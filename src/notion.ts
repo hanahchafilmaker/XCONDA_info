@@ -31,17 +31,16 @@ const LS_ENDPOINT = "xconda:notion-endpoint";
 const LS_CACHE = "xconda:notion-cache:v1";
 
 /**
- * 기본 연동 대상: XCONDA 전용 Cloudflare Worker 프록시.
- * (기존 무료 공개 프록시 notion-api.splitbee.io 는 500 오류 + CORS 차단으로 중단됨)
+ * 기본 연동 대상: 웹에 게시된 XCONDA_NEWs 페이지.
+ * 공개 API가 실패하면 notionPublic 어댑터가 동일 출처의 notion-content.json
+ * 스냅샷으로 자동 전환하므로 브라우저 CORS/Worker 장애에 영향을 받지 않습니다.
  */
-const DEFAULT_ENDPOINT = "https://xconda-info-news.wjwn93.workers.dev";
+const DEFAULT_ENDPOINT = "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd";
 
-/** 웹에 게시된 노션 페이지 ID (Worker 장애 시 공개 API 폴백용) */
-export const PUBLIC_PAGE_ENDPOINT = "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd";
-
-/** 더 이상 동작하지 않아 자동으로 기본값으로 되돌릴 예전 엔드포인트들 */
+/** 이전 배포에서 저장된 장애 프록시는 새 공개 페이지 + 스냅샷 방식으로 승격합니다. */
 const STALE_ENDPOINTS = [
-  "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd",
+  "https://xconda-info-news.wjwn93.workers.dev",
+  "https://xconda-info-news.wjwn93.workers.dev/v1",
   "https://notion-api.splitbee.io/v1",
   "https://notion-api.splitbee.io",
 ];
