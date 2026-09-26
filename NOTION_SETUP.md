@@ -23,7 +23,10 @@
 
 다른 공개 페이지로 바꾸려면 사이트 주소 뒤에 `?notion=<노션 페이지 URL 또는 32자리 ID>` 를 붙이거나, `.env` 에 `VITE_NOTION_ENDPOINT=<페이지 URL>` 을 넣고 다시 빌드하세요.
 
-> 공개 페이지 연동은 무료 공개 프록시(`notion-api.splitbee.io`)를 사용합니다. 2026년부터 해당 서비스의 `/table` 경로가 간헐적으로 실패하는 사례가 있어, 사이트는 자동으로 `/page` 레코드맵 대체 경로를 한 번 더 시도합니다. 그래도 실패하면 프록시 장애이므로 **방법 B(Cloudflare Worker)** 를 연결하세요. 비공개 운영에도 방법 B가 필요합니다.
+> ⚠️ 무료 공개 프록시(`notion-api.splitbee.io`)는 2026년부터 **500 Internal Server Error + CORS 차단**으로 사용할 수 없습니다.
+> 그래서 사이트 기본 엔드포인트는 전용 Cloudflare Worker `https://xconda-info-news.wjwn93.workers.dev` 로 변경되었습니다.
+> 다른 프록시를 쓰려면 `.env` 에 `VITE_NOTION_ENDPOINT`(Worker 방식) 또는 `VITE_NOTION_PUBLIC_PROXY`(공개 `/v1/table` 방식) 를 지정하세요.
+> 브라우저에 예전 설정이 저장돼 있으면 `?notion=` 파라미터로 덮어쓰거나, 사이트가 자동으로 기본값으로 되돌립니다.
 
 ---
 

@@ -2,7 +2,7 @@
  * 공개(웹에 게시된) Notion 페이지 어댑터 — 토큰 · 서버 배포 불필요
  * -----------------------------------------------------------------------------
  * ▸ Notion에서 "웹에 게시(Publish)"한 페이지라면, 통합 토큰이나 Cloudflare Worker
- *   없이도 공개 API 프록시(notion-api.splitbee.io, CORS 허용)로 바로 읽을 수 있습니다.
+ *   없이도 공개 API 프록시(기본값: XCONDA Cloudflare Worker, CORS 허용)로 바로 읽을 수 있습니다.
  * ▸ 페이지 안에 데이터베이스(표)를 하나 만들면 그 행들이 콘텐츠가 됩니다.
  *   속성 스키마는 NOTION_SETUP.md 와 동일합니다. (Title/Type/Published/Date …)
  * ▸ 엔드포인트 형식: "public:<32자리 페이지 ID>"  → src/notion.ts 가 라우팅합니다.
@@ -13,7 +13,15 @@ import { TYPE_MAP, parseChanges } from "./notion";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-const API = "https://notion-api.splitbee.io/v1";
+/**
+ * 공개 Notion 프록시 베이스 URL.
+ *
+ * 기본값은 XCONDA 전용 Cloudflare Worker 입니다. 예전 기본값이던
+ * notion-api.splitbee.io 는 500 Internal Server Error + CORS 차단으로
+ * 더 이상 사용할 수 없습니다. 다른 프록시를 쓰려면 .env 의
+ * VITE_NOTION_PUBLIC_PROXY 로 덮어쓰세요. (예: https://my-worker.workers.dev/v1)
+ */
+const API = (import.meta.env.VITE_NOTION_PUBLIC_PROXY || "https://xconda-info-news.wjwn93.workers.dev/v1").replace(/\/$/, "");
 
 type LegacySchema = Record<string, { name?: unknown; type?: unknown }>;
 
@@ -28,10 +36,10 @@ function isRecord(value: unknown): value is R {
 }
 
 /**
- * Splitbee's historical `/table` route is no longer reliable (it began
- * returning network/5xx failures in 2026). Its `/page` route is still
- * available and includes the same collection rows in each `collection_view`
- * block. The fallback below decodes that legacy record-map response.
+ * The proxy's `/table` route can fail (Splitbee's public instance returns
+ * 5xx/CORS errors since 2026). The `/page` route returns the same collection
+ * rows inside each `collection_view` block, so the fallback below decodes that
+ * legacy record-map response.
  */
 async function fetchJson(url: string, signal?: AbortSignal): Promise<unknown> {
   const res = await fetch(url, { signal, headers: { Accept: "application/json" } });
@@ -247,7 +255,7 @@ export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): 
     throw new Error(
       "공개 Notion 동기화에 실패했습니다. " +
         `공개 API의 table 요청(${describeError(tableFailure)}) 및 page 대체 요청(${describeError(pageFailure)})을 모두 완료하지 못했습니다. ` +
-        "노션 페이지의 웹 게시 상태를 확인하거나, 안정적인 운영을 위해 NOTION_SETUP.md의 Cloudflare Worker 프록시를 연결해 주세요."
+        `프록시 주소(${API})와 노션 페이지의 웹 게시 상태를 확인해 주세요. 자세한 설정은 NOTION_SETUP.md 를 참고하세요.`
     );
   }
 }
