@@ -44,7 +44,7 @@ jobs:
           path: notion-content.json
           retention-days: 7
 
-      - name: 변경사항 커밋
+      - name: 변경사항 커밋 (notion-content.json)
         run: |
           if [ -z "$(git status --porcelain notion-content.json)" ]; then
             echo "변경 없음 — 커밋 생략"
@@ -54,4 +54,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add notion-content.json
           git commit -m "chore: Notion 콘텐츠 동기화 [skip ci]"
+          # 다른 푸시와 경주해 거절되지 않도록 최신 상태에 재적용 후 푸시.
+          # 스냅샷은 막 생성한 쪽이 최신이므로 충돌 시 새 파일(=theirs)을 우선합니다.
+          git pull --rebase -X theirs origin "${{ github.ref_name }}"
           git push origin HEAD:${{ github.ref_name }}

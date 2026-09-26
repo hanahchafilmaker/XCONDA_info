@@ -1,32 +1,43 @@
 # XCONDA 가이드 센터 · Notion 연동 가이드
 
-노션에 글을 쓰고 **Published**를 체크하면 → 최대 3분(사이트 자동 동기화) 안에 가이드 사이트에 반영됩니다.
-사이트는 탭으로 돌아올 때도 자동으로 새로 불러오며, 상단 배지의 🔄 버튼으로 즉시 동기화할 수 있습니다.
+노션에 글을 쓰고 **Published**를 체크하면 → **최대 10분**(GitHub Actions 스냅샷 주기) 안에 가이드 사이트에 반영됩니다.
+사이트는 3분마다, 탭으로 돌아올 때, 상단 배지의 🔄 버튼을 누를 때 스냅샷을 새로 읽습니다.
+
+**어떻게 동작하나요?**
+`.github/workflows/notion-sync.yml` 이 10분마다 게시된 Notion 페이지를 **서버**에서 읽어
+사이트와 같은 폴더의 `notion-content.json`(정적 스냅샷)으로 커밋하고, 사이트는 그 파일만 읽습니다.
+같은 출처의 정적 파일이라 **브라우저 CORS 차단이나 외부 공개 프록시(notion-api.splitbee.io) 장애의 영향을 받지 않습니다.**
+(스냅샷이 아직 없거나 6시간 이상 오래된 경우에만 실시간 공개 API 를 보조로 시도합니다.)
 
 연동 방법은 두 가지입니다.
 
-| | 방법 A · 공개 페이지 (현재 기본) | 방법 B · Worker 프록시 |
+| | 방법 A · 공개 페이지 + 스냅샷 (현재 기본) | 방법 B · Worker 프록시 |
 |---|---|---|
 | 준비물 | 노션 페이지 **웹에 게시**만 하면 끝 | 통합 토큰 + Cloudflare Worker 배포 |
-| 노션 페이지 공개 여부 | 공개(누구나 링크로 열람 가능) | 비공개 유지 가능 |
+| 노션 페이지 공개 여부 | 공개(누구나 링크로 열어보기 가능) | 비공개 유지 가능 |
+| 반영 지연 | 최대 10분 (Actions 주기) | 거의 실시간 (1분 캐시) |
 | 난이도 | ⭐ (설정 0분) | ⭐⭐⭐ |
 
 ---
 
 ## 방법 A. 공개 페이지 연동 (토큰 · 서버 배포 불필요) ✅ 현재 설정
 
-사이트는 기본으로 **웹에 게시된 [XCONDA_NEWs](https://silicon-mascara-c7d.notion.site/XCONDA_NEWs-3e72ebc017ad8024a3f5ef8fb9f8c6dd) 노션 페이지**에 연결되어 있습니다 (`src/notion.ts` 의 `DEFAULT_ENDPOINT`).
+사이트는 기본으로 **웹에 게시된 [XCONDA_NEWs](https://silicon-mascara-c7d.notion.site/XCONDA_NEWs-3e72ebc017ad8024a3f5ef8fb9f8c6dd) 노션 페이지**를 읽습니다 (`src/notion.ts` 의 `DEFAULT_ENDPOINT`).
 
 1. 노션 페이지 우측 상단 **공유 → 게시(Publish)** 가 켜져 있는지 확인합니다. *(XCONDA_NEWs는 이미 게시됨)*
 2. 페이지 **본문 안에 데이터베이스(표 보기)** 를 하나 만들고, 아래 「노션 데이터베이스 만들기」의 속성을 추가합니다.
-3. 끝! 행을 추가하고 `Published`를 체크하면 사이트에 나타납니다.
+3. 끝! 행을 추가하고 `Published`를 체크하면 다음 스냅샷 생성(10분 주기)부터 사이트에 나타납니다.
+   지금 바로 반영하고 싶다면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 실행하세요.
 
-다른 공개 페이지로 바꾸려면 사이트 주소 뒤에 `?notion=<노션 페이지 URL 또는 32자리 ID>` 를 붙이거나, `.env` 에 `VITE_NOTION_ENDPOINT=<페이지 URL>` 을 넣고 다시 빌드하세요.
+다른 공개 페이지로 바꾸려면 사이트 주소 뒤에 `?notion=<노션 페이지 URL 또는 32자리 ID>` 를 붙이면(실시간 공개 API 로 읽음) 되고,
+스냅샷 대상 자체를 옮기려면 저장소 **Settings → Variables** 의 `NOTION_PAGE_ID` 를 바꾼 뒤 Actions 를 한 번 실행하세요.
+`.env` 의 `VITE_NOTION_ENDPOINT` 도 여전히 사용할 수 있습니다.
 
-> ⚠️ 무료 공개 프록시(`notion-api.splitbee.io`)는 2026년부터 **500 Internal Server Error + CORS 차단**으로 사용할 수 없습니다.
-> 그래서 사이트 기본 엔드포인트는 전용 Cloudflare Worker `https://xconda-info-news.wjwn93.workers.dev` 로 변경되었습니다.
-> 다른 프록시를 쓰려면 `.env` 에 `VITE_NOTION_ENDPOINT`(Worker 방식) 또는 `VITE_NOTION_PUBLIC_PROXY`(공개 `/v1/table` 방식) 를 지정하세요.
-> 브라우저에 예전 설정이 저장돼 있으면 `?notion=` 파라미터로 덮어쓰거나, 사이트가 자동으로 기본값으로 되돌립니다.
+> **동기화가 안 될 때 확인 순서**
+> 1. 저장소 **Actions → “Notion 동기화”** 최근 실행이 성공(초록)인지 확인 — 실패하면 로그에 원인이 표시됩니다.
+> 2. 저장소에 `notion-content.json` 이 있는지, 안의 `generatedAt` 이 최근인지 확인합니다.
+> 3. 노션 페이지가 **웹에 게시** 상태인지 확인합니다. (게시를 해제하면 스냅샷 생성이 실패합니다)
+> 4. 그래도 안 되면 **방법 B(Cloudflare Worker)** 를 연결하세요. 비공개 운영·즉시 반영에도 방법 B가 필요합니다.
 
 ---
 

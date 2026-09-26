@@ -38,10 +38,13 @@ export function extractId(input) {
   return m ? m[0].toLowerCase() : undefined;
 }
 
-const dashed = (id) =>
-  `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
-
 const undashed = (id) => String(id).replace(/-/g, "").toLowerCase();
+
+/** 하이픈이 있든 없든 항상 8-4-4-4-12 UUID 형태로 정규화합니다. */
+const dashed = (id) => {
+  const raw = undashed(id);
+  return `${raw.slice(0, 8)}-${raw.slice(8, 12)}-${raw.slice(12, 16)}-${raw.slice(16, 20)}-${raw.slice(20)}`;
+};
 
 async function notionPost(path, body, { retries = 3 } = {}) {
   let lastError;
@@ -66,6 +69,7 @@ async function notionPost(path, body, { retries = 3 } = {}) {
       }
     } catch (error) {
       lastError = error;
+      console.warn(`  ! ${path} 시도 ${attempt}/${retries} 실패: ${error?.message ?? error}`);
       if (attempt < retries) await new Promise((r) => setTimeout(r, attempt * 1200));
     }
   }
@@ -271,9 +275,14 @@ function rowToObject(block, schema) {
   return row;
 }
 
+/**
+ * Published 계열 열이 있는 스키마에서는 체크된 행만 공개합니다.
+ * 체크를 해제한 행은 레거시 레코드맵에서 속성 자체가 빠지므로,
+ * "열이 있는데 키가 없음" = 미공개로 간주합니다. (사이트 표시 규칙과 동일)
+ */
 const isPublished = (row) => {
   const key = Object.keys(row).find((k) => PUBLISHED_KEYS.includes(k.trim().toLowerCase()));
-  return key === undefined ? true : row[key] === true;
+  return key !== undefined && row[key] === true;
 };
 
 const hasPublishedColumn = (schema) =>
@@ -281,9 +290,12 @@ const hasPublishedColumn = (schema) =>
 
 /* ------------------------------ 스냅샷 ------------------------------ */
 
+/** 빈 문자열(설정하지 않은 GitHub Variables 가 공백으로 넘어오는 경우)은 없는 값으로 취급합니다. */
+const firstFilled = (...values) => values.find((v) => typeof v === "string" && v.trim() !== "");
+
 export async function buildSnapshot({ pageId, databaseId } = {}) {
-  const page = extractId(pageId ?? process.env.NOTION_PAGE_ID ?? DEFAULT_PAGE_ID);
-  const database = extractId(databaseId ?? process.env.NOTION_DATABASE_ID ?? DEFAULT_DATABASE_ID);
+  const page = extractId(firstFilled(pageId, process.env.NOTION_PAGE_ID, DEFAULT_PAGE_ID));
+  const database = extractId(firstFilled(databaseId, process.env.NOTION_DATABASE_ID, DEFAULT_DATABASE_ID));
   if (!page && !database) throw new Error("NOTION_PAGE_ID 또는 NOTION_DATABASE_ID 가 필요합니다");
 
   const rootId = page ?? database;
