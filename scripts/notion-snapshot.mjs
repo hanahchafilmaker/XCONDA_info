@@ -66,6 +66,7 @@ async function notionPost(path, body, { retries = 3 } = {}) {
       }
     } catch (error) {
       lastError = error;
+      console.warn(`  ! ${path} 시도 ${attempt}/${retries} 실패: ${error?.message ?? error}`);
       if (attempt < retries) await new Promise((r) => setTimeout(r, attempt * 1200));
     }
   }
