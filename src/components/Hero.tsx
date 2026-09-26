@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, BookOpen, ChevronRight, Command, Megaphone, Rocket, Search, Sparkles, Wrench } from "lucide-react";
 import { Container, Serif } from "./ui";
+import { useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { TOOLS } from "../content/tools";
 import type { Entry } from "../content/types";
@@ -26,6 +27,7 @@ function score(hay: string, q: string) {
 }
 
 export default function Hero() {
+  const { t, pick } = useLang();
   const { entries, notices, updates, guides, openEntry, openTool, syncedAt } = useContent();
   const [q, setQ] = useState("");
   const [focused, setFocused] = useState(false);
@@ -121,11 +123,11 @@ export default function Hero() {
           >
             <span className="text-gradient-soft">XCONDA</span> <Serif className="text-gradient pr-1 font-normal">Guide</Serif>
             <br />
-            <span className="text-gradient-soft">가장 빠른 업데이트, 가장 쉬운 사용법</span>
+            <span className="text-gradient-soft">{t("hero.title2")}</span>
           </h1>
 
           <p className="hero-in mt-6 max-w-xl text-pretty text-base leading-relaxed text-zinc-400 sm:text-lg" style={{ animationDelay: "160ms" }}>
-            매일 새로워지는 XCONDA의 공지사항과 업데이트, 툴별 사용법을 한곳에 모았습니다. 궁금한 기능을 검색해 보세요.
+            {t("hero.subtitle")}
           </p>
 
           {/* Search */}
@@ -138,7 +140,7 @@ export default function Hero() {
             >
               <div className="glass-strong flex items-center gap-3 rounded-[15px] px-4 sm:px-5">
                 <Search className="h-5 w-5 shrink-0 text-zinc-400" aria-hidden />
-                <label htmlFor="guide-search" className="sr-only">가이드 검색</label>
+                <label htmlFor="guide-search" className="sr-only">{t("hero.searchLabel")}</label>
                 <input
                   ref={inputRef}
                   id="guide-search"
@@ -152,7 +154,7 @@ export default function Hero() {
                   onChange={(e) => setQ(e.target.value)}
                   onFocus={() => setFocused(true)}
                   onKeyDown={onKeyDown}
-                  placeholder="공지, 사용법, 툴 이름을 검색하세요 (예: 캐릭터, 마스크, 크레딧)"
+                  placeholder={t("hero.searchPlaceholder")}
                   className="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-white placeholder-zinc-500 outline-none sm:h-16 sm:text-base [&::-webkit-search-cancel-button]:hidden"
                 />
                 <kbd className="hidden shrink-0 items-center gap-0.5 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1 font-mono text-[11px] text-zinc-400 sm:inline-flex">
@@ -184,10 +186,10 @@ export default function Hero() {
                           ) : (
                             <>
                               <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-fuchsia-400/12 px-2 py-0.5 text-[11px] font-semibold text-fuchsia-200 ring-1 ring-inset ring-fuchsia-400/25">
-                                <Wrench className="h-3 w-3" /> 툴
+                                <Wrench className="h-3 w-3" /> {t("common.tool")}
                               </span>
                               <span className="min-w-0 flex-1">
-                                <span className="block truncate text-sm text-white">{r.name} 사용법</span>
+                                <span className="block truncate text-sm text-white">{pick(`${r.name} 사용법`, `${r.name} guide`)}</span>
                                 <span className="block truncate text-xs text-zinc-500">{r.tagline}</span>
                               </span>
                             </>
@@ -199,7 +201,8 @@ export default function Hero() {
                   </ul>
                 ) : (
                   <div className="px-5 py-8 text-center text-sm text-zinc-400">
-                    “{q}”에 대한 결과가 없습니다. <a href="#support" className="text-fuchsia-300 underline underline-offset-4">문의하기</a>
+                    {pick(`“${q}”에 대한 결과가 없습니다. `, `No results for “${q}”. `)}
+                    <a href="#support" className="text-fuchsia-300 underline underline-offset-4">{t("common.contact")}</a>
                   </div>
                 )}
                 <div className="hidden items-center gap-4 border-t border-white/5 px-4 py-2 text-[11px] text-zinc-500 sm:flex">
@@ -211,7 +214,7 @@ export default function Hero() {
 
           {/* Quick chips */}
           <div className="hero-in mt-5 flex flex-wrap items-center justify-center gap-2" style={{ animationDelay: "320ms" }}>
-            <span className="text-xs text-zinc-500">바로가기</span>
+            <span className="text-xs text-zinc-500">{t("hero.quickLinks")}</span>
             {QUICK.map((c) => (
               <button
                 key={c.slug}
@@ -223,7 +226,7 @@ export default function Hero() {
               </button>
             ))}
             <a href="#credits" className="rounded-full bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-white">
-              크레딧 충전
+              {t("hero.rechargeCredits")}
             </a>
           </div>
         </div>
@@ -241,7 +244,7 @@ export default function Hero() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2 text-xs text-zinc-400">
-                  {pinned.pinned ? "고정 공지" : "최신 공지"} · {formatDate(pinned.date)}
+                  {pinned.pinned ? t("hero.pinnedNotice") : t("hero.latestNotice")} · {formatDate(pinned.date)}
                   {isNew(pinned.date) && <NewBadge />}
                 </span>
                 <span className="mt-1 block truncate font-semibold text-white">{pinned.title}</span>
@@ -258,7 +261,7 @@ export default function Hero() {
               <Sparkles className="h-4.5 w-4.5" />
             </span>
             <span className="min-w-0">
-              <span className="block text-xs text-zinc-400">최신 업데이트</span>
+              <span className="block text-xs text-zinc-400">{t("hero.latestUpdate")}</span>
               <span className="block truncate font-semibold text-white">
                 {latestUpdate ? `${latestUpdate.version ?? ""} · ${timeAgo(latestUpdate.date)}` : "—"}
               </span>
@@ -267,9 +270,9 @@ export default function Hero() {
 
           <div className="glass grid grid-cols-3 divide-x divide-white/[0.06] rounded-2xl py-4 text-center">
             {[
-              { icon: Megaphone, n: notices.length, l: "공지" },
-              { icon: BookOpen, n: guides.length + TOOLS.length, l: "가이드" },
-              { icon: Rocket, n: updates.length, l: "릴리스" },
+              { icon: Megaphone, n: notices.length, l: t("hero.statNotices") },
+              { icon: BookOpen, n: guides.length + TOOLS.length, l: t("hero.statGuides") },
+              { icon: Rocket, n: updates.length, l: t("hero.statReleases") },
             ].map((s) => (
               <div key={s.l} className="flex flex-col items-center justify-center px-2">
                 <span className="text-xl font-bold tabular-nums tracking-tight text-white">{s.n}</span>
@@ -278,7 +281,7 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        {syncedAt && <span className="sr-only">마지막 동기화 {timeAgo(syncedAt)}</span>}
+        {syncedAt && <span className="sr-only">{t("hero.lastSynced")} {timeAgo(syncedAt)}</span>}
       </Container>
     </section>
   );

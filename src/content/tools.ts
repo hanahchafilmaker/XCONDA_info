@@ -1,4 +1,5 @@
 import type { Block, Entry, Tool } from "./types";
+import { getLang, translate } from "../i18n/dict";
 
 export const STUDIO_URL = "https://www.xconda.ai";
 const IMG = `${STUDIO_URL}/assets/img/land`;
@@ -226,20 +227,21 @@ export const TOOL_GROUPS = ["전체", "핵심 스튜디오", "스토리보드", 
 
 /** 툴 → 모달에서 보여줄 가이드 Entry로 변환 */
 export function toolToEntry(tool: Tool): Entry {
+  const lang = getLang();
   const blocks: Block[] = [
     { type: "p", text: tool.desc },
-    { type: "h2", text: "사용 방법" },
+    { type: "h2", text: translate("toolentry.howTo", lang) },
     { type: "ol", items: tool.steps },
   ];
   if (tool.image) blocks.push({ type: "img", src: tool.image, caption: tool.name });
   if (tool.tips?.length) {
-    blocks.push({ type: "h2", text: "팁" });
+    blocks.push({ type: "h2", text: translate("toolentry.tips", lang) });
     tool.tips.forEach((t) => blocks.push({ type: "callout", icon: "💡", text: t }));
   }
   return {
     id: `tool-${tool.slug}`,
     type: "guide",
-    title: `${tool.name} 사용법`,
+    title: lang === "ko" ? `${tool.name} 사용법` : `${tool.name} guide`,
     summary: tool.tagline,
     category: tool.group,
     date: new Date().toISOString(),

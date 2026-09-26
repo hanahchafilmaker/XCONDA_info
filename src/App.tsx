@@ -11,6 +11,7 @@ import CTA from "./components/CTA";
 import Footer from "./components/Footer";
 import ArticleModal from "./components/ArticleModal";
 import { ContentProvider } from "./content/ContentContext";
+import { useLang } from "./i18n";
 
 function ScrollProgress() {
   const [p, setP] = useState(0);
@@ -37,6 +38,7 @@ function ScrollProgress() {
 const Divider = () => <div aria-hidden className="mx-auto h-px max-w-5xl bg-gradient-to-r from-transparent via-white/10 to-transparent" />;
 
 export default function App() {
+  const { t } = useLang();
   return (
     <ContentProvider>
       <div className="relative min-h-screen overflow-x-clip">
@@ -44,7 +46,7 @@ export default function App() {
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-ink-950"
         >
-          본문으로 건너뛰기
+          {t("a11y.skip")}
         </a>
         <ScrollProgress />
         <Navbar />

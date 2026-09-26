@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CalendarDays, Link2, Check, X, Pin } from "lucide-react";
 import { useContent } from "../content/ContentContext";
+import { useLang } from "../i18n";
 import type { Block } from "../content/types";
 import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "./common";
@@ -14,6 +15,7 @@ const KIND_TONE = {
 };
 
 export default function ArticleModal() {
+  const { t } = useLang();
   const { active, closeEntry, endpoint, entries, openEntry } = useContent();
   const [blocks, setBlocks] = useState<Block[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -63,7 +65,7 @@ export default function ArticleModal() {
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="article-title" className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center sm:p-6">
-      <button type="button" aria-label="닫기" tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-ink-950/75 backdrop-blur-md" />
+      <button type="button" aria-label={t("common.close")} tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-ink-950/75 backdrop-blur-md" />
       <div className="modal-in glass-strong relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[28px] sm:max-w-3xl sm:rounded-[28px]">
         {/* Top bar */}
         <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-5 py-3.5 sm:px-7">
@@ -79,13 +81,13 @@ export default function ArticleModal() {
               className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-zinc-300 transition hover:bg-white/10 hover:text-white"
             >
               {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Link2 className="h-3.5 w-3.5" />}
-              <span aria-live="polite">{copied ? "링크 복사됨" : "공유"}</span>
+              <span aria-live="polite">{copied ? t("common.linkCopied") : t("common.share")}</span>
             </button>
             <button
               ref={closeRef}
               type="button"
               onClick={closeEntry}
-              aria-label="닫기"
+              aria-label={t("common.close")}
               className="grid h-9 w-9 place-items-center rounded-full text-zinc-300 transition hover:bg-white/10 hover:text-white"
             >
               <X className="h-4.5 w-4.5" />
@@ -104,7 +106,7 @@ export default function ArticleModal() {
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
               {active.pinned && (
                 <span className="inline-flex items-center gap-1 text-fuchsia-300">
-                  <Pin className="h-3.5 w-3.5" /> 고정 공지
+                  <Pin className="h-3.5 w-3.5" /> {t("modal.pinnedNotice")}
                 </span>
               )}
               {!active.id.startsWith("tool-") ? (
@@ -132,7 +134,7 @@ export default function ArticleModal() {
 
             <div className="mt-8">
               {loading ? (
-                <div className="space-y-3" aria-label="본문 불러오는 중">
+                <div className="space-y-3" aria-label={t("modal.loadingAria")}>
                   {[100, 92, 96, 70, 88].map((w, i) => (
                     <div key={i} className="skeleton h-4 rounded" style={{ width: `${w}%` }} />
                   ))}
@@ -158,14 +160,14 @@ export default function ArticleModal() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-ink-950 transition hover:shadow-[0_10px_30px_-8px_rgba(236,72,153,0.7)] active:scale-95"
               >
-                {active.type === "guide" ? "스튜디오에서 바로 해보기" : "자세히 보기"}
+                {active.type === "guide" ? t("modal.tryInStudio") : t("common.readMore")}
                 <ArrowUpRight className="h-4 w-4" />
               </a>
             )}
 
             {related.length > 0 && (
               <div className="mt-12 border-t border-white/[0.06] pt-8">
-                <p className="text-sm font-semibold text-white">관련 글</p>
+                <p className="text-sm font-semibold text-white">{t("modal.related")}</p>
                 <ul className="mt-3 divide-y divide-white/[0.05]">
                   {related.map((r) => (
                     <li key={r.id}>

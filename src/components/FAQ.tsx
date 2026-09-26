@@ -1,6 +1,7 @@
 import { useId, useMemo, useState } from "react";
 import { MessageCircle, Plus } from "lucide-react";
 import { ButtonLink, Container, Reveal, SectionHeading, Serif } from "./ui";
+import { useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { cn } from "../utils/cn";
 
@@ -40,12 +41,15 @@ function Item({ q, a, open, onToggle }: { q: string; a: string; open: boolean; o
   );
 }
 
+const ALL = "전체";
+
 export default function FAQ() {
+  const { t } = useLang();
   const { faqs } = useContent();
   const [open, setOpen] = useState<string | null>(null);
-  const [cat, setCat] = useState("전체");
-  const cats = useMemo(() => ["전체", ...Array.from(new Set(faqs.map((f) => f.category).filter(Boolean)))], [faqs]);
-  const list = cat === "전체" ? faqs : faqs.filter((f) => f.category === cat);
+  const [cat, setCat] = useState(ALL);
+  const cats = useMemo(() => [ALL, ...Array.from(new Set(faqs.map((f) => f.category).filter(Boolean)))], [faqs]);
+  const list = cat === ALL ? faqs : faqs.filter((f) => f.category === cat);
 
   return (
     <section id="faq" className="relative py-20 sm:py-28">
@@ -55,8 +59,8 @@ export default function FAQ() {
             <SectionHeading
               align="left"
               eyebrow="FAQ"
-              title={<>자주 묻는 질문 <Serif className="text-gradient font-normal">Q&amp;A</Serif></>}
-              description="가장 많이 받는 질문을 모았습니다. 원하는 답이 없다면 언제든 문의해 주세요."
+              title={<>{t("faq.titleKo")} <Serif className="text-gradient font-normal">Q&amp;A</Serif></>}
+              description={t("faq.desc")}
             />
             <Reveal delay={160} className="mt-6 flex flex-wrap gap-2">
               {cats.map((c) => (
@@ -67,13 +71,13 @@ export default function FAQ() {
                   onClick={() => setCat(c)}
                   className={cn("rounded-full px-3.5 py-1.5 text-sm transition", cat === c ? "bg-white text-ink-950" : "glass text-zinc-300 hover:bg-white/10")}
                 >
-                  {c}
+                  {c === ALL ? t("common.all") : c}
                 </button>
               ))}
             </Reveal>
             <Reveal delay={220} className="mt-8">
               <ButtonLink href="#support" variant="secondary">
-                <MessageCircle className="h-4 w-4" /> 1:1 문의하기
+                <MessageCircle className="h-4 w-4" /> {t("faq.contact")}
               </ButtonLink>
             </Reveal>
           </div>
@@ -83,7 +87,7 @@ export default function FAQ() {
                 <Item q={f.title} a={f.summary} open={open === f.id} onToggle={() => setOpen(open === f.id ? null : f.id)} />
               </Reveal>
             ))}
-            {list.length === 0 && <p className="py-10 text-center text-sm text-zinc-500">등록된 질문이 없습니다.</p>}
+            {list.length === 0 && <p className="py-10 text-center text-sm text-zinc-500">{t("faq.empty")}</p>}
           </div>
         </div>
       </Container>

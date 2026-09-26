@@ -2,12 +2,12 @@ import { useState, type ReactNode } from "react";
 import { Check, Copy, ExternalLink, ImageOff, RefreshCw } from "lucide-react";
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
+import { useLang, typeLabel } from "../i18n";
 import { timeAgo } from "../notion";
 import { cn } from "../utils/cn";
 
 /* ----------------------------- Badges ----------------------------- */
 
-const TYPE_LABEL: Record<EntryType, string> = { notice: "공지", update: "업데이트", guide: "가이드", faq: "FAQ" };
 const CATEGORY_TONE: Record<string, string> = {
   공지: "bg-violet-400/12 text-violet-200 ring-violet-400/25",
   점검: "bg-amber-400/12 text-amber-200 ring-amber-400/25",
@@ -32,7 +32,8 @@ export function CategoryBadge({ children, className }: { children: ReactNode; cl
 }
 
 export function TypeLabel({ type }: { type: EntryType }) {
-  return <CategoryBadge>{TYPE_LABEL[type]}</CategoryBadge>;
+  const { lang } = useLang();
+  return <CategoryBadge>{typeLabel(type, lang)}</CategoryBadge>;
 }
 
 export function NewBadge() {
@@ -46,18 +47,22 @@ export function NewBadge() {
 /* --------------------------- Sync status --------------------------- */
 
 export function SyncStatus({ className }: { className?: string }) {
+  const { t, pick } = useLang();
   const { source, status, syncedAt, refresh, endpoint } = useContent();
   const live = source === "notion" && status !== "error";
   const label =
     status === "loading"
-      ? "Notion 불러오는 중…"
+      ? t("sync.loading")
       : status === "syncing"
-        ? "동기화 중…"
+        ? t("sync.syncing")
         : live
-          ? `Notion 실시간 연동 · ${syncedAt ? timeAgo(syncedAt) : ""}`
+          ? pick(
+              `Notion 실시간 연동 · ${syncedAt ? timeAgo(syncedAt) : ""}`,
+              `Live from Notion · ${syncedAt ? timeAgo(syncedAt) : ""}`
+            )
           : status === "error"
-            ? "Notion 연결 오류 · 캐시 표시"
-            : "샘플 콘텐츠 · Notion 미연결";
+            ? t("sync.error")
+            : t("sync.sample");
   return (
     <div className={cn("glass inline-flex items-center gap-2 rounded-full py-1.5 pl-3 pr-1.5 text-xs text-zinc-300", className)}>
       <span className="relative flex h-2 w-2">
@@ -75,7 +80,7 @@ export function SyncStatus({ className }: { className?: string }) {
         <button
           type="button"
           onClick={refresh}
-          aria-label="지금 동기화"
+          aria-label={t("sync.now")}
           className="grid h-6 w-6 place-items-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-white"
         >
           <RefreshCw className={cn("h-3.5 w-3.5", (status === "syncing" || status === "loading") && "animate-spin")} />
@@ -138,6 +143,7 @@ function youTubeEmbed(url: string): string | null {
 }
 
 function CodeBlock({ text, language }: { text: string; language?: string }) {
+  const { t } = useLang();
   const [copied, setCopied] = useState(false);
   return (
     <div className="relative overflow-hidden rounded-xl bg-black/40 ring-1 ring-white/[0.08]">
@@ -153,7 +159,7 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
           className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-white/10 hover:text-white"
         >
           {copied ? <Check className="h-3 w-3 text-emerald-300" /> : <Copy className="h-3 w-3" />}
-          {copied ? "복사됨" : "복사"}
+          {copied ? t("common.copied") : t("common.copy")}
         </button>
       </div>
       <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-zinc-300">
