@@ -30,8 +30,21 @@ type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-expli
 const LS_ENDPOINT = "xconda:notion-endpoint";
 const LS_CACHE = "xconda:notion-cache:v1";
 
-/** 기본 연동 대상: 웹에 게시된 XCONDA_NEWs 노션 페이지 (공개 · 토큰 불필요) */
-const DEFAULT_ENDPOINT = "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd";
+/**
+ * 기본 연동 대상: XCONDA 전용 Cloudflare Worker 프록시.
+ * (기존 무료 공개 프록시 notion-api.splitbee.io 는 500 오류 + CORS 차단으로 중단됨)
+ */
+const DEFAULT_ENDPOINT = "https://xconda-info-news.wjwn93.workers.dev";
+
+/** 웹에 게시된 노션 페이지 ID (Worker 장애 시 공개 API 폴백용) */
+export const PUBLIC_PAGE_ENDPOINT = "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd";
+
+/** 더 이상 동작하지 않아 자동으로 기본값으로 되돌릴 예전 엔드포인트들 */
+const STALE_ENDPOINTS = [
+  "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd",
+  "https://notion-api.splitbee.io/v1",
+  "https://notion-api.splitbee.io",
+];
 
 /** Worker URL은 그대로, 노션 페이지 URL·ID는 "public:<id>" 로 정규화 */
 function normalizeEndpoint(raw: string): string {
@@ -56,7 +69,12 @@ export function resolveEndpoint(): string | undefined {
       return norm;
     }
     const stored = localStorage.getItem(LS_ENDPOINT);
-    if (stored) return normalizeEndpoint(stored);
+    if (stored) {
+      const norm = normalizeEndpoint(stored);
+      // 브라우저에 남아 있는 옛 Splitbee/공개 API 설정은 무시하고 기본값(Worker)으로 승격
+      if (STALE_ENDPOINTS.includes(norm)) localStorage.removeItem(LS_ENDPOINT);
+      else return norm;
+    }
   } catch {
     /* SSR / private mode */
   }
