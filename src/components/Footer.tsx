@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Container, Logo } from "./ui";
+import { useLang } from "../i18n";
 import { STUDIO_URL } from "../content/tools";
 import { NotionMark } from "./common";
 import { useContent } from "../content/ContentContext";
@@ -7,35 +8,36 @@ import { timeAgo } from "../notion";
 
 const cols = [
   {
-    title: "가이드 센터",
+    titleKey: "footer.col.guide",
     links: [
-      { l: "공지사항", h: "#notices" },
-      { l: "업데이트", h: "#updates" },
-      { l: "시작하기", h: "#start" },
-      { l: "FAQ", h: "#faq" },
+      { key: "nav.notices", h: "#notices" },
+      { key: "nav.updates", h: "#updates" },
+      { key: "nav.start", h: "#start" },
+      { key: "nav.faq", h: "#faq" },
     ],
   },
   {
-    title: "핵심 스튜디오",
+    titleKey: "footer.col.studio",
     links: [
-      { l: "360 Turn Studio", h: `${STUDIO_URL}/studio/turn` },
-      { l: "Director's Cut", h: `${STUDIO_URL}/studio/directors-cut` },
-      { l: "Art Director Pro", h: STUDIO_URL },
-      { l: "전체 툴", h: "#tools" },
+      { label: "360 Turn Studio", h: `${STUDIO_URL}/studio/turn` },
+      { label: "Director's Cut", h: `${STUDIO_URL}/studio/directors-cut` },
+      { label: "Art Director Pro", h: STUDIO_URL },
+      { key: "footer.link.allTools", h: "#tools" },
     ],
   },
   {
     title: "XCONDA",
     links: [
-      { l: "스튜디오 열기", h: STUDIO_URL },
-      { l: "크레딧 구매", h: "#credits" },
-      { l: "문의하기", h: "#support" },
-      { l: "이메일", h: "mailto:support@xconda.ai" },
+      { key: "footer.link.openStudio", h: STUDIO_URL },
+      { key: "footer.link.buyCredits", h: "#credits" },
+      { key: "common.contact", h: "#support" },
+      { key: "footer.link.email", h: "mailto:support@xconda.ai" },
     ],
   },
 ];
 
 export default function Footer() {
+  const { t, pick } = useLang();
   const { source, syncedAt } = useContent();
   return (
     <footer className="relative border-t border-white/[0.06] pt-16">
@@ -47,36 +49,45 @@ export default function Footer() {
               <span className="rounded-md bg-white/[0.07] px-1.5 py-0.5 text-[11px] font-semibold text-zinc-300 ring-1 ring-inset ring-white/10">Guide</span>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-400">
-              AI Storyboard for Ad Campaigns. XCONDA의 모든 소식과 사용법을 가장 빠르게 전합니다.
+              {t("footer.tagline")}
             </p>
             <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-400 ring-1 ring-inset ring-white/10">
               <NotionMark className="h-3.5 w-3.5 text-zinc-300" />
-              {source === "notion" ? `Powered by Notion · ${syncedAt ? timeAgo(syncedAt) : ""} 동기화` : "Powered by Notion"}
+              {source === "notion"
+                ? pick(
+                    `Powered by Notion · ${syncedAt ? timeAgo(syncedAt) : ""} 동기화`,
+                    `Powered by Notion · synced ${syncedAt ? timeAgo(syncedAt) : ""}`
+                  )
+                : t("footer.poweredNotion")}
             </p>
           </div>
-          <nav aria-label="푸터" className="grid grid-cols-2 gap-8 sm:grid-cols-3">
-            {cols.map((c) => (
-              <div key={c.title}>
-                <h3 className="text-sm font-semibold text-white">{c.title}</h3>
-                <ul className="mt-4 flex flex-col gap-3">
-                  {c.links.map((x) => {
-                    const ext = x.h.startsWith("http");
-                    return (
-                      <li key={x.l}>
-                        <a
-                          href={x.h}
-                          {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                          className="group inline-flex items-center gap-1 text-sm text-zinc-400 transition-colors hover:text-white"
-                        >
-                          {x.l}
-                          {ext && <ArrowUpRight className="h-3 w-3 opacity-50 transition group-hover:opacity-100" />}
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
+          <nav aria-label={t("footer.navAria")} className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            {cols.map((c, ci) => {
+              const title = c.title ?? t(c.titleKey!);
+              return (
+                <div key={ci}>
+                  <h3 className="text-sm font-semibold text-white">{title}</h3>
+                  <ul className="mt-4 flex flex-col gap-3">
+                    {c.links.map((x) => {
+                      const ext = x.h.startsWith("http");
+                      const label = "label" in x && x.label ? x.label : t((x as { key: string }).key);
+                      return (
+                        <li key={x.h}>
+                          <a
+                            href={x.h}
+                            {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                            className="group inline-flex items-center gap-1 text-sm text-zinc-400 transition-colors hover:text-white"
+                          >
+                            {label}
+                            {ext && <ArrowUpRight className="h-3 w-3 opacity-50 transition group-hover:opacity-100" />}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
           </nav>
         </div>
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] py-8 text-xs text-zinc-500 sm:flex-row">

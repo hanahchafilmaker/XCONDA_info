@@ -1,19 +1,40 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, ArrowUpRight, Menu, Search, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Languages, Menu, Search, X } from "lucide-react";
 import { ButtonLink, Container, Logo } from "./ui";
+import { useLang } from "../i18n";
 import { cn } from "../utils/cn";
 
 const links = [
-  { href: "#notices", label: "공지사항" },
-  { href: "#updates", label: "업데이트" },
-  { href: "#start", label: "시작하기" },
-  { href: "#tools", label: "툴 가이드" },
-  { href: "#credits", label: "크레딧" },
-  { href: "#faq", label: "FAQ" },
+  { href: "#notices", key: "nav.notices" },
+  { href: "#updates", key: "nav.updates" },
+  { href: "#start", key: "nav.start" },
+  { href: "#tools", key: "nav.tools" },
+  { href: "#credits", key: "nav.credits" },
+  { href: "#faq", key: "nav.faq" },
 ];
 const STUDIO = "https://www.xconda.ai";
 
+function LangToggle({ className }: { className?: string }) {
+  const { lang, toggle } = useLang();
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={lang === "ko" ? "Change language to English" : "언어를 한국어로 변경"}
+      title={lang === "ko" ? "English" : "한국어"}
+      className={cn(
+        "inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white",
+        className
+      )}
+    >
+      <Languages className="h-4 w-4" />
+      <span className="font-semibold">{lang === "ko" ? "EN" : "한국어"}</span>
+    </button>
+  );
+}
+
 export default function Navbar() {
+  const { t } = useLang();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("");
@@ -66,7 +87,7 @@ export default function Navbar() {
                 : "border border-transparent bg-transparent"
             )}
           >
-            <a href="#top" aria-label="XCONDA 가이드 센터 홈" className="flex items-center gap-2 rounded-full">
+            <a href="#top" aria-label={t("nav.home")} className="flex items-center gap-2 rounded-full">
               <Logo />
               <span className="rounded-md bg-white/[0.07] px-1.5 py-0.5 text-[11px] font-semibold text-zinc-300 ring-1 ring-inset ring-white/10">Guide</span>
             </a>
@@ -84,7 +105,7 @@ export default function Navbar() {
                     {active === l.href && (
                       <span aria-hidden className="absolute inset-0 rounded-full bg-white/[0.07] ring-1 ring-inset ring-white/10" />
                     )}
-                    <span className="relative">{l.label}</span>
+                    <span className="relative">{t(l.key)}</span>
                   </a>
                 </li>
               ))}
@@ -98,14 +119,15 @@ export default function Navbar() {
                   el?.scrollIntoView({ block: "center", behavior: "smooth" });
                   setTimeout(() => el?.focus(), 350);
                 }}
-                aria-label="검색"
+                aria-label={t("nav.search")}
                 className="hidden h-9 items-center gap-2 rounded-full px-3 text-sm text-zinc-400 transition-colors hover:bg-white/5 hover:text-white md:inline-flex"
               >
                 <Search className="h-4 w-4" />
                 <kbd className="font-mono text-[11px] text-zinc-500">⌘K</kbd>
               </button>
+              <LangToggle className="hidden sm:inline-flex" />
               <ButtonLink href={STUDIO} target="_blank" rel="noopener noreferrer" size="sm" className="hidden sm:inline-flex">
-                스튜디오 열기
+                {t("nav.openStudioShort")}
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </ButtonLink>
               <button
@@ -113,7 +135,7 @@ export default function Navbar() {
                 onClick={() => setOpen((o) => !o)}
                 aria-expanded={open}
                 aria-controls="mobile-menu"
-                aria-label={open ? "Close menu" : "Open menu"}
+                aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
                 className="grid h-10 w-10 place-items-center rounded-full text-white transition hover:bg-white/10 lg:hidden"
               >
                 {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -147,18 +169,21 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-between border-b border-white/5 py-5 text-2xl font-medium tracking-tight text-white"
                 >
-                  {l.label}
+                  {t(l.key)}
                   <ArrowRight className="h-5 w-5 text-zinc-500" />
                 </a>
               </li>
             ))}
           </ul>
           <div className="mt-auto flex flex-col gap-3">
+            <div className="flex justify-center pb-1">
+              <LangToggle className="border border-white/10" />
+            </div>
             <ButtonLink href={STUDIO} target="_blank" rel="noopener noreferrer" size="lg" onClick={() => setOpen(false)}>
-              XCONDA 스튜디오 열기 <ArrowUpRight className="h-4 w-4" />
+              {t("common.openStudioTop")} <ArrowUpRight className="h-4 w-4" />
             </ButtonLink>
             <ButtonLink href="#support" variant="secondary" size="lg" onClick={() => setOpen(false)}>
-              문의하기
+              {t("common.contact")}
             </ButtonLink>
           </div>
         </Container>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowRight, ChevronDown, GitCommitHorizontal } from "lucide-react";
 import { Container, Reveal, SectionHeading, Serif, trackSpotlight } from "./ui";
+import { useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew, timeAgo } from "../notion";
 import { NewBadge, SmartImage } from "./common";
@@ -13,6 +14,7 @@ const KIND = {
 };
 
 export default function Changelog() {
+  const { t, pick } = useLang();
   const { updates, openEntry, status } = useContent();
   const [expanded, setExpanded] = useState(false);
   const list = expanded ? updates : updates.slice(0, 3);
@@ -23,8 +25,8 @@ export default function Changelog() {
       <Container>
         <SectionHeading
           eyebrow="Changelog"
-          title={<>업데이트 <Serif className="text-gradient font-normal">Release Notes</Serif></>}
-          description="XCONDA는 매주 새로워집니다. 새 기능, 개선 사항, 버그 수정을 버전별로 확인하세요."
+          title={<>{t("updates.titleKo")} <Serif className="text-gradient font-normal">Release Notes</Serif></>}
+          description={t("updates.desc")}
         />
 
         <div className="relative mx-auto mt-14 max-w-4xl">
@@ -89,7 +91,7 @@ export default function Changelog() {
                       onClick={() => openEntry(u)}
                       className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-300 transition hover:text-white"
                     >
-                      자세히 보기 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                      {t("common.readMore")} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </button>
                   </div>
                 </article>
@@ -105,7 +107,9 @@ export default function Changelog() {
                 aria-expanded={expanded}
                 className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm text-zinc-200 transition hover:bg-white/10"
               >
-                {expanded ? "접기" : `이전 릴리스 ${updates.length - 3}개 더보기`}
+                {expanded
+                  ? t("updates.collapse")
+                  : pick(`이전 릴리스 ${updates.length - 3}개 더보기`, `${updates.length - 3} more past releases`)}
                 <ChevronDown className={cn("h-4 w-4 transition-transform", expanded && "rotate-180")} />
               </button>
             </div>

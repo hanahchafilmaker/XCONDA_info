@@ -23,6 +23,7 @@
 
 import type { Block, Change, ChangeKind, Entry, EntryType, Rich, RichSeg } from "./content/types";
 import { extractPageId, fetchPublicBlocks, fetchPublicEntries } from "./notionPublic";
+import { getLang } from "./i18n/dict";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -292,7 +293,13 @@ export async function fetchBlocks(endpoint: string, pageId: string): Promise<Blo
 /* ------------------------------ 포맷 유틸 ------------------------------ */
 
 export function formatDate(iso: string): string {
+  const lang = getLang();
   try {
+    if (lang === "en") {
+      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(
+        new Date(iso)
+      );
+    }
     return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" })
       .format(new Date(iso))
       .replace(/\.\s?/g, ".")
@@ -305,10 +312,20 @@ export function formatDate(iso: string): string {
 export function timeAgo(ts: number | string): string {
   const t = typeof ts === "number" ? ts : new Date(ts).getTime();
   const s = Math.max(0, (Date.now() - t) / 1000);
-  if (s < 60) return "방금 전";
-  if (s < 3600) return `${Math.floor(s / 60)}분 전`;
-  if (s < 86400) return `${Math.floor(s / 3600)}시간 전`;
-  if (s < 86400 * 7) return `${Math.floor(s / 86400)}일 전`;
+  const en = getLang() === "en";
+  if (s < 60) return en ? "just now" : "방금 전";
+  if (s < 3600) {
+    const m = Math.floor(s / 60);
+    return en ? `${m}m ago` : `${m}분 전`;
+  }
+  if (s < 86400) {
+    const h = Math.floor(s / 3600);
+    return en ? `${h}h ago` : `${h}시간 전`;
+  }
+  if (s < 86400 * 7) {
+    const d = Math.floor(s / 86400);
+    return en ? `${d}d ago` : `${d}일 전`;
+  }
   return formatDate(new Date(t).toISOString());
 }
 
