@@ -11,6 +11,11 @@
  *   2) .env          VITE_NOTION_ENDPOINT=…
  *   3) 기본값        DEFAULT_ENDPOINT (아래 상수)
  *
+ * 공개 페이지("public:…") 모드는 src/notionPublic.ts 가 아래 순서로 읽습니다.
+ *   1) 같은 폴더의 정적 스냅샷 notion-content.json  (CORS 무관 · 항상 성공)
+ *      └ .github/workflows/notion-sync.yml 이 서버에서 Notion 을 읽어 생성
+ *   2) 무료 공개 프록시 notion-api.splitbee.io  (보조 — 장애 시 스냅샷으로 회복)
+ *
  * 엔드포인트 값으로 쓸 수 있는 것
  *   ▸ Cloudflare Worker 프록시 주소  https://xxx.workers.dev        (비공개 DB용)
  *   ▸ 웹에 게시(Publish)된 노션 페이지 — URL / 32자리 ID / public:ID  (토큰·배포 불필요)
