@@ -261,9 +261,14 @@ function rowToObject(block, schema) {
   return row;
 }
 
+/**
+ * Published 계열 열이 있는 스키마에서는 체크된 행만 공개합니다.
+ * 체크를 해제한 행은 레거시 레코드맵에서 속성 자체가 빠지므로,
+ * "열이 있는데 키가 없음" = 미공개로 간주합니다. (사이트 표시 규칙과 동일)
+ */
 const isPublished = (row) => {
   const key = Object.keys(row).find((k) => PUBLISHED_KEYS.includes(k.trim().toLowerCase()));
-  return key === undefined ? true : row[key] === true;
+  return key !== undefined && row[key] === true;
 };
 
 const hasPublishedColumn = (schema) =>
