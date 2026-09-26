@@ -16,4 +16,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  // 루트 index.html 은 GitHub Pages 로 배포되는 "빌드 결과물"이므로
+  // 개발/빌드 진입점은 dev.html 을 사용합니다. (npm run build 가 index.html 을 갱신)
+  server: {
+    open: "/dev.html",
+    allowedHosts: true,
+  },
+  build: {
+    rollupOptions: {
+      input: path.resolve(__dirname, "dev.html"),
+    },
+  },
 });

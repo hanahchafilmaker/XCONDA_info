@@ -7,38 +7,61 @@
  *     └ 예제: /notion-worker/worker.js , 설정 가이드: /NOTION_SETUP.md
  *
  * 엔드포인트 지정 방법 (우선순위 순)
- *   1) URL 파라미터  ?notion=https://xxx.workers.dev   (테스트용, 로컬에 기억됨)
- *   2) .env          VITE_NOTION_ENDPOINT=https://xxx.workers.dev
- *   미지정 시 → 샘플 콘텐츠 표시
+ *   1) URL 파라미터  ?notion=…   (테스트용, 로컬에 기억됨 · ?notion=off 로 해제 → 샘플 모드)
+ *   2) .env          VITE_NOTION_ENDPOINT=…
+ *   3) 기본값        DEFAULT_ENDPOINT (아래 상수)
  *
- * 프록시 API
+ * 엔드포인트 값으로 쓸 수 있는 것
+ *   ▸ Cloudflare Worker 프록시 주소  https://xxx.workers.dev        (비공개 DB용)
+ *   ▸ 웹에 게시(Publish)된 노션 페이지 — URL / 32자리 ID / public:ID  (토큰·배포 불필요)
+ *     예) https://silicon-mascara-c7d.notion.site/XCONDA_NEWs-3e72ebc017ad8024a3f5ef8fb9f8c6dd
+ *
+ * 프록시 API (Worker 방식)
  *   GET {endpoint}               → Notion database query 응답 (results[])
  *   GET {endpoint}/blocks/{id}   → Notion block children 응답 (results[])
  * ========================================================================== */
 
 import type { Block, Change, ChangeKind, Entry, EntryType, Rich, RichSeg } from "./content/types";
+import { extractPageId, fetchPublicBlocks, fetchPublicEntries } from "./notionPublic";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const LS_ENDPOINT = "xconda:notion-endpoint";
 const LS_CACHE = "xconda:notion-cache:v1";
 
+/** 기본 연동 대상: 웹에 게시된 XCONDA_NEWs 노션 페이지 (공개 · 토큰 불필요) */
+const DEFAULT_ENDPOINT = "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd";
+
+/** Worker URL은 그대로, 노션 페이지 URL·ID는 "public:<id>" 로 정규화 */
+function normalizeEndpoint(raw: string): string {
+  const v = raw.trim().replace(/\/$/, "");
+  if (/^https?:\/\//i.test(v) && !/notion\.(so|site)\//i.test(v)) return v; // Worker 프록시
+  const id = extractPageId(v);
+  return id ? `public:${id}` : v;
+}
+
+export const isPublicEndpoint = (endpoint: string) => endpoint.startsWith("public:");
+
 export function resolveEndpoint(): string | undefined {
   try {
     const qs = new URLSearchParams(window.location.search).get("notion");
     if (qs === "off") {
       localStorage.removeItem(LS_ENDPOINT);
-    } else if (qs) {
-      localStorage.setItem(LS_ENDPOINT, qs);
-      return qs.replace(/\/$/, "");
+      return undefined; // 샘플 콘텐츠 모드
+    }
+    if (qs) {
+      const norm = normalizeEndpoint(qs);
+      localStorage.setItem(LS_ENDPOINT, norm);
+      return norm;
     }
     const stored = localStorage.getItem(LS_ENDPOINT);
-    if (stored) return stored.replace(/\/$/, "");
+    if (stored) return normalizeEndpoint(stored);
   } catch {
     /* SSR / private mode */
   }
   const env = import.meta.env.VITE_NOTION_ENDPOINT;
-  return env ? env.replace(/\/$/, "") : undefined;
+  if (env) return normalizeEndpoint(env);
+  return DEFAULT_ENDPOINT;
 }
 
 /* ------------------------------ 속성 읽기 ------------------------------ */
@@ -84,14 +107,14 @@ function fileUrl(p?: R): string {
   return f?.external?.url ?? f?.file?.url ?? "";
 }
 
-const TYPE_MAP: Record<string, EntryType> = {
+export const TYPE_MAP: Record<string, EntryType> = {
   공지: "notice", 공지사항: "notice", notice: "notice", announcement: "notice",
   업데이트: "update", 릴리스: "update", update: "update", release: "update", changelog: "update",
   가이드: "guide", 사용법: "guide", guide: "guide", tutorial: "guide", "how-to": "guide",
   faq: "faq", 질문: "faq", "자주 묻는 질문": "faq",
 };
 
-function parseChanges(raw: string): Change[] {
+export function parseChanges(raw: string): Change[] {
   return raw
     .split(/\n+/)
     .map((l) => l.replace(/^[-•*]\s*/, "").trim())
@@ -230,6 +253,7 @@ function writeCache(p: ContentPayload) {
 }
 
 export async function fetchEntries(endpoint: string, signal?: AbortSignal): Promise<Entry[]> {
+  if (isPublicEndpoint(endpoint)) return fetchPublicEntries(endpoint.slice("public:".length), signal);
   const res = await fetch(endpoint, { signal, headers: { Accept: "application/json" } });
   if (!res.ok) throw new Error(`Notion proxy ${res.status}`);
   const data = await res.json();
@@ -252,6 +276,11 @@ const blockCache = new Map<string, Block[]>();
 
 export async function fetchBlocks(endpoint: string, pageId: string): Promise<Block[]> {
   if (blockCache.has(pageId)) return blockCache.get(pageId)!;
+  if (isPublicEndpoint(endpoint)) {
+    const blocks = await fetchPublicBlocks(pageId);
+    blockCache.set(pageId, blocks);
+    return blocks;
+  }
   const res = await fetch(`${endpoint}/blocks/${pageId}`, { headers: { Accept: "application/json" } });
   if (!res.ok) throw new Error(`Notion blocks ${res.status}`);
   const data = await res.json();
