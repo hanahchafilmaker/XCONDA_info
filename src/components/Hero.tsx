@@ -14,7 +14,9 @@ type Result =
   | { kind: "tool"; slug: string; name: string; tagline: string; score: number };
 
 const QUICK = [
-  { label: "360 Turn Studio", slug: "turn" },
+  { label: "Turn (턴)", slug: "turn" },
+  { label: "FlexBoard (플렉스보드)", slug: "flexboard" },
+  { label: "Blocking Board (블로킹보드)", slug: "blocking-board" },
   { label: "Director's Cut", slug: "directors-cut" },
   { label: "Art Director Pro", slug: "art-director-pro" },
 ];

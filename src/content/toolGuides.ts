@@ -14,6 +14,91 @@ const toggle = (title: string, children: Block[]): Block => ({ type: "toggle", t
  * option details, editing flows, and output-management instructions below.
  */
 export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
+  flexboard: {
+    ko: [
+      { type: "p", text: "시나리오를 입력해 3×3 구성의 9컷 시네마틱 스토리보드를 생성하고, 원하는 컷만 선택 재생성(Selective Regeneration)하여 완성도를 높이는 XCONDA의 핵심 스토리보드 도구입니다." },
+      callout("XCONDA 핵심 워크플로우 · 시나리오 → 9컷 보드 생성 → 개별 컷 선택 재생성 → Seedance 2.5 / Kling 영상화 연계", "🎬"),
+      { type: "h2", text: "빠른 시작" },
+      {
+        type: "ol",
+        items: [
+          "왼쪽 메뉴에서 FlexBoard(또는 Storyboard)를 엽니다.",
+          "초안용 Standard 또는 고품질용 Cinema Pro 엔진을 선택합니다.",
+          "Year, Location과 장면에 대한 구체적인 시나리오(Scenario)를 입력합니다.",
+          "감독 연출 스타일(Director Style)과 아트 스타일(Art Style)을 지정합니다.",
+          "Generate를 눌러 9컷 그리드 스토리보드를 일괄 생성합니다.",
+          "수정이 필요한 컷은 개별 선택해 프롬프트를 수정하고 해당 컷만 재생성(Regenerate)합니다.",
+        ],
+      },
+      { type: "h2", text: "1. 시나리오 및 연출 스타일" },
+      toggle("엔진 및 스타일 옵션", [
+        { type: "ul", items: [
+          "Standard 엔진: 빠른 아이디어 구상과 콘티 검토에 적합합니다.",
+          "Cinema Pro 엔진: 현업 프로덕션 기준의 조명, 질감, 시네마틱 심도를 구현합니다.",
+          "Director Style: 클래식 시네마, 네오 느와르, 다큐멘터리 등 5가지 연출 톤을 제공합니다.",
+          "Art Style: 포토리얼, 필름 스틸, 애니메 등 비주얼 질감을 결정합니다.",
+        ] },
+      ]),
+      { type: "h2", text: "2. 선택 재생성 (Selective Regeneration)" },
+      { type: "p", text: "전체 9컷 중 특정 컷의 인물 구도나 소품이 어색할 경우, 전체를 다시 생성하지 않고 해당 컷의 펜 아이콘을 클릭해 프롬프트를 수정한 뒤 개별 재생성합니다. 컷 간 맥락과 연속성이 유지됩니다." },
+      callout("선택 재생성은 횟수 제한 없이 원하는 만큼 반복 수정할 수 있어 프로덕션 시간을 대폭 단축합니다."),
+      { type: "h2", text: "3. Claude 스킬 및 씨댄스(Seedance) 연계" },
+      { type: "p", text: "완성된 9컷 보드는 Claude 프롬프트 스킬(xconda-new-prompt)과 연계하여 10블록 프롬프트로 변환되며, Seedance 2.5/2.0 엔진으로 즉시 렌더링할 수 있습니다." },
+    ],
+    en: [
+      { type: "p", text: "XCONDA's core storyboard tool that generates a 3×3 nine-frame cinematic storyboard from a scenario, allowing individual frame selective regeneration for seamless production." },
+      callout("Core Workflow · Scenario → 9-Cut Board → Selective Regeneration → Seedance 2.5 / Kling Video Rendering", "🎬"),
+      { type: "h2", text: "Quick Start" },
+      {
+        type: "ol",
+        items: [
+          "Open FlexBoard from the studio sidebar.",
+          "Select Standard for quick drafts or Cinema Pro for production quality.",
+          "Enter Year, Location, and detailed Scenario text.",
+          "Choose Director Style and Art Style presets.",
+          "Click Generate to render the full 3×3 nine-cut grid.",
+          "Refine any individual frame by editing its prompt and clicking Regenerate.",
+        ],
+      },
+      { type: "h2", text: "1. Engine & Direction Styles" },
+      { type: "h2", text: "2. Selective Regeneration" },
+      { type: "p", text: "Fix problematic frames one by one without losing the global continuity of the entire board." },
+      { type: "h2", text: "3. Video Pipeline Integration" },
+      { type: "p", text: "Pass completed 9-cut storyboard frames directly into Seedance 2.5 or Kling video models." },
+    ],
+  },
+  "blocking-board": {
+    ko: [
+      { type: "p", text: "Turn에서 생성된 360° 가상 공간 위에 인물의 위치, 시선 방향, 카메라 이동 경로를 배치하여 씬 간 시각적 연속성과 연출 동선을 설계하는 도구입니다." },
+      callout("XCONDA 핵심 워크플로우 · Turn으로 공간 고정 → Blocking Board로 공간 연출 → FlexBoard로 컷 생성", "🧭"),
+      { type: "h2", text: "빠른 시작" },
+      {
+        type: "ol",
+        items: [
+          "Turn에서 고정된 360° 가상 공간을 불러옵니다.",
+          "공간 평면도 및 뷰포트에서 캐릭터의 시작 위치와 이동 경로를 설정합니다.",
+          "카메라 시점(화각, 샷 앵글, 이동 궤적)을 지정합니다.",
+          "인물과 카메라의 공간 관계를 확인하고 컷 연출 프롬프트를 생성합니다.",
+        ],
+      },
+      { type: "h2", text: "1. 공간 고정과 블로킹" },
+      { type: "p", text: "컷마다 방의 구조가 바뀌는 문제를 방지하기 위해, Turn으로 공간의 여섯 면을 먼저 고정한 뒤 블로킹보드에서 캐릭터와 카메라를 배치합니다." },
+    ],
+    en: [
+      { type: "p", text: "A spatial direction tool that places characters, gaze directions, and camera movements within the locked 360° virtual space created by Turn." },
+      callout("Core Workflow · Lock Space with Turn → Block Characters & Camera → Generate Cuts in FlexBoard", "🧭"),
+      { type: "h2", text: "Quick Start" },
+      {
+        type: "ol",
+        items: [
+          "Load the locked 360° space from Turn.",
+          "Place character starting points and movement paths on the floor plan.",
+          "Configure camera viewpoints, focal lengths, and camera tracks.",
+          "Validate spatial relationships to prevent consistency drift across cuts.",
+        ],
+      },
+    ],
+  },
   turn: {
     ko: [
       { type: "p", text: "360도 배경 생성부터 3D 시점 선택, 부분 수정, 인물 연출, 최종 스틸까지 한 흐름으로 이어지는 작업 환경입니다." },
