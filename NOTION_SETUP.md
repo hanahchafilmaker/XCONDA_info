@@ -1,33 +1,81 @@
 # XCONDA 가이드 센터 · Notion 연동 가이드
 
-노션에 글을 쓰고 **Published**를 체크하면 → 최대 3분(사이트 자동 동기화) 안에 가이드 사이트에 반영됩니다.
-사이트는 탭으로 돌아올 때도 자동으로 새로 불러오며, 상단 배지의 🔄 버튼으로 즉시 동기화할 수 있습니다.
+노션에 글을 쓰고 **Published**를 체크하면 → 가이드 사이트에 자동 반영됩니다.
+사이트는 3분마다, 탭으로 돌아올 때, 그리고 상단 배지의 🔄 버튼으로 다시 불러옵니다.
 
-연동 방법은 두 가지입니다.
+연동 방법은 세 가지이며, **A + B(기본값)** 조합으로 이미 동작하도록 설정되어 있습니다.
 
-| | 방법 A · 공개 페이지 (현재 기본) | 방법 B · Worker 프록시 |
-|---|---|---|
-| 준비물 | 노션 페이지 **웹에 게시**만 하면 끝 | 통합 토큰 + Cloudflare Worker 배포 |
-| 노션 페이지 공개 여부 | 공개(누구나 링크로 열람 가능) | 비공개 유지 가능 |
-| 난이도 | ⭐ (설정 0분) | ⭐⭐⭐ |
+| | 방법 A · 자동 스냅샷 (기본 · 권장) | 방법 B · 공개 프록시 | 방법 C · Worker 프록시 |
+|---|---|---|---|
+| 준비물 | 노션 페이지 **웹에 게시** + 깃허브 액션(이미 포함) | 노션 페이지 **웹에 게시** | 통합 토큰 + Cloudflare Worker 배포 |
+| 반영 속도 | 약 10분 (워크플로 주기) | 즉시 | 약 1분 |
+| 외부 서비스 의존 | 없음 (깃허브만) | `notion-api.splitbee.io` | Cloudflare |
+| 노션 페이지 공개 | 공개 | 공개 | 비공개 유지 가능 |
+| 난이도 | ⭐ (설정 완료) | ⭐ | ⭐⭐⭐ |
 
----
-
-## 방법 A. 공개 페이지 연동 (토큰 · 서버 배포 불필요) ✅ 현재 설정
-
-사이트는 기본으로 **웹에 게시된 [XCONDA_NEWs](https://silicon-mascara-c7d.notion.site/XCONDA_NEWs-3e72ebc017ad8024a3f5ef8fb9f8c6dd) 노션 페이지**에 연결되어 있습니다 (`src/notion.ts` 의 `DEFAULT_ENDPOINT`).
-
-1. 노션 페이지 우측 상단 **공유 → 게시(Publish)** 가 켜져 있는지 확인합니다. *(XCONDA_NEWs는 이미 게시됨)*
-2. 페이지 **본문 안에 데이터베이스(표 보기)** 를 하나 만들고, 아래 「노션 데이터베이스 만들기」의 속성을 추가합니다.
-3. 끝! 행을 추가하고 `Published`를 체크하면 사이트에 나타납니다.
-
-다른 공개 페이지로 바꾸려면 사이트 주소 뒤에 `?notion=<노션 페이지 URL 또는 32자리 ID>` 를 붙이거나, `.env` 에 `VITE_NOTION_ENDPOINT=<페이지 URL>` 을 넣고 다시 빌드하세요.
-
-> 공개 페이지 연동은 무료 공개 프록시(`notion-api.splitbee.io`)를 사용합니다. 2026년부터 해당 서비스의 `/table` 경로가 간헐적으로 실패하는 사례가 있어, 사이트는 자동으로 `/page` 레코드맵 대체 경로를 한 번 더 시도합니다. 그래도 실패하면 프록시 장애이므로 **방법 B(Cloudflare Worker)** 를 연결하세요. 비공개 운영에도 방법 B가 필요합니다.
+사이트는 **B를 먼저 시도하고, 실패하면 A(스냅샷)** 로 자동 전환합니다.
+그래서 공개 프록시가 죽어도 글은 계속 표시됩니다.
 
 ---
 
-## 1. 노션 데이터베이스 만들기 (방법 A · B 공통)
+## 방법 A. 자동 스냅샷 연동 ✅ 현재 기본값
+
+브라우저에서 노션 API를 직접 부르면 CORS로 막히기 때문에, 지금까지는 무료 공개 프록시에 의존했습니다.
+그런데 `notion-api.splitbee.io` 의 `/table` 경로가 **HTTP 500** 으로 죽으면서
+`Failed to fetch` / `페이지 안에서 표(데이터베이스)를 찾지 못했습니다` 오류가 발생했습니다.
+
+이를 없애기 위해 **깃허브 액션이 서버에서 노션을 대신 읽어** 사이트와 같은 폴더에
+`notion-content.json` 을 만들어 둡니다. 서버에는 CORS가 없으므로 항상 성공하고,
+사이트는 같은 출처의 정적 파일만 읽으면 됩니다.
+
+| 파일 | 역할 |
+|---|---|
+| `.github/workflows/notion-sync.yml` | 10분마다(및 수동 실행 시) 노션을 읽어 커밋 |
+| `scripts/notion-snapshot.mjs` | 게시된 페이지 → `notion-content.json` 변환 |
+| `notion-content.json` | 글 목록 + 각 글 본문 (사이트가 읽는 파일) |
+| `src/notionSnapshot.ts` | 사이트 쪽 스냅샷 리더 |
+
+### 확인 · 수동 실행
+1. 깃허브 저장소 → **Actions → “Notion 동기화” → Run workflow**
+2. 로컬에서 바로 확인하려면:
+   ```bash
+   node scripts/notion-snapshot.mjs --print
+   ```
+
+### 다른 노션 페이지/DB로 바꾸기
+저장소 **Settings → Secrets and variables → Actions → Variables** 에 추가하세요.
+
+| 변수 | 값 예시 |
+|---|---|
+| `NOTION_PAGE_ID` | 게시된 페이지 URL 또는 32자리 ID |
+| `NOTION_DATABASE_ID` | 페이지 안 데이터베이스 URL 또는 ID |
+
+현재 기본값은 `scripts/notion-snapshot.mjs` 상단 상수입니다.
+- 페이지: [XCONDA_NEWs](https://silicon-mascara-c7d.notion.site/XCONDA_NEWs-3e72ebc017ad8024a3f5ef8fb9f8c6dd) — `3e72ebc017ad8024a3f5ef8fb9f8c6dd`
+- 데이터베이스: `3b54d2ea0d5e4ab5b33cff12de807517`
+
+> ⚠️ 노션 페이지의 **게시(Publish)** 를 끄면 스냅샷 생성도 실패합니다. 비공개로 운영하려면 방법 C를 쓰세요.
+> ⚠️ `Published` 체크가 없는 행은 스냅샷 파일에 아예 담기지 않습니다. (초안 유출 방지)
+
+---
+
+## 방법 B. 공개 프록시 (실시간, 설정 0분)
+
+사이트는 기본으로 웹에 게시된 XCONDA_NEWs 페이지를 공개 프록시로 먼저 읽습니다
+(`src/notion.ts` 의 `DEFAULT_ENDPOINT`).
+
+1. 노션 페이지 우측 상단 **공유 → 게시(Publish)** 확인
+2. 페이지 **본문 안에 데이터베이스(표 보기)** 를 만들고 아래 속성을 추가
+3. 행을 추가하고 `Published` 체크 → 사이트에 노출
+
+다른 공개 페이지로 바꾸려면 주소 뒤에 `?notion=<노션 페이지 URL 또는 ID>` 를 붙이거나,
+`.env` 에 `VITE_NOTION_ENDPOINT=<페이지 URL>` 을 넣고 다시 빌드하세요. (`?notion=off` → 샘플 모드)
+
+> 이 경로가 실패해도 오류 화면 대신 방법 A의 스냅샷이 사용됩니다.
+
+---
+
+## 1. 노션 데이터베이스 만들기 (공통)
 
 데이터베이스 **하나**로 공지 · 업데이트 · 가이드 · FAQ를 모두 관리합니다.
 
@@ -57,7 +105,7 @@
 
 ---
 
-# 방법 B. Worker 프록시 연동 (비공개 데이터베이스용)
+# 방법 C. Worker 프록시 연동 (비공개 데이터베이스용)
 
 ## 2. 노션 통합(Integration) 만들기
 
@@ -90,6 +138,7 @@ VITE_NOTION_ENDPOINT=https://xconda-notion.<계정>.workers.dev
 **빌드 없이 테스트하기:** 사이트 주소 뒤에 `?notion=https://xconda-notion.<계정>.workers.dev` 를 붙이면 해당 브라우저에 저장되어 바로 연동됩니다. (`?notion=off` 로 해제)
 
 ## 운영 팁
+- **동기화가 안 될 때**: Actions → “Notion 동기화” 워크플로가 초록불인지 확인 → 실패했다면 노션 페이지 게시 상태 확인 → `node scripts/notion-snapshot.mjs --print` 로 로컬 재현
 - **긴급 공지**: `Type=공지`, `Pinned` + `Important` 체크 → 히어로 배너와 공지 목록 최상단에 즉시 노출
 - **글 공유**: 상세 모달의 "공유" 버튼 → `#post=페이지ID` 링크가 복사되어, 링크를 열면 해당 글이 바로 열립니다
 - **초안 작성**: `Published` 체크를 해제해 두면 사이트에 노출되지 않습니다
