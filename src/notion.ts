@@ -35,8 +35,20 @@ type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-expli
 const LS_ENDPOINT = "xconda:notion-endpoint";
 const LS_CACHE = "xconda:notion-cache:v1";
 
-/** 기본 연동 대상: 웹에 게시된 XCONDA_NEWs 노션 페이지 (공개 · 토큰 불필요) */
+/**
+ * 기본 연동 대상: 웹에 게시된 XCONDA_NEWs 페이지.
+ * 공개 API가 실패하면 notionPublic 어댑터가 동일 출처의 notion-content.json
+ * 스냅샷으로 자동 전환하므로 브라우저 CORS/Worker 장애에 영향을 받지 않습니다.
+ */
 const DEFAULT_ENDPOINT = "public:3e72ebc017ad8024a3f5ef8fb9f8c6dd";
+
+/** 이전 배포에서 저장된 장애 프록시는 새 공개 페이지 + 스냅샷 방식으로 승격합니다. */
+const STALE_ENDPOINTS = [
+  "https://xconda-info-news.wjwn93.workers.dev",
+  "https://xconda-info-news.wjwn93.workers.dev/v1",
+  "https://notion-api.splitbee.io/v1",
+  "https://notion-api.splitbee.io",
+];
 
 /** Worker URL은 그대로, 노션 페이지 URL·ID는 "public:<id>" 로 정규화 */
 function normalizeEndpoint(raw: string): string {
@@ -61,7 +73,12 @@ export function resolveEndpoint(): string | undefined {
       return norm;
     }
     const stored = localStorage.getItem(LS_ENDPOINT);
-    if (stored) return normalizeEndpoint(stored);
+    if (stored) {
+      const norm = normalizeEndpoint(stored);
+      // 브라우저에 남아 있는 옛 Splitbee/공개 API 설정은 무시하고 기본값(Worker)으로 승격
+      if (STALE_ENDPOINTS.includes(norm)) localStorage.removeItem(LS_ENDPOINT);
+      else return norm;
+    }
   } catch {
     /* SSR / private mode */
   }
