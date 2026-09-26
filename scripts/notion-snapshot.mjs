@@ -268,9 +268,12 @@ const hasPublishedColumn = (schema) =>
 
 /* ------------------------------ 스냅샷 ------------------------------ */
 
+/** 빈 문자열(설정하지 않은 GitHub Variables)은 없는 값으로 취급합니다. */
+const firstFilled = (...values) => values.find((v) => typeof v === "string" && v.trim() !== "");
+
 export async function buildSnapshot({ pageId, databaseId } = {}) {
-  const page = extractId(pageId ?? process.env.NOTION_PAGE_ID ?? DEFAULT_PAGE_ID);
-  const database = extractId(databaseId ?? process.env.NOTION_DATABASE_ID ?? DEFAULT_DATABASE_ID);
+  const page = extractId(firstFilled(pageId, process.env.NOTION_PAGE_ID, DEFAULT_PAGE_ID));
+  const database = extractId(firstFilled(databaseId, process.env.NOTION_DATABASE_ID, DEFAULT_DATABASE_ID));
   if (!page && !database) throw new Error("NOTION_PAGE_ID 또는 NOTION_DATABASE_ID 가 필요합니다");
 
   const rootId = page ?? database;
