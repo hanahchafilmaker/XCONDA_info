@@ -1,0 +1,8 @@
+Notion API 설정
+
+NOTION_API_KEY=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
+NOTION_DATABASE_ID=https://app.notion.com/p/3b54d2ea0d5e4ab5b33cff12de807517?v=b52d782ba744426bbefd9efb7d6e3af2&source=copy_link
+
+기타 서비스 설정
+
+TWITTER_BEARER_TOKEN=your_twitter_bearer_token
