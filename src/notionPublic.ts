@@ -1,8 +1,9 @@
 /* =============================================================================
  * 공개(웹에 게시된) Notion 페이지 어댑터 — 토큰 · 서버 배포 불필요
  * -----------------------------------------------------------------------------
- * ▸ Notion에서 "웹에 게시(Publish)"한 페이지라면, 통합 토큰이나 Cloudflare Worker
- *   없이도 공개 API 프록시(notion-api.splitbee.io, CORS 허용)로 바로 읽을 수 있습니다.
+ * ▸ 읽기 순서 (앞에서 먼저 성공하는 쪽 사용)
+ *   1) 정적 스냅샷 `notion-content.json` (같은 출처 · CORS 무관 · workflows/notion-sync.yml 이 10분마다 갱신)
+ *   2) 무료 공개 프록시 notion-api.splitbee.io (실시간이지만 장애가 잦음 — 보조 수단)
  * ▸ 페이지 안에 데이터베이스(표)를 하나 만들면 그 행들이 콘텐츠가 됩니다.
  *   속성 스키마는 NOTION_SETUP.md 와 동일합니다. (Title/Type/Published/Date …)
  * ▸ 엔드포인트 형식: "public:<32자리 페이지 ID>"  → src/notion.ts 가 라우팅합니다.
@@ -10,7 +11,13 @@
 
 import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { TYPE_MAP, parseChanges } from "./notion";
-import { loadSnapshot, snapshotMatches, type NotionSnapshot } from "./notionSnapshot";
+import {
+  loadSnapshot,
+  snapshotIsStale,
+  snapshotMatches,
+  snapshotPageMap,
+  type NotionSnapshot,
+} from "./notionSnapshot";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -268,30 +275,41 @@ async function matchingSnapshot(pageId: string, force = false): Promise<NotionSn
   return snapshot && snapshotMatches(snapshot, pageId) ? snapshot : null;
 }
 
+/**
+ * 공개 페이지 읽기 전략 — 정적 스냅샷 우선 · 공개 프록시 보조
+ * -----------------------------------------------------------------------------
+ * 1) 같은 폴더의 `notion-content.json` 이 이 페이지의 것이고 신선하면 그대로 사용
+ *    → 외부 프록시를 아예 부르지 않아 콘솔에 CORS 오류가 남지 않습니다.
+ * 2) 스냅샷이 없거나 낡았으면 공개 프록시로 실시간 조회를 시도합니다.
+ *    (프록시가 빈 표를 돌려주면 스냅샷 쪽을 우선합니다 — 기존 방어 로직 유지)
+ * 3) 프록시마저 실패하면 낡은 스냅샷이라도 표시하고, 둘 다 없으면 안내 오류를 던집니다.
+ */
 export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): Promise<Entry[]> {
-  // 공개 프록시(실시간)와 정적 스냅샷(안정)을 동시에 시도해 더 나은 쪽을 씁니다.
-  const [live, snapshot] = await Promise.all([
-    fetchLiveRows(pageId, signal).then(
-      (rows) => ({ ok: true as const, rows }),
-      (error: unknown) => ({ ok: false as const, error })
-    ),
-    matchingSnapshot(pageId, true),
-  ]);
+  const snapshot = await matchingSnapshot(pageId);
 
-  if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
-
-  if (live.ok) {
-    const entries = rowsToEntries(live.rows);
-    // 프록시가 빈 표를 돌려준 경우(장애·권한 변경)에는 스냅샷을 씁니다.
-    if (entries.length || !snapshot?.rows.length) return entries;
+  // 신선한 스냅샷이 있으면 외부 호출 없이 즉시 응답 (가장 빠르고 조용한 경로)
+  if (snapshot && !snapshotIsStale(snapshot)) {
+    if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+    return rowsToEntries(snapshot.rows);
   }
-  if (snapshot) return rowsToEntries(snapshot.rows);
 
-  throw new Error(
-    `공개 Notion 동기화에 실패했습니다 (${describeError(live.ok ? "빈 응답" : live.error)}). ` +
-      "잠시 후 자동으로 다시 시도합니다. 계속 실패하면 NOTION_SETUP.md 의 “Notion 동기화 워크플로”(notion-content.json) 또는 " +
-      "Cloudflare Worker 프록시를 연결해 주세요."
-  );
+  let liveRows: R[];
+  try {
+    liveRows = await fetchLiveRows(pageId, signal);
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    if (snapshot) return rowsToEntries(snapshot.rows); // 프록시 장애 중에는 낡은 스냅샷이라도 표시
+    throw new Error(
+      `공개 Notion 동기화에 실패했습니다 (${describeError(error)}). ` +
+        "잠시 후 자동으로 다시 시도합니다. 계속 실패하면 저장소의 “Notion 동기화” 워크플로 상태를 확인하거나, " +
+        "NOTION_SETUP.md 의 Cloudflare Worker 프록시를 연결해 주세요."
+    );
+  }
+
+  const liveEntries = rowsToEntries(liveRows);
+  // 프록시가 빈 표를 돌려준 경우(장애·권한 변경)에는 낡은 스냅샷이라도 씁니다.
+  if (!liveEntries.length && snapshot?.rows.length) return rowsToEntries(snapshot.rows);
+  return liveEntries;
 }
 
 /* ------------------------------ 본문 블록 ------------------------------ */
@@ -430,28 +448,24 @@ export function parseLegacyRecordMap(data: R, pageId: string): Block[] {
   return root?.content?.length ? convertLegacy(root.content, map) : [];
 }
 
-function snapshotPage(snapshot: NotionSnapshot | null, pageId: string): R | undefined {
-  if (!snapshot?.pages) return undefined;
-  const wanted = (extractPageId(pageId) ?? pageId).replace(/-/g, "").toLowerCase();
-  const hit = Object.keys(snapshot.pages).find((key) => key.replace(/-/g, "").toLowerCase() === wanted);
-  return hit ? snapshot.pages[hit] : undefined;
-}
-
+/**
+ * 상세 본문 읽기 — 정적 스냅샷 우선 · 공개 프록시 보조.
+ * 스냅샷에 해당 글이 담겨 있으면 외부 호출 없이 즉시 표시합니다.
+ */
 export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
+  const snapshot = await loadSnapshot();
+  const embedded = snapshot ? snapshotPageMap(snapshot, pageId) : undefined;
+  if (embedded) return parseLegacyRecordMap(embedded, pageId);
+
+  // 스냅샷에 없는 글(예: ?notion= 으로 연 다른 페이지)만 실시간으로 시도합니다.
   try {
     const res = await fetch(`${API}/page/${pageId}`, {
       signal: withTimeout(),
       headers: { Accept: "application/json" },
     });
-    if (res.ok) {
-      const blocks = parseLegacyRecordMap((await res.json()) as R, pageId);
-      if (blocks.length) return blocks;
-    }
+    if (res.ok) return parseLegacyRecordMap((await res.json()) as R, pageId);
   } catch {
-    /* 공개 프록시 장애 → 아래 스냅샷으로 진행 */
+    /* 공개 프록시 장애 — 모달이 빈 본문으로 처리 */
   }
-
-  // 정적 스냅샷에 본문이 담겨 있으면 그대로 사용합니다. (같은 출처라 항상 성공)
-  const page = snapshotPage(await loadSnapshot(), pageId);
-  return page ? parseLegacyRecordMap(page, pageId) : [];
+  return [];
 }

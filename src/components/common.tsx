@@ -146,6 +146,12 @@ function youTubeEmbed(url: string): string | null {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }
 
+/** Google Drive 파일 링크를 임베드 가능한 /preview URL로 변환합니다. */
+function driveEmbed(url: string): string | null {
+  const m = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+  return m ? `https://drive.google.com/file/d/${m[1]}/preview` : null;
+}
+
 function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();
   const [copied, setCopied] = useState(false);
@@ -248,11 +254,11 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
               </figure>
             );
           case "video": {
-            const yt = youTubeEmbed(b.src);
+            const yt = youTubeEmbed(b.src) ?? driveEmbed(b.src);
             return (
               <figure key={i} className="overflow-hidden rounded-xl ring-1 ring-white/10">
                 {yt ? (
-                  <iframe src={yt} title={b.caption ?? "video"} className="aspect-video w-full" allowFullScreen loading="lazy" />
+                  <iframe src={yt} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
                 ) : (
                   <video src={b.src} controls playsInline className="aspect-video w-full bg-black" />
                 )}
