@@ -2,7 +2,7 @@
  * 공개(웹에 게시된) Notion 페이지 어댑터 — 토큰 · 서버 배포 불필요
  * -----------------------------------------------------------------------------
  * ▸ Notion에서 "웹에 게시(Publish)"한 페이지라면, 통합 토큰이나 Cloudflare Worker
- *   없이도 공개 API 프록시(기본값: XCONDA Cloudflare Worker, CORS 허용)로 바로 읽을 수 있습니다.
+ *   없이도 공개 API 프록시(notion-api.splitbee.io, CORS 허용)로 바로 읽을 수 있습니다.
  * ▸ 페이지 안에 데이터베이스(표)를 하나 만들면 그 행들이 콘텐츠가 됩니다.
  *   속성 스키마는 NOTION_SETUP.md 와 동일합니다. (Title/Type/Published/Date …)
  * ▸ 엔드포인트 형식: "public:<32자리 페이지 ID>"  → src/notion.ts 가 라우팅합니다.
@@ -10,18 +10,11 @@
 
 import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { TYPE_MAP, parseChanges } from "./notion";
+import { loadSnapshot, snapshotMatches, type NotionSnapshot } from "./notionSnapshot";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-/**
- * 공개 Notion 프록시 베이스 URL.
- *
- * 기본값은 XCONDA 전용 Cloudflare Worker 입니다. 예전 기본값이던
- * notion-api.splitbee.io 는 500 Internal Server Error + CORS 차단으로
- * 더 이상 사용할 수 없습니다. 다른 프록시를 쓰려면 .env 의
- * VITE_NOTION_PUBLIC_PROXY 로 덮어쓰세요. (예: https://my-worker.workers.dev/v1)
- */
-const API = (import.meta.env.VITE_NOTION_PUBLIC_PROXY || "https://xconda-info-news.wjwn93.workers.dev/v1").replace(/\/$/, "");
+const API = "https://notion-api.splitbee.io/v1";
 
 type LegacySchema = Record<string, { name?: unknown; type?: unknown }>;
 
@@ -36,13 +29,25 @@ function isRecord(value: unknown): value is R {
 }
 
 /**
- * The proxy's `/table` route can fail (Splitbee's public instance returns
- * 5xx/CORS errors since 2026). The `/page` route returns the same collection
- * rows inside each `collection_view` block, so the fallback below decodes that
- * legacy record-map response.
+ * Splitbee's historical `/table` route is no longer reliable (it began
+ * returning network/5xx failures in 2026). Its `/page` route is still
+ * available and includes the same collection rows in each `collection_view`
+ * block. The fallback below decodes that legacy record-map response.
  */
+/** 공개 프록시가 응답하지 않을 때 무한정 기다리지 않도록 타임아웃을 겁니다. */
+const LIVE_TIMEOUT_MS = 8000;
+
+function withTimeout(signal?: AbortSignal, ms = LIVE_TIMEOUT_MS): AbortSignal | undefined {
+  try {
+    const timeout = AbortSignal.timeout(ms);
+    return signal ? AbortSignal.any([signal, timeout]) : timeout;
+  } catch {
+    return signal; // 구형 브라우저
+  }
+}
+
 async function fetchJson(url: string, signal?: AbortSignal): Promise<unknown> {
-  const res = await fetch(url, { signal, headers: { Accept: "application/json" } });
+  const res = await fetch(url, { signal: withTimeout(signal), headers: { Accept: "application/json" } });
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     const message = isRecord(data) && typeof data.error === "string" ? `: ${data.error}` : "";
@@ -229,35 +234,64 @@ function rowsToEntries(data: R[]): Entry[] {
   return data.map((row) => mapRow(row, hasPublishedCol)).filter((entry): entry is Entry => entry !== null);
 }
 
-export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): Promise<Entry[]> {
-  let tableFailure: unknown;
+/** 무료 공개 프록시(splitbee)에서 표 데이터를 읽습니다. `/table` → `/page` 순서로 시도 */
+async function fetchLiveRows(pageId: string, signal?: AbortSignal): Promise<R[]> {
+  const failures: string[] = [];
 
   try {
     const table = await fetchJson(`${API}/table/${pageId}`, signal);
-    if (!Array.isArray(table)) throw new Error("응답에 데이터베이스 행이 없습니다");
-    return rowsToEntries(table.filter(isRecord));
+    if (Array.isArray(table)) return table.filter(isRecord);
+    failures.push("table: 응답에 데이터베이스 행이 없습니다");
   } catch (error) {
-    // An explicit cancellation must never turn into a second request or a
-    // misleading configuration error.
+    // 사용자가 직접 취소한 경우에는 두 번째 요청을 보내지 않습니다.
     if (signal?.aborted) throw error;
-    tableFailure = error;
+    failures.push(`table: ${describeError(error)}`);
   }
 
   try {
-    // `/table` has an upstream outage, but the same public service's `/page`
-    // endpoint still returns inline database data as a legacy record map.
+    // `/table` 장애 시, 같은 서비스의 `/page` 응답(레거시 레코드맵)에서 표를 찾습니다.
     const page = await fetchJson(`${API}/page/${pageId}`, signal);
     const rows = rowsFromPageRecordMap(page);
-    if (rows === null) throw new Error("페이지 안에서 표(데이터베이스)를 찾지 못했습니다");
-    return rowsToEntries(rows);
-  } catch (pageFailure) {
-    if (signal?.aborted) throw pageFailure;
-    throw new Error(
-      "공개 Notion 동기화에 실패했습니다. " +
-        `공개 API의 table 요청(${describeError(tableFailure)}) 및 page 대체 요청(${describeError(pageFailure)})을 모두 완료하지 못했습니다. ` +
-        `프록시 주소(${API})와 노션 페이지의 웹 게시 상태를 확인해 주세요. 자세한 설정은 NOTION_SETUP.md 를 참고하세요.`
-    );
+    if (rows) return rows;
+    failures.push("page: 페이지 안에서 표(데이터베이스)를 찾지 못했습니다");
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    failures.push(`page: ${describeError(error)}`);
   }
+
+  throw new Error(failures.join(" · "));
+}
+
+/** 이 사이트와 같은 폴더의 정적 스냅샷 중, 지금 보는 페이지의 것만 사용 */
+async function matchingSnapshot(pageId: string, force = false): Promise<NotionSnapshot | null> {
+  const snapshot = await loadSnapshot(force);
+  return snapshot && snapshotMatches(snapshot, pageId) ? snapshot : null;
+}
+
+export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): Promise<Entry[]> {
+  // 공개 프록시(실시간)와 정적 스냅샷(안정)을 동시에 시도해 더 나은 쪽을 씁니다.
+  const [live, snapshot] = await Promise.all([
+    fetchLiveRows(pageId, signal).then(
+      (rows) => ({ ok: true as const, rows }),
+      (error: unknown) => ({ ok: false as const, error })
+    ),
+    matchingSnapshot(pageId, true),
+  ]);
+
+  if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+
+  if (live.ok) {
+    const entries = rowsToEntries(live.rows);
+    // 프록시가 빈 표를 돌려준 경우(장애·권한 변경)에는 스냅샷을 씁니다.
+    if (entries.length || !snapshot?.rows.length) return entries;
+  }
+  if (snapshot) return rowsToEntries(snapshot.rows);
+
+  throw new Error(
+    `공개 Notion 동기화에 실패했습니다 (${describeError(live.ok ? "빈 응답" : live.error)}). ` +
+      "잠시 후 자동으로 다시 시도합니다. 계속 실패하면 NOTION_SETUP.md 의 “Notion 동기화 워크플로”(notion-content.json) 또는 " +
+      "Cloudflare Worker 프록시를 연결해 주세요."
+  );
 }
 
 /* ------------------------------ 본문 블록 ------------------------------ */
@@ -384,17 +418,40 @@ function convertLegacy(ids: string[], map: Map<string, LegacyBlock>, depth = 0):
   return out;
 }
 
-export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
-  const res = await fetch(`${API}/page/${pageId}`, { headers: { Accept: "application/json" } });
-  if (!res.ok) throw new Error(`공개 Notion 페이지 본문을 불러오지 못했습니다 (HTTP ${res.status})`);
-  const data: R = await res.json();
-
+/** 레거시 레코드맵(`{ id: { value } }`) → 상세 모달용 블록 */
+export function parseLegacyRecordMap(data: R, pageId: string): Block[] {
   const map = new Map<string, LegacyBlock>();
   for (const [id, entry] of Object.entries<R>(data ?? {})) {
     const v: R | undefined = entry?.value?.value ?? entry?.value; // 응답 형태 2종 모두 지원
     if (v?.id && v?.type) map.set(id, v as LegacyBlock);
   }
-  const rootId = dashed(extractPageId(pageId) ?? pageId.replace(/-/g, ""));
-  const root = map.get(rootId) ?? map.get(pageId);
+  const plainId = extractPageId(pageId) ?? pageId.replace(/-/g, "");
+  const root = map.get(dashed(plainId)) ?? map.get(pageId) ?? map.get(plainId);
   return root?.content?.length ? convertLegacy(root.content, map) : [];
+}
+
+function snapshotPage(snapshot: NotionSnapshot | null, pageId: string): R | undefined {
+  if (!snapshot?.pages) return undefined;
+  const wanted = (extractPageId(pageId) ?? pageId).replace(/-/g, "").toLowerCase();
+  const hit = Object.keys(snapshot.pages).find((key) => key.replace(/-/g, "").toLowerCase() === wanted);
+  return hit ? snapshot.pages[hit] : undefined;
+}
+
+export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
+  try {
+    const res = await fetch(`${API}/page/${pageId}`, {
+      signal: withTimeout(),
+      headers: { Accept: "application/json" },
+    });
+    if (res.ok) {
+      const blocks = parseLegacyRecordMap((await res.json()) as R, pageId);
+      if (blocks.length) return blocks;
+    }
+  } catch {
+    /* 공개 프록시 장애 → 아래 스냅샷으로 진행 */
+  }
+
+  // 정적 스냅샷에 본문이 담겨 있으면 그대로 사용합니다. (같은 출처라 항상 성공)
+  const page = snapshotPage(await loadSnapshot(), pageId);
+  return page ? parseLegacyRecordMap(page, pageId) : [];
 }

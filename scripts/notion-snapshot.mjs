@@ -82,6 +82,19 @@ function unwrap(entry) {
   return isRecord(v) ? v : undefined;
 }
 
+/** 렌더링에 필요한 필드만 남겨 스냅샷 용량을 줄입니다. (crdt_data 등 제거) */
+function slimBlock(value) {
+  const slim = { id: value.id, type: value.type };
+  if (isRecord(value.properties)) slim.properties = value.properties;
+  if (isRecord(value.format)) slim.format = value.format;
+  if (Array.isArray(value.content)) slim.content = value.content;
+  if (Array.isArray(value.view_ids)) slim.view_ids = value.view_ids;
+  if (value.collection_id) slim.collection_id = value.collection_id;
+  if (value.space_id) slim.space_id = value.space_id;
+  if (value.alive === false) slim.alive = false;
+  return slim;
+}
+
 async function loadPageChunk(pageId, chunkNumber = 0, cursor = { stack: [] }) {
   return notionPost("loadPageChunk", {
     pageId: dashed(pageId),
@@ -102,7 +115,7 @@ async function loadBlockMap(pageId) {
     const chunk = data?.recordMap?.block ?? {};
     for (const [id, entry] of Object.entries(chunk)) {
       const value = unwrap(entry);
-      if (value?.id && value?.type) blocks[id] = { value };
+      if (value?.id && value?.type) blocks[id] = { value: slimBlock(value) };
     }
     const next = data?.cursor;
     if (!next || !Array.isArray(next.stack) || next.stack.length === 0) break;
@@ -248,9 +261,10 @@ function rowToObject(block, schema) {
     const decoded = decodeCell(value, column.type, block.id);
     if (decoded !== undefined && decoded !== "") row[name] = decoded;
   }
-  if (block.format?.page_cover && !row.Cover) {
+  // 커버 속성이 없으면 노션 페이지 커버 이미지를 대신 사용합니다.
+  if (!row.Cover && block.format?.page_cover) {
     const cover = String(block.format.page_cover);
-    row.__pageCover = cover.startsWith("/")
+    row.Cover = cover.startsWith("/")
       ? `https://www.notion.so/image/${encodeURIComponent(`https://www.notion.so${cover}`)}?table=block&id=${block.id}&cache=v2`
       : cover;
   }
