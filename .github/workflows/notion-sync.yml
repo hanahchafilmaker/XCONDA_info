@@ -1,0 +1,57 @@
+name: Notion 동기화
+
+# 게시된 Notion 페이지를 서버에서 읽어 `notion-content.json` 으로 커밋합니다.
+# 사이트(index.html)는 같은 도메인의 이 파일을 읽으므로 CORS·외부 프록시 장애와 무관하게
+# 항상 최신 글을 표시할 수 있습니다.
+on:
+  schedule:
+    - cron: "*/10 * * * *" # 10분마다 (GitHub 사정에 따라 지연될 수 있음)
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "arena/**"
+    paths:
+      - "scripts/notion-snapshot.mjs"
+      - ".github/workflows/notion-sync.yml"
+
+concurrency:
+  group: notion-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Notion 스냅샷 생성
+        env:
+          NOTION_PAGE_ID: ${{ vars.NOTION_PAGE_ID }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
+        run: node scripts/notion-snapshot.mjs --out notion-content.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notion-content
+          path: notion-content.json
+          retention-days: 7
+
+      - name: 변경사항 커밋
+        run: |
+          if [ -z "$(git status --porcelain notion-content.json)" ]; then
+            echo "변경 없음 — 커밋 생략"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add notion-content.json
+          git commit -m "chore: Notion 콘텐츠 동기화 [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
