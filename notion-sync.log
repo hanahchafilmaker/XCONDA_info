@@ -1,1 +1,6 @@
-✖ Notion 스냅샷 생성 실패: NOTION_PAGE_ID 또는 NOTION_DATABASE_ID 가 필요합니다
+  ! loadPageChunk 시도 1/3 실패: loadPageChunk HTTP 400: {"isNotionError":true,"errorId":"775462c8-c6c4-4975-9e89-5e155670596d","name":"ValidationError","debugMessage":"Invalid input.","message":"Something went wrong. (400)"}
+  ! loadPageChunk 시도 2/3 실패: loadPageChunk HTTP 400: {"isNotionError":true,"errorId":"77735b18-ac39-4de8-8ce3-128fa3792f7f","name":"ValidationError","debugMessage":"Invalid input.","message":"Something went wrong. (400)"}
+  ! loadPageChunk 시도 3/3 실패: loadPageChunk HTTP 400: {"isNotionError":true,"errorId":"ff5d27d4-3780-4c11-8e4d-30bfe2a82d37","name":"ValidationError","debugMessage":"Invalid input.","message":"Something went wrong. (400)"}
+  · 본문 로드 실패 (684f113d-45da-4844-86e7-c07cdc8f5b2b): loadPageChunk HTTP 400: {"isNotionError":true,"errorId":"ff5d27d4-3780-4c11-8e4d-30bfe2a82d37","name":"ValidationError","debugMessage":"Invalid input.","message":"Something went wrong. (400)"}
+✔ notion-content.json 생성 — 글 1개 / 본문 0개 (0.4 KB)
+  · 공지 | XCONDA 서비스 안내
