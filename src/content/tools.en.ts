@@ -3,19 +3,47 @@ import type { ToolTranslation } from "./types";
 /** English copy translated from the product instructions in tools.ts. */
 export const TOOL_EN: Record<string, ToolTranslation> = {
   turn: {
-    tagline: "From 360° environment to viewpoint edits and a directed Final Still",
-    desc: "Build a 360° HDRI from a prompt or one/four-direction references, refine its Cube Map, then add a subject, lighting, and style at your chosen viewpoint.",
+    tagline: "One photo → 360° space creation and background/space locking",
+    desc: "Build a 360° six-faced cube map from a single photo to lock your background space. Maintain complete spatial consistency across Dutch angles, bird's-eye views, and camera moves.",
     steps: [
-      "Add Front / Left / Right / Back references or write only a Description.",
+      "In Reference, add Front / Left / Right / Back references or write a Description.",
       "Generate the 360° HDRI and choose a camera viewpoint in 3D Preview.",
       "If needed, refine each Cube Map face with Brush, Replace with, Inpaint, or REGEN.",
       "Save the chosen viewpoint as a Freeze Frame.",
-      "In Production, set the subject, action, lighting, Cinema Style, and Face ID / Wardrobe references.",
-      "Generate the Final Still and download either the Freeze Frame or final output separately.",
+      "In Production, configure cast, lighting, action, and style to finalize the shot.",
     ],
     tips: [
-      "Leave Replace with empty during Inpaint to remove the masked object.",
-      "Start with four references, one image, or a prompt alone.",
+      "Turn is the initial step to lock the virtual space before entering FlexBoard.",
+      "A 6-sided cube map ensures the room remains consistent even as camera angles change.",
+    ],
+  },
+  flexboard: {
+    tagline: "Scenario-driven 9-cut storyboard & selective frame regeneration",
+    desc: "Generate a 3×3 cinematic 9-cut storyboard from a single scenario, then edit prompts and selectively regenerate only the cuts you want to refine.",
+    steps: [
+      "Choose Standard or Cinema Pro engine and input your scenario.",
+      "Select Director Style and Art Style presets.",
+      "Click Generate to create the 3×3 nine-cut grid storyboard.",
+      "Select any cut to modify its prompt and regenerate only that frame.",
+      "Export the 9-cut board directly into Seedance 2.5 / Kling video generation.",
+    ],
+    tips: [
+      "Regenerate problematic frames individually without restarting the entire storyboard.",
+      "Integrate with the Claude skill (xconda-new-prompt) to expand into 10-block prompts.",
+    ],
+  },
+  "blocking-board": {
+    tagline: "Character movement, camera blocking & spatial direction in 360° space",
+    desc: "Intuitively place characters, gaze directions, and camera movements on the locked 360° space to design visual continuity across scenes.",
+    steps: [
+      "Load the locked 360° space or background from Turn.",
+      "Place characters and their movement paths on the spatial viewport.",
+      "Configure camera viewpoint, focal length, and movement trajectories.",
+      "Verify spatial relationships before moving to final rendering.",
+    ],
+    tips: [
+      "Check obstacle maps so movement paths do not collide with furniture or walls.",
+      "Clear positioning in foreground, midground, and background maximizes consistency.",
     ],
   },
   "directors-cut": {

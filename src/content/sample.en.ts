@@ -60,21 +60,21 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
   },
 
   "update-240": {
-    title: "Automatic mask erasing in 360 Turn Studio",
-    summary: "Paint a mask with an empty prompt to remove an object automatically.",
+    title: "Turn: 360 Space Cube Map & Mask Editing Update",
+    summary: "Lock 360° background space with a 6-faced cube map and remove or swap objects with mask tools.",
     changes: [
+      { kind: "New", text: "One photo → 6-faced cube map background lock (preserves spatial consistency across cuts)" },
       { kind: "New", text: "Masked area + empty prompt → automatic object removal" },
-      { kind: "New", text: "Select and position characters within a space" },
-      { kind: "Improved", text: "Higher-quality 3D reconstruction from reference images" },
+      { kind: "Improved", text: "Higher-quality 3D viewpoint Freeze Frame and Production rendering" },
     ],
   },
   "update-230": {
-    title: "Per-cut regeneration in Director's Cut",
-    summary: "Edit the prompt and regenerate only the cuts you want to change.",
+    title: "FlexBoard: Selective Frame Regeneration",
+    summary: "Selectively regenerate individual cuts on the 9-cut grid without rebuilding the entire storyboard.",
     changes: [
-      { kind: "New", text: "Edit prompts and regenerate individual cuts" },
-      { kind: "New", text: "New director-style and art-style presets" },
-      { kind: "Fixed", text: "An intermittent issue that changed cut order during nine-cut generation" },
+      { kind: "New", text: "Per-frame prompt editing and unlimited individual regeneration" },
+      { kind: "New", text: "Claude skill (xconda-new-prompt) & Seedance 2.5 integration" },
+      { kind: "Fixed", text: "Enhanced narrative consistency across the 9-cut grid" },
     ],
   },
   "update-220": {
@@ -106,17 +106,17 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
   },
 
   "guide-start": {
-    title: "Getting started: your first storyboard in five minutes",
-    summary: "The fastest path from creating an account to completing your first nine-cut storyboard.",
+    title: "Getting started: 5-minute pipeline from Turn to FlexBoard",
+    summary: "The core workflow to lock space with Turn and generate 9-cut storyboards with FlexBoard.",
     category: "Getting Started",
     blocks: [
-      { type: "h2", text: "1. Create an account" },
-      { type: "p", text: "Visit xconda.ai and create your account." },
-      { type: "h2", text: "2. Get credits" },
-      { type: "p", text: "Credit packs are one-time purchases. If you are new, Starter Pack V1 ($6.90 · 2,020 credits) is enough to explore the workflow." },
-      { type: "h2", text: "3. Open Director's Cut" },
-      { type: "ol", items: ["Choose an image engine", "Set the period and location", "Write a scenario", "Choose director and art styles", "Generate"] },
-      { type: "callout", icon: "💡", text: "Start with the Ad Storyboard template to learn the structure quickly." },
+      { type: "h2", text: "1. Lock space with Turn" },
+      { type: "p", text: "Upload one photo to create a 6-faced cube map and freeze your camera angle." },
+      { type: "h2", text: "2. Generate 9-cut storyboard in FlexBoard" },
+      { type: "ol", items: ["Write scenario", "Choose director and art styles", "Generate 9 cuts", "Selectively regenerate frames"] },
+      { type: "h2", text: "3. Video rendering" },
+      { type: "p", text: "Pass completed frames into Seedance 2.5 or Kling video models." },
+      { type: "callout", icon: "💡", text: "Turn → FlexBoard → Blocking Board → Seedance 2.5 is XCONDA's production pipeline." },
     ],
   },
   "guide-prompt": {

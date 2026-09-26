@@ -9,34 +9,71 @@ import { getToolVideo } from "./toolVideos";
 export const STUDIO_URL = "https://www.xconda.ai";
 const IMG = `${STUDIO_URL}/assets/img/land`;
 export const FLOW_GIFS = {
-  models: "https://media.toolgov.com/media/land/flow-01.gif",
-  tools: "https://media.toolgov.com/media/land/flow-02.gif",
-  storyboard: "https://media.toolgov.com/media/land/flow-03.gif",
-  continuity: "https://media.toolgov.com/media/land/flow-04.gif",
+  models: "",
+  tools: "",
+  storyboard: "",
+  continuity: "",
 };
 
 const BASE_TOOLS: Tool[] = [
   /* ------------------------------ 핵심 스튜디오 ------------------------------ */
   {
     slug: "turn",
-    name: "360 Turn Studio",
+    name: "Turn (턴)",
     group: "핵심 스튜디오",
-    tagline: "360° 공간 생성부터 시점 선택·부분 수정·Final Still까지",
-    desc: "프롬프트 또는 1장·4방향 레퍼런스로 360° HDRI를 만들고, Cube Map을 수정한 뒤 원하는 시점에 인물·조명·스타일을 더해 최종 이미지를 완성합니다.",
+    tagline: "사진 1장으로 360° 공간 생성 및 배경·공간 고정",
+    desc: "사진 한 장으로 공간 한 면을 만들고 여섯 면(큐브맵)을 생성해 360° 배경을 고정합니다. 앙각·부감·동선이 바뀌어도 컷마다 방이 바뀌지 않는 공간 일관성을 제공합니다.",
     href: `${STUDIO_URL}/studio/turn`,
-    image: FLOW_GIFS.tools,
     badge: "Core",
     steps: [
-      "Front / Left / Right / Back 레퍼런스를 넣거나 Description만 작성합니다.",
-      "Generate로 360° HDRI를 만들고 3D Preview에서 카메라 시점을 고릅니다.",
-      "필요하면 Cube Map의 Brush·Replace with·Inpaint·REGEN으로 방향별 디테일을 수정합니다.",
+      "Reference 단계에서 Front / Left / Right / Back 이미지를 넣거나 Description만 작성합니다.",
+      "Generate로 360° HDRI 큐브맵을 만들고 3D Preview에서 카메라 시점을 지정합니다.",
+      "필요하면 Cube Map의 Inpaint 및 부분 수정 기능으로 방향별 디테일을 수정합니다.",
       "원하는 시점을 Freeze Frame으로 저장합니다.",
-      "Production에서 인물·액션·조명·Cinema Style과 Face ID / Wardrobe 레퍼런스를 설정합니다.",
-      "Final Still을 생성하고 Freeze Frame 또는 최종 결과를 각각 다운로드합니다.",
+      "Production에서 인물·액션·조명·Cinema Style과 캐스트 레퍼런스를 설정해 최종 컷을 완성합니다.",
     ],
     tips: [
-      "Inpaint에서 Replace with를 비워 두면 마스크 영역의 오브젝트를 제거할 수 있습니다.",
-      "Reference는 4장, 1장 또는 프롬프트만으로도 시작할 수 있습니다.",
+      "Turn은 플렉스보드로 들어가기 전 공간을 먼저 고정하는 0단계 필수 도구입니다.",
+      "여섯 면이 고정되면 앙각, 부감, 좌우 동선에서도 일관된 공간 렌더링이 가능합니다.",
+    ],
+  },
+  {
+    slug: "flexboard",
+    name: "FlexBoard (플렉스보드)",
+    group: "핵심 스튜디오",
+    tagline: "시나리오 기반 9컷 스토리보드 생성 & 원하는 컷만 선택 재생성",
+    desc: "시나리오를 입력해 3×3 그리드의 9컷 시네마틱 스토리보드를 한 번에 생성하고, 마음에 들지 않는 컷만 골라 개별 재생성(Selective Regeneration)합니다.",
+    href: `${STUDIO_URL}/studio/directors-cut`,
+    badge: "Core",
+    steps: [
+      "Standard 또는 Cinema Pro 엔진을 선택하고 시나리오를 작성합니다.",
+      "감독 연출 스타일과 아트 스타일 프리셋을 선택합니다.",
+      "Generate 버튼을 눌러 3×3 구성의 9컷 그리드 스토리보드를 일괄 생성합니다.",
+      "수정이 필요한 컷만 펜 아이콘을 눌러 프롬프트를 바꾸고 개별 재생성(Regenerate)합니다.",
+      "완성된 9컷 보드를 기반으로 Seedance 2.5 / Kling 영상 제작으로 연결합니다.",
+    ],
+    tips: [
+      "전체 보드를 다시 만들 필요 없이 어색한 컷만 횟수 제한 없이 선택 재생성할 수 있습니다.",
+      "Claude 스킬(xconda-new-prompt)과 연계하여 10블록 프롬프트로 고도화할 수 있습니다.",
+    ],
+  },
+  {
+    slug: "blocking-board",
+    name: "Blocking Board (블로킹보드)",
+    group: "핵심 스튜디오",
+    tagline: "공간 내 인물·카메라 동선 및 공간 연출 블로킹",
+    desc: "고정된 360° 가상 공간 위에 인물의 위치, 시선 방향, 카메라 무브먼트 동선을 직관적으로 배치해 장면 간 시각적 연속성을 설계합니다.",
+    href: `${STUDIO_URL}`,
+    badge: "Core",
+    steps: [
+      "Turn에서 고정된 360° 공간 또는 배경 이미지를 불러옵니다.",
+      "공간 뷰포트 위에 캐릭터 인물의 위치와 이동 동선을 배치합니다.",
+      "카메라 시점(샷 앵글, 화각, 이동 궤적)을 설정합니다.",
+      "씬별 인물과 카메라의 공간 관계를 검증하고 다음 렌더링 단계로 전달합니다.",
+    ],
+    tips: [
+      "동선이 벽이나 가구 등 장애물을 관통하지 않도록 블로킹 상태를 확인하세요.",
+      "프레임 좌/중/우 및 전경/중경/후경 배치를 명확히 하면 일관성이 극대화됩니다.",
     ],
   },
   {
@@ -46,7 +83,6 @@ const BASE_TOOLS: Tool[] = [
     tagline: "엔진·연출·아트 스타일로 완성하는 9컷 스토리보드",
     desc: "Standard 또는 Cinema Pro 엔진과 시간·공간, 디렉터 스타일, 아트 스타일을 설정해 하나의 이야기로 이어지는 3×3 스토리보드를 만듭니다.",
     href: `${STUDIO_URL}/studio/directors-cut`,
-    image: FLOW_GIFS.storyboard,
     badge: "Most Popular",
     steps: [
       "초안용 Standard 또는 최종 결과용 Cinema Pro 엔진을 선택합니다.",
@@ -68,14 +104,13 @@ const BASE_TOOLS: Tool[] = [
     tagline: "포커스 모드·캐릭터 시트·카메라로 만드는 일관된 9컷",
     desc: "시나리오의 Role Name으로 얼굴·의상을 연결하고, 포커스 모드와 카메라·렌즈를 조합해 캐릭터와 공간의 연속성을 유지하는 시네마틱 컷을 만듭니다.",
     href: STUDIO_URL,
-    image: FLOW_GIFS.continuity,
     badge: "Core",
     steps: [
       "Dialogue, Action, Atmosphere 중 장면에 맞는 포커스 모드를 선택합니다.",
       "시나리오에 모든 Role Name을 포함하고 공간 구조가 명확한 배경을 업로드합니다.",
       "각 캐스트의 Role Name과 Face ID Source를 설정하고 필요하면 Wardrobe Ref를 추가합니다.",
       "Detect Face로 좌·정면·우 3뷰 캐릭터 시트를 생성합니다.",
-      "6가지 Camera와 10가지 Optics 중 원하는 룩을 선택합니다.",
+      "카메라와 광학 렌즈 중 원하는 룩을 선택합니다.",
       "Generate로 Preview를 만들고 필요한 컷을 재생성·업스케일·다운로드합니다.",
     ],
     tips: [
@@ -232,7 +267,6 @@ const BASE_TOOLS: Tool[] = [
     tagline: "Kling 3.0 등 영상 모델",
     desc: "완성된 스토리보드 컷이나 프롬프트로 영상을 생성합니다.",
     href: `${STUDIO_URL}/studio/video`,
-    image: FLOW_GIFS.models,
     steps: ["영상 모델을 선택합니다.", "프롬프트를 입력하거나 시작 이미지를 업로드합니다.", "길이·비율 등 옵션을 설정하고 생성합니다."],
   },
   {
