@@ -38,10 +38,13 @@ export function extractId(input) {
   return m ? m[0].toLowerCase() : undefined;
 }
 
-const dashed = (id) =>
-  `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
-
 const undashed = (id) => String(id).replace(/-/g, "").toLowerCase();
+
+/** 이미 하이픈이 있든 없든 항상 올바른 UUID 형태로 정규화합니다. */
+const dashed = (id) => {
+  const raw = undashed(id);
+  return `${raw.slice(0, 8)}-${raw.slice(8, 12)}-${raw.slice(12, 16)}-${raw.slice(16, 20)}-${raw.slice(20)}`;
+};
 
 async function notionPost(path, body, { retries = 3 } = {}) {
   let lastError;
