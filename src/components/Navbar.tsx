@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, ArrowUpRight, Languages, Menu, Search, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Menu, Search, X } from "lucide-react";
 import { ButtonLink, Container, Logo } from "./ui";
 import { useLang } from "../i18n";
 import { cn } from "../utils/cn";
@@ -15,21 +15,32 @@ const links = [
 const STUDIO = "https://www.xconda.ai";
 
 function LangToggle({ className }: { className?: string }) {
-  const { lang, toggle } = useLang();
+  const { lang, setLang, t } = useLang();
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={lang === "ko" ? "Change language to English" : "언어를 한국어로 변경"}
-      title={lang === "ko" ? "English" : "한국어"}
-      className={cn(
-        "inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white",
-        className
-      )}
+    <div
+      role="group"
+      aria-label={t("lang.switchAria")}
+      className={cn("inline-flex h-9 items-center rounded-full border border-white/10 bg-black/20 p-1", className)}
     >
-      <Languages className="h-4 w-4" />
-      <span className="font-semibold">{lang === "ko" ? "EN" : "한국어"}</span>
-    </button>
+      {(["ko", "en"] as const).map((option) => (
+        <button
+          key={option}
+          type="button"
+          onClick={() => setLang(option)}
+          aria-pressed={lang === option}
+          aria-label={option === "ko" ? t("lang.korean") : t("lang.english")}
+          title={option === "ko" ? t("lang.korean") : t("lang.english")}
+          className={cn(
+            "grid h-7 min-w-8 place-items-center rounded-full px-2 text-[11px] font-bold tracking-wide transition-all",
+            lang === option
+              ? "bg-white text-ink-950 shadow-sm"
+              : "text-zinc-500 hover:bg-white/[0.06] hover:text-white"
+          )}
+        >
+          {option === "ko" ? "KR" : "EN"}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -79,7 +90,7 @@ export default function Navbar() {
       >
         <Container>
           <nav
-            aria-label="Primary"
+            aria-label={t("nav.primary")}
             className={cn(
               "flex h-14 items-center justify-between rounded-full pl-4 pr-2 transition-all duration-500 ease-out sm:pl-5",
               scrolled
@@ -89,7 +100,7 @@ export default function Navbar() {
           >
             <a href="#top" aria-label={t("nav.home")} className="flex items-center gap-2 rounded-full">
               <Logo />
-              <span className="rounded-md bg-white/[0.07] px-1.5 py-0.5 text-[11px] font-semibold text-zinc-300 ring-1 ring-inset ring-white/10">Guide</span>
+              <span className="hidden rounded-md bg-white/[0.07] px-1.5 py-0.5 text-[11px] font-semibold text-zinc-300 ring-1 ring-inset ring-white/10 min-[390px]:inline">Guide</span>
             </a>
 
             <ul className="hidden items-center gap-1 lg:flex">
@@ -125,7 +136,7 @@ export default function Navbar() {
                 <Search className="h-4 w-4" />
                 <kbd className="font-mono text-[11px] text-zinc-500">⌘K</kbd>
               </button>
-              <LangToggle className="hidden sm:inline-flex" />
+              <LangToggle />
               <ButtonLink href={STUDIO} target="_blank" rel="noopener noreferrer" size="sm" className="hidden sm:inline-flex">
                 {t("nav.openStudioShort")}
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -176,9 +187,6 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="mt-auto flex flex-col gap-3">
-            <div className="flex justify-center pb-1">
-              <LangToggle className="border border-white/10" />
-            </div>
             <ButtonLink href={STUDIO} target="_blank" rel="noopener noreferrer" size="lg" onClick={() => setOpen(false)}>
               {t("common.openStudioTop")} <ArrowUpRight className="h-4 w-4" />
             </ButtonLink>

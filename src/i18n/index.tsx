@@ -10,7 +10,8 @@ import {
 import { setCurrentLang, translate, type Lang } from "./dict";
 
 export type { Lang } from "./dict";
-export { groupLabel, typeLabel } from "./dict";
+export { categoryLabel, changeLabel, groupLabel, typeLabel } from "./dict";
+export { localizeEntry, localizeTool } from "./content";
 
 const STORAGE_KEY = "xconda-lang";
 
@@ -54,13 +55,29 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
     try {
       document.documentElement.lang = lang;
+      document.title = translate("meta.title", lang);
+      const description = translate("meta.description", lang);
+      document.querySelector('meta[name="description"]')?.setAttribute("content", description);
+      document.querySelector('meta[property="og:title"]')?.setAttribute("content", translate("meta.title", lang));
+      document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
     } catch {
       /* noop */
     }
   }, [lang]);
 
-  const setLang = useCallback((l: Lang) => setLangState(l), []);
-  const toggle = useCallback(() => setLangState((p) => (p === "ko" ? "en" : "ko")), []);
+  // Update the non-React formatter locale before the next render. Otherwise
+  // dates can remain in the previous language until an unrelated render.
+  const setLang = useCallback((l: Lang) => {
+    setCurrentLang(l);
+    setLangState(l);
+  }, []);
+  const toggle = useCallback(() => {
+    setLangState((previous) => {
+      const next = previous === "ko" ? "en" : "ko";
+      setCurrentLang(next);
+      return next;
+    });
+  }, []);
   const t = useCallback((key: string) => translate(key, lang), [lang]);
   const pick = useCallback(
     <T,>(ko: T, en: T): T => (lang === "ko" ? ko : en),

@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { ArrowRight, ChevronDown, GitCommitHorizontal } from "lucide-react";
 import { Container, Reveal, SectionHeading, Serif, trackSpotlight } from "./ui";
-import { useLang } from "../i18n";
+import { changeLabel, useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew, timeAgo } from "../notion";
 import { NewBadge, SmartImage } from "./common";
 import { cn } from "../utils/cn";
 
 const KIND = {
-  New: { label: "New", cls: "bg-emerald-400/12 text-emerald-200 ring-emerald-400/25" },
-  Improved: { label: "Improved", cls: "bg-sky-400/12 text-sky-200 ring-sky-400/25" },
-  Fixed: { label: "Fixed", cls: "bg-amber-400/12 text-amber-200 ring-amber-400/25" },
+  New: { cls: "bg-emerald-400/12 text-emerald-200 ring-emerald-400/25" },
+  Improved: { cls: "bg-sky-400/12 text-sky-200 ring-sky-400/25" },
+  Fixed: { cls: "bg-amber-400/12 text-amber-200 ring-amber-400/25" },
 };
 
 export default function Changelog() {
-  const { t, pick } = useLang();
+  const { t, pick, lang } = useLang();
   const { updates, openEntry, status } = useContent();
   const [expanded, setExpanded] = useState(false);
   const list = expanded ? updates : updates.slice(0, 3);
@@ -79,7 +79,7 @@ export default function Changelog() {
                         {u.changes.map((c, j) => (
                           <li key={j} className="flex items-start gap-3 text-sm text-zinc-300">
                             <span className={cn("mt-px w-[68px] shrink-0 rounded-md py-0.5 text-center text-[11px] font-semibold ring-1 ring-inset", KIND[c.kind].cls)}>
-                              {KIND[c.kind].label}
+                              {changeLabel(c.kind, lang)}
                             </span>
                             <span className="leading-relaxed">{c.text}</span>
                           </li>

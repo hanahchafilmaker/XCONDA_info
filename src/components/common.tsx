@@ -10,9 +10,13 @@ import { cn } from "../utils/cn";
 
 const CATEGORY_TONE: Record<string, string> = {
   공지: "bg-violet-400/12 text-violet-200 ring-violet-400/25",
+  Notice: "bg-violet-400/12 text-violet-200 ring-violet-400/25",
   점검: "bg-amber-400/12 text-amber-200 ring-amber-400/25",
+  Maintenance: "bg-amber-400/12 text-amber-200 ring-amber-400/25",
   이벤트: "bg-fuchsia-400/12 text-fuchsia-200 ring-fuchsia-400/25",
+  Event: "bg-fuchsia-400/12 text-fuchsia-200 ring-fuchsia-400/25",
   정책: "bg-sky-400/12 text-sky-200 ring-sky-400/25",
+  Policy: "bg-sky-400/12 text-sky-200 ring-sky-400/25",
   업데이트: "bg-emerald-400/12 text-emerald-200 ring-emerald-400/25",
 };
 

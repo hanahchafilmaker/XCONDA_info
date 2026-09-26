@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { ArrowRight, ArrowUpRight, Search } from "lucide-react";
 import { Container, Reveal, SectionHeading, Serif, trackSpotlight } from "./ui";
-import { useLang, groupLabel } from "../i18n";
+import { useLang, groupLabel, localizeTool } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { TOOL_GROUPS, TOOLS } from "../content/tools";
 import { SmartImage } from "./common";
@@ -15,14 +15,15 @@ export default function Tools() {
   const [group, setGroup] = useState<string>(ALL);
   const [q, setQ] = useState("");
 
+  const tools = useMemo(() => TOOLS.map((tool) => localizeTool(tool, lang)), [lang]);
   const list = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return TOOLS.filter(
-      (t) =>
-        (group === ALL || t.group === group) &&
-        (!query || `${t.name} ${t.tagline} ${t.desc}`.toLowerCase().includes(query))
+    return tools.filter(
+      (tool) =>
+        (group === ALL || tool.group === group) &&
+        (!query || `${tool.name} ${tool.tagline} ${tool.desc} ${groupLabel(tool.group, lang)}`.toLowerCase().includes(query))
     );
-  }, [group, q]);
+  }, [group, lang, q, tools]);
 
   return (
     <section id="tools" className="relative py-20 sm:py-28">
@@ -32,8 +33,8 @@ export default function Tools() {
           eyebrow="All Tools"
           title={<>{tr("tools.titleKo")} <Serif className="text-gradient font-normal">Tool Guide</Serif></>}
           description={pick(
-            `XCONDA의 ${TOOLS.length}가지 툴을 한눈에. 카드를 누르면 단계별 사용법을 볼 수 있습니다.`,
-            `All ${TOOLS.length} XCONDA tools at a glance. Tap a card to see step-by-step how-tos.`
+            `XCONDA의 ${tools.length}가지 툴을 한눈에. 카드를 누르면 단계별 사용법을 볼 수 있습니다.`,
+            `All ${tools.length} XCONDA tools at a glance. Tap a card to see step-by-step how-tos.`
           )}
         />
 

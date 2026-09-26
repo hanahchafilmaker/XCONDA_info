@@ -2,8 +2,8 @@
  * XCONDA 가이드 센터 다국어(i18n) 사전.
  *
  * - UI "크롬"(내비게이션, 섹션 제목, 버튼, 안내 문구 등)의 한/영 문구를 한곳에서 관리합니다.
- * - 노션/샘플로 들어오는 "콘텐츠"(공지·가이드 본문 등)는 작성 언어를 그대로 따르며,
- *   추후 각 항목에 영어 필드가 추가되면 resolveLocalized 로 확장할 수 있습니다.
+ * - 샘플·툴 콘텐츠는 별도 영문 번역을 제공하며, Notion 콘텐츠는 Title EN 등
+ *   언어별 보조 필드가 있을 때 해당 언어로 표시합니다.
  */
 
 export type Lang = "ko" | "en";
@@ -42,8 +42,17 @@ export const DICT: Dict = {
 
   /* --------------------------- 접근성 --------------------------- */
   "a11y.skip": { ko: "본문으로 건너뛰기", en: "Skip to content" },
+  "meta.title": {
+    ko: "XCONDA 가이드 센터 — 공지사항 · 업데이트 · 사용법",
+    en: "XCONDA Guide Center — Notices, Updates & How-tos",
+  },
+  "meta.description": {
+    ko: "XCONDA의 최신 공지사항, 업데이트 내역과 모든 툴의 단계별 사용법을 한곳에서 확인하세요.",
+    en: "Find the latest XCONDA notices, release notes, and step-by-step guides for every tool in one place.",
+  },
 
   /* -------------------------- 내비게이션 -------------------------- */
+  "nav.primary": { ko: "주요 메뉴", en: "Primary navigation" },
   "nav.notices": { ko: "공지사항", en: "Notices" },
   "nav.updates": { ko: "업데이트", en: "Updates" },
   "nav.start": { ko: "시작하기", en: "Get Started" },
@@ -55,7 +64,9 @@ export const DICT: Dict = {
   "nav.search": { ko: "검색", en: "Search" },
   "nav.openMenu": { ko: "메뉴 열기", en: "Open menu" },
   "nav.closeMenu": { ko: "메뉴 닫기", en: "Close menu" },
-  "lang.switchAria": { ko: "언어 변경", en: "Change language" },
+  "lang.switchAria": { ko: "언어 선택", en: "Choose language" },
+  "lang.korean": { ko: "한국어", en: "Korean" },
+  "lang.english": { ko: "영어", en: "English" },
 
   /* ---------------------------- 히어로 ---------------------------- */
   "hero.title2": { ko: "가장 빠른 업데이트, 가장 쉬운 사용법", en: "The fastest updates, the simplest how-tos" },
@@ -77,9 +88,12 @@ export const DICT: Dict = {
   "hero.statGuides": { ko: "가이드", en: "Guides" },
   "hero.statReleases": { ko: "릴리스", en: "Releases" },
   "hero.lastSynced": { ko: "마지막 동기화", en: "Last synced" },
+  "hero.keyMove": { ko: "이동", en: "Move" },
+  "hero.keyOpen": { ko: "열기", en: "Open" },
+  "hero.keyClose": { ko: "닫기", en: "Close" },
 
   /* ---------------------------- 공지사항 ---------------------------- */
-  "notices.titleKo": { ko: "공지사항", en: "Notices" },
+  "notices.titleKo": { ko: "공지사항", en: "Notices &" },
   "notices.desc": {
     ko: "서비스 공지, 점검 일정, 정책 변경, 이벤트 소식을 가장 먼저 알려드립니다.",
     en: "Be the first to hear about service notices, maintenance, policy changes, and events.",
@@ -95,7 +109,7 @@ export const DICT: Dict = {
   "notices.defaultCategory": { ko: "공지", en: "Notice" },
 
   /* ---------------------------- 업데이트 ---------------------------- */
-  "updates.titleKo": { ko: "업데이트", en: "Updates" },
+  "updates.titleKo": { ko: "업데이트", en: "Latest" },
   "updates.desc": {
     ko: "XCONDA는 매주 새로워집니다. 새 기능, 개선 사항, 버그 수정을 버전별로 확인하세요.",
     en: "XCONDA gets better every week. Track new features, improvements, and fixes by version.",
@@ -139,19 +153,20 @@ export const DICT: Dict = {
   "start.creditsLink": { ko: "크레딧 안내", en: "Credit details" },
 
   /* -------------------------- 툴 가이드 -------------------------- */
-  "tools.titleKo": { ko: "툴별 사용법", en: "Per-tool guides" },
+  "tools.titleKo": { ko: "툴별 사용법", en: "Explore the" },
   "tools.tabAria": { ko: "툴 분류", en: "Tool categories" },
   "tools.searchLabel": { ko: "툴 검색", en: "Search tools" },
   "tools.searchPlaceholder": { ko: "툴 이름 검색", en: "Search by tool name" },
 
   /* ---------------------------- 크레딧 ---------------------------- */
-  "credits.titleKo": { ko: "크레딧 안내", en: "Credits" },
+  "credits.titleKo": { ko: "크레딧 안내", en: "Simple" },
   "credits.desc": {
     ko: "원하는 팩을 골라 한 번만 결제하면 바로 창작을 시작할 수 있습니다.",
     en: "Pick a pack, pay once, and start creating right away.",
   },
   "credits.unit": { ko: "크레딧", en: "credits" },
   "credits.buy": { ko: "구매하기", en: "Buy now" },
+  "credits.popular": { ko: "가장 인기", en: "Most Popular" },
   "credits.notePre": { ko: "모든 팩은 ", en: "Every pack is " },
   "credits.noteStrong": { ko: "1회 결제", en: "a one-time payment" },
   "credits.notePost": {
@@ -165,7 +180,7 @@ export const DICT: Dict = {
   "pack.master.desc": { ko: "한계 없이, 모든 것을 만드세요", en: "Create everything, without limits" },
 
   /* ------------------------------ FAQ ------------------------------ */
-  "faq.titleKo": { ko: "자주 묻는 질문", en: "FAQ" },
+  "faq.titleKo": { ko: "자주 묻는 질문", en: "Answers in" },
   "faq.desc": {
     ko: "가장 많이 받는 질문을 모았습니다. 원하는 답이 없다면 언제든 문의해 주세요.",
     en: "The questions we hear most. If you can't find your answer, reach out anytime.",
@@ -255,10 +270,36 @@ export const GROUP_LABELS: Record<string, Entry> = {
   "생성 · 보정": { ko: "생성 · 보정", en: "Generate · Enhance" },
 };
 
+export const CATEGORY_LABELS: Record<string, Entry> = {
+  공지: { ko: "공지", en: "Notice" },
+  점검: { ko: "점검", en: "Maintenance" },
+  이벤트: { ko: "이벤트", en: "Event" },
+  정책: { ko: "정책", en: "Policy" },
+  시작하기: { ko: "시작하기", en: "Getting Started" },
+  시나리오: { ko: "시나리오", en: "Scenario" },
+  캐릭터: { ko: "캐릭터", en: "Character" },
+  크레딧: { ko: "크레딧", en: "Credits" },
+  사용법: { ko: "사용법", en: "How-to" },
+};
+
+const CHANGE_LABELS: Record<string, Entry> = {
+  New: { ko: "신규", en: "New" },
+  Improved: { ko: "개선", en: "Improved" },
+  Fixed: { ko: "수정", en: "Fixed" },
+};
+
 export function typeLabel(type: string, lang: Lang): string {
   return TYPE_LABELS[type]?.[lang] ?? type;
 }
 
 export function groupLabel(group: string, lang: Lang): string {
   return GROUP_LABELS[group]?.[lang] ?? group;
+}
+
+export function categoryLabel(category: string, lang: Lang): string {
+  return CATEGORY_LABELS[category]?.[lang] ?? category;
+}
+
+export function changeLabel(kind: string, lang: Lang): string {
+  return CHANGE_LABELS[kind]?.[lang] ?? kind;
 }

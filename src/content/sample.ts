@@ -1,9 +1,10 @@
 import type { Entry } from "./types";
 import { FLOW_GIFS, STUDIO_URL } from "./tools";
+import { SAMPLE_ENTRY_EN } from "./sample.en";
 
 const daysAgo = (d: number) => new Date(Date.now() - d * 86400000).toISOString();
 
-export const SAMPLE_ENTRIES: Entry[] = [
+const BASE_SAMPLE_ENTRIES: Entry[] = [
   /* =============================== 공지사항 =============================== */
   {
     id: "notice-kbs",
@@ -233,3 +234,8 @@ export const SAMPLE_ENTRIES: Entry[] = [
   { id: "faq-5", type: "faq", order: 5, title: "360 Turn Studio에서 오브젝트를 지우려면?", summary: "마스크 툴로 지울 영역을 칠하고, 프롬프트를 비워 둔 채 실행하면 자동으로 지워집니다. 프롬프트를 입력하면 새 오브젝트가 배치됩니다.", category: "사용법", date: daysAgo(3), tags: [] },
   { id: "faq-6", type: "faq", order: 6, title: "만든 결과물을 상업적으로 사용할 수 있나요?", summary: "이용약관의 범위 내에서 사용 가능합니다. 타인의 초상 · 저작물을 사용하는 경우 반드시 권리자의 동의가 필요합니다.", category: "정책", date: daysAgo(3), tags: [] },
 ];
+
+export const SAMPLE_ENTRIES: Entry[] = BASE_SAMPLE_ENTRIES.map((entry) => ({
+  ...entry,
+  translations: SAMPLE_ENTRY_EN[entry.id] ? { en: SAMPLE_ENTRY_EN[entry.id] } : undefined,
+}));

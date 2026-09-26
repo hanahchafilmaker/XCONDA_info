@@ -1,7 +1,7 @@
 import { useState, type KeyboardEvent } from "react";
 import { ArrowRight, ArrowUpRight, BookOpen, CreditCard, Lightbulb, MousePointerClick, PenLine, UserPlus } from "lucide-react";
 import { Container, Reveal, SectionHeading, Serif, trackSpotlight } from "./ui";
-import { useLang } from "../i18n";
+import { categoryLabel, localizeTool, useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { TOOLS } from "../content/tools";
 import { SmartImage, CategoryBadge } from "./common";
@@ -17,15 +17,16 @@ const START: { icon: typeof UserPlus; id: string; href?: string }[] = [
 const CORE = TOOLS.filter((t) => t.group === "핵심 스튜디오");
 
 export default function Guides() {
-  const { t, pick } = useLang();
+  const { t, pick, lang } = useLang();
   const { guides, openEntry, openTool } = useContent();
   const [tab, setTab] = useState(0);
-  const tool = CORE[tab];
+  const core = CORE.map((item) => localizeTool(item, lang));
+  const tool = core[tab];
 
   const onKey = (e: KeyboardEvent) => {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
-    const n = (tab + (e.key === "ArrowRight" ? 1 : -1) + CORE.length) % CORE.length;
+    const n = (tab + (e.key === "ArrowRight" ? 1 : -1) + core.length) % core.length;
     setTab(n);
     document.getElementById(`core-tab-${n}`)?.focus();
   };
@@ -80,7 +81,7 @@ export default function Guides() {
 
           <Reveal delay={80} className="mt-10">
             <div role="tablist" aria-label={t("guides.coreTabAria")} onKeyDown={onKey} className="glass inline-flex max-w-full gap-1 overflow-x-auto rounded-full p-1">
-              {CORE.map((t, i) => (
+              {core.map((t, i) => (
                 <button
                   key={t.slug}
                   id={`core-tab-${i}`}
@@ -177,7 +178,7 @@ export default function Guides() {
                       </div>
                     )}
                     <div className="flex flex-1 flex-col p-6">
-                      {g.category && <CategoryBadge className="self-start">{g.category}</CategoryBadge>}
+                      {g.category && <CategoryBadge className="self-start">{categoryLabel(g.category, lang)}</CategoryBadge>}
                       <h4 className="mt-3 font-semibold leading-snug text-white">{g.title}</h4>
                       <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-zinc-400">{g.summary}</p>
                       <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm text-zinc-300 transition group-hover:text-white">

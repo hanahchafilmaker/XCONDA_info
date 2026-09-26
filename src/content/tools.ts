@@ -1,5 +1,8 @@
 import type { Block, Entry, Tool } from "./types";
-import { getLang, translate } from "../i18n/dict";
+import type { Lang } from "../i18n/dict";
+import { translate } from "../i18n/dict";
+import { localizeEntry, localizeTool } from "../i18n/content";
+import { TOOL_EN } from "./tools.en";
 
 export const STUDIO_URL = "https://www.xconda.ai";
 const IMG = `${STUDIO_URL}/assets/img/land`;
@@ -10,7 +13,7 @@ export const FLOW_GIFS = {
   continuity: "https://media.toolgov.com/media/land/flow-04.gif",
 };
 
-export const TOOLS: Tool[] = [
+const BASE_TOOLS: Tool[] = [
   /* ------------------------------ 핵심 스튜디오 ------------------------------ */
   {
     slug: "turn",
@@ -223,11 +226,14 @@ export const TOOLS: Tool[] = [
   },
 ];
 
+export const TOOLS: Tool[] = BASE_TOOLS.map((tool) => ({
+  ...tool,
+  translations: TOOL_EN[tool.slug] ? { en: TOOL_EN[tool.slug] } : undefined,
+}));
+
 export const TOOL_GROUPS = ["전체", "핵심 스튜디오", "스토리보드", "카메라 · 앵글", "이미지 편집", "생성 · 보정"] as const;
 
-/** 툴 → 모달에서 보여줄 가이드 Entry로 변환 */
-export function toolToEntry(tool: Tool): Entry {
-  const lang = getLang();
+function toolBlocks(tool: Tool, lang: Lang): Block[] {
   const blocks: Block[] = [
     { type: "p", text: tool.desc },
     { type: "h2", text: translate("toolentry.howTo", lang) },
@@ -236,18 +242,32 @@ export function toolToEntry(tool: Tool): Entry {
   if (tool.image) blocks.push({ type: "img", src: tool.image, caption: tool.name });
   if (tool.tips?.length) {
     blocks.push({ type: "h2", text: translate("toolentry.tips", lang) });
-    tool.tips.forEach((t) => blocks.push({ type: "callout", icon: "💡", text: t }));
+    tool.tips.forEach((tip) => blocks.push({ type: "callout", icon: "💡", text: tip }));
   }
-  return {
+  return blocks;
+}
+
+/** 툴 → 모달에서 보여줄 양언어 가이드 Entry로 변환 */
+export function toolToEntry(tool: Tool, lang: Lang = "ko"): Entry {
+  const english = localizeTool(tool, "en");
+  const entry: Entry = {
     id: `tool-${tool.slug}`,
     type: "guide",
-    title: lang === "ko" ? `${tool.name} 사용법` : `${tool.name} guide`,
+    title: `${tool.name} 사용법`,
     summary: tool.tagline,
     category: tool.group,
     date: new Date().toISOString(),
     tags: [tool.name],
     url: tool.href,
     tool: tool.name,
-    blocks,
+    blocks: toolBlocks(tool, "ko"),
+    translations: {
+      en: {
+        title: `${tool.name} guide`,
+        summary: english.tagline,
+        blocks: toolBlocks(english, "en"),
+      },
+    },
   };
+  return localizeEntry(entry, lang);
 }

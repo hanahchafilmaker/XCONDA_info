@@ -8,7 +8,7 @@
  * ▸ 엔드포인트 형식: "public:<32자리 페이지 ID>"  → src/notion.ts 가 라우팅합니다.
  * ========================================================================== */
 
-import type { Block, Entry, EntryType, Rich, RichSeg } from "./content/types";
+import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { TYPE_MAP, parseChanges } from "./notion";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -60,6 +60,17 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
   const rawType = asText(pick(row, ["Type", "유형", "타입", "구분"])).toLowerCase();
   const type: EntryType = TYPE_MAP[rawType] ?? "notice";
   const changesRaw = asText(pick(row, ["Changes", "변경사항", "변경 사항"]));
+  const titleEn = asText(pick(row, ["Title EN", "English Title", "제목 EN", "영문 제목"]));
+  const summaryEn = asText(pick(row, ["Summary EN", "English Summary", "요약 EN", "영문 요약", "Answer EN"]));
+  const categoryEn = asText(pick(row, ["Category EN", "English Category", "카테고리 EN", "영문 카테고리"]));
+  const changesEnRaw = asText(pick(row, ["Changes EN", "English Changes", "변경사항 EN", "영문 변경사항"]));
+  const english: EntryTranslation = {
+    ...(titleEn ? { title: titleEn } : {}),
+    ...(summaryEn ? { summary: summaryEn } : {}),
+    ...(categoryEn ? { category: categoryEn } : {}),
+    ...(changesEnRaw ? { changes: parseChanges(changesEnRaw) } : {}),
+  };
+  const hasEnglish = Object.keys(english).length > 0;
 
   return {
     id: row.id,
@@ -78,6 +89,7 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
     order: asNum(pick(row, ["Order", "순서"])),
     changes: changesRaw ? parseChanges(changesRaw) : undefined,
     remote: true,
+    translations: hasEnglish ? { en: english } : undefined,
   };
 }
 

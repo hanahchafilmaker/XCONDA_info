@@ -42,7 +42,7 @@ export default function Credits() {
                 >
                   {p.popular && (
                     <span className="bg-brand mb-4 inline-flex items-center gap-1 self-start rounded-full px-2.5 py-1 text-[11px] font-semibold text-white">
-                      <Sparkles className="h-3 w-3" /> Most Popular
+                      <Sparkles className="h-3 w-3" /> {t("credits.popular")}
                     </span>
                   )}
                   <h3 className="text-sm font-semibold text-white">{p.name}</h3>
