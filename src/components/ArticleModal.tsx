@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CalendarDays, Link2, Check, X, Pin } from "lucide-react";
 import { useContent } from "../content/ContentContext";
-import { useLang } from "../i18n";
+import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
 import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "./common";
@@ -15,7 +15,7 @@ const KIND_TONE = {
 };
 
 export default function ArticleModal() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { active, closeEntry, endpoint, entries, openEntry } = useContent();
   const [blocks, setBlocks] = useState<Block[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -71,7 +71,9 @@ export default function ArticleModal() {
         <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-5 py-3.5 sm:px-7">
           <div className="flex min-w-0 items-center gap-2">
             <TypeLabel type={active.type} />
-            {active.category && active.category !== "공지" && <CategoryBadge>{active.category}</CategoryBadge>}
+            {active.category && !["공지", "Notice"].includes(active.category) && (
+              <CategoryBadge>{categoryLabel(active.category, lang)}</CategoryBadge>
+            )}
             {active.version && <span className="font-mono text-xs text-zinc-400">{active.version}</span>}
           </div>
           <div className="flex items-center gap-1">
@@ -125,7 +127,7 @@ export default function ArticleModal() {
               <ul className="mt-6 space-y-2 rounded-2xl bg-white/[0.03] p-4 ring-1 ring-inset ring-white/[0.06]">
                 {active.changes.map((c, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-zinc-200">
-                    <span className={cn("mt-0.5 w-[68px] shrink-0 rounded-md py-0.5 text-center text-[11px] font-semibold ring-1 ring-inset", KIND_TONE[c.kind])}>{c.kind}</span>
+                    <span className={cn("mt-0.5 w-[68px] shrink-0 rounded-md py-0.5 text-center text-[11px] font-semibold ring-1 ring-inset", KIND_TONE[c.kind])}>{changeLabel(c.kind, lang)}</span>
                     {c.text}
                   </li>
                 ))}

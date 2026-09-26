@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, BookOpen, ChevronRight, Command, Megaphone, Rocket, Search, Sparkles, Wrench } from "lucide-react";
 import { Container, Serif } from "./ui";
-import { useLang } from "../i18n";
+import { localizeTool, useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { TOOLS } from "../content/tools";
 import type { Entry } from "../content/types";
@@ -27,7 +27,7 @@ function score(hay: string, q: string) {
 }
 
 export default function Hero() {
-  const { t, pick } = useLang();
+  const { t, pick, lang } = useLang();
   const { entries, notices, updates, guides, openEntry, openTool, syncedAt } = useContent();
   const [q, setQ] = useState("");
   const [focused, setFocused] = useState(false);
@@ -66,12 +66,12 @@ export default function Hero() {
       const s = Math.max(score(e.title, query) * 2, score(`${e.summary} ${e.tags.join(" ")} ${e.category} ${e.tool ?? ""}`, query));
       if (s) r.push({ kind: "entry", entry: e, score: s });
     }
-    for (const t of TOOLS) {
-      const s = Math.max(score(t.name, query) * 2, score(`${t.tagline} ${t.desc} ${t.group}`, query));
-      if (s) r.push({ kind: "tool", slug: t.slug, name: t.name, tagline: t.tagline, score: s + 0.5 });
+    for (const tool of TOOLS.map((item) => localizeTool(item, lang))) {
+      const s = Math.max(score(tool.name, query) * 2, score(`${tool.tagline} ${tool.desc} ${tool.group}`, query));
+      if (s) r.push({ kind: "tool", slug: tool.slug, name: tool.name, tagline: tool.tagline, score: s + 0.5 });
     }
     return r.sort((a, b) => b.score - a.score).slice(0, 8);
-  }, [q, entries]);
+  }, [q, entries, lang]);
 
   useEffect(() => setCursor(0), [q]);
 
@@ -206,7 +206,7 @@ export default function Hero() {
                   </div>
                 )}
                 <div className="hidden items-center gap-4 border-t border-white/5 px-4 py-2 text-[11px] text-zinc-500 sm:flex">
-                  <span>↑↓ 이동</span><span>↵ 열기</span><span>esc 닫기</span>
+                  <span>↑↓ {t("hero.keyMove")}</span><span>↵ {t("hero.keyOpen")}</span><span>esc {t("hero.keyClose")}</span>
                 </div>
               </div>
             )}

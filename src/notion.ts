@@ -21,7 +21,7 @@
  *   GET {endpoint}/blocks/{id}   → Notion block children 응답 (results[])
  * ========================================================================== */
 
-import type { Block, Change, ChangeKind, Entry, EntryType, Rich, RichSeg } from "./content/types";
+import type { Block, Change, ChangeKind, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { extractPageId, fetchPublicBlocks, fetchPublicEntries } from "./notionPublic";
 import { getLang } from "./i18n/dict";
 
@@ -139,6 +139,17 @@ export function mapPage(page: R): Entry | null {
   if (published && published.type === "checkbox" && !published.checkbox) return null;
 
   const changesRaw = text(prop(p, ["Changes", "변경사항", "변경 사항"]));
+  const titleEn = text(prop(p, ["Title EN", "English Title", "제목 EN", "영문 제목"]));
+  const summaryEn = text(prop(p, ["Summary EN", "English Summary", "요약 EN", "영문 요약", "Answer EN"]));
+  const categoryEn = text(prop(p, ["Category EN", "English Category", "카테고리 EN", "영문 카테고리"]));
+  const changesEnRaw = text(prop(p, ["Changes EN", "English Changes", "변경사항 EN", "영문 변경사항"]));
+  const english: EntryTranslation = {
+    ...(titleEn ? { title: titleEn } : {}),
+    ...(summaryEn ? { summary: summaryEn } : {}),
+    ...(categoryEn ? { category: categoryEn } : {}),
+    ...(changesEnRaw ? { changes: parseChanges(changesEnRaw) } : {}),
+  };
+  const hasEnglish = Object.keys(english).length > 0;
   return {
     id: page.id,
     type,
@@ -156,6 +167,7 @@ export function mapPage(page: R): Entry | null {
     order: num(prop(p, ["Order", "순서"])),
     changes: changesRaw ? parseChanges(changesRaw) : undefined,
     remote: true,
+    translations: hasEnglish ? { en: english } : undefined,
   };
 }
 

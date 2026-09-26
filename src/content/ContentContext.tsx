@@ -3,6 +3,7 @@ import type { Entry } from "./types";
 import { SAMPLE_ENTRIES } from "./sample";
 import { TOOLS, toolToEntry } from "./tools";
 import { readCache, resolveEndpoint, syncFromNotion } from "../notion";
+import { localizeEntry, useLang } from "../i18n";
 
 const POLL_MS = 3 * 60 * 1000;
 
@@ -31,6 +32,7 @@ const byDateDesc = (a: Entry, b: Entry) => +new Date(b.date) - +new Date(a.date)
 const byOrder = (a: Entry, b: Entry) => (a.order ?? 999) - (b.order ?? 999) || byDateDesc(a, b);
 
 export function ContentProvider({ children }: { children: ReactNode }) {
+  const { lang } = useLang();
   const endpoint = useMemo(() => resolveEndpoint(), []);
   const cached = useMemo(() => (endpoint ? readCache() : null), [endpoint]);
 
@@ -82,14 +84,16 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, [endpoint, refresh]);
 
   /* ---------------- 모달 & 딥링크 (#post=ID) ---------------- */
-  const openEntry = useCallback((e: Entry) => {
-    setActive(e);
+  const openEntry = useCallback((entry: Entry) => {
+    // Components receive localized entries; keep the source entry in state so
+    // switching back to Korean can always recover the original fields.
+    setActive(entries.find((source) => source.id === entry.id) ?? entry);
     try {
-      history.replaceState(null, "", `#post=${encodeURIComponent(e.id)}`);
+      history.replaceState(null, "", `#post=${encodeURIComponent(entry.id)}`);
     } catch {
       /* noop */
     }
-  }, []);
+  }, [entries]);
 
   const closeEntry = useCallback(() => {
     setActive(null);
@@ -125,15 +129,16 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, [entries]);
 
   const value = useMemo<Ctx>(() => {
-    const notices = entries
-      .filter((e) => e.type === "notice")
+    const localized = entries.map((entry) => localizeEntry(entry, lang));
+    const notices = localized
+      .filter((entry) => entry.type === "notice")
       .sort((a, b) => Number(!!b.pinned) - Number(!!a.pinned) || byDateDesc(a, b));
     return {
-      entries,
+      entries: localized,
       notices,
-      updates: entries.filter((e) => e.type === "update").sort(byDateDesc),
-      guides: entries.filter((e) => e.type === "guide").sort(byOrder),
-      faqs: entries.filter((e) => e.type === "faq").sort(byOrder),
+      updates: localized.filter((entry) => entry.type === "update").sort(byDateDesc),
+      guides: localized.filter((entry) => entry.type === "guide").sort(byOrder),
+      faqs: localized.filter((entry) => entry.type === "faq").sort(byOrder),
       source,
       status,
       syncedAt,
@@ -142,9 +147,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       openEntry,
       openTool,
       closeEntry,
-      active,
+      active: active ? localizeEntry(active, lang) : null,
     };
-  }, [entries, source, status, syncedAt, endpoint, refresh, openEntry, openTool, closeEntry, active]);
+  }, [entries, lang, source, status, syncedAt, endpoint, refresh, openEntry, openTool, closeEntry, active]);
 
   return <ContentCtx.Provider value={value}>{children}</ContentCtx.Provider>;
 }

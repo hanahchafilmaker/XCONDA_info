@@ -1,7 +1,7 @@
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { MessageCircle, Plus } from "lucide-react";
 import { ButtonLink, Container, Reveal, SectionHeading, Serif } from "./ui";
-import { useLang } from "../i18n";
+import { categoryLabel, useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { cn } from "../utils/cn";
 
@@ -44,12 +44,14 @@ function Item({ q, a, open, onToggle }: { q: string; a: string; open: boolean; o
 const ALL = "전체";
 
 export default function FAQ() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { faqs } = useContent();
   const [open, setOpen] = useState<string | null>(null);
   const [cat, setCat] = useState(ALL);
   const cats = useMemo(() => [ALL, ...Array.from(new Set(faqs.map((f) => f.category).filter(Boolean)))], [faqs]);
   const list = cat === ALL ? faqs : faqs.filter((f) => f.category === cat);
+
+  useEffect(() => setCat(ALL), [lang]);
 
   return (
     <section id="faq" className="relative py-20 sm:py-28">
@@ -71,7 +73,7 @@ export default function FAQ() {
                   onClick={() => setCat(c)}
                   className={cn("rounded-full px-3.5 py-1.5 text-sm transition", cat === c ? "bg-white text-ink-950" : "glass text-zinc-300 hover:bg-white/10")}
                 >
-                  {c === ALL ? t("common.all") : c}
+                  {c === ALL ? t("common.all") : categoryLabel(c, lang)}
                 </button>
               ))}
             </Reveal>

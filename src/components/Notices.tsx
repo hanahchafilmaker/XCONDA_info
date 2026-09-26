@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, Pin, Megaphone } from "lucide-react";
 import { Container, Reveal, SectionHeading, Serif } from "./ui";
-import { useLang } from "../i18n";
+import { categoryLabel, useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew } from "../notion";
 import { CategoryBadge, NewBadge } from "./common";
@@ -11,7 +11,7 @@ const PAGE = 6;
 const ALL = "전체";
 
 export default function Notices() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { notices, openEntry, status } = useContent();
   const [cat, setCat] = useState(ALL);
   const [limit, setLimit] = useState(PAGE);
@@ -19,6 +19,11 @@ export default function Notices() {
   const cats = useMemo(() => [ALL, ...Array.from(new Set(notices.map((n) => n.category).filter(Boolean)))], [notices]);
   const list = useMemo(() => (cat === ALL ? notices : notices.filter((n) => n.category === cat)), [notices, cat]);
   const visible = list.slice(0, limit);
+
+  useEffect(() => {
+    setCat(ALL);
+    setLimit(PAGE);
+  }, [lang]);
 
   return (
     <section id="notices" className="relative py-20 sm:py-28">
@@ -47,7 +52,7 @@ export default function Notices() {
                     cat === c ? "bg-white text-ink-950" : "text-zinc-400 hover:text-white"
                   )}
                 >
-                  {c === ALL ? t("common.all") : c}
+                  {c === ALL ? t("common.all") : categoryLabel(c, lang)}
                 </button>
               ))}
             </div>
@@ -91,7 +96,7 @@ export default function Notices() {
                             <Pin className="h-3 w-3" /> {t("notices.pinned")}
                           </span>
                         ) : (
-                          <CategoryBadge>{n.category || t("notices.defaultCategory")}</CategoryBadge>
+                          <CategoryBadge>{n.category ? categoryLabel(n.category, lang) : t("notices.defaultCategory")}</CategoryBadge>
                         )}
                         <span className="text-xs text-zinc-500 md:hidden">{formatDate(n.date)}</span>
                       </span>

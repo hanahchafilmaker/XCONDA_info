@@ -30,6 +30,14 @@ export type Block =
 export type ChangeKind = "New" | "Improved" | "Fixed";
 export type Change = { kind: ChangeKind; text: string };
 
+export type EntryTranslation = {
+  title?: string;
+  summary?: string;
+  category?: string;
+  changes?: Change[];
+  blocks?: Block[];
+};
+
 export type Entry = {
   id: string;
   type: EntryType;
@@ -50,6 +58,15 @@ export type Entry = {
   blocks?: Block[];
   /** 본문을 Notion에서 지연 로딩해야 하는지 */
   remote?: boolean;
+  /** 정적 콘텐츠 또는 Notion의 언어별 보조 필드 */
+  translations?: Partial<Record<"ko" | "en", EntryTranslation>>;
+};
+
+export type ToolTranslation = {
+  tagline: string;
+  desc: string;
+  steps: string[];
+  tips?: string[];
 };
 
 export type Tool = {
@@ -63,4 +80,5 @@ export type Tool = {
   badge?: string;
   steps: string[];
   tips?: string[];
+  translations?: Partial<Record<"ko" | "en", ToolTranslation>>;
 };
