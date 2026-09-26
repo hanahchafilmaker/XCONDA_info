@@ -8,11 +8,17 @@ import { getToolVideo } from "./toolVideos";
 
 export const STUDIO_URL = "https://www.xconda.ai";
 const IMG = `${STUDIO_URL}/assets/img/land`;
+/**
+ * 스튜디오 랜딩에 대표 이미지가 없는 툴은 이 저장소에 함께 배포되는 자체 커버 아트를 사용합니다.
+ * 상대 경로라서 개발 서버(`/dev.html`)와 GitHub Pages(`/XCONDA_info/`) 모두에서 그대로 동작합니다.
+ */
+const LOCAL_IMG = "assets/img/tools";
+const FLOW = "https://media.toolgov.com/media/land";
 export const FLOW_GIFS = {
-  models: "",
-  tools: "",
-  storyboard: "",
-  continuity: "",
+  models: `${FLOW}/flow-01.gif`,
+  tools: `${FLOW}/flow-02.gif`,
+  storyboard: `${FLOW}/flow-03.gif`,
+  continuity: `${FLOW}/flow-04.gif`,
 };
 
 const BASE_TOOLS: Tool[] = [
@@ -24,6 +30,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "사진 1장으로 360° 공간 생성 및 배경·공간 고정",
     desc: "사진 한 장으로 공간 한 면을 만들고 여섯 면(큐브맵)을 생성해 360° 배경을 고정합니다. 앙각·부감·동선이 바뀌어도 컷마다 방이 바뀌지 않는 공간 일관성을 제공합니다.",
     href: `${STUDIO_URL}/studio/turn`,
+    image: `${LOCAL_IMG}/tool-turn.jpg`,
     badge: "Core",
     steps: [
       "Reference 단계에서 Front / Left / Right / Back 이미지를 넣거나 Description만 작성합니다.",
@@ -44,6 +51,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "시나리오 기반 9컷 스토리보드 생성 & 원하는 컷만 선택 재생성",
     desc: "시나리오를 입력해 3×3 그리드의 9컷 시네마틱 스토리보드를 한 번에 생성하고, 마음에 들지 않는 컷만 골라 개별 재생성(Selective Regeneration)합니다.",
     href: `${STUDIO_URL}/studio/directors-cut`,
+    image: `${LOCAL_IMG}/tool-flexboard.jpg`,
     badge: "Core",
     steps: [
       "Standard 또는 Cinema Pro 엔진을 선택하고 시나리오를 작성합니다.",
@@ -64,6 +72,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "공간 내 인물·카메라 동선 및 공간 연출 블로킹",
     desc: "고정된 360° 가상 공간 위에 인물의 위치, 시선 방향, 카메라 무브먼트 동선을 직관적으로 배치해 장면 간 시각적 연속성을 설계합니다.",
     href: `${STUDIO_URL}`,
+    image: `${LOCAL_IMG}/tool-blocking-board.jpg`,
     badge: "Core",
     steps: [
       "Turn에서 고정된 360° 공간 또는 배경 이미지를 불러옵니다.",
@@ -83,6 +92,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "엔진·연출·아트 스타일로 완성하는 9컷 스토리보드",
     desc: "Standard 또는 Cinema Pro 엔진과 시간·공간, 디렉터 스타일, 아트 스타일을 설정해 하나의 이야기로 이어지는 3×3 스토리보드를 만듭니다.",
     href: `${STUDIO_URL}/studio/directors-cut`,
+    image: `${LOCAL_IMG}/tool-directors-cut.jpg`,
     badge: "Most Popular",
     steps: [
       "초안용 Standard 또는 최종 결과용 Cinema Pro 엔진을 선택합니다.",
@@ -104,6 +114,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "포커스 모드·캐릭터 시트·카메라로 만드는 일관된 9컷",
     desc: "시나리오의 Role Name으로 얼굴·의상을 연결하고, 포커스 모드와 카메라·렌즈를 조합해 캐릭터와 공간의 연속성을 유지하는 시네마틱 컷을 만듭니다.",
     href: STUDIO_URL,
+    image: `${LOCAL_IMG}/tool-art-director-pro.jpg`,
     badge: "Core",
     steps: [
       "Dialogue, Action, Atmosphere 중 장면에 맞는 포커스 모드를 선택합니다.",
@@ -229,6 +240,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "인물 + 배경 → 시네마틱 합성",
     desc: "인물 사진과 배경 이미지를 올리면 AI가 자연스럽게 합성해 시네마틱한 룩을 만듭니다.",
     href: `${STUDIO_URL}/studio/background-blend`,
+    image: `${LOCAL_IMG}/tool-background-blend.jpg`,
     steps: ["인물 사진을 업로드합니다.", "배경 이미지를 업로드합니다.", "생성하면 조명과 톤이 맞춰진 합성 이미지가 만들어집니다."],
   },
 
@@ -267,6 +279,7 @@ const BASE_TOOLS: Tool[] = [
     tagline: "Kling 3.0 등 영상 모델",
     desc: "완성된 스토리보드 컷이나 프롬프트로 영상을 생성합니다.",
     href: `${STUDIO_URL}/studio/video`,
+    image: `${LOCAL_IMG}/tool-video.jpg`,
     steps: ["영상 모델을 선택합니다.", "프롬프트를 입력하거나 시작 이미지를 업로드합니다.", "길이·비율 등 옵션을 설정하고 생성합니다."],
   },
   {
