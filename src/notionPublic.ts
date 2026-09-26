@@ -10,6 +10,7 @@
 
 import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { TYPE_MAP, parseChanges } from "./notion";
+import { loadSnapshot, snapshotMatches, type NotionSnapshot } from "./notionSnapshot";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -33,8 +34,20 @@ function isRecord(value: unknown): value is R {
  * available and includes the same collection rows in each `collection_view`
  * block. The fallback below decodes that legacy record-map response.
  */
+/** 공개 프록시가 응답하지 않을 때 무한정 기다리지 않도록 타임아웃을 겁니다. */
+const LIVE_TIMEOUT_MS = 8000;
+
+function withTimeout(signal?: AbortSignal, ms = LIVE_TIMEOUT_MS): AbortSignal | undefined {
+  try {
+    const timeout = AbortSignal.timeout(ms);
+    return signal ? AbortSignal.any([signal, timeout]) : timeout;
+  } catch {
+    return signal; // 구형 브라우저
+  }
+}
+
 async function fetchJson(url: string, signal?: AbortSignal): Promise<unknown> {
-  const res = await fetch(url, { signal, headers: { Accept: "application/json" } });
+  const res = await fetch(url, { signal: withTimeout(signal), headers: { Accept: "application/json" } });
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     const message = isRecord(data) && typeof data.error === "string" ? `: ${data.error}` : "";
@@ -221,35 +234,64 @@ function rowsToEntries(data: R[]): Entry[] {
   return data.map((row) => mapRow(row, hasPublishedCol)).filter((entry): entry is Entry => entry !== null);
 }
 
-export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): Promise<Entry[]> {
-  let tableFailure: unknown;
+/** 무료 공개 프록시(splitbee)에서 표 데이터를 읽습니다. `/table` → `/page` 순서로 시도 */
+async function fetchLiveRows(pageId: string, signal?: AbortSignal): Promise<R[]> {
+  const failures: string[] = [];
 
   try {
     const table = await fetchJson(`${API}/table/${pageId}`, signal);
-    if (!Array.isArray(table)) throw new Error("응답에 데이터베이스 행이 없습니다");
-    return rowsToEntries(table.filter(isRecord));
+    if (Array.isArray(table)) return table.filter(isRecord);
+    failures.push("table: 응답에 데이터베이스 행이 없습니다");
   } catch (error) {
-    // An explicit cancellation must never turn into a second request or a
-    // misleading configuration error.
+    // 사용자가 직접 취소한 경우에는 두 번째 요청을 보내지 않습니다.
     if (signal?.aborted) throw error;
-    tableFailure = error;
+    failures.push(`table: ${describeError(error)}`);
   }
 
   try {
-    // `/table` has an upstream outage, but the same public service's `/page`
-    // endpoint still returns inline database data as a legacy record map.
+    // `/table` 장애 시, 같은 서비스의 `/page` 응답(레거시 레코드맵)에서 표를 찾습니다.
     const page = await fetchJson(`${API}/page/${pageId}`, signal);
     const rows = rowsFromPageRecordMap(page);
-    if (rows === null) throw new Error("페이지 안에서 표(데이터베이스)를 찾지 못했습니다");
-    return rowsToEntries(rows);
-  } catch (pageFailure) {
-    if (signal?.aborted) throw pageFailure;
-    throw new Error(
-      "공개 Notion 동기화에 실패했습니다. " +
-        `공개 API의 table 요청(${describeError(tableFailure)}) 및 page 대체 요청(${describeError(pageFailure)})을 모두 완료하지 못했습니다. ` +
-        "노션 페이지의 웹 게시 상태를 확인하거나, 안정적인 운영을 위해 NOTION_SETUP.md의 Cloudflare Worker 프록시를 연결해 주세요."
-    );
+    if (rows) return rows;
+    failures.push("page: 페이지 안에서 표(데이터베이스)를 찾지 못했습니다");
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    failures.push(`page: ${describeError(error)}`);
   }
+
+  throw new Error(failures.join(" · "));
+}
+
+/** 이 사이트와 같은 폴더의 정적 스냅샷 중, 지금 보는 페이지의 것만 사용 */
+async function matchingSnapshot(pageId: string, force = false): Promise<NotionSnapshot | null> {
+  const snapshot = await loadSnapshot(force);
+  return snapshot && snapshotMatches(snapshot, pageId) ? snapshot : null;
+}
+
+export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): Promise<Entry[]> {
+  // 공개 프록시(실시간)와 정적 스냅샷(안정)을 동시에 시도해 더 나은 쪽을 씁니다.
+  const [live, snapshot] = await Promise.all([
+    fetchLiveRows(pageId, signal).then(
+      (rows) => ({ ok: true as const, rows }),
+      (error: unknown) => ({ ok: false as const, error })
+    ),
+    matchingSnapshot(pageId, true),
+  ]);
+
+  if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+
+  if (live.ok) {
+    const entries = rowsToEntries(live.rows);
+    // 프록시가 빈 표를 돌려준 경우(장애·권한 변경)에는 스냅샷을 씁니다.
+    if (entries.length || !snapshot?.rows.length) return entries;
+  }
+  if (snapshot) return rowsToEntries(snapshot.rows);
+
+  throw new Error(
+    `공개 Notion 동기화에 실패했습니다 (${describeError(live.ok ? "빈 응답" : live.error)}). ` +
+      "잠시 후 자동으로 다시 시도합니다. 계속 실패하면 NOTION_SETUP.md 의 “Notion 동기화 워크플로”(notion-content.json) 또는 " +
+      "Cloudflare Worker 프록시를 연결해 주세요."
+  );
 }
 
 /* ------------------------------ 본문 블록 ------------------------------ */
@@ -376,17 +418,40 @@ function convertLegacy(ids: string[], map: Map<string, LegacyBlock>, depth = 0):
   return out;
 }
 
-export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
-  const res = await fetch(`${API}/page/${pageId}`, { headers: { Accept: "application/json" } });
-  if (!res.ok) throw new Error(`공개 Notion 페이지 본문을 불러오지 못했습니다 (HTTP ${res.status})`);
-  const data: R = await res.json();
-
+/** 레거시 레코드맵(`{ id: { value } }`) → 상세 모달용 블록 */
+export function parseLegacyRecordMap(data: R, pageId: string): Block[] {
   const map = new Map<string, LegacyBlock>();
   for (const [id, entry] of Object.entries<R>(data ?? {})) {
     const v: R | undefined = entry?.value?.value ?? entry?.value; // 응답 형태 2종 모두 지원
     if (v?.id && v?.type) map.set(id, v as LegacyBlock);
   }
-  const rootId = dashed(extractPageId(pageId) ?? pageId.replace(/-/g, ""));
-  const root = map.get(rootId) ?? map.get(pageId);
+  const plainId = extractPageId(pageId) ?? pageId.replace(/-/g, "");
+  const root = map.get(dashed(plainId)) ?? map.get(pageId) ?? map.get(plainId);
   return root?.content?.length ? convertLegacy(root.content, map) : [];
+}
+
+function snapshotPage(snapshot: NotionSnapshot | null, pageId: string): R | undefined {
+  if (!snapshot?.pages) return undefined;
+  const wanted = (extractPageId(pageId) ?? pageId).replace(/-/g, "").toLowerCase();
+  const hit = Object.keys(snapshot.pages).find((key) => key.replace(/-/g, "").toLowerCase() === wanted);
+  return hit ? snapshot.pages[hit] : undefined;
+}
+
+export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
+  try {
+    const res = await fetch(`${API}/page/${pageId}`, {
+      signal: withTimeout(),
+      headers: { Accept: "application/json" },
+    });
+    if (res.ok) {
+      const blocks = parseLegacyRecordMap((await res.json()) as R, pageId);
+      if (blocks.length) return blocks;
+    }
+  } catch {
+    /* 공개 프록시 장애 → 아래 스냅샷으로 진행 */
+  }
+
+  // 정적 스냅샷에 본문이 담겨 있으면 그대로 사용합니다. (같은 출처라 항상 성공)
+  const page = snapshotPage(await loadSnapshot(), pageId);
+  return page ? parseLegacyRecordMap(page, pageId) : [];
 }
