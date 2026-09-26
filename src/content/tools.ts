@@ -4,6 +4,7 @@ import { translate } from "../i18n/dict";
 import { localizeEntry, localizeTool } from "../i18n/content";
 import { TOOL_EN } from "./tools.en";
 import { getToolGuide } from "./toolGuides";
+import { getToolVideo } from "./toolVideos";
 
 export const STUDIO_URL = "https://www.xconda.ai";
 const IMG = `${STUDIO_URL}/assets/img/land`;
@@ -263,16 +264,26 @@ export const TOOL_GROUPS = ["전체", "핵심 스튜디오", "스토리보드", 
 
 function toolBlocks(tool: Tool, lang: Lang): Block[] {
   const manual = getToolGuide(tool.slug, lang);
-  if (manual) return manual;
-
-  const blocks: Block[] = [
-    { type: "p", text: tool.desc },
-    { type: "h2", text: translate("toolentry.howTo", lang) },
-    { type: "ol", items: tool.steps },
-  ];
-  if (tool.tips?.length) {
+  const blocks: Block[] = manual
+    ? [...manual]
+    : [
+        { type: "p", text: tool.desc },
+        { type: "h2", text: translate("toolentry.howTo", lang) },
+        { type: "ol", items: tool.steps },
+      ];
+  if (!manual && tool.tips?.length) {
     blocks.push({ type: "h2", text: translate("toolentry.tips", lang) });
     tool.tips.forEach((tip) => blocks.push({ type: "callout", icon: "💡", text: tip }));
+  }
+
+  /* 공식 영상 가이드가 있으면 맨 위에 임베드합니다. */
+  const video = getToolVideo(tool.slug, lang);
+  if (video) {
+    blocks.unshift({
+      type: "video",
+      src: video,
+      caption: lang === "ko" ? "공식 영상 가이드" : "Official video guide",
+    });
   }
   return blocks;
 }
