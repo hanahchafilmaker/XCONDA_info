@@ -6,10 +6,10 @@ import { useLang } from "../i18n";
 
 const LINKS = [
   { id: "notices", label: { ko: "공지사항", en: "Notices" } },
+  { id: "news", label: { ko: "뉴스", en: "News" } },
   { id: "guides", label: { ko: "툴 사용법", en: "Guides" } },
-  { id: "updates", label: { ko: "업데이트", en: "Updates" } },
-  { id: "credits", label: { ko: "크레딧", en: "Credits" } },
-  { id: "faq", label: { ko: "FAQ", en: "FAQ" } },
+  { id: "blog", label: { ko: "블로그", en: "Blog" } },
+  { id: "faq", label: { ko: "Q&A", en: "Q&A" } },
 ];
 
 function LangToggle({ className, full }: { className?: string; full?: boolean }) {

@@ -12,8 +12,9 @@ type Status = "loading" | "ready" | "syncing" | "error";
 type Ctx = {
   entries: Entry[];
   notices: Entry[];
-  updates: Entry[];
+  news: Entry[];
   guides: Entry[];
+  blogs: Entry[];
   faqs: Entry[];
   source: "notion" | "sample";
   status: Status;
@@ -60,7 +61,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       })
       .catch((err) => {
         if (err?.name === "AbortError") return;
-        console.warn("[XCONDA Guide] Notion 동기화 실패:", err);
+        console.warn("[XCONDA허브] Notion 동기화 실패:", err);
         setEntries((prev) => (prev.length ? prev : SAMPLE_ENTRIES));
         setSource((s) => (cached ? s : "sample"));
         setStatus("error");
@@ -138,8 +139,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     return {
       entries: localized,
       notices,
-      updates: localized.filter((entry) => entry.type === "update").sort(byDateDesc),
+      news: localized.filter((entry) => entry.type === "news").sort(byDateDesc),
       guides: localized.filter((entry) => entry.type === "guide").sort(byOrder),
+      blogs: localized.filter((entry) => entry.type === "blog").sort(byDateDesc),
       faqs: localized.filter((entry) => entry.type === "faq").sort(byOrder),
       source,
       status,

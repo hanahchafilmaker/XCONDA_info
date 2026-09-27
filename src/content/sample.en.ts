@@ -51,57 +51,92 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
     ],
   },
   "notice-welcome": {
-    title: "Introducing the XCONDA Guide Center",
-    summary: "Find notices, release notes, and per-tool instructions together in one guide center.",
+    title: "Introducing XCONDA Hub",
+    summary: "Find notices, news, per-tool guides, blog posts and Q&A together in one hub.",
     category: "Notice",
     blocks: [
-      { type: "p", text: "All Guide Center content is synced with Notion so you can get the latest XCONDA news as quickly as possible." },
+      { type: "p", text: "All XCONDA Hub content is synced with Notion so you can get the latest XCONDA news as quickly as possible." },
     ],
   },
 
-  "update-240": {
-    title: "Turn: 360 Space Cube Map & Mask Editing Update",
-    summary: "Lock 360° background space with a 6-faced cube map and remove or swap objects with mask tools.",
-    changes: [
-      { kind: "New", text: "One photo → 6-faced cube map background lock (preserves spatial consistency across cuts)" },
-      { kind: "New", text: "Masked area + empty prompt → automatic object removal" },
-      { kind: "Improved", text: "Higher-quality 3D viewpoint Freeze Frame and Production rendering" },
+  "news-240": {
+    title: "[YouTube] Turn: 360 space cube map & mask editing update",
+    summary: "A new walkthrough shows how to lock space with a 6-faced cube map from one photo and add or remove objects with mask tools.",
+    category: "YouTube",
+    blocks: [
+      { type: "p", text: "The official XCONDA YouTube channel now has a six-minute walkthrough of the Turn 360 space-locking workflow, from cube map creation to mask editing." },
+      { type: "callout", icon: "🎬", text: "Put a video or post URL into the Link property in Notion and it becomes the button in the detail modal." },
     ],
   },
-  "update-230": {
-    title: "FlexBoard: Selective Frame Regeneration",
-    summary: "Selectively regenerate individual cuts on the 9-cut grid without rebuilding the entire storyboard.",
-    changes: [
-      { kind: "New", text: "Per-frame prompt editing and unlimited individual regeneration" },
-      { kind: "New", text: "Claude skill (xconda-new-prompt) & Seedance 2.5 integration" },
-      { kind: "Fixed", text: "Enhanced narrative consistency across the 9-cut grid" },
+  "news-230": {
+    title: "[Instagram] FlexBoard selective frame regeneration reel",
+    summary: "A short reel shows regenerating only the cuts you dislike on the 9-cut grid.",
+    category: "Instagram",
+    blocks: [
+      { type: "p", text: "This Instagram reel demonstrates FlexBoard selective regeneration — fix a single cut without rebuilding the whole board." },
     ],
   },
-  "update-220": {
-    title: "Continuity memory in Art Director Pro",
+  "news-220": {
+    title: "[X] Continuity memory ships in Art Director Pro",
     summary: "Character emotions, injuries, prop states, and previous prompts are remembered across every scene.",
-    changes: [
-      { kind: "New", text: "Continuity memory for emotions, injuries, and props" },
-      { kind: "Improved", text: "More accurate Detect Face results" },
-      { kind: "Improved", text: "Previous-cut tone is retained during regeneration" },
+    category: "X",
+    blocks: [
+      { type: "p", text: "First announced on X: continuity memory removes the reset problem when cuts change." },
     ],
   },
-  "update-210": {
-    title: "Three new tools: CineGrade AI, ClothSwap, and YouTube Ref",
+  "news-210": {
+    title: "[LinkedIn] Three new tools: CineGrade AI, ClothSwap, and YouTube Ref",
     summary: "Transfer color grades, replace wardrobe, and build a nine-scene storyboard from a YouTube link.",
-    changes: [
-      { kind: "New", text: "CineGrade AI — transfer the color grade of a film still" },
-      { kind: "New", text: "ClothSwap — replace wardrobe with a brush and reference image" },
-      { kind: "New", text: "YouTube Ref — create a nine-scene storyboard from a video link" },
+    category: "LinkedIn",
+    blocks: [
+      { type: "p", text: "Shared with partners and production houses on LinkedIn." },
     ],
   },
-  "update-200": {
-    title: "All-in-one model workspace",
+  "news-200": {
+    title: "[Notion] All-in-one model workspace release notes",
     summary: "Use every AI model in one workspace, with consistent detailed controls as you switch models.",
-    changes: [
-      { kind: "New", text: "Support for Kling 3.0 video and Grok Imagine image models" },
-      { kind: "Improved", text: "Parameters persist when switching models" },
-      { kind: "New", text: "Upscaler now supports 6K" },
+    category: "Notion",
+    blocks: [
+      { type: "p", text: "These are the v2.0.0 release notes recorded in the XCONDA_NEWs Notion database — the same source behind this page." },
+    ],
+  },
+
+  "blog-pipeline": {
+    title: "Turn → FlexBoard → Blocking Board → Seedance 2.5: the order that produces nine cuts",
+    summary: "The official XCONDA production pipeline, step by step: lock space, build cuts, then render video.",
+    category: "Workflow",
+    blocks: [
+      { type: "h2", text: "1. Lock space (Turn)" },
+      { type: "p", text: "Create a 6-faced cube map from one photo and freeze the angle you want. Locking space first keeps the background stable across cuts." },
+      { type: "h2", text: "2. Generate cuts (FlexBoard)" },
+      { type: "ol", items: ["Write the scenario", "Pick director and art styles", "Generate all nine cuts", "Regenerate only the cuts you dislike"] },
+      { type: "h2", text: "3. Block the movement (Blocking Board)" },
+      { type: "p", text: "Place characters and camera moves to design how each cut connects." },
+      { type: "h2", text: "4. Render video (Seedance 2.5 · Kling)" },
+      { type: "p", text: "Pass the finished board to a video model for the final cuts." },
+      { type: "callout", icon: "💡", text: "Following the order reduces regenerations — and saves credits." },
+    ],
+  },
+  "blog-continuity": {
+    title: "Building a character sheet that keeps faces consistent across cuts",
+    summary: "Practical tips for character consistency using Detect Face and the name-linking rule in Art Director Pro.",
+    category: "Tutorial",
+    blocks: [
+      { type: "p", text: "Most face drift comes from a missing character name in the scenario or no character sheet at all." },
+      { type: "h3", text: "Order" },
+      { type: "ol", items: ["Name the character in the scenario", "Upload a face photo", "Detect Face → create a character sheet", "Generate or regenerate"] },
+      { type: "callout", icon: "⚠️", text: "Generation cannot begin until you create a character sheet." },
+    ],
+  },
+  "blog-interview": {
+    title: "Notes from the KBS Production validation — why causality-driven AI worked on set",
+    summary: "What held up during real production validation, and what still needed work.",
+    category: "Insight",
+    blocks: [
+      { type: "p", text: "Validation covered continuity across cuts (emotion, props, wardrobe), face consistency, and preserved context after feedback." },
+      { type: "quote", text: "Write the scenario so each event's cause and effect is clear, and the cuts flow naturally." },
+      { type: "h3", text: "Open issues" },
+      { type: "ul", items: ["Token splitting for long scenarios", "Retaining previous-cut tone during regeneration"] },
     ],
   },
 

@@ -1,9 +1,9 @@
 /**
- * XCONDA 가이드 센터 · Notion 프록시 (Cloudflare Worker)
+ * XCONDA허브 · Notion 프록시 (Cloudflare Worker)
  * ---------------------------------------------------------------
  * 환경 변수 (wrangler secret / Dashboard → Settings → Variables)
  *   NOTION_TOKEN   : Notion Internal Integration Secret (secret_xxx / ntn_xxx)
- *   NOTION_DB_ID   : 가이드 센터 데이터베이스 ID (32자리)
+ *   NOTION_DB_ID   : XCONDA허브 데이터베이스 ID (32자리)
  *   ALLOW_ORIGIN   : (선택) 허용할 사이트 주소. 기본 "*"
  *
  * 라우트

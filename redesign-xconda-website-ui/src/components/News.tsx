@@ -189,7 +189,7 @@ export default function News() {
 
       <div className="shell">
         <Reveal>
-          <SectionLabel index="03" title="AI NEWS" kicker="주 2회 브리핑" />
+          <SectionLabel index="02" title="NEWS" kicker="주 2회 브리핑" />
           <SectionHeading
             sub={
               <>

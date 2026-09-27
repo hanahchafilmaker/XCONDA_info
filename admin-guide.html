@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XCONDA 가이드 센터 · 콘텐츠 관리자 가이드</title>
-<meta name="description" content="Notion에서 XCONDA 가이드 센터의 글 작성, 게시, 긴급 공지, 업데이트 변경사항을 운영하는 관리자 실무 가이드">
+<title>XCONDA허브 · 콘텐츠 관리자 가이드</title>
+<meta name="description" content="Notion에서 XCONDA허브의 글 작성, 게시, 긴급 공지, 뉴스·블로그 콘텐츠를 운영하는 관리자 실무 가이드">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -282,7 +282,7 @@ pre code{color:#d5d9e2}
           </li>
           <li>
             <h3>Title · Type · Date를 먼저 입력합니다</h3>
-            <p>세 항목은 모든 콘텐츠의 필수값입니다. <span class="mono">Type</span>은 <b class="strong">공지 / 업데이트 / 가이드 / FAQ</b> 중 정확히 하나를 선택하고, <span class="mono">Date</span>에는 실제 게시 기준일을 입력합니다.</p>
+            <p>세 항목은 모든 콘텐츠의 필수값입니다. <span class="mono">Type</span>은 <b class="strong">공지 / 뉴스 / 가이드 / 블로그 / FAQ</b> 중 정확히 하나를 선택하고, <span class="mono">Date</span>에는 실제 게시 기준일을 입력합니다.</p>
             <ul>
               <li><b class="strong">Title:</b> 목록과 상세 모달에 표시되는 제목. 핵심 내용을 앞쪽에 작성</li>
               <li><b class="strong">Type:</b> 글이 노출될 사이트 영역을 결정</li>
@@ -344,7 +344,7 @@ pre code{color:#d5d9e2}
             <thead><tr><th>필드</th><th>입력 기준</th><th>사이트에서 하는 일</th><th>운영 예시</th></tr></thead>
             <tbody>
               <tr><td><b>Title</b> <span class="pill required">필수</span></td><td>짧고 구체적인 한 문장. 중요한 단어를 앞쪽에 배치</td><td>목록 제목, 검색 결과, 상세 모달 제목</td><td>Turn 스튜디오 360도 공간 고정 기능 출시</td></tr>
-              <tr><td><b>Type</b> <span class="pill required">필수</span></td><td><code>공지</code> · <code>업데이트</code> · <code>가이드</code> · <code>FAQ</code> 중 선택</td><td>노출되는 사이트 섹션 결정</td><td><code>업데이트</code></td></tr>
+              <tr><td><b>Type</b> <span class="pill required">필수</span></td><td><code>공지</code> · <code>뉴스</code> · <code>가이드</code> · <code>블로그</code> · <code>FAQ</code> 중 선택</td><td>노출되는 사이트 섹션 결정 (순서: 공지사항 → 뉴스 → 툴 사용법 → 블로그 → Q&amp;A)</td><td><code>뉴스</code></td></tr>
               <tr><td><b>Date</b> <span class="pill required">필수</span></td><td>실제 게시일 또는 업데이트 공개일</td><td>날짜 표시, 공지·업데이트 최신순 정렬</td><td><code>2026-09-27</code></td></tr>
               <tr><td><b>Published</b> <span class="pill required">필수</span></td><td>검수 완료 전 OFF, 공개 승인 시 ON</td><td>체크된 글만 사이트에 노출</td><td>초안 ☐ → 게시 ☑</td></tr>
               <tr><td><b>Summary</b></td><td>핵심만 1~2문장. FAQ에서는 짧은 답변</td><td>카드 요약과 상세 제목 아래 설명</td><td>공간 기준점을 유지하며 카메라를 회전합니다.</td></tr>
@@ -492,7 +492,7 @@ pre code{color:#d5d9e2}
         <div class="section-head">
           <div class="kicker">Update Changelog</div>
           <h2>Changes 필드 작성 규칙</h2>
-          <p><span class="mono">Type=업데이트</span>인 글에서 사용합니다. 한 줄이 사이트의 변경사항 한 항목이 되며, 줄 맨 앞 태그에 따라 색상과 종류가 정해집니다.</p>
+          <p><span class="mono">Type=뉴스</span>(릴리스 노트)인 글에서 사용합니다. 기존 <span class="mono">업데이트</span> 값도 뉴스로 인식됩니다. 한 줄이 사이트의 변경사항 한 항목이 되며, 줄 맨 앞 태그에 따라 색상과 종류가 정해집니다.</p>
         </div>
         <div class="grid3" style="margin-bottom:14px">
           <div class="card"><span class="pill new">New · 신규</span><h3 style="margin-top:10px">새 기능·새 도구</h3><p class="small" style="margin:6px 0 0">사용자가 전에 할 수 없던 기능, 새로운 스튜디오나 옵션 추가.</p></div>
@@ -595,7 +595,7 @@ pre code{color:#d5d9e2}
             <thead><tr><th>증상</th><th>먼저 확인할 것</th><th>해결 방법</th></tr></thead>
             <tbody>
               <tr><td><b>10분이 지나도 글이 안 보임</b></td><td>Published, Title, Type, Date / Actions 실행 상태</td><td>필수값을 다시 확인하고 Notion 동기화를 수동 실행. 빨간 X면 오류 로그 확인</td></tr>
-              <tr><td><b>다른 섹션에 나타남</b></td><td>Type 값</td><td>Type을 공지·업데이트·가이드·FAQ 중 올바른 값으로 변경 후 재동기화</td></tr>
+              <tr><td><b>다른 섹션에 나타남</b></td><td>Type 값</td><td>Type을 공지·뉴스·가이드·블로그·FAQ 중 올바른 값으로 변경 후 재동기화</td></tr>
               <tr><td><b>긴급 공지가 최상단이 아님</b></td><td>Type=공지, Pinned 체크, Date</td><td>Pinned를 체크하고 날짜를 확인. 기존 Pinned 공지가 여러 개인지도 확인</td></tr>
               <tr><td><b>제목이 강조되지 않음</b></td><td>Important 체크</td><td>Important를 체크 후 재동기화. Pinned와 Important는 서로 다른 필드</td></tr>
               <tr><td><b>Changes가 모두 ‘개선’으로 표시됨</b></td><td>각 줄 맨 앞 태그</td><td>[New]/[Improved]/[Fixed] 또는 [신규]/[개선]/[수정]으로 정확히 수정</td></tr>

@@ -1,7 +1,7 @@
 /* =============================================================================
- * XCONDA 가이드 센터  ⇄  Notion 연동 어댑터
+ * XCONDA허브  ⇄  Notion 연동 어댑터
  * -----------------------------------------------------------------------------
- * ▸ Notion 데이터베이스 1개로 공지 · 업데이트 · 가이드 · FAQ 를 모두 관리합니다.
+ * ▸ Notion 데이터베이스 1개로 공지 · 뉴스 · 가이드 · 블로그 · FAQ 를 모두 관리합니다.
  * ▸ 브라우저에서 api.notion.com 을 직접 호출하면 CORS 차단 + 토큰 노출 문제가
  *   있으므로, 프록시(Cloudflare Worker 등)를 경유합니다.
  *     └ 예제: /notion-worker/worker.js , 설정 가이드: /NOTION_SETUP.md
@@ -133,9 +133,12 @@ function fileUrl(p?: R): string {
 
 export const TYPE_MAP: Record<string, EntryType> = {
   공지: "notice", 공지사항: "notice", notice: "notice", announcement: "notice",
-  업데이트: "update", 릴리스: "update", update: "update", release: "update", changelog: "update",
-  가이드: "guide", 사용법: "guide", guide: "guide", tutorial: "guide", "how-to": "guide",
-  faq: "faq", 질문: "faq", "자주 묻는 질문": "faq",
+  // 뉴스 = 타 SNS/외부 채널 소식 + 기존 업데이트(릴리스 노트)를 통합한 섹션
+  뉴스: "news", news: "news", sns: "news", 소식: "news",
+  업데이트: "news", 릴리스: "news", update: "news", release: "news", changelog: "news",
+  가이드: "guide", 사용법: "guide", 툴사용법: "guide", guide: "guide", tutorial: "guide", "how-to": "guide",
+  블로그: "blog", blog: "blog", 포스트: "blog", post: "blog", 아티클: "blog", article: "blog",
+  faq: "faq", "q&a": "faq", qa: "faq", 질문: "faq", "자주 묻는 질문": "faq",
 };
 
 export function parseChanges(raw: string): Change[] {
