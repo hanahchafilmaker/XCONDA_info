@@ -314,14 +314,27 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
   const schema = isRecord(collection.schema) ? collection.schema : {};
   const requirePublished = hasPublishedColumn(schema);
 
+  console.log(`[Notion Sync] 데이터베이스 컬럼: ${Object.values(schema).map((c) => `${c?.name}(${c?.type})`).join(", ")}`);
+  console.log(`[Notion Sync] 조회된 전체 행 수: ${blockIds.length}`);
+
   const rows = [];
   for (const id of blockIds) {
     const block = unwrap(recordMap?.block?.[id]);
     if (!block || block.alive === false) continue;
     const row = rowToObject(block, schema);
     if (!row.id) continue;
-    if (requirePublished && !isPublished(row)) continue;
+    const title = row.Title ?? row.title ?? row["제목"] ?? "(제목 없음)";
+    const published = isPublished(row);
+    console.log(`[Notion Sync] 행 확인: "${title}" | Type=${row.Type ?? "없음"} | Published=${row.Published ?? "없음"} (isPublished=${published})`);
+    if (requirePublished && !published) {
+      console.log(`  └ [미공개 제외] "${title}" 은(는) Published 가 체크되지 않아 스냅샷에서 제외되었습니다.`);
+      continue;
+    }
     rows.push(row);
+  }
+
+  if (rows.length === 0 && blockIds.length > 0) {
+    console.warn(`⚠️ [Notion Sync 경고] ${blockIds.length}개의 행이 있지만 Published 조건으로 인해 0개가 포함되었습니다.`);
   }
 
   // 각 글의 본문 블록(상세 모달용)까지 미리 담아 둡니다.
