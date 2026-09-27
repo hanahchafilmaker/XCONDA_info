@@ -255,8 +255,8 @@ export const DICT: Dict = {
   "v.lang.toggleAria": { ko: "언어 변경", en: "Change language" },
 
   "v.hero.badge": { ko: "XCONDA 공식 가이드 센터", en: "XCONDA Official Guide Center" },
-  "v.hero.lead": { ko: "공지를 읽고, 툴을 익히고,", en: "Read the notices, master the tools," },
-  "v.hero.accent": { ko: "다음 트렌드를 먼저 잡는다.", en: "and stay ahead of what’s next." },
+  "v.hero.lead": { ko: "빠른 공지, 쉬운 툴 가이드,", en: "Fast notices, easy tool guides," },
+  "v.hero.accent": { ko: "핵심 업데이트로 한발 앞서가세요.", en: "stay ahead with key updates." },
   "v.hero.desc": {
     ko: "XCONDA의 모든 업데이트 소식과 툴별 사용법, 자주 묻는 질문을 한 곳에 모았습니다. 검색으로 시간을 쓰지 말고, 이 페이지에서 답을 찾으세요.",
     en: "Every XCONDA update, per-tool walkthrough, and common question in one place. Stop searching — the answer is on this page.",
@@ -276,8 +276,8 @@ export const DICT: Dict = {
 
   "v.notices.kicker": { ko: "매주 업데이트", en: "Updated weekly" },
   "v.notices.lead": { ko: "공지사항 —", en: "Notices —" },
-  "v.notices.accent": { ko: "먼저 알아야", en: "know these first" },
-  "v.notices.accentTail": { ko: "바쁘지 않습니다.", en: "before you get busy." },
+  "v.notices.accent": { ko: "시행착오를 줄이는", en: "the fastest intel" },
+  "v.notices.accentTail": { ko: "가장 빠른 정보", en: "with less trial and error." },
   "v.notices.subA": { ko: "서비스 변경, 점검 일정, 정책 개정은 이 페이지 하나로", en: "Service changes, maintenance windows and policy revisions — all on" },
   "v.notices.subB": { ko: "확인하세요. 고정 공지는 항상 상단에 유지됩니다.", en: "one page. Pinned notices always stay on top." },
   "v.notices.subStrong": { ko: "이 페이지 하나", en: "this one page" },
@@ -290,8 +290,8 @@ export const DICT: Dict = {
 
   "v.guides.kicker": { ko: "개 툴", en: "tools" },
   "v.guides.lead": { ko: "툴 사용법 —", en: "Tool guides —" },
-  "v.guides.accent": { ko: "단계별로", en: "step by step" },
-  "v.guides.accentTail": { ko: "끊지 않고.", en: "without the guesswork." },
+  "v.guides.accent": { ko: "흐름이 끊기지 않는", en: "uninterrupted flow," },
+  "v.guides.accentTail": { ko: "직관적 매뉴얼", en: "an intuitive manual." },
   "v.guides.subA": { ko: "단계별로, 툴별로. 어디서 막혔는지만 찾아 읽으세요. 모든 가이드에는", en: "By step, by tool — read the exact place you got stuck. Every guide includes" },
   "v.guides.subB": { ko: "실제로 통하는 프롬프트와 순서가 들어 있습니다.", en: "the prompt and sequence that actually works." },
   "v.guides.subStrong": { ko: "실제로 통하는 프롬프트 예시", en: "a working prompt example" },
@@ -313,8 +313,8 @@ export const DICT: Dict = {
 
   "v.updates.kicker": { ko: "릴리스 노트", en: "Release notes" },
   "v.updates.lead": { ko: "업데이트 —", en: "Updates —" },
-  "v.updates.accent": { ko: "쓸 것만", en: "only what matters" },
-  "v.updates.accentTail": { ko: "골라서.", en: "and nothing else." },
+  "v.updates.accent": { ko: "현업에 바로 적용할", en: "practical recaps" },
+  "v.updates.accentTail": { ko: "실속 기능 요약", en: "you can apply today." },
   "v.updates.subA": { ko: "새 기능과 개선, 수정 내역만 선별합니다. 홍보성 소식은 걸러 내고,", en: "Only new features, improvements and fixes. We filter out marketing noise and keep" },
   "v.updates.subB": { ko: "실무에 바로 영향을 주는 것", en: "what actually changes your workflow" },
   "v.updates.subStrong": { ko: "실무에 바로 영향을 주는 것", en: "what actually changes your workflow" },

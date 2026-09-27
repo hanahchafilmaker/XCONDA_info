@@ -127,25 +127,31 @@ export const IconGit = (p: IconProps) => (
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <a href="#top" className={cn("group flex items-center gap-2.5", className)}>
-      <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-volt-400">
-        <span className="absolute -left-1 top-0 h-full w-1.5 rotate-12 bg-ink-950/85" />
-        <svg viewBox="0 0 24 24" className="relative h-4 w-4 text-ink-950">
-          <path
-            d="M5 5l7 7-7 7M19 5l-7 7 7 7"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-          />
+    <a href="#top" aria-label="XCONDA 가이드 센터 홈" className={cn("group flex items-center gap-2.5", className)}>
+      <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-volt-400 transition-shadow duration-300 group-hover:shadow-[0_8px_28px_-8px_rgba(255,214,10,0.9)]">
+        <svg
+          viewBox="0 0 24 24"
+          className="relative h-[17px] w-[17px] text-ink-950"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3.1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+        >
+          <path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8" />
         </svg>
+        <span
+          aria-hidden
+          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-full"
+        />
       </span>
       <span className="flex flex-col leading-none">
-        <span className="text-[15px] font-extrabold tracking-[-0.04em] text-white">
+        <span className="text-[15px] font-extrabold tracking-[0.08em] text-white">
           XCONDA
           <span className="text-volt-400">.</span>
         </span>
-        <span className="mt-0.5 text-[9px] font-semibold uppercase tracking-[0.24em] text-zinc-500">
+        <span className="mt-1 text-[8.5px] font-bold uppercase tracking-[0.3em] text-zinc-500">
           Guide Center
         </span>
       </span>
