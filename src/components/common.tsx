@@ -9,15 +9,8 @@ import { cn } from "../utils/cn";
 /* ----------------------------- Badges ----------------------------- */
 
 const CATEGORY_TONE: Record<string, string> = {
-  공지: "border-volt-400/35 bg-volt-400/10 text-volt-300",
-  Notice: "border-volt-400/35 bg-volt-400/10 text-volt-300",
-  점검: "border-rose-400/25 bg-rose-400/10 text-rose-300",
-  Maintenance: "border-rose-400/25 bg-rose-400/10 text-rose-300",
-  이벤트: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
-  Event: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
-  정책: "border-sky-400/25 bg-sky-400/10 text-sky-300",
-  Policy: "border-sky-400/25 bg-sky-400/10 text-sky-300",
-  업데이트: "border-volt-400/35 bg-volt-400/10 text-volt-300",
+  점검: "bg-rose-400/10 text-rose-300",
+  Maintenance: "bg-rose-400/10 text-rose-300",
 };
 
 export function CategoryBadge({ children, className }: { children: ReactNode; className?: string }) {
@@ -25,8 +18,8 @@ export function CategoryBadge({ children, className }: { children: ReactNode; cl
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-full border px-2.5 py-1 text-[10.5px] font-bold tracking-wide",
-        tone ?? "border-white/10 bg-white/[0.04] text-zinc-400",
+        "inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[12px] font-semibold",
+        tone ?? "bg-white/[0.06] text-zinc-400",
         className
       )}
     >
@@ -75,25 +68,14 @@ export function SyncStatus({ className }: { className?: string }) {
             : t("sync.sample");
   return (
     <div
-      className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-ink-900/60 py-1.5 pl-3 pr-1.5 text-[11.5px] font-semibold text-zinc-400 backdrop-blur-xl",
-        className
-      )}
+      className={cn("inline-flex items-center gap-2 text-[13px] text-zinc-500", className)}
       title={pick(
         "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다.",
         "Connected to Notion database. Published checkbox must be checked in Notion."
       )}
     >
-      <span className="relative flex h-2 w-2">
-        <span
-          className={cn(
-            "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
-            live ? "bg-emerald-400" : status === "error" ? "bg-rose-400" : "bg-amber-400"
-          )}
-        />
-        <span className={cn("relative inline-flex h-2 w-2 rounded-full", live ? "bg-emerald-400" : status === "error" ? "bg-rose-400" : "bg-amber-400")} />
-      </span>
-      <NotionMark className="h-3.5 w-3.5 text-zinc-200" />
+      <span className={cn("h-1.5 w-1.5 rounded-full", live ? "bg-emerald-400" : status === "error" ? "bg-rose-400" : "bg-amber-400")} />
+      <NotionMark className="h-3.5 w-3.5 text-zinc-400" />
       <span aria-live="polite">{label}</span>
       {endpoint && (
         <button
@@ -104,12 +86,11 @@ export function SyncStatus({ className }: { className?: string }) {
             "최신 Notion 스냅샷 새로고침 (클릭 시 캐시를 무효화하고 최신 데이터를 읽어옵니다)",
             "Refresh Notion snapshot"
           )}
-          className="grid h-6 w-6 place-items-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-white"
+          className="grid h-7 w-7 place-items-center rounded-full text-zinc-500 transition hover:bg-white/10 hover:text-white"
         >
           <RefreshCw className={cn("h-3.5 w-3.5", (status === "syncing" || status === "loading") && "animate-spin")} />
         </button>
       )}
-      {!endpoint && <span className="w-1.5" />}
     </div>
   );
 }
