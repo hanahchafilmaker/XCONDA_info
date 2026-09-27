@@ -3,7 +3,7 @@ import { Check, Copy, ExternalLink, ImageOff, RefreshCw } from "lucide-react";
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { useLang, typeLabel } from "../i18n";
-import { timeAgo } from "../notion";
+import { isPublicEndpoint, timeAgo } from "../notion";
 import { cn } from "../utils/cn";
 
 /* ----------------------------- Badges ----------------------------- */
@@ -54,21 +54,33 @@ export function SyncStatus({ className }: { className?: string }) {
   const { t, pick } = useLang();
   const { source, status, syncedAt, refresh, endpoint } = useContent();
   const live = source === "notion" && status !== "error";
+  const isPublic = endpoint ? isPublicEndpoint(endpoint) : false;
   const label =
     status === "loading"
       ? t("sync.loading")
       : status === "syncing"
         ? t("sync.syncing")
         : live
-          ? pick(
-              `Notion 실시간 연동 · ${syncedAt ? timeAgo(syncedAt) : ""}`,
-              `Live from Notion · ${syncedAt ? timeAgo(syncedAt) : ""}`
-            )
+          ? isPublic
+            ? pick(
+                `Notion 동기화 · ${syncedAt ? timeAgo(syncedAt) : ""}`,
+                `Notion Synced · ${syncedAt ? timeAgo(syncedAt) : ""}`
+              )
+            : pick(
+                `Notion 실시간 연동 · ${syncedAt ? timeAgo(syncedAt) : ""}`,
+                `Live from Notion · ${syncedAt ? timeAgo(syncedAt) : ""}`
+              )
           : status === "error"
             ? t("sync.error")
             : t("sync.sample");
   return (
-    <div className={cn("glass inline-flex items-center gap-2 rounded-full py-1.5 pl-3 pr-1.5 text-xs text-zinc-300", className)}>
+    <div
+      className={cn("glass inline-flex items-center gap-2 rounded-full py-1.5 pl-3 pr-1.5 text-xs text-zinc-300", className)}
+      title={pick(
+        "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다.",
+        "Connected to Notion database. Published checkbox must be checked in Notion."
+      )}
+    >
       <span className="relative flex h-2 w-2">
         <span
           className={cn(
@@ -83,8 +95,12 @@ export function SyncStatus({ className }: { className?: string }) {
       {endpoint && (
         <button
           type="button"
-          onClick={refresh}
+          onClick={() => refresh(true)}
           aria-label={t("sync.now")}
+          title={pick(
+            "최신 Notion 스냅샷 새로고침 (클릭 시 캐시를 무효화하고 최신 데이터를 읽어옵니다)",
+            "Refresh Notion snapshot"
+          )}
           className="grid h-6 w-6 place-items-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-white"
         >
           <RefreshCw className={cn("h-3.5 w-3.5", (status === "syncing" || status === "loading") && "animate-spin")} />

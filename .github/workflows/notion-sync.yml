@@ -7,13 +7,12 @@ on:
   schedule:
     - cron: "*/10 * * * *" # 10분마다 (GitHub 사정에 따라 지연될 수 있음)
   workflow_dispatch:
+  repository_dispatch:
+    types: [notion-sync, sync]
   push:
     branches:
       - main
       - "arena/**"
-    paths:
-      - "scripts/notion-snapshot.mjs"
-      - ".github/workflows/notion-sync.yml"
 
 concurrency:
   group: notion-sync-${{ github.ref }}

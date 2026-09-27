@@ -28,6 +28,7 @@
 
 import type { Block, Change, ChangeKind, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { extractPageId, fetchPublicBlocks, fetchPublicEntries } from "./notionPublic";
+import { getLastSnapshotGeneratedAt, invalidateSnapshot } from "./notionSnapshot";
 import { getLang } from "./i18n/dict";
 
 type R = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -268,7 +269,12 @@ export function mapBlocks(results: R[]): Block[] {
 
 /* ------------------------------ Fetch / Cache ------------------------------ */
 
-export type ContentPayload = { entries: Entry[]; source: "notion" | "sample"; syncedAt: number };
+export type ContentPayload = {
+  entries: Entry[];
+  source: "notion" | "sample";
+  syncedAt: number;
+  snapshotGeneratedAt?: string;
+};
 
 export function readCache(): ContentPayload | null {
   try {
@@ -287,8 +293,8 @@ function writeCache(p: ContentPayload) {
   }
 }
 
-export async function fetchEntries(endpoint: string, signal?: AbortSignal): Promise<Entry[]> {
-  if (isPublicEndpoint(endpoint)) return fetchPublicEntries(endpoint.slice("public:".length), signal);
+export async function fetchEntries(endpoint: string, signal?: AbortSignal, force = false): Promise<Entry[]> {
+  if (isPublicEndpoint(endpoint)) return fetchPublicEntries(endpoint.slice("public:".length), signal, force);
   const res = await fetch(endpoint, { signal, headers: { Accept: "application/json" } });
   if (!res.ok) throw new Error(`Notion proxy ${res.status}`);
   const data = await res.json();
@@ -300,9 +306,16 @@ export async function fetchEntries(endpoint: string, signal?: AbortSignal): Prom
   return results.map(mapPage).filter((e): e is Entry => e !== null);
 }
 
-export async function syncFromNotion(endpoint: string, signal?: AbortSignal): Promise<ContentPayload> {
-  const entries = await fetchEntries(endpoint, signal);
-  const payload: ContentPayload = { entries, source: "notion", syncedAt: Date.now() };
+export async function syncFromNotion(endpoint: string, signal?: AbortSignal, force = false): Promise<ContentPayload> {
+  if (force) invalidateSnapshot();
+  const entries = await fetchEntries(endpoint, signal, force);
+  const snapshotAt = getLastSnapshotGeneratedAt();
+  const payload: ContentPayload = {
+    entries,
+    source: "notion",
+    syncedAt: snapshotAt ? Date.parse(snapshotAt) : Date.now(),
+    snapshotGeneratedAt: snapshotAt,
+  };
   writeCache(payload);
   return payload;
 }

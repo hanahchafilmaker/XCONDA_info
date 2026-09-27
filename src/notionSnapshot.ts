@@ -43,12 +43,14 @@ let cached: { at: number; value: NotionSnapshot | null } | null = null;
 
 const undash = (id: unknown): string => String(id ?? "").replace(/-/g, "").toLowerCase();
 
-function snapshotUrl(): string {
+function snapshotUrl(force = false): string {
   try {
     // dev.html / index.html 어느 경로든 문서 기준으로 파일 위치를 계산합니다.
-    return new URL(FILE, document.baseURI).toString();
+    const url = new URL(FILE, document.baseURI);
+    if (force) url.searchParams.set("t", String(Date.now()));
+    return url.toString();
   } catch {
-    return FILE;
+    return force ? `${FILE}?t=${Date.now()}` : FILE;
   }
 }
 
@@ -63,12 +65,17 @@ function isSnapshot(value: unknown): value is NotionSnapshot {
 
 /** 스냅샷을 읽습니다. 없거나 오류면 null (호출부에서 공개 API 경로로 진행) */
 export function loadSnapshot(force = false): Promise<NotionSnapshot | null> {
-  if (!force && cached && Date.now() - cached.at < TTL_MS) return Promise.resolve(cached.value);
+  if (force) {
+    cached = null;
+    pending = null;
+  } else if (cached && Date.now() - cached.at < TTL_MS) {
+    return Promise.resolve(cached.value);
+  }
   if (!force && pending) return pending;
 
   pending = (async () => {
     try {
-      const res = await fetch(snapshotUrl(), { cache: "no-store", headers: { Accept: "application/json" } });
+      const res = await fetch(snapshotUrl(force), { cache: "no-store", headers: { Accept: "application/json" } });
       if (!res.ok) return null;
       const data: unknown = await res.json();
       return isSnapshot(data) ? data : null;
@@ -88,6 +95,11 @@ export function loadSnapshot(force = false): Promise<NotionSnapshot | null> {
 export function invalidateSnapshot() {
   cached = null;
   pending = null;
+}
+
+/** 가장 최근에 읽은 스냅샷 생성 시각 */
+export function getLastSnapshotGeneratedAt(): string | undefined {
+  return cached?.value?.generatedAt;
 }
 
 /** 이 스냅샷이 지금 연동 중인 노션 페이지(또는 그 안의 데이터베이스)의 것인지 확인 */
