@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XCONDA 가이드 센터 - 관리자 가이드</title>
+<meta name="description" content="XCONDA_info 리포지토리 관리자용 기술 문서 - 아키텍처, Notion 연동, 배포, 운영">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080d;--bg2:#0f0f18;--card:#13131e;--card2:#1a1a2a;--card3:#1e1e32;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--border3:rgba(255,255,255,0.18);
+  --text:#e8e8ec;--muted:#8b8b9a;--muted2:#5c5c6b;
+  --brand:#facc15;--brand-dim:rgba(250,204,21,0.12);--brand-border:rgba(250,204,21,0.25);
+  --purple:#8b5cf6;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;
+  --radius:14px;--radius-lg:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Pretendard Variable",Pretendard,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+code{font-family:"Geist Mono",monospace}
+.mono{font-family:"Geist Mono",monospace}
+
+/* header */
+.header{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(8,8,13,0.85);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1440px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px;font-weight:800}
+.logo-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#8b5cf6,#ec4899 55%,#f59e0b);display:grid;place-items:center;color:white;font-weight:900;font-size:15px}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:0.04em}
+.badge-admin{background:var(--brand-dim);color:var(--brand);border:1px solid var(--brand-border)}
+.badge-version{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border)}
+
+/* layout */
+.container{max-width:1440px;margin:0 auto;padding:0 24px}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:40px;padding:32px 0 120px}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}}
+
+/* sidebar */
+.sidebar{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 90px);overflow:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.nav-group{margin-bottom:28px}
+.nav-title{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);font-weight:700;margin:0 0 10px 8px}
+.nav-link{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:13.5px;color:var(--muted);transition:.15s}
+.nav-link:hover{background:rgba(255,255,255,0.05);color:var(--text)}
+.nav-link.active{background:var(--brand);color:#111;font-weight:600}
+.nav-link .icon{width:20px;text-align:center;font-size:13px}
+
+/* content */
+.hero{padding:48px 0 24px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.hero h1{font-size:clamp(28px,4vw,44px);line-height:1.1;letter-spacing:-0.03em;margin:0 0 12px;font-weight:800}
+.hero h1 span{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;color:var(--brand)}
+.hero p{color:var(--muted);max-width:720px;font-size:15.5px;margin:0}
+.hero-meta{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.meta-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.meta-card b{font-size:13px}
+.meta-card span{font-size:12px;color:var(--muted)}
+
+.section{margin:56px 0;scroll-margin-top:80px}
+.section-head{margin-bottom:20px}
+.kicker{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--brand);font-weight:700;margin-bottom:6px}
+.section-head h2{font-size:26px;letter-spacing:-0.02em;margin:0 0 8px;line-height:1.2}
+.section-head p{color:var(--muted);margin:0;max-width:760px;font-size:14.5px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card2{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:800px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* code */
+pre{background:#0d0d14;border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;font-size:13px;line-height:1.6;margin:12px 0}
+pre code{color:#cbd5e1}
+.code-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;color:var(--muted2)}
+.code-header b{color:var(--muted);font-weight:600}
+.hl-comment{color:#64748b}.hl-keyword{color:#c084fc}.hl-string{color:#86efac}.hl-func{color:#facc15}.hl-number{color:#fda4af}
+
+/* table */
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius);margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th{text-align:left;padding:12px 14px;background:var(--card2);color:var(--muted);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+
+/* steps */
+.step-list{counter-reset:step;list-style:none;padding:0;margin:0}
+.step-list li{counter-increment:step;display:flex;gap:14px;padding:14px 0;border-bottom:1px dashed var(--border)}
+.step-list li:last-child{border-bottom:0}
+.step-list li::before{content:counter(step);flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#111;display:grid;place-items:center;font-weight:800;font-size:13px;margin-top:1px}
+
+/* callouts */
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:12px;font-size:13.5px;line-height:1.6;margin:12px 0}
+.callout-warn{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#fca5a5}
+.callout-info{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:#93c5fd}
+.callout-success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#86efac}
+.callout-brand{background:var(--brand-dim);border:1px solid var(--brand-border);color:#fde68a}
+
+/* diagram */
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;overflow:auto}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.flow-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;text-align:center;min-width:140px}
+.flow-box b{display:block;font-size:13px}
+.flow-box span{font-size:11px;color:var(--muted)}
+.flow-arrow{color:var(--muted2);font-size:18px}
+.flow-box.highlight{border-color:var(--brand-border);background:var(--brand-dim)}
+
+/* status dot */
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot-green{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,0.5)}
+.dot-yellow{background:var(--brand);box-shadow:0 0 8px rgba(250,204,21,0.5)}
+.dot-red{background:var(--red)}
+
+/* footer */
+.footer{border-top:1px solid var(--border);padding:24px 0;color:var(--muted2);font-size:12px}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo"><div class="logo-mark">X</div> XCONDA <span class="mono" style="font-weight:400;color:var(--muted2);font-size:12px;margin-left:4px">INFO</span> <span class="badge badge-admin" style="margin-left:8px">ADMIN GUIDE</span></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="badge badge-version mono">v2026.04 · main@b4a105e</span>
+      <a href="https://github.com/hanahchafilmaker/XCONDA_info" target="_blank" style="background:rgba(255,255,255,0.08);border:1px solid var(--border);padding:7px 14px;border-radius:999px;font-size:13px">GitHub →</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav-group">
+        <div class="nav-title">시작하기</div>
+        <a class="nav-link active" href="#overview"><span class="icon">🏠</span> 개요 & 아키텍처</a>
+        <a class="nav-link" href="#structure"><span class="icon">📁</span> 프로젝트 구조</a>
+        <a class="nav-link" href="#stack"><span class="icon">🧱</span> 기술 스택</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Notion CMS</div>
+        <a class="nav-link" href="#notion-arch"><span class="icon">🔗</span> 연동 아키텍처</a>
+        <a class="nav-link" href="#notion-schema"><span class="icon">🗄️</span> DB 스키마</a>
+        <a class="nav-link" href="#notion-method-a"><span class="icon">🌐</span> 방법 A: 공개 스냅샷</a>
+        <a class="nav-link" href="#notion-method-b"><span class="icon">☁️</span> 방법 B: Worker 프록시</a>
+        <a class="nav-link" href="#notion-content"><span class="icon">✍️</span> 콘텐츠 운영 가이드</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">개발 & 배포</div>
+        <a class="nav-link" href="#dev-setup"><span class="icon">💻</span> 로컬 개발</a>
+        <a class="nav-link" href="#build"><span class="icon">📦</span> 빌드 시스템</a>
+        <a class="nav-link" href="#deploy"><span class="icon">🚀</span> 배포 (GitHub Pages)</a>
+        <a class="nav-link" href="#github-actions"><span class="icon">⚙️</span> GitHub Actions</a>
+        <a class="nav-link" href="#env"><span class="icon">🔑</span> 환경변수</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">운영</div>
+        <a class="nav-link" href="#content-code"><span class="icon">📝</span> 정적 콘텐츠 코드</a>
+        <a class="nav-link" href="#i18n"><span class="icon">🌍</span> 다국어(i18n)</a>
+        <a class="nav-link" href="#troubleshoot"><span class="icon">🛠️</span> 트러블슈팅</a>
+        <a class="nav-link" href="#security"><span class="icon">🔒</span> 보안 & 권한</a>
+        <a class="nav-link" href="#checklist"><span class="icon">✅</span> 운영 체크리스트</a>
+      </div>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <h1>관리자 가이드 <span>Technical Manual</span></h1>
+        <p><b>XCONDA_info</b>는 Notion을 CMS로 사용하는 가이드 센터입니다. 이 문서는 리포지토리 구조부터 Notion 연동, 빌드/배포, 장애 대응까지 관리자가 알아야 할 모든 것을 다룹니다.</p>
+        <div class="hero-meta">
+          <div class="meta-card"><span class="dot dot-green"></span><div><b>공개 스냅샷 방식 운영 중</b><br><span class="mono" style="font-size:11px">public:3e72ebc0... · notion-content.json</span></div></div>
+          <div class="meta-card"><div><b>배포</b><br><span>GitHub Pages · Single File Build</span></div></div>
+          <div class="meta-card"><div><b>동기화 주기</b><br><span>10분 (Actions cron) · 수동 실행 가능</span></div></div>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <section id="overview" class="section">
+        <div class="section-head">
+          <div class="kicker">Architecture</div>
+          <h2>시스템 개요 & 아키텍처</h2>
+          <p>사이트는 Notion 데이터베이스 1개로 공지·업데이트·가이드·FAQ를 모두 관리하고, GitHub Actions가 서버에서 Notion을 읽어 정적 JSON 스냅샷으로 커밋합니다. 브라우저는 같은 출처의 JSON만 읽어 CORS 문제를 원천 차단합니다.</p>
+        </div>
+        <div class="diagram">
+          <div class="flow">
+            <div class="flow-box"><b>📝 Notion DB</b><span>XCONDA_NEWs 페이지<br>Published 체크</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box highlight"><b>⚙️ GitHub Actions</b><span>10분마다 실행<br>scripts/notion-snapshot.mjs</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box"><b>📄 notion-content.json</b><span>정적 스냅샷<br>리포지토리 커밋</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box"><b>🌐 GitHub Pages</b><span>index.html (single file)<br>같은 출처 JSON 읽기</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box"><b>👤 사용자</b><span>공지·가이드·툴 사용법<br>검색 & 모달 뷰</span></div>
+          </div>
+          <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <div class="flow-box" style="min-width:200px;border-style:dashed"><b>☁️ (선택) Cloudflare Worker</b><span>비공개 DB용 실시간 프록시<br>60초 캐시</span></div>
+            <div class="flow-box" style="min-width:200px;border-style:dashed"><b>🔧 로컬 ?notion= 파라미터</b><span>Worker URL 또는 public:ID<br>테스트용 오버라이드</span></div>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:16px">
+          <div class="card">
+            <b>🎯 핵심 설계 결정</b>
+            <ul style="font-size:13.5px;color:var(--muted);margin:10px 0 0;padding-left:18px">
+              <li><b style="color:var(--text)">Single File Build:</b> vite-plugin-singlefile로 index.html 하나에 모든 JS/CSS 인라인 → GitHub Pages에서 경로 이슈 없음</li>
+              <li><b style="color:var(--text)">정적 스냅샷 우선:</b> notion-content.json이 있으면 외부 API 호출 없이 동작, splitbee.io 장애 영향 없음</li>
+              <li><b style="color:var(--text)">Notion은 진실의 원천(SSOT):</b> 코드에 하드코딩된 샘플은 Notion 미연결 시에만 표시</li>
+            </ul>
+          </div>
+          <div class="card">
+            <b>📊 현재 데이터</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.8">
+              <span class="mono">source.pageId:</span> 3e72ebc0-17ad-8024-a3f5-ef8fb9f8c6dd<br>
+              <span class="mono">collectionViewId:</span> 3b54d2ea-0d5e-4ab5-b33c-ff12de807517<br>
+              <span class="mono">collectionId:</span> 284d44e9-a4eb-4c55-99b5-35815748bad0<br>
+              <span class="mono">generatedAt:</span> 2026-09-26T22:47:59Z<br>
+              <span class="mono">rows:</span> 3개 (공지) · pages: 본문 블록 포함
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STRUCTURE -->
+      <section id="structure" class="section">
+        <div class="section-head">
+          <div class="kicker">Project Structure</div>
+          <h2>프로젝트 구조</h2>
+        </div>
+        <div class="grid2">
+          <div>
+            <pre><code>XCONDA_info/
+├─ .github/workflows/notion-sync.yml  # 10분마다 스냅샷 생성
+├─ assets/img/tools/                   # 로컬 툴 커버 이미지 6종
+├─ notion-worker/worker.js             # Cloudflare Worker 프록시 (선택)
+├─ scripts/notion-snapshot.mjs         # 공개 Notion → JSON 스냅샷 생성기
+├─ src/
+│  ├─ App.tsx                          # 레이아웃 & 섹션 조립
+│  ├─ main.tsx                         # 진입점
+│  ├─ index.css                        # Tailwind 4.x
+│  ├─ notion.ts                        # Notion 어댑터 (메인)
+│  ├─ notionPublic.ts                  # 공개 페이지 + 스냅샷 어댑터
+│  ├─ notionSnapshot.ts                # 스냅샷 로더
+│  ├─ content/
+│  │  ├─ types.ts                      # Entry, Block 타입
+│  │  ├─ tools.ts                      # 19개 툴 정의 (BASE_TOOLS)
+│  │  ├─ toolGuides.ts                 # 툴별 상세 가이드 (KO/EN)
+│  │  ├─ toolVideos.ts                 # 공식 영상 가이드 URL
+│  │  └─ sample.ts / sample.en.ts      # Notion 미연결 시 샘플
+│  ├─ i18n/
+│  │  ├─ dict.ts                       # UI 다국어 사전 (300+ 키)
+│  │  ├─ content.ts                    # 콘텐츠 로컬라이제이션
+│  │  └─ index.tsx                     # LanguageProvider
+│  └─ components/
+│     ├─ Navbar, Hero, Notices, Changelog
+│     ├─ Guides, Tools, Credits, FAQ, CTA, Footer
+│     └─ ArticleModal (Notion 상세)
+├─ dev.html                            # 개발 진입점 (Vite가 이 파일로 열림)
+├─ index.html                          # 빌드 결과물 (GitHub Pages 배포)
+├─ notion-content.json                 # ★ Notion 스냅샷 (Actions가 생성)
+├─ vite.config.ts                      # singleFile + dev.html 설정
+└─ package.json</code></pre>
+          </div>
+          <div>
+            <div class="card">
+              <b>📂 중요 파일 역할</b>
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;font-size:13px">
+                <div><b class="mono" style="color:var(--brand)">dev.html vs index.html</b><br><span style="color:var(--muted)">dev.html이 Vite 진입점. npm run build 시 dist/dev.html → index.html로 복사되어 GitHub Pages 배포 파일이 됨. 루트 index.html은 직접 수정하지 말 것.</span></div>
+                <div><b class="mono" style="color:var(--brand)">notion-content.json</b><br><span style="color:var(--muted)">Actions가 생성. 같은 출처 정적 파일이라 CORS 없이 항상 성공. 수동 편집 금지, Actions가 덮어씀.</span></div>
+                <div><b class="mono" style="color:var(--brand)">tools.ts / toolGuides.ts</b><br><span style="color:var(--muted)">툴 카드 짧은 설명 vs 모달 상세 가이드 분리. 카드 스캔성, 모달은 모델 매트릭스·옵션 상세. Notion의 Tool 속성이 있으면 Notion 글로 대체됨.</span></div>
+                <div><b class="mono" style="color:var(--brand)">notion-worker/</b><br><span style="color:var(--muted)">방법 B용. 현재는 미사용, 필요 시 wrangler deploy로 배포.</span></div>
+              </div>
+            </div>
+            <div class="callout callout-info" style="margin-top:12px">
+              💡 <b>로컬 이미지 전략:</b> 스튜디오 랜딩에 대표 이미지가 없는 툴(turn, flexboard 등 6종)은 <span class="mono">assets/img/tools/</span>에 자체 커버를 둬서 dev.html과 GitHub Pages(/XCONDA_info/) 모두에서 상대 경로로 동작.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STACK -->
+      <section id="stack" class="section">
+        <div class="section-head"><div class="kicker">Tech Stack</div><h2>기술 스택</h2></div>
+        <div class="grid3">
+          <div class="card"><b>Frontend</b><div style="font-size:13px;color:var(--muted);margin-top:8px">React 19.2.6<br>Tailwind CSS 4.1.17 (@tailwindcss/vite)<br>Vite 7.3.2 + vite-plugin-singlefile<br>TypeScript 5.9.3<br>lucide-react 아이콘</div></div>
+          <div class="card"><b>Notion 연동</b><div style="font-size:13px;color:var(--muted);margin-top:8px">공개 API: notion.so/api/v3 (loadPageChunk, queryCollection)<br>비공개 API: api.notion.com/v1 (Worker 경유)<br>스냅샷: Node 20, fetch, AbortSignal.timeout<br>캐시: localStorage + Cloudflare Cache API</div></div>
+          <div class="card"><b>인프라</b><div style="font-size:13px;color:var(--muted);margin-top:8px">GitHub Pages (정적 호스팅)<br>GitHub Actions (10분 cron + push trigger)<br>Cloudflare Workers (선택, 무료 플랜)<br>Notion (CMS, SSOT)</div></div>
+        </div>
+      </section>
+
+      <!-- NOTION ARCH -->
+      <section id="notion-arch" class="section">
+        <div class="section-head"><div class="kicker">Notion CMS</div><h2>연동 아키텍처 상세</h2><p>두 가지 방법을 지원. 현재 기본은 방법 A (공개 스냅샷).</p></div>
+        <div class="table-wrap"><table><thead><tr><th>구분</th><th>방법 A · 공개 스냅샷 (현재 기본 ✅)</th><th>방법 B · Worker 프록시</th></tr></thead><tbody>
+          <tr><td><b>준비물</b></td><td>Notion 페이지 웹에 게시만</td><td>통합 토큰 + Worker 배포</td></tr>
+          <tr><td><b>공개 여부</b></td><td>공개 (링크 알면 누구나 열람)</td><td>비공개 유지 가능</td></tr>
+          <tr><td><b>반영 지연</b></td><td>최대 10분 (Actions 주기) + 수동 Run 가능</td><td>거의 실시간 (60초 엣지 캐시)</td></tr>
+          <tr><td><b>CORS 이슈</b></td><td>없음 (같은 출처 JSON)</td><td>Worker에서 CORS 헤더 처리</td></tr>
+          <tr><td><b>난이도</b></td><td>⭐ 설정 0분</td><td>⭐⭐⭐ wrangler 필요</td></tr>
+          <tr><td><b>코드 위치</b></td><td>scripts/notion-snapshot.mjs, src/notionPublic.ts</td><td>notion-worker/worker.js, src/notion.ts</td></tr>
+          <tr><td><b>환경변수</b></td><td>NOTION_PAGE_ID, NOTION_DATABASE_ID (GitHub Variables)</td><td>NOTION_TOKEN, NOTION_DB_ID, ALLOW_ORIGIN (Worker secrets)</td></tr>
+        </tbody></table></div>
+
+        <div class="card2" style="margin-top:16px">
+          <b>🔄 데이터 흐름 (방법 A)</b>
+          <pre><code><span class="hl-comment">// 1. GitHub Actions 러너 (Node 20, CORS 없음)</span>
+<span class="hl-keyword">POST</span> https://www.notion.so/api/v3/loadPageChunk
+  body: { pageId: "3e72ebc0-..." } → blockMap 수집 (최대 12 청크)
+<span class="hl-keyword">POST</span> https://www.notion.so/api/v3/queryCollection
+  body: { collectionId, viewId, loader: { reducer, limit: 300 } }
+  → blockIds + recordMap
+
+<span class="hl-comment">// 2. 각 행을 평면 객체로 디코딩</span>
+<span class="hl-func">rowToObject</span>(block, schema) → { Title, Type, Published, Date, ... }
+<span class="hl-func">isPublished</span>() 필터 → Published=true만 유지
+<span class="hl-func">loadBlockMap</span>(row.id) → 각 글 본문 블록 미리 수집
+
+<span class="hl-comment">// 3. 스냅샷 JSON 생성 & 커밋</span>
+{
+  generatedAt, source: { pageId, collectionViewId, collectionId },
+  rows: [ { id, Title, Type, ... }, ... ],
+  pages: { [rowId]: { blockId: { value: slimBlock } } }
+}
+→ notion-content.json (용량 최적화: slimBlock으로 crdt_data 제거)
+
+<span class="hl-comment">// 4. 브라우저 (src/notionPublic.ts)</span>
+fetch("./notion-content.json") → 성공 시 즉시 표시
+실패 or 6시간 이상 오래됨 → fetch("https://notion-api.splitbee.io/...") 보조 시도
+fetchPublicBlocks(pageId) → 페이지 본문을 block → Block[] 변환</code></pre>
+        </div>
+      </section>
+
+      <!-- SCHEMA -->
+      <section id="notion-schema" class="section">
+        <div class="section-head"><div class="kicker">Database Schema</div><h2>Notion 데이터베이스 스키마</h2><p>데이터베이스 1개로 4가지 Type을 모두 관리. 속성 이름은 한글/영문 모두 인식 (대소문자 무시).</p></div>
+        <div class="table-wrap"><table><thead><tr><th>속성 이름</th><th>유형</th><th>필수</th><th>설명</th><th>예시</th></tr></thead><tbody>
+          <tr><td><b>Title</b> / 제목</td><td>제목</td><td>✅</td><td>글 제목 / FAQ는 질문</td><td>XCONDA 서비스 안내</td></tr>
+          <tr><td><b>Type</b> / 유형</td><td>선택</td><td>✅</td><td>공지·업데이트·가이드·FAQ</td><td>공지</td></tr>
+          <tr><td><b>Published</b> / 공개</td><td>체크박스</td><td>✅</td><td>체크된 글만 노출. 열이 있는데 키 없음 = 미공개</td><td>☑</td></tr>
+          <tr><td><b>Date</b> / 날짜</td><td>날짜</td><td>✅</td><td>게시일, 정렬 기준 (내림차순)</td><td>2026-09-26</td></tr>
+          <tr><td><b>Summary</b> / 요약</td><td>텍스트</td><td>권장</td><td>목록 요약 / FAQ는 답변</td><td>환영합니다</td></tr>
+          <tr><td><b>Category</b> / 카테고리</td><td>선택</td><td>권장</td><td>공지: 공지/점검/이벤트/정책<br>가이드: 시작하기/시나리오/캐릭터...</td><td>공지</td></tr>
+          <tr><td><b>Pinned</b> / 고정</td><td>체크박스</td><td></td><td>공지 상단 고정 + 히어로 배너</td><td>☐</td></tr>
+          <tr><td><b>Important</b> / 중요</td><td>체크박스</td><td></td><td>빨간 점 + 굵게</td><td>☐</td></tr>
+          <tr><td><b>Version</b> / 버전</td><td>텍스트</td><td></td><td>업데이트용</td><td>v2.5.0</td></tr>
+          <tr><td><b>Changes</b> / 변경사항</td><td>텍스트</td><td></td><td>한 줄에 하나씩 [New]/[Improved]/[Fixed]</td><td>[New] Turn 추가</td></tr>
+          <tr><td><b>Tool</b> / 툴</td><td>선택</td><td></td><td>툴 이름과 같으면 해당 툴 카드 사용법 대체</td><td>Director's Cut</td></tr>
+          <tr><td><b>Order</b> / 순서</td><td>숫자</td><td></td><td>가이드·FAQ 정렬 순서</td><td>1</td></tr>
+          <tr><td><b>Tags</b> / 태그</td><td>다중 선택</td><td></td><td>태그</td><td>캐릭터, 크레딧</td></tr>
+          <tr><td><b>Cover</b> / 커버</td><td>파일</td><td></td><td>썸네일, 없으면 페이지 커버 사용</td><td>image.png</td></tr>
+          <tr><td><b>Link</b> / 링크</td><td>URL</td><td></td><td>스튜디오에서 바로 해보기 버튼</td><td>https://www.xconda.ai/studio/turn</td></tr>
+          <tr><td><b>Title EN</b></td><td>텍스트</td><td></td><td>영문 제목 (EN 모드에서 사용)</td><td>Welcome</td></tr>
+          <tr><td><b>Summary EN</b></td><td>텍스트</td><td></td><td>영문 요약 / FAQ 영문 답변</td><td>Welcome to XCONDA</td></tr>
+          <tr><td><b>Category EN</b></td><td>텍스트/선택</td><td></td><td>영문 카테고리</td><td>Notice</td></tr>
+          <tr><td><b>Changes EN</b></td><td>텍스트</td><td></td><td>영문 변경사항</td><td>[New] Added Turn</td></tr>
+        </tbody></table></div>
+        <div class="callout callout-brand">💡 페이지 본문(제목, 목록, 체크리스트, 인용, 콜아웃, 코드, 이미지, 유튜브, 북마크, 토글, 구분선)은 그대로 상세 모달에 표시됩니다. UI 크롬은 한/영 토글에 맞춰 전환, Notion 본문은 원문 그대로.</div>
+      </section>
+
+      <!-- METHOD A -->
+      <section id="notion-method-a" class="section">
+        <div class="section-head"><div class="kicker">Method A</div><h2>방법 A: 공개 스냅샷 (현재 운영 중)</h2></div>
+        <ol class="step-list">
+          <li><div><b>Notion 페이지 게시 확인</b><br><span style="font-size:13px;color:var(--muted)">XCONDA_NEWs 페이지 우측 상단 공유 → 게시(Publish) 켜져 있는지 확인. 현재 ID: <span class="mono">3e72ebc017ad8024a3f5ef8fb9f8c6dd</span></span></div></li>
+          <li><div><b>GitHub Variables 설정 (선택)</b><br><span style="font-size:13px;color:var(--muted)">Settings → Secrets and variables → Variables에 NOTION_PAGE_ID, NOTION_DATABASE_ID 설정. 비어 있으면 기본값 사용. 다른 공개 페이지로 바꾸려면 이 변수 변경 후 Actions 실행.</span></div></li>
+          <li><div><b>수동 동기화</b><br><span style="font-size:13px;color:var(--muted)">Actions → "Notion 동기화" → Run workflow 클릭 시 즉시 notion-content.json 갱신. 10분 cron 외 긴급 반영 시 사용.</span></div></li>
+          <li><div><b>로컬 테스트</b><br><pre style="margin-top:8px"><code>node scripts/notion-snapshot.mjs --out notion-content.json --print
+<span class="hl-comment"># --print: rows를 pretty JSON으로 콘솔 출력</span>
+<span class="hl-comment"># --out: 출력 경로 지정 (기본 notion-content.json)</span></code></pre></div></li>
+        </ol>
+        <div class="callout callout-warn">⚠️ <b>동기화 실패 시 확인 순서:</b> 1) Actions 최근 실행 성공 여부 (로그 확인) 2) notion-content.json 존재 및 generatedAt 최신 여부 3) Notion 페이지 웹에 게시 상태 유지 여부 4) 게시 해제 시 스냅샷 생성 실패함.</div>
+      </section>
+
+      <!-- METHOD B -->
+      <section id="notion-method-b" class="section">
+        <div class="section-head"><div class="kicker">Method B</div><h2>방법 B: Worker 프록시 (비공개 DB용)</h2><p>비공개 운영·즉시 반영이 필요할 때 사용. 현재는 미사용이지만 코드는 유지됨.</p></div>
+        <ol class="step-list">
+          <li><div><b>Notion 통합 만들기</b><br><span style="font-size:13px;color:var(--muted)">https://www.notion.so/my-integrations → 새 통합 (Internal) → 권한: 콘텐츠 읽기만 → 시크릿 토큰 복사 (secret_xxx / ntn_xxx)</span></div></li>
+          <li><div><b>DB에 통합 연결</b><br><span style="font-size:13px;color:var(--muted)">데이터베이스 페이지 우측 상단 ··· → 연결(Connections) → 방금 만든 통합 추가. DB URL에서 32자리 ID 복사.</span></div></li>
+          <li><div><b>Worker 배포</b><br><pre><code>npm i -g wrangler
+cd notion-worker
+wrangler init xconda-notion --yes
+<span class="hl-comment"># 생성된 src/index.js를 worker.js 내용으로 교체</span>
+wrangler secret put NOTION_TOKEN      <span class="hl-comment"># 시크릿 붙여넣기</span>
+wrangler secret put NOTION_DB_ID      <span class="hl-comment"># DB ID 붙여넣기</span>
+wrangler deploy
+<span class="hl-comment"># → https://xconda-notion.&lt;계정&gt;.workers.dev 주소 복사</span></code></pre></div></li>
+          <li><div><b>사이트에 연결</b><br><pre><code><span class="hl-comment"># .env</span>
+VITE_NOTION_ENDPOINT=https://xconda-notion.&lt;계정&gt;.workers.dev
+
+<span class="hl-comment"># 또는 빌드 없이 테스트:</span>
+https://.../XCONDA_info/?notion=https://xconda-notion.&lt;계정&gt;.workers.dev
+<span class="hl-comment"># 해제: ?notion=off</span></code></pre></div></li>
+        </ol>
+        <div class="card" style="margin-top:16px">
+          <b>notion-worker/worker.js API</b>
+          <div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>라우트</th><th>설명</th><th>캐시</th></tr></thead><tbody>
+            <tr><td><span class="mono">GET /</span></td><td>Published=true 전체 글 (Date 내림차순)</td><td>60초 엣지 캐시</td></tr>
+            <tr><td><span class="mono">GET /blocks/:pageId</span></td><td>페이지 본문 블록 (토글 1단계 하위 포함)</td><td>60초 엣지 캐시</td></tr>
+            <tr><td><span class="mono">OPTIONS</span></td><td>CORS preflight</td><td>-</td></tr>
+          </tbody></table></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px">환경변수: NOTION_TOKEN (secret), NOTION_DB_ID, ALLOW_ORIGIN (선택, 기본 "*")</div>
+        </div>
+      </section>
+
+      <!-- CONTENT OPS -->
+      <section id="notion-content" class="section">
+        <div class="section-head"><div class="kicker">Content Operations</div><h2>콘텐츠 운영 가이드</h2></div>
+        <div class="grid2">
+          <div class="card">
+            <b>📝 글 작성 플로우</b>
+            <ol style="font-size:13px;color:var(--muted);margin:10px 0 0;padding-left:18px;line-height:1.9">
+              <li>Notion DB에 새 행 추가</li>
+              <li>Title, Type, Date 입력 (필수)</li>
+              <li>Summary, Category 등 선택 입력</li>
+              <li>페이지 본문에 상세 내용 작성 (헤딩, 리스트, 이미지, 토글 등)</li>
+              <li><b style="color:var(--text)">Published 체크 → 10분 내 사이트 반영</b></li>
+              <li>긴급 시 Actions에서 수동 Run workflow</li>
+            </ol>
+          </div>
+          <div class="card">
+            <b>🚨 긴급 공지</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:8px">
+              Type=공지, Pinned + Important 체크<br>
+              → 히어로 배너와 공지 목록 최상단에 즉시 노출<br><br>
+              <b>초안 작성:</b> Published 해제 → 사이트 미노출<br>
+              <b>글 공유:</b> 상세 모달 공유 버튼 → #post=페이지ID 링크 복사<br>
+              <b>이미지 주의:</b> Notion 파일 URL은 1시간 후 만료. 오래 노출할 이미지는 외부 URL 권장
+            </div>
+          </div>
+        </div>
+        <div class="card2" style="margin-top:16px">
+          <b>Changes 필드 작성 규칙 (업데이트용)</b>
+          <pre><code>[New] Turn 스튜디오 추가 - 360도 공간 고정 기능
+[Improved] Director's Cut 생성 속도 30% 개선
+[Fixed] 모바일에서 모달 스크롤 버그 수정
+
+<span class="hl-comment"># 또는 한글:</span>
+[신규] Turn 스튜디오 추가
+[개선] 생성 속도 개선
+[수정] 버그 수정
+
+<span class="hl-comment"># 파싱: parseChanges()가 줄 단위로 분리, 대괄호 태그로 kind 분류</span></code></pre>
+        </div>
+      </section>
+
+      <!-- DEV SETUP -->
+      <section id="dev-setup" class="section">
+        <div class="section-head"><div class="kicker">Development</div><h2>로컬 개발 환경</h2></div>
+        <div class="grid2">
+          <div>
+            <pre><code><span class="hl-comment"># 1. 클론 & 설치</span>
+git clone https://github.com/hanahchafilmaker/XCONDA_info.git
+cd XCONDA_info
+npm install
+
+<span class="hl-comment"># 2. 개발 서버 (dev.html로 자동 오픈)</span>
+npm run dev
+<span class="hl-comment"># → http://localhost:5173/dev.html</span>
+<span class="hl-comment"># Vite config: server.open = "/dev.html"</span>
+
+<span class="hl-comment"># 3. Notion 스냅샷 수동 생성 (선택)</span>
+node scripts/notion-snapshot.mjs --out notion-content.json
+
+<span class="hl-comment"># 4. 빌드 테스트</span>
+npm run build
+<span class="hl-comment"># → dist/dev.html 생성 후 postbuild가 index.html로 복사</span>
+npm run preview</code></pre>
+          </div>
+          <div>
+            <div class="card">
+              <b>🔧 vite.config.ts 핵심</b>
+              <pre style="margin-top:10px"><code>plugins: [react(), tailwindcss(), viteSingleFile()]
+server: { open: "/dev.html", allowedHosts: true }
+build: {
+  rollupOptions: { input: "dev.html" }
+}
+<span class="hl-comment">// postbuild: dist/dev.html → index.html 복사</span>
+<span class="hl-comment">// 이유: GitHub Pages는 index.html을 진입점으로 사용</span></code></pre>
+              <div style="font-size:12px;color:var(--muted);margin-top:10px">dev.html은 개발용, index.html은 배포용. 루트 index.html을 직접 수정하면 빌드 시 덮어쓰여짐.</div>
+            </div>
+            <div class="card" style="margin-top:12px">
+              <b>🧪 테스트 URL 파라미터</b>
+              <div style="font-size:13px;color:var(--muted);margin-top:8px;line-height:1.8">
+                <span class="mono">?notion=public:ID</span> → 특정 공개 페이지로 전환 (localStorage 저장)<br>
+                <span class="mono">?notion=https://...workers.dev</span> → Worker 프록시로 전환<br>
+                <span class="mono">?notion=off</span> → Notion 해제, 샘플 콘텐츠 모드<br>
+                <span class="mono">#post=페이지ID</span> → 특정 글 모달 자동 오픈 (공유 링크)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUILD -->
+      <section id="build" class="section">
+        <div class="section-head"><div class="kicker">Build</div><h2>빌드 시스템</h2></div>
+        <div class="card">
+          <b>Single File Build 전략</b>
+          <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0">vite-plugin-singlefile이 모든 JS/CSS를 index.html에 인라인으로 포함. GitHub Pages에서 /XCONDA_info/ 하위 경로일 때도 상대 경로 문제 없이 동작. 외부 에셋은 assets/img/tools/ 6종만 유지 (상대 경로).</p>
+          <pre><code><span class="hl-comment"># package.json scripts</span>
+"dev": "vite"  <span class="hl-comment"># dev.html로 개발</span>
+"build": "vite build"  <span class="hl-comment"># dist/dev.html 생성</span>
+"postbuild": "node -e \"fs.copyFileSync('dist/dev.html','index.html')\""
+<span class="hl-comment"># → index.html이 GitHub Pages 배포 파일이 됨 (558KB+)</span>
+"preview": "vite preview"</code></pre>
+        </div>
+      </section>
+
+      <!-- DEPLOY -->
+      <section id="deploy" class="section">
+        <div class="section-head"><div class="kicker">Deploy</div><h2>배포 (GitHub Pages)</h2></div>
+        <ol class="step-list">
+          <li><div><b>main 브랜치 푸시 → 자동 배포</b><br><span style="font-size:13px;color:var(--muted)">GitHub Pages는 main의 index.html을 서빙. Settings → Pages → Source: Deploy from a branch, Branch: main / root</span></div></li>
+          <li><div><b>빌드 파일 갱신 필요</b><br><pre><code>npm run build
+git add index.html notion-content.json
+git commit -m "chore: build & sync"
+git push origin main</code></pre></div></li>
+          <li><div><b>도메인</b><br><span style="font-size:13px;color:var(--muted)">현재: https://hanahchafilmaker.github.io/XCONDA_info/ · 커스텀 도메인 설정 시 CNAME 파일 추가 필요</span></div></li>
+        </ol>
+        <div class="callout callout-warn">⚠️ <b>주의:</b> index.html은 빌드 결과물 (558KB). 직접 편집하지 말고 dev.html과 src/를 수정한 뒤 npm run build로 재생성하세요. .gitignore에 dist/는 제외되지만 index.html은 포함됨.</div>
+      </section>
+
+      <!-- ACTIONS -->
+      <section id="github-actions" class="section">
+        <div class="section-head"><div class="kicker">CI/CD</div><h2>GitHub Actions</h2></div>
+        <div class="card">
+          <b>.github/workflows/notion-sync.yml</b>
+          <pre><code>name: Notion 동기화
+on:
+  schedule:
+    - cron: "*/10 * * * *"  <span class="hl-comment"># 10분마다 (GitHub 사정으로 지연 가능)</span>
+  workflow_dispatch:  <span class="hl-comment"># 수동 실행 버튼</span>
+  push:
+    branches: [main, "arena/**"]
+    paths: [scripts/notion-snapshot.mjs, .github/workflows/notion-sync.yml]
+
+concurrency:
+  group: notion-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write  <span class="hl-comment"># notion-content.json 커밋을 위해 필요</span>
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - checkout@v4
+      - setup-node@v4 (node 20)
+      - run: node scripts/notion-snapshot.mjs --out notion-content.json
+        env:
+          NOTION_PAGE_ID: ${{ vars.NOTION_PAGE_ID }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
+      - upload-artifact (7일 보관)
+      - commit: notion-content.json 변경 시 자동 커밋
+        message: "chore: Notion 콘텐츠 동기화 [skip ci]"
+        rebase -X theirs 전략으로 충돌 해결</code></pre>
+        </div>
+        <div class="grid2" style="margin-top:12px">
+          <div class="callout callout-info">💡 <b>Variables 설정:</b> Settings → Secrets and variables → Variables에 NOTION_PAGE_ID, NOTION_DATABASE_ID 등록. Secrets가 아닌 Variables인 이유: ID는 민감정보 아님. 토큰이 필요한 방법 B는 Worker secrets로 관리.</div>
+          <div class="callout callout-success">✅ <b>멱등성:</b> 변경사항 없으면 커밋 생략. [skip ci]로 무한 루프 방지. pull --rebase -X theirs로 동시 푸시 경합 시 최신 스냅샷 우선.</div>
+        </div>
+      </section>
+
+      <!-- ENV -->
+      <section id="env" class="section">
+        <div class="section-head"><div class="kicker">Configuration</div><h2>환경변수</h2></div>
+        <div class="table-wrap"><table><thead><tr><th>변수</th><th>위치</th><th>필수</th><th>설명</th></tr></thead><tbody>
+          <tr><td><span class="mono">VITE_NOTION_ENDPOINT</span></td><td>.env (로컬)</td><td>선택</td><td>Worker URL 또는 public:ID. 빌드 시점에 주입. 없으면 DEFAULT_ENDPOINT 사용</td></tr>
+          <tr><td><span class="mono">NOTION_PAGE_ID</span></td><td>GitHub Variables / .env</td><td>선택</td><td>공개 페이지 ID. 기본값 3e72ebc017ad...</td></tr>
+          <tr><td><span class="mono">NOTION_DATABASE_ID</span></td><td>GitHub Variables</td><td>선택</td><td>DB ID. 페이지 내 첫 번째 DB 자동 탐색되므로 선택</td></tr>
+          <tr><td><span class="mono">NOTION_TOKEN</span></td><td>Worker secret</td><td>방법 B만</td><td>Notion Integration secret_xxx</td></tr>
+          <tr><td><span class="mono">NOTION_DB_ID</span></td><td>Worker secret</td><td>방법 B만</td><td>DB ID 32자리</td></tr>
+          <tr><td><span class="mono">ALLOW_ORIGIN</span></td><td>Worker variable</td><td>선택</td><td>CORS 허용 도메인, 기본 "*"</td></tr>
+        </tbody></table></div>
+      </section>
+
+      <!-- CONTENT CODE -->
+      <section id="content-code" class="section">
+        <div class="section-head"><div class="kicker">Static Content</div><h2>정적 콘텐츠 코드 (툴 가이드)</h2><p>Notion에 글이 없을 때 표시되는 폴백. 코드로 관리되는 툴 가이드는 Notion의 Tool 속성으로 오버라이드 가능.</p></div>
+        <div class="grid2">
+          <div class="card">
+            <b>src/content/tools.ts</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:8px">BASE_TOOLS 19개 정의. 각 툴: slug, name, group, tagline, desc, href, image, badge, steps, tips. TOOL_GROUPS 6개. toolToEntry()로 Entry 변환, getToolGuide()로 상세 가이드 병합, getToolVideo()로 영상 임베드.</div>
+            <pre><code><span class="hl-keyword">const</span> BASE_TOOLS: Tool[] = [
+  { slug: "turn", group: "핵심 스튜디오", ... },
+  { slug: "flexboard", ... },
+  <span class="hl-comment">// ... 19개</span>
+]</code></pre>
+          </div>
+          <div class="card">
+            <b>src/content/toolGuides.ts</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:8px">TOOL_GUIDES: slug → { ko, en } → Block[] . Block 타입: p, h2, h3, ul, ol, callout, toggle, img, video 등. Notion이 없을 때 ArticleModal에 표시되는 상세 매뉴얼.</div>
+            <pre><code><span class="hl-keyword">export const</span> TOOL_GUIDES = {
+  turn: { ko: [ { type: "p", text: "..." }, ... ], en: [...] },
+  "directors-cut": { ... },
+  ...
+}</code></pre>
+          </div>
+        </div>
+        <div class="callout callout-brand" style="margin-top:12px">💡 <b>오버라이드 규칙:</b> Notion DB에 Tool 속성이 "Director's Cut"인 글이 있으면, 해당 툴 카드 클릭 시 코드의 toolGuides 대신 Notion 글 본문이 표시됨. 공지/가이드 운영자가 툴 사용법을 직접 수정할 수 있게 하는 기능.</div>
+      </section>
+
+      <!-- I18N -->
+      <section id="i18n" class="section">
+        <div class="section-head"><div class="kicker">Internationalization</div><h2>다국어 (i18n) 시스템</h2></div>
+        <div class="grid2">
+          <div class="card">
+            <b>UI 다국어: src/i18n/dict.ts</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:8px">DICT 객체에 300+ 키. ko/en 두 언어. translate(key, lang)으로 조회. TYPE_LABELS, GROUP_LABELS, CATEGORY_LABELS, CHANGE_LABELS로 필터 라벨 번역.</div>
+            <pre><code>"nav.tools": { ko: "툴 가이드", en: "Tool Guide" }
+"toolentry.howTo": { ko: "사용 방법", en: "How to use" }
+
+<span class="hl-func">translate</span>("nav.tools", "ko") → "툴 가이드"
+<span class="hl-func">groupLabel</span>("핵심 스튜디오", "en") → "Core Studios"</code></pre>
+          </div>
+          <div class="card">
+            <b>콘텐츠 다국어</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:8px">
+              <b>정적 툴:</b> tools.en.ts에 영문 번역, localizeTool()로 병합<br>
+              <b>Notion:</b> Title EN, Summary EN, Category EN, Changes EN 속성. 있으면 EN 모드에서 해당 필드 대체, 없으면 KO 원문 표시<br>
+              <b>본문:</b> Notion 본문은 번역 없이 원문 그대로 (작성자가 한/영 모두 작성하거나 KO 위주)<br><br>
+              <b>언어 감지:</b> localStorage + 브라우저 언어. LanguageProvider가 setCurrentLang()으로 전역 동기화, formatDate()가 lang에 따라 날짜 포맷 변경
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TROUBLESHOOT -->
+      <section id="troubleshoot" class="section">
+        <div class="section-head"><div class="kicker">Troubleshooting</div><h2>트러블슈팅</h2></div>
+        <div class="table-wrap"><table><thead><tr><th>증상</th><th>원인</th><th>해결</th></tr></thead><tbody>
+          <tr><td>Notion 글이 사이트에 안 보임</td><td>Published 미체크, Date 없음, Type 없음</td><td>필수 4개 속성 확인, Actions 수동 실행</td></tr>
+          <tr><td>Actions 실패 (빨간 X)</td><td>Notion 페이지 게시 해제, DB 삭제, API 변경</td><td>Actions 로그 확인, NOTION_SETUP.md 1~4단계 재확인, 페이지 게시 상태 확인</td></tr>
+          <tr><td>notion-content.json 오래됨</td><td>cron 지연 (GitHub 사정), Variables 미설정</td><td>수동 Run workflow, generatedAt 확인</td></tr>
+          <tr><td>이미지 1시간 후 깨짐</td><td>Notion 파일 URL 만료 (1시간)</td><td>외부 이미지 호스팅 URL로 교체, Cover에 외부 URL 사용</td></tr>
+          <tr><td>index.html 404 or 빈 화면</td><td>빌드 결과물 미커밋, Pages 설정 오류</td><td>npm run build 후 index.html 커밋, Settings → Pages → main / root 확인</td></tr>
+          <tr><td>로컬에서 Notion 연결 안 됨</td><td>CORS, endpoint 오류</td><td>?notion=off로 샘플 모드 확인, 브라우저 콘솔 네트워크 탭 확인, public:ID 형식 확인</td></tr>
+          <tr><td>툴 가이드가 Notion 글로 대체됨</td><td>Tool 속성이 툴 이름과 일치</td><td>의도된 기능. Notion에서 Tool 속성 제거하면 코드 가이드로 복구</td></tr>
+          <tr><td>번역이 안 보임</td><td>Title EN 등 속성 없음</td><td>EN 속성 추가, localStorage 언어 설정 확인</td></tr>
+        </tbody></table></div>
+        <div class="card2" style="margin-top:16px">
+          <b>🩺 헬스체크 명령어</b>
+          <pre><code><span class="hl-comment"># 스냅샷 유효성 검사</span>
+cat notion-content.json | python3 -m json.tool | head -n 50
+<span class="hl-comment"># generatedAt이 6시간 이내인지 확인</span>
+
+<span class="hl-comment"># 로컬 스냅샷 생성 테스트</span>
+node scripts/notion-snapshot.mjs --print
+
+<span class="hl-comment"># 빌드 후 파일 크기 확인 (500KB+ 정상)</span>
+npm run build && ls -lh index.html dist/dev.html
+
+<span class="hl-comment"># Notion 공개 페이지 접속 테스트</span>
+curl -I https://www.notion.so/api/v3/loadPageChunk -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"pageId":"3e72ebc0-17ad-8024-a3f5-ef8fb9f8c6dd","limit":1,"cursor":{"stack":[]},"chunkNumber":0,"verticalColumns":false}'</code></pre>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section id="security" class="section">
+        <div class="section-head"><div class="kicker">Security</div><h2>보안 & 권한</h2></div>
+        <div class="grid2">
+          <div class="card">
+            <b>🔑 토큰 관리</b>
+            <ul style="font-size:13px;color:var(--muted);margin:10px 0 0;padding-left:18px;line-height:1.8">
+              <li><b>방법 A는 토큰 없음:</b> 공개 페이지라 토큰 노출 위험 없음. 가장 안전.</li>
+              <li><b>방법 B 토큰은 Worker secret:</b> wrangler secret put으로 암호화 저장. 코드/로그에 노출 안 됨. 절대 .env에 커밋 금지.</li>
+              <li><b>GitHub Variables vs Secrets:</b> Page ID는 Variables (민감 아님), Token은 Secrets (민감). 현재는 Variables만 사용 중.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <b>🛡️ CORS & 공개 범위</b>
+            <ul style="font-size:13px;color:var(--muted);margin:10px 0 0;padding-left:18px;line-height:1.8">
+              <li><b>스냅샷 방식:</b> 같은 출처 JSON이라 CORS 불필요. 외부 API 의존성 0.</li>
+              <li><b>Worker 방식:</b> ALLOW_ORIGIN으로 허용 도메인 제한 가능. 기본 "*" → 특정 도메인으로 변경 권장.</li>
+              <li><b>Notion 공개 페이지:</b> 링크를 아는 사람은 누구나 열람 가능. 민감 정보는 비공개 DB + Worker 방식 사용.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout callout-warn" style="margin-top:12px">⚠️ <b>절대 커밋하면 안 되는 것:</b> NOTION_TOKEN, .env, .git/config, wrangler.toml에 토큰 평문. .gitignore에 .env는 이미 제외됨. 토큰은 항상 secret put으로 관리.</div>
+      </section>
+
+      <!-- CHECKLIST -->
+      <section id="checklist" class="section">
+        <div class="section-head"><div class="kicker">Operations</div><h2>운영 체크리스트</h2></div>
+        <div class="grid2">
+          <div class="card">
+            <b>📅 일일 체크</b>
+            <ul style="font-size:13px;color:var(--muted);margin:10px 0 0;padding-left:18px;line-height:2">
+              <li>GitHub Pages 정상 접속 (https://.../XCONDA_info/)</li>
+              <li>Actions → Notion 동기화 최근 실행 초록불 확인</li>
+              <li>notion-content.json generatedAt 1시간 이내인지</li>
+              <li>긴급 공지 Pinned 처리 필요 여부</li>
+            </ul>
+          </div>
+          <div class="card">
+            <b>📅 주간/월간 체크</b>
+            <ul style="font-size:13px;color:var(--muted);margin:10px 0 0;padding-left:18px;line-height:2">
+              <li>Notion DB 속성 정리 (불필요한 태그, 카테고리)</li>
+              <li>이미지 만료 체크 (1시간 지난 Notion 파일 URL 교체)</li>
+              <li>툴 가이드 최신화 (tools.ts, toolGuides.ts vs 실제 스튜디오 기능)</li>
+              <li>번역 누락 체크 (Title EN, Summary EN)</li>
+              <li>npm audit / 의존성 업데이트</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;background:linear-gradient(135deg, rgba(250,204,21,0.08), rgba(139,92,246,0.08));border-color:var(--brand-border)">
+          <b>🚀 신규 관리자 온보딩 순서</b>
+          <ol style="font-size:13.5px;color:var(--muted);margin:10px 0 0;padding-left:18px;line-height:2">
+            <li>리포지토리 클론 & npm install & npm run dev로 로컬 실행 확인</li>
+            <li>NOTION_SETUP.md 정독 (방법 A/B 이해)</li>
+            <li>Notion XCONDA_NEWs 페이지 접근 권한 요청 & DB 구조 파악</li>
+            <li>GitHub Variables (NOTION_PAGE_ID) 위치 확인</li>
+            <li>Actions → Run workflow로 수동 동기화 테스트</li>
+            <li>테스트 글 작성 (Type=공지, Published 체크) → 10분 후 사이트 반영 확인</li>
+            <li>이 관리자 가이드 북마크 & 운영 체크리스트 숙지</li>
+          </ol>
+        </div>
+      </section>
+
+      <div class="card" style="text-align:center;padding:28px;margin-top:24px">
+        <div style="font-size:22px;margin-bottom:8px">🛠️</div>
+        <b>관리자 가이드 v2026.04</b>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px">마지막 업데이트: 2026-09-27 · 리포지토리: hanahchafilmaker/XCONDA_info · 브랜치: main<br>문의: GitHub Issues 또는 스튜디오 내 채팅 · 이 문서는 arena/01a0e05b-xconda-info 브랜치에서 생성됨</div>
+        <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <a href="https://github.com/hanahchafilmaker/XCONDA_info/actions" target="_blank" style="background:var(--card2);border:1px solid var(--border);padding:8px 16px;border-radius:999px;font-size:13px">Actions 보기 →</a>
+          <a href="https://www.notion.so/3e72ebc017ad8024a3f5ef8fb9f8c6dd" target="_blank" style="background:var(--brand);color:#111;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600">Notion DB 열기 →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <div>© 2026 XCONDA · Admin Guide · Internal Use Only</div>
+    <div class="mono">notion-content.json · single-file build · GitHub Pages</div>
+  </div>
+</footer>
+
+<script>
+// active nav on scroll
+const links = document.querySelectorAll('.nav-link');
+const secs = Array.from(links).map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if(link) link.classList.add('active');
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px', threshold:0});
+secs.forEach(s=>obs.observe(s));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const href=a.getAttribute('href');
+    if(href.length>1){
+      e.preventDefault();
+      const t=document.querySelector(href);
+      if(t) window.scrollTo({top:t.offsetTop-80, behavior:'smooth'});
+      history.pushState(null,null,href);
+    }
+  });
+});
+</script>
+</body>
+</html>
