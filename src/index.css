@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* Tailwind 자동 스캔을 src/ 으로 제한합니다.
+   저장소 루트에는 참고용 프로토타입(redesign-xconda-website-ui/)이 함께
+   존재하므로, 경로를 지정하지 않으면 그쪽 클래스까지 CSS 에 섞여 나옵니다. */
+@import "tailwindcss" source("../src");
 
 /* ─────────────────────────────────────────────────────────────
    XCONDA Guide Center — design tokens
