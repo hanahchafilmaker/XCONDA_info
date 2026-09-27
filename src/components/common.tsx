@@ -9,15 +9,15 @@ import { cn } from "../utils/cn";
 /* ----------------------------- Badges ----------------------------- */
 
 const CATEGORY_TONE: Record<string, string> = {
-  공지: "bg-violet-400/12 text-violet-200 ring-violet-400/25",
-  Notice: "bg-violet-400/12 text-violet-200 ring-violet-400/25",
-  점검: "bg-amber-400/12 text-amber-200 ring-amber-400/25",
-  Maintenance: "bg-amber-400/12 text-amber-200 ring-amber-400/25",
-  이벤트: "bg-fuchsia-400/12 text-fuchsia-200 ring-fuchsia-400/25",
-  Event: "bg-fuchsia-400/12 text-fuchsia-200 ring-fuchsia-400/25",
-  정책: "bg-sky-400/12 text-sky-200 ring-sky-400/25",
-  Policy: "bg-sky-400/12 text-sky-200 ring-sky-400/25",
-  업데이트: "bg-emerald-400/12 text-emerald-200 ring-emerald-400/25",
+  공지: "border-volt-400/35 bg-volt-400/10 text-volt-300",
+  Notice: "border-volt-400/35 bg-volt-400/10 text-volt-300",
+  점검: "border-rose-400/25 bg-rose-400/10 text-rose-300",
+  Maintenance: "border-rose-400/25 bg-rose-400/10 text-rose-300",
+  이벤트: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+  Event: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+  정책: "border-sky-400/25 bg-sky-400/10 text-sky-300",
+  Policy: "border-sky-400/25 bg-sky-400/10 text-sky-300",
+  업데이트: "border-volt-400/35 bg-volt-400/10 text-volt-300",
 };
 
 export function CategoryBadge({ children, className }: { children: ReactNode; className?: string }) {
@@ -25,8 +25,8 @@ export function CategoryBadge({ children, className }: { children: ReactNode; cl
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ring-1 ring-inset",
-        tone ?? "bg-white/[0.06] text-zinc-300 ring-white/10",
+        "inline-flex shrink-0 items-center rounded-full border px-2.5 py-1 text-[10.5px] font-bold tracking-wide",
+        tone ?? "border-white/10 bg-white/[0.04] text-zinc-400",
         className
       )}
     >
@@ -42,7 +42,7 @@ export function TypeLabel({ type }: { type: EntryType }) {
 
 export function NewBadge() {
   return (
-    <span className="bg-brand inline-flex shrink-0 items-center rounded-full px-1.5 py-px text-[9px] font-bold tracking-wider text-white">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-volt-400 px-2 py-px text-[9px] font-extrabold tracking-wider text-ink-950">
       NEW
     </span>
   );
@@ -75,7 +75,10 @@ export function SyncStatus({ className }: { className?: string }) {
             : t("sync.sample");
   return (
     <div
-      className={cn("glass inline-flex items-center gap-2 rounded-full py-1.5 pl-3 pr-1.5 text-xs text-zinc-300", className)}
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-ink-900/60 py-1.5 pl-3 pr-1.5 text-[11.5px] font-semibold text-zinc-400 backdrop-blur-xl",
+        className
+      )}
       title={pick(
         "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다.",
         "Connected to Notion database. Published checkbox must be checked in Notion."
@@ -125,7 +128,7 @@ export function SmartImage({ src, alt = "", className }: { src?: string; alt?: s
   const [failed, setFailed] = useState(false);
   if (!src || failed) {
     return (
-      <div className={cn("grid place-items-center bg-gradient-to-br from-violet-600/25 via-fuchsia-600/15 to-amber-500/15", className)}>
+      <div className={cn("grid place-items-center bg-gradient-to-br from-volt-400/18 via-volt-500/10 to-ink-800", className)}>
         <ImageOff className="h-6 w-6 text-white/30" aria-hidden />
       </div>
     );
@@ -141,13 +144,13 @@ export function RichText({ value }: { value: Rich }) {
     <>
       {value.map((s, i) => {
         let node: ReactNode = s.text;
-        if (s.code) node = <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[0.85em] text-fuchsia-200">{node}</code>;
+        if (s.code) node = <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[0.85em] text-volt-300">{node}</code>;
         if (s.bold) node = <strong className="font-semibold text-white">{node}</strong>;
         if (s.italic) node = <em>{node}</em>;
         if (s.strike) node = <s className="text-zinc-500">{node}</s>;
         if (s.href)
           node = (
-            <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-fuchsia-300 underline decoration-fuchsia-300/40 underline-offset-4 hover:decoration-fuchsia-300">
+            <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-volt-300 underline decoration-volt-400/40 underline-offset-4 hover:decoration-volt-400">
               {node}
             </a>
           );
@@ -213,7 +216,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
               <ul key={i} className="space-y-2 pl-1">
                 {b.items.map((it, j) => (
                   <li key={j} className="flex gap-3">
-                    <span className="bg-brand mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full" />
+                    <span className="bg-volt-400 mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full" />
                     <span><RichText value={it} /></span>
                   </li>
                 ))}
@@ -237,7 +240,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
               <ul key={i} className="space-y-2">
                 {b.items.map((it, j) => (
                   <li key={j} className="flex gap-3">
-                    <span className={cn("mt-1 grid h-4.5 w-4.5 shrink-0 place-items-center rounded ring-1 ring-inset", it.checked ? "bg-brand ring-transparent" : "ring-white/20")}>
+                    <span className={cn("mt-1 grid h-4.5 w-4.5 shrink-0 place-items-center rounded ring-1 ring-inset", it.checked ? "bg-volt-400 ring-transparent" : "ring-white/20")}>
                       {it.checked && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
                     </span>
                     <span className={cn(it.checked && "text-zinc-400")}><RichText value={it.text} /></span>
@@ -247,7 +250,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             );
           case "quote":
             return (
-              <blockquote key={i} className="border-l-2 border-fuchsia-400/60 pl-4 text-zinc-200 italic">
+              <blockquote key={i} className="border-l-2 border-volt-400/60 pl-4 text-zinc-200 italic">
                 <RichText value={b.text} />
               </blockquote>
             );
