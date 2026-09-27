@@ -284,8 +284,8 @@ async function matchingSnapshot(pageId: string, force = false): Promise<NotionSn
  *    (프록시가 빈 표를 돌려주면 스냅샷 쪽을 우선합니다 — 기존 방어 로직 유지)
  * 3) 프록시마저 실패하면 낡은 스냅샷이라도 표시하고, 둘 다 없으면 안내 오류를 던집니다.
  */
-export async function fetchPublicEntries(pageId: string, signal?: AbortSignal): Promise<Entry[]> {
-  const snapshot = await matchingSnapshot(pageId);
+export async function fetchPublicEntries(pageId: string, signal?: AbortSignal, force = false): Promise<Entry[]> {
+  const snapshot = await matchingSnapshot(pageId, force);
 
   // 신선한 스냅샷이 있으면 외부 호출 없이 즉시 응답 (가장 빠르고 조용한 경로)
   if (snapshot && !snapshotIsStale(snapshot)) {

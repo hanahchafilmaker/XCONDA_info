@@ -19,7 +19,7 @@ type Ctx = {
   status: Status;
   syncedAt: number | null;
   endpoint?: string;
-  refresh: () => void;
+  refresh: (force?: boolean) => void;
   openEntry: (e: Entry) => void;
   openTool: (slug: string) => void;
   closeEntry: () => void;
@@ -45,13 +45,13 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const syncedAtRef = useRef(syncedAt);
   syncedAtRef.current = syncedAt;
 
-  const refresh = useCallback(() => {
+  const refresh = useCallback((force = true) => {
     if (!endpoint) return;
     inflight.current?.abort();
     const ctrl = new AbortController();
     inflight.current = ctrl;
     setStatus((s) => (s === "loading" ? "loading" : "syncing"));
-    syncFromNotion(endpoint, ctrl.signal)
+    syncFromNotion(endpoint, ctrl.signal, force)
       .then((p) => {
         setEntries(p.entries);
         setSource("notion");
@@ -70,10 +70,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   // 최초 동기화 + 주기적 폴링 + 탭 복귀 시 재동기화
   useEffect(() => {
     if (!endpoint) return;
-    refresh();
-    const id = window.setInterval(() => document.visibilityState === "visible" && refresh(), POLL_MS);
+    refresh(false); // 초기 로드는 캐시 허용
+    const id = window.setInterval(() => document.visibilityState === "visible" && refresh(true), POLL_MS);
     const onVis = () => {
-      if (document.visibilityState === "visible" && syncedAtRef.current && Date.now() - syncedAtRef.current > 30_000) refresh();
+      if (document.visibilityState === "visible" && syncedAtRef.current && Date.now() - syncedAtRef.current > 30_000) {
+        refresh(true);
+      }
     };
     document.addEventListener("visibilitychange", onVis);
     return () => {
