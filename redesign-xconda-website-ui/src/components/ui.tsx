@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useId,
   useRef,
   useState,
   type ReactNode,
@@ -103,21 +104,43 @@ export const IconMenu = (p: IconProps) => (
 
 /* ───────────────────────── logo ───────────────────────── */
 
+/** XCONDA 공식 마크 — 골드(＼)와 실버(／) 셰브론이 교차해 X 를 이루는 형상. */
+export function LogoMark({ className }: { className?: string }) {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" aria-hidden>
+      <defs>
+        <linearGradient id={`${uid}-gold`} x1="6" y1="3" x2="42" y2="45" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#FFF8D0" />
+          <stop offset=".16" stopColor="#FFE45C" />
+          <stop offset=".42" stopColor="#FFD60A" />
+          <stop offset=".7" stopColor="#E7AF06" />
+          <stop offset="1" stopColor="#A67800" />
+        </linearGradient>
+        <linearGradient id={`${uid}-silver`} x1="42" y1="3" x2="6" y2="45" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#FFFFFF" />
+          <stop offset=".3" stopColor="#F2F5F9" />
+          <stop offset=".62" stopColor="#C9D3DF" />
+          <stop offset="1" stopColor="#8A97A8" />
+        </linearGradient>
+      </defs>
+      <path d="M38.9 4.9 35.3 1.3 9.1 43.1l3.6 3.6z" fill={`url(#${uid}-silver)`} />
+      <path
+        d="M9.1 9.1 12.7 5.6 38.9 38.9l-3.6 3.5z"
+        fill={`url(#${uid}-gold)`}
+        stroke="#08080C"
+        strokeWidth="1.1"
+        strokeOpacity=".5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function Logo({ className }: { className?: string }) {
   return (
     <a href="#top" className={cn("group flex items-center gap-2.5", className)}>
-      <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-volt-400">
-        <span className="absolute -left-1 top-0 h-full w-1.5 rotate-12 bg-ink-950/85" />
-        <svg viewBox="0 0 24 24" className="relative h-4 w-4 text-ink-950">
-          <path
-            d="M5 5l7 7-7 7M19 5l-7 7 7 7"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-          />
-        </svg>
-      </span>
+      <LogoMark className="h-9 w-9 shrink-0 transition-transform duration-500 group-hover:scale-105" />
       <span className="flex flex-col leading-none">
         <span className="text-[15px] font-extrabold tracking-[-0.04em] text-white">
           XCONDA

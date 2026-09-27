@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useId,
   useRef,
   useState,
   type ReactNode,
@@ -125,26 +126,60 @@ export const IconGit = (p: IconProps) => (
 
 /* ───────────────────────── logo ───────────────────────── */
 
+/**
+ * XCONDA 공식 마크 — 골드(＼)와 실버(／) 셰브론이 교차해 X 를 이루는 형상.
+ * 에셋 원본: assets/img/logo/xconda-mark.svg (단일 파일 빌드를 위해 인라인으로도 유지)
+ */
+export function LogoMark({ className, title }: { className?: string; title?: string }) {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      className={className}
+      fill="none"
+      role={title ? "img" : undefined}
+      aria-hidden={title ? undefined : true}
+    >
+      {title ? <title>{title}</title> : null}
+      <defs>
+        <linearGradient id={`${uid}-gold`} x1="6" y1="3" x2="42" y2="45" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#FFF8D0" />
+          <stop offset=".16" stopColor="#FFE45C" />
+          <stop offset=".42" stopColor="#FFD60A" />
+          <stop offset=".7" stopColor="#E7AF06" />
+          <stop offset="1" stopColor="#A67800" />
+        </linearGradient>
+        <linearGradient id={`${uid}-silver`} x1="42" y1="3" x2="6" y2="45" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#FFFFFF" />
+          <stop offset=".3" stopColor="#F2F5F9" />
+          <stop offset=".62" stopColor="#C9D3DF" />
+          <stop offset="1" stopColor="#8A97A8" />
+        </linearGradient>
+      </defs>
+      {/* 실버 셰브론 (／) */}
+      <path d="M38.9 4.9 35.3 1.3 9.1 43.1l3.6 3.6z" fill={`url(#${uid}-silver)`} />
+      {/* 골드 셰브론 (＼) — 위에 올라와 교차부를 덮음 */}
+      <path
+        d="M9.1 9.1 12.7 5.6 38.9 38.9l-3.6 3.5z"
+        fill={`url(#${uid}-gold)`}
+        stroke="#08080C"
+        strokeWidth="1.1"
+        strokeOpacity=".5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function Logo({ className }: { className?: string }) {
   return (
     <a href="#top" aria-label="XCONDA 가이드 센터 홈" className={cn("group flex items-center gap-2.5", className)}>
-      <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-volt-400 transition-shadow duration-300 group-hover:shadow-[0_8px_28px_-8px_rgba(255,214,10,0.9)]">
-        <svg
-          viewBox="0 0 24 24"
-          className="relative h-[17px] w-[17px] text-ink-950"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3.1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-        >
-          <path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8" />
-        </svg>
+      <span className="relative grid h-9 w-9 shrink-0 place-items-center">
         <span
           aria-hidden
-          className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-full"
+          className="absolute inset-0 rounded-full bg-volt-400/0 blur-lg transition-colors duration-500 group-hover:bg-volt-400/25"
         />
+        <LogoMark className="relative h-9 w-9 transition-transform duration-500 group-hover:scale-[1.07]" />
       </span>
       <span className="flex flex-col leading-none">
         <span className="text-[15px] font-extrabold tracking-[0.08em] text-white">
