@@ -127,14 +127,15 @@ export const IconGit = (p: IconProps) => (
 /* ───────────────────────── logo ───────────────────────── */
 
 /**
- * XCONDA 공식 마크 — 골드(＼)와 실버(／) 셰브론이 교차해 X 를 이루는 형상.
+ * XCONDA 공식 마크 — 옐로(＼) 획이 화이트(／) 획을 가르며 교차하는 플랫 X.
+ * 화이트 획은 마스크로 잘라내 배경색과 무관하게 틈이 보입니다.
  * 에셋 원본: assets/img/logo/xconda-mark.svg (단일 파일 빌드를 위해 인라인으로도 유지)
  */
 export function LogoMark({ className, title }: { className?: string; title?: string }) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   return (
     <svg
-      viewBox="0 0 48 48"
+      viewBox="0 0 32 32"
       className={className}
       fill="none"
       role={title ? "img" : undefined}
@@ -142,54 +143,25 @@ export function LogoMark({ className, title }: { className?: string; title?: str
     >
       {title ? <title>{title}</title> : null}
       <defs>
-        <linearGradient id={`${uid}-gold`} x1="6" y1="3" x2="42" y2="45" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#FFF8D0" />
-          <stop offset=".16" stopColor="#FFE45C" />
-          <stop offset=".42" stopColor="#FFD60A" />
-          <stop offset=".7" stopColor="#E7AF06" />
-          <stop offset="1" stopColor="#A67800" />
-        </linearGradient>
-        <linearGradient id={`${uid}-silver`} x1="42" y1="3" x2="6" y2="45" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#FFFFFF" />
-          <stop offset=".3" stopColor="#F2F5F9" />
-          <stop offset=".62" stopColor="#C9D3DF" />
-          <stop offset="1" stopColor="#8A97A8" />
-        </linearGradient>
+        <mask id={`${uid}-cut`} maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+          <rect width="32" height="32" fill="#fff" />
+          <path d="M4 4h7l17 24h-7z" fill="#000" stroke="#000" strokeWidth="3" strokeLinejoin="round" />
+        </mask>
       </defs>
-      {/* 실버 셰브론 (／) */}
-      <path d="M38.9 4.9 35.3 1.3 9.1 43.1l3.6 3.6z" fill={`url(#${uid}-silver)`} />
-      {/* 골드 셰브론 (＼) — 위에 올라와 교차부를 덮음 */}
-      <path
-        d="M9.1 9.1 12.7 5.6 38.9 38.9l-3.6 3.5z"
-        fill={`url(#${uid}-gold)`}
-        stroke="#08080C"
-        strokeWidth="1.1"
-        strokeOpacity=".5"
-        strokeLinejoin="round"
-      />
+      {/* 화이트 획 (／) — 옐로 획 주변을 잘라냄 */}
+      <path d="M21 4h7L11 28H4z" fill="#FFFFFF" mask={`url(#${uid}-cut)`} />
+      {/* 옐로 획 (＼) */}
+      <path d="M4 4h7l17 24h-7z" fill="#FFD60A" />
     </svg>
   );
 }
 
+/** 헤더·푸터 로고 락업: 마크 + "Xconda" 워드마크 */
 export function Logo({ className }: { className?: string }) {
   return (
-    <a href="#top" aria-label="XCONDA 가이드 센터 홈" className={cn("group flex items-center gap-2.5", className)}>
-      <span className="relative grid h-9 w-9 shrink-0 place-items-center">
-        <span
-          aria-hidden
-          className="absolute inset-0 rounded-full bg-volt-400/0 blur-lg transition-colors duration-500 group-hover:bg-volt-400/25"
-        />
-        <LogoMark className="relative h-9 w-9 transition-transform duration-500 group-hover:scale-[1.07]" />
-      </span>
-      <span className="flex flex-col leading-none">
-        <span className="text-[15px] font-extrabold tracking-[0.08em] text-white">
-          XCONDA
-          <span className="text-volt-400">.</span>
-        </span>
-        <span className="mt-1 text-[8.5px] font-bold uppercase tracking-[0.3em] text-zinc-500">
-          Guide Center
-        </span>
-      </span>
+    <a href="#top" aria-label="Xconda 가이드 센터 홈" className={cn("flex items-center gap-2", className)}>
+      <LogoMark className="h-[22px] w-[22px] shrink-0" />
+      <span className="text-[19px] font-bold leading-none tracking-[-0.02em] text-white">Xconda</span>
     </a>
   );
 }
@@ -242,68 +214,75 @@ export function Reveal({
 
 /* ───────────────────────── section chrome ───────────────────────── */
 
-export function SectionLabel({
-  index,
+/** 섹션 머리: 작은 라벨 + 제목 + 한 줄 설명 (+ 우측 액션) */
+export function SectionHeader({
+  eyebrow,
   title,
-  kicker,
-}: {
-  index: string;
-  title: string;
-  kicker?: string;
-}) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="font-mono text-[11px] font-bold tracking-[0.22em] text-volt-400">
-        {index}
-      </span>
-      <span className="h-px w-8 bg-volt-400/40" />
-      <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-400">
-        {title}
-      </span>
-      {kicker && (
-        <span className="hidden items-center gap-1.5 rounded-full border border-zinc-800 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-zinc-500 sm:inline-flex">
-          {kicker}
-        </span>
-      )}
-    </div>
-  );
-}
-
-export function SectionHeading({
-  children,
   sub,
+  action,
 }: {
-  children: ReactNode;
+  eyebrow?: string;
+  title: ReactNode;
   sub?: ReactNode;
+  action?: ReactNode;
 }) {
   return (
-    <div className="mt-5 space-y-4">
-      <h2 className="text-balance-tight text-[2rem] font-extrabold leading-[1.08] text-white sm:text-[2.6rem] lg:text-[3.1rem]">
-        {children}
-      </h2>
-      {sub && <p className="max-w-2xl text-[15px] leading-relaxed text-zinc-400">{sub}</p>}
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="min-w-0">
+        {eyebrow && <p className="text-[13px] font-semibold text-volt-400">{eyebrow}</p>}
+        <h2 className="mt-2 text-[1.75rem] font-bold leading-tight tracking-[-0.03em] text-white sm:text-[2.1rem]">
+          {title}
+        </h2>
+        {sub && <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-zinc-400">{sub}</p>}
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
     </div>
   );
 }
 
+/** 강조 텍스트 — 색상만 사용 (장식 바 없음) */
 export function Highlight({ children }: { children: ReactNode }) {
+  return <span className="text-volt-400">{children}</span>;
+}
+
+/** 필터 탭 (세그먼트) */
+export function Tabs<T extends string>({
+  items,
+  value,
+  onChange,
+  label,
+}: {
+  items: { id: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+  label?: string;
+}) {
   return (
-    <span className="relative inline-block">
-      <span className="relative z-10 text-volt-400">{children}</span>
-      <span className="absolute inset-x-0 bottom-1 z-0 h-2.5 -skew-x-6 bg-volt-400/15" />
-    </span>
+    <div role="tablist" aria-label={label} className="flex gap-1 overflow-x-auto">
+      {items.map((it) => (
+        <button
+          key={it.id}
+          role="tab"
+          aria-selected={value === it.id}
+          onClick={() => onChange(it.id)}
+          className={cn(
+            "shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition-colors",
+            value === it.id ? "bg-white text-ink-950" : "text-zinc-400 hover:bg-white/[0.06] hover:text-white",
+          )}
+        >
+          {it.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
 /* ───────────────────────── badges / chips ───────────────────────── */
 
 const toneMap: Record<string, string> = {
-  volt: "border-volt-400/35 bg-volt-400/10 text-volt-300",
-  zinc: "border-white/10 bg-white/[0.04] text-zinc-400",
-  green: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
-  red: "border-rose-400/25 bg-rose-400/10 text-rose-300",
-  blue: "border-sky-400/25 bg-sky-400/10 text-sky-300",
-  violet: "border-violet-400/25 bg-violet-400/10 text-violet-300",
+  volt: "bg-volt-400/12 text-volt-300",
+  zinc: "bg-white/[0.06] text-zinc-400",
+  red: "bg-rose-400/10 text-rose-300",
 };
 
 export function Pill({
@@ -318,7 +297,7 @@ export function Pill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] font-bold tracking-wide",
+        "inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11.5px] font-semibold",
         toneMap[tone] ?? toneMap.zinc,
         className,
       )}
@@ -346,7 +325,7 @@ export function FilterChip({
       className={cn(
         "group inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-[12.5px] font-semibold transition-all duration-300",
         active
-          ? "border-volt-400 bg-volt-400 text-ink-950 glow-volt"
+          ? "border-volt-400 bg-volt-400 text-ink-950"
           : "border-white/10 bg-white/[0.02] text-zinc-400 hover:border-white/25 hover:text-white",
       )}
     >
@@ -376,14 +355,13 @@ export function VoltButton({
   icon?: boolean;
 }) {
   const cls = cn(
-    "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-volt-400 px-6 py-3 text-[13px] font-extrabold tracking-tight text-ink-950 transition-all duration-300 hover:shadow-[0_14px_44px_-10px_rgba(255,214,10,0.75)] active:scale-[0.97]",
+    "group inline-flex items-center justify-center gap-2 rounded-full bg-volt-400 px-5 py-2.5 text-[14px] font-bold text-ink-950 transition-colors hover:bg-volt-300 active:scale-[0.98]",
     className,
   );
   const inner = (
     <>
-      <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-      <span className="relative">{children}</span>
-      {icon && <IconArrow className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
+      <span>{children}</span>
+      {icon && <IconArrow className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />}
     </>
   );
   return href ? (
@@ -409,7 +387,7 @@ export function GhostButton({
   className?: string;
 }) {
   const cls = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-[13px] font-bold text-zinc-200 transition-all duration-300 hover:border-white/35 hover:bg-white/[0.07] hover:text-white active:scale-[0.97]",
+    "inline-flex items-center justify-center gap-2 rounded-full border border-white/12 px-5 py-2.5 text-[14px] font-semibold text-zinc-200 transition-colors hover:border-white/25 hover:bg-white/[0.04] hover:text-white active:scale-[0.98]",
     className,
   );
   return href ? (
@@ -482,27 +460,6 @@ export function useCountUp(target: number, run: boolean, duration = 1200) {
     return () => cancelAnimationFrame(raf);
   }, [target, run, duration]);
   return n;
-}
-
-export function Marquee({ items, speed = "normal" }: { items: string[]; speed?: "normal" | "slow" }) {
-  const doubled = [...items, ...items];
-  return (
-    <div className="mask-fade-x relative flex overflow-hidden">
-      <div
-        className={cn(
-          "flex min-w-max items-center gap-10 pr-10",
-          speed === "slow" ? "animate-marquee-slow" : "animate-marquee",
-        )}
-      >
-        {doubled.map((t, i) => (
-          <span key={i} className="flex items-center gap-3 whitespace-nowrap text-[12.5px] font-medium text-zinc-500">
-            <span className="h-1 w-1 rounded-full bg-volt-400" />
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 /** 4자리 mono 숫자 카운터 (조회수 등) */

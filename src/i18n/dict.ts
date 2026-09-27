@@ -381,6 +381,15 @@ export const DICT: Dict = {
   "v.search.close": { ko: "닫기", en: "Close" },
   "v.search.all": { ko: "전체", en: "All" },
 
+  /* 섹션 한 줄 설명 (간결 버전) */
+  "v.notices.sub": { ko: "서비스 변경, 점검 일정, 정책 개정을 한곳에서 확인하세요.", en: "Service changes, maintenance and policy updates in one place." },
+  "v.guides.sub": { ko: "툴을 고르면 사용 순서와 팁을 바로 볼 수 있습니다.", en: "Pick a tool to see its steps and tips." },
+  "v.updates.sub": { ko: "새 기능, 개선, 수정 내역을 최신순으로 정리했습니다.", en: "New features, improvements and fixes — newest first." },
+  "v.updates.more": { ko: "더 보기", en: "Show more" },
+  "v.updates.less": { ko: "접기", en: "Show less" },
+  "v.credits.sub": { ko: "쓰는 만큼만 충전하세요. 큰 팩일수록 1K당 단가가 낮아집니다.", en: "Top up only what you need. Bigger packs cost less per 1K." },
+  "v.faq.sub": { ko: "원하는 답이 없다면 메일로 문의해 주세요. 영업일 기준 1일 내 답변드립니다.", en: "Can’t find an answer? Email us — we reply within one business day." },
+
   "v.ticker.brand": { ko: "가이드 센터", en: "Guide Center" },
 };
 
