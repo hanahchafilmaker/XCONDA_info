@@ -263,16 +263,6 @@ export const DICT: Dict = {
   },
   "v.hero.cta1": { ko: "툴 사용법 바로 보기", en: "Browse tool guides" },
   "v.hero.cta2": { ko: "통합 검색으로 찾기", en: "Search everything" },
-  "v.hero.stat.guides": { ko: "툴 사용법 가이드", en: "Tool guides" },
-  "v.hero.stat.notices": { ko: "공지 아카이브", en: "Notices archived" },
-  "v.hero.stat.updates": { ko: "업데이트 내역", en: "Release notes" },
-  "v.hero.stat.tools": { ko: "이용 가능한 툴", en: "Available tools" },
-
-  "v.quick.notices.desc": { ko: "업데이트 · 점검 · 정책 변경", en: "Updates · maintenance · policy" },
-  "v.quick.guides.desc": { ko: "툴별 단계 가이드 · 프롬프트", en: "Step-by-step per tool · prompts" },
-  "v.quick.updates.desc": { ko: "새 기능 · 개선 · 수정 내역", en: "Features · improvements · fixes" },
-  "v.quick.faq.desc": { ko: "크레딧 · 결제 · 저작권", en: "Credits · billing · rights" },
-  "v.quick.move": { ko: "이동", en: "Go" },
 
   "v.notices.kicker": { ko: "매주 업데이트", en: "Updated weekly" },
   "v.notices.lead": { ko: "공지사항 —", en: "Notices —" },
