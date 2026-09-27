@@ -9,9 +9,9 @@ import {
 
 const links = [
   { id: "notices", label: "공지사항", en: "Notices" },
+  { id: "news", label: "뉴스", en: "News" },
   { id: "guides", label: "툴 사용법", en: "Guides" },
-  { id: "news", label: "AI 뉴스", en: "AI News" },
-  { id: "faq", label: "FAQ", en: "FAQ" },
+  { id: "faq", label: "Q&A", en: "Q&A" },
 ];
 
 export default function Nav({ onSearch }: { onSearch: () => void }) {

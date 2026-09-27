@@ -1,4 +1,9 @@
-export type EntryType = "notice" | "update" | "guide" | "faq";
+/**
+ * 사이트 섹션과 1:1로 대응하는 콘텐츠 유형.
+ *  notice → 공지사항 · news → 뉴스(타 SNS 정보) · guide → 툴 사용법 · blog → 블로그 · faq → Q&A
+ *  (기존 "update" 유형은 "news"로 통합되었습니다.)
+ */
+export type EntryType = "notice" | "news" | "guide" | "blog" | "faq";
 
 /** 인라인 서식이 있는 텍스트 조각 (Notion rich_text 호환) */
 export type RichSeg = {

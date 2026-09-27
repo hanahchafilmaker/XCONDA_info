@@ -6,7 +6,7 @@ import { formatDate } from "../notion";
 import { useLang } from "../i18n";
 import { IconArrow, IconClose, IconSearch, Pill } from "./volt";
 
-type Kind = "notice" | "update" | "guide" | "faq";
+type Kind = "notice" | "news" | "guide" | "blog" | "faq";
 
 type Hit = {
   id: string;
@@ -20,8 +20,9 @@ type Hit = {
 
 const KIND_TONE: Record<Kind, string> = {
   notice: "volt",
-  update: "green",
+  news: "green",
   guide: "blue",
+  blog: "amber",
   faq: "violet",
 };
 
@@ -37,7 +38,7 @@ const toHit = (e: Entry, kind: Kind, target: string): Hit => ({
 
 export default function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useLang();
-  const { notices, guides, updates, faqs, openEntry } = useContent();
+  const { notices, news, guides, blogs, faqs, openEntry } = useContent();
   const [q, setQ] = useState("");
   const [kind, setKind] = useState<Kind | "all">("all");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -58,11 +59,12 @@ export default function SearchOverlay({ open, onClose }: { open: boolean; onClos
   const all: Hit[] = useMemo(
     () => [
       ...notices.map((e) => toHit(e, "notice", "notices")),
-      ...updates.map((e) => toHit(e, "update", "updates")),
+      ...news.map((e) => toHit(e, "news", "news")),
       ...guides.map((e) => toHit(e, "guide", "guides")),
+      ...blogs.map((e) => toHit(e, "blog", "blog")),
       ...faqs.map((e) => toHit(e, "faq", "faq")),
     ],
-    [notices, updates, guides, faqs],
+    [notices, news, guides, blogs, faqs],
   );
 
   const results = useMemo(() => {
@@ -84,9 +86,10 @@ export default function SearchOverlay({ open, onClose }: { open: boolean; onClos
   const kindLabel: Record<Kind | "all", string> = {
     all: t("v.search.all"),
     notice: t("nav.notices"),
-    update: t("nav.updates"),
+    news: t("nav.news"),
     guide: t("nav.tools"),
-    faq: t("nav.faq"),
+    blog: t("nav.blog"),
+    faq: t("nav.qna"),
   };
 
   return (

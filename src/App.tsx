@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Notices from "./components/Notices";
+import News from "./components/News";
 import Guides from "./components/Guides";
-import Updates from "./components/Updates";
-import Credits from "./components/Credits";
+import Blog from "./components/Blog";
+import Qna from "./components/Qna";
 import Closing from "./components/Closing";
 import SearchOverlay from "./components/SearchOverlay";
 import ArticleModal from "./components/ArticleModal";
@@ -46,10 +47,12 @@ export default function App() {
 
         <main id="main">
           <Hero onSearch={() => setSearchOpen(true)} />
+          {/* 섹션 순서: 공지사항 → 뉴스(타 SNS 정보) → 툴 사용법 → 블로그 → Q&A */}
           <Notices />
+          <News />
           <Guides />
-          <Updates />
-          <Credits />
+          <Blog />
+          <Qna />
         </main>
 
         <Closing />

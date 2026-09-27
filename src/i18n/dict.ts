@@ -1,5 +1,5 @@
 /**
- * XCONDA 가이드 센터 다국어(i18n) 사전.
+ * XCONDA허브 다국어(i18n) 사전.
  *
  * - UI "크롬"(내비게이션, 섹션 제목, 버튼, 안내 문구 등)의 한/영 문구를 한곳에서 관리합니다.
  * - 샘플·툴 콘텐츠는 별도 영문 번역을 제공하며, Notion 콘텐츠는 Title EN 등
@@ -43,24 +43,24 @@ export const DICT: Dict = {
   /* --------------------------- 접근성 --------------------------- */
   "a11y.skip": { ko: "본문으로 건너뛰기", en: "Skip to content" },
   "meta.title": {
-    ko: "XCONDA 가이드 센터 — 공지사항 · 업데이트 · 사용법",
-    en: "XCONDA Guide Center — Notices, Updates & How-tos",
+    ko: "XCONDA허브 — 공지사항 · 뉴스 · 툴 사용법 · 블로그 · Q&A",
+    en: "XCONDA Hub — Notices, News, Tool Guides, Blog & Q&A",
   },
   "meta.description": {
-    ko: "XCONDA의 최신 공지사항, 업데이트 내역과 모든 툴의 단계별 사용법을 한곳에서 확인하세요.",
-    en: "Find the latest XCONDA notices, release notes, and step-by-step guides for every tool in one place.",
+    ko: "XCONDA허브에서 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한곳에서 확인하세요.",
+    en: "XCONDA Hub gathers notices, social news, tool guides, blog posts and Q&A in one place.",
   },
 
   /* -------------------------- 내비게이션 -------------------------- */
   "nav.primary": { ko: "주요 메뉴", en: "Primary navigation" },
   "nav.notices": { ko: "공지사항", en: "Notices" },
-  "nav.updates": { ko: "업데이트", en: "Updates" },
+  "nav.news": { ko: "뉴스", en: "News" },
   "nav.start": { ko: "시작하기", en: "Get Started" },
-  "nav.tools": { ko: "툴 가이드", en: "Tool Guide" },
-  "nav.credits": { ko: "크레딧", en: "Credits" },
-  "nav.faq": { ko: "FAQ", en: "FAQ" },
+  "nav.tools": { ko: "툴 사용법", en: "Tool Guides" },
+  "nav.blog": { ko: "블로그", en: "Blog" },
+  "nav.qna": { ko: "Q&A", en: "Q&A" },
   "nav.openStudioShort": { ko: "스튜디오 열기", en: "Open Studio" },
-  "nav.home": { ko: "XCONDA 가이드 센터 홈", en: "XCONDA Guide Center home" },
+  "nav.home": { ko: "XCONDA허브 홈", en: "XCONDA Hub home" },
   "nav.search": { ko: "검색", en: "Search" },
   "nav.openMenu": { ko: "메뉴 열기", en: "Open menu" },
   "nav.closeMenu": { ko: "메뉴 닫기", en: "Close menu" },
@@ -69,10 +69,10 @@ export const DICT: Dict = {
   "lang.english": { ko: "영어", en: "English" },
 
   /* ---------------------------- 히어로 ---------------------------- */
-  "hero.title2": { ko: "가장 빠른 업데이트, 가장 쉬운 사용법", en: "The fastest updates, the simplest how-tos" },
+  "hero.title2": { ko: "가장 빠른 소식, 가장 쉬운 사용법", en: "The fastest news, the simplest how-tos" },
   "hero.subtitle": {
-    ko: "매일 새로워지는 XCONDA의 공지사항과 업데이트, 툴별 사용법을 한곳에 모았습니다. 궁금한 기능을 검색해 보세요.",
-    en: "Notices, updates, and per-tool guides for the ever-evolving XCONDA — all in one place. Search for any feature you're curious about.",
+    ko: "매일 새로워지는 XCONDA의 공지사항과 뉴스, 툴별 사용법, 블로그를 한곳에 모았습니다. 궁금한 기능을 검색해 보세요.",
+    en: "Notices, news, per-tool guides and blog posts for the ever-evolving XCONDA — all in one place. Search for any feature you're curious about.",
   },
   "hero.searchLabel": { ko: "가이드 검색", en: "Search the guide" },
   "hero.searchPlaceholder": {
@@ -83,7 +83,7 @@ export const DICT: Dict = {
   "hero.rechargeCredits": { ko: "크레딧 충전", en: "Buy credits" },
   "hero.pinnedNotice": { ko: "고정 공지", en: "Pinned notice" },
   "hero.latestNotice": { ko: "최신 공지", en: "Latest notice" },
-  "hero.latestUpdate": { ko: "최신 업데이트", en: "Latest update" },
+  "hero.latestUpdate": { ko: "최신 뉴스", en: "Latest news" },
   "hero.statNotices": { ko: "공지", en: "Notices" },
   "hero.statGuides": { ko: "가이드", en: "Guides" },
   "hero.statReleases": { ko: "릴리스", en: "Releases" },
@@ -108,13 +108,17 @@ export const DICT: Dict = {
   "notices.more": { ko: "공지 더보기", en: "More notices" },
   "notices.defaultCategory": { ko: "공지", en: "Notice" },
 
-  /* ---------------------------- 업데이트 ---------------------------- */
-  "updates.titleKo": { ko: "업데이트", en: "Latest" },
-  "updates.desc": {
-    ko: "XCONDA는 매주 새로워집니다. 새 기능, 개선 사항, 버그 수정을 버전별로 확인하세요.",
-    en: "XCONDA gets better every week. Track new features, improvements, and fixes by version.",
+  /* --------------------- 뉴스(타 SNS 정보) · 블로그 --------------------- */
+  "news.titleKo": { ko: "뉴스", en: "News from" },
+  "news.desc": {
+    ko: "XCONDA의 SNS·외부 채널 소식과 릴리스 노트를 한곳에서 확인하세요.",
+    en: "XCONDA social channel stories and release notes, all in one place.",
   },
-  "updates.collapse": { ko: "접기", en: "Collapse" },
+  "blog.titleKo": { ko: "블로그", en: "From the" },
+  "blog.desc": {
+    ko: "제작 노트, 워크플로우 해설, 인터뷰를 카드 형태로 정리했습니다.",
+    en: "Production notes, workflow deep-dives and interviews, as cards.",
+  },
 
   /* --------------------------- 시작하기 --------------------------- */
   "guides.titleKo": { ko: "처음이라면,", en: "New here?" },
@@ -158,29 +162,8 @@ export const DICT: Dict = {
   "tools.searchLabel": { ko: "툴 검색", en: "Search tools" },
   "tools.searchPlaceholder": { ko: "툴 이름 검색", en: "Search by tool name" },
 
-  /* ---------------------------- 크레딧 ---------------------------- */
-  "credits.titleKo": { ko: "크레딧 안내", en: "Simple" },
-  "credits.desc": {
-    ko: "원하는 팩을 골라 한 번만 결제하면 바로 창작을 시작할 수 있습니다.",
-    en: "Pick a pack, pay once, and start creating right away.",
-  },
-  "credits.unit": { ko: "크레딧", en: "credits" },
-  "credits.buy": { ko: "구매하기", en: "Buy now" },
-  "credits.popular": { ko: "가장 인기", en: "Most Popular" },
-  "credits.notePre": { ko: "모든 팩은 ", en: "Every pack is " },
-  "credits.noteStrong": { ko: "1회 결제", en: "a one-time payment" },
-  "credits.notePost": {
-    ko: "이며, 구독 플랜은 곧 출시됩니다. 툴별 소모 크레딧은 스튜디오의 생성 버튼에서 확인할 수 있습니다. 가격은 변경될 수 있으며 최신 정보는 공지사항을 확인해 주세요.",
-    en: "; subscription plans are coming soon. You can check each tool's credit cost on its Generate button in the studio. Prices may change — see Notices for the latest.",
-  },
-  "pack.starter1.desc": { ko: "AI 창작을 처음 탐색하는 분께", en: "For those first exploring AI creation" },
-  "pack.starter2.desc": { ko: "꾸준히 창작하는 크리에이터의 시작", en: "A starting point for steady creators" },
-  "pack.pro1.desc": { ko: "빠른 작업이 필요한 라이트 옵션", en: "A light option when you need speed" },
-  "pack.pro2.desc": { ko: "가장 인기 있는 선택. 상상하는 모든 것을", en: "The most popular choice — everything you imagine" },
-  "pack.master.desc": { ko: "한계 없이, 모든 것을 만드세요", en: "Create everything, without limits" },
-
-  /* ------------------------------ FAQ ------------------------------ */
-  "faq.titleKo": { ko: "자주 묻는 질문", en: "Answers in" },
+  /* ------------------------------ Q&A ------------------------------ */
+  "faq.titleKo": { ko: "Q&A", en: "Q&A" },
   "faq.desc": {
     ko: "가장 많이 받는 질문을 모았습니다. 원하는 답이 없다면 언제든 문의해 주세요.",
     en: "The questions we hear most. If you can't find your answer, reach out anytime.",
@@ -217,7 +200,7 @@ export const DICT: Dict = {
   },
   "footer.navAria": { ko: "푸터", en: "Footer" },
   "footer.poweredNotion": { ko: "Powered by Notion", en: "Powered by Notion" },
-  "footer.col.guide": { ko: "가이드 센터", en: "Guide Center" },
+  "footer.col.guide": { ko: "XCONDA허브", en: "XCONDA Hub" },
   "footer.col.studio": { ko: "핵심 스튜디오", en: "Core Studios" },
   "footer.link.allTools": { ko: "전체 툴", en: "All tools" },
   "footer.link.openStudio": { ko: "스튜디오 열기", en: "Open Studio" },
@@ -254,12 +237,12 @@ export const DICT: Dict = {
   "v.lang.en": { ko: "English", en: "English" },
   "v.lang.toggleAria": { ko: "언어 변경", en: "Change language" },
 
-  "v.hero.badge": { ko: "XCONDA 공식 가이드 센터", en: "XCONDA Official Guide Center" },
+  "v.hero.badge": { ko: "XCONDA허브", en: "XCONDA Hub" },
   "v.hero.lead": { ko: "빠른 공지, 쉬운 툴 가이드,", en: "Fast notices, easy tool guides," },
-  "v.hero.accent": { ko: "핵심 업데이트로 한발 앞서가세요.", en: "stay ahead with key updates." },
+  "v.hero.accent": { ko: "뉴스와 툴 사용법으로 한발 앞서가세요.", en: "stay ahead with news and tool guides." },
   "v.hero.desc": {
-    ko: "XCONDA의 모든 업데이트 소식과 툴별 사용법, 자주 묻는 질문을 한 곳에 모았습니다. 검색으로 시간을 쓰지 말고, 이 페이지에서 답을 찾으세요.",
-    en: "Every XCONDA update, per-tool walkthrough, and common question in one place. Stop searching — the answer is on this page.",
+    ko: "공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A까지 XCONDA의 모든 정보를 한 곳에 모았습니다. 검색으로 시간을 쓰지 말고, 이 페이지에서 답을 찾으세요.",
+    en: "Notices, social news, tool guides, blog posts and Q&A — every XCONDA resource in one place. Stop searching elsewhere; the answer is on this page.",
   },
   "v.hero.cta1": { ko: "툴 사용법 바로 보기", en: "Browse tool guides" },
   "v.hero.cta2": { ko: "통합 검색으로 찾기", en: "Search everything" },
@@ -301,43 +284,41 @@ export const DICT: Dict = {
   },
   "v.guides.noTip": { ko: "추가 팁이 없습니다.", en: "No extra tips for this tool." },
 
-  "v.updates.kicker": { ko: "릴리스 노트", en: "Release notes" },
-  "v.updates.lead": { ko: "업데이트 —", en: "Updates —" },
-  "v.updates.accent": { ko: "현업에 바로 적용할", en: "practical recaps" },
-  "v.updates.accentTail": { ko: "실속 기능 요약", en: "you can apply today." },
-  "v.updates.subA": { ko: "새 기능과 개선, 수정 내역만 선별합니다. 홍보성 소식은 걸러 내고,", en: "Only new features, improvements and fixes. We filter out marketing noise and keep" },
-  "v.updates.subB": { ko: "실무에 바로 영향을 주는 것", en: "what actually changes your workflow" },
-  "v.updates.subStrong": { ko: "실무에 바로 영향을 주는 것", en: "what actually changes your workflow" },
-  "v.updates.featured": { ko: "최신 릴리스", en: "Latest release" },
-  "v.updates.readMore": { ko: "전문 보기", en: "Open notes" },
-  "v.updates.empty": { ko: "아직 등록된 업데이트가 없습니다.", en: "No updates published yet." },
-  "v.updates.syncAria": { ko: "Notion 연동 상태", en: "Notion sync status" },
-  "v.updates.syncTitle": { ko: "이 페이지는 Notion에서 자동 동기화됩니다.", en: "This page syncs automatically from Notion." },
-  "v.updates.syncDesc": {
-    ko: "운영팀이 Notion에서 글을 발행하는 즉시 이 화면에 반영됩니다. 새로고침 버튼을 누르면 캐시를 무효화하고 최신 스냅샷을 읽어옵니다.",
-    en: "Whatever the team publishes in Notion shows up here immediately. Hit refresh to invalidate the cache and pull the newest snapshot.",
+  /* ------------------------- 뉴스 (타 SNS 정보) ------------------------- */
+  "v.news.kicker": { ko: "외부 채널 소식", en: "From our channels" },
+  "v.news.readMore": { ko: "전문 보기", en: "Open story" },
+  "v.news.empty": {
+    ko: "아직 등록된 뉴스가 없습니다. 오른쪽 XCONDA 채널에서 최신 소식을 먼저 확인해 보세요.",
+    en: "No news published yet. Check the XCONDA channels on the right for the latest.",
   },
-  "v.updates.syncCta": { ko: "XCONDA 스튜디오 열기", en: "Open XCONDA Studio" },
-
-  "v.credits.kicker": { ko: "요금제", en: "Pricing" },
-  "v.credits.lead": { ko: "크레딧 —", en: "Credits —" },
-  "v.credits.accent": { ko: "쓰는 만큼만", en: "pay for what you use" },
-  "v.credits.accentTail": { ko: "지불하세요.", en: "." },
-  "v.credits.subA": { ko: "생성 횟수가 늘수록 1K당 단가가 내려갑니다. 모든 팩은 구매 후 ", en: "The more you generate, the lower the per-1K rate. Every pack includes " },
-  "v.credits.subB": { ko: "일 회차만 유효합니다.", en: " with no expiry on the purchase itself." },
-  "v.credits.unit": { ko: "크레딧", en: "credits" },
-  "v.credits.popular": { ko: "인기", en: "Popular" },
-  "v.credits.buy": { ko: "구매", en: "Buy" },
-  "v.credits.save": { ko: "절약", en: "Save" },
-  "v.credits.perK": { ko: "1K당", en: "per 1K" },
-  "v.credits.note": {
-    ko: "크레딧은 Tool별 실행 버튼 옆에서 실시간으로 확인되며, 사용하지 않은 크레딧은 다음 결제일로 이월됩니다.",
-    en: "You can see your credit balance live next to each tool’s run button, and unused credits roll over to the next billing date.",
+  "v.news.more": { ko: "더 보기", en: "Show more" },
+  "v.news.less": { ko: "접기", en: "Show less" },
+  "v.news.soon": { ko: "준비 중", en: "Coming soon" },
+  "v.news.channels": { ko: "XCONDA 채널", en: "XCONDA channels" },
+  "v.news.channelsSub": {
+    ko: "XCONDA 소식은 공식 SNS와 Notion에서도 확인할 수 있습니다. 채널을 누르면 새 창에서 열립니다.",
+    en: "XCONDA news also lives on our social channels and Notion. Each card opens in a new tab.",
   },
-  "v.credits.noteTitle": { ko: "크레딧 안내", en: "How credits work" },
+  "v.news.ch.x": { ko: "짧은 소식과 릴리스 안내", en: "Short updates and release notes" },
+  "v.news.ch.youtube": { ko: "툴 사용법 영상과 데모", en: "Tool walkthroughs and demos" },
+  "v.news.ch.instagram": { ko: "제작 결과물과 비하인드", en: "Finished work and behind the scenes" },
+  "v.news.ch.linkedin": { ko: "비즈니스·파트너십 소식", en: "Business and partnership news" },
+  "v.news.ch.notion": { ko: "이 페이지의 원본 데이터베이스", en: "The source database behind this page" },
+  "v.news.ch.web": { ko: "스튜디오와 제품 정보", en: "The studio and product info" },
+  "v.news.syncAria": { ko: "Notion 연동 상태", en: "Notion sync status" },
 
-  "v.faq.kicker": { ko: "모두", en: "answers" },
-  "v.faq.lead": { ko: "자주 묻는 질문", en: "Frequently asked questions" },
+  /* ------------------------------ 블로그 ------------------------------ */
+  "v.blog.kicker": { ko: "제작 노트", en: "Production notes" },
+  "v.blog.read": { ko: "글 읽기", en: "Read post" },
+  "v.blog.empty": {
+    ko: "아직 등록된 블로그 글이 없습니다. 첫 글이 발행되면 이 곳에 표시됩니다.",
+    en: "No blog posts yet. New posts will appear here as soon as they are published.",
+  },
+  "v.blog.more": { ko: "더 보기", en: "Show more" },
+  "v.blog.less": { ko: "접기", en: "Show less" },
+
+  "v.faq.kicker": { ko: "Q&A", en: "Q&A" },
+  "v.faq.lead": { ko: "Q&A", en: "Q&A" },
   "v.faq.subA": { ko: "가이드를 읽어도 남는 질문들입니다. 여기에 없으면 하단 문의로 보내주세요 —", en: "The questions that survive reading every guide. If yours isn’t here, send it below — we answer" },
   "v.faq.subB": { ko: "영업일 기준 1일 내", en: "within one business day" },
   "v.faq.subStrong": { ko: "영업일 기준 1일 내", en: "within one business day" },
@@ -356,10 +337,10 @@ export const DICT: Dict = {
   "v.cta.again": { ko: "가이드 다시 보기", en: "Back to guides" },
 
   "v.footer.desc": {
-    ko: "AI로 광고·영상을 만드는 사람들을 위한 공식 가이드 센터. 업데이트 소식, 툴 사용법, 업계 뉴스를 한 곳에서.",
-    en: "The official guide center for people making ads and film with AI — release notes, tool walkthroughs, and industry news in one place.",
+    ko: "AI로 광고·영상을 만드는 사람들을 위한 XCONDA허브. 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한 곳에서.",
+    en: "XCONDA Hub for people making ads and film with AI — notices, social news, tool guides, blog posts and Q&A in one place.",
   },
-  "v.footer.guide": { ko: "가이드", en: "Guide" },
+  "v.footer.guide": { ko: "XCONDA허브", en: "XCONDA Hub" },
   "v.footer.tools": { ko: "툴", en: "Tools" },
   "v.footer.support": { ko: "지원", en: "Support" },
   "v.footer.rights": {
@@ -369,8 +350,8 @@ export const DICT: Dict = {
   "v.footer.backToTop": { ko: "맨 위로", en: "Back to top" },
 
   "v.search.placeholder": {
-    ko: "공지 · 툴 · 업데이트를 검색하세요 (예: 크레딧, Kling, 컨티뉴이티)",
-    en: "Search notices, tools and updates (try: credits, Kling, continuity)",
+    ko: "공지 · 뉴스 · 툴 사용법 · 블로그를 검색하세요 (예: 크레딧, Kling, 컨티뉴이티)",
+    en: "Search notices, news, tool guides and blog posts (try: credits, Kling, continuity)",
   },
   "v.search.empty": { ko: "검색 결과가 없습니다.", en: "No results." },
   "v.search.emptyHint": {
@@ -384,13 +365,17 @@ export const DICT: Dict = {
   /* 섹션 한 줄 설명 (간결 버전) */
   "v.notices.sub": { ko: "서비스 변경, 점검 일정, 정책 개정을 한곳에서 확인하세요.", en: "Service changes, maintenance and policy updates in one place." },
   "v.guides.sub": { ko: "툴을 고르면 사용 순서와 팁을 바로 볼 수 있습니다.", en: "Pick a tool to see its steps and tips." },
-  "v.updates.sub": { ko: "새 기능, 개선, 수정 내역을 최신순으로 정리했습니다.", en: "New features, improvements and fixes — newest first." },
-  "v.updates.more": { ko: "더 보기", en: "Show more" },
-  "v.updates.less": { ko: "접기", en: "Show less" },
-  "v.credits.sub": { ko: "쓰는 만큼만 충전하세요. 큰 팩일수록 1K당 단가가 낮아집니다.", en: "Top up only what you need. Bigger packs cost less per 1K." },
+  "v.news.sub": {
+    ko: "타 SNS·외부 채널 소식과 릴리스 노트를 최신순으로 모았습니다.",
+    en: "Social channel stories and release notes, newest first.",
+  },
+  "v.blog.sub": {
+    ko: "제작 노트, 워크플로우 해설, 인터뷰를 카드 형태로 정리했습니다.",
+    en: "Production notes, workflow deep-dives and interviews, as cards.",
+  },
   "v.faq.sub": { ko: "원하는 답이 없다면 메일로 문의해 주세요. 영업일 기준 1일 내 답변드립니다.", en: "Can’t find an answer? Email us — we reply within one business day." },
 
-  "v.ticker.brand": { ko: "가이드 센터", en: "Guide Center" },
+  "v.ticker.brand": { ko: "XCONDA허브", en: "XCONDA Hub" },
 };
 
 export function translate(key: string, lang: Lang): string {
@@ -404,9 +389,10 @@ export function translate(key: string, lang: Lang): string {
  * ------------------------------------------------------------------ */
 export const TYPE_LABELS: Record<string, Entry> = {
   notice: { ko: "공지", en: "Notice" },
-  update: { ko: "업데이트", en: "Update" },
-  guide: { ko: "가이드", en: "Guide" },
-  faq: { ko: "FAQ", en: "FAQ" },
+  news: { ko: "뉴스", en: "News" },
+  guide: { ko: "툴 사용법", en: "Tool Guide" },
+  blog: { ko: "블로그", en: "Blog" },
+  faq: { ko: "Q&A", en: "Q&A" },
 };
 
 export const GROUP_LABELS: Record<string, Entry> = {
@@ -428,6 +414,20 @@ export const CATEGORY_LABELS: Record<string, Entry> = {
   캐릭터: { ko: "캐릭터", en: "Character" },
   크레딧: { ko: "크레딧", en: "Credits" },
   사용법: { ko: "사용법", en: "How-to" },
+  /* 뉴스 — 릴리스/타 SNS 채널 (Notion Category 값과 일치시키면 채널 필터로 동작) */
+  Release: { ko: "릴리스", en: "Release" },
+  릴리스: { ko: "릴리스", en: "Release" },
+  X: { ko: "X", en: "X" },
+  YouTube: { ko: "YouTube", en: "YouTube" },
+  Instagram: { ko: "Instagram", en: "Instagram" },
+  LinkedIn: { ko: "LinkedIn", en: "LinkedIn" },
+  Notion: { ko: "Notion", en: "Notion" },
+  SNS: { ko: "SNS", en: "Social" },
+  /* 블로그 */
+  워크플로우: { ko: "워크플로우", en: "Workflow" },
+  튜토리얼: { ko: "튜토리얼", en: "Tutorial" },
+  인터뷰: { ko: "인터뷰", en: "Interview" },
+  인사이트: { ko: "인사이트", en: "Insight" },
 };
 
 const CHANGE_LABELS: Record<string, Entry> = {

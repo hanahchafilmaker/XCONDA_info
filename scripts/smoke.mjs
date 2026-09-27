@@ -90,36 +90,48 @@ const interactions = {
   koreanActive: qa('header button[aria-pressed="true"]').some((b) => b.textContent?.trim().toLowerCase() === "ko"),
 };
 
-const sections = ["top", "notices", "guides", "updates", "credits", "faq"].map((id) => ({
+const EXPECTED_ORDER = ["top", "notices", "news", "guides", "blog", "faq"];
+const sections = EXPECTED_ORDER.map((id) => ({
   id,
   present: !!doc.getElementById(id),
 }));
+
+// 실제 DOM 순서가 요청된 섹션 순서(공지사항 → 뉴스 → 툴사용법 → 블로그 → Q&A)와 일치하는지 확인
+const renderedOrder = qa("main section[id], footer section[id], section[id]")
+  .map((el) => el.id)
+  .filter((id) => EXPECTED_ORDER.includes(id));
+const orderOk = JSON.stringify(renderedOrder.slice(0, EXPECTED_ORDER.length)) === JSON.stringify(EXPECTED_ORDER);
 
 const result = {
   mounted: (q("#root")?.children.length ?? 0) > 0,
   h1: q("h1")?.textContent?.trim().slice(0, 70) ?? null,
   sections,
+  renderedOrder,
+  orderOk,
   counts: {
     guideToolButtons: qa("#guides ul li button").length,
     noticeRows: qa("#notices li button").length,
-    updateCards: qa("#updates article").length,
-    creditsCards: qa("#credits article").length,
+    newsItems: qa("#news article").length,
+    channelCards: qa("#news a[target='_blank'], #news div.rounded-2xl").length,
+    blogCards: qa("#blog article").length,
     faqItems: qa("#faq button[aria-expanded]").length,
   },
   voltPaletteActive: !!q("[class*='text-volt-400']"),
   legacyPaletteLeft: qa("[class*='text-fuchsia-'], [class*='bg-brand'], [class*='gradient-border']").length,
   footer: !!q("footer"),
   langToggleButtons: qa("button[aria-pressed]").length,
-  syncStatus: qa("#updates [aria-label]").length > 0,
+  syncStatus: qa("#news [aria-label]").length > 0,
 };
 
 console.log(JSON.stringify({ result, interactions, problems: problems.slice(0, 20) }, null, 2));
 
 const fail = [];
 if (!result.mounted) fail.push("app did not mount");
+if (!result.orderOk) fail.push(`section order wrong: ${result.renderedOrder.join(" → ")}`);
 for (const s of sections) if (!s.present) fail.push(`missing section #${s.id}`);
 if (result.counts.guideToolButtons < 10) fail.push(`guides tool list short: ${result.counts.guideToolButtons}`);
-if (result.counts.creditsCards < 5) fail.push(`credits packs missing: ${result.counts.creditsCards}`);
+if (result.counts.newsItems < 3) fail.push(`news items missing: ${result.counts.newsItems}`);
+if (result.counts.blogCards < 3) fail.push(`blog cards missing: ${result.counts.blogCards}`);
 if (!result.voltPaletteActive) fail.push("volt palette not applied");
 if (result.legacyPaletteLeft > 0) fail.push("legacy palette classes still present");
 if (!result.footer) fail.push("footer missing");

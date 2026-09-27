@@ -93,7 +93,7 @@ export default function Guides() {
 
       <div className="shell">
         <Reveal>
-          <SectionLabel index="02" title="TOOL GUIDES" kicker={`${guides.length}개 툴`} />
+          <SectionLabel index="03" title="TOOL GUIDES" kicker={`${guides.length}개 툴`} />
           <SectionHeading
             sub={
               <>

@@ -45,7 +45,7 @@ export default function App() {
             <div className="flex min-w-max animate-marquee-slow items-center gap-8">
               {Array.from({ length: 12 }).map((_, i) => (
                 <span key={i} className="flex items-center gap-8">
-                  <span className="brand-word whitespace-nowrap">XCONDA GUIDE CENTER</span>
+                  <span className="brand-word whitespace-nowrap">XCONDA HUB</span>
                   <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-volt-400" fill="currentColor">
                     <path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2Z" />
                   </svg>
@@ -58,9 +58,10 @@ export default function App() {
           </div>
         </div>
 
+        {/* 섹션 순서: 공지사항 → 뉴스(타 SNS 정보) → 툴 사용법 → Q&A */}
         <Notices />
-        <Guides />
         <News />
+        <Guides />
       </main>
 
       <Closing />

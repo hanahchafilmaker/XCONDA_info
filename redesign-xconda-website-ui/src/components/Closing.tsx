@@ -79,7 +79,7 @@ export default function Closing() {
         <div className="shell">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-14">
             <Reveal className="lg:sticky lg:top-28 lg:self-start">
-              <SectionLabel index="04" title="FAQ" kicker="1일 내 답변" />
+              <SectionLabel index="04" title="Q&A" kicker="1일 내 답변" />
               <SectionHeading
                 sub={
                   <>
