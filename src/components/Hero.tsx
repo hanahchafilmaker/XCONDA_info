@@ -1,290 +1,236 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, BookOpen, ChevronRight, Command, Megaphone, Rocket, Search, Sparkles, Wrench } from "lucide-react";
-import { Container, Serif } from "./ui";
-import { localizeTool, useLang } from "../i18n";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "../utils/cn";
+import {
+  GhostButton,
+  Highlight,
+  IconArrow,
+  IconBook,
+  IconBullhorn,
+  IconChevron,
+  IconGit,
+  Pill,
+  Reveal,
+  useCountUp,
+  VoltButton,
+} from "./volt";
 import { useContent } from "../content/ContentContext";
 import { TOOLS } from "../content/tools";
-import type { Entry } from "../content/types";
-import { formatDate, isNew, timeAgo } from "../notion";
-import { NewBadge, SyncStatus, TypeLabel } from "./common";
-import { cn } from "../utils/cn";
+import { useLang } from "../i18n";
 
-type Result =
-  | { kind: "entry"; entry: Entry; score: number }
-  | { kind: "tool"; slug: string; name: string; tagline: string; score: number };
+const scrollTo = (id: string) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-const QUICK = [
-  { label: "Turn (턴)", slug: "turn" },
-  { label: "FlexBoard (플렉스보드)", slug: "flexboard" },
-  { label: "Blocking Board (블로킹보드)", slug: "blocking-board" },
-  { label: "Director's Cut", slug: "directors-cut" },
-  { label: "Art Director Pro", slug: "art-director-pro" },
-];
-
-function score(hay: string, q: string) {
-  const h = hay.toLowerCase();
-  if (h.startsWith(q)) return 3;
-  if (h.includes(q)) return 2;
-  return q.split(/\s+/).every((w) => h.includes(w)) ? 1 : 0;
-}
-
-export default function Hero() {
-  const { t, pick, lang } = useLang();
-  const { entries, notices, updates, guides, openEntry, openTool, syncedAt } = useContent();
-  const [q, setQ] = useState("");
-  const [focused, setFocused] = useState(false);
-  const [cursor, setCursor] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const boxRef = useRef<HTMLDivElement>(null);
-
-  const pinned = notices.find((n) => n.pinned) ?? notices[0];
-  const latestUpdate = updates[0];
+function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [run, setRun] = useState(false);
+  const n = useCountUp(value, run);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA")) {
-        e.preventDefault();
-        inputRef.current?.focus();
-        inputRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((e) => {
+      if (e[0].isIntersecting) {
+        setRun(true);
+        io.disconnect();
       }
-    };
-    const onClick = (e: MouseEvent) => {
-      if (boxRef.current && !boxRef.current.contains(e.target as Node)) setFocused(false);
-    };
-    window.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onClick);
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onClick);
-    };
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
-  const results = useMemo<Result[]>(() => {
-    const query = q.trim().toLowerCase();
-    if (!query) return [];
-    const r: Result[] = [];
-    for (const e of entries) {
-      const s = Math.max(score(e.title, query) * 2, score(`${e.summary} ${e.tags.join(" ")} ${e.category} ${e.tool ?? ""}`, query));
-      if (s) r.push({ kind: "entry", entry: e, score: s });
-    }
-    for (const tool of TOOLS.map((item) => localizeTool(item, lang))) {
-      const s = Math.max(score(tool.name, query) * 2, score(`${tool.tagline} ${tool.desc} ${tool.group}`, query));
-      if (s) r.push({ kind: "tool", slug: tool.slug, name: tool.name, tagline: tool.tagline, score: s + 0.5 });
-    }
-    return r.sort((a, b) => b.score - a.score).slice(0, 8);
-  }, [q, entries, lang]);
+  return (
+    <div ref={ref} className="flex flex-col">
+      <span className="font-mono text-[1.6rem] font-bold tracking-tight text-white sm:text-[1.85rem]">
+        {n.toLocaleString()}
+        <span className="text-volt-400">{suffix}</span>
+      </span>
+      <span className="mt-1 text-[11.5px] font-medium text-zinc-500">{label}</span>
+    </div>
+  );
+}
 
-  useEffect(() => setCursor(0), [q]);
+/** 히어로 우측의 인터랙티브 스토리보드 시각화 (제품 컨셉 전달용) */
+function StoryboardVisual() {
+  const [active, setActive] = useState(4);
+  useEffect(() => {
+    const t = setInterval(() => setActive((v) => (v + 1) % 9), 1400);
+    return () => clearInterval(t);
+  }, []);
 
-  const choose = (r: Result) => {
-    setFocused(false);
-    if (r.kind === "entry") openEntry(r.entry);
-    else openTool(r.slug);
-  };
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (!results.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setCursor((c) => (c + 1) % results.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setCursor((c) => (c - 1 + results.length) % results.length);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      choose(results[cursor]);
-    } else if (e.key === "Escape") {
-      setFocused(false);
-      inputRef.current?.blur();
-    }
-  };
-
-  const showResults = focused && q.trim().length > 0;
+  const angles = ["EST · WIDE", "INSERT", "MEDIUM", "PRODUCT", "CLOSE-UP", "WIDE", "TITLE", "LOW ANGLE", "END"];
 
   return (
-    <section id="top" className="relative isolate pb-16 pt-32 sm:pb-24 sm:pt-40">
-      {/* Ambient */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="grid-bg mask-radial absolute inset-0 opacity-70" />
-        <div className="animate-drift absolute -top-40 left-1/2 h-[40rem] w-[40rem] -translate-x-[75%] rounded-full bg-violet-600/25 blur-[120px]" />
-        <div className="animate-drift-slow absolute -top-24 left-1/2 h-[32rem] w-[32rem] -translate-x-[5%] rounded-full bg-fuchsia-600/20 blur-[120px]" />
-        <div className="grain absolute inset-0 opacity-[0.06] mix-blend-overlay" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink-950" />
-      </div>
-
-      <Container>
-        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <div className="hero-in" style={{ animationDelay: "0ms" }}>
-            <SyncStatus />
+    <div className="relative">
+      <div className="pointer-events-none absolute -inset-10 -z-10 rounded-[50%] bg-volt-400/12 blur-[90px]" />
+      <div className="relative overflow-hidden rounded-[24px] border border-white/[0.09] bg-ink-900/80 p-4 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)] backdrop-blur-sm sm:p-5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-volt-400" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+              storyboard · 9 cuts
+            </span>
           </div>
+          <span className="rounded-full border border-volt-400/30 bg-volt-400/10 px-2 py-0.5 font-mono text-[9.5px] font-bold text-volt-300">
+            Director&apos;s Cut
+          </span>
+        </div>
 
-          <h1
-            className="hero-in mt-7 text-balance text-[2.5rem] font-bold leading-[1.12] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl"
-            style={{ animationDelay: "80ms" }}
-          >
-            <span className="text-gradient-soft">XCONDA</span> <Serif className="text-gradient pr-1 font-normal">Guide</Serif>
-            <br />
-            <span className="text-gradient-soft">{t("hero.title2")}</span>
-          </h1>
-
-          <p className="hero-in mt-6 max-w-xl text-pretty text-base leading-relaxed text-zinc-400 sm:text-lg" style={{ animationDelay: "160ms" }}>
-            {t("hero.subtitle")}
-          </p>
-
-          {/* Search */}
-          <div ref={boxRef} className="hero-in relative mt-9 w-full max-w-2xl" style={{ animationDelay: "240ms" }}>
+        <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-2.5">
+          {angles.map((a, i) => (
             <div
+              key={a}
+              onMouseEnter={() => setActive(i)}
               className={cn(
-                "gradient-border rounded-2xl p-px transition-shadow duration-500",
-                focused ? "shadow-[0_0_0_4px_rgba(139,92,246,0.15),0_20px_70px_-20px_rgba(236,72,153,0.5)]" : "shadow-[0_20px_60px_-28px_rgba(139,92,246,0.6)]"
+                "group relative aspect-video cursor-pointer overflow-hidden rounded-lg border transition-all duration-500",
+                active === i
+                  ? "border-volt-400 bg-volt-400/[0.14] shadow-[0_0_0_1px_rgba(255,214,10,0.35),0_10px_30px_-12px_rgba(255,214,10,0.5)]"
+                  : "border-white/[0.07] bg-white/[0.025] hover:border-white/20",
               )}
             >
-              <div className="glass-strong flex items-center gap-3 rounded-[15px] px-4 sm:px-5">
-                <Search className="h-5 w-5 shrink-0 text-zinc-400" aria-hidden />
-                <label htmlFor="guide-search" className="sr-only">{t("hero.searchLabel")}</label>
-                <input
-                  ref={inputRef}
-                  id="guide-search"
-                  type="search"
-                  role="combobox"
-                  aria-expanded={showResults}
-                  aria-controls="search-results"
-                  aria-activedescendant={showResults && results[cursor] ? `sr-${cursor}` : undefined}
-                  autoComplete="off"
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  onFocus={() => setFocused(true)}
-                  onKeyDown={onKeyDown}
-                  placeholder={t("hero.searchPlaceholder")}
-                  className="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-white placeholder-zinc-500 outline-none sm:h-16 sm:text-base [&::-webkit-search-cancel-button]:hidden"
-                />
-                <kbd className="hidden shrink-0 items-center gap-0.5 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1 font-mono text-[11px] text-zinc-400 sm:inline-flex">
-                  <Command className="h-3 w-3" />K
-                </kbd>
-              </div>
-            </div>
-
-            {showResults && (
-              <div className="modal-in glass-strong absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-2xl text-left shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]">
-                {results.length ? (
-                  <ul id="search-results" role="listbox" className="max-h-[22rem] overflow-y-auto p-1.5">
-                    {results.map((r, i) => (
-                      <li key={r.kind === "entry" ? r.entry.id : r.slug} id={`sr-${i}`} role="option" aria-selected={i === cursor}>
-                        <button
-                          type="button"
-                          onMouseEnter={() => setCursor(i)}
-                          onClick={() => choose(r)}
-                          className={cn("flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors", i === cursor ? "bg-white/[0.08]" : "hover:bg-white/[0.04]")}
-                        >
-                          {r.kind === "entry" ? (
-                            <>
-                              <TypeLabel type={r.entry.type} />
-                              <span className="min-w-0 flex-1">
-                                <span className="block truncate text-sm text-white">{r.entry.title}</span>
-                                <span className="block truncate text-xs text-zinc-500">{r.entry.summary}</span>
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-fuchsia-400/12 px-2 py-0.5 text-[11px] font-semibold text-fuchsia-200 ring-1 ring-inset ring-fuchsia-400/25">
-                                <Wrench className="h-3 w-3" /> {t("common.tool")}
-                              </span>
-                              <span className="min-w-0 flex-1">
-                                <span className="block truncate text-sm text-white">{pick(`${r.name} 사용법`, `${r.name} guide`)}</span>
-                                <span className="block truncate text-xs text-zinc-500">{r.tagline}</span>
-                              </span>
-                            </>
-                          )}
-                          <ChevronRight className="h-4 w-4 shrink-0 text-zinc-600" />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="px-5 py-8 text-center text-sm text-zinc-400">
-                    {pick(`“${q}”에 대한 결과가 없습니다. `, `No results for “${q}”. `)}
-                    <a href="#support" className="text-fuchsia-300 underline underline-offset-4">{t("common.contact")}</a>
-                  </div>
+              <span className="dotgrid absolute inset-0 opacity-40" />
+              <span
+                className={cn(
+                  "absolute inset-0 flex items-center justify-center px-1 text-center font-mono text-[9px] font-bold tracking-[0.14em] transition-colors duration-500",
+                  active === i ? "text-volt-300" : "text-zinc-600",
                 )}
-                <div className="hidden items-center gap-4 border-t border-white/5 px-4 py-2 text-[11px] text-zinc-500 sm:flex">
-                  <span>↑↓ {t("hero.keyMove")}</span><span>↵ {t("hero.keyOpen")}</span><span>esc {t("hero.keyClose")}</span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Quick chips */}
-          <div className="hero-in mt-5 flex flex-wrap items-center justify-center gap-2" style={{ animationDelay: "320ms" }}>
-            <span className="text-xs text-zinc-500">{t("hero.quickLinks")}</span>
-            {QUICK.map((c) => (
-              <button
-                key={c.slug}
-                type="button"
-                onClick={() => openTool(c.slug)}
-                className="rounded-full bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-white"
               >
-                {c.label}
-              </button>
-            ))}
-            <a href="#credits" className="rounded-full bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300 ring-1 ring-inset ring-white/10 transition hover:bg-white/10 hover:text-white">
-              {t("hero.rechargeCredits")}
-            </a>
-          </div>
+                {a}
+              </span>
+              <span
+                className={cn(
+                  "absolute bottom-1 left-1.5 font-mono text-[8px] transition-colors duration-500",
+                  active === i ? "text-volt-400" : "text-zinc-700",
+                )}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
+          ))}
         </div>
 
-        {/* Pinned notice + status cards */}
-        <div className="hero-in mx-auto mt-14 grid max-w-5xl gap-3 md:grid-cols-[1.6fr_1fr_1fr]" style={{ animationDelay: "420ms" }}>
-          {pinned ? (
-            <button
-              type="button"
-              onClick={() => openEntry(pinned)}
-              className="group glass flex items-start gap-4 rounded-2xl p-5 text-left transition hover:bg-white/[0.07]"
-            >
-              <span className="bg-brand grid h-10 w-10 shrink-0 place-items-center rounded-xl shadow-[0_8px_24px_-8px_rgba(236,72,153,0.8)]">
-                <Megaphone className="h-4.5 w-4.5 text-white" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="flex items-center gap-2 text-xs text-zinc-400">
-                  {pinned.pinned ? t("hero.pinnedNotice") : t("hero.latestNotice")} · {formatDate(pinned.date)}
-                  {isNew(pinned.date) && <NewBadge />}
-                </span>
-                <span className="mt-1 block truncate font-semibold text-white">{pinned.title}</span>
-                <span className="mt-0.5 line-clamp-1 block text-sm text-zinc-400">{pinned.summary}</span>
-              </span>
-              <ArrowRight className="mt-3 h-4 w-4 shrink-0 text-zinc-500 transition group-hover:translate-x-0.5 group-hover:text-white" />
-            </button>
-          ) : (
-            <div className="skeleton h-[92px] rounded-2xl" />
-          )}
+        <div className="mt-4 rounded-xl border border-white/[0.07] bg-ink-950/70 p-3">
+          <div className="flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.18em] text-zinc-600">
+            prompt
+          </div>
+          <p className="mt-1.5 text-[11.5px] leading-relaxed text-zinc-400">
+            골든타임 측광, 통창 로프트 스튜디오, <span className="text-volt-400">35mm</span>, 커튼 미세 흔들림, 인물 시선 유지
+            <span className="ml-0.5 inline-block h-3 w-1.5 translate-y-0.5 animate-blink bg-volt-400" />
+          </p>
+        </div>
 
-          <a href="#updates" className="group glass flex items-center gap-4 rounded-2xl p-5 transition hover:bg-white/[0.07]">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-400/12 text-emerald-300 ring-1 ring-inset ring-emerald-400/20">
-              <Sparkles className="h-4.5 w-4.5" />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-xs text-zinc-400">{t("hero.latestUpdate")}</span>
-              <span className="block truncate font-semibold text-white">
-                {latestUpdate ? `${latestUpdate.version ?? ""} · ${timeAgo(latestUpdate.date)}` : "—"}
-              </span>
-            </span>
-          </a>
-
-          <div className="glass grid grid-cols-3 divide-x divide-white/[0.06] rounded-2xl py-4 text-center">
-            {[
-              { icon: Megaphone, n: notices.length, l: t("hero.statNotices") },
-              { icon: BookOpen, n: guides.length + TOOLS.length, l: t("hero.statGuides") },
-              { icon: Rocket, n: updates.length, l: t("hero.statReleases") },
-            ].map((s) => (
-              <div key={s.l} className="flex flex-col items-center justify-center px-2">
-                <span className="text-xl font-bold tabular-nums tracking-tight text-white">{s.n}</span>
-                <span className="text-[11px] text-zinc-500">{s.l}</span>
-              </div>
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex gap-1.5">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className={cn("h-1 rounded-full transition-all duration-500", active % 3 === i ? "w-6 bg-volt-400" : "w-2 bg-white/15")}
+              />
             ))}
           </div>
+          <span className="font-mono text-[9.5px] text-zinc-600">
+            render 00:0{active % 6}.{active % 10}s
+          </span>
         </div>
-        {syncedAt && <span className="sr-only">{t("hero.lastSynced")} {timeAgo(syncedAt)}</span>}
-      </Container>
+      </div>
+
+      <div className="animate-float absolute -bottom-6 -left-4 hidden rounded-2xl border border-white/10 bg-ink-880/95 px-4 py-3 shadow-2xl backdrop-blur sm:block">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">생성 시간</p>
+        <p className="mt-0.5 text-[15px] font-extrabold text-white">
+          3일 <span className="text-volt-400">→</span> 4분
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function Hero({ onSearch }: { onSearch: () => void }) {
+  const { t } = useLang();
+  const { notices, guides, updates, faqs } = useContent();
+
+  const quick = [
+    { id: "notices", label: t("nav.notices"), en: "Notices", desc: t("v.quick.notices.desc"), count: `${notices.length}`, Icon: IconBullhorn },
+    { id: "guides", label: t("nav.tools"), en: "Guides", desc: t("v.quick.guides.desc"), count: `${TOOLS.length}`, Icon: IconBook },
+    { id: "updates", label: t("nav.updates"), en: "Updates", desc: t("v.quick.updates.desc"), count: `${updates.length}`, Icon: IconGit },
+    { id: "faq", label: t("nav.faq"), en: "FAQ", desc: t("v.quick.faq.desc"), count: `${faqs.length}`, Icon: IconChevron },
+  ];
+
+  return (
+    <section id="top" className="relative overflow-hidden pt-28 sm:pt-36">
+      {/* backdrop */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-1/2 top-[-18rem] h-[36rem] w-[36rem] -translate-x-1/2 animate-drift rounded-full bg-volt-400/[0.13] blur-[130px]" />
+        <div className="absolute right-[-10rem] top-40 h-[26rem] w-[26rem] animate-drift rounded-full bg-volt-600/10 blur-[120px] [animation-delay:-8s]" />
+        <div className="hatch absolute inset-x-0 top-0 h-64 opacity-40" />
+        <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-b from-transparent to-ink-950" />
+      </div>
+
+      <div className="shell">
+        <Reveal className="flex flex-col items-start gap-5">
+          <Pill tone="volt" className="py-1.5 pl-2 pr-3">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-volt-400" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-volt-400" />
+            </span>
+            {t("v.hero.badge")}
+          </Pill>
+
+          <h1 className="text-balance-tight max-w-[16ch] text-[2.5rem] font-extrabold leading-[1.06] text-white sm:text-[3.5rem] lg:text-[4.2rem]">
+            {t("v.hero.lead")}
+            <br />
+            <Highlight>{t("v.hero.accent")}</Highlight>
+          </h1>
+
+          <p className="max-w-xl text-[15px] leading-relaxed text-zinc-400 sm:text-base">{t("v.hero.desc")}</p>
+
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+            <VoltButton onClick={() => scrollTo("guides")} icon>
+              {t("v.hero.cta1")}
+            </VoltButton>
+            <GhostButton onClick={onSearch}>
+              <IconArrow className="h-4 w-4" />
+              {t("v.hero.cta2")}
+            </GhostButton>
+          </div>
+
+          <div className="mt-4 grid w-full grid-cols-2 gap-x-6 gap-y-5 border-t border-white/[0.07] pt-6 sm:grid-cols-4">
+            <Stat value={TOOLS.length} suffix="" label={t("v.hero.stat.tools")} />
+            <Stat value={guides.length} suffix="" label={t("v.hero.stat.guides")} />
+            <Stat value={notices.length} suffix="" label={t("v.hero.stat.notices")} />
+            <Stat value={updates.length} suffix="" label={t("v.hero.stat.updates")} />
+          </div>
+        </Reveal>
+
+        <Reveal delay={140} className="mt-14 lg:mt-6">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-center">
+            <StoryboardVisual />
+            <div className="grid gap-3 sm:grid-cols-2">
+              {quick.map((q, i) => (
+                <button
+                  key={q.id}
+                  onClick={() => scrollTo(q.id)}
+                  className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900/60 p-5 text-left transition-all duration-500 hover:-translate-y-1 hover:border-volt-400/40 hover:bg-ink-880"
+                  style={{ animationDelay: `${i * 60}ms` }}
+                >
+                  <span className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-volt-400/0 blur-2xl transition-all duration-500 group-hover:bg-volt-400/20" />
+                  <div className="flex items-center justify-between">
+                    <span className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-volt-400 transition-colors duration-500 group-hover:border-volt-400/40 group-hover:bg-volt-400/10">
+                      <q.Icon className="h-4 w-4" />
+                    </span>
+                    <span className="font-mono text-[10px] font-bold text-zinc-600">
+                      {String(q.count).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-[15px] font-extrabold text-white">{q.label}</p>
+                  <p className="mt-1 text-[11.5px] leading-relaxed text-zinc-500">{q.desc}</p>
+                  <span className="mt-3 flex items-center gap-1 text-[11px] font-bold text-volt-400 opacity-0 transition-all duration-500 group-hover:opacity-100">
+                    {t("v.quick.move")} <IconArrow className="h-3 w-3" />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
     </section>
   );
 }

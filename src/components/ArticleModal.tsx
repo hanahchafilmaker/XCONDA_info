@@ -9,9 +9,9 @@ import { isNew } from "../notion";
 import { cn } from "../utils/cn";
 
 const KIND_TONE = {
-  New: "bg-emerald-400/12 text-emerald-200 ring-emerald-400/25",
-  Improved: "bg-sky-400/12 text-sky-200 ring-sky-400/25",
-  Fixed: "bg-amber-400/12 text-amber-200 ring-amber-400/25",
+  New: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
+  Improved: "border-sky-400/25 bg-sky-400/10 text-sky-300",
+  Fixed: "border-volt-400/35 bg-volt-400/10 text-volt-300",
 };
 
 export default function ArticleModal() {
@@ -66,7 +66,7 @@ export default function ArticleModal() {
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="article-title" className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center sm:p-6">
       <button type="button" aria-label={t("common.close")} tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-ink-950/75 backdrop-blur-md" />
-      <div className="modal-in glass-strong relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[28px] sm:max-w-3xl sm:rounded-[28px]">
+      <div className="anim-modal relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[28px] border border-white/10 bg-ink-900 shadow-[0_-20px_90px_-20px_rgba(0,0,0,0.9)] sm:max-w-3xl sm:rounded-[28px]">
         {/* Top bar */}
         <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-5 py-3.5 sm:px-7">
           <div className="flex min-w-0 items-center gap-2">
@@ -80,7 +80,7 @@ export default function ArticleModal() {
             <button
               type="button"
               onClick={share}
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-zinc-300 transition hover:bg-white/10 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-zinc-400 transition hover:border-white/25 hover:text-white"
             >
               {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Link2 className="h-3.5 w-3.5" />}
               <span aria-live="polite">{copied ? t("common.linkCopied") : t("common.share")}</span>
@@ -90,7 +90,7 @@ export default function ArticleModal() {
               type="button"
               onClick={closeEntry}
               aria-label={t("common.close")}
-              className="grid h-9 w-9 place-items-center rounded-full text-zinc-300 transition hover:bg-white/10 hover:text-white"
+              className="grid h-9 w-9 place-items-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-white"
             >
               <X className="h-4.5 w-4.5" />
             </button>
@@ -107,7 +107,7 @@ export default function ArticleModal() {
           <article className="px-5 pb-10 pt-7 sm:px-10">
             <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
               {active.pinned && (
-                <span className="inline-flex items-center gap-1 text-fuchsia-300">
+                <span className="inline-flex items-center gap-1 text-volt-300">
                   <Pin className="h-3.5 w-3.5" /> {t("modal.pinnedNotice")}
                 </span>
               )}
@@ -124,10 +124,10 @@ export default function ArticleModal() {
             {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-zinc-400">{active.summary}</p>}
 
             {active.changes && active.changes.length > 0 && (
-              <ul className="mt-6 space-y-2 rounded-2xl bg-white/[0.03] p-4 ring-1 ring-inset ring-white/[0.06]">
+              <ul className="mt-6 space-y-2 rounded-2xl bg-white/[0.03] p-4 border border-white/[0.07]">
                 {active.changes.map((c, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-zinc-200">
-                    <span className={cn("mt-0.5 w-[68px] shrink-0 rounded-md py-0.5 text-center text-[11px] font-semibold ring-1 ring-inset", KIND_TONE[c.kind])}>{changeLabel(c.kind, lang)}</span>
+                    <span className={cn("mt-0.5 w-[68px] shrink-0 rounded-md border py-0.5 text-center text-[11px] font-semibold", KIND_TONE[c.kind])}>{changeLabel(c.kind, lang)}</span>
                     {c.text}
                   </li>
                 ))}
@@ -160,7 +160,7 @@ export default function ArticleModal() {
                 href={active.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-ink-950 transition hover:shadow-[0_10px_30px_-8px_rgba(236,72,153,0.7)] active:scale-95"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-volt-400 px-5 py-3 text-sm font-extrabold text-ink-950 transition hover:shadow-[0_14px_44px_-10px_rgba(255,214,10,0.75)] active:scale-95"
               >
                 {active.type === "guide" ? t("modal.tryInStudio") : t("common.readMore")}
                 <ArrowUpRight className="h-4 w-4" />

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test:smoke": "vite build --config scripts/vite.smoke.config.ts && node scripts/smoke.mjs",
     "postbuild": "node -e \"const fs=require('fs');fs.copyFileSync('dist/dev.html','index.html');console.log('✔ dist/dev.html → index.html (GitHub Pages 배포 파일 갱신)')\"",
     "preview": "vite preview"
   },
@@ -22,6 +23,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.1",
+    "jsdom": "^30.1.1",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3",
     "vite": "7.3.2",
