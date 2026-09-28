@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ExternalLink } from "lucide-react";
 import { cn } from "../utils/cn";
 import { TOOLS, TOOL_GROUPS } from "../content/tools";
 import { getToolVideo } from "../content/toolVideos";
@@ -10,7 +11,7 @@ import { GhostButton, IconArrow, Reveal, SectionHeader, Tabs, VoltButton } from 
 type Group = (typeof TOOL_GROUPS)[number];
 
 export default function Guides() {
-  const { t, lang } = useLang();
+  const { t, pick, lang } = useLang();
   const { openTool } = useContent();
   const [group, setGroup] = useState<Group>("전체");
   const [activeSlug, setActiveSlug] = useState(TOOLS[0].slug);
@@ -139,6 +140,16 @@ export default function Guides() {
                     allowFullScreen
                     loading="lazy"
                   />
+                  {/* 임베드가 차단되거나 로드되지 않아도 영상에 접근할 수 있도록 폴백 링크 제공 */}
+                  <a
+                    href={video.replace(/\/preview$/, "/view")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 border-t border-white/[0.06] px-4 py-2 text-xs text-zinc-500 transition hover:text-white"
+                  >
+                    <ExternalLink className="h-3 w-3" aria-hidden />
+                    {pick("Google Drive에서 새 창으로 열기", "Open in Google Drive")}
+                  </a>
                 </div>
               )}
 

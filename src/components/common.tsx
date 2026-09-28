@@ -146,11 +146,19 @@ function youTubeEmbed(url: string): string | null {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }
 
-/** Google Drive 파일 링크를 임베드 가능한 /preview URL로 변환합니다. */
-function driveEmbed(url: string): string | null {
-  const m = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
-  return m ? `https://drive.google.com/file/d/${m[1]}/preview` : null;
+/** Google Drive 파일 링크에서 파일 ID를 추출합니다. (`/file/d/<id>/view`, `open?id=`, `uc?id=` 모두 지원) */
+function driveFileId(url: string): string | null {
+  let m = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+  if (!m) m = url.match(/drive\.google\.com\/(?:open|uc)\?(?:[^#]*&)?id=([\w-]+)/);
+  return m ? m[1] : null;
 }
+
+/**
+ * 구글 드라이브 링크 중 파일 밖(홈 · 폴더 · 공유 목록 등) 링크는
+ * 구글이 `frame-ancestors https://drive.google.com` CSP 로 iframe 임베드를 차단하므로
+ * iframe/video 로 넣지 않고 "새 창에서 열기" 링크 카드로 대체합니다.
+ */
+const isDriveUrl = (url: string) => /(^|\.)drive\.google\.com\//.test(url);
 
 function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();
@@ -182,6 +190,7 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
 /* --------------------------- Block renderer --------------------------- */
 
 export function Blocks({ blocks }: { blocks: Block[] }) {
+  const { pick } = useLang();
   return (
     <div className="space-y-4 text-[15px] leading-[1.8] text-zinc-300">
       {blocks.map((b, i) => {
@@ -254,13 +263,44 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
               </figure>
             );
           case "video": {
-            const yt = youTubeEmbed(b.src) ?? driveEmbed(b.src);
+            const yt = youTubeEmbed(b.src);
+            const driveId = yt ? null : driveFileId(b.src);
+            const embed = yt ?? (driveId ? `https://drive.google.com/file/d/${driveId}/preview` : null);
+            /* 드라이브 홈 · 폴더 링크는 구글이 iframe 을 차단(frame-ancestors CSP)하므로 링크 카드로 대체 */
+            if (!embed && isDriveUrl(b.src)) {
+              return (
+                <a
+                  key={i}
+                  href={b.src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-3 rounded-xl bg-white/[0.03] px-4 py-3 text-sm text-zinc-200 ring-1 ring-inset ring-white/[0.08] transition hover:bg-white/[0.06]"
+                >
+                  <span className="truncate">
+                    {b.caption ? `${b.caption} — ` : ""}
+                    {pick("Google Drive 링크 (새 창에서 열기)", "Google Drive link (opens in a new tab)")}
+                  </span>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-zinc-500" />
+                </a>
+              );
+            }
             return (
               <figure key={i} className="overflow-hidden rounded-xl ring-1 ring-white/10">
-                {yt ? (
-                  <iframe src={yt} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
+                {embed ? (
+                  <iframe src={embed} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
                 ) : (
                   <video src={b.src} controls playsInline className="aspect-video w-full bg-black" />
+                )}
+                {driveId && (
+                  <a
+                    href={`https://drive.google.com/file/d/${driveId}/view`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 border-t border-white/[0.06] px-4 py-2 text-xs text-zinc-500 transition hover:text-white"
+                  >
+                    <ExternalLink className="h-3 w-3" aria-hidden />
+                    {pick("Google Drive에서 새 창으로 열기", "Open in Google Drive")}
+                  </a>
                 )}
                 {b.caption && <figcaption className="px-4 py-2 text-xs text-zinc-500">{b.caption}</figcaption>}
               </figure>
