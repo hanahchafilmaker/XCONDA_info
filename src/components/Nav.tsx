@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "../utils/cn";
 import { IconClose, IconMenu, IconSearch, Logo } from "./volt";
+import { SyncButton } from "./common";
 import { STUDIO_URL } from "../content/tools";
 import { useLang } from "../i18n";
 
@@ -89,6 +90,11 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* 수동 동기화 버튼 — 상단 내비게이션 (연결 없으면 자동으로 숨김) */}
+            <SyncButton
+              className="h-9 px-2.5 text-zinc-400 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60"
+              labelClass="hidden text-[13px] font-medium lg:inline"
+            />
             <button
               onClick={onSearch}
               className="flex h-9 items-center gap-2 rounded-full px-2.5 text-zinc-400 transition-colors hover:bg-white/[0.06] hover:text-white"

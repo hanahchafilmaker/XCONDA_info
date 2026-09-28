@@ -296,8 +296,13 @@ function writeCache(p: ContentPayload) {
   }
 }
 
-export async function fetchEntries(endpoint: string, signal?: AbortSignal, force = false): Promise<Entry[]> {
-  if (isPublicEndpoint(endpoint)) return fetchPublicEntries(endpoint.slice("public:".length), signal, force);
+export async function fetchEntries(
+  endpoint: string,
+  signal?: AbortSignal,
+  force = false,
+  manual = false
+): Promise<Entry[]> {
+  if (isPublicEndpoint(endpoint)) return fetchPublicEntries(endpoint.slice("public:".length), signal, force, manual);
   const res = await fetch(endpoint, { signal, headers: { Accept: "application/json" } });
   if (!res.ok) throw new Error(`Notion proxy ${res.status}`);
   const data = await res.json();
@@ -309,14 +314,21 @@ export async function fetchEntries(endpoint: string, signal?: AbortSignal, force
   return results.map(mapPage).filter((e): e is Entry => e !== null);
 }
 
-export async function syncFromNotion(endpoint: string, signal?: AbortSignal, force = false): Promise<ContentPayload> {
+export async function syncFromNotion(
+  endpoint: string,
+  signal?: AbortSignal,
+  force = false,
+  manual = false
+): Promise<ContentPayload> {
   if (force) invalidateSnapshot();
-  const entries = await fetchEntries(endpoint, signal, force);
+  const entries = await fetchEntries(endpoint, signal, force, manual);
   const snapshotAt = getLastSnapshotGeneratedAt();
   const payload: ContentPayload = {
     entries,
     source: "notion",
-    syncedAt: snapshotAt ? Date.parse(snapshotAt) : Date.now(),
+    // 수동 동기화는 방금 읽은 시점이므로 "방금 전"으로 표시해 사용자가
+    // 눌렀다는 사실을 정확히 반영합니다. (자동 동기화는 스냅샷 생성 시각 사용)
+    syncedAt: manual ? Date.now() : snapshotAt ? Date.parse(snapshotAt) : Date.now(),
     snapshotGeneratedAt: snapshotAt,
   };
   writeCache(payload);

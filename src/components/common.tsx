@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check, Copy, ExternalLink, ImageOff, RefreshCw } from "lucide-react";
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
@@ -43,9 +43,77 @@ export function NewBadge() {
 
 /* --------------------------- Sync status --------------------------- */
 
+/**
+ * Notion 수동 동기화 버튼 — 내비게이션과 뉴스 섹션 배지에서 공통으로 사용합니다.
+ * 클릭 시 캐시를 무효화하고(브라우저·스냅샷) 공개 프록시의 실시간 데이터를
+ * 먼저 시도한 뒤, 스냅샷으로 폴백합니다. 연결이 없는 샘플 모드에서는 렌더하지 않습니다.
+ */
+export function SyncButton({
+  className,
+  labelClass,
+  title,
+}: {
+  className?: string;
+  /** 화면에 보이는 라벨 스타일 (예: 모바일에서는 숨기고 아이콘만 표시) */
+  labelClass?: string;
+  /** 아이콘 툴팁 (기본: 상태에 맞는 동기화 문구) */
+  title?: string;
+}) {
+  const { t } = useLang();
+  const { status, refresh, endpoint } = useContent();
+  const [done, setDone] = useState(false);
+  const pending = useRef(false);
+
+  const syncing = status === "syncing";
+  const busy = syncing || status === "loading";
+
+  // 클릭 후 동기화가 끝나면 완료 피드백(✓)을 잠시 보여줍니다.
+  useEffect(() => {
+    if (!pending.current) return;
+    if (status === "ready") {
+      pending.current = false;
+      setDone(true);
+      const id = window.setTimeout(() => setDone(false), 1600);
+      return () => window.clearTimeout(id);
+    }
+    if (status === "error") pending.current = false;
+  }, [status]);
+
+  if (!endpoint) return null;
+
+  const stateLabel = done ? t("sync.done") : busy ? t("sync.syncing") : t("sync.now");
+
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (syncing) return;
+        pending.current = true;
+        setDone(false);
+        refresh(true, true);
+      }}
+      aria-label={stateLabel}
+      aria-busy={busy || undefined}
+      title={title ?? stateLabel}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full transition-colors",
+        className,
+        done ? "text-emerald-300" : "hover:text-white"
+      )}
+    >
+      {done ? (
+        <Check className="h-4 w-4 shrink-0" aria-hidden />
+      ) : (
+        <RefreshCw className={cn("h-4 w-4 shrink-0", busy && "animate-spin")} aria-hidden />
+      )}
+      <span className={labelClass}>{t("sync.now")}</span>
+    </button>
+  );
+}
+
 export function SyncStatus({ className }: { className?: string }) {
   const { t, pick } = useLang();
-  const { source, status, syncedAt, refresh, endpoint } = useContent();
+  const { source, status, syncedAt, endpoint } = useContent();
   const live = source === "notion" && status !== "error";
   const isPublic = endpoint ? isPublicEndpoint(endpoint) : false;
   const label =
@@ -77,20 +145,13 @@ export function SyncStatus({ className }: { className?: string }) {
       <span className={cn("h-1.5 w-1.5 rounded-full", live ? "bg-emerald-400" : status === "error" ? "bg-rose-400" : "bg-amber-400")} />
       <NotionMark className="h-3.5 w-3.5 text-zinc-400" />
       <span aria-live="polite">{label}</span>
-      {endpoint && (
-        <button
-          type="button"
-          onClick={() => refresh(true)}
-          aria-label={t("sync.now")}
-          title={pick(
-            "최신 Notion 스냅샷 새로고침 (클릭 시 캐시를 무효화하고 최신 데이터를 읽어옵니다)",
-            "Refresh Notion snapshot"
-          )}
-          className="grid h-7 w-7 place-items-center rounded-full text-zinc-500 transition hover:bg-white/10 hover:text-white"
-        >
-          <RefreshCw className={cn("h-3.5 w-3.5", (status === "syncing" || status === "loading") && "animate-spin")} />
-        </button>
-      )}
+      <SyncButton
+        className="h-7 border border-white/10 bg-white/[0.04] px-2.5 text-[12.5px] font-semibold text-zinc-400 hover:border-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60"
+        title={pick(
+          "지금 동기화 — 캐시를 무효화하고 Notion 최신 글을 다시 읽습니다",
+          "Sync now — refresh the latest Notion posts (bypasses cache)"
+        )}
+      />
     </div>
   );
 }
