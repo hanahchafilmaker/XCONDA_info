@@ -3,6 +3,10 @@
 노션에 글을 쓰고 **Published**를 체크하면 → **최대 10분**(GitHub Actions 스냅샷 주기) 안에 가이드 사이트에 반영됩니다.
 사이트는 3분마다, 탭으로 돌아올 때, 상단 배지의 🔄 버튼을 누를 때 스냅샷을 새로 읽습니다.
 
+> ⚠️ **GitHub Actions 스케줄 지연**: 워크플로는 10분 주기(cron `*/10`)로 예약되어 있지만,
+> GitHub의 스케줄 지연으로 **실제로는 수 시간(3~6시간) 간격으로밖에 실행되지 않는 경우이 있습니다.**
+> 즉시 반영이 필요하면 저장소 **Actions → "Notion 동기화" → Run workflow** 를 직접 실행하세요 (약 15초 + Pages 배포 수 분).
+
 **어떻게 동작하나요?**
 `.github/workflows/notion-sync.yml` 이 10분마다 게시된 Notion 페이지를 **서버**에서 읽어
 사이트와 같은 폴더의 `notion-content.json`(정적 스냅샷)으로 커밋하고, 사이트는 그 파일만 읽습니다.
@@ -35,7 +39,7 @@
 
 > **동기화가 안 될 때 확인 순서**
 > 1. **`Published` 체크박스 확인**: 노션 데이터베이스에서 해당 행의 `Published`(또는 `공개`) 체크박스가 체크되어 있는지 확인합니다. 체크되지 않은 행은 비공개(초안)로 간주되어 스냅샷에서 자동으로 제외됩니다.
-> 2. **GitHub Actions 수동 동기화 실행**: GitHub의 cron 스케줄은 저장소 상황에 따라 실행이 지연될 수 있습니다. 지금 바로 반영하려면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 클릭하여 실행하세요 (약 15초 소요).
+> 2. **GitHub Actions 수동 동기화 실행**: GitHub의 cron 스케줄은 저장소 상황에 따라 실행이 지연될 수 있습니다(2026-09 실측: 최대 3~6시간 간격까지 밀림). 지금 바로 반영하려면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 클릭하여 실행하세요 (약 15초 소요).
 > 3. **사이트 새로고침(🔄)**: 상단 상태 배지의 🔄 버튼을 누르면 브라우저 및 CDN 캐시를 무효화하고 최신 스냅샷을 즉시 다시 읽어옵니다.
 > 4. **노션 페이지 공개 상태**: 노션 페이지 우측 상단 공유에서 **웹에 게시(Publish)** 상태인지 확인합니다.
 > 5. 그래도 안 되면 **방법 B(Cloudflare Worker)** 를 연결하세요. 비공개 운영·즉시 반영에도 방법 B가 필요합니다.
@@ -72,6 +76,22 @@
 | `Changes EN` | 텍스트 | | 뉴스 영문 변경사항. `Changes`와 같은 한 줄 형식 |
 
 **페이지 본문**(제목, 목록, 번호 목록, 체크리스트, 인용, 콜아웃, 코드, 이미지, 유튜브 영상, 북마크, 토글, 구분선)은 그대로 상세 모달에 표시됩니다. UI와 정적 툴 설명은 한/영 토글에 맞춰 전환되며, Notion 본문은 작성된 원문을 그대로 표시합니다.
+
+### 🎬 구글 드라이브 영상 넣기 (CSP 오류 주의)
+
+구글은 `drive.google.com` 페이지에 `Content-Security-Policy: frame-ancestors https://drive.google.com` 를 설정해 두어서,
+**드라이브 홈/폴더/파일 보기(`/view`) 링크를 iframe 으로 직접 넣으면 브라우저가 차단**합니다.
+
+```
+Framing 'https://drive.google.com/' violates the following Content Security Policy
+directive: "frame-ancestors https://drive.google.com" — The request has been blocked.
+```
+
+- ✅ **임베드 가능**: `https://drive.google.com/file/d/<파일ID>/preview` (파일 "링크를 가진 모든 사람" 공유 필수)
+- ❌ **임베드 불가**: 드라이브 홈 · 폴더 · `file/d/<ID>/view` 링크를 그대로 iframe(노션의 "임베드/Web frame" 포함)에 넣는 경우
+- 이 사이트의 툴 영상 가이드는 이미 `/preview` 형태를 사용합니다. Notion 본문에 드라이브 **파일** 링크를 넣으면
+  사이트가 자동으로 `/preview` 로 변환해 재생하고, 변환할 수 없는 링크(폴더 등)는 "새 창에서 열기" 링크 카드로 표시합니다.
+- 이 CSP 오류는 **콘텐츠 동기화와 무관**합니다. (사이트 갱신이 안 되는 원인은 위 「동기화가 안 될 때 확인 순서」 참고)
 
 ---
 
