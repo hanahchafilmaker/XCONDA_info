@@ -4,6 +4,7 @@
  * ▸ 읽기 순서 (앞에서 먼저 성공하는 쪽 사용)
  *   1) 정적 스냅샷 `notion-content.json` (같은 출처 · CORS 무관 · workflows/notion-sync.yml 이 10분마다 갱신)
  *   2) 무료 공개 프록시 notion-api.splitbee.io (실시간이지만 장애가 잦음 — 보조 수단)
+ *   ▸ 단, 사용자가 "지금 동기화" 버튼을 직접 누른 경우(manual)에는 2번을 먼저 시도합니다.
  * ▸ 페이지 안에 데이터베이스(표)를 하나 만들면 그 행들이 콘텐츠가 됩니다.
  *   속성 스키마는 NOTION_SETUP.md 와 동일합니다. (Title/Type/Published/Date …)
  * ▸ 엔드포인트 형식: "public:<32자리 페이지 ID>"  → src/notion.ts 가 라우팅합니다.
@@ -284,11 +285,18 @@ async function matchingSnapshot(pageId: string, force = false): Promise<NotionSn
  *    (프록시가 빈 표를 돌려주면 스냅샷 쪽을 우선합니다 — 기존 방어 로직 유지)
  * 3) 프록시마저 실패하면 낡은 스냅샷이라도 표시하고, 둘 다 없으면 안내 오류를 던집니다.
  */
-export async function fetchPublicEntries(pageId: string, signal?: AbortSignal, force = false): Promise<Entry[]> {
+export async function fetchPublicEntries(
+  pageId: string,
+  signal?: AbortSignal,
+  force = false,
+  manual = false
+): Promise<Entry[]> {
   const snapshot = await matchingSnapshot(pageId, force);
 
   // 신선한 스냅샷이 있으면 외부 호출 없이 즉시 응답 (가장 빠르고 조용한 경로)
-  if (snapshot && !snapshotIsStale(snapshot)) {
+  // 단, 사용자가 "지금 동기화"를 직접 눌렀다면 공개 프록시에서 실시간 데이터를
+  // 먼저 시도합니다 — GitHub Actions 스케줄이 밀리는 동안에도 새 글을 바로 읽어옵니다.
+  if (snapshot && !snapshotIsStale(snapshot) && !manual) {
     if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
     return rowsToEntries(snapshot.rows);
   }

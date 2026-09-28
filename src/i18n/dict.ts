@@ -213,6 +213,7 @@ export const DICT: Dict = {
   "sync.error": { ko: "Notion 연결 오류 · 캐시 표시", en: "Notion connection error · showing cache" },
   "sync.sample": { ko: "샘플 콘텐츠 · Notion 미연결", en: "Sample content · Notion not connected" },
   "sync.now": { ko: "지금 동기화", en: "Sync now" },
+  "sync.done": { ko: "동기화 완료", en: "Synced" },
 
   /* -------------------------- 아티클 모달 -------------------------- */
   "modal.pinnedNotice": { ko: "고정 공지", en: "Pinned notice" },

@@ -20,7 +20,7 @@ type Ctx = {
   status: Status;
   syncedAt: number | null;
   endpoint?: string;
-  refresh: (force?: boolean) => void;
+  refresh: (force?: boolean, manual?: boolean) => void;
   openEntry: (e: Entry) => void;
   openTool: (slug: string) => void;
   closeEntry: () => void;
@@ -46,13 +46,17 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const syncedAtRef = useRef(syncedAt);
   syncedAtRef.current = syncedAt;
 
-  const refresh = useCallback((force = true) => {
+  /**
+   * @param force   브라우저/스냅샷 캐시를 무효화하고 다시 읽는다 (자동 폴링·가시성 복귀 포함)
+   * @param manual  사용자가 "지금 동기화" 버튼을 직접 눌렀다 — 공개 프록시 실시간 조회를 먼저 시도
+   */
+  const refresh = useCallback((force = true, manual = false) => {
     if (!endpoint) return;
     inflight.current?.abort();
     const ctrl = new AbortController();
     inflight.current = ctrl;
     setStatus((s) => (s === "loading" ? "loading" : "syncing"));
-    syncFromNotion(endpoint, ctrl.signal, force)
+    syncFromNotion(endpoint, ctrl.signal, force, manual)
       .then((p) => {
         setEntries(p.entries);
         setSource("notion");
