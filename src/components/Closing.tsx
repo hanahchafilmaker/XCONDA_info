@@ -1,4 +1,5 @@
 import { STUDIO_URL, TOOLS } from "../content/tools";
+import { CHANNELS } from "../content/channels";
 import { useLang } from "../i18n";
 import { Logo, Reveal, VoltButton } from "./volt";
 import { SUPPORT_EMAIL } from "./Qna";
@@ -33,6 +34,24 @@ export default function Closing() {
             <div>
               <Logo />
               <p className="mt-4 max-w-sm text-[13.5px] leading-relaxed text-zinc-500">{t("v.footer.desc")}</p>
+              <div className="mt-5 flex items-center gap-2.5">
+                {CHANNELS.filter((c) => c.href && c.id !== "web" && c.id !== "notion").map((c) => {
+                  const Icon = c.Icon;
+                  return (
+                    <a
+                      key={c.id}
+                      href={c.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={c.name}
+                      title={`${c.name} (${c.handle})`}
+                      className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-400 transition hover:border-white/25 hover:bg-white/10 hover:text-white"
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
 
             <div>
