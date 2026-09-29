@@ -77,21 +77,23 @@
 
 **페이지 본문**(제목, 목록, 번호 목록, 체크리스트, 인용, 콜아웃, 코드, 이미지, 유튜브 영상, 북마크, 토글, 구분선)은 그대로 상세 모달에 표시됩니다. UI와 정적 툴 설명은 한/영 토글에 맞춰 전환되며, Notion 본문은 작성된 원문을 그대로 표시합니다.
 
-### 🎬 구글 드라이브 영상 넣기 (CSP 오류 주의)
+### 🎬 구글 드라이브 영상 링크 (CSP 오류 주의)
 
-구글은 `drive.google.com` 페이지에 `Content-Security-Policy: frame-ancestors https://drive.google.com` 를 설정해 두어서,
-**드라이브 홈/폴더/파일 보기(`/view`) 링크를 iframe 으로 직접 넣으면 브라우저가 차단**합니다.
+Google Drive가 응답에 설정하는 `Content-Security-Policy: frame-ancestors` 는 사이트에서 변경하거나 우회할 수 없습니다.
+계정, 공유 설정, 요청 경로 등에 따라 `/preview` 파일 링크도 브라우저에서 임베드가 차단될 수 있습니다.
+차단되면 다음과 같은 콘솔 메시지가 표시됩니다.
 
 ```
-Framing 'https://drive.google.com/' violates the following Content Security Policy
-directive: "frame-ancestors https://drive.google.com" — The request has been blocked.
+Framing '<URL>' violates the following Content Security Policy directive: "frame-ancestors <URL>".
+The request has been blocked.
 ```
 
-- ✅ **임베드 가능**: `https://drive.google.com/file/d/<파일ID>/preview` (파일 "링크를 가진 모든 사람" 공유 필수)
-- ❌ **임베드 불가**: 드라이브 홈 · 폴더 · `file/d/<ID>/view` 링크를 그대로 iframe(노션의 "임베드/Web frame" 포함)에 넣는 경우
-- 이 사이트의 툴 영상 가이드는 이미 `/preview` 형태를 사용합니다. Notion 본문에 드라이브 **파일** 링크를 넣으면
-  사이트가 자동으로 `/preview` 로 변환해 재생하고, 변환할 수 없는 링크(폴더 등)는 "새 창에서 열기" 링크 카드로 표시합니다.
-- 이 CSP 오류는 **콘텐츠 동기화와 무관**합니다. (사이트 갱신이 안 되는 원인은 위 「동기화가 안 될 때 확인 순서」 참고)
+이 사이트는 Google Drive 영상을 iframe에 넣지 않고 **Google Drive에서 새 창으로 열기** 링크로 표시합니다.
+따라서 외부 CSP에 의해 반복되는 프레이밍 오류가 발생하지 않습니다. 영상 파일은 Drive에서 열어 시청하며,
+YouTube 영상과 직접 제공되는 영상 파일은 기존처럼 페이지 안에서 재생됩니다.
+
+참고: CSP 오류가 다른 외부 서비스 URL에서 발생한다면 해당 서비스가 프레이밍을 차단하는 것입니다.
+브라우저 콘솔에 표시된 실제 요청 URL과 페이지 위치를 확인해야 정확히 구분할 수 있습니다.
 
 ---
 

@@ -131,26 +131,15 @@ export default function Guides() {
               )}
 
               {video && (
-                <div className="mt-5 overflow-hidden rounded-xl bg-black">
-                  <iframe
-                    src={video}
-                    title={`${active.name} — ${t("v.guides.video")}`}
-                    className="aspect-video w-full"
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                  {/* 임베드가 차단되거나 로드되지 않아도 영상에 접근할 수 있도록 폴백 링크 제공 */}
-                  <a
-                    href={video.replace(/\/preview$/, "/view")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 border-t border-white/[0.06] px-4 py-2 text-xs text-zinc-500 transition hover:text-white"
-                  >
-                    <ExternalLink className="h-3 w-3" aria-hidden />
-                    {pick("Google Drive에서 새 창으로 열기", "Open in Google Drive")}
-                  </a>
-                </div>
+                <a
+                  href={video}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 flex items-center justify-between gap-3 rounded-xl bg-black px-4 py-3 text-sm text-zinc-200 ring-1 ring-inset ring-white/[0.08] transition hover:bg-white/[0.06]"
+                >
+                  <span>{pick("공식 영상 가이드 (Google Drive에서 열기)", "Official video guide (open in Google Drive)")}</span>
+                  <ExternalLink className="h-4 w-4 shrink-0 text-zinc-500" aria-hidden />
+                </a>
               )}
 
               <div className="mt-7 flex flex-wrap gap-3">
