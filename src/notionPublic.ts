@@ -12,7 +12,8 @@
  * ========================================================================== */
 
 import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
-import { TYPE_MAP, parseChanges } from "./notion";
+import { channelName, classifyType, hasPublishedColumn, includeRow, isEntryType } from "./content/classify";
+import { parseChanges } from "./notion";
 import {
   loadSnapshot,
   snapshotIsStale,
@@ -192,16 +193,26 @@ function asFileUrl(v: unknown): string {
   return typeof v === "string" ? v : "";
 }
 
-const PUBLISHED_KEYS = ["Published", "공개", "게시"];
-
 function mapRow(row: R, requirePublished: boolean): Entry | null {
   const title = asText(pick(row, ["Title", "Name", "제목", "이름", "질문"]));
   if (!title) return null;
-  if (requirePublished && !asBool(pick(row, PUBLISHED_KEYS))) return null;
+  // Published 열이 있는 표에서는 체크된 행만 (값이 빠진 행 = 미공개 → 제외)
+  if (!includeRow(row, requirePublished)) return null;
 
-  const rawType = asText(pick(row, ["Type", "유형", "타입", "구분"])).toLowerCase();
-  const type: EntryType = TYPE_MAP[rawType] ?? "notice";
+  const category = asText(pick(row, ["Category", "카테고리", "분류"]));
+  const link = asText(pick(row, ["Link", "URL", "링크"]));
   const changesRaw = asText(pick(row, ["Changes", "변경사항", "변경 사항"]));
+  // 섹션 판정은 `src/content/classify.js` 한 곳에서만 — Type 동의어·내용 추론까지 동일 규칙
+  const decision = classifyType({
+    type: pick(row, ["Type", "유형", "타입", "구분"]),
+    category,
+    link,
+    changes: changesRaw,
+    version: pick(row, ["Version", "버전"]),
+    tool: pick(row, ["Tool", "툴", "도구"]),
+  });
+  // 동기화 서버(scripts/notion-snapshot.mjs)가 기록한 확정 섹션이 있으면 그것을 우선합니다.
+  const type: EntryType = isEntryType(row.__type) ? row.__type : decision.type;
   const titleEn = asText(pick(row, ["Title EN", "English Title", "제목 EN", "영문 제목"]));
   const summaryEn = asText(pick(row, ["Summary EN", "English Summary", "요약 EN", "영문 요약", "Answer EN"]));
   const categoryEn = asText(pick(row, ["Category EN", "English Category", "카테고리 EN", "영문 카테고리"]));
@@ -219,11 +230,12 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
     type,
     title,
     summary: asText(pick(row, ["Summary", "요약", "설명", "답변", "Answer"])),
-    category: asText(pick(row, ["Category", "카테고리", "분류"])) || (type === "notice" ? "공지" : ""),
+    // Category 가 비어 있으면 공지는 '공지', 뉴스는 링크로 알아낸 채널 이름(X · YouTube …)을 씁니다.
+    category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: asText(pick(row, ["Date", "날짜", "게시일"])) || new Date().toISOString(),
     tags: asList(pick(row, ["Tags", "태그"])),
     cover: asFileUrl(pick(row, ["Cover", "커버", "썸네일", "Image"])) || undefined,
-    url: asText(pick(row, ["Link", "URL", "링크"])) || undefined,
+    url: link || undefined,
     pinned: asBool(pick(row, ["Pinned", "고정", "상단고정"])),
     important: asBool(pick(row, ["Important", "중요"])),
     version: asText(pick(row, ["Version", "버전"])) || undefined,
@@ -237,9 +249,7 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
 
 function rowsToEntries(data: R[]): Entry[] {
   // Published 열이 하나라도 있으면 체크된 행만, 아예 없으면 전부 노출
-  const hasPublishedCol = data.some((row) =>
-    Object.keys(row).some((key) => PUBLISHED_KEYS.some((name) => key.trim().toLowerCase() === name.toLowerCase()))
-  );
+  const hasPublishedCol = hasPublishedColumn(data);
   return data.map((row) => mapRow(row, hasPublishedCol)).filter((entry): entry is Entry => entry !== null);
 }
 
