@@ -207,19 +207,12 @@ function youTubeEmbed(url: string): string | null {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }
 
-/** Google Drive 파일 링크에서 파일 ID를 추출합니다. (`/file/d/<id>/view`, `open?id=`, `uc?id=` 모두 지원) */
-function driveFileId(url: string): string | null {
-  let m = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
-  if (!m) m = url.match(/drive\.google\.com\/(?:open|uc)\?(?:[^#]*&)?id=([\w-]+)/);
-  return m ? m[1] : null;
-}
-
 /**
- * 구글 드라이브 링크 중 파일 밖(홈 · 폴더 · 공유 목록 등) 링크는
- * 구글이 `frame-ancestors https://drive.google.com` CSP 로 iframe 임베드를 차단하므로
- * iframe/video 로 넣지 않고 "새 창에서 열기" 링크 카드로 대체합니다.
+ * Google Drive controls its own `frame-ancestors` policy. It can block an otherwise
+ * valid `/preview` URL depending on the file's sharing/access state, and that policy
+ * cannot be overridden by this site. Keep Drive URLs as links rather than iframes.
  */
-const isDriveUrl = (url: string) => /(^|\.)drive\.google\.com\//.test(url);
+const isDriveUrl = (url: string) => /(^|\.)drive\.google\.com\//i.test(url);
 
 function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();
@@ -325,10 +318,8 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             );
           case "video": {
             const yt = youTubeEmbed(b.src);
-            const driveId = yt ? null : driveFileId(b.src);
-            const embed = yt ?? (driveId ? `https://drive.google.com/file/d/${driveId}/preview` : null);
-            /* 드라이브 홈 · 폴더 링크는 구글이 iframe 을 차단(frame-ancestors CSP)하므로 링크 카드로 대체 */
-            if (!embed && isDriveUrl(b.src)) {
+            /* Google Drive controls its own CSP; do not iframe it, even on /preview URLs. */
+            if (!yt && isDriveUrl(b.src)) {
               return (
                 <a
                   key={i}
@@ -347,21 +338,10 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
             }
             return (
               <figure key={i} className="overflow-hidden rounded-xl ring-1 ring-white/10">
-                {embed ? (
-                  <iframe src={embed} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
+                {yt ? (
+                  <iframe src={yt} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
                 ) : (
                   <video src={b.src} controls playsInline className="aspect-video w-full bg-black" />
-                )}
-                {driveId && (
-                  <a
-                    href={`https://drive.google.com/file/d/${driveId}/view`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 border-t border-white/[0.06] px-4 py-2 text-xs text-zinc-500 transition hover:text-white"
-                  >
-                    <ExternalLink className="h-3 w-3" aria-hidden />
-                    {pick("Google Drive에서 새 창으로 열기", "Open in Google Drive")}
-                  </a>
                 )}
                 {b.caption && <figcaption className="px-4 py-2 text-xs text-zinc-500">{b.caption}</figcaption>}
               </figure>
