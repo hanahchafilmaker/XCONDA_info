@@ -27,7 +27,7 @@
  * ========================================================================== */
 
 import type { Block, Change, ChangeKind, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
-import { extractPageId, fetchPublicBlocks, fetchPublicEntries } from "./notionPublic";
+import { extractPageId, fetchPublicBlocks, fetchPublicEntries, getLastPublicOrigin } from "./notionPublic";
 import { getLastSnapshotGeneratedAt, invalidateSnapshot } from "./notionSnapshot";
 import { getLang } from "./i18n/dict";
 
@@ -323,12 +323,17 @@ export async function syncFromNotion(
   if (force) invalidateSnapshot();
   const entries = await fetchEntries(endpoint, signal, force, manual);
   const snapshotAt = getLastSnapshotGeneratedAt();
+  const snapshotTime = snapshotAt ? Date.parse(snapshotAt) : NaN;
+  // 데이터를 정적 스냅샷에서 읽었다면 수동 동기화라도 "스냅샷 생성 시각"을 표시합니다.
+  // (공개 프록시가 죽어 있으면 "지금 동기화"도 스냅샷으로 폴백하는데, 이때 "방금 전"이라고
+  //  표시하면 몇 시간 전 데이터를 방금 읽은 것처럼 보여 새 글이 안 보이는 이유를 오해하게 됩니다.)
+  // 실시간(프록시/Worker)에서 읽은 경우에만 지금 시각을 씁니다.
+  const fromSnapshot =
+    isPublicEndpoint(endpoint) && getLastPublicOrigin() === "snapshot" && Number.isFinite(snapshotTime);
   const payload: ContentPayload = {
     entries,
     source: "notion",
-    // 수동 동기화는 방금 읽은 시점이므로 "방금 전"으로 표시해 사용자가
-    // 눌렀다는 사실을 정확히 반영합니다. (자동 동기화는 스냅샷 생성 시각 사용)
-    syncedAt: manual ? Date.now() : snapshotAt ? Date.parse(snapshotAt) : Date.now(),
+    syncedAt: fromSnapshot ? snapshotTime : Date.now(),
     snapshotGeneratedAt: snapshotAt,
   };
   writeCache(payload);

@@ -1,17 +1,34 @@
 # XCONDA허브 · Notion 연동 가이드
 
-노션에 글을 쓰고 **Published**를 체크하면 → **최대 10분**(GitHub Actions 스냅샷 주기) 안에 가이드 사이트에 반영됩니다.
-사이트는 3분마다, 탭으로 돌아올 때, 상단 배지의 🔄 버튼을 누를 때 스냅샷을 새로 읽습니다.
+노션에 글을 쓰고 **Published**를 체크하면 → **다음 스냅샷 생성(GitHub Actions) 직후** 가이드 사이트에 반영됩니다.
+스냅샷을 얼마나 자주 만드느냐는 **워크플로를 깨우는 트리거**에 달려 있습니다.
 
-> ⚠️ **GitHub Actions 스케줄 지연**: 워크플로는 10분 주기(cron `*/10`)로 예약되어 있지만,
-> GitHub의 스케줄 지연으로 **실제로는 수 시간(3~6시간) 간격으로밖에 실행되지 않는 경우이 있습니다.**
-> 즉시 반영이 필요하면 저장소 **Actions → "Notion 동기화" → Run workflow** 를 직접 실행하세요 (약 15초 + Pages 배포 수 분).
+| 트리거 | 실제 반영 시간 | 비고 |
+|---|---|---|
+| GitHub 기본 `schedule`(cron)만 사용 — *설정 전 기본 상태* | **수 시간** (실측 2~8시간 간격) | GitHub 가 실행을 보장하지 않음 |
+| **외부 스케줄러 → `workflow_dispatch`** (아래 「⏱ 반영 속도 보장하기」) | **약 10~12분** (호출 주기 + 실행 15초 + Pages 배포 1~2분) | ✅ 권장 · 무료 · 1회 설정 |
+| 수동: Actions → “Notion 동기화” → **Run workflow** | 약 2분 | 즉시 반영이 필요할 때 |
+| 이 저장소에 push / PR 병합 | 약 2분 | 자동 (`push` 트리거) |
+
+사이트는 3분마다, 탭으로 돌아올 때, 상단 배지의 🔄 버튼을 누를 때 **스냅샷 파일**(`notion-content.json`)을 새로 읽습니다.
+다만 🔄 는 “이미 만들어진 스냅샷”을 다시 읽을 뿐이라, **서버에서 스냅샷이 새로 만들어지기 전에는 노션의 새 글이 나타나지 않습니다.**
+상단 배지의 “n시간 전”은 스냅샷이 만들어진 시각입니다.
+
+> ⚠️ **왜 “10분”이 지켜지지 않았나요? — GitHub `schedule` 은 정시 실행을 보장하는 스케줄러가 아닙니다.**
+> 워크플로에는 10분 주기 cron 이 걸려 있지만, GitHub 는 부하가 큰 시간대에 스케줄 실행을 지연시키거나 건너뜁니다.
+> 공식 문서: *“The schedule event can be delayed during periods of high loads … some queued jobs may be dropped.”*
+> 이 저장소의 실측(2026-09-26~29, `schedule` 실행 16회): **간격 2.2~8.3시간, 중앙값 3.8시간** — 10분 주기였다면 이 기간(약 65시간)에 약 390회 실행돼야 합니다.
+> 그래서 “노션에 글 추가 → 몇 시간 뒤에야 사이트에 반영”이 발생합니다. (실행 자체는 항상 성공하고, 늦게 실행될 뿐입니다.)
+>
+> **해결: 아래 「⏱ 반영 속도 보장하기」의 외부 스케줄러(무료)를 한 번만 설정하세요.**
+> 지금 당장 반영하려면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 실행하세요 (약 15초 + Pages 배포 1~2분).
 
 **어떻게 동작하나요?**
-`.github/workflows/notion-sync.yml` 이 10분마다 게시된 Notion 페이지를 **서버**에서 읽어
+`.github/workflows/notion-sync.yml` 이 (트리거될 때마다) 게시된 Notion 페이지를 **서버**에서 읽어
 사이트와 같은 폴더의 `notion-content.json`(정적 스냅샷)으로 커밋하고, 사이트는 그 파일만 읽습니다.
 같은 출처의 정적 파일이라 **브라우저 CORS 차단이나 외부 공개 프록시(notion-api.splitbee.io) 장애의 영향을 받지 않습니다.**
-(스냅샷이 아직 없거나 6시간 이상 오래된 경우에만 실시간 공개 API 를 보조로 시도합니다.)
+(스냅샷이 아직 없거나 6시간 이상 오래된 경우에만 실시간 공개 API 를 보조로 시도합니다.
+내용이 바뀌지 않으면 파일을 다시 커밋하지 않고, 1시간마다 한 번만 갱신 시각(하트비트)을 새로 씁니다 — 자주 호출해도 빈 커밋·Pages 빌드가 쌓이지 않습니다.)
 
 연동 방법은 두 가지입니다.
 
@@ -19,7 +36,7 @@
 |---|---|---|
 | 준비물 | 노션 페이지 **웹에 게시**만 하면 끝 | 통합 토큰 + Cloudflare Worker 배포 |
 | 노션 페이지 공개 여부 | 공개(누구나 링크로 열어보기 가능) | 비공개 유지 가능 |
-| 반영 지연 | 최대 10분 (Actions 주기) | 거의 실시간 (1분 캐시) |
+| 반영 지연 | 외부 스케줄러 설정 시 약 10분 / 기본 cron 만 쓰면 수 시간 | 거의 실시간 (1분 캐시) |
 | 난이도 | ⭐ (설정 0분) | ⭐⭐⭐ |
 
 ---
@@ -30,8 +47,8 @@
 
 1. 노션 페이지 우측 상단 **공유 → 게시(Publish)** 가 켜져 있는지 확인합니다. *(XCONDA_NEWs는 이미 게시됨)*
 2. 페이지 **본문 안에 데이터베이스(표 보기)** 를 하나 만들고, 아래 「노션 데이터베이스 만들기」의 속성을 추가합니다.
-3. 끝! 행을 추가하고 `Published`를 체크하면 다음 스냅샷 생성(10분 주기)부터 사이트에 나타납니다.
-   지금 바로 반영하고 싶다면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 실행하세요.
+3. 끝! 행을 추가하고 `Published`를 체크하면 다음 스냅샷 생성부터 사이트에 나타납니다.
+   반영 시간을 ~10분으로 보장하려면 「⏱ 반영 속도 보장하기」를 설정하고, 지금 바로 반영하고 싶다면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 실행하세요.
 
 다른 공개 페이지로 바꾸려면 사이트 주소 뒤에 `?notion=<노션 페이지 URL 또는 32자리 ID>` 를 붙이면(실시간 공개 API 로 읽음) 되고,
 스냅샷 대상 자체를 옮기려면 저장소 **Settings → Variables** 의 `NOTION_PAGE_ID` 를 바꾼 뒤 Actions 를 한 번 실행하세요.
@@ -39,10 +56,100 @@
 
 > **동기화가 안 될 때 확인 순서**
 > 1. **`Published` 체크박스 확인**: 노션 데이터베이스에서 해당 행의 `Published`(또는 `공개`) 체크박스가 체크되어 있는지 확인합니다. 체크되지 않은 행은 비공개(초안)로 간주되어 스냅샷에서 자동으로 제외됩니다.
-> 2. **GitHub Actions 수동 동기화 실행**: GitHub의 cron 스케줄은 저장소 상황에 따라 실행이 지연될 수 있습니다(2026-09 실측: 최대 3~6시간 간격까지 밀림). 지금 바로 반영하려면 저장소 **Actions → “Notion 동기화” → Run workflow** 를 클릭하여 실행하세요 (약 15초 소요).
-> 3. **사이트 새로고침(🔄)**: 상단 상태 배지의 🔄 버튼을 누르면 브라우저 및 CDN 캐시를 무효화하고 최신 스냅샷을 즉시 다시 읽어옵니다.
+>    *(노션의 공개 표 화면에는 미체크 행도 보이므로, “노션에는 보이는데 사이트에 없다”면 가장 먼저 이것을 확인하세요.)*
+>    어떤 행이 제외됐는지는 Actions → 최근 “Notion 동기화” 실행 로그의 `[미공개 제외]` 줄로 확인할 수 있습니다.
+> 2. **Actions 탭에서 마지막 “Notion 동기화” 실행 시각 확인**: 마지막 실행이 몇 시간 전이라면 GitHub 스케줄 지연입니다(2026-09 실측: 실행 간격 2~8시간).
+>    지금 바로 반영하려면 **Run workflow** 를 클릭하세요(약 15초). 재발을 막으려면 「⏱ 반영 속도 보장하기」를 설정하세요.
+> 3. **사이트 배지 확인**: 상단 배지의 “n시간 전”은 스냅샷 생성 시각입니다. 🔄 는 스냅샷 파일을 다시 읽을 뿐이라 서버 동기화(2번) 전에는 새 글이 나타나지 않습니다.
 > 4. **노션 페이지 공개 상태**: 노션 페이지 우측 상단 공유에서 **웹에 게시(Publish)** 상태인지 확인합니다.
 > 5. 그래도 안 되면 **방법 B(Cloudflare Worker)** 를 연결하세요. 비공개 운영·즉시 반영에도 방법 B가 필요합니다.
+
+---
+
+## ⏱ 반영 속도 보장하기 (권장 · 무료 · 1회 설정)
+
+GitHub 의 `schedule` 은 정해진 시각에 실행된다고 보장하지 않습니다. 대신 **외부 스케줄러가 10분마다 GitHub API 로
+“Notion 동기화” 워크플로를 직접 깨우게** 하면, 실행 시각을 스케줄러가 정하므로 지연·누락이 사라집니다.
+(기존 GitHub 스케줄은 백업으로 그대로 둡니다.)
+
+> 이 워크플로는 **내용이 바뀌지 않으면 커밋하지 않습니다.** 그래서 10분마다 불러도 빈 커밋이 쌓이지 않고,
+> GitHub Pages 의 빌드 한도(브랜치 배포는 시간당 10회 soft limit)도 넘지 않습니다.
+
+### 1) 토큰 만들기 (최소 권한)
+
+GitHub → 프로필 사진 → **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
+
+- **Repository access**: *Only select repositories* → `XCONDA_info` 하나만
+- **Permissions → Repository permissions → Actions: Read and write** (다른 권한은 필요 없습니다. *Metadata: Read-only* 는 자동으로 추가됩니다)
+- **Expiration**: 원하는 기간 (만료되면 새로 발급해 스케줄러에 교체하세요)
+- 생성 직후 한 번만 보이는 `github_pat_…` 값을 복사해 둡니다.
+
+> 이 토큰은 **워크플로 실행만** 할 수 있어 유출돼도 코드를 바꿀 수 없습니다. 그래도 비밀번호처럼 보관하세요.
+
+### 2) 동작 확인 (터미널 한 줄)
+
+```bash
+curl -i -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer <토큰>" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/hanahchafilmaker/XCONDA_info/actions/workflows/notion-sync.yml/dispatches \
+  -d '{"ref":"main"}'
+```
+
+`HTTP/2 204` 가 나오면 성공입니다. 저장소 **Actions** 탭에 `workflow_dispatch` 로 “Notion 동기화”가 바로 실행됩니다.
+(`403`/`404` 라면 토큰 권한이 **Actions: Read and write** 인지, 저장소가 `XCONDA_info` 로 선택됐는지 확인하세요.)
+
+### 3) 10분마다 자동 호출 — cron-job.org (무료 · 코드 없음)
+
+1. https://cron-job.org 가입 → **Create cronjob**
+2. **URL**: `https://api.github.com/repos/hanahchafilmaker/XCONDA_info/actions/workflows/notion-sync.yml/dispatches`
+3. **Schedule**: 10분마다 (*Every 10 minutes*)
+4. **Advanced**: Request method **POST**, Request body `{"ref":"main"}`, Headers
+   - `Accept: application/vnd.github+json`
+   - `Authorization: Bearer <토큰>`
+   - `X-GitHub-Api-Version: 2022-11-28`
+   - `Content-Type: application/json`
+5. 저장한 뒤 실행 이력에서 응답 코드가 **204** 인지 확인합니다.
+
+### (대안) Cloudflare Worker Cron Trigger
+
+이미 Cloudflare 를 쓰고 있다면 Worker 하나로도 됩니다. (`wrangler secret put GITHUB_TOKEN` 으로 토큰 저장)
+
+```js
+// src/index.js
+export default {
+  async scheduled(_event, env, ctx) {
+    ctx.waitUntil(
+      fetch("https://api.github.com/repos/hanahchafilmaker/XCONDA_info/actions/workflows/notion-sync.yml/dispatches", {
+        method: "POST",
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": "xconda-notion-sync", // GitHub API 는 User-Agent 가 필수입니다
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ref: "main" }),
+      }).then((res) => {
+        if (res.status !== 204) throw new Error(`workflow dispatch 실패: HTTP ${res.status}`);
+      }),
+    );
+  },
+};
+```
+
+```toml
+# wrangler.toml
+[triggers]
+crons = ["*/10 * * * *"]
+```
+
+### 알아두기
+
+- `workflow_dispatch` 는 **기본 브랜치(main)** 에 있는 워크플로만 실행합니다. 이 워크플로 변경이 main 에 병합돼 있어야 합니다.
+- 실행 결과는 `main` 의 `notion-content.json` 커밋 → GitHub Pages 자동 배포로 이어지므로, 노션에서 `Published` 를 체크한 뒤 **최대 (호출 주기 + 약 2분)** 이내에 사이트에 나타납니다.
+- 토큰이 만료되거나 폐기되면 호출이 `401` 로 실패하고 다시 GitHub 기본 스케줄(수 시간 간격)로 되돌아갑니다. 스케줄러의 실행 이력(또는 실패 알림)을 가끔 확인하세요.
 
 ---
 

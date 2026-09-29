@@ -138,8 +138,8 @@ export function SyncStatus({ className }: { className?: string }) {
     <div
       className={cn("inline-flex items-center gap-2 text-[13px] text-zinc-500", className)}
       title={pick(
-        "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다.",
-        "Connected to Notion database. Published checkbox must be checked in Notion."
+        "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다. 표시된 시각은 서버 스냅샷이 만들어진 시각이며, 새 글은 다음 동기화 이후에 나타납니다.",
+        "Connected to Notion database. The Published checkbox must be checked in Notion. The time shown is when the server snapshot was generated; new posts appear after the next sync."
       )}
     >
       <span className={cn("h-1.5 w-1.5 rounded-full", live ? "bg-emerald-400" : status === "error" ? "bg-rose-400" : "bg-amber-400")} />
@@ -148,8 +148,8 @@ export function SyncStatus({ className }: { className?: string }) {
       <SyncButton
         className="h-7 border border-white/10 bg-white/[0.04] px-2.5 text-[12.5px] font-semibold text-zinc-400 hover:border-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60"
         title={pick(
-          "지금 동기화 — 캐시를 무효화하고 Notion 최신 글을 다시 읽습니다",
-          "Sync now — refresh the latest Notion posts (bypasses cache)"
+          "지금 동기화 — 캐시를 무효화하고 서버의 최신 스냅샷을 다시 읽습니다",
+          "Sync now — reload the latest server snapshot (bypasses cache)"
         )}
       />
     </div>
