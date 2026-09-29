@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test:unit": "node --test scripts/notion-snapshot.test.mjs",
+    "test:unit": "node --test scripts/notion-snapshot.test.mjs scripts/classify.test.mjs && node scripts/smoke-sections.mjs",
     "test:smoke": "vite build --config scripts/vite.smoke.config.ts && node scripts/smoke.mjs && node scripts/smoke-sync.mjs",
     "postbuild": "node -e \"const fs=require('fs');fs.copyFileSync('dist/dev.html','index.html');console.log('✔ dist/dev.html → index.html (GitHub Pages 배포 파일 갱신)')\"",
     "preview": "vite preview"

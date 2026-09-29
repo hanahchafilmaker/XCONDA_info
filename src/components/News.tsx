@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { Entry } from "../content/types";
 import { CHANNELS } from "../content/channels";
+import { channelFromUrl } from "../content/classify";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew } from "../notion";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
@@ -15,7 +16,9 @@ function channelOf(entry: Entry): string | undefined {
   const hit = CHANNELS.find((c) => [c.id, c.name.toLowerCase()].includes(cat));
   if (hit) return hit.id;
   const tag = (entry.tags ?? []).map((t) => t.toLowerCase()).find((t) => CHANNELS.some((c) => c.id === t));
-  return tag;
+  if (tag) return tag;
+  // Category 를 비워 두어도 Link 주소로 채널을 알아냅니다 (x.com → X, youtu.be → YouTube …)
+  return channelFromUrl(entry.url);
 }
 
 function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {

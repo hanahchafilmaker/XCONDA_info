@@ -111,38 +111,56 @@ export function SyncButton({
   );
 }
 
+/**
+ * 서버 스냅샷이 이 시간보다 오래됐으면 "지연"으로 표시합니다.
+ * GitHub 의 기본 `schedule` 은 수 시간까지 밀리므로, 배지만 초록색으로 두면
+ * "노션에 올렸는데 사이트엔 왜 안 나오지?" 의 원인을 알 수 없습니다.
+ * (해결: NOTION_SETUP.md 「⏱ 반영 속도 보장하기」 — 외부 스케줄러 10분 호출)
+ */
+const SYNC_DELAY_MS = 90 * 60 * 1000;
+
 export function SyncStatus({ className }: { className?: string }) {
   const { t, pick } = useLang();
   const { source, status, syncedAt, endpoint } = useContent();
   const live = source === "notion" && status !== "error";
   const isPublic = endpoint ? isPublicEndpoint(endpoint) : false;
+  const ago = syncedAt ? timeAgo(syncedAt) : "";
+  const delayed = live && isPublic && !!syncedAt && Date.now() - syncedAt > SYNC_DELAY_MS;
   const label =
     status === "loading"
       ? t("sync.loading")
       : status === "syncing"
         ? t("sync.syncing")
         : live
-          ? isPublic
-            ? pick(
-                `Notion 동기화 · ${syncedAt ? timeAgo(syncedAt) : ""}`,
-                `Notion Synced · ${syncedAt ? timeAgo(syncedAt) : ""}`
-              )
-            : pick(
-                `Notion 실시간 연동 · ${syncedAt ? timeAgo(syncedAt) : ""}`,
-                `Live from Notion · ${syncedAt ? timeAgo(syncedAt) : ""}`
-              )
+          ? delayed
+            ? pick(`Notion 동기화 지연 · ${ago}`, `Notion sync delayed · ${ago}`)
+            : isPublic
+              ? pick(`Notion 동기화 · ${ago}`, `Notion Synced · ${ago}`)
+              : pick(`Notion 실시간 연동 · ${ago}`, `Live from Notion · ${ago}`)
           : status === "error"
             ? t("sync.error")
             : t("sync.sample");
   return (
     <div
       className={cn("inline-flex items-center gap-2 text-[13px] text-zinc-500", className)}
-      title={pick(
-        "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다. 표시된 시각은 서버 스냅샷이 만들어진 시각이며, 새 글은 다음 동기화 이후에 나타납니다.",
-        "Connected to Notion database. The Published checkbox must be checked in Notion. The time shown is when the server snapshot was generated; new posts appear after the next sync."
-      )}
+      title={
+        delayed
+          ? pick(
+              `서버 동기화가 ${ago} 멈춰 있습니다 — 노션에 올린 새 글이 아직 사이트에 반영되지 않았을 수 있습니다. 저장소 Actions → “Notion 동기화” → Run workflow 로 즉시 반영하거나, NOTION_SETUP.md 의 「⏱ 반영 속도 보장하기」대로 외부 스케줄러를 설정하면 약 10분 주기로 반영됩니다.`,
+              `The server snapshot is ${ago} — new Notion posts may not appear yet. Run the “Notion 동기화” workflow in Actions, or set up the external scheduler described in NOTION_SETUP.md for ~10-minute updates.`
+            )
+          : pick(
+              "Notion 데이터베이스와 연동된 상태입니다. 노션에서 글 작성 시 Published 체크가 필요합니다. 표시된 시각은 서버 스냅샷이 만들어진 시각이며, 새 글은 다음 동기화 이후에 나타납니다.",
+              "Connected to Notion database. The Published checkbox must be checked in Notion. The time shown is when the server snapshot was generated; new posts appear after the next sync."
+            )
+      }
     >
-      <span className={cn("h-1.5 w-1.5 rounded-full", live ? "bg-emerald-400" : status === "error" ? "bg-rose-400" : "bg-amber-400")} />
+      <span
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          live ? (delayed ? "bg-amber-400" : "bg-emerald-400") : status === "error" ? "bg-rose-400" : "bg-amber-400"
+        )}
+      />
       <NotionMark className="h-3.5 w-3.5 text-zinc-400" />
       <span aria-live="polite">{label}</span>
       <SyncButton

@@ -1,0 +1,61 @@
+name: 사이트 빌드 (index.html 갱신)
+
+# 배포되는 `index.html` 은 저장소에 커밋된 **빌드 결과물**입니다(GitHub Pages 가 그대로 서빙).
+# 그래서 `src/` 를 고치고 빌드를 잊으면 사이트에는 옛 화면이 남습니다
+# → main 에 소스 변경이 들어오면 자동으로 다시 빌드해서 커밋합니다.
+#
+# (내용이 같으면 커밋하지 않으므로 빈 커밋·Pages 재배포가 쌓이지 않습니다)
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "dev.html"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.ts"
+      - "tsconfig.json"
+  workflow_dispatch:
+
+concurrency:
+  group: site-build
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 분류 · 동기화 규칙 테스트
+        run: npm run test:unit
+
+      - name: 빌드 (dist/dev.html → index.html)
+        run: npm run build
+
+      - name: 빌드 결과물 커밋
+        run: |
+          if [ -z "$(git status --porcelain index.html)" ]; then
+            echo "index.html 변경 없음 — 커밋 생략"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "build: 소스 변경 반영 (index.html 갱신) [skip ci]"
+          # 동기화 워크플로가 notion-content.json 을 커밋하는 중일 수 있으므로 최신 상태에 재적용 후 푸시
+          git pull --rebase origin main
+          git push origin HEAD:main

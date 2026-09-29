@@ -19,8 +19,13 @@
  *   NOTION_DATABASE_ID  페이지 안 데이터베이스 ID/URL   (선택, 있으면 우선)
  * ========================================================================== */
 
+import { SECTION_LABELS, TYPE_CHOICES, classifyType, pickRow } from "../src/content/classify.js";
+
 const DEFAULT_PAGE_ID = "3e72ebc017ad8024a3f5ef8fb9f8c6dd";
 const DEFAULT_DATABASE_ID = "3b54d2ea0d5e4ab5b33cff12de807517";
+
+/** 섹션 표시 순서 (사이트와 동일: 공지사항 → 뉴스 → 툴 사용법 → 블로그 → Q&A) */
+const SECTION_ORDER = ["notice", "news", "guide", "blog", "faq"];
 
 const API = "https://www.notion.so/api/v3";
 const USER_AGENT =
@@ -129,26 +134,46 @@ async function loadBlockMap(pageId) {
   return blocks;
 }
 
-/** 페이지 안에서 첫 번째 데이터베이스(collection_view) 블록을 찾습니다. */
-function findCollectionView(blocks, preferredId) {
-  const wanted = preferredId ? undashed(preferredId) : undefined;
-  const candidates = [];
+/**
+ * 페이지 안의 데이터베이스(collection_view) 블록을 **모두** 찾습니다.
+ * 표가 2개 이상이면 지금은 첫 번째(또는 지정한 ID)만 동기화하므로, 리포트에서 경고합니다
+ * — "글을 다른 표에 추가해서 사이트에 안 보이는" 상황을 바로 알 수 있게 하기 위함입니다.
+ */
+function findCollectionViews(blocks) {
+  const views = [];
   for (const entry of Object.values(blocks)) {
     const b = entry.value;
     if (!b || !/^collection_view/.test(String(b.type))) continue;
     const collectionId = b.collection_id ?? b.format?.collection_pointer?.id;
     const viewId = Array.isArray(b.view_ids) ? b.view_ids[0] : undefined;
     if (!collectionId || !viewId) continue;
-    const found = {
+    views.push({
       blockId: b.id,
       collectionId,
       viewId,
       spaceId: b.space_id ?? b.format?.collection_pointer?.spaceId,
-    };
-    if (wanted && undashed(b.id) === wanted) return found;
-    candidates.push(found);
+    });
   }
-  return candidates[0];
+  return views;
+}
+
+/** 지정한 ID(없으면 첫 번째)에 해당하는 표를 고릅니다. */
+function pickCollectionView(views, preferredId) {
+  if (!views.length) return undefined;
+  const wanted = preferredId ? undashed(preferredId) : undefined;
+  return (wanted ? views.find((v) => undashed(v.blockId) === wanted) : undefined) ?? views[0];
+}
+
+/** 이 행이 어느 섹션으로 들어가는지 — 사이트와 같은 규칙(src/content/classify.js)으로 판정 */
+function classifyRow(row) {
+  return classifyType({
+    type: pickRow(row, ["Type", "유형", "타입", "구분"]),
+    category: pickRow(row, ["Category", "카테고리", "분류"]),
+    link: pickRow(row, ["Link", "URL", "링크"]),
+    changes: pickRow(row, ["Changes", "변경사항", "변경 사항"]),
+    version: pickRow(row, ["Version", "버전"]),
+    tool: pickRow(row, ["Tool", "툴", "도구"]),
+  });
 }
 
 async function queryCollection({ collectionId, viewId, spaceId }) {
@@ -300,12 +325,15 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
 
   const rootId = page ?? database;
   const blocks = await loadBlockMap(rootId);
-  let view = findCollectionView(blocks, database);
+  let views = findCollectionViews(blocks);
+  let view = pickCollectionView(views, database);
 
   // 페이지가 아니라 데이터베이스 ID 만 주어진 경우 해당 블록을 직접 조회
   if (!view && database) {
     const dbBlocks = await loadBlockMap(database);
-    view = findCollectionView(dbBlocks, database);
+    const dbViews = findCollectionViews(dbBlocks);
+    if (dbViews.length) views = dbViews;
+    view = pickCollectionView(dbViews, database);
   }
   if (!view) throw new Error("게시된 페이지 안에서 데이터베이스(표)를 찾지 못했습니다");
 
@@ -318,18 +346,38 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
   console.log(`[Notion Sync] 조회된 전체 행 수: ${blockIds.length}`);
 
   const rows = [];
+  const included = []; // 요약(Actions Summary)에 쓰는 행 정보
+  const excluded = []; // Published 미체크로 제외된 행
   for (const id of blockIds) {
     const block = unwrap(recordMap?.block?.[id]);
     if (!block || block.alive === false) continue;
     const row = rowToObject(block, schema);
     if (!row.id) continue;
     const title = row.Title ?? row.title ?? row["제목"] ?? "(제목 없음)";
+    const decision = classifyRow(row);
+    // 사이트가 그대로 쓰는 확정 섹션 — 노션 Type/내용으로 판정한 결과를 스냅샷에 함께 기록합니다.
+    row.__type = decision.type;
+    const link = pickRow(row, ["Link", "URL", "링크"]);
+    const info = {
+      title,
+      type: decision.type,
+      rawType: decision.raw,
+      source: decision.source,
+      reason: decision.reason,
+      channel: decision.channel,
+      category: String(pickRow(row, ["Category", "카테고리", "분류"]) ?? ""),
+      link: typeof link === "string" ? link : "",
+    };
     const published = isPublished(row);
-    console.log(`[Notion Sync] 행 확인: "${title}" | Type=${row.Type ?? "없음"} | Published=${row.Published ?? "없음"} (isPublished=${published})`);
+    console.log(
+      `[Notion Sync] 행 확인: "${title}" | Type=${row.Type ?? "없음"} | Published=${row.Published ?? "없음"} (isPublished=${published}) → ${SECTION_LABELS[decision.type]} (${decision.reason})`
+    );
     if (requirePublished && !published) {
       console.log(`  └ [미공개 제외] "${title}" 은(는) Published 가 체크되지 않아 스냅샷에서 제외되었습니다.`);
+      excluded.push(info);
       continue;
     }
+    included.push(info);
     rows.push(row);
   }
 
@@ -356,7 +404,144 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
     },
     rows,
     pages,
+    /* ↓ 스냅샷 파일에는 저장하지 않고, Actions 요약 리포트에만 쓰는 정보 */
+    report: {
+      included,
+      excluded,
+      columns: Object.values(schema).map((c) => `${c?.name ?? "?"}(${c?.type ?? "?"})`),
+      // 같은 표를 여러 뷰(표·갤러리 등)로 보여주는 경우가 있으므로 데이터베이스(collection) 기준으로 셉니다.
+      viewCount: new Set(views.map((v) => undashed(v.collectionId))).size,
+      rowCount: included.length + excluded.length,
+      viewBlockId: view.blockId ?? null,
+    },
   };
+}
+
+/* --------------------------- Actions 요약 리포트 --------------------------- */
+
+const cell = (value, max = 80) =>
+  String(value ?? "")
+    .replace(/\s+/g, " ")
+    .replace(/\|/g, "\\|")
+    .trim()
+    .slice(0, max);
+
+/**
+ * "글이 어느 섹션으로 들어갔는지" + "손볼 곳"을 한 장으로 정리합니다.
+ * GitHub Actions 실행 화면의 **Summary** 탭에 그대로 표시됩니다.
+ * (분류가 이상하다고 느낄 때 로그를 뒤지지 않고 바로 확인할 수 있게 하는 것이 목적)
+ */
+export function renderSyncSummary({ report, generatedAt, writeReason = null, previousGeneratedAt = null, now = Date.now() } = {}) {
+  const included = report?.included ?? [];
+  const excluded = report?.excluded ?? [];
+  const columns = report?.columns ?? [];
+  const viewCount = report?.viewCount ?? 0;
+  const rowCount = report?.rowCount ?? included.length + excluded.length;
+
+  const counts = Object.fromEntries(SECTION_ORDER.map((type) => [type, 0]));
+  for (const item of included) counts[item.type] = (counts[item.type] ?? 0) + 1;
+
+  const lines = [];
+  lines.push("## 📥 Notion 동기화 결과");
+  lines.push("");
+  lines.push(
+    `표에서 읽은 행 **${rowCount}개** · 사이트에 포함 **${included.length}개** · 미공개(제외) **${excluded.length}개**` +
+      (writeReason ? ` · 스냅샷 파일: ${writeReason}` : "")
+  );
+  lines.push("");
+  lines.push("### 섹션별 글 수");
+  lines.push("");
+  lines.push("| 섹션 | 글 수 |");
+  lines.push("| --- | --- |");
+  for (const type of SECTION_ORDER) lines.push(`| ${SECTION_LABELS[type]} | ${counts[type] ?? 0} |`);
+  lines.push("");
+
+  if (included.length) {
+    lines.push("### 포함된 글");
+    lines.push("");
+    lines.push("| 제목 | 노션 Type | → 사이트 섹션 | 분류 근거 | Category |");
+    lines.push("| --- | --- | --- | --- | --- |");
+    for (const item of included) {
+      lines.push(
+        `| ${cell(item.title)} | ${cell(item.rawType || "(비어 있음)", 20)} | ${SECTION_LABELS[item.type] ?? item.type} | ${cell(item.reason, 40)} | ${cell(item.category, 20)} |`
+      );
+    }
+    lines.push("");
+  }
+
+  if (excluded.length) {
+    lines.push("### 제외된 글 (Published 미체크)");
+    lines.push("");
+    lines.push("| 제목 | 노션 Type |");
+    lines.push("| --- | --- |");
+    for (const item of excluded) lines.push(`| ${cell(item.title)} | ${cell(item.rawType || "(비어 있음)", 20)} |`);
+    lines.push("");
+  }
+
+  /* ------------------------------ 확인 필요 ------------------------------ */
+  const notes = [];
+  if (viewCount > 1) {
+    notes.push(
+      `**표(데이터베이스)가 ${viewCount}개** 있습니다. 지금은 첫 번째 표만 읽습니다 — 글을 다른 표에 추가했다면 사이트에 나타나지 않습니다. 한 표로 합치거나 저장소 Settings → Variables 의 \`NOTION_DATABASE_ID\` 를 원하는 표로 바꾸세요.`
+    );
+  }
+  const unknown = included.filter((item) => item.source === "unknown");
+  if (unknown.length) {
+    const values = [...new Set(unknown.map((item) => `\`${item.rawType}\``))].join(", ");
+    notes.push(
+      `**처음 보는 Type 값**: ${values} → 내용으로 추정했습니다. 정확히 분류하려면 노션에서 \`Type\` 을 ${TYPE_CHOICES} 중 하나로 바꾸세요.`
+    );
+  }
+  const blank = included.filter((item) => item.source === "default");
+  if (blank.length) {
+    notes.push(
+      `**Type 칸이 비어 있는 글 ${blank.length}개** — 내용으로 추정했습니다(${blank
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}). 노션에서 \`Type\` 을 지정하는 것이 가장 확실합니다.`
+    );
+  }
+  const linkedNotices = included.filter((item) => item.type === "notice" && item.channel);
+  if (linkedNotices.length) {
+    notes.push(
+      `**SNS 링크가 있는 공지 ${linkedNotices.length}개** — ${linkedNotices
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}. 지금은 **공지사항**에 표시됩니다. 뉴스 섹션에 넣으려면 노션에서 \`Type\` 을 \`뉴스\` 로 바꾸세요. (Type 을 적어 두면 자동 이동하지 않습니다)`
+    );
+  }
+  if (!included.length && rowCount) {
+    notes.push(`**게시된 글이 0개**입니다. 노션에서 \`Published\`(또는 \`공개\`) 체크박스를 확인하세요.`);
+  }
+  if (excluded.length) {
+    notes.push(`제외된 ${excluded.length}개 글은 \`Published\` 를 체크하면 다음 동기화부터 사이트에 나타납니다.`);
+  }
+  const previousAt = Date.parse(previousGeneratedAt ?? "");
+  const ageMin = Number.isFinite(previousAt) ? Math.round((now - previousAt) / 60_000) : NaN;
+  if (Number.isFinite(ageMin) && ageMin >= 60) {
+    notes.push(
+      `직전 스냅샷이 **${(ageMin / 60).toFixed(1)}시간 전**입니다. GitHub 기본 스케줄은 수 시간까지 밀립니다 — NOTION_SETUP.md 의 「⏱ 반영 속도 보장하기」(외부 스케줄러, 무료)를 설정하면 약 10분 주기로 반영됩니다.`
+    );
+  }
+  if (!notes.length) notes.push("특별히 확인할 항목이 없습니다. ✅");
+
+  lines.push("### ⚠️ 확인 필요");
+  lines.push("");
+  for (const note of notes) lines.push(`- ${note}`);
+  lines.push("");
+  lines.push(
+    `_스냅샷 생성: ${generatedAt ?? new Date(now).toISOString()} · 사이트: https://hanahchafilmaker.github.io/XCONDA_info/ · 분류 규칙: src/content/classify.js_`
+  );
+  return lines.join("\n");
+}
+
+/** GitHub Actions 요약(Summary) 탭에 리포트를 씁니다. (로컬 실행에서는 조용히 넘어갑니다) */
+export async function appendSyncSummary(markdown) {
+  const file = process.env.GITHUB_STEP_SUMMARY;
+  if (!file || !markdown) return false;
+  const { appendFile } = await import("node:fs/promises");
+  await appendFile(file, markdown.endsWith("\n") ? markdown : `${markdown}\n`, "utf8");
+  return true;
 }
 
 /* ------------------------ 변경 감지 (빈 커밋 방지) ------------------------ */
@@ -424,8 +609,11 @@ if (isMain) {
 
   buildSnapshot()
     .then(async (snapshot) => {
-      const json = `${JSON.stringify(snapshot, null, 0)}\n`;
-      if (print) console.log(JSON.stringify(snapshot.rows, null, 2));
+      // 스냅샷 파일에는 generatedAt · source · rows · pages 만 저장합니다.
+      // (report 는 Actions 요약 전용 — 파일 크기와 커밋 노이즈를 늘리지 않습니다)
+      const payload = { generatedAt: snapshot.generatedAt, source: snapshot.source, rows: snapshot.rows, pages: snapshot.pages };
+      const json = `${JSON.stringify(payload, null, 0)}\n`;
+      if (print) console.log(JSON.stringify(payload.rows, null, 2));
       const { readFile, writeFile } = await import("node:fs/promises");
 
       let previous = null;
@@ -434,25 +622,47 @@ if (isMain) {
       } catch {
         /* 첫 생성이거나 읽을 수 없음 → 새로 씁니다 */
       }
-      const decision = force ? { write: true, reason: "--force" } : shouldWriteSnapshot(previous, snapshot, { heartbeatMs });
+      const decision = force ? { write: true, reason: "--force" } : shouldWriteSnapshot(previous, payload, { heartbeatMs });
 
+      let writeReason;
       if (decision.write) {
         await writeFile(out, json, "utf8");
+        writeReason = `갱신 (${decision.reason})`;
         console.log(
-          `✔ ${out} 갱신 (${decision.reason}) — 글 ${snapshot.rows.length}개 / 본문 ${Object.keys(snapshot.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
+          `✔ ${out} 갱신 (${decision.reason}) — 글 ${payload.rows.length}개 / 본문 ${Object.keys(payload.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
         );
       } else {
+        writeReason = `유지 (${decision.reason})`;
         console.log(
-          `＝ ${out} 유지 (${decision.reason}) — 글 ${snapshot.rows.length}개, 내용 동일 · 마지막 갱신 ${previous.generatedAt} (하트비트 ${Math.round(heartbeatMs / 60_000)}분) → 빈 커밋 방지`
+          `＝ ${out} 유지 (${decision.reason}) — 글 ${payload.rows.length}개, 내용 동일 · 마지막 갱신 ${previous.generatedAt} (하트비트 ${Math.round(heartbeatMs / 60_000)}분) → 빈 커밋 방지`
         );
       }
-      for (const row of snapshot.rows) {
-        const title = row.Title ?? row.title ?? row["제목"] ?? "(제목 없음)";
-        console.log(`  · ${row.Type ?? row["유형"] ?? "?"} | ${title}`);
-      }
+
+      // 어느 글이 어느 섹션으로 들어갔는지 + 노션에서 손볼 곳을 요약으로 남깁니다.
+      const summary = renderSyncSummary({
+        report: snapshot.report,
+        generatedAt: payload.generatedAt,
+        writeReason,
+        previousGeneratedAt: previous?.generatedAt ?? null,
+      });
+      if (!(await appendSyncSummary(summary))) console.log(`\n${summary}`);
     })
-    .catch((error) => {
+    .catch(async (error) => {
       console.error(`✖ Notion 스냅샷 생성 실패: ${error?.message ?? error}`);
+      const help = [
+        "## ✖ Notion 동기화 실패",
+        "",
+        "```",
+        String(error?.message ?? error),
+        "```",
+        "",
+        "**확인 순서**",
+        "1. 노션 페이지 공유 → **웹에 게시(Publish)** 상태인지",
+        "2. 페이지 안에 표(데이터베이스)가 있고, `Published` 체크된 행이 있는지",
+        "3. 저장소 Settings → Variables 의 `NOTION_PAGE_ID` / `NOTION_DATABASE_ID` 가 맞는지",
+        "4. 그래도 실패하면 NOTION_SETUP.md 의 「동기화가 안 될 때 확인 순서」",
+      ].join("\n");
+      if (!(await appendSyncSummary(help))) console.error(help);
       process.exit(1);
     });
 }

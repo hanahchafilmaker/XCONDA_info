@@ -40,13 +40,19 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
+
+      - name: 글 분류 · 요약 리포트 규칙 테스트
+        # 노션 값을 사이트 섹션으로 옮기는 규칙(scripts · src/content/classify.js)을 먼저 검증합니다.
+        # 실패하면 엉뚱한 섹션으로 글이 들어가는 것을 막기 위해 동기화를 중단합니다.
+        run: npm run test:unit
 
       - name: Notion 스냅샷 생성
         env:
           NOTION_PAGE_ID: ${{ vars.NOTION_PAGE_ID }}
           NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
         # 내용이 이전 스냅샷과 같고 마지막 갱신이 60분 이내면 파일을 다시 쓰지 않습니다.
+        # 실행 화면의 Summary 탭에 "글 → 섹션" 분류표와 노션에서 손볼 곳을 남깁니다.
         run: node scripts/notion-snapshot.mjs --out notion-content.json
 
       - uses: actions/upload-artifact@v4

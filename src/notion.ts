@@ -27,6 +27,7 @@
  * ========================================================================== */
 
 import type { Block, Change, ChangeKind, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
+import { TYPE_ALIASES, channelName, classifyType } from "./content/classify";
 import { extractPageId, fetchPublicBlocks, fetchPublicEntries, getLastPublicOrigin } from "./notionPublic";
 import { getLastSnapshotGeneratedAt, invalidateSnapshot } from "./notionSnapshot";
 import { getLang } from "./i18n/dict";
@@ -131,15 +132,12 @@ function fileUrl(p?: R): string {
   return f?.external?.url ?? f?.file?.url ?? "";
 }
 
-export const TYPE_MAP: Record<string, EntryType> = {
-  공지: "notice", 공지사항: "notice", notice: "notice", announcement: "notice",
-  // 뉴스 = 타 SNS/외부 채널 소식 + 기존 업데이트(릴리스 노트)를 통합한 섹션
-  뉴스: "news", news: "news", sns: "news", 소식: "news",
-  업데이트: "news", 릴리스: "news", update: "news", release: "news", changelog: "news",
-  가이드: "guide", 사용법: "guide", 툴사용법: "guide", guide: "guide", tutorial: "guide", "how-to": "guide",
-  블로그: "blog", blog: "blog", 포스트: "blog", post: "blog", 아티클: "blog", article: "blog",
-  faq: "faq", "q&a": "faq", qa: "faq", 질문: "faq", "자주 묻는 질문": "faq",
-};
+/**
+ * `Type` 값 → 섹션 (하위 호환용 표).
+ * 실제 판정 규칙·동의어 목록은 **`src/content/classify.js` 한 곳**에서만 관리합니다.
+ * (사이트 · 동기화 스크립트가 같은 규칙을 쓰도록 이 표를 그대로 다시 내보냅니다.)
+ */
+export const TYPE_MAP: Record<string, EntryType> = TYPE_ALIASES;
 
 export function parseChanges(raw: string): Change[] {
   return raw
@@ -159,12 +157,22 @@ export function mapPage(page: R): Entry | null {
   const p: R = page.properties ?? {};
   const title = text(prop(p, ["Title", "Name", "제목", "이름", "질문"]));
   if (!title) return null;
-  const rawType = text(prop(p, ["Type", "유형", "타입", "구분"])).toLowerCase();
-  const type = TYPE_MAP[rawType] ?? "notice";
   const published = prop(p, ["Published", "공개", "게시"]);
   if (published && published.type === "checkbox" && !published.checkbox) return null;
 
   const changesRaw = text(prop(p, ["Changes", "변경사항", "변경 사항"]));
+  const category = text(prop(p, ["Category", "카테고리", "분류"]));
+  const link = text(prop(p, ["Link", "URL", "링크"]));
+  // 섹션 판정은 `src/content/classify.js` 한 곳에서만 (스냅샷·동기화 리포트와 동일 규칙)
+  const decision = classifyType({
+    type: text(prop(p, ["Type", "유형", "타입", "구분"])),
+    category,
+    link,
+    changes: changesRaw,
+    version: text(prop(p, ["Version", "버전"])),
+    tool: text(prop(p, ["Tool", "툴", "도구"])),
+  });
+  const type = decision.type;
   const titleEn = text(prop(p, ["Title EN", "English Title", "제목 EN", "영문 제목"]));
   const summaryEn = text(prop(p, ["Summary EN", "English Summary", "요약 EN", "영문 요약", "Answer EN"]));
   const categoryEn = text(prop(p, ["Category EN", "English Category", "카테고리 EN", "영문 카테고리"]));
@@ -181,7 +189,8 @@ export function mapPage(page: R): Entry | null {
     type,
     title,
     summary: text(prop(p, ["Summary", "요약", "설명", "답변", "Answer"])),
-    category: text(prop(p, ["Category", "카테고리", "분류"])) || (type === "notice" ? "공지" : ""),
+    // Category 가 비어 있으면 공지는 '공지', 뉴스는 링크로 알아낸 채널 이름(X · YouTube …)을 씁니다.
+    category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: date(prop(p, ["Date", "날짜", "게시일"])) || page.created_time || new Date().toISOString(),
     tags: multi(prop(p, ["Tags", "태그"])),
     cover: fileUrl(prop(p, ["Cover", "커버", "썸네일", "Image"])) || page.cover?.external?.url || page.cover?.file?.url || undefined,

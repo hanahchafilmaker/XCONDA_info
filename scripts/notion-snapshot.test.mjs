@@ -4,7 +4,13 @@
  */
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HEARTBEAT_MS, shouldWriteSnapshot, snapshotContentKey, stableStringify } from "./notion-snapshot.mjs";
+import {
+  HEARTBEAT_MS,
+  renderSyncSummary,
+  shouldWriteSnapshot,
+  snapshotContentKey,
+  stableStringify,
+} from "./notion-snapshot.mjs";
 
 const NOW = Date.parse("2026-09-29T12:00:00.000Z");
 const minutesAgo = (m) => new Date(NOW - m * 60_000).toISOString();
@@ -98,4 +104,108 @@ test("파일에서 읽은 이전 스냅샷(JSON 왕복)과 새로 만든 스냅�
   // 새 스냅샷 쪽 행의 키 순서를 뒤집어도 동일해야 함
   fresh.rows = fresh.rows.map((row) => Object.fromEntries(Object.entries(row).reverse()));
   assert.deepEqual(shouldWriteSnapshot(fromDisk, fresh, { now: NOW }), { write: false, reason: "변경 없음" });
+});
+
+/* ------------------------ Actions 요약 리포트 ------------------------ */
+
+/** 테스트용 최소 리포트 */
+const reportWith = (overrides = {}) => ({
+  rowCount: 4,
+  viewCount: 1,
+  columns: ["Title(title)", "Type(select)", "Published(checkbox)"],
+  included: [
+    { title: "서버 점검 안내", type: "notice", rawType: "공지", source: "type", reason: "Type '공지'", category: "점검" },
+    { title: "X 바이럴 영상 모음", type: "news", rawType: "뉴스", source: "type", reason: "Type '뉴스'", category: "X" },
+  ],
+  excluded: [],
+  ...overrides,
+});
+
+test("요약 리포트: 섹션별 글 수와 분류 근거를 표로 보여준다", () => {
+  const markdown = renderSyncSummary({
+    report: reportWith({
+      included: [
+        ...reportWith().included,
+        { title: "정체불명", type: "notice", rawType: "재밌는글", source: "unknown", reason: "기본값(공지사항)" },
+        { title: "Type 없는 글", type: "news", rawType: "", source: "default", reason: "SNS 링크(X)" },
+      ],
+    }),
+    generatedAt: "2026-09-29T10:00:00.000Z",
+    writeReason: "갱신 (내용 변경)",
+  });
+  assert.match(markdown, /사이트에 포함 \*\*4개\*\*/);
+  assert.match(markdown, /\| 공지사항 \| 2 \|/);
+  assert.match(markdown, /\| 뉴스 \| 2 \|/);
+  assert.match(markdown, /\| 툴 사용법 \| 0 \|/);
+  assert.match(markdown, /\| Q&A \| 0 \|/);
+  assert.match(markdown, /정체불명/);
+  assert.match(markdown, /갱신 \(내용 변경\)/);
+});
+
+test("요약 리포트: 처음 보는 Type · 빈 Type 은 노션에서 고치도록 안내한다", () => {
+  const markdown = renderSyncSummary({
+    report: reportWith({
+      included: [
+        { title: "정체불명", type: "notice", rawType: "재밌는글", source: "unknown", reason: "기본값(공지사항)" },
+        { title: "Type 없는 글", type: "news", rawType: "", source: "default", reason: "SNS 링크(X)" },
+      ],
+    }),
+  });
+  assert.match(markdown, /처음 보는 Type 값/);
+  assert.match(markdown, /`재밌는글`/);
+  assert.match(markdown, /Type 칸이 비어 있는 글 1개/);
+});
+
+test("요약 리포트: SNS 링크가 있는 공지는 'Type 을 뉴스로 바꾸세요' 로 안내한다", () => {
+  const markdown = renderSyncSummary({
+    report: reportWith({
+      included: [
+        {
+          title: "Claude Opus 5.5로 만든 바이럴 영상 389개, 프롬프트와 함께 공개",
+          type: "notice",
+          rawType: "공지",
+          source: "type",
+          reason: "Type '공지'",
+          channel: "x",
+          link: "https://x.com/VibeEverything/status/2104539752016076956",
+        },
+      ],
+    }),
+  });
+  assert.match(markdown, /SNS 링크가 있는 공지 1개/);
+  assert.match(markdown, /Type\` 을 \`뉴스\` 로 바꾸세요/);
+});
+
+test("요약 리포트: 미공개·표 여러 개·스냅샷 지연도 짚어 준다", () => {
+  const markdown = renderSyncSummary({
+    report: reportWith({ viewCount: 2, rowCount: 5, excluded: [{ title: "초안", rawType: "뉴스" }] }),
+    previousGeneratedAt: "2026-09-29T05:00:00.000Z",
+    now: Date.parse("2026-09-29T10:00:00.000Z"),
+  });
+  assert.match(markdown, /표\(데이터베이스\)가 2개/);
+  assert.match(markdown, /미공개\(제외\) \*\*1개\*\*/);
+  assert.match(markdown, /직전 스냅샷이 \*\*5\.0시간 전\*\*/);
+  assert.match(markdown, /제외된 1개 글은/);
+});
+
+test("요약 리포트: 특이사항이 없으면 ✅ 한 줄로 끝난다", () => {
+  const markdown = renderSyncSummary({ report: reportWith() });
+  assert.match(markdown, /특별히 확인할 항목이 없습니다/);
+  assert.doesNotMatch(markdown, /처음 보는 Type/);
+});
+
+test("요약 리포트: 제목에 | 나 줄바꿈이 있어도 표가 깨지지 않는다", () => {
+  const markdown = renderSyncSummary({
+    report: reportWith({
+      included: [{ title: "A | B\nC", type: "notice", rawType: "공지", source: "type", reason: "Type '공지'" }],
+    }),
+  });
+  assert.match(markdown, /A \\\| B C/);
+  assert.doesNotMatch(markdown, /A \| B/);
+});
+
+test("요약 리포트: 게시된 글이 하나도 없으면 Published 확인을 안내한다", () => {
+  const markdown = renderSyncSummary({ report: reportWith({ included: [], excluded: [{ title: "초안", rawType: "공지" }] }) });
+  assert.match(markdown, /게시된 글이 0개/);
+  assert.match(markdown, /\| 공지사항 \| 0 \|/);
 });
