@@ -2,7 +2,8 @@
  * 공개(웹에 게시된) Notion 페이지 어댑터 — 토큰 · 서버 배포 불필요
  * -----------------------------------------------------------------------------
  * ▸ 읽기 순서 (앞에서 먼저 성공하는 쪽 사용)
- *   1) 정적 스냅샷 `notion-content.json` (같은 출처 · CORS 무관 · workflows/notion-sync.yml 이 10분마다 갱신)
+ *   1) 정적 스냅샷 `notion-content.json` (같은 출처 · CORS 무관 · workflows/notion-sync.yml 이 갱신.
+ *      갱신 주기는 트리거에 달림: GitHub cron 만 쓰면 수 시간, 외부 스케줄러를 붙이면 ~10분)
  *   2) 무료 공개 프록시 notion-api.splitbee.io (실시간이지만 장애가 잦음 — 보조 수단)
  *   ▸ 단, 사용자가 "지금 동기화" 버튼을 직접 누른 경우(manual)에는 2번을 먼저 시도합니다.
  * ▸ 페이지 안에 데이터베이스(표)를 하나 만들면 그 행들이 콘텐츠가 됩니다.
@@ -277,6 +278,19 @@ async function matchingSnapshot(pageId: string, force = false): Promise<NotionSn
 }
 
 /**
+ * 마지막 공개 읽기의 출처.
+ *  - "live"     공개 프록시에서 방금 읽음 (실시간)
+ *  - "snapshot" 정적 스냅샷(notion-content.json)에서 읽음 → 데이터 시각은 스냅샷 생성 시각
+ *
+ * "지금 동기화"를 눌러도 프록시가 죽어 있으면 스냅샷으로 폴백하는데, 이때 배지에
+ * "방금 전"이라고 표시하면 몇 시간 전 데이터를 방금 동기화한 것처럼 보여 혼란을 줍니다.
+ * notion.ts 가 이 값을 보고 배지 시각을 정직하게 결정합니다.
+ */
+export type PublicOrigin = "live" | "snapshot";
+let lastOrigin: PublicOrigin | null = null;
+export const getLastPublicOrigin = (): PublicOrigin | null => lastOrigin;
+
+/**
  * 공개 페이지 읽기 전략 — 정적 스냅샷 우선 · 공개 프록시 보조
  * -----------------------------------------------------------------------------
  * 1) 같은 폴더의 `notion-content.json` 이 이 페이지의 것이고 신선하면 그대로 사용
@@ -298,6 +312,7 @@ export async function fetchPublicEntries(
   // 먼저 시도합니다 — GitHub Actions 스케줄이 밀리는 동안에도 새 글을 바로 읽어옵니다.
   if (snapshot && !snapshotIsStale(snapshot) && !manual) {
     if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+    lastOrigin = "snapshot";
     return rowsToEntries(snapshot.rows);
   }
 
@@ -306,7 +321,10 @@ export async function fetchPublicEntries(
     liveRows = await fetchLiveRows(pageId, signal);
   } catch (error) {
     if (signal?.aborted) throw error;
-    if (snapshot) return rowsToEntries(snapshot.rows); // 프록시 장애 중에는 낡은 스냅샷이라도 표시
+    if (snapshot) {
+      lastOrigin = "snapshot";
+      return rowsToEntries(snapshot.rows); // 프록시 장애 중에는 낡은 스냅샷이라도 표시
+    }
     throw new Error(
       `공개 Notion 동기화에 실패했습니다 (${describeError(error)}). ` +
         "잠시 후 자동으로 다시 시도합니다. 계속 실패하면 저장소의 “Notion 동기화” 워크플로 상태를 확인하거나, " +
@@ -316,7 +334,11 @@ export async function fetchPublicEntries(
 
   const liveEntries = rowsToEntries(liveRows);
   // 프록시가 빈 표를 돌려준 경우(장애·권한 변경)에는 낡은 스냅샷이라도 씁니다.
-  if (!liveEntries.length && snapshot?.rows.length) return rowsToEntries(snapshot.rows);
+  if (!liveEntries.length && snapshot?.rows.length) {
+    lastOrigin = "snapshot";
+    return rowsToEntries(snapshot.rows);
+  }
+  lastOrigin = "live";
   return liveEntries;
 }
 

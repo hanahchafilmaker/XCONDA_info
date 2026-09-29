@@ -359,6 +359,56 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
   };
 }
 
+/* ------------------------ 변경 감지 (빈 커밋 방지) ------------------------ */
+
+/**
+ * 내용이 그대로여도 `generatedAt` 은 매번 달라지므로, 그대로 두면 동기화가 돌 때마다
+ * 커밋 + GitHub Pages 빌드가 발생합니다. (실측: 스냅샷 커밋의 83% 가 generatedAt 만 바뀐 빈 커밋)
+ * GitHub Pages(브랜치 배포)는 시간당 10회 빌드가 soft limit 이라, 외부 스케줄러로 동기화를
+ * 자주 호출하려면 "내용이 바뀔 때만" 파일을 갱신해야 합니다.
+ *
+ * 단, 사이트의 "n분 전" 표시와 낡음(stale) 판정이 generatedAt 에 의존하므로
+ * 내용이 같아도 HEARTBEAT_MS 가 지나면 한 번 갱신(하트비트)합니다.
+ */
+export const HEARTBEAT_MS = 60 * 60 * 1000;
+
+/** 키 순서와 무관하게 같은 값이면 같은 문자열이 되는 직렬화 (비교 전용) */
+export function stableStringify(value) {
+  if (Array.isArray(value)) return `[${value.map((v) => stableStringify(v ?? null)).join(",")}]`;
+  if (isRecord(value)) {
+    const body = Object.keys(value)
+      .filter((key) => value[key] !== undefined)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`);
+    return `{${body.join(",")}}`;
+  }
+  return JSON.stringify(value ?? null);
+}
+
+/** `generatedAt` 을 제외한 "내용" 지문 */
+export const snapshotContentKey = (snapshot) =>
+  stableStringify({
+    source: snapshot?.source ?? null,
+    rows: snapshot?.rows ?? [],
+    pages: snapshot?.pages ?? {},
+  });
+
+/**
+ * 새 스냅샷을 파일에 쓸지 결정합니다. 애매하면 항상 "쓴다" 쪽으로 판단합니다.
+ *  - 이전 스냅샷이 없거나 형식이 다르면 쓴다
+ *  - 내용(source · rows · pages)이 달라졌으면 쓴다
+ *  - 내용이 같아도 이전 generatedAt 이 heartbeatMs 이상 지났거나 읽을 수 없으면 쓴다(하트비트)
+ */
+export function shouldWriteSnapshot(previous, next, { now = Date.now(), heartbeatMs = HEARTBEAT_MS } = {}) {
+  if (!isRecord(previous) || !Array.isArray(previous.rows)) return { write: true, reason: "이전 스냅샷 없음" };
+  if (snapshotContentKey(previous) !== snapshotContentKey(next)) return { write: true, reason: "내용 변경" };
+  const previousAt = Date.parse(previous.generatedAt ?? "");
+  if (!Number.isFinite(previousAt) || previousAt > now || now - previousAt >= heartbeatMs) {
+    return { write: true, reason: "하트비트 갱신" };
+  }
+  return { write: false, reason: "변경 없음" };
+}
+
 /* ------------------------------ CLI ------------------------------ */
 
 const isMain = process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
@@ -367,16 +417,35 @@ if (isMain) {
   const outIndex = args.indexOf("--out");
   const out = outIndex >= 0 ? args[outIndex + 1] : "notion-content.json";
   const print = args.includes("--print");
+  const force = args.includes("--force"); // 변경 여부와 관계없이 항상 다시 쓴다
+  const heartbeatIndex = args.indexOf("--heartbeat-min");
+  const heartbeatMin = heartbeatIndex >= 0 ? Number(args[heartbeatIndex + 1]) : NaN;
+  const heartbeatMs = Number.isFinite(heartbeatMin) && heartbeatMin >= 0 ? heartbeatMin * 60_000 : HEARTBEAT_MS;
 
   buildSnapshot()
     .then(async (snapshot) => {
       const json = `${JSON.stringify(snapshot, null, 0)}\n`;
       if (print) console.log(JSON.stringify(snapshot.rows, null, 2));
-      const { writeFile } = await import("node:fs/promises");
-      await writeFile(out, json, "utf8");
-      console.log(
-        `✔ ${out} 생성 — 글 ${snapshot.rows.length}개 / 본문 ${Object.keys(snapshot.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
-      );
+      const { readFile, writeFile } = await import("node:fs/promises");
+
+      let previous = null;
+      try {
+        previous = JSON.parse(await readFile(out, "utf8"));
+      } catch {
+        /* 첫 생성이거나 읽을 수 없음 → 새로 씁니다 */
+      }
+      const decision = force ? { write: true, reason: "--force" } : shouldWriteSnapshot(previous, snapshot, { heartbeatMs });
+
+      if (decision.write) {
+        await writeFile(out, json, "utf8");
+        console.log(
+          `✔ ${out} 갱신 (${decision.reason}) — 글 ${snapshot.rows.length}개 / 본문 ${Object.keys(snapshot.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
+        );
+      } else {
+        console.log(
+          `＝ ${out} 유지 (${decision.reason}) — 글 ${snapshot.rows.length}개, 내용 동일 · 마지막 갱신 ${previous.generatedAt} (하트비트 ${Math.round(heartbeatMs / 60_000)}분) → 빈 커밋 방지`
+        );
+      }
       for (const row of snapshot.rows) {
         const title = row.Title ?? row.title ?? row["제목"] ?? "(제목 없음)";
         console.log(`  · ${row.Type ?? row["유형"] ?? "?"} | ${title}`);
