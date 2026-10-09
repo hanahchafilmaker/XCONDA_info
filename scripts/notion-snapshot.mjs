@@ -20,6 +20,7 @@
  * ========================================================================== */
 
 import { SECTION_LABELS, TYPE_CHOICES, classifyType, pickRow } from "../src/content/classify.js";
+import { AUTHOR_KEYS, COVER_KEYS, COVER_SOURCE_LABELS, coverFromPageMap, personNames, signNotionImage } from "../src/content/fields.js";
 
 const DEFAULT_PAGE_ID = "3e72ebc017ad8024a3f5ef8fb9f8c6dd";
 const DEFAULT_DATABASE_ID = "3b54d2ea0d5e4ab5b33cff12de807517";
@@ -247,7 +248,7 @@ function cellFiles(value, rowId) {
     const rawUrl = raw.startsWith("/") ? `https://www.notion.so${raw}` : raw;
     files.push({
       name: String(part[0] ?? ""),
-      url: `https://www.notion.so/image/${encodeURIComponent(rawUrl)}?table=block&id=${rowId}&cache=v2`,
+      url: signNotionImage(rawUrl, rowId),
       rawUrl,
     });
   }
@@ -256,6 +257,9 @@ function cellFiles(value, rowId) {
 
 function decodeCell(value, type, rowId) {
   switch (type) {
+    case "person":
+      // 사람 속성은 이름만 — 계정 참조("‣")가 작성자로 표시되지 않게 합니다
+      return personNames(value);
     case "checkbox":
       return cellText(value) === "Yes";
     case "date":
@@ -290,12 +294,12 @@ function rowToObject(block, schema) {
     const decoded = decodeCell(value, column.type, block.id);
     if (decoded !== undefined && decoded !== "") row[name] = decoded;
   }
-  // 커버 속성이 없으면 노션 페이지 커버 이미지를 대신 사용합니다.
-  if (!row.Cover && block.format?.page_cover) {
-    const cover = String(block.format.page_cover);
-    row.Cover = cover.startsWith("/")
-      ? `https://www.notion.so/image/${encodeURIComponent(`https://www.notion.so${cover}`)}?table=block&id=${block.id}&cache=v2`
-      : cover;
+  // Cover 속성이 없으면 노션 페이지 커버 이미지를 대신 사용합니다.
+  // (그래도 없으면 본문 첫 이미지가 썸네일이 됩니다 — 아래 buildSnapshot 참조)
+  const coverKey = Object.keys(row).find((k) => COVER_KEYS.includes(k.trim()));
+  if ((!coverKey || !row[coverKey]) && block.format?.page_cover) {
+    row.__cover = signNotionImage(String(block.format.page_cover), block.id);
+    row.__coverFrom = "page_cover";
   }
   return row;
 }
@@ -347,6 +351,7 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
 
   const rows = [];
   const included = []; // 요약(Actions Summary)에 쓰는 행 정보
+  const includedByRowId = new Map(); // 본문 로드 후 썸네일 정보를 같은 글에 되돌려 놓을 때 사용
   const excluded = []; // Published 미체크로 제외된 행
   for (const id of blockIds) {
     const block = unwrap(recordMap?.block?.[id]);
@@ -366,6 +371,7 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
       reason: decision.reason,
       channel: decision.channel,
       category: String(pickRow(row, ["Category", "카테고리", "분류"]) ?? ""),
+      author: String(pickRow(row, AUTHOR_KEYS) ?? ""),
       link: typeof link === "string" ? link : "",
     };
     const published = isPublished(row);
@@ -378,6 +384,7 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
       continue;
     }
     included.push(info);
+    includedByRowId.set(row.id, info);
     rows.push(row);
   }
 
@@ -392,6 +399,29 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
       pages[row.id] = await loadBlockMap(row.id);
     } catch (error) {
       console.warn(`  · 본문 로드 실패 (${row.id}): ${error?.message ?? error}`);
+    }
+
+    /* 썸네일 확정 — Cover 속성 → 페이지 커버 → 본문 첫 이미지 (규칙: src/content/fields.js) */
+    const info = includedByRowId.get(row.id);
+    const coverKey = Object.keys(row).find((k) => COVER_KEYS.includes(k.trim()));
+    if (coverKey && row[coverKey]) {
+      info && (info.cover = "cover_property");
+      continue;
+    }
+    if (row.__cover) {
+      info && (info.cover = row.__coverFrom ?? "page_cover");
+      continue;
+    }
+    const derived = coverFromPageMap(pages[row.id], row.id);
+    if (derived) {
+      row.__cover = derived.url;
+      row.__coverFrom = derived.source;
+      if (derived.fallback) row.__coverAlt = derived.fallback;
+      info && (info.cover = derived.source);
+      console.log(`  · 썸네일: "${row.Title ?? row.id}" → ${COVER_SOURCE_LABELS[derived.source] ?? derived.source}`);
+    } else {
+      info && (info.cover = "");
+      console.log(`  · 썸네일 없음: "${row.Title ?? row.id}" — Cover 속성 · 페이지 커버 · 본문 이미지 모두 없습니다.`);
     }
   }
 
@@ -459,11 +489,13 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
   if (included.length) {
     lines.push("### 포함된 글");
     lines.push("");
-    lines.push("| 제목 | 노션 Type | → 사이트 섹션 | 분류 근거 | Category |");
-    lines.push("| --- | --- | --- | --- | --- |");
+    lines.push("| 제목 | 노션 Type | → 사이트 섹션 | 분류 근거 | Category | 썸네일 | 작성자 |");
+    lines.push("| --- | --- | --- | --- | --- | --- | --- |");
     for (const item of included) {
       lines.push(
-        `| ${cell(item.title)} | ${cell(item.rawType || "(비어 있음)", 20)} | ${SECTION_LABELS[item.type] ?? item.type} | ${cell(item.reason, 40)} | ${cell(item.category, 20)} |`
+        `| ${cell(item.title)} | ${cell(item.rawType || "(비어 있음)", 20)} | ${SECTION_LABELS[item.type] ?? item.type} | ${cell(item.reason, 40)} | ${cell(item.category, 20)} | ${
+          item.cover ? COVER_SOURCE_LABELS[item.cover] ?? item.cover : "(없음)"
+        } | ${item.author ? cell(item.author, 20) : item.author === "" ? "(없음)" : "—"} |`
       );
     }
     lines.push("");
@@ -508,6 +540,26 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
         .slice(0, 5)
         .map((item) => `“${cell(item.title, 30)}”`)
         .join(", ")}. 지금은 **공지사항**에 표시됩니다. 뉴스 섹션에 넣으려면 노션에서 \`Type\` 을 \`뉴스\` 로 바꾸세요. (Type 을 적어 두면 자동 이동하지 않습니다)`
+    );
+  }
+  // `cover` · `author` 는 동기화가 직접 확인한 값만 판단합니다.
+  // ("" = 확인했는데 없음 → 안내 · undefined = 리포트에 그 정보가 없음 → 판단 보류)
+  const noCover = included.filter((item) => item.cover === "");
+  if (noCover.length) {
+    notes.push(
+      `**썸네일이 없는 글 ${noCover.length}개** — ${noCover
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}. 카드에 이미지 대신 자리 표시자가 나옵니다. \`Cover\`(커버) 속성에 이미지를 넣거나, 노션 페이지 커버를 지정하거나, 본문에 이미지를 하나 이상 넣으면 자동으로 첫 이미지가 썸네일이 됩니다.`
+    );
+  }
+  const noAuthor = included.filter((item) => item.type === "blog" && item.author === "");
+  if (noAuthor.length) {
+    notes.push(
+      `**작성자가 없는 블로그 글 ${noAuthor.length}개** — ${noAuthor
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}. 표에 \`Author\`(작성자) 속성을 만들고 이름을 넣으면 카드와 상세 화면에 표시됩니다.`
     );
   }
   if (!included.length && rowCount) {

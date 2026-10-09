@@ -6,6 +6,7 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
     title: "XCONDA completes KBS Production validation",
     summary: "XCONDA's causality-driven AI storyboard workflow has passed validation in the KBS Production pipeline.",
     category: "Notice",
+    author: "XCONDA Team",
     blocks: [
       { type: "p", text: "Hello from the XCONDA team. We are pleased to share that XCONDA ADP has completed validation in KBS Production's real-world production workflow." },
       { type: "h2", text: "What was validated" },
@@ -105,6 +106,7 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
     title: "Turn → FlexBoard → Blocking Board → Seedance 2.5: the order that produces nine cuts",
     summary: "The official XCONDA production pipeline, step by step: lock space, build cuts, then render video.",
     category: "Workflow",
+    author: "XCONDA Production Team",
     blocks: [
       { type: "h2", text: "1. Lock space (Turn)" },
       { type: "p", text: "Create a 6-faced cube map from one photo and freeze the angle you want. Locking space first keeps the background stable across cuts." },
@@ -121,6 +123,7 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
     title: "Building a character sheet that keeps faces consistent across cuts",
     summary: "Practical tips for character consistency using Detect Face and the name-linking rule in Art Director Pro.",
     category: "Tutorial",
+    author: "Hana Kim",
     blocks: [
       { type: "p", text: "Most face drift comes from a missing character name in the scenario or no character sheet at all." },
       { type: "h3", text: "Order" },
@@ -132,6 +135,7 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
     title: "Notes from the KBS Production validation — why causality-driven AI worked on set",
     summary: "What held up during real production validation, and what still needed work.",
     category: "Insight",
+    author: "Dohyun Lee",
     blocks: [
       { type: "p", text: "Validation covered continuity across cuts (emotion, props, wardrobe), face consistency, and preserved context after feedback." },
       { type: "quote", text: "Write the scenario so each event's cause and effect is clear, and the cuts flow naturally." },

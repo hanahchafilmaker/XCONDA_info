@@ -41,6 +41,8 @@ export type EntryTranslation = {
   category?: string;
   changes?: Change[];
   blocks?: Block[];
+  /** 작성자 표기 (예: `Author EN` 속성) */
+  author?: string;
 };
 
 export type Entry = {
@@ -51,7 +53,15 @@ export type Entry = {
   category: string;
   date: string; // ISO
   tags: string[];
+  /**
+   * 썸네일. `Cover` 속성 → 노션 페이지 커버 → 본문 첫 이미지 순서로 채워집니다.
+   * (규칙: `src/content/fields.js` — 사이트와 동기화 스크립트가 함께 사용)
+   */
   cover?: string;
+  /** `cover` 가 열리지 않을 때 이어서 시도할 같은 이미지의 다른 공개 주소 (노션 첨부용) */
+  coverFallback?: string;
+  /** 작성자 — 노션 `Author`(또는 `작성자`) 속성. 블로그 카드 · 상세 모달에 표시됩니다. */
+  author?: string;
   url?: string;
   pinned?: boolean;
   important?: boolean;

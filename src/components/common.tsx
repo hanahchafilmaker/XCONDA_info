@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Check, Copy, ExternalLink, ImageOff, RefreshCw } from "lucide-react";
+import { Check, Copy, ExternalLink, ImageOff, PenLine, RefreshCw } from "lucide-react";
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { useLang, typeLabel } from "../i18n";
@@ -31,6 +31,26 @@ export function CategoryBadge({ children, className }: { children: ReactNode; cl
 export function TypeLabel({ type }: { type: EntryType }) {
   const { lang } = useLang();
   return <CategoryBadge>{typeLabel(type, lang)}</CategoryBadge>;
+}
+
+/**
+ * 작성자 표기 — 노션 `Author`(또는 `작성자`) 속성 값이 있을 때만 그립니다.
+ * 블로그 카드와 상세 모달이 같은 모양을 쓰도록 한 곳에 둡니다.
+ */
+export function Byline({ author, className }: { author?: string; className?: string }) {
+  const { t } = useLang();
+  if (!author) return null;
+  return (
+    <span
+      data-byline={author}
+      className={cn("inline-flex min-w-0 items-center gap-1.5 text-zinc-500", className)}
+      title={`${t("common.author")}: ${author}`}
+    >
+      <PenLine className="h-3.5 w-3.5 shrink-0 text-zinc-600" aria-hidden />
+      <span className="sr-only">{t("common.author")}: </span>
+      <span className="truncate">{author}</span>
+    </span>
+  );
 }
 
 export function NewBadge() {
@@ -184,16 +204,41 @@ export function NotionMark({ className }: { className?: string }) {
 
 /* ---------------------------- Smart image ---------------------------- */
 
-export function SmartImage({ src, alt = "", className }: { src?: string; alt?: string; className?: string }) {
-  const [failed, setFailed] = useState(false);
-  if (!src || failed) {
+/**
+ * 이미지 + 자동 폴백.
+ * 노션에 직접 올린 파일은 열 수 있는 공개 주소가 둘(prod-files · attachment 프록시)이라
+ * 첫 주소가 실패하면 `fallbackSrc` 로 한 번 더 시도하고, 그래도 안 되면 자리 표시자를 씁니다.
+ */
+export function SmartImage({
+  src,
+  fallbackSrc,
+  alt = "",
+  className,
+}: {
+  src?: string;
+  fallbackSrc?: string;
+  alt?: string;
+  className?: string;
+}) {
+  // 0 = 첫 주소 · 1 = 폴백 주소 · 2 = 자리 표시자
+  const [stage, setStage] = useState(0);
+  const active = stage === 0 ? src : stage === 1 ? fallbackSrc : undefined;
+  if (!active) {
     return (
       <div className={cn("grid place-items-center bg-gradient-to-br from-volt-400/18 via-volt-500/10 to-ink-800", className)}>
         <ImageOff className="h-6 w-6 text-white/30" aria-hidden />
       </div>
     );
   }
-  return <img src={src} alt={alt} loading="lazy" onError={() => setFailed(true)} className={className} />;
+  return (
+    <img
+      src={active}
+      alt={alt}
+      loading="lazy"
+      onError={() => setStage((s) => Math.min(2, s + 1))}
+      className={className}
+    />
+  );
 }
 
 /* --------------------------- Rich text --------------------------- */

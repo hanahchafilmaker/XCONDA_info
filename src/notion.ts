@@ -28,6 +28,7 @@
 
 import type { Block, Change, ChangeKind, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { TYPE_ALIASES, channelName, classifyType } from "./content/classify";
+import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS } from "./content/fields";
 import { extractPageId, fetchPublicBlocks, fetchPublicEntries, getLastPublicOrigin } from "./notionPublic";
 import { getLastSnapshotGeneratedAt, invalidateSnapshot } from "./notionSnapshot";
 import { getLang } from "./i18n/dict";
@@ -117,6 +118,9 @@ function text(p?: R): string {
       return p.number != null ? String(p.number) : "";
     case "url":
       return p.url ?? "";
+    case "people":
+      // 노션 "사람(Person)" 속성 — 이름을 그대로 씁니다. (계정 연결이 없으면 빈 문자열)
+      return (p.people ?? []).map((u: R) => u?.name ?? "").filter(Boolean).join(", ");
     case "formula":
       return String(p.formula?.[p.formula?.type] ?? "");
     default:
@@ -177,11 +181,14 @@ export function mapPage(page: R): Entry | null {
   const summaryEn = text(prop(p, ["Summary EN", "English Summary", "요약 EN", "영문 요약", "Answer EN"]));
   const categoryEn = text(prop(p, ["Category EN", "English Category", "카테고리 EN", "영문 카테고리"]));
   const changesEnRaw = text(prop(p, ["Changes EN", "English Changes", "변경사항 EN", "영문 변경사항"]));
+  const author = text(prop(p, AUTHOR_KEYS));
+  const authorEn = text(prop(p, AUTHOR_EN_KEYS));
   const english: EntryTranslation = {
     ...(titleEn ? { title: titleEn } : {}),
     ...(summaryEn ? { summary: summaryEn } : {}),
     ...(categoryEn ? { category: categoryEn } : {}),
     ...(changesEnRaw ? { changes: parseChanges(changesEnRaw) } : {}),
+    ...(authorEn ? { author: authorEn } : {}),
   };
   const hasEnglish = Object.keys(english).length > 0;
   return {
@@ -193,7 +200,9 @@ export function mapPage(page: R): Entry | null {
     category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: date(prop(p, ["Date", "날짜", "게시일"])) || page.created_time || new Date().toISOString(),
     tags: multi(prop(p, ["Tags", "태그"])),
-    cover: fileUrl(prop(p, ["Cover", "커버", "썸네일", "Image"])) || page.cover?.external?.url || page.cover?.file?.url || undefined,
+    // 썸네일: Cover 속성 → 노션 페이지 커버. (본문 첫 이미지는 notionPublic 쪽 스냅샷 경로에서 채웁니다)
+    cover: fileUrl(prop(p, COVER_KEYS)) || page.cover?.external?.url || page.cover?.file?.url || undefined,
+    author: author || undefined,
     url: text(prop(p, ["Link", "URL", "링크"])) || undefined,
     pinned: check(prop(p, ["Pinned", "고정", "상단고정"])),
     important: check(prop(p, ["Important", "중요"])),

@@ -35,6 +35,8 @@ window.IntersectionObserver = IO;
 window.matchMedia ??= () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
 window.scrollTo = () => {};
 Object.defineProperty(window.HTMLElement.prototype, "scrollIntoView", { value() {}, writable: true });
+// jsdom has no Element.prototype.scrollTo — the article modal scrolls its body to the top on open.
+Object.defineProperty(window.HTMLElement.prototype, "scrollTo", { value() {}, writable: true });
 
 const script = window.document.createElement("script");
 script.textContent = bundle;
@@ -80,6 +82,15 @@ click(koBtn);
 await new Promise((r) => setTimeout(r, 400));
 const h1AfterKo = q("h1")?.textContent?.trim().slice(0, 60) ?? null;
 
+// 5) open a blog post and confirm the article modal shows the author byline
+const blogCard = qa("#blog article button")[0];
+click(blogCard);
+await new Promise((r) => setTimeout(r, 500));
+const modal = q('div[role="dialog"][aria-modal="true"]');
+const modalByline = modal?.querySelector("[data-byline]")?.getAttribute("data-byline") ?? null;
+window.document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+await new Promise((r) => setTimeout(r, 300));
+
 const interactions = {
   searchOpened: !!overlay,
   term,
@@ -114,6 +125,9 @@ const result = {
     newsItems: qa("#news article").length,
     channelCards: qa("#news a[target='_blank'], #news div.rounded-2xl").length,
     blogCards: qa("#blog article").length,
+    blogThumbnails: qa("#blog article img").length,
+    blogBylines: qa("#blog article [data-byline]").length,
+    modalByline,
     faqItems: qa("#faq button[aria-expanded]").length,
   },
   voltPaletteActive: !!q("[class*='text-volt-400']"),
@@ -132,6 +146,9 @@ for (const s of sections) if (!s.present) fail.push(`missing section #${s.id}`);
 if (result.counts.guideToolButtons < 10) fail.push(`guides tool list short: ${result.counts.guideToolButtons}`);
 if (result.counts.newsItems < 3) fail.push(`news items missing: ${result.counts.newsItems}`);
 if (result.counts.blogCards < 3) fail.push(`blog cards missing: ${result.counts.blogCards}`);
+if (!result.counts.blogThumbnails) fail.push("blog cards render no thumbnail <img>");
+if (result.counts.blogBylines < 3) fail.push(`blog cards missing author byline: ${result.counts.blogBylines}`);
+if (!modalByline) fail.push("article modal did not show the author byline");
 if (!result.voltPaletteActive) fail.push("volt palette not applied");
 if (result.legacyPaletteLeft > 0) fail.push("legacy palette classes still present");
 if (!result.footer) fail.push("footer missing");

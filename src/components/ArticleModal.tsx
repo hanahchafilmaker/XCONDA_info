@@ -4,7 +4,7 @@ import { useContent } from "../content/ContentContext";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
 import { fetchBlocks, formatDate } from "../notion";
-import { Blocks, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "./common";
+import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "./common";
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
 
@@ -100,7 +100,7 @@ export default function ArticleModal() {
         <div ref={scrollRef} className="overflow-y-auto overscroll-contain">
           {active.cover && (
             <div className="relative aspect-[21/9] w-full overflow-hidden">
-              <SmartImage src={active.cover} className="h-full w-full object-cover" />
+              <SmartImage src={active.cover} fallbackSrc={active.coverFallback} className="h-full w-full object-cover" />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink-900/90 to-transparent" />
             </div>
           )}
@@ -116,6 +116,8 @@ export default function ArticleModal() {
                   <CalendarDays className="h-3.5 w-3.5" /> {formatDate(active.date)}
                 </span>
               ) : null}
+              {/* 작성자 — 노션 `Author`(작성자) 속성을 채우면 목록 카드와 여기에 함께 표시됩니다. */}
+              {active.author && !active.id.startsWith("tool-") ? <Byline author={active.author} className="text-xs" /> : null}
               {isNew(active.date) && active.type !== "faq" && !active.id.startsWith("tool-") && <NewBadge />}
             </div>
             <h2 id="article-title" className="mt-3 text-balance text-2xl font-bold leading-snug tracking-[-0.03em] text-white sm:text-[2rem]">

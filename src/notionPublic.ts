@@ -13,6 +13,7 @@
 
 import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { channelName, classifyType, hasPublishedColumn, includeRow, isEntryType } from "./content/classify";
+import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS, coverFromPageMap, personNames, signNotionImage } from "./content/fields";
 import { parseChanges } from "./notion";
 import {
   loadSnapshot,
@@ -96,8 +97,7 @@ function legacyFiles(value: unknown, rowId: string): Array<{ name: string; url: 
     const raw = Array.isArray(link) && typeof link[1] === "string" ? link[1] : "";
     if (!raw) continue;
     const rawUrl = raw.startsWith("/") ? `https://www.notion.so${raw}` : raw;
-    const url = `https://www.notion.so/image/${encodeURIComponent(rawUrl)}?table=block&id=${rowId}&cache=v2`;
-    files.push({ name: String(part[0] ?? ""), url, rawUrl });
+    files.push({ name: String(part[0] ?? ""), url: signNotionImage(rawUrl, rowId), rawUrl });
   }
   return files;
 }
@@ -106,6 +106,8 @@ function legacyFiles(value: unknown, rowId: string): Array<{ name: string; url: 
 function decodeLegacyCell(value: unknown, type: unknown, rowId: string): unknown {
   const cellType = typeof type === "string" ? type : "text";
   switch (cellType) {
+    case "person":
+      return personNames(value); // "‣" 가 아니라 이름이 작성자로 들어가도록
     case "checkbox":
       return legacyValueText(value) === "Yes";
     case "date":
@@ -193,7 +195,22 @@ function asFileUrl(v: unknown): string {
   return typeof v === "string" ? v : "";
 }
 
-function mapRow(row: R, requirePublished: boolean): Entry | null {
+/**
+ * 썸네일 우선순위 — `Cover` 속성 → 동기화가 기록한 `__cover` → 본문 첫 이미지.
+ * 규칙 자체는 `src/content/fields.js` 한 곳에서 관리합니다(동기화 스크립트와 동일).
+ */
+function coverOf(
+  row: R,
+  snapshot?: NotionSnapshot | null
+): { cover?: string; coverFallback?: string } {
+  const explicit = asFileUrl(pick(row, COVER_KEYS)) || asText(row.__cover);
+  if (explicit) return { cover: explicit, coverFallback: asText(row.__coverAlt) || undefined };
+  if (!snapshot) return {};
+  const derived = coverFromPageMap(snapshotPageMap(snapshot, String(row.id ?? "")), String(row.id ?? ""));
+  return { cover: derived?.url || undefined, coverFallback: derived?.fallback || undefined };
+}
+
+function mapRow(row: R, requirePublished: boolean, snapshot?: NotionSnapshot | null): Entry | null {
   const title = asText(pick(row, ["Title", "Name", "제목", "이름", "질문"]));
   if (!title) return null;
   // Published 열이 있는 표에서는 체크된 행만 (값이 빠진 행 = 미공개 → 제외)
@@ -217,13 +234,17 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
   const summaryEn = asText(pick(row, ["Summary EN", "English Summary", "요약 EN", "영문 요약", "Answer EN"]));
   const categoryEn = asText(pick(row, ["Category EN", "English Category", "카테고리 EN", "영문 카테고리"]));
   const changesEnRaw = asText(pick(row, ["Changes EN", "English Changes", "변경사항 EN", "영문 변경사항"]));
+  const author = asText(pick(row, AUTHOR_KEYS));
+  const authorEn = asText(pick(row, AUTHOR_EN_KEYS));
   const english: EntryTranslation = {
     ...(titleEn ? { title: titleEn } : {}),
     ...(summaryEn ? { summary: summaryEn } : {}),
     ...(categoryEn ? { category: categoryEn } : {}),
     ...(changesEnRaw ? { changes: parseChanges(changesEnRaw) } : {}),
+    ...(authorEn ? { author: authorEn } : {}),
   };
   const hasEnglish = Object.keys(english).length > 0;
+  const { cover, coverFallback } = coverOf(row, snapshot);
 
   return {
     id: row.id,
@@ -234,7 +255,9 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
     category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: asText(pick(row, ["Date", "날짜", "게시일"])) || new Date().toISOString(),
     tags: asList(pick(row, ["Tags", "태그"])),
-    cover: asFileUrl(pick(row, ["Cover", "커버", "썸네일", "Image"])) || undefined,
+    cover,
+    coverFallback,
+    author: author || undefined,
     url: link || undefined,
     pinned: asBool(pick(row, ["Pinned", "고정", "상단고정"])),
     important: asBool(pick(row, ["Important", "중요"])),
@@ -247,10 +270,16 @@ function mapRow(row: R, requirePublished: boolean): Entry | null {
   };
 }
 
-function rowsToEntries(data: R[]): Entry[] {
+/**
+ * @param snapshot 같은 페이지의 정적 스냅샷 — 본문 블록에서 썸네일을 뽑을 때 씁니다.
+ *                 실시간(프록시) 행이라도 스냅샷에 본문이 있으면 그대로 썸네일로 사용합니다.
+ */
+function rowsToEntries(data: R[], snapshot?: NotionSnapshot | null): Entry[] {
   // Published 열이 하나라도 있으면 체크된 행만, 아예 없으면 전부 노출
   const hasPublishedCol = hasPublishedColumn(data);
-  return data.map((row) => mapRow(row, hasPublishedCol)).filter((entry): entry is Entry => entry !== null);
+  return data
+    .map((row) => mapRow(row, hasPublishedCol, snapshot))
+    .filter((entry): entry is Entry => entry !== null);
 }
 
 /** 무료 공개 프록시(splitbee)에서 표 데이터를 읽습니다. `/table` → `/page` 순서로 시도 */
@@ -323,7 +352,7 @@ export async function fetchPublicEntries(
   if (snapshot && !snapshotIsStale(snapshot) && !manual) {
     if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
     lastOrigin = "snapshot";
-    return rowsToEntries(snapshot.rows);
+    return rowsToEntries(snapshot.rows, snapshot);
   }
 
   let liveRows: R[];
@@ -333,7 +362,7 @@ export async function fetchPublicEntries(
     if (signal?.aborted) throw error;
     if (snapshot) {
       lastOrigin = "snapshot";
-      return rowsToEntries(snapshot.rows); // 프록시 장애 중에는 낡은 스냅샷이라도 표시
+      return rowsToEntries(snapshot.rows, snapshot); // 프록시 장애 중에는 낡은 스냅샷이라도 표시
     }
     throw new Error(
       `공개 Notion 동기화에 실패했습니다 (${describeError(error)}). ` +
@@ -342,11 +371,11 @@ export async function fetchPublicEntries(
     );
   }
 
-  const liveEntries = rowsToEntries(liveRows);
+  const liveEntries = rowsToEntries(liveRows, snapshot);
   // 프록시가 빈 표를 돌려준 경우(장애·권한 변경)에는 낡은 스냅샷이라도 씁니다.
   if (!liveEntries.length && snapshot?.rows.length) {
     lastOrigin = "snapshot";
-    return rowsToEntries(snapshot.rows);
+    return rowsToEntries(snapshot.rows, snapshot);
   }
   lastOrigin = "live";
   return liveEntries;
@@ -388,19 +417,6 @@ function legacyRich(val?: unknown[]): Rich {
 
 const legacyPlain = (val?: unknown[]): string =>
   Array.isArray(val) ? val.map((i) => (Array.isArray(i) ? String(i[0] ?? "") : "")).join("") : "";
-
-/** 노션 내부(S3) 이미지 URL을 공개 서명 URL로 변환 */
-function signImage(src: string, blockId: string): string {
-  if (!src || src.startsWith("data:")) return src;
-  const internal =
-    src.startsWith("/") ||
-    src.startsWith("attachment:") ||
-    /(^https?:\/\/)(s3[^/]*\.amazonaws\.com|file\.notion\.so|prod-files-secure)/i.test(src) ||
-    src.includes("secure.notion-static.com");
-  if (!internal) return src;
-  const abs = src.startsWith("/") ? `https://www.notion.so${src}` : src;
-  return `https://www.notion.so/image/${encodeURIComponent(abs)}?table=block&id=${blockId}&cache=v2`;
-}
 
 function convertLegacy(ids: string[], map: Map<string, LegacyBlock>, depth = 0): Block[] {
   const out: Block[] = [];
@@ -450,7 +466,8 @@ function convertLegacy(ids: string[], map: Map<string, LegacyBlock>, depth = 0):
         break;
       case "image": {
         const src = legacyPlain(p.source) || f.display_source || "";
-        if (src) out.push({ type: "img", src: signImage(src, b.id), caption: legacyPlain(p.caption) || undefined });
+        // 본문 이미지 · 썸네일이 같은 규칙(src/content/fields.js)으로 공개 주소를 만듭니다.
+        if (src) out.push({ type: "img", src: signNotionImage(src, b.id), caption: legacyPlain(p.caption) || undefined });
         break;
       }
       case "video": {
