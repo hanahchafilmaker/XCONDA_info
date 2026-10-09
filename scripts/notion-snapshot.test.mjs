@@ -114,8 +114,8 @@ const reportWith = (overrides = {}) => ({
   viewCount: 1,
   columns: ["Title(title)", "Type(select)", "Published(checkbox)"],
   included: [
-    { title: "서버 점검 안내", type: "notice", rawType: "공지", source: "type", reason: "Type '공지'", category: "점검" },
-    { title: "X 바이럴 영상 모음", type: "news", rawType: "뉴스", source: "type", reason: "Type '뉴스'", category: "X" },
+    { title: "서버 점검 안내", type: "notice", rawType: "공지", source: "type", reason: "Type '공지'", category: "점검", cover: "page_cover", author: "XCONDA 팀" },
+    { title: "X 바이럴 영상 모음", type: "news", rawType: "뉴스", source: "type", reason: "Type '뉴스'", category: "X", cover: "body_image", author: "" },
   ],
   excluded: [],
   ...overrides,
@@ -192,6 +192,24 @@ test("요약 리포트: 특이사항이 없으면 ✅ 한 줄로 끝난다", () 
   const markdown = renderSyncSummary({ report: reportWith() });
   assert.match(markdown, /특별히 확인할 항목이 없습니다/);
   assert.doesNotMatch(markdown, /처음 보는 Type/);
+});
+
+test("요약 리포트: 썸네일 · 작성자 상태를 표와 안내로 보여준다", () => {
+  const markdown = renderSyncSummary({
+    report: reportWith({
+      included: [
+        { title: "썸네일 있는 블로그", type: "blog", rawType: "블로그", source: "type", reason: "Type '블로그'", cover: "body_image", author: "김하나 PD" },
+        { title: "썸네일 없는 블로그", type: "blog", rawType: "블로그", source: "type", reason: "Type '블로그'", cover: "", author: "" },
+      ],
+    }),
+  });
+  assert.match(markdown, /\| 썸네일 \| 작성자 \|/);
+  assert.match(markdown, /본문 첫 이미지 \| 김하나 PD \|/);
+  assert.match(markdown, /\(없음\) \| \(없음\) \|/);
+  assert.match(markdown, /썸네일이 없는 글 1개/);
+  assert.match(markdown, /`Cover`\(커버\) 속성/);
+  assert.match(markdown, /작성자가 없는 블로그 글 1개/);
+  assert.match(markdown, /`Author`\(작성자\) 속성/);
 });
 
 test("요약 리포트: 제목에 | 나 줄바꿈이 있어도 표가 깨지지 않는다", () => {

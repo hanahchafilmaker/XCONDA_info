@@ -39,6 +39,7 @@ export const DICT: Dict = {
   "common.tool": { ko: "툴", en: "Tool" },
   "common.article": { ko: "글", en: "article" },
   "common.articles": { ko: "글", en: "articles" },
+  "common.author": { ko: "작성자", en: "Author" },
 
   /* --------------------------- 접근성 --------------------------- */
   "a11y.skip": { ko: "본문으로 건너뛰기", en: "Skip to content" },
