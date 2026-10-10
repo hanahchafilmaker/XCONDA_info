@@ -120,7 +120,14 @@ export default function ArticleModal() {
               {active.author && !active.id.startsWith("tool-") ? <Byline author={active.author} className="text-xs" /> : null}
               {isNew(active.date) && active.type !== "faq" && !active.id.startsWith("tool-") && <NewBadge />}
             </div>
-            <h2 id="article-title" className="mt-3 text-balance text-2xl font-bold leading-snug tracking-[-0.03em] text-white sm:text-[2rem]">
+            <h2
+              id="article-title"
+              className={cn(
+                "mt-3 text-balance text-2xl font-bold leading-snug tracking-[-0.03em] text-white sm:text-[2rem]",
+                /* 툴 가이드는 제목이 제품명이므로 번역 대상에서 제외 */
+                active.id.startsWith("tool-") && "notranslate"
+              )}
+            >
               {active.title}
             </h2>
             {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-zinc-400">{active.summary}</p>}

@@ -13,22 +13,30 @@ const LINKS = [
   { id: "faq", label: { ko: "Q&A", en: "Q&A" } },
 ];
 
+const LANG_ITEMS = [
+  { target: "ko", code: "KO", ariaKey: "lang.korean" },
+  { target: "en", code: "EN", ariaKey: "lang.english" },
+  { target: "ja", code: "JA", ariaKey: "lang.japanese" },
+  { target: "zh-CN", code: "ZH", ariaKey: "lang.chinese" },
+] as const;
+
 function LangToggle({ className, full }: { className?: string; full?: boolean }) {
-  const { t, lang, setLang } = useLang();
+  const { t, target, setTarget } = useLang();
   return (
     <div className={cn("items-center rounded-full bg-white/[0.05] p-0.5", className)} role="group" aria-label={t("v.lang.toggleAria")}>
-      {(["ko", "en"] as const).map((l) => (
+      {LANG_ITEMS.map((item) => (
         <button
-          key={l}
-          onClick={() => setLang(l)}
-          aria-pressed={lang === l}
+          key={item.target}
+          onClick={() => setTarget(item.target)}
+          aria-pressed={target === item.target}
+          title={t(item.ariaKey)}
           className={cn(
             "rounded-full px-2.5 py-1 text-[12px] font-semibold uppercase transition-colors",
             full && "flex-1 py-2",
-            lang === l ? "bg-white/[0.12] text-white" : "text-zinc-500 hover:text-white",
+            target === item.target ? "bg-white/[0.12] text-white" : "text-zinc-500 hover:text-white",
           )}
         >
-          {l}
+          {item.code}
         </button>
       ))}
     </div>
@@ -72,7 +80,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
         <div className="shell flex h-16 items-center justify-between gap-6">
           <div className="flex items-center gap-10">
             <Logo />
-            <nav className="hidden items-center gap-1 md:flex" aria-label={t("nav.primary")}>
+            <nav className="hidden items-center gap-1 lg:flex" aria-label={t("nav.primary")}>
               {LINKS.map((l) => (
                 <button
                   key={l.id}
@@ -118,7 +126,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
               onClick={() => setOpen((v) => !v)}
               aria-label={t("v.nav.menu")}
               aria-expanded={open}
-              className="grid h-9 w-9 place-items-center rounded-full text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white md:hidden"
+              className="grid h-9 w-9 place-items-center rounded-full text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white lg:hidden"
             >
               {open ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
             </button>
@@ -129,7 +137,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
       {/* mobile drawer */}
       <div
         className={cn(
-          "fixed inset-x-0 top-16 z-40 border-b border-white/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 md:hidden",
+          "fixed inset-x-0 top-16 z-40 border-b border-white/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 lg:hidden",
           open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
         )}
       >
