@@ -8,7 +8,7 @@
 | 문서 작성일 | 2026-10-10 |
 | 대상 | XCONDA허브(`XCONDA_info`)를 이어받는 프런트엔드/풀스택 개발자 |
 | 저장소 | https://github.com/hanahchafilmaker/XCONDA_info |
-| 운영 사이트 | https://hanahchafilmaker.github.io/XCONDA_info/ |
+| 운영 사이트 | https://hub.xconda.ai/ (커스텀 도메인 · 과거 주소 `hanahchafilmaker.github.io/XCONDA_info/` 는 자동 리다이렉트) |
 | 기본 브랜치 | `main` |
 | 관련 문서 | [`NOTION_SETUP.md`](./NOTION_SETUP.md) (노션 연동 · 콘텐츠 운영자용), [`admin-guide.html`](./admin-guide.html), [`user-guide.html`](./user-guide.html) (사용자용 가이드 페이지) |
 | 읽는 데 걸리는 시간 | 전체 30~40분 / 실무 투입은 「2. 30분 온보딩」까지만 읽고 시작 가능 |
@@ -408,7 +408,7 @@ npm run build
 
 ### 10.3 배포
 
-- GitHub Pages: **브랜치 배포** (`main` 루트 `/`), 빌드 타입 `legacy`, `https://hanahchafilmaker.github.io/XCONDA_info/` (커스텀 도메인 없음)
+- GitHub Pages: **브랜치 배포** (`main` 루트 `/`), 빌드 타입 `legacy`, 커스텀 도메인 `https://hub.xconda.ai/` (저장소 루트의 `CNAME` 파일로 지정). 기본 주소 `hanahchafilmaker.github.io/XCONDA_info/` 는 커스텀 도메인으로 301 리다이렉트.
 - 저장소 커밋 → Pages가 자동 배포 (통상 1~2분)
 - `dist/`, `dist-test/`는 `.gitignore` 처리
 
@@ -646,7 +646,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 - [ ] 제품/콘텐츠 의사결정자 연락처(공지 내용·툴 매뉴얼 승인권자)
 - [ ] XCONDA 스튜디오 공식 SNS 채널 주소(`src/content/channels.tsx`에 `href: ""`로 비어 있는 항목들)
 - [ ] Google Drive 영상 공유 폴더 접근 권한
-- [ ] 커스텀 도메인 도입 계획 여부(현재 `hanahchafilmaker.github.io/XCONDA_info/`)
+- [x] 커스텀 도메인 도입 — `hub.xconda.ai` (CNAME 파일 반영)
 
 ---
 
@@ -704,7 +704,7 @@ gh run list --workflow "Notion 동기화" --limit 10                      # 최�
 gh run view <run-id> --log-failed                                     # 실패 로그
 
 # 사이트 확인
-open https://hanahchafilmaker.github.io/XCONDA_info/
+open https://hub.xconda.ai/
 #   ?notion=off                     → 샘플 모드
 #   ?notion=<노션 URL 또는 32자리 ID> → 다른 공개 페이지로 보기
 #   #post=<페이지ID>                 → 해당 글 모달로 열기
