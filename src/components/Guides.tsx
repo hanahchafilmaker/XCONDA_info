@@ -64,7 +64,7 @@ export default function Guides() {
                         : "text-zinc-400 hover:bg-white/[0.03] hover:text-white",
                     )}
                   >
-                    {g.name}
+                    <span className="notranslate">{g.name}</span>
                   </button>
                 </li>
               ))}
@@ -82,7 +82,7 @@ export default function Guides() {
                   g.slug === active.slug ? "border-white bg-white text-ink-950" : "border-white/10 text-zinc-400",
                 )}
               >
-                {g.name}
+                <span className="notranslate">{g.name}</span>
               </button>
             ))}
           </div>
@@ -92,7 +92,7 @@ export default function Guides() {
             <div className="p-6 sm:p-8">
               <p className="text-[13px] font-medium text-zinc-500">{groupLabel(active.group, lang)}</p>
               <h3 className="mt-2 text-[1.6rem] font-bold leading-tight tracking-[-0.03em] text-white sm:text-[1.9rem]">
-                {active.name}
+                <span className="notranslate">{active.name}</span>
               </h3>
               <p className="mt-2 text-[15px] font-medium text-volt-400">{active.tagline}</p>
               <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-400">{active.desc}</p>

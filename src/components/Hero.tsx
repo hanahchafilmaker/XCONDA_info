@@ -17,7 +17,7 @@ export default function Hero({ onSearch }: { onSearch: () => void }) {
 
       <div className="shell">
         <Reveal className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <p className="text-[13px] font-semibold text-volt-400">{t("v.hero.badge")}</p>
+          <p className="notranslate text-[13px] font-semibold text-volt-400">{t("v.hero.badge")}</p>
 
           <h1 className="text-balance-tight mt-5 text-[2.3rem] font-bold leading-[1.15] text-white sm:text-[3.2rem]">
             {t("v.hero.lead")}

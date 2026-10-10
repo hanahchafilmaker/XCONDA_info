@@ -174,3 +174,11 @@
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ───────────────────────── Google 번역 위젯 ─────────────────────────
+   번역 자체는 페이지 텍스트를 직접 바꿔 쓰지만, 위젯이 넣는 UI(상단 배너 ·
+   언어 선택 바)는 사이트 디자인에 맞지 않아 숨긴다. 언어 전환은 내비게이션의
+   KO/EN/JA/ZH 버튼이 담당 (src/i18n/google.ts 참고). */
+.goog-te-banner-frame { display: none !important; }
+.skiptranslate > iframe { display: none !important; }
+body { top: 0 !important; }

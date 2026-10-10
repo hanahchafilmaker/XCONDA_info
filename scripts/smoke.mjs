@@ -12,7 +12,11 @@ const bundle = fs.readFileSync(path.join(here, "../dist-test/app.js"), "utf8");
 
 const problems = [];
 const vc = new VirtualConsole();
-vc.on("jsdomError", (e) => problems.push(`jsdomError: ${e.message}`));
+vc.on("jsdomError", (e) => {
+  // 언어 전환은 Google 번역 쿠키 + window.location.reload (jsdom 은 네비게이션 불가 — 기대되는 오류)
+  if (/Not implemented: (window\.location\.reload|navigation to another Document)/.test(String(e?.message ?? e))) return;
+  problems.push(`jsdomError: ${e.message}`);
+});
 vc.on("error", (...a) => problems.push(`console.error: ${a.join(" ")}`));
 
 const dom = new JSDOM(

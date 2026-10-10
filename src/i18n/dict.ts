@@ -6,6 +6,8 @@
  *   언어별 보조 필드가 있을 때 해당 언어로 표시합니다.
  */
 
+import type { Target } from "./google";
+
 export type Lang = "ko" | "en";
 
 /* ------------------------------------------------------------------ *
@@ -68,6 +70,8 @@ export const DICT: Dict = {
   "lang.switchAria": { ko: "언어 선택", en: "Choose language" },
   "lang.korean": { ko: "한국어", en: "Korean" },
   "lang.english": { ko: "영어", en: "English" },
+  "lang.japanese": { ko: "일본어", en: "Japanese" },
+  "lang.chinese": { ko: "중국어", en: "Chinese" },
 
   /* ---------------------------- 히어로 ---------------------------- */
   "hero.title2": { ko: "가장 빠른 소식, 가장 쉬운 사용법", en: "The fastest news, the simplest how-tos" },
@@ -455,3 +459,27 @@ export function categoryLabel(category: string, lang: Lang): string {
 export function changeLabel(kind: string, lang: Lang): string {
   return CHANGE_LABELS[kind]?.[lang] ?? kind;
 }
+
+/* ------------------------------------------------------------------ *
+ * 문서 <title> · 메타 설명 — 언어별 4종.
+ * Google 번역이 <head> 문서는 바꾸지 않으므로 LanguageProvider 가
+ * 목표 언어에 맞게 직접 갱신합니다.
+ * ------------------------------------------------------------------ */
+export const META: Record<Target, { title: string; description: string }> = {
+  ko: {
+    title: "XCONDA허브 — 공지사항 · 뉴스 · 툴 사용법 · 블로그 · Q&A",
+    description: "XCONDA허브에서 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한곳에 확인하세요.",
+  },
+  en: {
+    title: "XCONDA Hub — Notices, News, Tool Guides, Blog & Q&A",
+    description: "XCONDA Hub gathers notices, social news, tool guides, blog posts and Q&A in one place.",
+  },
+  ja: {
+    title: "XCONDAハブ — お知らせ · ニュース · ツール使い方 · ブログ · Q&A",
+    description: "XCONDAの通知、SNSニュース、ツールガイド、ブログ、Q&Aを1ページで確認できます。",
+  },
+  "zh-CN": {
+    title: "XCONDA中心 — 公告 · 新闻 · 工具使用指南 · 博客 · Q&A",
+    description: "在 XCONDA 中心一站式查看公告、社媒新闻、工具使用指南、博客与 Q&A。",
+  },
+};

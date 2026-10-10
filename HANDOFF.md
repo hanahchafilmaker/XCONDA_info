@@ -113,7 +113,7 @@ npm run build      # dist/dev.html 생성 → postbuild 가 루트 index.html �
 | 전체 검색 | `Cmd/Ctrl + K` 또는 `/` | `src/components/SearchOverlay.tsx` |
 | 상세 모달 | 카드 클릭 | `src/components/ArticleModal.tsx` |
 | 글 딥링크 | `#post=<페이지ID>` (공유 버튼) | `ContentContext` |
-| 한/영 전환 | 내비 KO/EN 토글 (`localStorage: xconda-lang`) | `src/i18n/` |
+| 언어 전환 (KO/EN/JA/ZH) | 내비 4-토글 — KO·EN은 정제 사전, EN/JA/ZH는 Google 번역 위젯(`googtrans` 쿠키 + 리로드) | `src/i18n/` |
 | 수동 동기화 | 상단 배지의 🔄 | `src/components/common.tsx` `SyncButton` |
 
 ---
@@ -156,7 +156,7 @@ XCONDA_info/
 │   ├── notionSnapshot.ts       정적 스냅샷(notion-content.json) 리더 · TTL · 낡음 판정
 │   ├── components/             UI (화면 단위 + 공통 프리미티브)
 │   ├── content/                데이터 모델 · 분류/필드 규칙 · 정적 콘텐츠
-│   ├── i18n/                   한/영 사전과 Provider · 콘텐츠 로컬라이즈
+│   ├── i18n/                   한/영 사전 + Google 번역 위젯 연동(4언어) · 콘텐츠 로컬라이즈
 │   └── utils/cn.ts             clsx + tailwind-merge
 │
 ├── scripts/                    Node 실행 스크립트 (동기화 · 테스트)
@@ -239,7 +239,9 @@ XCONDA_info/
 | `src/notionPublic.ts` | 공개 페이지 어댑터. **스냅샷 우선 → 공개 프록시 보조**, 구 record-map 디코딩, 스냅샷 `__type` 우선 적용 | 여기가 "노션엔 뉴스인데 사이트엔 공지"가 갈리는 지점. `scripts/smoke-sections.mjs`가 실제 코드로 검증 |
 | `src/notionSnapshot.ts` | 스냅샷 fetch/TTL(60초)/낡음 판정(6시간)/페이지 본문 조회 | `SNAPSHOT_STALE_MS`는 하트비트(60분)보다 충분히 커야 함 |
 | `src/content/ContentContext.tsx` | 데이터 소유. 동기화·폴링·섹션 분류·정렬·모달 상태·딥링크 | 정렬 규칙은 여기(공지는 `pinned` 우선, 가이드·FAQ는 `order`, 나머지는 날짜 내림차순) |
-| `src/i18n/dict.ts` (222키) | UI 문구 한/영 사전 + 비 React 유틸용 전역 언어 변수 | 키는 `ko`/`en` **항상 동시 추가** |
+| `src/i18n/dict.ts` (224키) | UI 문구 한/영 사전 + `META`(4언어 title/메타) + 비 React 유틸용 전역 언어 변수 | 키는 `ko`/`en` **항상 동시 추가** |
+| `src/i18n/google.ts` | Google 번역 위젯 연동 — `Target`(ko/en/ja/zh-CN), `googtrans` 쿠키 설정/해독 | 위젯 UI는 숨김, 쿠키가 상태의 원천 |
+| `src/i18n/index.tsx` | `LanguageProvider` — 목표 언어 감지(쿠키→저장값→브라우저) · `setTarget`(쿠키+리로드) · ko/en 정제 사전 적용 | `lang`=사전 언어, `target`=목표 언어 |
 | `src/i18n/content.ts` | `localizeEntry` / `localizeTool` — 노션 EN 보조 필드를 현재 언어에 반영 | — |
 | `src/content/tools.ts` (19개 툴) | 툴 카드 메타데이터 + `TOOLS` / `toolToEntry` | 툴 이미지는 `assets/img/tools`(상대경로) 또는 스튜디오 랜딩 URL |
 | `src/content/toolGuides.ts` (1,499줄) | 툴 상세 매뉴얼 본문(`Block[]`) — `flexboard`, `turn`, `image`, `upscale`, `video`, `expression` | 제품 매뉴얼 원문. 내용 수정은 제품팀 확인 후 |
@@ -437,7 +439,8 @@ npm run build
 
 | 키 | 값 |
 |---|---|
-| `xconda-lang` | `ko` \| `en` |
+| `xconda-lang` | `ko` \| `en` \| `ja` \| `zh-CN` (목표 언어) |
+| `googtrans` (쿠키, Google) | `/ko/en` \| `/ko/ja` \| `/ko/zh-CN` (ko는 삭제) — Google 번역 위젯이 읽는 상태 |
 | `xconda:notion-endpoint` | `?notion=` 으로 지정한 엔드포인트 |
 | `xconda:notion-cache:v1` | 마지막으로 받은 글 목록(오프라인/첫 페인트용) |
 
@@ -496,6 +499,8 @@ npm run build
 - 클래스명 조합은 `cn()` (`clsx` + `tailwind-merge`).
 - **분류·필드 규칙은 `.js` 구현 + `.d.ts` 선언** 쌍으로 관리합니다. 이유: 브라우저(TS)와 Node 스크립트(JS)가 **같은 구현**을 import 해야 하기 때문입니다. 규칙을 TS 파일로 옮기면 이 공유가 깨집니다.
 - UI 문구는 **하드코딩하지 말고** `src/i18n/dict.ts`에 `ko`/`en` 동시 추가 후 `t("key")`.
+- **언어 전환은 `LanguageProvider.setTarget` 경유** — `googtrans` 쿠키 갱신 + 리로드가 정석. Google 위젯 상태를 컴포넌트에서 직접 건드리지 말 것(위젯 UI는 숨김).
+- **브랜드/제품명**(Xconda, 툴 이름 등)은 번역 대상에서 제외하기 위해 `<span className="notranslate">`로 감쌈. 신규 브랜드 텍스트도 동일 처리.
 - 디자인 토큰은 `src/index.css`의 `@theme`에 추가하고 Tailwind 클래스로 사용(`bg-ink-950`, `text-volt-400` …).
 - 새 컴포넌트는 `volt.tsx`(프리미티브)와 `common.tsx`(콘텐츠 공용) 중 맞는 쪽에 넣고, 없을 때만 새 파일.
 
@@ -544,6 +549,8 @@ npm run build
 | 8 | 저장소에 `README.md`가 없음 | 본 문서(`HANDOFF.md`)가 개발자 진입점, `NOTION_SETUP.md`가 운영자 진입점 |
 | 9 | `src/i18n/dict.ts`가 모듈 전역 `_current` 언어를 둠 | 비 React 유틸(날짜 포맷)이 언어를 참조하기 위한 의도된 설계. SSR 없음 |
 | 10 | 루트 `index.html`(약 507 KB)이 저장소에 커밋됨 | 의도된 설계(Pages 브랜치 배포). 히스토리가 커지면 Pages Actions 배포로 전환 검토 |
+| 11 | **언어 전환 시 페이지 리로드** (Google 번역 위젯 제약) | 위젯은 쿠키를 리로드 시점에 읽어 적용. EN/JA/ZH 전환은 재로딩됨(단일 파일이라 빠름). 리로드 없이는 동적 재번역이 불안정해서 의도적으로 유지 |
+| 12 | **EN 모드 노션 본문은 기계번역** (정제 영문이 아님) | 노션에 `Title EN`/`Summary EN`/`Author EN`을 채우면 정제 영문 우선 표시(`localizeEntry`), 미충족 분만 Google 번역. 본문(`Block[]`)은 노션 EN 필드가 없어 항상 기계번역 |
 
 ---
 
@@ -563,6 +570,7 @@ npm run build
 | Actions가 커밋을 안 만듦 | **정상** — 내용이 같으면 커밋하지 않음 | 요약의 `유지 (변경 없음)` 확인. 강제 갱신은 `--force` |
 | `npm run build` 후 `index.html`이 더러워짐 | 커밋된 산출물이 소스와 달랐음 | 의도된 변경이면 커밋, 아니면 이전 산출물이 어떤 소스에서 만들어졌는지 확인 |
 | Google Drive 영상이 안 열림 | Drive 공유 설정 / CSP | 새 창 열기 링크로 동작하므로 Drive 공유 권한 확인. YouTube·직접 제공 파일은 인페이지 재생 |
+| EN/JA/ZH 전환했는데 일부가 한국어로 남음 | ① Google 번역 미적용(쿠키/리로드) ② `notranslate`로 고의 제외(브랜드명) ③ 지연 로딩 영역의 번역 지연 | ① 쿠키·재방문 확인 ② `notranslate` 의도 확인 ③ 재로딩. `googtrans` 쿠키값은 `/ko/<언어>` |
 
 ---
 

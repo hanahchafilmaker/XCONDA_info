@@ -161,7 +161,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <a href="#top" aria-label="XCONDA허브 홈" className={cn("flex items-center gap-2", className)}>
       <LogoMark className="h-[22px] w-[22px] shrink-0" />
-      <span className="text-[19px] font-bold leading-none tracking-[-0.02em] text-white">Xconda</span>
+      <span className="notranslate text-[19px] font-bold leading-none tracking-[-0.02em] text-white">Xconda</span>
     </a>
   );
 }
