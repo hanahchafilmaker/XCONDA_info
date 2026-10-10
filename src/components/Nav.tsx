@@ -36,7 +36,9 @@ function LangToggle({ className, full }: { className?: string; full?: boolean })
             target === item.target ? "bg-white/[0.12] text-white" : "text-zinc-500 hover:text-white",
           )}
         >
-          {item.code}
+          {/* 언어 코드(KO/EN/JA/ZH)는 Google 번역기가 한글 단어(고→WHO, 인→IN, 안→AND)로
+              오역하는 대상이므로, 툴 이름·로고와 동일하게 notranslate 로 보호합니다. */}
+          <span className="notranslate">{item.code}</span>
         </button>
       ))}
     </div>
