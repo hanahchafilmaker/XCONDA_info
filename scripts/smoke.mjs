@@ -138,6 +138,9 @@ const result = {
   legacyPaletteLeft: qa("[class*='text-fuchsia-'], [class*='bg-brand'], [class*='gradient-border']").length,
   footer: !!q("footer"),
   langToggleButtons: qa("button[aria-pressed]").length,
+  // 언어 코드(KO/EN/JA/ZH)는 Google 번역기 오역(WHO/IN/AND) 대상이므로
+  // notranslate 스팬으로 보호된 상태여야 합니다.
+  langCodeTexts: qa("header button[aria-pressed] > span.notranslate").map((s) => s.textContent?.trim()),
   syncStatus: qa("#news [aria-label]").length > 0,
 };
 
@@ -161,6 +164,9 @@ if (!interactions.hitsIdle) fail.push("search overlay returned no results");
 if (interactions.hitsFiltered > interactions.hitsIdle) fail.push("search filter did not narrow results");
 if (!interactions.overlayClosedOnEsc) fail.push("Escape did not close search overlay");
 if (!interactions.koreanActive) fail.push("language toggle did not switch to KO");
+if (JSON.stringify(result.langCodeTexts) !== JSON.stringify(["KO", "EN", "JA", "ZH"])) {
+  fail.push(`language codes missing or not notranslate-protected: ${JSON.stringify(result.langCodeTexts)}`);
+}
 if (!/[가-힣]/.test(interactions.h1AfterKo ?? "")) fail.push("hero copy did not become Korean");
 if (problems.length) fail.push("runtime errors present");
 
