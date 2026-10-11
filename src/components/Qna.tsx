@@ -45,10 +45,15 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
   );
 }
 
+/** Q&A — 기본으로 펼쳐 두는 문항 수 (나머지는 '더 보기' 로 노출) */
+const PAGE = 5;
+
 /** Q&A 섹션 — Notion `Type = FAQ`(또는 Q&A) 글이 노출됩니다. */
 export default function Qna() {
   const { t } = useLang();
   const { faqs, openEntry } = useContent();
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? faqs : faqs.slice(0, PAGE);
 
   return (
     <section id="faq" className="scroll-mt-20 border-t border-white/[0.06] py-20 sm:py-24">
@@ -70,9 +75,19 @@ export default function Qna() {
             </p>
           )}
           {faqs.length === 0 && <p className="py-6 text-[14px] text-zinc-500">{t("v.faq.empty")}</p>}
-          {faqs.map((f, i) => (
+          {visible.map((f, i) => (
             <QnaItem key={f.id} f={f} defaultOpen={i === 0} onOpen={() => openEntry(f)} />
           ))}
+          {faqs.length > PAGE && (
+            <div className="flex justify-center py-2">
+              <button
+                onClick={() => setShowAll((v) => !v)}
+                className="rounded-full border border-white/12 px-5 py-2 text-[14px] font-medium text-zinc-300 transition-colors hover:border-white/25 hover:text-white"
+              >
+                {showAll ? t("v.faq.less") : `${t("v.faq.more")} (${faqs.length - PAGE})`}
+              </button>
+            </div>
+          )}
         </Reveal>
       </div>
     </section>
