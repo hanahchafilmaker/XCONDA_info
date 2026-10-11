@@ -142,6 +142,8 @@ const result = {
   // notranslate 스팬으로 보호된 상태여야 합니다.
   langCodeTexts: qa("header button[aria-pressed] > span.notranslate").map((s) => s.textContent?.trim()),
   syncStatus: qa("#news [aria-label]").length > 0,
+  // 문의 메일 — Q&A 섹션 · 푸터 모두 info@cubeberry.ai (대표님 확인 주소)
+  contactEmails: qa('#faq a[href^="mailto:"], footer a[href^="mailto:"]').map((a) => a.getAttribute("href")),
 };
 
 console.log(JSON.stringify({ result, interactions, problems: problems.slice(0, 20) }, null, 2));
@@ -168,6 +170,9 @@ if (JSON.stringify(result.langCodeTexts) !== JSON.stringify(["KO", "EN", "JA", "
   fail.push(`language codes missing or not notranslate-protected: ${JSON.stringify(result.langCodeTexts)}`);
 }
 if (!/[가-힣]/.test(interactions.h1AfterKo ?? "")) fail.push("hero copy did not become Korean");
+if (result.contactEmails.length < 2 || result.contactEmails.some((h) => h !== "mailto:info@cubeberry.ai")) {
+  fail.push(`contact email must be info@cubeberry.ai (Q&A + footer): ${JSON.stringify(result.contactEmails)}`);
+}
 if (problems.length) fail.push("runtime errors present");
 
 window.close();

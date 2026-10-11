@@ -5,7 +5,8 @@ import { useContent } from "../content/ContentContext";
 import { useLang } from "../i18n";
 import { IconArrow, IconPlus, Reveal, SectionHeader } from "./volt";
 
-const SUPPORT_EMAIL = "support@xconda.ai";
+/** 문의 메일 — Q&A 섹션 링크 · 푸터(Closing.tsx)에 노출됩니다. */
+const SUPPORT_EMAIL = "info@cubeberry.ai";
 
 function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; onOpen: () => void }) {
   const [open, setOpen] = useState(defaultOpen);
