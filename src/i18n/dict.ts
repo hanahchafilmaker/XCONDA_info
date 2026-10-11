@@ -224,6 +224,7 @@ export const DICT: Dict = {
   "modal.pinnedNotice": { ko: "고정 공지", en: "Pinned notice" },
   "modal.related": { ko: "관련 글", en: "Related" },
   "modal.tryInStudio": { ko: "스튜디오에서 바로 해보기", en: "Try it in the studio" },
+  "modal.visitXconda": { ko: "XCONDA 바로가기", en: "Visit XCONDA" },
   "modal.loadingAria": { ko: "본문 불러오는 중", en: "Loading content" },
 
   /* ------------------------- 툴 가이드 본문 ------------------------- */
