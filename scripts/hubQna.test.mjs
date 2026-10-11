@@ -227,11 +227,15 @@ const bodyChunk = (rowId) => ({
   cursor: { stack: [] },
 });
 
-/** 노션 API 응답을 흉내 내는 fetch 스텁 — 호출한 pageId 를 기록합니다. */
-function withFakeNotion(run) {
+/**
+ * 노션 API 응답을 흉내 내는 fetch 스텁 — 호출한 pageId 를 기록합니다.
+ * `flaky` 로 지정한 페이지는 처음 N번 빈 recordMap 을 돌려줍니다(레이트리밋 재현).
+ */
+function withFakeNotion(run, { flaky = {} } = {}) {
   const previousFetch = globalThis.fetch;
   const previousLog = console.log;
   const loaded = [];
+  const remaining = { ...flaky };
   globalThis.fetch = async (url, init) => {
     const path = String(url).replace("https://www.notion.so/api/v3/", "");
     const body = JSON.parse(init?.body ?? "{}");
@@ -239,7 +243,9 @@ function withFakeNotion(run) {
     if (path.startsWith("loadPageChunk")) {
       loaded.push(body.pageId);
       data =
-        body.pageId === "15d20857-6a64-4c49-9959-ace667de40a2"
+        remaining[body.pageId] > 0
+          ? ((remaining[body.pageId] -= 1), { recordMap: { block: {} }, cursor: { stack: [] } })
+          : body.pageId === "15d20857-6a64-4c49-9959-ace667de40a2"
           ? {
               recordMap: {
                 block: {
@@ -320,4 +326,15 @@ test("loadHubQna: 게시 대상만 행으로 만들고, 내부 근거는 본문�
   assert.equal(loaded.includes("22222222-2222-2222-2222-222222222222"), false);
   assert.equal(loaded.includes("33333333-3333-3333-3333-333333333333"), false);
   assert.equal(loaded.length, 3); // 표 1 + 포함 행 2
+});
+
+test("loadHubQna: 본문이 일시적으로 비어 오면 다시 읽어 답변을 채운다 (레이트리밋 대비)", async () => {
+  const { value: result } = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }), {
+    flaky: { "11111111-1111-1111-1111-111111111111": 1 }, // 첫 요청은 빈 recordMap
+  });
+
+  const first = result.rows[0];
+  assert.equal(first.Summary, "답변 본문입니다."); // 빈 응답을 그대로 쓰지 않는다
+  assert.equal(result.report.missingAnswer.length, 0);
+  assert.ok(result.pages[first.id], "재시도 뒤에는 본문(게시용 출처)도 담긴다");
 });

@@ -440,6 +440,7 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
   report.columns = Object.values(schema).map((c) => `${c?.name ?? "?"}(${c?.type ?? "?"})`);
   console.log(`[Notion Sync] 허브 Q&A 열: ${report.columns.join(", ")}`);
 
+  const emptyBodies = []; // 본문을 못 읽은 문항 — 마지막에 한 번 더 시도
   for (const id of blockIds) {
     const block = unwrap(recordMap?.block?.[id]);
     if (!block || block.alive === false) continue;
@@ -475,7 +476,7 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
     } catch (error) {
       report.notes.push(`본문 로드 실패 — "${info.title}": ${error?.message ?? error}`);
     }
-    await sleep(150);
+    await sleep(200);
     const answer = body ? hubAnswerFromPage(body, row.id) : { text: "", from: "none", sections: [] };
     const publicBody = body ? hubPublicPageMap(body, row.id) : { map: {}, note: null };
     info.answerLength = answer.text.length;
@@ -492,11 +493,35 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
     result.rows.push(siteRow);
     if (Object.keys(publicBody.map).length) result.pages[siteRow.id] = publicBody.map;
     report.included.push(info);
+    // 본문 자체를 못 읽은 문항은 아래에서 한 번 더 시도합니다(일시적인 빈 응답 대비).
+    if (!body) emptyBodies.push({ row, info, siteRow });
     console.log(
       `[Notion Sync] Q&A 포함: "${info.title}" (${info.reason} · 답변 ${info.answerLength}자${
         answer.from === "answer" ? "" : ` · 출처=${answer.from}`
       })`
     );
+  }
+
+  /* 본문을 못 읽은 문항 재시도 — 한 바퀴 돌고 나면 노션의 일시 제한이 풀려 있는 경우가 많습니다. */
+  for (const item of emptyBodies) {
+    try {
+      const body = await loadBodyMap(item.row.id, { attempts: 2, pauseMs: 2000 });
+      const answer = hubAnswerFromPage(body, item.row.id);
+      const publicBody = hubPublicPageMap(body, item.row.id);
+      if (!answer.text && !Object.keys(publicBody.map).length) continue;
+      item.siteRow.Summary = answer.text;
+      item.info.answerLength = answer.text.length;
+      item.info.answerFrom = answer.from;
+      item.info.sections = answer.sections.map((section) => section.heading || `(${section.mode})`);
+      item.info.note = publicBody.note ?? null;
+      if (answer.text) report.missingAnswer = report.missingAnswer.filter((entry) => entry !== item.info);
+      if (publicBody.note && !report.unsectioned.includes(item.info)) report.unsectioned.push(item.info);
+      if (Object.keys(publicBody.map).length) result.pages[item.siteRow.id] = publicBody.map;
+      console.log(`[Notion Sync] Q&A 본문 재시도 성공: "${item.info.title}" (답변 ${answer.text.length}자)`);
+    } catch (error) {
+      report.notes.push(`본문 재시도 실패 — "${item.info.title}": ${error?.message ?? error}`);
+    }
+    await sleep(400);
   }
 
   return result;
