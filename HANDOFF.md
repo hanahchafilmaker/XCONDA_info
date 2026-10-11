@@ -70,7 +70,7 @@ npm ci
 
 npm run dev        # http://localhost:5173/dev.html 이 자동으로 열립니다
 npm run test:unit  # 0.5초 — 분류 · 필드 · 섹션 배정 규칙
-npm run test:smoke # 16초 — 실제 번들을 jsdom에서 실행하는 런타임 스모크
+npm run test:smoke # 약 35초 — 실제 번들을 jsdom에서 실행하는 런타임 스모크 (언어 전환 리로드 회귀 포함)
 npm run build      # dist/dev.html 생성 → postbuild 가 루트 index.html 로 복사
 ```
 
@@ -113,7 +113,7 @@ npm run build      # dist/dev.html 생성 → postbuild 가 루트 index.html �
 | 전체 검색 | `Cmd/Ctrl + K` 또는 `/` | `src/components/SearchOverlay.tsx` |
 | 상세 모달 | 카드 클릭 | `src/components/ArticleModal.tsx` |
 | 글 딥링크 | `#post=<페이지ID>` (공유 버튼) | `ContentContext` |
-| 언어 전환 (KO/EN/JA/ZH) | 내비 4-토글 — KO·EN은 정제 사전, EN/JA/ZH는 Google 번역 위젯(`googtrans` 쿠키 + 리로드) | `src/i18n/` |
+| 언어 전환 (KO/EN/JA/ZH) | 내비 4-토글 — KO·EN은 정제 사전, EN/JA/ZH는 Google 번역 위젯(`googtrans` 쿠키 + 리로드). 위젯은 EN/JA/ZH에서만 로드, 직접 고른 언어가 항상 최우선 | `src/i18n/` |
 | 수동 동기화 | 상단 배지의 🔄 | `src/components/common.tsx` `SyncButton` |
 
 ---
@@ -240,8 +240,8 @@ XCONDA_info/
 | `src/notionSnapshot.ts` | 스냅샷 fetch/TTL(60초)/낡음 판정(6시간)/페이지 본문 조회 | `SNAPSHOT_STALE_MS`는 하트비트(60분)보다 충분히 커야 함 |
 | `src/content/ContentContext.tsx` | 데이터 소유. 동기화·폴링·섹션 분류·정렬·모달 상태·딥링크 | 정렬 규칙은 여기(공지는 `pinned` 우선, 가이드·FAQ는 `order`, 나머지는 날짜 내림차순) |
 | `src/i18n/dict.ts` (224키) | UI 문구 한/영 사전 + `META`(4언어 title/메타) + 비 React 유틸용 전역 언어 변수 | 키는 `ko`/`en` **항상 동시 추가** |
-| `src/i18n/google.ts` | Google 번역 위젯 연동 — `Target`(ko/en/ja/zh-CN), `googtrans` 쿠키 설정/해독 | 위젯 UI는 숨김, 쿠키가 상태의 원천 |
-| `src/i18n/index.tsx` | `LanguageProvider` — 목표 언어 감지(쿠키→저장값→브라우저) · `setTarget`(쿠키+리로드) · ko/en 정제 사전 적용 | `lang`=사전 언어, `target`=목표 언어 |
+| `src/i18n/google.ts` | Google 번역 위젯 연동 — `Target`(ko/en/ja/zh-CN), `googtrans` 쿠키 설정/해독, 위젯 로더 `loadTranslateWidget`(EN/JA/ZH만) | 위젯 UI는 숨김. 쿠키는 언어 결정의 **결과물**(입력 아님) |
+| `src/i18n/index.tsx` | 언어 결정의 **유일한 원천** `detectInitialTarget`(직접 고른 언어 → 브라우저 언어, 저장소 차단 시에만 쿠키) · `bootstrapLanguage`(첫 렌더 전 쿠키·`<html lang>`·위젯 정렬, `main.tsx`가 호출) · `LanguageProvider`/`setTarget`(저장+쿠키+리로드) · ko/en 정제 사전 | `lang`=사전 언어, `target`=목표 언어. `dev.html`에 언어 관련 인라인 스크립트를 두지 말 것 |
 | `src/i18n/content.ts` | `localizeEntry` / `localizeTool` — 노션 EN 보조 필드를 현재 언어에 반영 | — |
 | `src/content/tools.ts` (19개 툴) | 툴 카드 메타데이터 + `TOOLS` / `toolToEntry` | 툴 이미지는 `assets/img/tools`(상대경로) 또는 스튜디오 랜딩 URL |
 | `src/content/toolGuides.ts` (1,499줄) | 툴 상세 매뉴얼 본문(`Block[]`) — `flexboard`, `turn`, `image`, `upscale`, `video`, `expression` | 제품 매뉴얼 원문. 내용 수정은 제품팀 확인 후 |
@@ -439,8 +439,8 @@ npm run build
 
 | 키 | 값 |
 |---|---|
-| `xconda-lang` | `ko` \| `en` \| `ja` \| `zh-CN` (목표 언어) |
-| `googtrans` (쿠키, Google) | `/ko/en` \| `/ko/ja` \| `/ko/zh-CN` (ko는 삭제) — Google 번역 위젯이 읽는 상태 |
+| `xconda-lang` | `ko` \| `en` \| `ja` \| `zh-CN` — 사용자가 토글로 **직접 고른** 언어만 저장(자동 감지 결과는 저장 안 함). 언어 결정에서 최우선 |
+| `googtrans` (쿠키, Google) | `/ko/en` \| `/ko/ja` \| `/ko/zh-CN` (ko는 삭제) — Google 번역 위젯이 읽는 상태. 앱이 매 로드마다 목표 언어에 맞춰 다시 씀(입력으로는 저장소 차단 시에만 사용) |
 | `xconda:notion-endpoint` | `?notion=` 으로 지정한 엔드포인트 |
 | `xconda:notion-cache:v1` | 마지막으로 받은 글 목록(오프라인/첫 페인트용) |
 
@@ -452,6 +452,7 @@ npm run build
 | `DEFAULT_PAGE_ID` / `DEFAULT_DATABASE_ID` | `scripts/notion-snapshot.mjs` |
 | `STUDIO_URL = "https://www.xconda.ai"` | `src/content/tools.ts` |
 | `NOTION_NEWS_URL` | `src/content/channels.tsx` |
+| 문의 메일 `SUPPORT_EMAIL = "info@cubeberry.ai"` (Q&A 섹션 · 푸터 노출) | `src/components/Qna.tsx` |
 | SNS 채널 카드 링크(`href: ""` = 준비 중) | `src/content/channels.tsx` |
 
 ---
@@ -463,7 +464,7 @@ npm run build
 | 명령 | 내용 | 소요 |
 |---|---|---|
 | `npm run test:unit` | `node --test` (notion-snapshot / classify / fields) **+** `scripts/smoke-sections.mjs` | ~0.5초 |
-| `npm run test:smoke` | `vite build --config scripts/vite.smoke.config.ts` (IIFE 번들 → `dist-test/`) → `smoke.mjs` + `smoke-sync.mjs` | ~16초 |
+| `npm run test:smoke` | `vite build --config scripts/vite.smoke.config.ts` (IIFE 번들 → `dist-test/`) → `smoke.mjs` + `smoke-sync.mjs` + `smoke-lang.mjs` | ~35초 |
 
 ### 12.1 각 테스트가 지키는 것
 
@@ -473,8 +474,9 @@ npm run build
 | `scripts/fields.test.mjs` | 썸네일 우선순위(Cover → 페이지 커버 → 본문 첫 이미지), 노션 이미지 프록시·폴백 주소, `Author`/`Author EN` |
 | `scripts/notion-snapshot.test.mjs` | 하트비트 판정(`shouldWriteSnapshot`), 안정 직렬화(`stableStringify`) |
 | `scripts/smoke-sections.mjs` | **실제 `src/notionPublic.ts`를 import**해 노션 행을 흘려보내고 섹션 배정을 확인. Node 22.18+ 의 TypeScript 타입 제거 기능 사용(미지원 버전은 SKIP) |
-| `scripts/smoke.mjs` | 실제 번들을 jsdom에서 마운트 → 모든 섹션 렌더 + 콘솔 에러 0 + 검색 동작 |
+| `scripts/smoke.mjs` | 실제 번들을 jsdom에서 마운트 → 모든 섹션 렌더 + 콘솔 에러 0 + 검색 동작 + 문의 메일(Q&A·푸터)이 `info@cubeberry.ai` |
 | `scripts/smoke-sync.mjs` | **"지금 동기화" 정직성 회귀**: 프록시 사망 시 스냅샷 생성 시각을 표시해야지 "방금 전"을 표시하면 안 됨 |
+| `scripts/smoke-lang.mjs` | **언어 전환 "리로드 이후" 회귀**: 실제 `dev.html` + 번들을 쿠키·localStorage를 이어 붙여 재로드. 영어·일본어·중국어 브라우저에서 KO를 고르면 리로드 후에도 KO, KO에선 위젯 미로드, 지워지지 않는 상위 도메인 쿠키가 있어도 KO 유지, 위젯 콜백 옵션(EN 자동 감지 / JA·ZH `pageLanguage: ko`) |
 
 ### 12.2 새 규칙을 추가했다면
 
@@ -500,6 +502,7 @@ npm run build
 - **분류·필드 규칙은 `.js` 구현 + `.d.ts` 선언** 쌍으로 관리합니다. 이유: 브라우저(TS)와 Node 스크립트(JS)가 **같은 구현**을 import 해야 하기 때문입니다. 규칙을 TS 파일로 옮기면 이 공유가 깨집니다.
 - UI 문구는 **하드코딩하지 말고** `src/i18n/dict.ts`에 `ko`/`en` 동시 추가 후 `t("key")`.
 - **언어 전환은 `LanguageProvider.setTarget` 경유** — `googtrans` 쿠키 갱신 + 리로드가 정석. Google 위젯 상태를 컴포넌트에서 직접 건드리지 말 것(위젯 UI는 숨김).
+- **목표 언어 결정은 `src/i18n/index.tsx`의 `detectInitialTarget` 한 곳뿐** — 우선순위는 직접 고른 언어 → 브라우저 언어. `dev.html` 등에 언어를 정하는 인라인 스크립트를 다시 만들지 마세요. 2026-10에 `<head>` 스크립트와 앱이 서로 다른 규칙을 써서 "영어 브라우저에서 KO를 눌러도 영어로 돌아가는" 장애가 있었습니다(`scripts/smoke-lang.mjs`가 회귀 방지).
 - **브랜드/제품명**(Xconda, 툴 이름 등)은 번역 대상에서 제외하기 위해 `<span className="notranslate">`로 감쌈. 신규 브랜드 텍스트도 동일 처리.
 - 디자인 토큰은 `src/index.css`의 `@theme`에 추가하고 Tailwind 클래스로 사용(`bg-ink-950`, `text-volt-400` …).
 - 새 컴포넌트는 `volt.tsx`(프리미티브)와 `common.tsx`(콘텐츠 공용) 중 맞는 쪽에 넣고, 없을 때만 새 파일.
@@ -551,6 +554,7 @@ npm run build
 | 10 | 루트 `index.html`(약 507 KB)이 저장소에 커밋됨 | 의도된 설계(Pages 브랜치 배포). 히스토리가 커지면 Pages Actions 배포로 전환 검토 |
 | 11 | **언어 전환 시 페이지 리로드** (Google 번역 위젯 제약) | 위젯은 쿠키를 리로드 시점에 읽어 적용. EN/JA/ZH 전환은 재로딩됨(단일 파일이라 빠름). 리로드 없이는 동적 재번역이 불안정해서 의도적으로 유지 |
 | 12 | **EN 모드 노션 본문은 기계번역** (정제 영문이 아님) | 노션에 `Title EN`/`Summary EN`/`Author EN`을 채우면 정제 영문 우선 표시(`localizeEntry`), 미충족 분만 Google 번역. 본문(`Block[]`)은 노션 EN 필드가 없어 항상 기계번역 |
+| 13 | **브라우저 자체 번역**(크롬 "한국어 항상 번역" 등)이 KO 화면을 다시 영어로 바꿀 수 있음 | 사용자가 KO를 **직접** 고르면 `<html translate="no">` + `<meta name="google" content="notranslate">`로 잠금(`applyDocumentLanguage`). 자동 감지로 KO가 된 경우(지원하지 않는 언어의 브라우저)는 크롬 번역 제안을 막지 않음 — 의도된 동작 |
 
 ---
 
@@ -570,6 +574,7 @@ npm run build
 | Actions가 커밋을 안 만듦 | **정상** — 내용이 같으면 커밋하지 않음 | 요약의 `유지 (변경 없음)` 확인. 강제 갱신은 `--force` |
 | `npm run build` 후 `index.html`이 더러워짐 | 커밋된 산출물이 소스와 달랐음 | 의도된 변경이면 커밋, 아니면 이전 산출물이 어떤 소스에서 만들어졌는지 확인 |
 | Google Drive 영상이 안 열림 | Drive 공유 설정 / CSP | 새 창 열기 링크로 동작하므로 Drive 공유 권한 확인. YouTube·직접 제공 파일은 인페이지 재생 |
+| KO를 눌렀는데 리로드 후 영어(또는 일·중)로 돌아감 | 2026-10-11 이전 빌드의 버그(브라우저 언어가 en/ja/zh면 `<head>` 스크립트가 `googtrans` 쿠키를 다시 쓰고 앱이 쿠키를 저장값보다 먼저 믿음) — 수정 완료 | 배포된 `index.html`이 최신인지 확인(옛 파일엔 `translate_a/element.js` `<script>` 태그가 HTML에 직접 있음). 개발자도구에서 `localStorage['xconda-lang']`(직접 고른 언어)·`googtrans` 쿠키 확인. 회귀 확인은 `npm run test:smoke`(`smoke-lang.mjs`) |
 | EN/JA/ZH 전환했는데 일부가 한국어로 남음 | ① Google 번역 미적용(쿠키/리로드) ② `notranslate`로 고의 제외(브랜드명) ③ 지연 로딩 영역의 번역 지연 | ① 쿠키·재방문 확인 ② `notranslate` 의도 확인 ③ 재로딩. `googtrans` 쿠키값은 `/ko/<언어>` |
 
 ---
