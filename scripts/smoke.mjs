@@ -92,6 +92,7 @@ click(blogCard);
 await new Promise((r) => setTimeout(r, 500));
 const modal = q('div[role="dialog"][aria-modal="true"]');
 const modalByline = modal?.querySelector("[data-byline]")?.getAttribute("data-byline") ?? null;
+const modalProductLink = modal?.querySelector('a[href="https://www.xconda.ai"]')?.textContent?.trim() ?? null;
 window.document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
 await new Promise((r) => setTimeout(r, 300));
 
@@ -132,11 +133,13 @@ const result = {
     blogThumbnails: qa("#blog article img").length,
     blogBylines: qa("#blog article [data-byline]").length,
     modalByline,
+    modalProductLink,
     faqItems: qa("#faq button[aria-expanded]").length,
   },
   voltPaletteActive: !!q("[class*='text-volt-400']"),
   legacyPaletteLeft: qa("[class*='text-fuchsia-'], [class*='bg-brand'], [class*='gradient-border']").length,
   footer: !!q("footer"),
+  headerLogoProductLink: !!q('header a[href="https://www.xconda.ai"]'),
   langToggleButtons: qa("button[aria-pressed]").length,
   // 언어 코드(KO/EN/JA/ZH)는 Google 번역기 오역(WHO/IN/AND) 대상이므로
   // notranslate 스팬으로 보호된 상태여야 합니다.
@@ -158,6 +161,8 @@ if (result.counts.blogCards < 3) fail.push(`blog cards missing: ${result.counts.
 if (!result.counts.blogThumbnails) fail.push("blog cards render no thumbnail <img>");
 if (result.counts.blogBylines < 3) fail.push(`blog cards missing author byline: ${result.counts.blogBylines}`);
 if (!modalByline) fail.push("article modal did not show the author byline");
+if (!modalProductLink) fail.push("article modal did not link back to XCONDA");
+if (!result.headerLogoProductLink) fail.push("header logo did not link to XCONDA");
 if (!result.voltPaletteActive) fail.push("volt palette not applied");
 if (result.legacyPaletteLeft > 0) fail.push("legacy palette classes still present");
 if (!result.footer) fail.push("footer missing");

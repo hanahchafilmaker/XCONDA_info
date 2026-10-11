@@ -81,7 +81,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
       >
         <div className="shell flex h-16 items-center justify-between gap-6">
           <div className="flex items-center gap-10">
-            <Logo />
+            <Logo href={STUDIO_URL} />
             <nav className="hidden items-center gap-1 lg:flex" aria-label={t("nav.primary")}>
               {LINKS.map((l) => (
                 <button

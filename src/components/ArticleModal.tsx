@@ -7,6 +7,7 @@ import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "./common";
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
+import { STUDIO_URL } from "../content/tools";
 
 const KIND_TONE = {
   New: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
@@ -195,6 +196,10 @@ export default function ArticleModal() {
                 </ul>
               </div>
             )}
+            <a href={STUDIO_URL} className="mt-10 inline-flex items-center gap-2 rounded-full border border-volt-400/40 px-5 py-3 text-sm font-semibold text-volt-400 transition hover:border-volt-400 hover:text-volt-300">
+              {t("modal.visitXconda")}
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
           </article>
         </div>
       </div>
