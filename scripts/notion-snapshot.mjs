@@ -133,6 +133,8 @@ async function loadPageChunk(pageId, chunkNumber = 0, cursor = { stack: [] }) {
   });
 }
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /** 페이지(또는 데이터베이스) 하위 블록을 전부 담은 recordMap.block 을 모읍니다. */
 async function loadBlockMap(pageId) {
   const blocks = {};
@@ -151,6 +153,26 @@ async function loadBlockMap(pageId) {
     chunkNumber += 1;
   }
   return blocks;
+}
+
+/**
+ * 본문 페이지 하나를 읽습니다 — 노션 공개 API 는 문항 수가 많으면(수십 건 연속 요청)
+ * 일시적으로 **빈 recordMap** 이나 오류를 돌려주므로, 잠시 쉬었다가 다시 시도합니다.
+ * (실측: 71건 중 16건이 한 번에 빈 본문으로 와서 답변이 비어 나간 적이 있음)
+ */
+async function loadBodyMap(pageId, { attempts = 3, pauseMs = 900 } = {}) {
+  let lastError = new Error("본문을 읽지 못했습니다");
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const blocks = await loadBlockMap(pageId);
+      if (Object.keys(blocks).length) return blocks;
+      lastError = new Error("빈 본문 응답");
+    } catch (error) {
+      lastError = error;
+    }
+    if (attempt < attempts) await sleep(pauseMs * attempt);
+  }
+  throw lastError;
 }
 
 /**
@@ -448,10 +470,12 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
 
     let body;
     try {
-      body = await loadBlockMap(row.id);
+      // 문항이 많으면 연속 요청이 잠깐 막히므로, 본문은 재시도 + 요청 사이 짧은 휴식으로 읽습니다.
+      body = await loadBodyMap(row.id);
     } catch (error) {
       report.notes.push(`본문 로드 실패 — "${info.title}": ${error?.message ?? error}`);
     }
+    await sleep(150);
     const answer = body ? hubAnswerFromPage(body, row.id) : { text: "", from: "none", sections: [] };
     const publicBody = body ? hubPublicPageMap(body, row.id) : { map: {}, note: null };
     info.answerLength = answer.text.length;
