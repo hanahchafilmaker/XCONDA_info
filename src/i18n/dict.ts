@@ -332,6 +332,8 @@ export const DICT: Dict = {
   "v.faq.count": { ko: "개 문항", en: "questions" },
   "v.faq.full": { ko: "전체 답변 보기", en: "Open full answer" },
   "v.faq.empty": { ko: "등록된 질문이 없습니다.", en: "No questions published yet." },
+  "v.faq.more": { ko: "더 보기", en: "Show more" },
+  "v.faq.less": { ko: "접기", en: "Show less" },
 
   "v.cta.kicker": { ko: "시작하세요", en: "Start now" },
   "v.cta.line1": { ko: "가이드는 읽는 게 아니라", en: "A guide is not read." },
