@@ -218,6 +218,8 @@ test("스냅샷에 기록된 __type 은 현재 규칙과 일치해야 한다", (
   let checked = 0;
   for (const row of rows) {
     if (!isEntryType(row.__type)) continue; // 아직 분류 정보가 없는 옛 스냅샷은 생략
+    // 허브 Q&A 표에서 온 행은 `Type` 열을 쓰지 않습니다 (게시 규칙은 src/content/hubQna.js).
+    if (row.__source === "hub-qna") continue;
     checked += 1;
     const decision = classifyType({
       type: row.Type,
@@ -233,5 +235,10 @@ test("스냅샷에 기록된 __type 은 현재 규칙과 일치해야 한다", (
       `"${row.Title}" — 스냅샷 __type=${row.__type} 인데 규칙은 ${decision.type} 로 봅니다. 분류 규칙을 바꿨다면 Actions 에서 "Notion 동기화"를 한 번 실행해 스냅샷을 갱신하세요.`
     );
   }
-  console.log(`  · 스냅샷 ${rows.length}행 중 ${checked}행의 __type 을 확인했습니다.`);
+  // 허브 Q&A 행은 언제나 Q&A(faq) — 다른 섹션으로 새면 안 됩니다.
+  const hubRows = rows.filter((row) => row.__source === "hub-qna");
+  for (const row of hubRows) {
+    assert.equal(row.__type, "faq", `"${row.Title}" — 허브 Q&A 행은 faq 여야 합니다`);
+  }
+  console.log(`  · 스냅샷 ${rows.length}행 중 ${checked}행의 __type · 허브 Q&A ${hubRows.length}행을 확인했습니다.`);
 });
