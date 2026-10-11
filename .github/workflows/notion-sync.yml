@@ -51,6 +51,9 @@ jobs:
         env:
           NOTION_PAGE_ID: ${{ vars.NOTION_PAGE_ID }}
           NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
+          # 허브 Q&A 표(XCONDA 허브 Q&A) — 비워 두면 스크립트의 기본값을 씁니다.
+          NOTION_FAQ_PAGE_ID: ${{ vars.NOTION_FAQ_PAGE_ID }}
+          NOTION_FAQ_DATABASE_ID: ${{ vars.NOTION_FAQ_DATABASE_ID }}
         # 내용이 이전 스냅샷과 같고 마지막 갱신이 60분 이내면 파일을 다시 쓰지 않습니다.
         # 실행 화면의 Summary 탭에 "글 → 섹션" 분류표와 노션에서 손볼 곳을 남깁니다.
         run: node scripts/notion-snapshot.mjs --out notion-content.json

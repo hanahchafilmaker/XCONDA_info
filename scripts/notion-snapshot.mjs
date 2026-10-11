@@ -21,9 +21,27 @@
 
 import { SECTION_LABELS, TYPE_CHOICES, classifyType, pickRow } from "../src/content/classify.js";
 import { AUTHOR_KEYS, COVER_KEYS, COVER_SOURCE_LABELS, coverFromPageMap, personNames, signNotionImage } from "../src/content/fields.js";
+import {
+  hubAnswerFromPage,
+  hubPublicPageMap,
+  hubQnaCategory,
+  hubQnaDecision,
+  hubQnaNumber,
+  hubQnaPriority,
+  hubQnaSiteRow,
+  hubQnaTitle,
+} from "../src/content/hubQna.js";
 
 const DEFAULT_PAGE_ID = "3e72ebc017ad8024a3f5ef8fb9f8c6dd";
 const DEFAULT_DATABASE_ID = "3b54d2ea0d5e4ab5b33cff12de807517";
+
+/**
+ * 허브 Q&A 표(XCONDA 허브 Q&A) — 질문 1건 = 페이지 1개, 답변은 페이지 본문의 `답변` 섹션.
+ * 노출·본문 규칙은 `src/content/hubQna.js` 한 곳에서 관리합니다.
+ * (GitHub 저장소 Settings → Variables 의 `NOTION_FAQ_PAGE_ID` / `NOTION_FAQ_DATABASE_ID` 로 바꿀 수 있습니다)
+ */
+const DEFAULT_FAQ_PAGE_ID = "15d208576a644c499959ace667de40a2";
+const DEFAULT_FAQ_DATABASE_ID = "2d3c8b526b4845999e2014f1db5eab93";
 
 /** 섹션 표시 순서 (사이트와 동일: 공지사항 → 뉴스 → 툴 사용법 → 블로그 → Q&A) */
 const SECTION_ORDER = ["notice", "news", "guide", "blog", "faq"];
@@ -146,23 +164,31 @@ function findCollectionViews(blocks) {
     const b = entry.value;
     if (!b || !/^collection_view/.test(String(b.type))) continue;
     const collectionId = b.collection_id ?? b.format?.collection_pointer?.id;
-    const viewId = Array.isArray(b.view_ids) ? b.view_ids[0] : undefined;
+    const viewIds = Array.isArray(b.view_ids) ? b.view_ids.filter(Boolean) : [];
+    const viewId = viewIds[0];
     if (!collectionId || !viewId) continue;
     views.push({
       blockId: b.id,
       collectionId,
       viewId,
+      viewIds,
       spaceId: b.space_id ?? b.format?.collection_pointer?.spaceId,
     });
   }
   return views;
 }
 
-/** 지정한 ID(없으면 첫 번째)에 해당하는 표를 고릅니다. */
+/** 지정한 ID(없으면 첫 번째)에 해당하는 표를 고릅니다. 블록 ID · 뷰 ID 어느 쪽으로도 찾습니다. */
 function pickCollectionView(views, preferredId) {
   if (!views.length) return undefined;
   const wanted = preferredId ? undashed(preferredId) : undefined;
-  return (wanted ? views.find((v) => undashed(v.blockId) === wanted) : undefined) ?? views[0];
+  const hit = wanted
+    ? views.find(
+        (v) =>
+          undashed(v.blockId) === wanted || (v.viewIds ?? []).some((id) => undashed(id) === wanted)
+      )
+    : undefined;
+  return hit ?? views[0];
 }
 
 /** 이 행이 어느 섹션으로 들어가는지 — 사이트와 같은 규칙(src/content/classify.js)으로 판정 */
@@ -317,6 +343,141 @@ const isPublished = (row) => {
 const hasPublishedColumn = (schema) =>
   Object.values(schema).some((c) => PUBLISHED_KEYS.includes(String(c?.name ?? "").trim().toLowerCase()));
 
+/* --------------------------- 허브 Q&A 표 (XCONDA 허브 Q&A) --------------------------- */
+
+/** 노션 시각(ms) → `YYYY-MM-DD` (없으면 빈 문자열) */
+const msToDate = (value) => {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return "";
+  const date = new Date(n);
+  return Number.isFinite(date.getTime()) ? date.toISOString().slice(0, 10) : "";
+};
+
+/**
+ * 허브 Q&A 표(`XCONDA 허브 Q&A`)를 읽어 **사이트 행**으로 바꿉니다.
+ *
+ *   ▸ 노출 판단(`상태` · `허브 게시`)과 본문 규칙(`답변` → 답변 글 · `게시용 출처` → 모달 ·
+ *     `내부 근거` 는 제외)은 `src/content/hubQna.js` 한 곳에서 관리합니다 — 사이트도 같은 함수를 씁니다.
+ *   ▸ 이 표를 읽지 못해도 메인 동기화는 계속됩니다(경고만 남기고 넘어갑니다).
+ */
+export async function loadHubQna({ pageId, databaseId } = {}) {
+  const page = extractId(firstFilled(pageId, process.env.NOTION_FAQ_PAGE_ID, DEFAULT_FAQ_PAGE_ID));
+  const viewId = extractId(firstFilled(databaseId, process.env.NOTION_FAQ_DATABASE_ID, DEFAULT_FAQ_DATABASE_ID));
+  const report = {
+    skipped: null,
+    rowCount: 0,
+    included: [],
+    excluded: [],
+    missingAnswer: [],
+    unsectioned: [],
+    notes: [],
+    columns: [],
+    viewBlockId: null,
+    collectionId: null,
+  };
+  const result = { rows: [], pages: {}, report };
+
+  if (!page && !viewId) {
+    report.skipped = "표 ID 가 없습니다 (NOTION_FAQ_PAGE_ID / NOTION_FAQ_DATABASE_ID)";
+    return result;
+  }
+
+  let blocks;
+  try {
+    blocks = await loadBlockMap(page ?? viewId);
+  } catch (error) {
+    report.skipped = `표를 읽지 못했습니다 — ${error?.message ?? error}`;
+    console.warn(`⚠️ [Notion Sync 경고] 허브 Q&A 표를 읽지 못했습니다: ${report.skipped}`);
+    return result;
+  }
+
+  let views = findCollectionViews(blocks);
+  let view = pickCollectionView(views, viewId);
+  if (!view && viewId) {
+    // 데이터베이스 페이지 대신 뷰(블록) ID 만 준 경우 — 블록을 직접 읽어 봅니다.
+    try {
+      const dbBlocks = await loadBlockMap(viewId);
+      const dbViews = findCollectionViews(dbBlocks);
+      if (dbViews.length) views = dbViews;
+      view = pickCollectionView(dbViews, viewId);
+    } catch (error) {
+      report.notes.push(`표 블록을 직접 읽지 못했습니다 — ${error?.message ?? error}`);
+    }
+  }
+  if (!view) {
+    report.skipped = "게시된 페이지 안에서 허브 Q&A 표(데이터베이스)를 찾지 못했습니다";
+    console.warn(`⚠️ [Notion Sync 경고] ${report.skipped}`);
+    return result;
+  }
+  report.viewBlockId = view.blockId ?? null;
+  report.collectionId = view.collectionId ?? null;
+
+  const { blockIds, recordMap } = await queryCollection(view);
+  const collection = unwrap(recordMap?.collection?.[view.collectionId]) ?? {};
+  const schema = isRecord(collection.schema) ? collection.schema : {};
+  report.columns = Object.values(schema).map((c) => `${c?.name ?? "?"}(${c?.type ?? "?"})`);
+  console.log(`[Notion Sync] 허브 Q&A 열: ${report.columns.join(", ")}`);
+
+  for (const id of blockIds) {
+    const block = unwrap(recordMap?.block?.[id]);
+    if (!block || block.alive === false) continue;
+    const row = rowToObject(block, schema);
+    if (!row.id) continue;
+
+    const decision = hubQnaDecision(row);
+    const info = {
+      title: hubQnaTitle(row),
+      category: hubQnaCategory(row),
+      priority: hubQnaPriority(row),
+      no: hubQnaNumber(row),
+      status: decision.status,
+      publish: decision.publish,
+      reason: decision.reason,
+      answerLength: 0,
+      answerFrom: "",
+      sections: [],
+      note: null,
+    };
+    report.rowCount += 1;
+
+    if (!decision.include) {
+      report.excluded.push(info);
+      console.log(`[Notion Sync] Q&A 제외: "${info.title}" (${info.reason})`);
+      continue;
+    }
+
+    let body;
+    try {
+      body = await loadBlockMap(row.id);
+    } catch (error) {
+      report.notes.push(`본문 로드 실패 — "${info.title}": ${error?.message ?? error}`);
+    }
+    const answer = body ? hubAnswerFromPage(body, row.id) : { text: "", from: "none", sections: [] };
+    const publicBody = body ? hubPublicPageMap(body, row.id) : { map: {}, note: null };
+    info.answerLength = answer.text.length;
+    info.answerFrom = answer.from;
+    info.sections = answer.sections.map((section) => section.heading || `(${section.mode})`);
+    info.note = publicBody.note ?? null;
+    if (!answer.text) report.missingAnswer.push(info);
+    if (publicBody.note) report.unsectioned.push(info);
+
+    const siteRow = hubQnaSiteRow(row, {
+      summary: answer.text,
+      dateFallback: msToDate(block.created_time ?? block.last_edited_time),
+    });
+    result.rows.push(siteRow);
+    if (Object.keys(publicBody.map).length) result.pages[siteRow.id] = publicBody.map;
+    report.included.push(info);
+    console.log(
+      `[Notion Sync] Q&A 포함: "${info.title}" (${info.reason} · 답변 ${info.answerLength}자${
+        answer.from === "answer" ? "" : ` · 출처=${answer.from}`
+      })`
+    );
+  }
+
+  return result;
+}
+
 /* ------------------------------ 스냅샷 ------------------------------ */
 
 /** 빈 문자열(설정하지 않은 GitHub Variables 가 공백으로 넘어오는 경우)은 없는 값으로 취급합니다. */
@@ -327,17 +488,29 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
   const database = extractId(firstFilled(databaseId, process.env.NOTION_DATABASE_ID, DEFAULT_DATABASE_ID));
   if (!page && !database) throw new Error("NOTION_PAGE_ID 또는 NOTION_DATABASE_ID 가 필요합니다");
 
+  // 허브 Q&A 표(별도 표) — 메인 표 선택에서 빼 둡니다. (아래에서 따로 읽습니다)
+  const faqPage = extractId(firstFilled(process.env.NOTION_FAQ_PAGE_ID, DEFAULT_FAQ_PAGE_ID));
+  const faqView = extractId(firstFilled(process.env.NOTION_FAQ_DATABASE_ID, DEFAULT_FAQ_DATABASE_ID));
+  const belongsToFaq = (v) => {
+    const ids = [v.blockId, ...(v.viewIds ?? [])].map(undashed);
+    return [faqPage, faqView].filter(Boolean).some((id) => ids.includes(undashed(id)));
+  };
+  const mainViews = (all) => {
+    const filtered = all.filter((v) => !belongsToFaq(v));
+    return filtered.length ? filtered : all; // 전부 Q&A 표로 판정되는 비정상 상황에서는 원래대로
+  };
+
   const rootId = page ?? database;
   const blocks = await loadBlockMap(rootId);
   let views = findCollectionViews(blocks);
-  let view = pickCollectionView(views, database);
+  let view = pickCollectionView(mainViews(views), database);
 
   // 페이지가 아니라 데이터베이스 ID 만 주어진 경우 해당 블록을 직접 조회
   if (!view && database) {
     const dbBlocks = await loadBlockMap(database);
     const dbViews = findCollectionViews(dbBlocks);
     if (dbViews.length) views = dbViews;
-    view = pickCollectionView(dbViews, database);
+    view = pickCollectionView(mainViews(dbViews), database);
   }
   if (!view) throw new Error("게시된 페이지 안에서 데이터베이스(표)를 찾지 못했습니다");
 
@@ -425,12 +598,26 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
     }
   }
 
+  /* ------------------------------ 허브 Q&A 표 병합 ------------------------------ */
+  // 고객 지원 Q&A(질문 1건 = 페이지 1개, 답변은 페이지 본문의 `답변` 섹션)를 같은 스냅샷에 합칩니다.
+  // 노출 판단(상태 · 허브 게시)과 본문 필터(내부 근거 제외)는 src/content/hubQna.js 한 곳에서 관리합니다.
+  const qna = await loadHubQna({ pageId: faqPage, databaseId: faqView });
+  rows.push(...qna.rows);
+  Object.assign(pages, qna.pages);
+  if (qna.report.skipped) console.warn(`⚠️ [Notion Sync 경고] 허브 Q&A: ${qna.report.skipped}`);
+  console.log(
+    `[Notion Sync] 허브 Q&A: 포함 ${qna.report.included.length} · 제외 ${qna.report.excluded.length} (읽은 문항 ${qna.report.rowCount})`
+  );
+
   return {
     generatedAt: new Date().toISOString(),
     source: {
       pageId: page ? dashed(page) : null,
       collectionViewId: view.blockId ?? null,
       collectionId: view.collectionId ?? null,
+      faqPageId: faqPage ? dashed(faqPage) : null,
+      faqViewId: qna.report.viewBlockId ?? (faqView ? dashed(faqView) : null),
+      faqCollectionId: qna.report.collectionId ?? null,
     },
     rows,
     pages,
@@ -440,9 +627,11 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
       excluded,
       columns: Object.values(schema).map((c) => `${c?.name ?? "?"}(${c?.type ?? "?"})`),
       // 같은 표를 여러 뷰(표·갤러리 등)로 보여주는 경우가 있으므로 데이터베이스(collection) 기준으로 셉니다.
-      viewCount: new Set(views.map((v) => undashed(v.collectionId))).size,
+      // (허브 Q&A 표는 따로 읽으므로 이 수에서 뺍니다)
+      viewCount: new Set(views.filter((v) => !belongsToFaq(v)).map((v) => undashed(v.collectionId))).size,
       rowCount: included.length + excluded.length,
       viewBlockId: view.blockId ?? null,
+      qna: qna.report,
     },
   };
 }
@@ -468,6 +657,12 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
   const viewCount = report?.viewCount ?? 0;
   const rowCount = report?.rowCount ?? included.length + excluded.length;
 
+  const qna = report?.qna ?? null;
+  const qnaIncluded = qna?.included ?? [];
+  const qnaExcluded = qna?.excluded ?? [];
+  const qnaMissing = qna?.missingAnswer ?? [];
+  const qnaUnsectioned = qna?.unsectioned ?? [];
+
   const counts = Object.fromEntries(SECTION_ORDER.map((type) => [type, 0]));
   for (const item of included) counts[item.type] = (counts[item.type] ?? 0) + 1;
 
@@ -476,6 +671,7 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
   lines.push("");
   lines.push(
     `표에서 읽은 행 **${rowCount}개** · 사이트에 포함 **${included.length}개** · 미공개(제외) **${excluded.length}개**` +
+      (qna && !qna.skipped ? ` · 허브 Q&A 포함 **${qnaIncluded.length}개**` : "") +
       (writeReason ? ` · 스냅샷 파일: ${writeReason}` : "")
   );
   lines.push("");
@@ -510,11 +706,56 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
     lines.push("");
   }
 
+  /* ------------------------------ 허브 Q&A ------------------------------ */
+  if (qna) {
+    lines.push("### 허브 Q&A (XCONDA 허브 Q&A)");
+    lines.push("");
+    if (qna.skipped) {
+      lines.push(`표를 읽지 못했습니다 — ${qna.skipped}`);
+    } else {
+      lines.push(
+        `표에서 읽은 문항 **${qna.rowCount}개** · 사이트에 포함 **${qnaIncluded.length}개** · 제외 **${qnaExcluded.length}개**` +
+          ` · 열: ${qna.columns.join(", ")}`
+      );
+    }
+    lines.push("");
+    if (qnaIncluded.length) {
+      lines.push("<details>");
+      lines.push(`<summary>포함된 문항 ${qnaIncluded.length}개 보기 (질문 · 카테고리 · 우선순위 · 상태 · 답변 길이)</summary>`);
+      lines.push("");
+      lines.push("| 질문 | 카테고리 | 우선순위 | 상태 | 답변 |");
+      lines.push("| --- | --- | --- | --- | --- |");
+      for (const item of qnaIncluded) {
+        lines.push(
+          `| ${cell(item.title)} | ${cell(item.category, 16)} | ${item.priority ?? "—"} | ${cell(item.status, 14)} | ${
+            item.answerLength ? `${item.answerLength}자` : "**(없음)**"
+          } |`
+        );
+      }
+      lines.push("");
+      lines.push("</details>");
+      lines.push("");
+    }
+    if (qnaExcluded.length) {
+      lines.push("<details>");
+      lines.push(`<summary>제외된 문항 ${qnaExcluded.length}개 보기 (아직 게시하지 않는 문항)</summary>`);
+      lines.push("");
+      lines.push("| 질문 | 카테고리 | 상태 | 판단 |");
+      lines.push("| --- | --- | --- | --- |");
+      for (const item of qnaExcluded) {
+        lines.push(`| ${cell(item.title)} | ${cell(item.category, 16)} | ${cell(item.status, 14)} | ${cell(item.reason, 40)} |`);
+      }
+      lines.push("");
+      lines.push("</details>");
+      lines.push("");
+    }
+  }
+
   /* ------------------------------ 확인 필요 ------------------------------ */
   const notes = [];
   if (viewCount > 1) {
     notes.push(
-      `**표(데이터베이스)가 ${viewCount}개** 있습니다. 지금은 첫 번째 표만 읽습니다 — 글을 다른 표에 추가했다면 사이트에 나타나지 않습니다. 한 표로 합치거나 저장소 Settings → Variables 의 \`NOTION_DATABASE_ID\` 를 원하는 표로 바꾸세요.`
+      `**메인 페이지에 표(데이터베이스)가 ${viewCount}개** 있습니다. 지금은 \`XCONDA_NEWs\` 표와 허브 Q&A 표만 읽습니다 — 다른 표에 글을 추가했다면 사이트에 나타나지 않습니다. (저장소 Settings → Variables 의 \`NOTION_DATABASE_ID\` · \`NOTION_FAQ_DATABASE_ID\` 로 대상 표를 바꿀 수 있습니다)`
     );
   }
   const unknown = included.filter((item) => item.source === "unknown");
@@ -562,6 +803,35 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
         .join(", ")}. 표에 \`Author\`(작성자) 속성을 만들고 이름을 넣으면 카드와 상세 화면에 표시됩니다.`
     );
   }
+  if (qna?.skipped) {
+    notes.push(
+      `**허브 Q&A 표를 읽지 못했습니다** — ${qna.skipped}. 사이트 Q&A 에는 기존 문항만 표시됩니다. (저장소 Settings → Variables 의 \`NOTION_FAQ_PAGE_ID\` · \`NOTION_FAQ_DATABASE_ID\`, 그리고 그 페이지가 **웹에 게시**되어 있는지 확인하세요)`
+    );
+  }
+  if (qnaExcluded.length) {
+    notes.push(
+      `**허브 Q&A 제외 ${qnaExcluded.length}개** — ${qnaExcluded
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}${qnaExcluded.length > 5 ? " …" : ""}. \`상태\` 가 ‘확인 필요’ 계열이거나 \`허브 게시\` 가 \`보류\` 인 문항입니다. 노션에서 확인이 끝난 문항의 \`상태\` 를 \`초안 완료\` 로 바꾸거나 \`허브 게시\` 를 \`게시\` 로 바꾸면 다음 동기화부터 사이트에 나타납니다.`
+    );
+  }
+  if (qnaMissing.length) {
+    notes.push(
+      `**허브 Q&A 답변 글이 비어 있는 문항 ${qnaMissing.length}개** — ${qnaMissing
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}${qnaMissing.length > 5 ? " …" : ""}. 노션 페이지에 \`답변\` 제목(섹션)을 만들고 답변을 적어 주세요. 지금은 질문만 표시됩니다.`
+    );
+  }
+  if (qnaUnsectioned.length) {
+    notes.push(
+      `**허브 Q&A 섹션 구분이 없는 문항 ${qnaUnsectioned.length}개** — ${qnaUnsectioned
+        .slice(0, 5)
+        .map((item) => `“${cell(item.title, 30)}”`)
+        .join(", ")}${qnaUnsectioned.length > 5 ? " …" : ""}. \`답변\` / \`게시용 출처\` / \`내부 근거\` 제목이 없어 **본문 전체가 공개**됩니다. 내부 메모가 있다면 \`내부 근거\` 제목 아래로 옮겨 주세요.`
+    );
+  }
   if (!included.length && rowCount) {
     notes.push(`**게시된 글이 0개**입니다. 노션에서 \`Published\`(또는 \`공개\`) 체크박스를 확인하세요.`);
   }
@@ -575,6 +845,7 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
       `직전 스냅샷이 **${(ageMin / 60).toFixed(1)}시간 전**입니다. GitHub 기본 스케줄은 수 시간까지 밀립니다 — NOTION_SETUP.md 의 「⏱ 반영 속도 보장하기」(외부 스케줄러, 무료)를 설정하면 약 10분 주기로 반영됩니다.`
     );
   }
+  for (const note of qna?.notes ?? []) notes.push(`**허브 Q&A** — ${note}`);
   if (!notes.length) notes.push("특별히 확인할 항목이 없습니다. ✅");
 
   lines.push("### ⚠️ 확인 필요");
@@ -681,7 +952,7 @@ if (isMain) {
         await writeFile(out, json, "utf8");
         writeReason = `갱신 (${decision.reason})`;
         console.log(
-          `✔ ${out} 갱신 (${decision.reason}) — 글 ${payload.rows.length}개 / 본문 ${Object.keys(payload.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
+          `✔ ${out} 갱신 (${decision.reason}) — 글 ${payload.rows.length}개 (Q&A ${payload.rows.filter((r) => r.__source === "hub-qna").length}개 포함) / 본문 ${Object.keys(payload.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
         );
       } else {
         writeReason = `유지 (${decision.reason})`;
@@ -712,7 +983,8 @@ if (isMain) {
         "1. 노션 페이지 공유 → **웹에 게시(Publish)** 상태인지",
         "2. 페이지 안에 표(데이터베이스)가 있고, `Published` 체크된 행이 있는지",
         "3. 저장소 Settings → Variables 의 `NOTION_PAGE_ID` / `NOTION_DATABASE_ID` 가 맞는지",
-        "4. 그래도 실패하면 NOTION_SETUP.md 의 「동기화가 안 될 때 확인 순서」",
+        "4. 허브 Q&A 표(`NOTION_FAQ_PAGE_ID` / `NOTION_FAQ_DATABASE_ID`)도 같은 조건인지",
+        "5. 그래도 실패하면 NOTION_SETUP.md 의 「동기화가 안 될 때 확인 순서」",
       ].join("\n");
       if (!(await appendSyncSummary(help))) console.error(help);
       process.exit(1);
