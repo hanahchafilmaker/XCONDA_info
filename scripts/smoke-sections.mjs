@@ -186,6 +186,38 @@ const authorEn = await sectionsOf([
 ]);
 check("Author EN 이 있으면 EN 번역으로 실린다", authorEn.entries[0]?.translations?.en?.author, "Hana Kim");
 
+/* --------------------------- 5. 허브 Q&A 표 (상태 · 허브 게시) --------------------------- */
+/*
+ * 동기화가 만든 스냅샷 행(__source=hub-qna)을 사이트가 **다시 한 번** 검사합니다.
+ * 스냅샷을 손으로 고치거나 노션 규칙이 바뀌어도, 확인이 필요한 문항이 사이트로 나가지 않도록.
+ */
+const hubRow = (over = {}) => ({
+  Published: true,
+  Date: "2026-10-11",
+  __type: "faq",
+  __source: "hub-qna",
+  상태: "초안 완료",
+  "허브 게시": "미게시",
+  No: 1,
+  우선순위: 1,
+  ...over,
+});
+
+const hub = await sectionsOf([
+  hubRow({ id: "h1", Title: "지금 게시되는 질문", Summary: "답변", Order: 1001 }),
+  hubRow({ id: "h2", Title: "확인이 더 필요한 질문", 상태: "일부 확인 필요", No: 2 }),
+  hubRow({ id: "h3", Title: "보류된 질문", "허브 게시": "보류", No: 3 }),
+  hubRow({ id: "h4", Title: "강제 게시 질문", 상태: "일부 확인 필요", "허브 게시": "게시", No: 4, 우선순위: 2, Order: 2004 }),
+]);
+
+check("허브 Q&A — 게시 규칙을 통과한 문항만 Q&A 로", titles(hub.sections.faq), ["지금 게시되는 질문", "강제 게시 질문"]);
+check(
+  "허브 Q&A — 확인 필요 · 보류 문항은 어느 섹션에도 없음",
+  ["확인이 더 필요한 질문", "보류된 질문"].filter((t) => titles(hub.entries).includes(t)),
+  []
+);
+check("허브 Q&A — Order(우선순위 × 1000 + No) 를 그대로 쓴다", hub.sections.faq.map((f) => f.order), [1001, 2004]);
+
 /* ------------------------------ 결과 ------------------------------ */
 
 if (failures.length) {

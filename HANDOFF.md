@@ -420,8 +420,10 @@ npm run build
 
 | 이름 | 현재 값 | 용도 |
 |---|---|---|
-| `NOTION_PAGE_ID` | `3e72ebc0…c6dd` (XCONDA_NEWs) | 스냅샷 대상 공개 페이지 |
+| `NOTION_PAGE_ID` | `3e72ebc0…c6dd` (XCONDA_NEWs) | 스냅샷 대상 공개 페이지 (메인 표) |
 | `NOTION_DATABASE_ID` | `3b54d2ea…7517` | 페이지 안 표(데이터베이스)가 여러 개일 때 지정 |
+| `NOTION_FAQ_PAGE_ID` | `15d20857…40a2` (XCONDA 허브 Q&A) | 허브 Q&A 표가 든 공개 페이지 (규칙: `src/content/hubQna.js`) |
+| `NOTION_FAQ_DATABASE_ID` | `2d3c8b52…eab9` | 허브 Q&A 표(뷰) ID — 메인 표와 별개로 읽음 |
 
 > **Secrets는 없습니다.** Notion 토큰을 쓰는 방식(Worker)을 쓰지 않으므로 저장소에 비밀을 둘 필요가 없습니다.
 
@@ -546,7 +548,7 @@ npm run build
 | 2 | **무료 공개 프록시 `notion-api.splitbee.io`의 `/table` 경로가 500** | 서버 스냅샷 방식으로 전환 완료. 프록시는 보조 수단(8초 타임아웃)으로만 사용 |
 | 3 | **Google Drive 영상의 CSP 차단** (`frame-ancestors`) — 서버에서 우회 불가 | iframe 미사용, **새 창으로 열기** 링크로 처리 (`toolVideos.ts` + 모달) |
 | 4 | `scripts/notion-snapshot.mjs`가 **Notion 비공개 API**(`www.notion.so/api/v3`)에 의존 | 공식 지원 API가 아님 → 노션이 바꾸면 동기화가 깨질 수 있는 **단일 취약점**. 증상: 스냅샷 실패, Summary에 HTTP 오류 |
-| 5 | 표(데이터베이스)가 **2개 이상이면 첫 번째만** 읽음 | `NOTION_DATABASE_ID`로 지정하거나 표를 하나로 합치기 |
+| 5 | 표(데이터베이스)를 **2개까지만** 읽음 (메인 표 + 허브 Q&A 표) | 그 밖의 표는 무시됨 → `NOTION_DATABASE_ID` · `NOTION_FAQ_DATABASE_ID`로 지정하거나 표를 합치기 |
 | 6 | 노션에 직접 업로드한 이미지의 서명 URL은 약 1시간 후 만료 | 만료되지 않는 notion.so 프록시 주소로 변환(`fields.js` `signNotionImage`) + `coverFallback`. 장기 노출 커버는 외부 URL 권장 |
 | 7 | `redesign-xconda-website-ui/`는 **미사용 프로토타입** | 삭제해도 무방하나, Tailwind 스캔에서 제외되어 있으므로 혼동 주의. 우선순위 낮음 |
 | 8 | 저장소에 `README.md`가 없음 | 본 문서(`HANDOFF.md`)가 개발자 진입점, `NOTION_SETUP.md`가 운영자 진입점 |

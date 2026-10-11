@@ -14,6 +14,7 @@
 import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { channelName, classifyType, hasPublishedColumn, includeRow, isEntryType } from "./content/classify";
 import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS, coverFromPageMap, personNames, signNotionImage } from "./content/fields";
+import { HUB_QNA_SOURCE, includeHubQnaRow } from "./content/hubQna";
 import { parseChanges } from "./notion";
 import {
   loadSnapshot,
@@ -215,6 +216,9 @@ function mapRow(row: R, requirePublished: boolean, snapshot?: NotionSnapshot | n
   if (!title) return null;
   // Published 열이 있는 표에서는 체크된 행만 (값이 빠진 행 = 미공개 → 제외)
   if (!includeRow(row, requirePublished)) return null;
+  // 허브 Q&A 표(`XCONDA 허브 Q&A`)에서 온 문항은 `상태` · `허브 게시` 규칙을 한 번 더 적용합니다.
+  // (동기화 스크립트와 같은 함수 — 스냅샷을 손으로 고쳐도 규칙 밖 문항이 나가지 않도록)
+  if (row.__source === HUB_QNA_SOURCE && !includeHubQnaRow(row)) return null;
 
   const category = asText(pick(row, ["Category", "카테고리", "분류"]));
   const link = asText(pick(row, ["Link", "URL", "링크"]));

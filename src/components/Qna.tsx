@@ -19,7 +19,7 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
         aria-expanded={open}
         className="flex w-full items-center gap-4 py-5 text-left"
       >
-        <span className="flex-1 text-[16px] font-semibold text-zinc-100">{f.title}</span>
+        <span className="flex-1 text-balance text-[16px] font-semibold text-zinc-100">{f.title}</span>
         <IconPlus
           className={cn("h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-300", open && "rotate-45 text-white")}
         />
@@ -30,7 +30,8 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
       >
         <div className="overflow-hidden">
           <div className="pb-6 pr-9">
-            <p className="text-[15px] leading-relaxed text-zinc-400">{f.summary}</p>
+            {/* 답변은 문단·목록이 여러 줄일 수 있어 줄바꿈을 그대로 살립니다. */}
+            <p className="whitespace-pre-line text-pretty text-[15px] leading-relaxed text-zinc-400">{f.summary}</p>
             <button
               onClick={onOpen}
               className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-zinc-400 transition-colors hover:text-volt-400"
@@ -63,6 +64,11 @@ export default function Qna() {
         </Reveal>
 
         <Reveal delay={60} className="border-t border-white/[0.06]">
+          {faqs.length > 0 && (
+            <p className="pt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-600">
+              {faqs.length} {t("v.faq.count")}
+            </p>
+          )}
           {faqs.length === 0 && <p className="py-6 text-[14px] text-zinc-500">{t("v.faq.empty")}</p>}
           {faqs.map((f, i) => (
             <QnaItem key={f.id} f={f} defaultOpen={i === 0} onOpen={() => openEntry(f)} />
