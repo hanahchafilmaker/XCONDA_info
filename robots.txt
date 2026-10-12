@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hanahchafilmaker.github.io/XCONDA_info/sitemap.xml

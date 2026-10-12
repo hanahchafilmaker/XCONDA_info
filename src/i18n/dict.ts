@@ -7,6 +7,7 @@
  */
 
 import type { Target } from "./google";
+import { SITE_META } from "../content/seo";
 
 export type Lang = "ko" | "en";
 
@@ -468,21 +469,8 @@ export function changeLabel(kind: string, lang: Lang): string {
  * Google 번역이 <head> 문서는 바꾸지 않으므로 LanguageProvider 가
  * 목표 언어에 맞게 직접 갱신합니다.
  * ------------------------------------------------------------------ */
-export const META: Record<Target, { title: string; description: string }> = {
-  ko: {
-    title: "XCONDA허브 — 공지사항 · 뉴스 · 툴 사용법 · 블로그 · Q&A",
-    description: "XCONDA허브에서 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한곳에 확인하세요.",
-  },
-  en: {
-    title: "XCONDA Hub — Notices, News, Tool Guides, Blog & Q&A",
-    description: "XCONDA Hub gathers notices, social news, tool guides, blog posts and Q&A in one place.",
-  },
-  ja: {
-    title: "XCONDAハブ — お知らせ · ニュース · ツール使い方 · ブログ · Q&A",
-    description: "XCONDAの通知、SNSニュース、ツールガイド、ブログ、Q&Aを1ページで確認できます。",
-  },
-  "zh-CN": {
-    title: "XCONDA中心 — 公告 · 新闻 · 工具使用指南 · 博客 · Q&A",
-    description: "在 XCONDA 中心一站式查看公告、社媒新闻、工具使用指南、博客与 Q&A。",
-  },
-};
+/**
+ * 언어별 사이트 제목 · 설명 — 값은 `src/content/seo.js` (SITE_META) 한 곳에만 있습니다.
+ * index.html 의 기본 메타(빌드 스크립트)와 앱 런타임이 같은 문구를 씁니다.
+ */
+export const META: Record<Target, { title: string; description: string }> = SITE_META;

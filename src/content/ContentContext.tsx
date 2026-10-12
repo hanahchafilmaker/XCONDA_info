@@ -4,6 +4,8 @@ import { SAMPLE_ENTRIES } from "./sample";
 import { TOOLS, toolToEntry } from "./tools";
 import { readCache, resolveEndpoint, syncFromNotion } from "../notion";
 import { localizeEntry, useLang } from "../i18n";
+import { parseRoute, routePathFor, routePrefixFor } from "./seo";
+import { applyArticleMeta, applySiteMeta, hubBase } from "../seo";
 
 const POLL_MS = 3 * 60 * 1000;
 
@@ -33,7 +35,7 @@ const byDateDesc = (a: Entry, b: Entry) => +new Date(b.date) - +new Date(a.date)
 const byOrder = (a: Entry, b: Entry) => (a.order ?? 999) - (b.order ?? 999) || byDateDesc(a, b);
 
 export function ContentProvider({ children }: { children: ReactNode }) {
-  const { lang } = useLang();
+  const { lang, target } = useLang();
   const endpoint = useMemo(() => resolveEndpoint(), []);
   const cached = useMemo(() => (endpoint ? readCache() : null), [endpoint]);
 
@@ -90,13 +92,17 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     };
   }, [endpoint, refresh]);
 
-  /* ---------------- 모달 & 딥링크 (#post=ID) ---------------- */
+  /* ---------------- 모달 & 글 주소 (/post/{slug}/ 등 · 예전 #post=ID) ---------------- */
   const openEntry = useCallback((entry: Entry) => {
     // Components receive localized entries; keep the source entry in state so
     // switching back to Korean can always recover the original fields.
-    setActive(entries.find((source) => source.id === entry.id) ?? entry);
+    const source = entries.find((item) => item.id === entry.id) ?? entry;
+    setActive(source);
     try {
-      history.replaceState(null, "", `#post=${encodeURIComponent(entry.id)}`);
+      // 주소가 있는 글은 글 주소로 바꿉니다(새로고침·공유해도 그 글이 열림). 없으면 예전 방식 #post=ID.
+      const path = source.slug ? routePathFor(source.type, source.slug) : null;
+      const next = path ? `${hubBase()}${path}${location.search}` : `${hubBase()}${location.search}#post=${encodeURIComponent(source.id)}`;
+      history.replaceState(null, "", next);
     } catch {
       /* noop */
     }
@@ -105,7 +111,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const closeEntry = useCallback(() => {
     setActive(null);
     try {
-      if (location.hash.startsWith("#post=")) history.replaceState(null, "", location.pathname + location.search);
+      const onRoute = parseRoute(location.pathname) !== null;
+      if (onRoute || location.hash.startsWith("#post=")) history.replaceState(null, "", `${hubBase()}${location.search}`);
     } catch {
       /* noop */
     }
@@ -122,11 +129,28 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     [entries, openEntry]
   );
 
+  /**
+   * 처음 열린 주소로 글 열기.
+   *  - /post/{slug}/ · /notice/{slug}/ · /qna/{slug}/ · /guide/{slug}/ → 해당 글
+   *  - 예전 링크 #post={글ID} → 주소가 있는 글이면 새 주소로 바로 이동(공유 링크가 깨지지 않게)
+   * 글 목록이 아직 없으면(캐시 전 등) 목록이 바뀔 때 다시 확인합니다.
+   */
   useEffect(() => {
+    if (active) return;
+    const route = parseRoute(location.pathname);
+    if (route) {
+      const hit = entries.find((e) => e.slug === route.slug && routePrefixFor(e.type) === route.prefix);
+      if (hit) setActive(hit);
+      return;
+    }
     const m = location.hash.match(/^#post=(.+)$/);
-    if (!m || active) return;
+    if (!m) return;
     const id = decodeURIComponent(m[1]);
     const hit = entries.find((e) => e.id === id);
+    if (hit?.slug && routePathFor(hit.type, hit.slug)) {
+      window.location.replace(`${hubBase()}${routePathFor(hit.type, hit.slug)}${location.search}`);
+      return;
+    }
     if (hit) setActive(hit);
     else if (id.startsWith("tool-")) {
       const tool = TOOLS.find((t) => `tool-${t.slug}` === id);
@@ -134,6 +158,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entries]);
+
+  /* 페이지 메타 — 글을 열면 글별 값, 홈이면 언어별 사이트 값 (빌드된 HTML 의 기본값과 같은 규칙) */
+  useEffect(() => {
+    if (active) applyArticleMeta(localizeEntry(active, lang));
+    else applySiteMeta(target);
+  }, [active, target, lang]);
 
   const value = useMemo<Ctx>(() => {
     const localized = entries.map((entry) => localizeEntry(entry, lang));

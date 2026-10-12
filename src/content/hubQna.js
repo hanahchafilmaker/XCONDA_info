@@ -447,6 +447,9 @@ export function hubQnaSiteRow(row, { summary = "", dateFallback = "" } = {}) {
     No: hubQnaNumber(row),
     "우선순위": hubQnaPriority(row),
     "카테고리": hubQnaCategory(row),
+    // 글 주소 · 검색 설명 (노션 Q&A 표의 `Slug` · `SEO 설명`) — src/content/seo.js 규칙
+    Slug: hubQnaText(row, ["Slug"]),
+    "SEO 설명": hubQnaText(row, ["SEO 설명"]),
     __decision: decision.reason,
   };
 }

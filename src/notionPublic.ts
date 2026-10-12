@@ -11,10 +11,14 @@
  * ▸ 엔드포인트 형식: "public:<32자리 페이지 ID>"  → src/notion.ts 가 라우팅합니다.
  * ========================================================================== */
 
-import type { Block, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
+import type { Block, Entry, EntryTranslation, EntryType } from "./content/types";
 import { channelName, classifyType, hasPublishedColumn, includeRow, isEntryType } from "./content/classify";
 import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS, coverFromPageMap, personNames, signNotionImage } from "./content/fields";
 import { HUB_QNA_SOURCE, includeHubQnaRow } from "./content/hubQna";
+import { extractPageId, parseLegacyRecordMap } from "./content/body";
+import { seoEligibility, seoFieldsOf } from "./content/seo";
+
+export { extractPageId };
 import { parseChanges } from "./notion";
 import {
   loadSnapshot,
@@ -161,14 +165,6 @@ function rowsFromPageRecordMap(payload: unknown): R[] | null {
   return null;
 }
 
-/** notion.so / notion.site URL, 32자리 ID, UUID 등에서 페이지 ID를 추출 */
-export function extractPageId(input: string): string | undefined {
-  const m = input.replace(/-/g, "").match(/[0-9a-f]{32}(?![0-9a-f])/i);
-  return m ? m[0].toLowerCase() : undefined;
-}
-
-const dashed = (id: string) =>
-  `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20)}`;
 
 /* ------------------------------ 행 → Entry ------------------------------ */
 
@@ -249,12 +245,20 @@ function mapRow(row: R, requirePublished: boolean, snapshot?: NotionSnapshot | n
   };
   const hasEnglish = Object.keys(english).length > 0;
   const { cover, coverFallback } = coverOf(row, snapshot);
+  // 글 주소(Slug)와 검색·공유 메타 — 주소 규칙은 src/content/seo.js (빌드 스크립트와 동일)
+  const seo = seoFieldsOf(row);
+  const eligibility = seoEligibility(row, type);
 
   return {
     id: row.id,
     type,
     title,
     summary: asText(pick(row, ["Summary", "요약", "설명", "답변", "Answer"])),
+    // 주소가 만들어지는 글만 slug 를 가집니다 (SEO 준비됨 · Slug 조건 — 아래 seoEligibility)
+    slug: eligibility.eligible ? eligibility.slug : undefined,
+    seoTitle: seo.seoTitle || undefined,
+    seoDescription: seo.seoDescription || undefined,
+    ogImage: seo.ogImage || undefined,
     // Category 가 비어 있으면 공지는 '공지', 뉴스는 링크로 알아낸 채널 이름(X · YouTube …)을 씁니다.
     category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: asText(pick(row, ["Date", "날짜", "게시일"])) || new Date().toISOString(),
@@ -383,130 +387,6 @@ export async function fetchPublicEntries(
   }
   lastOrigin = "live";
   return liveEntries;
-}
-
-/* ------------------------------ 본문 블록 ------------------------------ */
-
-type LegacyBlock = {
-  id: string;
-  type: string;
-  properties?: R;
-  format?: R;
-  content?: string[];
-};
-
-/** legacy rich text [["텍스트", [["b"],["a","url"]]], …] → Rich */
-function legacyRich(val?: unknown[]): Rich {
-  if (!Array.isArray(val)) return "";
-  const segs: RichSeg[] = [];
-  for (const item of val) {
-    if (!Array.isArray(item)) continue;
-    const [text, decos] = item as [string, [string, string?][]?];
-    if (typeof text !== "string") continue;
-    const seg: RichSeg = { text };
-    if (Array.isArray(decos)) {
-      for (const d of decos) {
-        if (!Array.isArray(d)) continue;
-        if (d[0] === "b") seg.bold = true;
-        else if (d[0] === "i") seg.italic = true;
-        else if (d[0] === "s") seg.strike = true;
-        else if (d[0] === "c") seg.code = true;
-        else if (d[0] === "a" && d[1]) seg.href = d[1];
-      }
-    }
-    segs.push(seg);
-  }
-  return segs;
-}
-
-const legacyPlain = (val?: unknown[]): string =>
-  Array.isArray(val) ? val.map((i) => (Array.isArray(i) ? String(i[0] ?? "") : "")).join("") : "";
-
-function convertLegacy(ids: string[], map: Map<string, LegacyBlock>, depth = 0): Block[] {
-  const out: Block[] = [];
-  for (const id of ids) {
-    const b = map.get(id);
-    if (!b) continue;
-    const p = b.properties ?? {};
-    const f = b.format ?? {};
-    const title = legacyRich(p.title);
-    const last = out[out.length - 1];
-    switch (b.type) {
-      case "text":
-        if (legacyPlain(p.title).trim()) out.push({ type: "p", text: title });
-        break;
-      case "header":
-      case "sub_header":
-        out.push({ type: "h2", text: title });
-        break;
-      case "sub_sub_header":
-        out.push({ type: "h3", text: title });
-        break;
-      case "bulleted_list":
-        if (last?.type === "ul") last.items.push(title);
-        else out.push({ type: "ul", items: [title] });
-        break;
-      case "numbered_list":
-        if (last?.type === "ol") last.items.push(title);
-        else out.push({ type: "ol", items: [title] });
-        break;
-      case "to_do": {
-        const checked = legacyPlain(p.checked) === "Yes";
-        if (last?.type === "todo") last.items.push({ text: title, checked });
-        else out.push({ type: "todo", items: [{ text: title, checked }] });
-        break;
-      }
-      case "quote":
-        out.push({ type: "quote", text: title });
-        break;
-      case "callout":
-        out.push({ type: "callout", text: title, icon: typeof f.page_icon === "string" && f.page_icon.length <= 4 ? f.page_icon : undefined });
-        break;
-      case "code":
-        out.push({ type: "code", text: legacyPlain(p.title), language: legacyPlain(p.language).toLowerCase() || undefined });
-        break;
-      case "divider":
-        out.push({ type: "divider" });
-        break;
-      case "image": {
-        const src = legacyPlain(p.source) || f.display_source || "";
-        // 본문 이미지 · 썸네일이 같은 규칙(src/content/fields.js)으로 공개 주소를 만듭니다.
-        if (src) out.push({ type: "img", src: signNotionImage(src, b.id), caption: legacyPlain(p.caption) || undefined });
-        break;
-      }
-      case "video": {
-        const src = f.display_source || legacyPlain(p.source) || "";
-        if (src) out.push({ type: "video", src, caption: legacyPlain(p.caption) || undefined });
-        break;
-      }
-      case "bookmark":
-      case "embed": {
-        const href = legacyPlain(p.link) || legacyPlain(p.source) || f.display_source || "";
-        if (href) out.push({ type: "link", href, caption: legacyPlain(p.caption) || legacyPlain(p.description) || undefined });
-        break;
-      }
-      case "toggle":
-        out.push({
-          type: "toggle",
-          text: title,
-          children: depth < 2 && b.content?.length ? convertLegacy(b.content, map, depth + 1) : undefined,
-        });
-        break;
-    }
-  }
-  return out;
-}
-
-/** 레거시 레코드맵(`{ id: { value } }`) → 상세 모달용 블록 */
-export function parseLegacyRecordMap(data: R, pageId: string): Block[] {
-  const map = new Map<string, LegacyBlock>();
-  for (const [id, entry] of Object.entries<R>(data ?? {})) {
-    const v: R | undefined = entry?.value?.value ?? entry?.value; // 응답 형태 2종 모두 지원
-    if (v?.id && v?.type) map.set(id, v as LegacyBlock);
-  }
-  const plainId = extractPageId(pageId) ?? pageId.replace(/-/g, "");
-  const root = map.get(dashed(plainId)) ?? map.get(pageId) ?? map.get(plainId);
-  return root?.content?.length ? convertLegacy(root.content, map) : [];
 }
 
 /**
