@@ -8,7 +8,7 @@
 | 문서 작성일 | 2026-10-10 |
 | 대상 | XCONDA허브(`XCONDA_info`)를 이어받는 프런트엔드/풀스택 개발자 |
 | 저장소 | https://github.com/hanahchafilmaker/XCONDA_info |
-| 운영 사이트 | https://hub.xconda.ai/ (DNS 설정 요청 중 — 연결 전에는 저장소 주소 https://hanahchafilmaker.github.io/XCONDA_info/ 로 접속) |
+| 운영 사이트 | https://hub.xconda.ai/ — Pages 커스텀 도메인 **등록 완료**(2026-10-12) · ⚠️ **DNS 연결 대기 중**. 등록 이후 저장소 주소 https://hanahchafilmaker.github.io/XCONDA_info/ 도 hub.xconda.ai 로 넘어가므로, DNS 가 연결되기 전에는 두 주소 모두 열리지 않습니다 → 「10.3 배포」 |
 | 기본 브랜치 | `main` |
 | 관련 문서 | [`NOTION_SETUP.md`](./NOTION_SETUP.md) (노션 연동 · 콘텐츠 운영자용), [`admin-guide.html`](./admin-guide.html), [`user-guide.html`](./user-guide.html) (사용자용 가이드 페이지) |
 | 읽는 데 걸리는 시간 | 전체 30~40분 / 실무 투입은 「2. 30분 온보딩」까지만 읽고 시작 가능 |
@@ -146,6 +146,7 @@ XCONDA_info/
 ├── index.html                  ⚠️ 빌드 산출물 (커밋됨 · Pages가 서빙) — 직접 수정 금지
 ├── post/ notice/ qna/ guide/   ⚠️ 글별 정적 페이지 (`{slug}/index.html`, 커밋됨) — 직접 수정 금지
 ├── sitemap.xml  robots.txt     ⚠️ 검색 엔진용 (커밋됨) — 직접 수정 금지
+├── CNAME                       ⚠️ Pages 커스텀 도메인(`hub.xconda.ai`) — 삭제·수정 금지 (지우면 도메인 연결이 풀림)
 ├── notion-content.json         ⚠️ 동기화 산출물 (커밋됨 · 사이트가 읽는 스냅샷) — 직접 수정 금지
 ├── dev.html                    ✅ 개발/빌드 진입점 (이 파일을 수정)
 ├── package.json  vite.config.ts  tsconfig.json
@@ -177,6 +178,7 @@ XCONDA_info/
 | `index.html` | 빌드 결과 (단일 파일 번들, 약 500 KB) + 홈 `<head>` | `npm run build` → `postbuild` (`build-seo.mjs`) | `src/**` · `dev.html` 수정 후 빌드, 또는 main 푸시(자동 워크플로) |
 | `post/ notice/ qna/ guide/`, `sitemap.xml`, `robots.txt` | 글별 정적 페이지 · 검색 엔진 파일 | `scripts/build-seo.mjs` (`postbuild` · 동기화 워크플로) | 노션 글을 고치고 동기화. 직접 수정 금지 |
 | `notion-content.json` | 동기화 스냅샷 (약 180 KB) | `scripts/notion-snapshot.mjs` (Actions) | 노션에서 글 수정 후 동기화 실행 |
+| `CNAME` | Pages 커스텀 도메인 설정값 (`hub.xconda.ai` 한 줄) | GitHub (Settings → Pages 에서 도메인을 저장하면 자동 커밋) | Settings → Pages 에서만 변경. 두 워크플로는 이 파일을 건드리지 않음 |
 | `dev.html` | 소스 진입점 | 개발자 | 직접 수정 |
 | `src/**` | 소스 | 개발자 | 직접 수정 |
 
@@ -423,8 +425,19 @@ npm run build
 
 ### 10.3 배포
 
-- GitHub Pages: **브랜치 배포** (`main` 루트 `/`), 빌드 타입 `legacy`. 저장소 주소 `https://hanahchafilmaker.github.io/XCONDA_info/`
-- **커스텀 도메인 `hub.xconda.ai`: DNS 설정 요청 중.** 연결되면 저장소 Settings → Pages 에서 커스텀 도메인을 등록하고 HTTPS 를 켭니다 (GitHub 가 `CNAME` 파일을 만듭니다)
+- GitHub Pages: **브랜치 배포** (`main` 루트 `/`), 빌드 타입 `legacy`. 기본 주소 `https://hanahchafilmaker.github.io/XCONDA_info/` — 커스텀 도메인을 등록했으므로 이 주소는 `https://hub.xconda.ai/` 로 **자동 리디렉션**됩니다
+- **커스텀 도메인 `hub.xconda.ai` 진행 상황** (2026-10-12 기준)
+
+  | 단계 | 상태 | 내용 |
+  |---|---|---|
+  | ① Pages 에 도메인 등록 | ✅ 완료 (2026-10-12) | 저장소 Settings → Pages → Custom domain = `hub.xconda.ai`. GitHub 가 루트 `CNAME` 파일을 커밋함(`Create CNAME`). 브랜치 배포에서는 **이 파일이 곧 설정값**이라 지우면 도메인이 풀립니다 |
+  | ② DNS 레코드 | ⏳ 요청 중 | `xconda.ai` DNS(AWS Route 53)에 **CNAME** 레코드 — 이름 `hub`, 값 `hanahchafilmaker.github.io` (저장소 이름 없이). 2026-10-12 조회 시 `hub.xconda.ai` 는 레코드 없음(NXDOMAIN) |
+  | ③ HTTPS | ⏳ ② 이후 | DNS 가 연결되면 GitHub 가 인증서를 자동 발급(보통 1시간 이내) → 저장소 Settings → Pages 에서 **Enforce HTTPS** 체크 |
+  | ④ 도메인 인증 (권장) | ☐ | **계정** Settings → Pages → **Add a domain** → `hub.xconda.ai` 입력 → 안내된 TXT 레코드(`_github-pages-challenge-hanahchafilmaker.hub`)를 Route 53 에 추가 → Verify. 다른 GitHub 계정이 이 도메인을 가로채는 것(서브도메인 탈취)을 막습니다 |
+
+  > ⚠️ ①을 마친 순간부터 `github.io` 주소도 `hub.xconda.ai` 로 넘어가므로 **②가 끝날 때까지 사이트가 열리지 않습니다.** DNS 담당자에게 ②(가능하면 ④의 TXT 도 함께)를 서둘러 요청하세요. 레코드를 추가하면 대개 15분 안에 열립니다('레코드 없음' 응답의 캐시 시간이 900초).
+  >
+  > DNS 가 며칠 걸린다면 저장소 Settings → Pages 에서 도메인을 잠시 **Remove** 해 `github.io` 주소를 살릴 수 있습니다. 다만 도메인을 뺀 상태에서 DNS 레코드가 먼저 생기면 탈취 위험이 있으므로, ④를 먼저 해 두거나 DNS 반영 즉시 도메인을 다시 저장하세요.
 - 글 주소 예: `https://hub.xconda.ai/post/flexboard-storyboard/` — Pages 가 `post/{slug}/index.html` 을 그대로 서빙합니다. canonical·sitemap 은 기본값 `https://hub.xconda.ai/` 기준으로 생성됩니다 (다른 주소를 쓸 때만 아래 11.1 의 `SITE_URL`)
 - 저장소 커밋 → Pages가 자동 배포 (통상 1~2분)
 - `dist/`, `dist-test/`는 `.gitignore` 처리
@@ -441,7 +454,7 @@ npm run build
 | `NOTION_DATABASE_ID` | `3b54d2ea…7517` | 페이지 안 표(데이터베이스)가 여러 개일 때 지정 |
 | `NOTION_FAQ_PAGE_ID` | `15d20857…40a2` (XCONDA 허브 Q&A) | 허브 Q&A 표가 든 공개 페이지 (규칙: `src/content/hubQna.js`) |
 | `NOTION_FAQ_DATABASE_ID` | `2d3c8b52…eab9` | 허브 Q&A 표(뷰) ID — 메인 표와 별개로 읽음 |
-| `SITE_URL` (선택) | 미설정 → 기본값 `https://hub.xconda.ai/` | 허브 정식 주소(끝 `/` 포함). canonical · og:url · sitemap 에 쓰임. **도메인 확정 후 등록** (`build-site` · `notion-sync` 두 워크플로가 읽음) |
+| `SITE_URL` (선택) | 미설정 → 기본값 `https://hub.xconda.ai/` | 허브 정식 주소(끝 `/` 포함). canonical · og:url · sitemap 에 쓰임. 도메인이 기본값과 같은 `hub.xconda.ai` 로 확정·등록됐으므로 **등록하지 않아도 됨** — 주소를 바꿀 때만 등록 (`build-site` · `notion-sync` 두 워크플로가 읽음) |
 
 > **Secrets는 없습니다.** Notion 토큰을 쓰는 방식(Worker)을 쓰지 않으므로 저장소에 비밀을 둘 필요가 없습니다.
 
@@ -601,6 +614,9 @@ npm run build
 | 카카오·X 공유 미리보기가 옛 제목·이미지 | 플랫폼 캐시 | 「15. 알려진 이슈」 14번의 공유 디버거에서 재수집. 그래도 같으면 해당 페이지의 `<meta property="og:…">` 확인 |
 | 사이트맵에 내린 글이 아직 있음 | 동기화 전 | 노션에서 `Published` 해제 → 동기화 실행 → `sitemap.xml` 에서 빠졌는지 확인 |
 | 글 주소 · 도메인이 다름 | 실제 접속 주소가 `SITE_URL` 기본값(`https://hub.xconda.ai/`)과 다름 | 저장소 Variables 에 `SITE_URL` 등록 후 **사이트 빌드** 수동 실행 → canonical·sitemap 이 새 주소로 바뀌는지 확인 |
+| 사이트가 안 열림 — "서버를 찾을 수 없음" (`github.io` 주소도 `hub.xconda.ai` 로 넘어간 뒤 실패) | `hub.xconda.ai` DNS 레코드가 없거나 잘못됨 (Pages 커스텀 도메인은 등록돼 있음) | Route 53 에 CNAME `hub` → `hanahchafilmaker.github.io` 가 있는지 확인(`dig +short CNAME hub.xconda.ai`). 저장소 Settings → Pages 의 DNS check 가 성공인지 확인 — 「10.3 배포」 |
+| 브라우저에 "안전하지 않음" · Settings → Pages 의 **Enforce HTTPS** 가 비활성 | DNS 연결 직후라 인증서 발급 전 | 보통 1시간 이내 자동 발급 후 체크. 1시간이 넘도록 그대로면 커스텀 도메인을 Remove → 다시 Save 해 재발급 |
+| 사이트가 다시 `github.io` 주소로 열림 · Settings → Pages 의 도메인 칸이 비어 있음 | 루트 `CNAME` 파일이 지워지거나 바뀜 | Settings → Pages 에서 `hub.xconda.ai` 다시 저장 (또는 `CNAME` 파일을 `hub.xconda.ai` 한 줄로 복구) |
 | Google Drive 영상이 안 열림 | Drive 공유 설정 / CSP | 새 창 열기 링크로 동작하므로 Drive 공유 권한 확인. YouTube·직접 제공 파일은 인페이지 재생 |
 | KO를 눌렀는데 리로드 후 영어(또는 일·중)로 돌아감 | 2026-10-11 이전 빌드의 버그(브라우저 언어가 en/ja/zh면 `<head>` 스크립트가 `googtrans` 쿠키를 다시 쓰고 앱이 쿠키를 저장값보다 먼저 믿음) — 수정 완료 | 배포된 `index.html`이 최신인지 확인(옛 파일엔 `translate_a/element.js` `<script>` 태그가 HTML에 직접 있음). 개발자도구에서 `localStorage['xconda-lang']`(직접 고른 언어)·`googtrans` 쿠키 확인. 회귀 확인은 `npm run test:smoke`(`smoke-lang.mjs`) |
 | EN/JA/ZH 전환했는데 일부가 한국어로 남음 | ① Google 번역 미적용(쿠키/리로드) ② `notranslate`로 고의 제외(브랜드명) ③ 지연 로딩 영역의 번역 지연 | ① 쿠키·재방문 확인 ② `notranslate` 의도 확인 ③ 재로딩. `googtrans` 쿠키값은 `/ko/<언어>` |
@@ -632,7 +648,7 @@ npm run build
 
 ### 17.4 장애 대응 우선순위
 
-1. **사이트가 아예 안 뜸** → `index.html` 커밋 상태 / Pages 워크플로(`pages build and deployment`) 확인
+1. **사이트가 아예 안 뜸** → `index.html` 커밋 상태 / Pages 워크플로(`pages build and deployment`) 확인 / `hub.xconda.ai` DNS 조회 · 루트 `CNAME` 파일 존재 확인
 2. **콘텐츠가 안 바뀜** → Notion 동기화 워크플로 마지막 성공 시각 → 실패면 Summary 확인
 3. **분류/표시 이상** → `npm run test:unit` → `smoke-sections` 결과 확인
 4. **스타일 깨짐** → Tailwind 스캔 범위(`source("../src")`)와 `vite-plugin-singlefile` 인라인 결과 확인
@@ -681,7 +697,8 @@ git checkout <정상 커밋> -- index.html notion-content.json
 - [ ] 제품/콘텐츠 의사결정자 연락처(공지 내용·툴 매뉴얼 승인권자)
 - [ ] XCONDA 스튜디오 공식 SNS 채널 주소(`src/content/channels.tsx`에 `href: ""`로 비어 있는 항목들)
 - [ ] Google Drive 영상 공유 폴더 접근 권한
-- [ ] 커스텀 도메인 `hub.xconda.ai` 연결 확인 (DNS · Pages 커스텀 도메인 · HTTPS)
+- [ ] 커스텀 도메인 `hub.xconda.ai` 연결 확인 — ✅ Pages 커스텀 도메인 등록(2026-10-12) · ☐ DNS CNAME · ☐ HTTPS 강제 · ☐ 도메인 인증(권장) → 「10.3 배포」
+- [ ] `xconda.ai` DNS(AWS Route 53) 관리 담당자 — 허브 레코드 변경 · 인증서 문제 시 연락처
 
 ---
 
@@ -739,6 +756,8 @@ gh run list --workflow "Notion 동기화" --limit 10                      # 최�
 gh run view <run-id> --log-failed                                     # 실패 로그
 
 # 사이트 확인
+gh api repos/hanahchafilmaker/XCONDA_info/pages --jq '{cname, status, https_enforced}'   # 커스텀 도메인 · HTTPS 상태
+dig +short CNAME hub.xconda.ai                                        # → hanahchafilmaker.github.io. 가 나와야 정상
 open https://hub.xconda.ai/
 #   ?notion=off                     → 샘플 모드
 #   ?notion=<노션 URL 또는 32자리 ID> → 다른 공개 페이지로 보기
