@@ -178,6 +178,9 @@ if (!/[가-힣]/.test(interactions.h1AfterKo ?? "")) fail.push("hero copy did no
 if (result.contactEmails.length < 2 || result.contactEmails.some((h) => h !== "mailto:info@cubeberry.ai")) {
   fail.push(`contact email must be info@cubeberry.ai (Q&A + footer): ${JSON.stringify(result.contactEmails)}`);
 }
+// 랜딩 뉴스 섹션의 "Notion" 연결 카드는 숨김 (노션 원본 DB 링크를 랜딩에 노출하지 않음)
+const notionCards = doc.querySelectorAll('#news a[href*="notion.site"], #news a[href*="notion.so"]').length;
+if (notionCards > 0) fail.push(`Notion connect card still shown in #news (${notionCards})`);
 if (problems.length) fail.push("runtime errors present");
 
 window.close();

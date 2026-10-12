@@ -28,10 +28,10 @@
 export const SITE_NAME = "XCONDA허브";
 
 /**
- * 허브의 정식 주소(끝에 / 포함). GitHub Pages 기본 주소이며,
- * 최종 도메인이 정해지면 빌드 환경 변수 `SITE_URL`(GitHub Actions Variables) 로 덮어씁니다.
+ * 허브의 정식 주소(끝에 / 포함). 허브 전용 도메인입니다 (DNS 설정 요청 중).
+ * 빌드 환경 변수 `SITE_URL`(GitHub Actions Variables) 로 덮어쓸 수 있습니다.
  */
-export const DEFAULT_SITE_URL = "https://hanahchafilmaker.github.io/XCONDA_info/";
+export const DEFAULT_SITE_URL = "https://hub.xconda.ai/";
 
 /** 저장소 루트 기준 기본 공유 이미지 (1200×630). 글별 이미지가 없을 때 씁니다. */
 export const DEFAULT_OG_IMAGE_PATH = "assets/img/og/xconda-hub-1200x630.png";

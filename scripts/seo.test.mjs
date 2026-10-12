@@ -67,6 +67,10 @@ test("현재 주소에서 글 주소를 읽고, 하위 경로에서도 기본 �
   assert.equal(parseRoute("/XCONDA_info/dev.html#post=abc"), null);
   assert.equal(hubBaseFromPathname("/XCONDA_info/post/abc/"), "/XCONDA_info/");
   assert.equal(hubBaseFromPathname("/XCONDA_info/dev.html"), "/XCONDA_info/");
+  // 허브 전용 도메인(루트 배포): 기본 경로가 / 여야 합니다
+  assert.equal(hubBaseFromPathname("/post/abc/"), "/");
+  assert.equal(hubBaseFromPathname("/dev.html"), "/");
+  assert.deepEqual(parseRoute("/post/flexboard-storyboard/"), { prefix: "post", slug: "flexboard-storyboard" });
   assert.equal(hubBaseFromPathname("/post/abc/"), "/");
   assert.equal(hubBaseFromPathname("/"), "/");
 });
@@ -319,12 +323,12 @@ test("글 본문이 HTML 에 들어 있고, $ 기호와 HTML 특수문자는 안
   assert.match(a, /<div id="root"><main class="seo-article"/);
 });
 
-test("Q&A 는 본문이 있으면 요약을 중복으로 싣지 않고, 본문이 없으면 요약을 싣는다", () => {
+test("Q&A 는 요약(답변)을 본문 유무와 관계없이 싣는다 (본문에는 답변이 빠져 있으므로)", () => {
   const q = pageOf("qna/refund-policy/index.html");
   assert.match(q, /<title>환불은 어떻게 하나요\? \| XCONDA허브<\/title>/);
   assert.match(q, /<meta name="description" content="환불 요청 방법과 기간을 안내합니다\." \/>/);
   assert.match(q, /답변 본문입니다\./);
-  assert.doesNotMatch(q, /마이페이지에서 요청할 수 있습니다/);
+  assert.match(q, /마이페이지에서 요청할 수 있습니다/);
   const noBody = renderSeoSite({ rows: [fixtureRows[3]], pages: {}, template: TEMPLATE, siteUrl: SITE });
   assert.match(noBody.files.get("qna/refund-policy/index.html"), /마이페이지에서 요청할 수 있습니다/);
 });
@@ -365,4 +369,5 @@ test("applyHead 는 기존 SEO 태그를 걷어 내고 앱 스크립트는 그�
 
 test("글 주소 경로 — 홈 기본 주소는 사이트 주소와 같다", () => {
   assert.equal(new URL(DEFAULT_SITE_URL).pathname.endsWith("/"), true);
+  assert.equal(DEFAULT_SITE_URL, "https://hub.xconda.ai/");
 });

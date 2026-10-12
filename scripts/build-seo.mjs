@@ -121,8 +121,9 @@ export function articleBodyHtml({ prefix, type, title, date, author, summary, co
   const hubHref = "../../";
   const section = SECTION_LABELS[type] ?? "";
   const hasBody = blocks.length > 0;
-  // Q&A 는 요약(답변)과 본문 답변이 같은 내용이라, 본문이 있으면 요약은 중복 없이 뺍니다.
-  const showSummary = summary && !(type === "faq" && hasBody);
+  // 요약은 항상 싣습니다. Q&A 의 답변(요약)은 본문에서 빠지므로(hubPublicPageMap) 본문이 있어도 빼면 답변이 사라집니다.
+  // 앱 모달도 요약 → 본문 순서로 똑같이 보여 줍니다.
+  const showSummary = summary;
   const coverHtml = cover ? `<figure class="seo-cover"><img src="${escapeHtml(cover)}" alt="${escapeHtml(title)}" loading="eager"></figure>` : "";
   const byline = [date && `<time datetime="${escapeHtml(date)}">${escapeHtml(date)}</time>`, author && escapeHtml(author)]
     .filter(Boolean)
