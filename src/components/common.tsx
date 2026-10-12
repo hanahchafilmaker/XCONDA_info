@@ -306,7 +306,12 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
 
 /* --------------------------- Block renderer --------------------------- */
 
-export function Blocks({ blocks }: { blocks: Block[] }) {
+/**
+ * 본문 블록 출력.
+ * - 노션 H2 → <h2>, H3 → <h3> (검색 엔진이 단계 구조를 읽도록 그대로 씁니다. 글 제목 <h2> 와 같은 단계)
+ * - 이미지 alt = 노션 캡션(측션). 캡션이 비면 `alt`(보통 글 제목)를 씁니다.
+ */
+export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) {
   const { pick } = useLang();
   return (
     <div className="space-y-4 text-[15px] leading-[1.8] text-zinc-300">
@@ -315,9 +320,9 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
           case "p":
             return <p key={i}><RichText value={b.text} /></p>;
           case "h2":
-            return <h3 key={i} className="pt-4 text-xl font-semibold tracking-[-0.02em] text-white"><RichText value={b.text} /></h3>;
+            return <h2 key={i} className="pt-4 text-xl font-semibold tracking-[-0.02em] text-white"><RichText value={b.text} /></h2>;
           case "h3":
-            return <h4 key={i} className="pt-2 text-base font-semibold text-white"><RichText value={b.text} /></h4>;
+            return <h3 key={i} className="pt-2 text-base font-semibold text-white"><RichText value={b.text} /></h3>;
           case "ul":
             return (
               <ul key={i} className="space-y-2 pl-1">
@@ -375,7 +380,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
           case "img":
             return (
               <figure key={i} className="overflow-hidden rounded-xl ring-1 ring-white/10">
-                <SmartImage src={b.src} alt={b.caption ?? ""} className="w-full min-h-40 object-cover" />
+                <SmartImage src={b.src} alt={b.caption || alt} className="w-full min-h-40 object-cover" />
                 {b.caption && <figcaption className="bg-white/[0.02] px-4 py-2 text-xs text-zinc-500">{b.caption}</figcaption>}
               </figure>
             );
@@ -430,7 +435,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
                   <span className="mr-2 inline-block transition-transform group-open:rotate-90">▸</span>
                   <RichText value={b.text} />
                 </summary>
-                {b.children && <div className="mt-3"><Blocks blocks={b.children} /></div>}
+                {b.children && <div className="mt-3"><Blocks blocks={b.children} alt={alt} /></div>}
               </details>
             );
           default:

@@ -193,7 +193,7 @@ export default function News() {
               <h3 className="text-[15px] font-semibold text-white">{t("v.news.channels")}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-zinc-500">{t("v.news.channelsSub")}</p>
               <div className="mt-4 grid gap-3">
-                {CHANNELS.map((c) => (
+                {CHANNELS.filter((c) => c.id !== "notion").map((c) => (
                   <ChannelCard key={c.id} channel={c} />
                 ))}
               </div>

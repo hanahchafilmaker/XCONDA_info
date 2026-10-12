@@ -8,6 +8,7 @@ import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
 import { STUDIO_URL } from "../content/tools";
+import { shareUrlFor } from "../seo";
 
 const KIND_TONE = {
   New: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
@@ -58,7 +59,8 @@ export default function ArticleModal() {
     .slice(0, 3);
 
   const share = () => {
-    const url = `${location.origin}${location.pathname}${location.search}#post=${encodeURIComponent(active.id)}`;
+    // 주소가 있는 글은 글 주소(/post/{slug}/)를, 없으면 예전 #post=ID 링크를 복사합니다.
+    const url = shareUrlFor(active);
     navigator.clipboard?.writeText(url).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
@@ -153,7 +155,7 @@ export default function ArticleModal() {
                   <div className="skeleton mt-4 h-40 w-full rounded-xl" />
                 </div>
               ) : blocks && blocks.length ? (
-                <Blocks blocks={blocks} />
+                <Blocks blocks={blocks} alt={active.title} />
               ) : null}
             </div>
 

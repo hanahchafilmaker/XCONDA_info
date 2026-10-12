@@ -29,6 +29,7 @@
 import type { Block, Change, ChangeKind, Entry, EntryTranslation, EntryType, Rich, RichSeg } from "./content/types";
 import { TYPE_ALIASES, channelName, classifyType } from "./content/classify";
 import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS } from "./content/fields";
+import { SEO_READY_KEYS, SLUG_KEYS, seoEligibility, seoFieldsOf } from "./content/seo";
 import { extractPageId, fetchPublicBlocks, fetchPublicEntries, getLastPublicOrigin } from "./notionPublic";
 import { getLastSnapshotGeneratedAt, invalidateSnapshot } from "./notionSnapshot";
 import { getLang } from "./i18n/dict";
@@ -191,11 +192,27 @@ export function mapPage(page: R): Entry | null {
     ...(authorEn ? { author: authorEn } : {}),
   };
   const hasEnglish = Object.keys(english).length > 0;
+  // 글 주소 · SEO 값 — 스냅샷 경로(notionPublic.ts)와 같은 규칙(src/content/seo.js)을 씁니다.
+  const readyProp = prop(p, SEO_READY_KEYS);
+  const flat = {
+    [SLUG_KEYS[0]]: text(prop(p, SLUG_KEYS)),
+    [SEO_READY_KEYS[0]]:
+      readyProp?.type === "checkbox" ? readyProp.checkbox : readyProp?.formula?.boolean ?? readyProp?.formula?.string ?? "",
+    "SEO 제목": text(prop(p, ["SEO 제목"])),
+    "SEO 설명": text(prop(p, ["SEO 설명"])),
+    "OG 이미지": fileUrl(prop(p, ["OG 이미지"])),
+  };
+  const eligibility = seoEligibility(flat, type);
+  const seo = seoFieldsOf(flat);
   return {
     id: page.id,
     type,
     title,
     summary: text(prop(p, ["Summary", "요약", "설명", "답변", "Answer"])),
+    slug: eligibility.eligible ? eligibility.slug : undefined,
+    seoTitle: seo.seoTitle || undefined,
+    seoDescription: seo.seoDescription || undefined,
+    ogImage: seo.ogImage || undefined,
     // Category 가 비어 있으면 공지는 '공지', 뉴스는 링크로 알아낸 채널 이름(X · YouTube …)을 씁니다.
     category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: date(prop(p, ["Date", "날짜", "게시일"])) || page.created_time || new Date().toISOString(),

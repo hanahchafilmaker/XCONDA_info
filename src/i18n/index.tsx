@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { META, setCurrentLang, translate, type Lang } from "./dict";
+import { setCurrentLang, translate, type Lang } from "./dict";
 import { applyGoogtransCookie, isTarget, loadTranslateWidget, readGoogtransTarget, type Target } from "./google";
 
 export type { Lang } from "./dict";
@@ -109,11 +109,8 @@ function applyDocumentLanguage(target: Target): void {
       meta?.remove();
     }
 
-    const m = META[target];
-    document.title = m.title;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", m.description);
-    document.querySelector('meta[property="og:title"]')?.setAttribute("content", m.title);
-    document.querySelector('meta[property="og:description"]')?.setAttribute("content", m.description);
+    // 제목 · 설명 · 공유 메타는 src/seo.ts 가 화면(글/홈)에 맞춰 갱신합니다.
+    // (여기서 사이트 기본값으로 덮어쓰면 글별 제목이 모두 같아지므로 두지 않습니다)
   } catch {
     /* noop */
   }

@@ -902,7 +902,7 @@ export function renderSyncSummary({ report, generatedAt, writeReason = null, pre
   for (const note of notes) lines.push(`- ${note}`);
   lines.push("");
   lines.push(
-    `_스냅샷 생성: ${generatedAt ?? new Date(now).toISOString()} · 사이트: https://hanahchafilmaker.github.io/XCONDA_info/ · 분류 규칙: src/content/classify.js_`
+    `_스냅샷 생성: ${generatedAt ?? new Date(now).toISOString()} · 사이트: https://hub.xconda.ai/ · 분류 규칙: src/content/classify.js_`
   );
   return lines.join("\n");
 }

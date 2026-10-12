@@ -62,6 +62,17 @@ export type Entry = {
   coverFallback?: string;
   /** 작성자 — 노션 `Author`(또는 `작성자`) 속성. 블로그 카드 · 상세 모달에 표시됩니다. */
   author?: string;
+  /**
+   * 글 주소의 끝부분 (노션 `Slug`). 주소 규칙을 통과한 글만 값이 있습니다.
+   * 예: `/post/{slug}/` · `/notice/{slug}/` · `/qna/{slug}/` · `/guide/{slug}/` (src/content/seo.js)
+   */
+  slug?: string;
+  /** 검색 결과 제목 — 노션 `SEO 제목`. 없으면 `title` 을 씁니다. */
+  seoTitle?: string;
+  /** 검색 결과 설명 — 노션 `SEO 설명`. 없으면 `summary` 를 120자 안팎으로 자릅니다. */
+  seoDescription?: string;
+  /** 공유 미리보기 이미지 — 노션 `OG 이미지`. 없으면 `cover` → 사이트 기본 이미지. */
+  ogImage?: string;
   url?: string;
   pinned?: boolean;
   important?: boolean;
