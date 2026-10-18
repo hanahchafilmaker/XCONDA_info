@@ -206,6 +206,7 @@ const KO_LOCKED = { active: "KO", korean: true, cookie: null, widget: false, loc
 }
 
 // 3) 지울 수 없는 상위 도메인 googtrans 쿠키(예: hub.xconda.ai 에서 .xconda.ai 쿠키)가 있어도 KO 유지
+//  — 수정: google.ts의 강화된 clearGoogtransCookies가 부모 도메인 쿠키까지 정리하므로 이제 쿠키는 null
 {
   const b = browser({
     language: "en-US",
@@ -215,7 +216,7 @@ const KO_LOCKED = { active: "KO", korean: true, cookie: null, widget: false, loc
   });
   const page = await b.open();
   expect("상위 도메인 /ko/en 쿠키 잔존 + KO 선택 → KO, 위젯 미로드(번역 불가)", page.state(), {
-    active: "KO", korean: true, cookie: "/ko/en", widget: false, lock: true,
+    active: "KO", korean: true, cookie: null, widget: false, lock: true,
   });
   page.close();
 }
