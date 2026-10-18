@@ -45,20 +45,55 @@ function saveTarget(target: Target): void {
   }
 }
 
-/** 브라우저 언어 → 목표 언어 (지원하지 않는 언어는 한국어 원문) */
+/**
+ * 브라우저가 알려주는 언어 태그를 선호 순서대로 정규화합니다.
+ *
+ * `navigator.language` 하나만 보면 안 됩니다 — 그 값은 브라우저 UI 언어라서,
+ * 웹 콘텐츠 선호 순서인 `navigator.languages` 와 어긋날 수 있습니다.
+ * (예: 일본에서 산 PC라 크롬 UI 는 일본어지만, 한국 구글계정으로 맞춘
+ * 웹 선호언어는 한국어인 경우 → 예전에는 UI 언어만 보고 JA 로 들어갔습니다.)
+ * 구글/크롬 \"계정 언어\" 자체는 웹사이트가 읽을 수 있는 방법이 없으므로
+ * (브라우저가 어떤 API 로도 계정 언어를 페이지에 알려주지 않음)
+ * 사이트가 쓸 수 있는 신호는 이 선호 목록과 직접 고른 언어뿐입니다.
+ */
+function browserLanguages(): string[] {
+  if (typeof navigator === "undefined") return [];
+  const preferred = navigator.languages;
+  const list = preferred && preferred.length > 0 ? [...preferred] : [navigator.language ?? ""];
+  return list.filter(Boolean).map((tag) => tag.toLowerCase().replace(/_/g, "-"));
+}
+
+function targetOfTag(tag: string): Target | null {
+  if (tag === "ko" || tag.startsWith("ko-")) return "ko";
+  if (tag === "en" || tag.startsWith("en-")) return "en";
+  if (tag === "ja" || tag.startsWith("ja-")) return "ja";
+  if (tag === "zh" || tag.startsWith("zh-")) return "zh-CN";
+  return null;
+}
+
+/**
+ * 브라우저 선호 언어 → 목표 언어.
+ * 선호 목록을 앞에서부터 훑어 처음 만나는 지원 언어를 고릅니다(선호 순서 존중).
+ * 지원 언어가 하나도 없으면 한국어 원문으로 둡니다.
+ */
 function browserTarget(): Target {
-  const nav = (typeof navigator !== "undefined" ? navigator.language || "" : "").toLowerCase();
-  if (nav.startsWith("en")) return "en";
-  if (nav.startsWith("ja")) return "ja";
-  if (nav.startsWith("zh")) return "zh-CN";
+  for (const tag of browserLanguages()) {
+    const target = targetOfTag(tag);
+    if (target) return target;
+  }
   return "ko";
+}
+
+/** 브라우저 선호 목록에 한국어가 들어 있는지 (한국어 원문을 읽을 수 있는 사용자인지) */
+function browserPrefersKorean(): boolean {
+  return browserLanguages().some((tag) => targetOfTag(tag) === "ko");
 }
 
 /**
  * 목표 언어 결정 — 사이트 전체에서 이 함수 한 곳뿐입니다.
  *   ① 사용자가 직접 고른 언어(localStorage) — 항상 최우선
  *   ② (저장소를 쓸 수 없을 때만) googtrans 쿠키
- *   ③ 브라우저 언어
+ *   ③ 브라우저 선호 언어 목록(`navigator.languages` 순서, `browserTarget`)
  *
  * googtrans 쿠키는 이 결정의 결과물(위젯 구동용)이지 입력이 아닙니다.
  * 예전에는 쿠키를 먼저 믿었고, <head> 부트스트랩이 저장된 "ko"를 무시한 채 브라우저 언어로
@@ -81,10 +116,16 @@ const NO_TRANSLATE_META_ID = "xconda-lang-notranslate";
 /**
  * <html lang> · title/메타 설명 · 브라우저 자체 번역 잠금을 목표 언어에 맞춥니다.
  *
- * 브라우저 자체 번역 잠금: 사용자가 KO 를 "직접" 고른 경우 크롬 등의 내장 번역
- * (예: "한국어 항상 번역")이 한국어 화면을 다시 영어로 바꾸지 못하게
- * `<html translate="no">` + `<meta name="google" content="notranslate">` 를 겁니다.
- * 자동 감지로 KO 가 된 경우(지원하지 않는 언어의 브라우저)는 브라우저 번역 제안을 그대로 둡니다.
+ * 브라우저 자체 번역 잠금: 크롬 등의 내장 번역(예: "한국어 항상 번역",
+ * 번역 대상 언어가 일본어 등으로 남아 있는 경우)이 한국어 화면을 다시
+ * 바꾸지 못하게 `<html translate="no">` + `<meta name="google" content="notranslate">` 를 겁니다.
+ * 잠그는 경우 — ① 사용자가 KO 를 "직접" 고른 경우
+ *              ② 브라우저 선호 목록에 한국어가 있어 한국어로 감지된 경우
+ *                 (한국어 원문을 읽을 수 있는 사용자를 기계번역으로 내보낼 이유가 없고,
+ *                  실제로 "한국계정인데 첫 화면만 일본어로 번역됐다"는 신고가 이 경로였습니다.
+ *                  KO 를 직접 누른 뒤에야 유지되던 것도 잠금이 그때 처음 걸렸기 때문입니다.)
+ * 잠그지 않는 경우 — 지원하지 않는 언어(프랑스어 등)라 한국어 원문으로 떨어진 경우.
+ *                 이때는 브라우저 번역 제안을 그대로 둡니다.
  */
 function applyDocumentLanguage(target: Target): void {
   if (typeof document === "undefined") return;
@@ -93,7 +134,7 @@ function applyDocumentLanguage(target: Target): void {
     // ja/zh 모드에서는 실제 표시 언어가 html lang 에 반영됩니다.
     root.lang = target;
 
-    const lockKorean = target === "ko" && readSavedTarget() === "ko";
+    const lockKorean = target === "ko" && (readSavedTarget() === "ko" || browserPrefersKorean());
     let meta = document.getElementById(NO_TRANSLATE_META_ID);
     if (lockKorean) {
       root.setAttribute("translate", "no");
