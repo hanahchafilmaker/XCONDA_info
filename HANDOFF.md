@@ -251,7 +251,7 @@ XCONDA_info/
 | `src/content/ContentContext.tsx` | 데이터 소유. 동기화·폴링·섹션 분류·정렬·모달 상태·딥링크 | 정렬 규칙은 여기(공지는 `pinned` 우선, 가이드·FAQ는 `order`, 나머지는 날짜 내림차순) |
 | `src/i18n/dict.ts` (224키) | UI 문구 한/영 사전 + `META`(4언어 title/메타) + 비 React 유틸용 전역 언어 변수 | 키는 `ko`/`en` **항상 동시 추가** |
 | `src/i18n/google.ts` | Google 번역 위젯 연동 — `Target`(ko/en/ja/zh-CN), `googtrans` 쿠키 설정/해독, 위젯 로더 `loadTranslateWidget`(EN/JA/ZH만) | 위젯 UI는 숨김. 쿠키는 언어 결정의 **결과물**(입력 아님) |
-| `src/i18n/index.tsx` | 언어 결정의 **유일한 원천** `detectInitialTarget`(직접 고른 언어 → 브라우저 언어, 저장소 차단 시에만 쿠키) · `bootstrapLanguage`(첫 렌더 전 쿠키·`<html lang>`·위젯 정렬, `main.tsx`가 호출) · `LanguageProvider`/`setTarget`(저장+쿠키+리로드) · ko/en 정제 사전 | `lang`=사전 언어, `target`=목표 언어. `dev.html`에 언어 관련 인라인 스크립트를 두지 말 것 |
+| `src/i18n/index.tsx` | 언어 결정의 **유일한 원천** `detectInitialTarget`(직접 고른 언어 → 브라우저 선호 목록 `navigator.languages` 순서, 저장소 차단 시에만 쿠키) · `bootstrapLanguage`(첫 렌더 전 쿠키·`<html lang>`·위젯 정렬, `main.tsx`가 호출) · `LanguageProvider`/`setTarget`(저장+쿠키+리로드) · ko/en 정제 사전 | `lang`=사전 언어, `target`=목표 언어. `dev.html`에 언어 관련 인라인 스크립트를 두지 말 것 |
 | `src/i18n/content.ts` | `localizeEntry` / `localizeTool` — 노션 EN 보조 필드를 현재 언어에 반영 | — |
 | `src/content/tools.ts` (19개 툴) | 툴 카드 메타데이터 + `TOOLS` / `toolToEntry` | 툴 이미지는 `assets/img/tools`(상대경로) 또는 스튜디오 랜딩 URL |
 | `src/content/toolGuides.ts` (1,499줄) | 툴 상세 매뉴얼 본문(`Block[]`) — `flexboard`, `turn`, `image`, `upscale`, `video`, `expression` | 제품 매뉴얼 원문. 내용 수정은 제품팀 확인 후 |
@@ -512,7 +512,7 @@ npm run build
 | `scripts/smoke-sync.mjs` | **"지금 동기화" 정직성 회귀**: 프록시 사망 시 스냅샷 생성 시각을 표시해야지 "방금 전"을 표시하면 안 됨 |
 | `scripts/seo.test.mjs` | 슬러그 검증·경로 규칙, 발행 조건(`SEO 준비됨`·Slug), 제목·설명·이미지 대체 순서, 본문 HTML(H1 → h2, 이미지 alt), `sitemap.xml` 은 발행 글만, `robots.txt` 가 sitemap 을 가리킴, 생성 결과 멱등성, `$` 기호가 든 제목 안전 치환 |
 | `scripts/smoke-seo.mjs` | **실제 번들**을 jsdom 에서 실행: `/post/{slug}/` 직접 열기 → 글 제목·설명·canonical·og:type, 닫으면 홈 주소·홈 제목, 공유 버튼 → 글 주소 복사, 주소 조건 미달 글은 열리지 않음, 예전 `#post=ID` 는 이동 요청 (jsdom 은 실제 이동을 하지 않아 목적지 주소는 `seo.test.mjs` 가 확인) |
-| `scripts/smoke-lang.mjs` | **언어 전환 "리로드 이후" 회귀**: 실제 `dev.html` + 번들을 쿠키·localStorage를 이어 붙여 재로드. 영어·일본어·중국어 브라우저에서 KO를 고르면 리로드 후에도 KO, KO에선 위젯 미로드, 지워지지 않는 상위 도메인 쿠키가 있어도 KO 유지, 위젯 콜백 옵션(EN 자동 감지 / JA·ZH `pageLanguage: ko`) |
+| `scripts/smoke-lang.mjs` | **언어 전환 "리로드 이후" 회귀**: 실제 `dev.html` + 번들을 쿠키·localStorage를 이어 붙여 재로드. 영어·일본어·중국어 브라우저에서 KO를 고르면 리로드 후에도 KO, KO에선 위젯 미로드, 지워지지 않는 상위 도메인 쿠키가 있어도 KO 유지, 위젯 콜백 옵션(EN 자동 감지 / JA·ZH `pageLanguage: ko`), 크롬 UI 언어와 웹 선호 목록이 어긋나는 경우(UI ja + 선호 [ko,ja] → KO) |
 
 ### 12.2 새 규칙을 추가했다면
 
@@ -590,7 +590,7 @@ npm run build
 | 10 | 루트 `index.html`(약 507 KB)이 저장소에 커밋됨 | 의도된 설계(Pages 브랜치 배포). 히스토리가 커지면 Pages Actions 배포로 전환 검토 |
 | 11 | **언어 전환 시 페이지 리로드** (Google 번역 위젯 제약) | 위젯은 쿠키를 리로드 시점에 읽어 적용. EN/JA/ZH 전환은 재로딩됨(단일 파일이라 빠름). 리로드 없이는 동적 재번역이 불안정해서 의도적으로 유지 |
 | 12 | **EN 모드 노션 본문은 기계번역** (정제 영문이 아님) | 노션에 `Title EN`/`Summary EN`/`Author EN`을 채우면 정제 영문 우선 표시(`localizeEntry`), 미충족 분만 Google 번역. 본문(`Block[]`)은 노션 EN 필드가 없어 항상 기계번역 |
-| 13 | **브라우저 자체 번역**(크롬 "한국어 항상 번역" 등)이 KO 화면을 다시 영어로 바꿀 수 있음 | 사용자가 KO를 **직접** 고르면 `<html translate="no">` + `<meta name="google" content="notranslate">`로 잠금(`applyDocumentLanguage`). 자동 감지로 KO가 된 경우(지원하지 않는 언어의 브라우저)는 크롬 번역 제안을 막지 않음 — 의도된 동작 |
+| 13 | **브라우저 자체 번역**(크롬 "한국어 항상 번역" 등)이 KO 화면을 다시 영어로 바꿀 수 있음 | 사용자가 KO를 **직접** 고른 경우 + 브라우저 선호 목록에 한국어가 있어 KO로 감지된 경우에 `<html translate="no">` + `<meta name="google" content="notranslate">`로 잠금(`applyDocumentLanguage`). 지원하지 않는 언어라 KO 원문으로 떨어진 경우만 크롬 번역 제안을 막지 않음 — 의도된 동작 |
 | 14 | **글 주소·미리보기 반영 지연** — 노션을 고쳐도 `/post/{slug}/` 페이지·sitemap·공유 미리보기는 **동기화 워크플로가 돌아야** 바뀜. 카카오·X·Google 은 미리보기를 캐시함 | 반영 시간은 9.2 와 같습니다. 캐시는 카카오 공유 디버거 · X 카드 검증기 · Google Search Console **URL 검사 → 색인 생성 요청**으로 갱신. Slug 를 바꾸면 옛 주소는 404 가 되므로 **Slug 는 발행 후 바꾸지 않기** |
 
 ---
@@ -619,6 +619,7 @@ npm run build
 | 사이트가 다시 `github.io` 주소로 열림 · Settings → Pages 의 도메인 칸이 비어 있음 | 루트 `CNAME` 파일이 지워지거나 바뀜 | Settings → Pages 에서 `hub.xconda.ai` 다시 저장 (또는 `CNAME` 파일을 `hub.xconda.ai` 한 줄로 복구) |
 | Google Drive 영상이 안 열림 | Drive 공유 설정 / CSP | 새 창 열기 링크로 동작하므로 Drive 공유 권한 확인. YouTube·직접 제공 파일은 인페이지 재생 |
 | KO를 눌렀는데 리로드 후 영어(또는 일·중)로 돌아감 | 2026-10-11 이전 빌드의 버그(브라우저 언어가 en/ja/zh면 `<head>` 스크립트가 `googtrans` 쿠키를 다시 쓰고 앱이 쿠키를 저장값보다 먼저 믿음) — 수정 완료 | 배포된 `index.html`이 최신인지 확인(옛 파일엔 `translate_a/element.js` `<script>` 태그가 HTML에 직접 있음). 개발자도구에서 `localStorage['xconda-lang']`(직접 고른 언어)·`googtrans` 쿠키 확인. 회귀 확인은 `npm run test:smoke`(`smoke-lang.mjs`) |
+| 한국(구글/크롬) 계정인데 일본어로 열림 | 웹사이트는 구글 계정 언어를 읽을 수 없음 — 사이트가 보는 건 직접 고른 언어(`xconda-lang`)와 브라우저 선호 목록뿐. 예전 코드는 `navigator.language`(UI 언어) 하나만 봐서 UI ja + 선호 ko 인 경우를 놓쳤고, KO 감지 시에도 직접 고르기 전엔 크롬 자체 번역 잠금이 안 걸려 내장 번역이 일본어로 바꿀 수 있었음 (수정 완료) | 크롬 `chrome://settings/languages`에서 한국어 최우선인지 + 상단 토글이 KO인지 확인. 그래도 일본어면 KO 한 번 클릭(직접 선택으로 저장·잠금). 회귀 확인은 `smoke-lang.mjs` 케이스 8 |
 | EN/JA/ZH 전환했는데 일부가 한국어로 남음 | ① Google 번역 미적용(쿠키/리로드) ② `notranslate`로 고의 제외(브랜드명) ③ 지연 로딩 영역의 번역 지연 | ① 쿠키·재방문 확인 ② `notranslate` 의도 확인 ③ 재로딩. `googtrans` 쿠키값은 `/ko/<언어>` |
 
 ---

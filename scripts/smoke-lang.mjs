@@ -29,8 +29,9 @@ const devHtml = fs
 const PAGES_URL = "https://hanahchafilmaker.github.io/XCONDA_info/";
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** 브라우저 한 개(쿠키 · localStorage 가 리로드를 넘어 유지됨) */
-function browser({ language, url = PAGES_URL, storage = {}, cookies = [], storageBlocked = false }) {
+/** 브라우저 한 개(쿠키 · localStorage 가 리로드를 넘어 유지됨)
+ *  `languages` 를 따로 주면 UI 언어(`language`)와 웹 선호 목록을 다르게 재현할 수 있다. */
+function browser({ language, languages, url = PAGES_URL, storage = {}, cookies = [], storageBlocked = false }) {
   const jar = new CookieJar();
   for (const [cookie, cookieUrl] of cookies) jar.setCookieSync(cookie, cookieUrl ?? url);
   let saved = { ...storage };
@@ -57,6 +58,18 @@ function browser({ language, url = PAGES_URL, storage = {}, cookies = [], storag
       virtualConsole: vc,
       beforeParse(w) {
         Object.defineProperty(w.navigator, "language", { value: language, configurable: true });
+        // jsdom 의 languages 는 기본값(en-US)에 머물러 있어, 지정이 없으면 UI 언어와 같은 목록으로 맞춰 둔다.
+        const effectiveLanguages = languages ?? (language ? [language] : null);
+        if (effectiveLanguages) {
+          try {
+            Object.defineProperty(w.navigator, "languages", {
+              value: Object.freeze([...effectiveLanguages]),
+              configurable: true,
+            });
+          } catch {
+            /* jsdom 이 허용하지 않으면 language 만으로 진행 */
+          }
+        }
         if (storageBlocked) {
           Object.defineProperty(w, "localStorage", {
             configurable: true,
@@ -231,12 +244,12 @@ for (const [language, code] of [["ja-JP", "JA"], ["zh-TW", "ZH"]]) {
   page.close();
 }
 
-// 5) 한국어 브라우저 — 자동 KO 는 잠그지 않고, 활성 KO 를 직접 누르면 그때 잠근다
+// 5) 한국어 브라우저 — 선호 목록에 한국어가 있으면 첫 방문부터 자체 번역 잠금(저장은 하지 않음)
 {
   const b = browser({ language: "ko-KR" });
   let page = await b.open();
-  expect("한국어 브라우저 첫 방문 → KO (위젯 미로드 · 잠금 없음)", page.state(), {
-    active: "KO", korean: true, cookie: null, widget: false, lock: false, saved: null,
+  expect("한국어 브라우저 첫 방문 → KO (위젯 미로드 · 자체 번역 잠금 · 자동 감지는 저장 안 함)", page.state(), {
+    active: "KO", korean: true, cookie: null, widget: false, lock: true, saved: null,
   });
   const r = await page.click("KO");
   page = r.page;
@@ -265,7 +278,26 @@ for (const [language, code] of [["ja-JP", "JA"], ["zh-TW", "ZH"]]) {
   page.close();
 }
 
-// 8) localStorage 가 차단된 환경 — googtrans 쿠키가 보조 저장소 역할
+// 8) "한국계정인데 일본어로 들어감" 회귀 — 크롬 UI 언어(ja)와 웹 선호 목록([ko, …])이 어긋나는 경우.
+//    웹사이트는 구글 계정 언어를 읽을 수 없으므로, UI 언어 하나가 아니라 선호 목록 순서로 정해야 한다.
+//    또 선호 목록에 한국어가 있으면 첫 방문부터 브라우저 자체 번역 잠금이 걸려야 한다
+//    (잠금이 없으면 크롬 내장 번역이 한국어 화면을 일본어 등으로 바꿔버릴 수 있음).
+{
+  const page = await browser({ language: "ja-JP", languages: ["ko-KR", "ko", "ja-JP"] }).open();
+  expect("UI ja + 선호 [ko, ja] 첫 방문 → KO (위젯 미로드 · 자체 번역 잠금 · 저장 안 함)", page.state(), {
+    active: "KO", korean: true, cookie: null, widget: false, lock: true, htmlLang: "ko", saved: null,
+  });
+  page.close();
+}
+{
+  const page = await browser({ language: "ja-JP", languages: ["ja-JP", "ko-KR"] }).open();
+  expect("선호 순서 [ja, ko] 첫 방문 → JA (선호 순서 존중)", page.state(), {
+    active: "JA", widget: true, lock: false, saved: null,
+  });
+  page.close();
+}
+
+// 9) localStorage 가 차단된 환경 — googtrans 쿠키가 보조 저장소 역할
 {
   const b = browser({ language: "ko-KR", storageBlocked: true });
   let page = await b.open();
