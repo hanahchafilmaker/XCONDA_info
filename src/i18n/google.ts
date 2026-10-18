@@ -36,19 +36,59 @@ const COOKIE_VALUE: Record<Target, string> = {
 /**
  * 현재 호스트의 `googtrans` 쿠키를 목표 언어에 맞게 설정(또는 ko면 삭제)합니다.
  * 호스트 전용 쿠키와 domain=호스트 쿠키 두 변형을 모두 써서 Google 쪽 설정과 맞춰 둡니다.
+ * + 상위 도메인(.xconda.ai / xconda.ai) 변형까지 함께 정리 — www.xconda.ai(스튜디오)와
+ *   hub.xconda.ai(허브) 사이를 오가는 미국 사용자 환경에서 부모 도메인에 남은
+ *   googtrans 쿠키가 hub의 언어 선택을 오염시키는 케이스를 방지합니다.
  */
+function cookieDomains(host: string): string[] {
+  const domains: string[] = [];
+  if (!host) return domains;
+  domains.push(host);
+  domains.push(`.${host}`);
+  // hub.xconda.ai → xconda.ai / .xconda.ai (부모 도메인 정리)
+  const parts = host.split(".");
+  if (parts.length > 2) {
+    const parent = parts.slice(-2).join(".");
+    domains.push(parent);
+    domains.push(`.${parent}`);
+  }
+  return [...new Set(domains)];
+}
+
+function clearGoogtransCookies(host: string): void {
+  const expired = new Date(0).toUTCString();
+  // host 전용
+  document.cookie = `${COOKIE_NAME}=; path=/; expires=${expired}`;
+  document.cookie = `${COOKIE_NAME}=; path=/; path=/; expires=${expired}`;
+  for (const d of cookieDomains(host)) {
+    try {
+      document.cookie = `${COOKIE_NAME}=; path=/; domain=${d}; expires=${expired}`;
+    } catch {
+      /* 일부 도메인은 public suffix(github.io 등)로 설정 불가 — 무시 */
+    }
+  }
+}
+
 export function applyGoogtransCookie(target: Target): void {
   const host = typeof location !== "undefined" ? location.hostname : "";
   if (target === "ko") {
-    const expired = new Date(0).toUTCString();
-    document.cookie = `${COOKIE_NAME}=; path=/; expires=${expired}`;
-    if (host) document.cookie = `${COOKIE_NAME}=; path=/; domain=${host}; expires=${expired}`;
+    clearGoogtransCookies(host);
     return;
   }
   const value = COOKIE_VALUE[target];
   const expires = new Date(Date.now() + ONE_YEAR_MS).toUTCString();
+  // 기존 남아 있는 부모 도메인 쿠키를 먼저 지워 충돌을 없앤다 (US 사용자 www ↔ hub 이동 시)
+  clearGoogtransCookies(host);
   document.cookie = `${COOKIE_NAME}=${value}; path=/; expires=${expires}`;
-  if (host) document.cookie = `${COOKIE_NAME}=${value}; path=/; domain=${host}; expires=${expires}`;
+  if (host) {
+    for (const d of cookieDomains(host)) {
+      try {
+        document.cookie = `${COOKIE_NAME}=${value}; path=/; domain=${d}; expires=${expires}`;
+      } catch {
+        /* noop — public suffix 등은 무시 */
+      }
+    }
+  }
 }
 
 /** 현재 `googtrans` 쿠키를 목표 언어로 역해독합니다. (없거나 알 수 없으면 null) */
@@ -102,5 +142,17 @@ export function loadTranslateWidget(target: Target): void {
   const script = document.createElement("script");
   script.async = true;
   script.src = WIDGET_SCRIPT_SRC;
+  script.onerror = () => {
+    // 미국 등에서 translate.google.com 이 차단/지연되는 경우 — 콘솔에 남기고, EN 모드는 정제 사전이
+    // 있어 부분 동작하지만 JA/ZH 는 전체 크롬이 기계번역에 의존하므로 실패를 인지할 수 있게 함
+    console.warn(`[i18n] Google Translate widget failed to load for target=${target} (src=${WIDGET_SCRIPT_SRC})`);
+    // 재시도 힌트: script 태그를 제거해 다음 언어 전환 시 다시 로드할 수 있게 함
+    try {
+      script.remove();
+      document.getElementById(WIDGET_CONTAINER_ID)?.remove();
+    } catch {
+      /* noop */
+    }
+  };
   parent.appendChild(script);
 }
