@@ -3,7 +3,7 @@ import { Check, Copy, ExternalLink, ImageOff, PenLine, RefreshCw } from "lucide-
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { useLang, typeLabel } from "../i18n";
-import { isPublicEndpoint, timeAgo } from "../notion";
+import { formatDate, isPublicEndpoint, timeAgo } from "../notion";
 import { cn } from "../utils/cn";
 
 /* ----------------------------- Badges ----------------------------- */
@@ -34,21 +34,32 @@ export function TypeLabel({ type }: { type: EntryType }) {
 }
 
 /**
- * 작성자 표기 — 노션 `Author`(또는 `작성자`) 속성 값이 있을 때만 그립니다.
- * 블로그 카드와 상세 모달이 같은 모양을 쓰도록 한 곳에 둡니다.
+ * 작성자 · 글쓴 날짜 — 블로그 카드와 상세 모달이 같은 모양을 씁니다.
+ * 날짜가 있으면 항상 보이고, 작성자(노션 Author)는 값이 있을 때만 붙습니다.
  */
-export function Byline({ author, className }: { author?: string; className?: string }) {
+export function Byline({ author, date, className }: { author?: string; date?: string; className?: string }) {
   const { t } = useLang();
-  if (!author) return null;
+  const when = date ? formatDate(date) : "";
+  if (!author && !when) return null;
   return (
     <span
-      data-byline={author}
-      className={cn("inline-flex min-w-0 items-center gap-1.5 text-zinc-500", className)}
-      title={`${t("common.author")}: ${author}`}
+      data-byline={author || undefined}
+      className={cn("inline-flex min-w-0 items-center gap-1.5 text-zinc-400", className)}
+      title={[when, author ? `${t("common.author")}: ${author}` : ""].filter(Boolean).join(" · ")}
     >
-      <PenLine className="h-3.5 w-3.5 shrink-0 text-zinc-600" aria-hidden />
-      <span className="sr-only">{t("common.author")}: </span>
-      <span className="truncate">{author}</span>
+      {when ? (
+        <time dateTime={date} className="shrink-0 tabular-nums">
+          {when}
+        </time>
+      ) : null}
+      {when && author ? <span aria-hidden className="text-zinc-600">·</span> : null}
+      {author ? (
+        <>
+          <PenLine className="h-3.5 w-3.5 shrink-0 text-zinc-500" aria-hidden />
+          <span className="sr-only">{t("common.author")}: </span>
+          <span className="truncate">{author}</span>
+        </>
+      ) : null}
     </span>
   );
 }

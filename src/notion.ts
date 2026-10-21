@@ -395,19 +395,21 @@ export async function fetchBlocks(endpoint: string, pageId: string): Promise<Blo
 /* ------------------------------ 포맷 유틸 ------------------------------ */
 
 export function formatDate(iso: string): string {
+  const raw = String(iso ?? "").trim();
+  if (!raw) return "";
   const lang = getLang();
   try {
+    const d = /^\d{4}-\d{2}-\d{2}$/.test(raw) ? new Date(`${raw}T00:00:00`) : new Date(raw);
+    if (Number.isNaN(d.getTime())) return raw;
     if (lang === "en") {
-      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(
-        new Date(iso)
-      );
+      return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(d);
     }
     return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" })
-      .format(new Date(iso))
+      .format(d)
       .replace(/\.\s?/g, ".")
       .replace(/\.$/, "");
   } catch {
-    return iso;
+    return raw;
   }
 }
 
