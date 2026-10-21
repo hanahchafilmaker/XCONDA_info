@@ -38,7 +38,7 @@ export type Block =
   | { type: "column_list"; children: Block[] }
   | { type: "column"; ratio?: number; children: Block[] }
   | { type: "file"; name: string; size?: string; url: string }
-  | { type: "table"; rows: { cells: Rich[][] }[] };
+  | { type: "table"; rows: { cells: Rich[] }[] };
 
 export type ChangeKind = "New" | "Improved" | "Fixed";
 export type Change = { kind: ChangeKind; text: string };
