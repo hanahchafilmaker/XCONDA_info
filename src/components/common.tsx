@@ -270,7 +270,8 @@ export function RichText({ value }: { value: Rich }) {
               {node}
             </a>
           );
-        return <span key={i}>{node}</span>;
+        const colorMap: Record<string, string> = { gray: "#9ca3af", brown: "#a16207", orange: "#f97316", yellow: "#eab308", green: "#22c55e", blue: "#3b82f6", purple: "#a855f7", pink: "#ec4899", red: "#ef4444", gray_background: "#6b7280", brown_background: "#78350f", orange_background: "#7c2d12", yellow_background: "#713f12", green_background: "#14532d", blue_background: "#1e3a8a", purple_background: "#581c87", pink_background: "#831843", red_background: "#7f1d1d" };
+        return <span key={i} style={s.color ? { color: colorMap[s.color] ?? undefined, backgroundColor: s.color.endsWith("_background") ? `${colorMap[s.color]}33` : undefined } : undefined}>{node}</span>;
       })}
     </>
   );
@@ -379,9 +380,9 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
             );
           case "callout":
             return (
-              <div key={i} className="flex gap-3 rounded-xl bg-white/[0.04] p-4 ring-1 ring-inset ring-white/[0.08]">
-                <span className="text-lg leading-7" aria-hidden>{b.icon ?? "💡"}</span>
-                <p className="text-zinc-200"><RichText value={b.text} /></p>
+              <div key={i} className="rounded-xl bg-white/[0.04] p-4 ring-1 ring-inset ring-white/[0.08]">
+                <div className="flex gap-3"><span className="text-lg leading-7" aria-hidden>{b.icon ?? "💡"}</span><p className="text-zinc-200"><RichText value={b.text} /></p></div>
+                {b.children?.length ? <div className="mt-3"><Blocks blocks={b.children} alt={alt} /></div> : null}
               </div>
             );
           case "code":
@@ -439,6 +440,20 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
                 <ExternalLink className="h-4 w-4 shrink-0 text-zinc-500" />
               </a>
             );
+          case "column_list": {
+            const cols = b.children.filter((child) => child.type === "column");
+            const ratios = cols.map((col) => col.type === "column" ? Math.max(0.1, col.ratio ?? 1) : 1);
+            return <div key={i} className="grid grid-cols-1 gap-4 md:grid-cols-2" style={{ gridTemplateColumns: ratios.map((ratio) => `minmax(0, ${ratio}fr)`).join(" ") }}>{cols.map((col, j) => <div key={j}><Blocks blocks={col.type === "column" ? col.children : [col]} alt={alt} /></div>)}</div>;
+          }
+          case "column":
+            return <div key={i} className="min-w-0">{b.children.map((child, j) => <Blocks key={j} blocks={[child]} alt={alt} />)}</div>;
+          case "file":
+          case "pdf":
+            return <a key={i} href={b.type === "file" ? b.url : b.src} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-xl bg-white/[0.04] p-4 ring-1 ring-white/10">{b.type === "file" ? b.name : b.caption || "PDF 보기"}{b.type === "file" && b.size ? <small>{b.size}</small> : null}<ExternalLink className="h-4 w-4" /></a>;
+          case "audio":
+            return <figure key={i} className="space-y-2"><audio controls preload="metadata" src={b.src} className="w-full" />{b.caption && <figcaption className="text-xs text-zinc-500">{b.caption}</figcaption>}</figure>;
+          case "table":
+            return <div key={i} className="overflow-x-auto rounded-lg ring-1 ring-white/10"><table className="w-full border-collapse text-left"><tbody>{b.rows.map((row, ri) => <tr key={ri}>{row.cells.map((cell, ci) => <td key={ci} className="border border-white/10 px-3 py-2"><RichText value={cell} /></td>)}</tr>)}</tbody></table></div>;
           case "toggle":
             return (
               <details key={i} className="group rounded-xl bg-white/[0.03] px-4 py-3 ring-1 ring-inset ring-white/[0.06]">

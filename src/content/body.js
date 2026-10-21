@@ -46,6 +46,7 @@ function legacyRich(val) {
         else if (d[0] === "s") seg.strike = true;
         else if (d[0] === "c") seg.code = true;
         else if (d[0] === "a" && d[1]) seg.href = d[1];
+        else if (d[0] === "color" && d[1]) seg.color = d[1];
       }
     }
     segs.push(seg);
@@ -56,7 +57,7 @@ function legacyRich(val) {
 const legacyPlain = (val) =>
   Array.isArray(val) ? val.map((i) => (Array.isArray(i) ? String(i[0] ?? "") : "")).join("") : "";
 
-function convertLegacy(ids, map, depth = 0) {
+function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
   const out = [];
   for (const id of ids) {
     const b = map.get(id);
@@ -67,14 +68,14 @@ function convertLegacy(ids, map, depth = 0) {
     const last = out[out.length - 1];
     switch (b.type) {
       case "text":
-        if (legacyPlain(p.title).trim()) out.push({ type: "p", text: title });
+        if (legacyPlain(p.title).trim()) out.push({ type: "p", text: title, ...(f.block_color ? { color: f.block_color } : {}) });
         break;
       case "header": // 노션 H1 — 글 제목과 겹치지 않도록 h2 로 내립니다
       case "sub_header":
-        out.push({ type: "h2", text: title });
+        out.push({ type: "h2", text: title, ...(f.block_color ? { color: f.block_color } : {}) });
         break;
       case "sub_sub_header":
-        out.push({ type: "h3", text: title });
+        out.push({ type: "h3", text: title, ...(f.block_color ? { color: f.block_color } : {}) });
         break;
       case "bulleted_list":
         if (last?.type === "ul") last.items.push(title);
@@ -98,6 +99,8 @@ function convertLegacy(ids, map, depth = 0) {
           type: "callout",
           text: title,
           icon: typeof f.page_icon === "string" && f.page_icon.length <= 4 ? f.page_icon : undefined,
+          color: f.block_color,
+          children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : undefined,
         });
         break;
       case "code":
@@ -123,14 +126,40 @@ function convertLegacy(ids, map, depth = 0) {
         if (href) out.push({ type: "link", href, caption: legacyPlain(p.caption) || legacyPlain(p.description) || undefined });
         break;
       }
-      case "toggle":
-        out.push({
-          type: "toggle",
-          text: title,
-          children: depth < 2 && b.content?.length ? convertLegacy(b.content, map, depth + 1) : undefined,
+      case "column_list":
+        out.push({ type: "column_list", children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : [] });
+        break;
+      case "column":
+        out.push({ type: "column", ratio: Number(f.column_ratio) || undefined, children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : [] });
+        break;
+      case "file":
+      case "pdf":
+      case "audio": {
+        const rawSrc = f.display_source || legacyPlain(p.source) || legacyPlain(p.title);
+        const src = rawSrc ? signNotionImage(rawSrc, b.id) : "";
+        const caption = legacyPlain(p.caption) || legacyPlain(p.title) || undefined;
+        if (src) {
+          if (b.type === "file") out.push({ type: "file", name: caption || "Download file", url: src, size: f.size });
+          else out.push({ type: b.type, src, caption });
+        }
+        break;
+      }
+      case "table": {
+        const columnOrder = Array.isArray(f.table_block_column_order) ? f.table_block_column_order : null;
+        const rows = (b.content ?? []).map((rowId) => {
+          const row = map.get(rowId);
+          const props = row?.properties ?? {};
+          const keys = columnOrder?.length ? columnOrder : Object.keys(props);
+          return { cells: keys.map((key) => legacyRich(props[key])) };
         });
+        out.push({ type: "table", rows });
+        break;
+      }
+      case "toggle":
+        out.push({ type: "toggle", text: title, children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : undefined });
         break;
       default:
+        console.warn(`지원하지 않는 블록: ${b.type} (${entryTitle})`);
         break;
     }
   }
@@ -146,7 +175,8 @@ export function parseLegacyRecordMap(data, pageId) {
   }
   const plainId = extractPageId(pageId) ?? String(pageId ?? "").replace(/-/g, "");
   const root = map.get(dashed(plainId)) ?? map.get(pageId) ?? map.get(plainId);
-  return root?.content?.length ? convertLegacy(root.content, map) : [];
+  const entryTitle = legacyPlain(root?.properties?.title) || "알 수 없는 글";
+  return root?.content?.length ? convertLegacy(root.content, map, 0, entryTitle) : [];
 }
 
 /* ------------------------------ 출력: Block[] → HTML ------------------------------ */
@@ -172,6 +202,7 @@ export function richToHtml(rich) {
       if (seg.bold) html = `<strong>${html}</strong>`;
       if (seg.italic) html = `<em>${html}</em>`;
       if (seg.strike) html = `<s>${html}</s>`;
+      if (seg.color && /^[a-z_]+$/.test(seg.color)) html = `<span class="notion-${esc(seg.color)}">${html}</span>`;
       if (isHttp(seg.href)) html = `<a href="${esc(seg.href)}" rel="noopener noreferrer">${html}</a>`;
       return html;
     })
@@ -182,7 +213,7 @@ function blockToHtml(block, options) {
   const { alt = "" } = options;
   switch (block.type) {
     case "p":
-      return `<p>${richToHtml(block.text)}</p>`;
+      return `<p class="notion-${esc(block.color || "default")}">${richToHtml(block.text)}</p>`;
     case "h2":
       return `<h2>${richToHtml(block.text)}</h2>`;
     case "h3":
@@ -197,8 +228,22 @@ function blockToHtml(block, options) {
         .join("")}</ul>`;
     case "quote":
       return `<blockquote><p>${richToHtml(block.text)}</p></blockquote>`;
-    case "callout":
-      return `<aside class="callout"><p>${block.icon ? `${esc(block.icon)} ` : ""}${richToHtml(block.text)}</p></aside>`;
+    case "callout": {
+      const inner = (block.children ?? []).map((c) => blockToHtml(c, options)).join("\n");
+      return `<aside class="callout notion-${esc(block.color || "default")}"><p>${block.icon ? `${esc(block.icon)} ` : ""}${richToHtml(block.text)}</p>${inner}</aside>`;
+    }
+    case "column_list":
+      return `<div class="notion-columns">${(block.children ?? []).map((c) => blockToHtml(c, options)).join("\n")}</div>`;
+    case "column":
+      return `<div class="notion-column" style="--column-ratio:${Math.max(0.1, Math.min(1, Number(block.ratio) || 0.5))}">${(block.children ?? []).map((c) => blockToHtml(c, options)).join("\n")}</div>`;
+    case "file":
+      return isHttp(block.url) ? `<a class="notion-file" href="${esc(block.url)}" download>${esc(block.name)}${block.size ? ` <small>${esc(block.size)}</small>` : ""}</a>` : "";
+    case "pdf":
+      return isHttp(block.src) ? `<a class="notion-file" href="${esc(block.src)}" target="_blank" rel="noopener noreferrer">${esc(block.caption || "PDF 보기")}</a>` : "";
+    case "audio":
+      return isHttp(block.src) ? `<figure><audio controls preload="metadata" src="${esc(block.src)}"></audio>${block.caption ? `<figcaption>${esc(block.caption)}</figcaption>` : ""}</figure>` : "";
+    case "table":
+      return `<div class="notion-table-wrap"><table><tbody>${(block.rows ?? []).map((r) => `<tr>${r.cells.map((cell) => `<td>${richToHtml(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
     case "code":
       return `<pre><code${block.language ? ` class="language-${esc(block.language)}"` : ""}>${esc(block.text)}</code></pre>`;
     case "img": {
@@ -208,7 +253,7 @@ function blockToHtml(block, options) {
       return `<figure><img src="${esc(block.src)}" alt="${esc(text)}" loading="lazy" decoding="async"></figure>`;
     }
     case "video":
-      return `<p><a href="${esc(block.src)}" rel="noopener noreferrer">${esc(block.caption || block.src)}</a></p>`;
+      return /\.(mp4|webm|ogg)(?:[?#]|$)/i.test(block.src) ? `<video controls playsinline preload="metadata" src="${esc(block.src)}" class="notion-video"></video>` : `<p><a href="${esc(block.src)}" rel="noopener noreferrer">${esc(block.caption || block.src)}</a></p>`;
     case "link":
       return isHttp(block.href)
         ? `<p><a href="${esc(block.href)}" rel="noopener noreferrer">${esc(block.caption || block.href)}</a></p>`

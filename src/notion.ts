@@ -243,24 +243,25 @@ function rich(arr?: R[]): Rich {
     code: t.annotations?.code,
     strike: t.annotations?.strikethrough,
     href: t.href ?? undefined,
+    color: t.annotations?.color ?? undefined,
   }));
 }
 
-export function mapBlocks(results: R[]): Block[] {
+export function mapBlocks(results: R[], depth = 0): Block[] {
   const out: Block[] = [];
   for (const b of results) {
     const d = b[b.type] ?? {};
     const last = out[out.length - 1];
     switch (b.type) {
       case "paragraph":
-        if (plain(d.rich_text).trim()) out.push({ type: "p", text: rich(d.rich_text) });
+        if (plain(d.rich_text).trim()) out.push({ type: "p", text: rich(d.rich_text), color: d.color });
         break;
       case "heading_1":
       case "heading_2":
-        out.push({ type: "h2", text: rich(d.rich_text) });
+        out.push({ type: "h2", text: rich(d.rich_text), color: d.color });
         break;
       case "heading_3":
-        out.push({ type: "h3", text: rich(d.rich_text) });
+        out.push({ type: "h3", text: rich(d.rich_text), color: d.color });
         break;
       case "bulleted_list_item":
         if (last?.type === "ul") last.items.push(rich(d.rich_text));
@@ -278,7 +279,7 @@ export function mapBlocks(results: R[]): Block[] {
         out.push({ type: "quote", text: rich(d.rich_text) });
         break;
       case "callout":
-        out.push({ type: "callout", text: rich(d.rich_text), icon: d.icon?.emoji });
+        out.push({ type: "callout", text: rich(d.rich_text), icon: d.icon?.emoji, color: d.color, children: Array.isArray(b.children) ? mapBlocks(b.children, depth + 1) : undefined });
         break;
       case "code":
         out.push({ type: "code", text: plain(d.rich_text), language: d.language });
@@ -292,13 +293,37 @@ export function mapBlocks(results: R[]): Block[] {
       case "video":
         out.push({ type: "video", src: d.external?.url ?? d.file?.url ?? "", caption: plain(d.caption) || undefined });
         break;
+      case "file":
+      case "pdf": {
+        const file = d.external ?? d.file ?? {};
+        const url = file.url ?? "";
+        if (url) out.push(b.type === "file" ? { type: "file", name: file.name ?? plain(d.caption) ?? "Download file", url, size: d.size } : { type: "pdf", src: url, caption: plain(d.caption) || file.name });
+        break;
+      }
+      case "audio": {
+        const url = d.external?.url ?? d.file?.url ?? "";
+        if (url) out.push({ type: "audio", src: url, caption: plain(d.caption) || undefined });
+        break;
+      }
+      case "table":
+        out.push({ type: "table", rows: (b.children ?? []).map((row: R) => ({ cells: ((row.table_row?.cells ?? []) as R[][]).map((cell) => rich(cell)) })) });
+        break;
+      case "column_list":
+        out.push({ type: "column_list", children: mapBlocks(b.children ?? [], depth + 1) });
+        break;
+      case "column":
+        out.push({ type: "column", ratio: d.ratio, children: mapBlocks(b.children ?? [], depth + 1) });
+        break;
       case "bookmark":
       case "embed":
       case "link_preview":
         if (d.url) out.push({ type: "link", href: d.url, caption: plain(d.caption) || undefined });
         break;
       case "toggle":
-        out.push({ type: "toggle", text: rich(d.rich_text), children: b.children ? mapBlocks(b.children) : undefined });
+        out.push({ type: "toggle", text: rich(d.rich_text), children: b.children ? mapBlocks(b.children, depth + 1) : undefined });
+        break;
+      default:
+        if (b.type) console.warn(`지원하지 않는 블록: ${b.type}`);
         break;
     }
   }
@@ -387,7 +412,20 @@ export async function fetchBlocks(endpoint: string, pageId: string): Promise<Blo
   const res = await fetch(`${endpoint}/blocks/${pageId}`, { headers: { Accept: "application/json" } });
   if (!res.ok) throw new Error(`Notion blocks ${res.status}`);
   const data = await res.json();
-  const blocks = mapBlocks(Array.isArray(data) ? data : data.results ?? []);
+  const results: R[] = Array.isArray(data) ? data : data.results ?? [];
+  const hydrateChildren = async (items: R[], level = 0): Promise<void> => {
+    if (level >= 12) return;
+    await Promise.all(items.map(async (block) => {
+      if (!block.has_children || Array.isArray(block.children)) return;
+      const childRes = await fetch(`${endpoint}/blocks/${block.id}`, { headers: { Accept: "application/json" } });
+      if (!childRes.ok) return;
+      const childData = await childRes.json();
+      block.children = Array.isArray(childData) ? childData : childData.results ?? [];
+      await hydrateChildren(block.children, level + 1);
+    }));
+  };
+  await hydrateChildren(results);
+  const blocks = mapBlocks(results);
   blockCache.set(pageId, blocks);
   return blocks;
 }
