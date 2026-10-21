@@ -13,24 +13,32 @@ export type RichSeg = {
   code?: boolean;
   strike?: boolean;
   href?: string;
+  /** 노션 글자 색 / 배경 색 주석 (예: "red", "blue_background") */
+  color?: string;
 };
 export type Rich = string | RichSeg[];
 
 export type Block =
-  | { type: "p"; text: Rich }
-  | { type: "h2"; text: Rich }
-  | { type: "h3"; text: Rich }
+  | { type: "p"; text: Rich; color?: string }
+  | { type: "h2"; text: Rich; color?: string }
+  | { type: "h3"; text: Rich; color?: string }
   | { type: "ul"; items: Rich[] }
   | { type: "ol"; items: Rich[] }
   | { type: "todo"; items: { text: Rich; checked: boolean }[] }
   | { type: "quote"; text: Rich }
-  | { type: "callout"; text: Rich; icon?: string }
+  | { type: "callout"; text: Rich; icon?: string; color?: string; children?: Block[] }
   | { type: "code"; text: string; language?: string }
   | { type: "img"; src: string; caption?: string }
   | { type: "video"; src: string; caption?: string }
+  | { type: "pdf"; src: string; caption?: string }
+  | { type: "audio"; src: string; caption?: string }
   | { type: "link"; href: string; caption?: string }
   | { type: "toggle"; text: Rich; children?: Block[] }
-  | { type: "divider" };
+  | { type: "divider" }
+  | { type: "column_list"; children: Block[] }
+  | { type: "column"; ratio?: number; children: Block[] }
+  | { type: "file"; name: string; size?: string; url: string }
+  | { type: "table"; rows: { cells: Rich[][] }[] };
 
 export type ChangeKind = "New" | "Improved" | "Fixed";
 export type Change = { kind: ChangeKind; text: string };
