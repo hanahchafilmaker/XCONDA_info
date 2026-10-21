@@ -115,12 +115,11 @@ export default function ArticleModal() {
                 </span>
               )}
               {!active.id.startsWith("tool-") ? (
-                <span className="inline-flex items-center gap-1.5">
-                  <CalendarDays className="h-3.5 w-3.5" /> {formatDate(active.date)}
+                <span className="inline-flex items-center gap-1.5 text-zinc-400">
+                  <CalendarDays className="h-3.5 w-3.5" />
+                  <Byline author={active.author} date={active.date} className="text-xs" />
                 </span>
               ) : null}
-              {/* 작성자 — 노션 `Author`(작성자) 속성을 채우면 목록 카드와 여기에 함께 표시됩니다. */}
-              {active.author && !active.id.startsWith("tool-") ? <Byline author={active.author} className="text-xs" /> : null}
               {isNew(active.date) && active.type !== "faq" && !active.id.startsWith("tool-") && <NewBadge />}
             </div>
             <h2
