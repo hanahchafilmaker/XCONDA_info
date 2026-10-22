@@ -10,7 +10,11 @@
  *
  * ▸ 주소를 만들 수 있는 글(= 정적 페이지 · 사이트맵 · 앱 딥링크 대상)의 조건
  *     1) Slug 가 있고 형식이 맞음
- *     2) 뉴스 DB 의 `SEO 준비됨` 체크(수식 칸)가 켜져 있음  — Q&A 는 이 칸이 없으므로 Slug 만 봅니다
+ *     2) `SEO 준비됨` 속성이 있는 글이면 켜져 있어야 함 — 속성 자체가 행에 없으면(뉴스 DB 에
+ *        그 칸이 없거나, 있어도 공개 수집(recordMap)으로 수식 값이 오지 않으면) Slug 만 봅니다.
+ *        2026-10-22 GEO 진단 A0: 실제로 이 칸이 스냅샷 전 행에 없어 블로그·공지·뉴스·가이드
+ *        전부가 주소 없이 막혀 있던 것을 확인하고 규칙을 바꿈. 검수 게이트를 다시 쓰려면
+ *        노션에 `SEO 준비됨` 체크박스(수식보다 수집이 확실)를 만들고 준비된 글만 체크하세요.
  *     3) 게시 여부(Published · 허브 게시)는 스냅샷 생성 단계에서 이미 걸러져 있음
  *   조건을 못 채운 글은 사이트 목록에는 그대로 나오지만, 주소 페이지 · 사이트맵에서는 빠지고
  *   빌드 로그와 Actions 요약에 이유가 남습니다.
@@ -209,9 +213,11 @@ export function seoEligibility(row, type) {
   if (!slug) reasons.push("Slug 없음");
   else if (!isValidSlug(slug)) reasons.push(`Slug 형식 오류 "${slug}" (영문 소문자 · 숫자 · 하이픈만 사용)`);
   if (!routePrefixFor(type)) reasons.push(`섹션 ${type ?? "(없음)"} 은 주소 규칙이 없음`);
-  // Q&A 표에는 `SEO 준비됨` 칸이 없으므로 Slug 만 확인합니다.
-  if (type !== "faq" && !isSeoReady(pickProp(row, SEO_READY_KEYS))) {
-    reasons.push("SEO 준비됨 꺼짐 (또는 값 없음 — 스냅샷에 칸이 없으면 노션 수식 칸 이름을 확인)");
+  // `SEO 준비됨` 검수 게이트 — 속성이 "있는데 꺼져 있을 때만" 주소를 막습니다.
+  // 속성 자체가 없으면 칸이 없는 것으로 보고 Slug 만 확인합니다 (Q&A 표가 원래 이 경우).
+  const readyRaw = pickProp(row, SEO_READY_KEYS);
+  if (readyRaw !== undefined && !isSeoReady(readyRaw)) {
+    reasons.push("SEO 준비됨 꺼짐");
   }
   return { eligible: reasons.length === 0, slug, reasons };
 }
@@ -284,4 +290,91 @@ export function escapeXml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
+}
+
+/* ------------------------------ 구조화 데이터(JSON-LD) ------------------------------ *
+ * AI·검색엔진에 "이 사이트·글이 무엇인지"를 기계가 읽는 명찰로 알려줍니다 (보고서 B1·B3).
+ * 빌드(scripts/build-seo.mjs)가 홈·글별 페이지의 <head> 에 넣습니다. 앱 런타임은 건드리지
+ * 않으므로, 목록에서 연 글(모달)에는 정적 페이지의 명찰이 그대로 기준이 됩니다.
+ * 명찰 내용은 화면에 보이는 값과 같아야 합니다 — 아래 함수들은 메타와 같은 값을 받습니다.
+ * ----------------------------------------------------------------------------------- */
+
+/** 운영사(큐브베리)의 전역 식별자 — www 에도 같은 @id 를 써서 두 사이트를 한 회사로 묶습니다. */
+export const ORG_ID = "https://www.xconda.ai/#org";
+/** 메인 사이트(제품) 주소 */
+export const WWW_URL = "https://www.xconda.ai";
+/** 저장소에 실제로 있는 로고 파일 (Organization logo) */
+export const ORG_LOGO_PATH = "assets/img/logo/xconda-mark.svg";
+
+/**
+ * 공식 채널 (Organization sameAs) — `src/content/channels.tsx` 의 CHANNELS 와 같은
+ * 값을 유지하세요. 이 파일은 빌드 스크립트도 쓰므로 tsx 를 import 할 수 없어 값을 둡니다.
+ */
+export const OFFICIAL_SAME_AS = [
+  "https://x.com/Xconda_official",
+  "https://www.threads.com/@xconda_official",
+  "https://www.youtube.com/@xconda_korea",
+  "https://www.instagram.com/xconda_ai/",
+  "https://blog.naver.com/dramajustice",
+];
+
+/** 전 페이지 공통 명찰: 운영사(Organization) + 이 사이트(WebSite) */
+export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
+  const site = absoluteUrl(siteUrl, "");
+  return [
+    {
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: "Cubeberry Co., Ltd.",
+      alternateName: ["큐브베리", "주식회사 큐브베리"],
+      url: WWW_URL,
+      logo: absoluteUrl(siteUrl, ORG_LOGO_PATH),
+      sameAs: [WWW_URL, site.replace(/\/$/, ""), ...OFFICIAL_SAME_AS],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site}#website`,
+      url: site,
+      name: SITE_NAME,
+      publisher: { "@id": ORG_ID },
+      inLanguage: "ko-KR",
+    },
+  ];
+}
+
+/**
+ * 글 한 건의 명찰. 블로그 → BlogPosting, 뉴스 → NewsArticle, 공지·가이드 → Article,
+ * Q&A → FAQPage(질문=제목, 답변=answerText). 값은 resolveArticleMeta 와 같은 재료로 만듭니다.
+ */
+export function articleJsonLd({ type, url, headline, description, image, date, author, answerText }) {
+  const base = { publisher: { "@id": ORG_ID }, inLanguage: "ko-KR" };
+  if (type === "faq") {
+    return {
+      "@type": "FAQPage",
+      ...base,
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: textOf(headline),
+          acceptedAnswer: { "@type": "Answer", text: textOf(answerText) || textOf(description) },
+        },
+      ],
+    };
+  }
+  const article = {
+    "@type": type === "blog" ? "BlogPosting" : type === "news" ? "NewsArticle" : "Article",
+    ...base,
+    headline: textOf(headline),
+    description: textOf(description),
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
+  if (textOf(image)) article.image = [textOf(image)];
+  if (/^\d{4}-\d{2}-\d{2}/.test(textOf(date))) article.datePublished = textOf(date).slice(0, 10);
+  article.author = textOf(author) ? { "@type": "Person", name: textOf(author) } : { "@id": ORG_ID };
+  return article;
+}
+
+/** 사이트 공통 + 페이지별 명찰을 하나의 @graph 스크립트로 묶습니다. */
+export function jsonLdGraph(siteUrl = DEFAULT_SITE_URL, extra = []) {
+  return { "@context": "https://schema.org", "@graph": [...siteJsonLd(siteUrl), ...extra.filter(Boolean)] };
 }

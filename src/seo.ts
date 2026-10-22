@@ -86,6 +86,9 @@ function applyHead(v: HeadValues) {
 /** 홈 화면 — 언어별 사이트 기본 메타 */
 export function applySiteMeta(target: string): void {
   if (typeof document === "undefined") return;
+  // 글별 구조화 데이터(JSON-LD)는 정적 페이지가 기준입니다. 홈으로 돌아오면 이전 글의
+  // 명찰이 남지 않게 걷어 냅니다(사이트 공통 명찰은 data-article-jsonld 가 없어 유지됨).
+  document.head.querySelectorAll("script[data-article-jsonld]").forEach((el) => el.remove());
   const m = siteMetaFor(target);
   applyHead({
     title: m.title,

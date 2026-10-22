@@ -5,7 +5,8 @@
  *
  * 검증하는 것
  *   1) Slug 규칙 — 정리(소문자 · 하이픈) · 형식 검사 · 주소 만들기 · 주소 읽기(하위 경로 포함)
- *   2) 주소 조건 — Slug 없음 · 형식 오류 · SEO 준비됨 꺼짐 은 주소를 만들지 않고 이유를 남김 (Q&A 는 Slug 만 봄)
+ *   2) 주소 조건 — Slug 없음 · 형식 오류 · SEO 준비됨 꺼짐 은 주소를 만들지 않고 이유를 남김
+ *      (SEO 준비됨 칸 자체가 없으면 Slug 만 봄 — 2026-10-22 A0)
  *   3) 메타 우선순위 — SEO 제목 → Title, SEO 설명 → Summary(120자 안팎) → 기본값, OG 이미지 → Cover → 기본 이미지
  *   4) 본문 HTML — H2/H3 그대로, <h1> 미출력, 이미지 alt = 캡션 → 글 제목, 이스케이프 · $ 기호 보존
  *   5) 생성 결과 — 글마다 title · canonical · og · twitter 가 다르고, 글 파일은 <title> 이 하나뿐
@@ -19,9 +20,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   DEFAULT_SITE_URL,
+  articleJsonLd,
   hubBaseFromPathname,
   isSeoReady,
   isValidSlug,
+  jsonLdGraph,
   normalizeSlug,
   parseRoute,
   resolveArticleMeta,
@@ -108,6 +111,16 @@ test("Q&A 는 SEO 준비됨 칸이 없으므로 Slug 만 있으면 주소를 만
   assert.equal(seoEligibility({ Slug: "" }, "faq").eligible, false);
 });
 
+test("SEO 준비됨 칸 자체가 없으면 모든 섹션이 Slug 만으로 주소를 만든다 (A0 — 스냅샷에 칸이 없어 전 글이 막히던 문제)", () => {
+  for (const type of ["news", "blog", "notice", "guide", "faq"]) {
+    assert.equal(seoEligibility({ Slug: "flex-story" }, type).eligible, true, type);
+  }
+  // 칸이 있는데 꺼져 있으면(빈 값 포함) 검수 게이트가 그대로 작동한다
+  assert.equal(seoEligibility({ Slug: "flex-story", "SEO 준비됨": "" }, "blog").eligible, false);
+  assert.equal(seoEligibility({ Slug: "flex-story", "SEO 준비됨": false }, "notice").eligible, false);
+  assert.equal(seoEligibility({ Slug: "flex-story", "SEO 준비됨": "✅" }, "guide").eligible, true);
+});
+
 /* ------------------------------ 3) 메타 우선순위 ------------------------------ */
 
 test("제목: SEO 제목이 우선, 없으면 Title, 그래도 없으면 사이트 이름", () => {
@@ -181,6 +194,19 @@ test("레거시 record map 의 heading_1 은 h2 로 내려간다", () => {
   };
   const blocks = parseLegacyRecordMap(map, "11111111111111111111111111111111");
   assert.deepEqual(blocks, [{ type: "h2", text: [{ text: "큰 제목" }] }]);
+});
+
+test("레거시 record map 의 header_4~6 은 버리지 않고 h3 으로 내린다", () => {
+  const map = {
+    "11111111-1111-1111-1111-111111111111": {
+      value: { id: "11111111-1111-1111-1111-111111111111", type: "page", content: ["22222222-2222-2222-2222-222222222222"] },
+    },
+    "22222222-2222-2222-2222-222222222222": {
+      value: { id: "22222222-2222-2222-2222-222222222222", type: "header_4", properties: { title: [["작은 제목"]] } },
+    },
+  };
+  const blocks = parseLegacyRecordMap(map, "11111111111111111111111111111111");
+  assert.deepEqual(blocks, [{ type: "h3", text: [{ text: "작은 제목" }] }]);
 });
 
 /* ------------------------------ 5·6) 생성 결과 ------------------------------ */
@@ -284,6 +310,7 @@ const pageOf = (rel) => result.files.get(rel);
 test("주소 조건을 통과한 글만 파일이 만들어지고, 나머지는 사유와 함께 제외된다", () => {
   const written = [...result.files.keys()].sort();
   assert.deepEqual(written, [
+    "404.html",
     "index.html",
     "post/deepseek-official-harness/index.html",
     "post/opus-5-5-trending/index.html",
@@ -370,4 +397,60 @@ test("applyHead 는 기존 SEO 태그를 걷어 내고 앱 스크립트는 그�
 test("글 주소 경로 — 홈 기본 주소는 사이트 주소와 같다", () => {
   assert.equal(new URL(DEFAULT_SITE_URL).pathname.endsWith("/"), true);
   assert.equal(DEFAULT_SITE_URL, "https://hub.xconda.ai/");
+});
+
+/* ------------------------------ 8) 구조화 데이터(JSON-LD) · 404 ------------------------------ */
+
+const ldJsonOf = (html, article = false) => {
+  const re = article
+    ? /<script type="application\/ld\+json" data-article-jsonld>([\s\S]*?)<\/script>/
+    : /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
+  const m = html.match(re);
+  assert.ok(m, article ? "글 JSON-LD 스크립트 없음" : "공통 JSON-LD 스크립트 없음");
+  return JSON.parse(m[1]);
+};
+
+test("구조화 데이터: 전 페이지에 운영사·사이트 명찰이 들어가고 공식 채널이 sameAs 로 연결된다 (B1)", () => {
+  for (const rel of ["index.html", "post/deepseek-official-harness/index.html", "qna/refund-policy/index.html", "404.html"]) {
+    const graph = ldJsonOf(pageOf(rel));
+    const org = graph["@graph"].find((n) => n["@type"] === "Organization");
+    assert.ok(org, rel);
+    assert.equal(org["@id"], "https://www.xconda.ai/#org");
+    assert.ok(org.sameAs.includes("https://www.youtube.com/@xconda_korea"), rel);
+    assert.ok(org.sameAs.includes("https://blog.naver.com/dramajustice"), rel);
+    assert.ok(graph["@graph"].some((n) => n["@type"] === "WebSite"), rel);
+  }
+  // 단위: 사이트 주소를 바꾸면 WebSite @id 와 sameAs 의 허브 주소도 따라간다
+  const g = jsonLdGraph("https://example.test/XCONDA_info/");
+  assert.equal(g["@graph"].find((n) => n["@type"] === "WebSite")["@id"], "https://example.test/XCONDA_info/#website");
+});
+
+test("구조화 데이터: 글 종류별 명찰 — 뉴스 NewsArticle · 블로그 BlogPosting · Q&A FAQPage (B3)", () => {
+  const news = ldJsonOf(pageOf("post/deepseek-official-harness/index.html"), true);
+  assert.equal(news["@type"], "NewsArticle");
+  assert.equal(news.headline, "DeepSeek 공식 하네스 공개, 모든 것이 플러그인");
+  assert.equal(news.datePublished, "2026-10-02");
+  assert.deepEqual(news.author, { "@type": "Person", name: "박찬혁 감독" });
+
+  const blog = ldJsonOf(pageOf("post/opus-5-5-trending/index.html"), true);
+  assert.equal(blog["@type"], "BlogPosting");
+
+  const faq = ldJsonOf(pageOf("qna/refund-policy/index.html"), true);
+  assert.equal(faq["@type"], "FAQPage");
+  assert.equal(faq.mainEntity[0].name, "환불은 어떻게 하나요?");
+  assert.match(faq.mainEntity[0].acceptedAnswer.text, /마이페이지에서 요청할 수 있습니다/);
+  assert.match(faq.mainEntity[0].acceptedAnswer.text, /답변 본문입니다/);
+
+  // 단위: 작성자가 없으면 운영사를 저자로 둔다
+  const bare = articleJsonLd({ type: "notice", url: "https://example.test/notice/x/", headline: "공지" });
+  assert.deepEqual(bare.author, { "@id": "https://www.xconda.ai/#org" });
+});
+
+test("404.html 이 함께 만들어지고 noindex 와 메인·최근 글 링크를 담는다 (A7)", () => {
+  const notFound = pageOf("404.html");
+  assert.ok(notFound);
+  assert.match(notFound, /<meta name="robots" content="noindex" \/>/);
+  assert.match(notFound, /페이지를 찾을 수 없습니다/);
+  // 임의의 깊이에서 서빙되므로 링크는 절대 주소여야 한다
+  assert.match(notFound, /href="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\/"/);
 });
