@@ -75,6 +75,10 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
         out.push({ type: "h2", text: title, ...(f.block_color ? { color: f.block_color } : {}) });
         break;
       case "sub_sub_header":
+      // 붙여넣기 등으로 생기는 H4~H6 — 버리지 않고 가장 낮은 단계(h3)로 내립니다.
+      case "header_4":
+      case "header_5":
+      case "header_6":
         out.push({ type: "h3", text: title, ...(f.block_color ? { color: f.block_color } : {}) });
         break;
       case "bulleted_list":

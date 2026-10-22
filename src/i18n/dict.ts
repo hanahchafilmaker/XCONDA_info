@@ -311,7 +311,7 @@ export const DICT: Dict = {
   "v.news.ch.threads": { ko: "실시간 대화와 커뮤니티 소식", en: "Real-time discussions and updates" },
   "v.news.ch.youtube": { ko: "툴 사용법 영상과 데모", en: "Tool walkthroughs and demos" },
   "v.news.ch.instagram": { ko: "제작 결과물과 비하인드", en: "Finished work and behind the scenes" },
-  "v.news.ch.linkedin": { ko: "비즈니스·파트너십 소식", en: "Business and partnership news" },
+  "v.news.ch.naver": { ko: "제작 노하우와 인사이트 글", en: "Production know-how and insights" },
   "v.news.ch.notion": { ko: "이 페이지의 원본 데이터베이스", en: "The source database behind this page" },
   "v.news.ch.web": { ko: "스튜디오와 제품 정보", en: "The studio and product info" },
   "v.news.syncAria": { ko: "Notion 연동 상태", en: "Notion sync status" },
@@ -432,7 +432,8 @@ export const CATEGORY_LABELS: Record<string, Entry> = {
   Threads: { ko: "Threads", en: "Threads" },
   YouTube: { ko: "YouTube", en: "YouTube" },
   Instagram: { ko: "Instagram", en: "Instagram" },
-  LinkedIn: { ko: "LinkedIn", en: "LinkedIn" },
+  "Naver Blog": { ko: "네이버 블로그", en: "Naver Blog" },
+  "네이버 블로그": { ko: "네이버 블로그", en: "Naver Blog" },
   Notion: { ko: "Notion", en: "Notion" },
   SNS: { ko: "SNS", en: "Social" },
   /* 블로그 */

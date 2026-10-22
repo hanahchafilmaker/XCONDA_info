@@ -46,10 +46,10 @@ export const IconInstagram = (p: IconProps) => (
   </svg>
 );
 
-/** LinkedIn */
-export const IconLinkedIn = (p: IconProps) => (
+/** Naver (네이버 블로그) */
+export const IconNaver = (p: IconProps) => (
   <svg {...brand(p)}>
-    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 2.07-2.07 2.07 2.07 0 0 1-2.07 2.07zm1.78 13.02H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0z" />
+    <path d="M16.273 12.845 7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845Z" />
   </svg>
 );
 
@@ -90,8 +90,8 @@ export const CHANNELS: Channel[] = [
   {
     id: "threads",
     name: "Threads",
-    handle: "@xconda_offcial",
-    href: "https://www.threads.com/@xconda_offcial",
+    handle: "@xconda_official",
+    href: "https://www.threads.com/@xconda_official",
     descKey: "v.news.ch.threads",
     Icon: IconThreads,
   },
@@ -112,12 +112,12 @@ export const CHANNELS: Channel[] = [
     Icon: IconInstagram,
   },
   {
-    id: "linkedin",
-    name: "LinkedIn",
-    handle: "XCONDA",
-    href: "",
-    descKey: "v.news.ch.linkedin",
-    Icon: IconLinkedIn,
+    id: "naver",
+    name: "Naver Blog",
+    handle: "dramajustice",
+    href: "https://blog.naver.com/dramajustice",
+    descKey: "v.news.ch.naver",
+    Icon: IconNaver,
   },
   {
     id: "notion",

@@ -86,11 +86,11 @@ export const SAMPLE_ENTRY_EN: Record<string, EntryTranslation> = {
     ],
   },
   "news-210": {
-    title: "[LinkedIn] Three new tools: CineGrade AI, ClothSwap, and YouTube Ref",
+    title: "[Naver Blog] Three new tools: CineGrade AI, ClothSwap, and YouTube Ref",
     summary: "Transfer color grades, replace wardrobe, and build a nine-scene storyboard from a YouTube link.",
-    category: "LinkedIn",
+    category: "Naver Blog",
     blocks: [
-      { type: "p", text: "Shared with partners and production houses on LinkedIn." },
+      { type: "p", text: "Introducing three new tools, as featured on our Naver Blog." },
     ],
   },
   "news-200": {

@@ -147,19 +147,19 @@ const BASE_SAMPLE_ENTRIES: Entry[] = [
   {
     id: "news-210",
     type: "news",
-    title: "[LinkedIn] 신규 툴 3종: CineGrade AI · ClothSwap · YouTube Ref",
+    title: "[Naver Blog] 신규 툴 3종: CineGrade AI · ClothSwap · YouTube Ref",
     summary: "색보정 이식, 의상 교체, 유튜브 링크 기반 9씬 스토리보드 툴이 추가되었습니다.",
-    category: "LinkedIn",
+    category: "Naver Blog",
     version: "v2.1.0",
     date: daysAgo(21),
-    tags: ["Tools", "LinkedIn"],
+    tags: ["Tools", "Naver"],
     changes: [
       { kind: "New", text: "CineGrade AI — 영화 스틸 컬러 그레이딩 이식" },
       { kind: "New", text: "ClothSwap — 브러시 + 참조 이미지 의상 교체" },
       { kind: "New", text: "YouTube Ref — 영상 링크로 9씬 스토리보드" },
     ],
     blocks: [
-      { type: "p", text: "파트너사와 제작사를 대상으로 LinkedIn에 공유한 신규 툴 3종 안내입니다." },
+      { type: "p", text: "네이버 블로그에 소개한 신규 툴 3종 안내입니다." },
     ],
   },
   {

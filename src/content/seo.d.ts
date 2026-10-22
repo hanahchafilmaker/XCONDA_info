@@ -67,3 +67,25 @@ export function sitemapXml(urls: { loc: string; lastmod?: string }[]): string;
 export function robotsTxt(siteUrl: string): string;
 export function escapeHtml(value: unknown): string;
 export function escapeXml(value: unknown): string;
+
+/** 구조화 데이터(JSON-LD) — 빌드 스크립트(scripts/build-seo.mjs)가 <head> 에 넣습니다. */
+export const ORG_ID: string;
+export const WWW_URL: string;
+export const ORG_LOGO_PATH: string;
+export const OFFICIAL_SAME_AS: string[];
+export function siteJsonLd(siteUrl?: string): Record<string, unknown>[];
+export type ArticleJsonLdInput = {
+  type: string;
+  url: string;
+  headline?: string;
+  description?: string;
+  image?: string;
+  date?: string;
+  author?: string;
+  answerText?: string;
+};
+export function articleJsonLd(input: ArticleJsonLdInput): Record<string, unknown>;
+export function jsonLdGraph(
+  siteUrl?: string,
+  extra?: Record<string, unknown>[]
+): { "@context": string; "@graph": Record<string, unknown>[] };

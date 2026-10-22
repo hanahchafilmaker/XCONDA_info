@@ -696,7 +696,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 ### 18.4 확인해야 할 미기재 사항 (인계자에게 물어볼 것)
 
 - [ ] 제품/콘텐츠 의사결정자 연락처(공지 내용·툴 매뉴얼 승인권자)
-- [ ] XCONDA 스튜디오 공식 SNS 채널 주소(`src/content/channels.tsx`에 `href: ""`로 비어 있는 항목들)
+- [x] XCONDA 스튜디오 공식 SNS 채널 주소 — ✅ 확정 (2026-10-22): X(`@Xconda_official`) · Threads(`@xconda_official`) · YouTube(`@xconda_korea`) · Instagram(`@xconda_ai`) · 네이버 블로그(`dramajustice`). LinkedIn은 운영하지 않기로 해 채널 삭제
 - [ ] Google Drive 영상 공유 폴더 접근 권한
 - [ ] 커스텀 도메인 `hub.xconda.ai` 연결 확인 — ✅ Pages 커스텀 도메인 등록(2026-10-12) · ☐ DNS CNAME · ☐ HTTPS 강제 · ☐ 도메인 인증(권장) → 「10.3 배포」
 - [ ] `xconda.ai` DNS(AWS Route 53) 관리 담당자 — 허브 레코드 변경 · 인증서 문제 시 연락처
@@ -714,7 +714,6 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 중간 | `redesign-xconda-website-ui/` 정리(삭제 또는 `docs/` 이동) | 혼동 방지 |
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | 중간 | 스모크 테스트를 CI에 연결(`test:smoke`는 현재 로컬 전용) | 회귀 방지 자동화 |
-| 낮음 | SNS 채널 `href` 채우기(제품팀 확인 필요) | `channels.tsx`의 "링크 준비 중" 카드 해소 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
 
 ---

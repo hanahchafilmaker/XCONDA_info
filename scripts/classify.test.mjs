@@ -86,7 +86,10 @@ test("isEntryType 은 사이트가 아는 섹션만 통과시킨다", () => {
 test("Type 이 비어 있으면 내용으로 섹션을 추정한다", () => {
   assert.equal(classifyType({ link: "https://x.com/VibeEverything/status/1" }).type, "news");
   assert.equal(classifyType({ link: "https://www.youtube.com/watch?v=abc" }).type, "news");
+  assert.equal(classifyType({ link: "https://blog.naver.com/dramajustice/224365637382" }).type, "news");
   assert.equal(classifyType({ category: "YouTube" }).type, "news");
+  assert.equal(classifyType({ category: "Naver Blog" }).type, "news");
+  assert.equal(classifyType({ category: "네이버 블로그" }).type, "news");
   assert.equal(classifyType({ category: "릴리스" }).type, "news");
   assert.equal(classifyType({ changes: "[New] 스토리보드 9컷" }).type, "news");
   assert.equal(classifyType({ version: "v2.5.0" }).type, "news");
@@ -122,11 +125,21 @@ test("Type 이 명시되면 내용 추론보다 우선한다", () => {
 test("channelFromUrl — 알려진 SNS 주소만 채널로 인식", () => {
   assert.equal(channelFromUrl("https://x.com/a/status/1"), "x");
   assert.equal(channelFromUrl("twitter.com/a"), "x");
-  assert.equal(channelFromUrl("https://www.threads.com/@xconda_offcial"), "threads");
+  assert.equal(channelFromUrl("https://www.threads.com/@xconda_official"), "threads");
   assert.equal(channelFromUrl("https://youtu.be/abc"), "youtube");
   assert.equal(channelFromUrl("https://www.instagram.com/xconda_ai/"), "instagram");
+  assert.equal(channelFromUrl("https://blog.naver.com/dramajustice/224365637382"), "naver");
+  assert.equal(channelFromUrl("https://m.blog.naver.com/dramajustice"), "naver");
   assert.equal(channelFromUrl("https://silicon-mascara-c7d.notion.site/XCONDA_NEWs-3e72ebc0"), "notion");
-  for (const other of ["https://xconda.ai", "https://blog.example.com/x.com", "", null, "메모"]) {
+  for (const other of [
+    "https://xconda.ai",
+    "https://blog.example.com/x.com",
+    "https://www.linkedin.com/company/xconda", // LinkedIn 채널은 2026-10-22 삭제됨
+    "https://news.naver.com/article/1", // 네이버라도 블로그 주소만 채널로 인식
+    "",
+    null,
+    "메모",
+  ]) {
     assert.equal(channelFromUrl(other), undefined, String(other));
   }
 });

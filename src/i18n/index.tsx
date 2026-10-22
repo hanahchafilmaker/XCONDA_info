@@ -191,6 +191,12 @@ type Ctx = {
   /** 사용자가 선택한 전체 목표 언어 (ko | en | ja | zh-CN). */
   target: Target;
   /**
+   * 사용자가 직접 언어를 고른 적이 있는지 (저장값 존재 여부).
+   * 자동 감지만으로 정해진 언어와 구분하는 데 씁니다 — 예: 검색용 메타(제목 등)는
+   * 직접 고른 경우에만 그 언어로 바꾸고, 자동 감지 때는 한국어 기본값을 유지합니다 (A6).
+   */
+  hasSaved: boolean;
+  /**
    * 언어 전환 — 선택을 저장하고 Google 번역 상태(googtrans 쿠키)를 갱신한 뒤
    * 페이지를 리로드합니다. (위젯은 리로드 시점에 쿠키를 읽어 적용합니다.)
    */
@@ -208,6 +214,8 @@ const LangCtx = createContext<Ctx | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [target, setTargetState] = useState<Target>(() => bootstrapLanguage());
+  // 저장소가 차단돼 undefined 면 "직접 고른 적 없음"으로 봅니다 (메타는 한국어 유지).
+  const [hasSaved, setHasSaved] = useState<boolean>(() => readSavedTarget() != null);
   const lang = dictLangOf(target);
 
   // 로드 시점의 정렬은 bootstrapLanguage 가 끝냈고, 여기서는 (리로드 직전 · jsdom 스모크처럼)
@@ -226,6 +234,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     (t: Target) => {
       const alreadyChosen = readSavedTarget() === t;
       saveTarget(t);
+      setHasSaved(true);
       if (t === target) {
         // 이미 보고 있는 언어 — 직접 선택으로 저장만 합니다.
         // 단, 자동 감지된 KO 를 직접 KO 로 고정하는 경우에는 브라우저 자체 번역 잠금이
@@ -249,8 +258,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const pick = useCallback(<T,>(ko: T, en: T): T => (lang === "ko" ? ko : en), [lang]);
 
   const value = useMemo<Ctx>(
-    () => ({ lang, target, setTarget, setLang, toggle, t, pick }),
-    [lang, target, setTarget, setLang, toggle, t, pick]
+    () => ({ lang, target, hasSaved, setTarget, setLang, toggle, t, pick }),
+    [lang, target, hasSaved, setTarget, setLang, toggle, t, pick]
   );
 
   return <LangCtx.Provider value={value}>{children}</LangCtx.Provider>;

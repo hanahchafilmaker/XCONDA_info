@@ -35,7 +35,7 @@ const byDateDesc = (a: Entry, b: Entry) => +new Date(b.date) - +new Date(a.date)
 const byOrder = (a: Entry, b: Entry) => (a.order ?? 999) - (b.order ?? 999) || byDateDesc(a, b);
 
 export function ContentProvider({ children }: { children: ReactNode }) {
-  const { lang, target } = useLang();
+  const { lang, target, hasSaved } = useLang();
   const endpoint = useMemo(() => resolveEndpoint(), []);
   const cached = useMemo(() => (endpoint ? readCache() : null), [endpoint]);
 
@@ -162,8 +162,11 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   /* 페이지 메타 — 글을 열면 글별 값, 홈이면 언어별 사이트 값 (빌드된 HTML 의 기본값과 같은 규칙) */
   useEffect(() => {
     if (active) applyArticleMeta(localizeEntry(active, lang));
-    else applySiteMeta(target);
-  }, [active, target, lang]);
+    // 검색용 메타(제목·설명·canonical)는 사용자가 직접 언어를 고른 경우에만 그 언어로 바꿉니다.
+    // 자동 감지 언어까지 메타에 반영하면 검색엔진·AI 봇(저장값 없음)이 영어 제목으로 색인해
+    // "허브 = 한국어 사이트" 신호와 어긋납니다 (보고서 A6). 화면 번역 동작은 그대로입니다.
+    else applySiteMeta(hasSaved ? target : "ko");
+  }, [active, target, lang, hasSaved]);
 
   const value = useMemo<Ctx>(() => {
     const localized = entries.map((entry) => localizeEntry(entry, lang));

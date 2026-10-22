@@ -37,8 +37,10 @@ import {
   SEO_TITLE_MAX,
   SITE_NAME,
   absoluteUrl,
+  articleJsonLd,
   escapeHtml,
   fileUrlOf,
+  jsonLdGraph,
   pickProp,
   resolveArticleMeta,
   robotsTxt,
@@ -78,12 +80,19 @@ export function applyHead(template, head) {
   return html.replace(headEnd, () => `    <!-- SEO:START -->\n${head}\n    <!-- SEO:END -->\n  ${headEnd}`);
 }
 
-/** 페이지별 메타 → <head> 조각 */
+/** 구조화 데이터 객체 → <script type="application/ld+json"> (</script> 가 값을 깨지 않게 < 를 이스케이프) */
+const jsonLdScript = (data, article = false) =>
+  data
+    ? `<script type="application/ld+json"${article ? " data-article-jsonld" : ""}>${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`
+    : "";
+
+/** 페이지별 메타 → <head> 조각. meta.siteLd(공통 명찰) · meta.articleLd(글 명찰) · meta.robots 선택 */
 export function headBlock(meta) {
   const e = escapeHtml;
   const lines = [
     `<title>${e(meta.title)}</title>`,
     `<meta name="description" content="${e(meta.description)}" />`,
+    meta.robots ? `<meta name="robots" content="${e(meta.robots)}" />` : "",
     `<link rel="canonical" href="${e(meta.url)}" />`,
     `<meta property="og:type" content="${meta.ogType}" />`,
     `<meta property="og:site_name" content="${e(SITE_NAME)}" />`,
@@ -97,6 +106,8 @@ export function headBlock(meta) {
     `<meta name="twitter:title" content="${e(meta.ogTitle)}" />`,
     `<meta name="twitter:description" content="${e(meta.ogDescription)}" />`,
     `<meta name="twitter:image" content="${e(meta.image)}" />`,
+    jsonLdScript(meta.siteLd),
+    jsonLdScript(meta.articleLd, true),
   ].filter(Boolean);
   return lines.map((line) => `    ${line}`).join("\n");
 }
@@ -143,6 +154,52 @@ export function articleBodyHtml({ prefix, type, title, date, author, summary, co
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+const richText = (value) =>
+  Array.isArray(value)
+    ? value.map((seg) => (typeof seg === "string" ? seg : seg?.text ?? "")).join("")
+    : String(value ?? "");
+
+/** 본문 블록 → 순수 텍스트 (FAQPage 답변처럼 기계가 읽는 텍스트가 필요한 곳) */
+function blocksToText(blocks) {
+  const parts = [];
+  const walk = (list) => {
+    for (const b of list ?? []) {
+      switch (b.type) {
+        case "p":
+        case "h2":
+        case "h3":
+        case "quote":
+        case "code":
+          parts.push(richText(b.text));
+          break;
+        case "ul":
+        case "ol":
+          parts.push((b.items ?? []).map(richText).join(" "));
+          break;
+        case "todo":
+          parts.push((b.items ?? []).map((it) => richText(it.text)).join(" "));
+          break;
+        case "table":
+          parts.push((b.rows ?? []).map((r) => (r.cells ?? []).map(richText).join(" ")).join(" "));
+          break;
+        case "callout":
+        case "toggle":
+          parts.push(richText(b.text));
+          walk(b.children);
+          break;
+        case "column_list":
+        case "column":
+          walk(b.children);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+  walk(blocks);
+  return parts.join(" ").replace(/\s+/g, " ").trim();
 }
 
 /** 정적 페이지가 로드되기 전에만 보이는 최소 스타일 (앱이 뜨면 #root 와 함께 사라집니다) */
@@ -196,6 +253,7 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
   if (!fs.existsSync(path.join(REPO_ROOT, DEFAULT_OG_IMAGE_PATH))) {
     warnings.push(`기본 공유 이미지(${DEFAULT_OG_IMAGE_PATH})가 없습니다 — 링크 미리보기에 이미지가 나오지 않습니다.`);
   }
+  const siteLd = jsonLdGraph(site);
   const home = siteMetaFor("ko");
   const homeHead = headBlock({
     title: home.title,
@@ -206,6 +264,7 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     ogDescription: home.ogDescription,
     image: defaultImageUrl,
     publishedTime: "",
+    siteLd,
   });
   files.set("index.html", applyHead(template, homeHead));
 
@@ -232,6 +291,23 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     if (!seo.ogImage && !coverRaw) warnings.push(`[${title}] 공유 이미지(OG 이미지·Cover)가 없어 기본 이미지를 씁니다.`);
 
     const blocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id) : [];
+    const author = textOf(pickProp(row, AUTHOR_KEYS));
+    // Q&A 답변 텍스트: 요약(답변) + 본문. 본문만 길게 싣지 않고 적당한 길이로 자릅니다.
+    const answerText =
+      type === "faq" ? [summary, blocksToText(blocks)].filter(Boolean).join(" ").replace(/\s+/g, " ").trim().slice(0, 2000) : "";
+    const articleLd = {
+      "@context": "https://schema.org",
+      ...articleJsonLd({
+        type,
+        url,
+        headline: meta.pageTitle,
+        description: meta.description,
+        image: meta.image,
+        date,
+        author,
+        answerText,
+      }),
+    };
     const head = headBlock({
       title: meta.title,
       description: meta.description,
@@ -241,13 +317,15 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       ogDescription: meta.ogDescription,
       image: meta.image,
       publishedTime: meta.publishedTime,
+      siteLd,
+      articleLd,
     });
     const body = articleBodyHtml({
       prefix: c.prefix,
       type,
       title,
       date,
-      author: textOf(pickProp(row, AUTHOR_KEYS)),
+      author,
       summary,
       cover: coverRaw,
       blocks,
@@ -256,6 +334,38 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     files.set(`${c.prefix}/${slug}/index.html`, html);
     pageRecords.push({ title, type, slug, url, description: meta.description, image: meta.image, pageTitle: meta.pageTitle, date, bodyBlocks: blocks.length });
   }
+
+  // 404 페이지 (GitHub Pages 가 없는 주소에 이 파일을 404 상태로 냅니다 — 보고서 A7)
+  // 임의의 깊이에서 서빙되므로 링크는 상대 경로가 아닌 사이트 기준 절대 주소를 씁니다.
+  const recent = [...pageRecords].sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 5);
+  const notFoundHead = headBlock({
+    title: `페이지를 찾을 수 없습니다 | ${SITE_NAME}`,
+    description: "주소가 바뀌었거나 삭제된 페이지입니다. XCONDA허브 메인에서 공지사항, 뉴스, 툴 사용법, 블로그, Q&A를 확인하세요.",
+    url: site,
+    ogType: "website",
+    ogTitle: `페이지를 찾을 수 없습니다 | ${SITE_NAME}`,
+    ogDescription: "주소가 바뀌었거나 삭제된 페이지입니다.",
+    image: defaultImageUrl,
+    publishedTime: "",
+    robots: "noindex",
+    siteLd,
+  });
+  const notFoundBody = [
+    `<div id="root"><main class="seo-article">`,
+    `<h1>페이지를 찾을 수 없습니다</h1>`,
+    `<p>주소가 바뀌었거나 삭제된 페이지입니다. 아래에서 찾으시는 내용을 확인해 보세요.</p>`,
+    `<p><a href="${escapeHtml(site)}">${escapeHtml(SITE_NAME)} 메인으로 가기</a></p>`,
+    recent.length
+      ? `<h2>최근 글</h2><ul>${recent.map((p) => `<li><a href="${escapeHtml(p.url)}">${escapeHtml(p.title)}</a></li>`).join("")}</ul>`
+      : "",
+    `</main></div>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  files.set(
+    "404.html",
+    applyHead(template, notFoundHead).replace('<div id="root"></div>', () => `${STATIC_STYLE}\n    ${notFoundBody}`)
+  );
 
   const sitemapUrls = [
     { loc: site },
