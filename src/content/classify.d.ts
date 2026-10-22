@@ -24,7 +24,7 @@ export type ClassifyResult = {
   raw: string;
   /** 사람이 읽는 판정 근거 (Actions 요약에 표시) */
   reason: string;
-  /** 링크가 알려진 SNS 주소일 때의 채널 id (x · threads · youtube · instagram · linkedin · notion) */
+  /** 링크가 알려진 SNS 주소일 때의 채널 id (x · threads · youtube · instagram · naver · notion) */
   channel?: string;
 };
 

@@ -14,7 +14,7 @@
  *      Tool(툴) 지정 → 툴 사용법
  *      Category 가 SNS·릴리스 계열 → 뉴스
  *      Version · Changes(변경사항) 있음 → 뉴스 (릴리스 노트)
- *      Link 가 X · Threads · YouTube · Instagram · LinkedIn · Notion 주소 → 뉴스
+ *      Link 가 X · Threads · YouTube · Instagram · 네이버 블로그 · Notion 주소 → 뉴스
  *   3) 그래도 모르면 → 공지사항 (가장 안전한 기본값, 스크립트가 경고로 알려줍니다)
  *
  * ⚠️ `__type` : 동기화 스크립트가 스냅샷의 각 행에 기록해 두는 확정 섹션입니다.
@@ -157,7 +157,7 @@ export const CHANNEL_NAMES = {
   threads: "Threads",
   youtube: "YouTube",
   instagram: "Instagram",
-  linkedin: "LinkedIn",
+  naver: "Naver Blog",
   notion: "Notion",
 };
 
@@ -171,8 +171,7 @@ const SNS_HOSTS = {
   "youtube.com": "youtube",
   "youtu.be": "youtube",
   "instagram.com": "instagram",
-  "linkedin.com": "linkedin",
-  "lnkd.in": "linkedin",
+  "blog.naver.com": "naver",
   "notion.so": "notion",
   "notion.site": "notion",
 };
@@ -181,6 +180,9 @@ const SNS_HOSTS = {
 const NEWS_CATEGORY_KEYS = new Set([
   ...Object.keys(CHANNEL_NAMES),
   "twitter",
+  "naverblog", // Category 'Naver Blog' (정규화하면 공백이 사라집니다)
+  "네이버",
+  "네이버블로그",
   "sns",
   "release",
   "릴리스",
@@ -260,7 +262,7 @@ export function channelFromUrl(url) {
   }
   host = host.replace(/^(?:www|m|mobile)\./, "");
   if (SNS_HOSTS[host]) return SNS_HOSTS[host];
-  // business.linkedin.com · silicon-mascara-c7d.notion.site 같은 하위 도메인
+  // silicon-mascara-c7d.notion.site 같은 하위 도메인
   const tail = host.split(".").slice(-2).join(".");
   return SNS_HOSTS[tail];
 }
