@@ -56,6 +56,7 @@ jobs:
         run: npm run build
 
       - name: 빌드 결과물 게시 (최신 origin 기준으로 재생성)
+        id: publish
         # 빌드 중에 notion-sync 가 main 에 새 스냅샷·페이지를 올렸을 수 있습니다.
         # 체크아웃 상태에 그대로 덮어쓰면 그 내용이 옛 글 목록으로 되돌아가므로,
         # 항상 origin 최신 상태에서 다시 시작해 (1) 새 번들 (2) 최신 스냅샷으로 페이지를 만들고 커밋합니다.
@@ -77,11 +78,13 @@ jobs:
             for d in post notice qna guide; do git add -A -- "$d" 2>/dev/null || true; done
             if git diff --cached --quiet; then
               echo "index.html · 글별 페이지 변경 없음 — 커밋 생략"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             git commit -m "build: 소스 변경 반영 (index.html · 글별 페이지 갱신) [skip ci]"
             if git push origin "HEAD:$BRANCH"; then
               echo "게시 완료"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             echo "푸시 경합 — 최신 상태에서 다시 시도 ($attempt/3)"
@@ -89,3 +92,11 @@ jobs:
           done
           echo "::error::3번 시도했지만 게시하지 못했습니다"
           exit 1
+
+      - name: IndexNow에 사이트맵 주소 알림
+        # 자동 실행은 실제 게시물이 바뀐 경우만. workflow_dispatch 는 실패한 알림의 수동 재시도도 겸합니다.
+        if: (steps.publish.outputs.changed == 'true' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: node scripts/indexnow.mjs
