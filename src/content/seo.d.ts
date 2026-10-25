@@ -8,8 +8,52 @@ export const SITE_NAME: string;
 export const DEFAULT_SITE_URL: string;
 export const DEFAULT_OG_IMAGE_PATH: string;
 export const SITE_META: Record<"ko" | "en" | "ja" | "zh-CN", { title: string; description: string }>;
+export type SiteLang = {
+  code: string;
+  htmlLang: string;
+  prefix: string;
+  hreflang: string;
+  ogLocale: string;
+  name: string;
+};
+export const SITE_LANGS: SiteLang[];
+export const langByCode: (code: string) => SiteLang | null;
+export function localizedUrl(siteUrl: string, code: string, path?: string): string;
+export function hreflangAlternates(
+  siteUrl: string,
+  path: string,
+  codes?: string[]
+): { hreflang: string; href: string }[];
+export function langFromPathname(pathname: string): string;
+
 export const ROUTE_PREFIX: Record<EntryType, string>;
 export const ROUTE_TYPES: Record<string, EntryType[]>;
+/** 비교용 2-gram 토큰 집합 (관련 글 점수 계산용) */
+export function linkTokens(text: unknown): Set<string>;
+/** `Tags` 값에서 해시태그만 뽑은 소문자 집합 */
+export function tagSetOf(value: unknown): Set<string>;
+
+export type RelatedCandidate = {
+  type: string;
+  slug: string;
+  title: string;
+  summary?: string;
+  date?: string;
+  category?: string;
+  tool?: string;
+  tags?: unknown;
+  [key: string]: unknown;
+};
+/** 관련 글 고르기 — 같은 카테고리·툴·해시태그 + 제목 2-gram 겹침 */
+export function relatedArticles(
+  current: RelatedCandidate,
+  pool: RelatedCandidate[],
+  opts?: { limit?: number; minScore?: number; skipType?: string }
+): RelatedCandidate[];
+
+/** 노션 글이 아닌 정적 페이지 중 색인할 것 (사이트맵 포함 · lastmod 없음) */
+export const EXTRA_INDEX_PAGES: string[];
+
 export const SLUG_PATTERN: RegExp;
 export const SUMMARY_MAX: number;
 export const SEO_TITLE_MAX: number;
@@ -120,6 +164,7 @@ export function modifiedDateOf(row: Record<string, unknown>, fallback?: string):
 /** 글별 공유 이미지 로컬 사본 (노션 프록시 의존 제거) */
 export const OG_LOCAL_DIR: string;
 export const OG_MANIFEST_PATH: string;
+/** manifest 키 — 주소 규칙과 1:1. 만들 수 없으면 `""` (throw 하지 않음) */
 export function ogManifestKey(type: string, slug: string): string;
 export function localOgImageUrl(
   manifest: Record<string, string> | null | undefined,
