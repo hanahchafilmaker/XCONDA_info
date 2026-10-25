@@ -41,6 +41,123 @@ export const DEFAULT_SITE_URL = "https://hub.xconda.ai/";
 export const DEFAULT_OG_IMAGE_PATH = "assets/img/og/xconda-hub-1200x630.png";
 
 /**
+ * 글별 공유 이미지를 **우리 도메인에 복사해 두는 폴더**와 그 목록(manifest) 파일.
+ *
+ * 배경: 노션 커버는 `www.notion.so/image/...` 프록시 주소입니다. 서명 파라미터가 만료되거나
+ * 노션이 정책을 바꾸면 **모든 글의 og:image · JSON-LD image 가 한꺼번에 깨집니다**
+ * (링크 미리보기·AI 인용 카드가 빈칸이 됨). 그래서 빌드가 아니라 별도 스크립트
+ * (`scripts/localize-og-images.mjs`)가 이미지를 내려받아 이 폴더에 두고,
+ * manifest 에 있는 글은 **로컬 파일 주소를 우선** 씁니다.
+ */
+/* ---------------------------------------------------------------------------
+ * 관련 글 연결 (2026-10-25 A5)
+ *   크롤러가 "글 → 글"로 이동할 길이 없으면 각 글은 막다른 문서가 됩니다.
+ *   제목·요약의 글자 2-gram 이 겹치는 정도로 관련도를 재고, 같은 섹션이면 가산합니다.
+ *   입력이 같으면 결과도 항상 같도록(멱등) 정렬 기준을 고정합니다.
+ * ------------------------------------------------------------------------ */
+
+/** 비교용 토큰 — 공백·문장부호를 지우고 소문자로 만든 뒤 2글자씩 쪼갭니다(한국어 조사 변화에 강함). */
+export function linkTokens(text) {
+  const s = String(text ?? "")
+    .toLowerCase()
+    .replace(/[^0-9a-z가-힣]+/g, "");
+  const out = new Set();
+  if (s.length < 2) {
+    if (s) out.add(s);
+    return out;
+  }
+  for (let i = 0; i < s.length - 1; i += 1) out.add(s.slice(i, i + 2));
+  return out;
+}
+
+/** `Tags` 값(문자열·배열·"['#A #B']" 형태)에서 해시태그만 뽑아 소문자 집합으로 만듭니다. */
+export function tagSetOf(value) {
+  const raw = Array.isArray(value) ? value.flat().join(" ") : String(value ?? "");
+  const out = new Set();
+  for (const m of raw.matchAll(/#([0-9a-z가-힣]+)/gi)) out.add(m[1].toLowerCase());
+  return out;
+}
+
+/**
+ * 관련 글 고르기 — 노션의 `Category` · `Tool` · `Tags` 를 1순위 신호로 쓰고,
+ * 제목·요약의 2-gram 겹침을 보조로 씁니다.
+ *   같은 카테고리 +6 · 같은 툴 +4 · 같은 해시태그 +4 · 제목 2-gram +1(개당, 최대 4)
+ * 점수가 같으면 최신 글 → slug 순으로 고정해, 같은 입력이면 항상 같은 결과가 나옵니다.
+ *
+ * @param {{ type: string, slug: string, title: string, summary?: string, date?: string,
+ *           category?: string, tool?: string, tags?: unknown }} current
+ * @param {Array<object>} pool 같은 모양의 후보 전체
+ * @param {{ limit?: number, minScore?: number, skipType?: string }} [opts]
+ *   `skipType` 은 그 섹션 글을 후보에서 뺍니다 — Q&A 에서는 같은 Q&A 보다
+ *   가이드·블로그로 보내는 편이 읽는 사람과 크롤러 모두에게 낫습니다.
+ */
+export function relatedArticles(current, pool, { limit = 4, minScore = 4, skipType = "" } = {}) {
+  if (!current || !Array.isArray(pool)) return [];
+  const baseTokens = linkTokens(current.title);
+  const baseTags = tagSetOf(current.tags);
+  const baseCategory = String(current.category ?? "").trim().toLowerCase();
+  const baseTool = String(current.tool ?? "").trim().toLowerCase();
+  const scored = [];
+  for (const item of pool) {
+    if (!item) continue;
+    if (item.type === current.type && item.slug === current.slug) continue; // 자기 자신 제외
+    if (skipType && item.type === skipType) continue;
+
+    let score = 0;
+    const category = String(item.category ?? "").trim().toLowerCase();
+    if (baseCategory && category && category === baseCategory) score += 6;
+    const tool = String(item.tool ?? "").trim().toLowerCase();
+    if (baseTool && tool && tool === baseTool) score += 4;
+    const tags = tagSetOf(item.tags);
+    for (const t of tags) if (baseTags.has(t)) score += 4;
+    if (score === 0) {
+      let grams = 0;
+      for (const t of linkTokens(item.title)) if (baseTokens.has(t)) grams += 1;
+      score += Math.min(grams, 4);
+    }
+    if (score < minScore) continue;
+    if (item.type === current.type) score += 1; // 그래도 같은 섹션이 조금 유리
+    scored.push({ item, score });
+  }
+  scored.sort(
+    (a, b) =>
+      b.score - a.score ||
+      String(b.item.date ?? "").localeCompare(String(a.item.date ?? "")) ||
+      String(a.item.slug ?? "").localeCompare(String(b.item.slug ?? "")),
+  );
+  return scored.slice(0, limit).map((s) => s.item);
+}
+
+/**
+ * 노션 글이 아니지만 검색에 노출할 정적 페이지(저장소 루트의 html 파일).
+ *  - `user-guide.html`: XCONDA 스튜디오 19개 툴 완전 가이드 — 공개용이라 색인 대상입니다.
+ *  - `admin-guide.html`: 노션 운영 매뉴얼 — 내부용이라 색인하지 않습니다(noindex). 그래서 여기 없습니다.
+ * 사이트맵 lastmod 는 넣지 않습니다: 파일 수정 시각은 체크아웃마다 달라져 빌드가 흔들립니다.
+ */
+export const EXTRA_INDEX_PAGES = ["user-guide.html"];
+
+export const OG_LOCAL_DIR = "assets/img/og/posts";
+export const OG_MANIFEST_PATH = `${OG_LOCAL_DIR}/manifest.json`;
+
+/** manifest 키 — 주소 규칙(`post/…`)과 1:1로 맞춥니다. */
+export function ogManifestKey(type, slug) {
+  const prefix = routePrefixFor(type);
+  return prefix && slug ? `${prefix}/${slug}` : "";
+}
+
+/**
+ * manifest 에 있으면 로컬(우리 도메인) 이미지 주소를, 없으면 빈 문자열을 돌려줍니다.
+ * @param {Record<string, string>} manifest `{ "post/slug": "file.png" }`
+ * @param {string} key `ogManifestKey()` 결과
+ * @param {string} siteUrl 사이트 주소 (끝 / 허용)
+ */
+export function localOgImageUrl(manifest, key, siteUrl = DEFAULT_SITE_URL) {
+  const file = isRecord(manifest) ? manifest[key] : "";
+  if (typeof file !== "string" || !file.trim()) return "";
+  return absoluteUrl(siteUrl, `${OG_LOCAL_DIR}/${file.trim()}`);
+}
+
+/**
  * 언어별 사이트 제목 · 설명. 한국어 값은 이 한 곳에서만 관리합니다
  * (index.html 의 빌드 결과 · 앱 런타임 `META` 가 모두 여기서 가져옵니다).
  */
@@ -346,6 +463,48 @@ export function sitemapXml(urls) {
 /** robots.txt — 모든 크롤러 허용 + 사이트맵 위치 */
 export function robotsTxt(siteUrl) {
   return `User-agent: *\nAllow: /\n\nSitemap: ${absoluteUrl(siteUrl, "sitemap.xml")}\n`;
+}
+
+/**
+ * llms.txt — AI 도우미가 사이트 구조를 한 번에 파악하도록 만드는 짧은 안내문.
+ * 형식: llmstxt.org (H1 제목 · 인용 요약 · 섹션별 링크 목록).
+ *   - 링크는 **절대 주소**로 적습니다(AI 가 인용할 때 그대로 쓰기 때문).
+ *   - 순서는 입력 순서를 고정(섹션 정의 순 → 최신순)해 같은 입력이면 같은 파일이 됩니다.
+ * @param {{ siteUrl: string, title: string, description: string,
+ *           sections: Array<{heading: string, url: string, description?: string}>,
+ *           pages: Array<{type: string, title: string, url: string, summary?: string}>,
+ *           perSection?: number }} input
+ */
+export function llmsTxt({ siteUrl, title, description, sections = [], pages = [], perSection = 20 }) {
+  const bySection = new Map();
+  for (const p of pages) {
+    if (!bySection.has(p.type)) bySection.set(p.type, []);
+    bySection.get(p.type).push(p);
+  }
+  const LABEL = { guide: "툴 사용법", notice: "공지사항", news: "뉴스", blog: "블로그", faq: "Q&A" };
+  const ORDER = ["guide", "notice", "news", "blog", "faq"];
+  const lines = [`# ${title}`, "", `> ${description}`, ""];
+  if (sections.length) {
+    lines.push("## 섹션", "");
+    for (const s of sections) {
+      lines.push(`- [${s.heading}](${s.url})${s.description ? `: ${s.description}` : ""}`);
+    }
+    lines.push("");
+  }
+  for (const type of ORDER) {
+    const items = bySection.get(type);
+    if (!items?.length) continue;
+    lines.push(`## ${LABEL[type] ?? type}`, "");
+    for (const p of items.slice(0, perSection)) {
+      // 한 줄 160자 안팎 — AI 가 통째로 읽기 좋은 길이로 자릅니다.
+      const full = String(p.summary ?? "").replace(/\s+/g, " ").trim();
+      const desc = full.length > 160 ? `${full.slice(0, 158).trimEnd()}…` : full;
+      lines.push(`- [${p.title}](${p.url})${desc ? `: ${desc}` : ""}`);
+    }
+    if (items.length > perSection) lines.push(`- … 외 ${items.length - perSection}건은 ${absoluteUrl(siteUrl, "sitemap.xml")} 참고`);
+    lines.push("");
+  }
+  return `${lines.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd()}\n`;
 }
 
 export function escapeHtml(value) {

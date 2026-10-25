@@ -46,6 +46,12 @@ import {
   howToJsonLd,
   jsonLdGraph,
   listJsonLd,
+  EXTRA_INDEX_PAGES,
+  llmsTxt,
+  localOgImageUrl,
+  relatedArticles,
+  ogManifestKey,
+  OG_MANIFEST_PATH,
   modifiedDateOf,
   pickProp,
   resolveArticleMeta,
@@ -84,6 +90,39 @@ export function applyHead(template, head) {
   if (!html.includes(headEnd)) throw new Error("템플릿에 </head> 가 없습니다");
   // 함수형 치환 — 제목·본문에 $ 기호가 있어도 특수 치환 패턴으로 해석되지 않게 합니다.
   return html.replace(headEnd, () => `    <!-- SEO:START -->\n${head}\n    <!-- SEO:END -->\n  ${headEnd}`);
+}
+
+/* ------------------------------ 공용 자산 분리 ------------------------------ */
+
+/**
+ * 단일 파일 빌드(`vite-plugin-singlefile`)가 index.html 안에 인라인으로 넣은
+ * **JS·CSS 를 공용 파일로 분리**합니다.
+ *
+ * 배경: 인라인 번들은 약 447KB(JS) + 46KB(CSS)이고, 글마다 같은 내용이 복사되어
+ * 100개 페이지 × 약 490KB ≈ 49MB 가 저장소·전송에 실렸습니다. 크롤러 입장에서는
+ * 페이지마다 같은 바이트를 다시 받는 셈이라 크롤 예산·LCP 에 불리합니다.
+ * → `assets/app.js` · `assets/app.css` 한 벌로 빼고, 모든 페이지가 그 주소를 가리킵니다.
+ *   (페이지 주소 깊이가 달라도 되도록 사이트 기준 절대 주소를 씁니다)
+ *
+ * 이미 분리된 템플릿(빌드 결과 index.html)을 다시 넣어도 아무 것도 하지 않습니다(멱등).
+ */
+export function externalizeAssets(template, siteUrl = DEFAULT_SITE_URL) {
+  const base = absoluteUrl(siteUrl, "");
+  let html = template;
+  let js = null;
+  let css = null;
+
+  const script = /<script type="module" crossorigin>([\s\S]*?)<\/script>/.exec(html);
+  if (script) {
+    js = script[1];
+    html = html.replace(script[0], () => `<script type="module" crossorigin src="${base}assets/app.js"></script>`);
+  }
+  const style = /<style rel="stylesheet" crossorigin>([\s\S]*?)<\/style>/.exec(html);
+  if (style) {
+    css = style[1];
+    html = html.replace(style[0], () => `<link rel="stylesheet" href="${base}assets/app.css" />`);
+  }
+  return { template: html, js, css };
 }
 
 const ROOT_OPEN = '<div id="root">';
@@ -164,7 +203,7 @@ const paragraphsHtml = (text) =>
  * 글 한 건의 #root 내용. 앱이 로드되면 React 가 이 내용을 지우고 상세 화면으로 바꿉니다.
  * 자바스크립트를 실행하지 않는 크롤러와 공유 미리보기 확인용으로도 쓰입니다.
  */
-export function articleBodyHtml({ prefix, type, title, date, author, summary, cover, blocks }) {
+export function articleBodyHtml({ prefix, type, title, date, author, summary, cover, blocks, related = [] }) {
   // 허브 메인으로 가는 상대 경로 (post/{slug}/ 기준 두 단계 위)
   const hubHref = "../../";
   const section = SECTION_LABELS[type] ?? "";
@@ -186,6 +225,20 @@ export function articleBodyHtml({ prefix, type, title, date, author, summary, co
     showSummary ? paragraphsHtml(summary) : "",
     hasBody ? blocksToHtml(blocks, { alt: title }) : "",
     `</article>`,
+    // 관련 글 — 글에서 글로 이어지는 크롤 경로(색인·AI 인용에 도움). 후보가 없으면 아무것도 넣지 않습니다.
+    related.length
+      ? [
+          `<nav class="seo-related" aria-label="관련 글">`,
+          `<h2>${type === "faq" ? "관련 안내" : "관련 글"}</h2>`,
+          `<ul>`,
+          ...related.map(
+            (r) =>
+              `<li><a href="${escapeHtml(relHref(routePathFor(r.type, r.slug), "../../"))}">${escapeHtml(r.title)}</a></li>`,
+          ),
+          `</ul>`,
+          `</nav>`,
+        ].join("")
+      : "",
     `<p><a href="${hubHref}">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -295,6 +348,10 @@ export function sectionPageHtml({ page, items }) {
     `<p>${escapeHtml(page.description)}</p>`,
     `<p class="seo-meta">${items.length}개</p>`,
     serverListHtml(items, linkOf),
+    // 툴 사용법 목록에는 스튜디오 전체 사용자 가이드(정적 페이지)로 가는 길을 둡니다.
+    page.types.includes("guide")
+      ? `<p class="seo-more"><a href="../user-guide.html">XCONDA 스튜디오 19개 툴 완전 사용자 가이드</a></p>`
+      : "",
     `<p><a href="../">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -379,8 +436,12 @@ const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh
  * @param {{ rows: object[], pages?: object, template: string, siteUrl?: string }} input
  * @returns {{ files: Map<string, string>, pages: object[], skipped: object[], warnings: string[], siteUrl: string }}
  */
-export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SITE_URL }) {
+export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput } = {}) {
+  let template = inputTemplate;
   const site = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
+  // 인라인 번들 → 공용 자산(assets/app.js · app.css). 이미 분리된 템플릿이면 그대로 둡니다.
+  const assetSplit = externalizeAssets(template, site);
+  template = assetSplit.template;
   const warnings = [];
   const skipped = [];
   const seen = new Set();
@@ -409,8 +470,23 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     candidates.push({ row, type, slug: eligibility.slug, title, prefix: ROUTE_PREFIX[type] });
   }
 
+  // 관련 글 후보 — 본문을 만들기 전에 제목·요약·날짜를 모아 둡니다(A5).
+  const relatedPool = candidates.map((c) => ({
+    type: c.type,
+    slug: c.slug,
+    title: c.row.Title ?? c.title,
+    summary: seoFieldsOf(c.row).seoDescription || textOf(c.row.Summary),
+    date: textOf(c.row.Date),
+    // 관련 글 판단에 쓰는 노션 속성 — Category · Tool · Tags
+    category: textOf(pickProp(c.row, ["Category", "카테고리"])),
+    tool: textOf(pickProp(c.row, ["Tool"])),
+    tags: pickProp(c.row, ["Tags"]),
+  }));
+
   const pageRecords = [];
   const files = new Map();
+  if (assetSplit.js) files.set("assets/app.js", assetSplit.js);
+  if (assetSplit.css) files.set("assets/app.css", assetSplit.css);
 
   /* 공유 이미지 · 로고 존재 확인 (없으면 경고만) */
   const defaultImageUrl = absoluteUrl(site, DEFAULT_OG_IMAGE_PATH);
@@ -423,14 +499,38 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
 
   const siteLd = jsonLdGraph(site);
 
+  // 글별 공유 이미지 로컬 사본 목록(있으면 로컬 주소를 우선 사용 — 노션 프록시 만료 대비)
+  // (테스트에서는 ogManifest 를 직접 주입할 수 있습니다)
+  let ogManifest = ogManifestInput;
+  if (!ogManifest) {
+    ogManifest = {};
+    try {
+      const manifestPath = path.join(REPO_ROOT, OG_MANIFEST_PATH);
+      if (fs.existsSync(manifestPath)) ogManifest = JSON.parse(fs.readFileSync(manifestPath, "utf8")) ?? {};
+    } catch (e) {
+      warnings.push(`공유 이미지 목록(${OG_MANIFEST_PATH})을 읽지 못했습니다: ${e?.message ?? e}`);
+    }
+  }
+
   for (const c of candidates) {
     const { row, type, slug, title } = c;
     const seo = seoFieldsOf(row);
     const coverRaw = fileUrlOf(pickProp(row, COVER_KEYS)) || textOf(row.__cover) || derivedCover(pages, row.id);
     const summary = textOf(row.Summary);
     const date = DATE_RE.test(textOf(row.Date)) ? textOf(row.Date) : "";
+    // 우선순위: 노션 OG 이미지 속성 → **우리 도메인에 복사해 둔 사본** → 커버(노션 프록시) → 기본 이미지
+    const localOg = localOgImageUrl(ogManifest, ogManifestKey(type, slug), site);
     const meta = resolveArticleMeta(
-      { title, summary, seoTitle: seo.seoTitle, seoDescription: seo.seoDescription, cover: coverRaw, ogImage: seo.ogImage, date, type },
+      {
+        title,
+        summary,
+        seoTitle: seo.seoTitle,
+        seoDescription: seo.seoDescription,
+        cover: coverRaw,
+        ogImage: localOg || seo.ogImage,
+        date,
+        type,
+      },
       { defaultImageUrl }
     );
     const url = absoluteUrl(site, routePathFor(type, slug));
@@ -495,6 +595,35 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       articleLd,
       howToLd,
     });
+    const relatedSubject = {
+      type,
+      slug,
+      title,
+      summary: seo.seoDescription || summary,
+      date,
+      category: textOf(pickProp(row, ["Category", "카테고리"])),
+      tool: textOf(pickProp(row, ["Tool"])),
+      tags: pickProp(row, ["Tags"]),
+    };
+    // Q&A 는 같은 Q&A 끼리보다 가이드·블로그로 이어 주는 편이 낫습니다(같은 Q&A 는 뒤에서 채움).
+    const related =
+      type === "faq"
+        ? [
+            ...relatedArticles(relatedSubject, relatedPool, { skipType: "faq" }),
+            ...relatedArticles(relatedSubject, relatedPool, { limit: 2 }),
+          ].filter((v, i, arr) => arr.findIndex((w) => w.type === v.type && w.slug === v.slug) === i).slice(0, 4)
+        : relatedArticles(relatedSubject, relatedPool);
+    // 관련도가 낮아 아무것도 못 고른 글은 **같은 섹션 최신 글**로 채웁니다.
+    // (크롤러가 막다른 문서에 도착하지 않도록 — 글 → 글 경로는 항상 하나 이상 둡니다.)
+    const byNewest = (a, b) =>
+      String(b.date ?? "").localeCompare(String(a.date ?? "")) || String(a.slug).localeCompare(String(b.slug));
+    const others = relatedPool.filter((p) => !(p.type === type && p.slug === slug));
+    const relatedFinal = related.length
+      ? related
+      : [...others.filter((p) => p.type === type).sort(byNewest), ...others.filter((p) => p.type !== type).sort(byNewest)].slice(
+          0,
+          3,
+        );
     const body = articleBodyHtml({
       prefix: c.prefix,
       type,
@@ -504,6 +633,7 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       summary,
       cover: coverRaw,
       blocks,
+      related: relatedFinal,
     });
     const html = injectRoot(applyHead(template, head), body);
     files.set(`${c.prefix}/${slug}/index.html`, html);
@@ -601,7 +731,7 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       ]),
     });
     files.set(`${page.prefix}/index.html`, injectRoot(applyHead(template, head), sectionPageHtml({ page, items })));
-    sectionRecords.push({ prefix: page.prefix, url, lastmod, count: items.length });
+    sectionRecords.push({ prefix: page.prefix, url, lastmod, count: items.length, heading: page.heading, description: page.description });
   }
 
   // 404 페이지 (GitHub Pages 가 없는 주소에 이 파일을 404 상태로 냅니다 — 보고서 A7)
@@ -639,9 +769,26 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     { loc: site, lastmod: newest },
     ...sectionRecords.map((s) => ({ loc: s.url, lastmod: s.lastmod })),
     ...pageRecords.map((p) => ({ loc: p.url, lastmod: p.modified || p.date || undefined })),
+    // 노션 밖 정적 페이지(예: 스튜디오 19개 툴 사용자 가이드) — lastmod 는 생략
+    ...EXTRA_INDEX_PAGES.map((file) => ({ loc: absoluteUrl(site, file) })),
   ];
   files.set("sitemap.xml", sitemapXml(sitemapUrls));
   files.set("robots.txt", robotsTxt(site));
+  // llms.txt — AI 도우미용 사이트 안내문(섹션 + 대표 글). 사이트맵과 같은 목록에서 만들어 항상 일치합니다.
+  files.set(
+    "llms.txt",
+    llmsTxt({
+      siteUrl: site,
+      title: home.title,
+      description: home.description,
+      sections: [
+        { heading: "XCONDA허브 홈", url: site, description: home.description },
+        ...sectionRecords.map((s) => ({ heading: s.heading, url: s.url, description: s.description })),
+        { heading: "스튜디오 19개 툴 완전 사용자 가이드", url: absoluteUrl(site, "user-guide.html") },
+      ],
+      pages: pageRecords.map((p) => ({ type: p.type, title: p.pageTitle || p.title, url: p.url, summary: p.summary })),
+    }),
+  );
 
   return { files, pages: pageRecords, sections: sectionRecords, skipped, warnings, siteUrl: site };
 }

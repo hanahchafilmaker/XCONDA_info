@@ -20,6 +20,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   DEFAULT_SITE_URL,
+  OG_LOCAL_DIR,
+  localOgImageUrl,
+  ogManifestKey,
+  relatedArticles,
+  tagSetOf,
   articleJsonLd,
   hubBaseFromPathname,
   isSeoReady,
@@ -312,6 +317,7 @@ test("주소 조건을 통과한 글만 파일이 만들어지고, 나머지는 
   assert.deepEqual(written, [
     "404.html",
     "index.html",
+    "llms.txt",
     "post/deepseek-official-harness/index.html",
     "post/index.html",
     "post/opus-5-5-trending/index.html",
@@ -372,8 +378,8 @@ test("사이트맵은 조건을 통과한 글과 홈만 담고, robots.txt 는 �
   assert.match(sitemap, /<lastmod>2026-10-02<\/lastmod>/);
   assert.doesNotMatch(sitemap, /maintenance/);
   assert.doesNotMatch(sitemap, /slug-없는|슬러그/);
-  // 홈 + 섹션 목록 2개(글 있는 섹션만) + 글 3개
-  assert.equal((sitemap.match(/<url>/g) ?? []).length, 6);
+  // 홈 + 섹션 목록 2개(글 있는 섹션만) + 글 3개 + 정적 공개 페이지 1개(user-guide.html)
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 7);
   // 표준 네임스페이스(복수형 sitemaps.org) — 단수형은 도구에 따라 사이트맵을 통째로 무시합니다
   assert.match(sitemap, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
   assert.doesNotMatch(sitemap, /www\.sitemap\.org\//);
@@ -589,4 +595,184 @@ test("수정일이 작성일과 다를 때만 dateModified 를 넣는다", () =>
   assert.doesNotMatch(untouched, /article:modified_time/);
   // 사이트맵 lastmod 는 수정일을 우선합니다
   assert.match(out.files.get("sitemap.xml"), /post\/edited-post\/<\/loc>\n    <lastmod>2026-10-20<\/lastmod>/);
+});
+
+/* ---------------------------------------------------------------------------
+ * 공유 이미지(OG) 자체 호스팅 — 2026-10-25 A3
+ *   노션 프록시(www.notion.so/image/...)는 만료·정책 변경 위험이 있어,
+ *   복사본이 있으면 우리 도메인 주소를 씁니다.
+ * ------------------------------------------------------------------------ */
+test("OG 목록 키는 type/slug 이고, 없는 키는 빈 문자열이다", () => {
+  assert.equal(ogManifestKey("blog", "my-post"), "post/my-post");
+  assert.equal(ogManifestKey("guide", "my-guide"), "guide/my-guide");
+  assert.equal(ogManifestKey("blog", ""), "");
+  assert.equal(OG_LOCAL_DIR, "assets/img/og/posts");
+});
+
+test("OG 목록에 있으면 우리 도메인 주소를, 없으면 null 을 돌려준다", () => {
+  const manifest = { "post/my-post": "post-my-post.png" };
+  assert.equal(
+    localOgImageUrl(manifest, "post/my-post", "https://hub.example.test"),
+    "https://hub.example.test/assets/img/og/posts/post-my-post.png",
+  );
+  assert.equal(localOgImageUrl(manifest, "post/unknown", "https://hub.example.test"), "");
+  assert.equal(localOgImageUrl(null, "post/my-post", "https://hub.example.test"), "");
+  // 사이트 주소 끝의 슬래시가 겹치지 않습니다
+  assert.equal(
+    localOgImageUrl(manifest, "post/my-post", "https://hub.example.test/"),
+    "https://hub.example.test/assets/img/og/posts/post-my-post.png",
+  );
+});
+
+test("복사본이 있으면 og:image · twitter:image · JSON-LD image 가 모두 우리 주소를 쓴다", () => {
+  const rows = [
+    {
+      id: "99999999-0000-4000-8000-000000000001",
+      Title: "노션 커버를 쓰는 글",
+      __type: "blog",
+      Published: true,
+      Date: "2026-10-05",
+      Slug: "notion-cover-post",
+      Summary: "요약",
+      __cover: "https://www.notion.so/image/abc123?table=block&id=xyz",
+    },
+  ];
+  const ogManifest = { "post/notion-cover-post": "post-notion-cover-post.png" };
+  const out = renderSeoSite({ rows, pages: {}, template: TEMPLATE, siteUrl: SITE, ogManifest });
+  const page = out.files.get("post/notion-cover-post/index.html");
+  const expected = `${SITE}assets/img/og/posts/post-notion-cover-post.png`;
+  assert.match(page, new RegExp(`<meta property="og:image" content="${expected}" />`));
+  assert.match(page, new RegExp(`<meta name="twitter:image" content="${expected}" />`));
+  const ldImage = ldJsonOf(page, true).image;
+  assert.equal([].concat(ldImage)[0], expected);
+  // <head> 안에는 노션 프록시 주소가 남아 있으면 안 됩니다
+  // (본문 <figure> 는 실제 커버 사진이므로 그대로 둡니다 — OG 카드와 다른 이미지일 수 있음)
+  const headOnly = page.slice(page.indexOf("<head>"), page.indexOf("</head>"));
+  assert.doesNotMatch(headOnly, /www\.notion\.so\/image/);
+});
+
+test("OG 이미지 속성이 있으면 커버보다 우선하고, 복사본이 있으면 그보다 로컬이 우선한다", () => {
+  const base = {
+    id: "99999999-0000-4000-8000-000000000002",
+    Title: "우선순위 글",
+    __type: "blog",
+    Published: true,
+    Date: "2026-10-06",
+    Slug: "og-priority",
+    Summary: "요약",
+    __cover: "https://www.notion.so/image/cover",
+    "OG 이미지": "https://cdn.example.test/designed-og.png",
+  };
+  // 복사본이 없으면 → 직접 지정한 OG 이미지
+  const noLocal = renderSeoSite({ rows: [base], pages: {}, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  assert.match(
+    noLocal.files.get("post/og-priority/index.html"),
+    /<meta property="og:image" content="https:\/\/cdn\.example\.test\/designed-og\.png" \/>/,
+  );
+  // 복사본이 있으면 → 로컬 사본 (노션·외부 CDN 의존 제거)
+  const withLocal = renderSeoSite({
+    rows: [base],
+    pages: {},
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: { "post/og-priority": "post-og-priority.webp" },
+  });
+  assert.match(
+    withLocal.files.get("post/og-priority/index.html"),
+    new RegExp(`<meta property="og:image" content="${SITE}assets/img/og/posts/post-og-priority.webp" />`),
+  );
+});
+
+/* ---------------------------------------------------------------------------
+ * 색인 정책 — 2026-10-25 A4
+ *   관리자 매뉴얼은 noindex, 공개 사용자 가이드는 canonical + 사이트맵.
+ * ------------------------------------------------------------------------ */
+test("관리자 매뉴얼은 noindex, 사용자 가이드는 canonical + 사이트맵에 들어간다", () => {
+  const read = (f) => fs.readFileSync(path.join(here, "..", f), "utf8");
+  assert.match(read("admin-guide.html"), /<meta name="robots" content="noindex, nofollow">/);
+  assert.match(read("user-guide.html"), /<link rel="canonical" href="https:\/\/hub\.xconda\.ai\/user-guide\.html" \/>/);
+  // noindex 페이지는 사이트맵에 없고, 공개 가이드는 있습니다.
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  const sitemap = out.files.get("sitemap.xml");
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/user-guide\.html<\/loc>/);
+  assert.doesNotMatch(sitemap, /admin-guide/);
+  // 정적 페이지에는 lastmod 를 넣지 않습니다(체크아웃마다 값이 달라지면 빌드가 흔들림).
+  const block = sitemap.split("<url>").find((b) => b.includes("user-guide.html"));
+  assert.doesNotMatch(block, /lastmod/);
+});
+
+/* ---------------------------------------------------------------------------
+ * 관련 글 · llms.txt — 2026-10-25 A5 · A6
+ * ------------------------------------------------------------------------ */
+test("관련 글은 카테고리 · 툴 · 태그를 먼저 보고 자기 자신은 빼며 결과가 항상 같다", () => {
+  const pool = [
+    { type: "blog", slug: "me", title: "시드댄스 스토리보드", date: "2026-10-09", category: "제작 가이드" },
+    { type: "blog", slug: "same-cat", title: "컷 연결", date: "2026-10-01", category: "제작 가이드" },
+    { type: "guide", slug: "same-tool", title: "툴 설명", date: "2026-10-02", tool: "FLEXBOARD" },
+    { type: "blog", slug: "same-tag", title: "태그 글", date: "2026-10-03", tags: "['#FLEXBOARD #AI영상']" },
+    { type: "blog", slug: "unrelated", title: "환불 정책", date: "2026-10-04", category: "저작권·이용 정책" },
+  ];
+  const me = { ...pool[0], tool: "FLEXBOARD", tags: ["#FLEXBOARD"] };
+  const got = relatedArticles(me, pool, { limit: 3 });
+  assert.ok(!got.some((x) => x.slug === "me"), "자기 자신이 들어갔습니다");
+  assert.equal(got[0].slug, "same-cat", "같은 카테고리가 1순위여야 합니다");
+  assert.ok(got.some((x) => x.slug === "same-tag"), "같은 태그 글도 후보여야 합니다");
+  assert.ok(!got.some((x) => x.slug === "unrelated"), "관련 없는 글이 들어갔습니다");
+  // 같은 입력 → 같은 결과(멱등)
+  const again = relatedArticles(me, pool, { limit: 3 });
+  assert.deepEqual(again.map((x) => x.slug), got.map((x) => x.slug));
+  // Q&A 에서는 같은 Q&A 를 뺄 수 있습니다
+  const skip = relatedArticles({ ...me, type: "faq" }, [{ type: "faq", slug: "other", title: "다른 질문", category: "제작 가이드" }, ...pool], { skipType: "faq" });
+  assert.ok(!skip.some((x) => x.type === "faq"));
+});
+
+test("태그 문자열에서 해시태그만 뽑는다", () => {
+  assert.deepEqual([...tagSetOf("['#FLEXBOARD #시댄스2.5']")], ["flexboard", "시댄스2"]);
+  assert.deepEqual([...tagSetOf(["#AI영상", "기타"])], ["ai영상"]);
+  assert.equal(tagSetOf(undefined).size, 0);
+});
+
+test("모든 글 페이지는 관련 글 링크를 1개 이상 갖고, 자기 자신을 링크하지 않는다", () => {
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  let checked = 0;
+  for (const [file, html] of out.files) {
+    if (!/^(post|notice|qna|guide)\/[^/]+\/index\.html$/.test(file)) continue;
+    checked += 1;
+    const block = /aria-label="관련 글".*?<\/nav>/s.exec(html)?.[0] ?? "";
+    assert.ok(block, `${file} 에 관련 글 블록이 없습니다`);
+    assert.match(block, /<li><a href="\.\.\/\.\.\/[^"]+">/, `${file} 관련 글이 비어 있습니다`);
+    const selfHref = `href="../../${file.replace("/index.html", "/")}"`;
+    assert.ok(!block.includes(selfHref), `${file} 가 자기 자신을 링크합니다`);
+  }
+  assert.ok(checked >= 3, `검사한 글 페이지가 너무 적습니다: ${checked}`);
+});
+
+test("llms.txt — 사이트 요약 · 섹션 · 대표 글 링크를 절대 주소로 담는다", () => {
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  const txt = out.files.get("llms.txt");
+  assert.ok(txt, "llms.txt 가 생성되지 않았습니다");
+  assert.match(txt, /^# XCONDA허브/);
+  assert.match(txt, /^> /m);
+  // 모든 링크는 절대 주소
+  for (const m of txt.matchAll(/\]\(([^)]+)\)/g)) assert.match(m[1], /^https:\/\/example\.test\//);
+  assert.match(txt, /\[뉴스 · 블로그\]\(https:\/\/example\.test\/XCONDA_info\/post\/\)/);
+  // 섹션별 상한(20건)을 넘으면 사이트맵으로 안내합니다
+  const many = Array.from({ length: 25 }, (_, i) => ({
+    id: `77777777-0000-4000-8000-${String(i).padStart(12, "0")}`,
+    Title: `블로그 글 ${i}`,
+    __type: "blog",
+    Published: true,
+    Date: `2026-09-${String((i % 28) + 1).padStart(2, "0")}`,
+    Slug: `many-post-${i}`,
+    Summary: "요약",
+  }));
+  const big = renderSeoSite({ rows: many, pages: {}, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  assert.match(big.files.get("llms.txt"), /- … 외 5건은 https:\/\/example\.test\/XCONDA_info\/sitemap\.xml 참고/);
+  // 사이트맵에 있는 글 주소가 llms.txt 에도 있어야 합니다(두 목록이 어긋나지 않게)
+  const sitemapLocs = [...out.files.get("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  const firstArticle = sitemapLocs.find((u) => /\/post\/[^/]+\/$/.test(u)) ?? sitemapLocs[0];
+  assert.ok(txt.includes(firstArticle), `llms.txt 에 ${firstArticle} 가 없습니다`);
+  // 같은 입력이면 같은 파일(멱등)
+  const again = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  assert.equal(again.files.get("llms.txt"), txt);
 });
