@@ -117,6 +117,16 @@ export function howToJsonLd(input: {
 export const MODIFIED_KEYS: string[];
 export function modifiedDateOf(row: Record<string, unknown>, fallback?: string): string;
 
+/** 글별 공유 이미지 로컬 사본 (노션 프록시 의존 제거) */
+export const OG_LOCAL_DIR: string;
+export const OG_MANIFEST_PATH: string;
+export function ogManifestKey(type: string, slug: string): string;
+export function localOgImageUrl(
+  manifest: Record<string, string> | null | undefined,
+  key: string,
+  siteUrl?: string
+): string;
+
 /** 섹션 인덱스 페이지(/post/ · /notice/ · /qna/ · /guide/) 정보 */
 export type SectionPage = {
   prefix: "post" | "notice" | "qna" | "guide";

@@ -1,0 +1,90 @@
+{
+  "_readme": [
+    "XCONDA허브 영어판 원문. 이 파일에 있는 글만 /en/ 주소가 만들어집니다(빌드: scripts/build-seo.mjs).",
+    "번역은 **사람이 검수**해 넣습니다. 기계번역을 그대로 넣지 마세요 — 같은 내용을 두 주소로 내보내면 검색에서 중복으로 처리됩니다.",
+    "키 규칙: entries 의 키는 `주소/슬러그`(예: qna/contact-inquiry). 원문 글이 사라지면 빌드가 경고하고 그 주소는 만들지 않습니다.",
+    "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변). 블로그·가이드는 본문 번역(bodies)이 아직 없어 영어 주소를 만들지 않습니다."
+  ],
+  "lang": "en",
+  "updated": "2026-10-25",
+  "site": {
+    "title": "XCONDA Hub — Q&A, Guides and Notices",
+    "description": "English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry."
+  },
+  "ui": {
+    "home": "Home",
+    "hubHome": "XCONDA Hub home",
+    "koreanOriginal": "이 글의 한국어 원문 보기 (Read this in Korean)",
+    "allSections": "All topics",
+    "note": "English pages are translated by the XCONDA team. The Korean hub is the primary source; contact cubeberry@cuberry.kr if anything here disagrees with it.",
+    "articleCount": "articles"
+  },
+  "sections": {
+    "qna": {
+      "title": "XCONDA Q&A (English)",
+      "description": "Reviewed English answers to the questions XCONDA users ask most: pricing and cancellation, privacy and payments, tools and workflows."
+    }
+  },
+  "entries": {
+    "qna/contact-inquiry": {
+      "title": "How do I contact support?",
+      "summary": "Support is handled in one place for every customer. Email cubeberry@cuberry.kr or call +82-70-8095-2302, weekdays 10:00–17:00 KST (lunch 12:00–13:00). The US entity (Cubeberry Co., Ltd, Delaware) can be reached at info@cubeberry.ai or +1-888-202-1989; its New York address is 276 5th Ave, Ste 704-2816, New York, NY 10001. Refunds for purchases made through the US entity go through the same support desk."
+    },
+    "qna/card-information-security": {
+      "title": "Is my card information stored safely?",
+      "summary": "Card details are handled by Stripe or by PortOne (Toss Payments, KakaoPay, Eximbay). Cubeberry's servers never store a full card number — only the last four digits and the expiry date, for verification."
+    },
+    "qna/company-business-info": {
+      "title": "Which company operates XCONDA?",
+      "summary": "XCONDA is developed and operated by Cubeberry Co., Ltd. (주식회사 큐브베리). CEO: Jinseo Lee (이진서). Business registration number 480-88-03079; e-commerce registration 2026-광주동구-0289. Address: 2F, 69-12 Chungjang-ro, Dong-gu, Jeonnam-Gwangju 61482, Republic of Korea. Phone +82-70-8095-2302, email cubeberry@cuberry.kr, weekdays 10:00–17:00 KST. Servers run on Amazon Web Services. The registration can be verified on the Korean Fair Trade Commission site (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079)."
+    },
+    "qna/personal-data-retention": {
+      "title": "How long do you keep personal data?",
+      "summary": "Account data is kept for up to 90 days after the account is deleted; payment records for 7 years as required by tax and accounting law; usage data for 2 years; support records for 3 years; and marketing consent records for 30 days after consent is withdrawn. When a retention period ends we delete or anonymise the data. Google Firebase authentication data used for sign-in is removed from servers and backups within 180 days of a deletion request."
+    },
+    "qna/personal-data-collected": {
+      "title": "What personal data do you collect?",
+      "summary": "We collect identifiers such as email, name, account name, IP address and device information; subscription and credit purchase and usage history; payment details such as card brand, last four digits, expiry date and billing address; platform usage logs and cookies; approximate location derived from IP (country and region); and the content you create and the files you upload. We do not collect precise location, health, racial, religious or sexual-orientation data, national ID numbers or passport numbers."
+    },
+    "qna/cookies": {
+      "title": "Do you use cookies?",
+      "summary": "Yes. We use strictly necessary cookies for sign-in and security, analytics cookies for usage statistics and error tracking, and preference cookies that remember settings such as language. You can block or delete cookies in your browser, though some features may then be limited. For users in Europe and the UK, non-essential cookies are used only with consent, and consent can be withdrawn at any time."
+    },
+    "qna/minors-eligibility": {
+      "title": "Can minors use XCONDA?",
+      "summary": "No. XCONDA is available only to people aged 18 or older. We do not collect personal data from anyone under 18, and if we learn that we have, we delete it immediately."
+    },
+    "qna/what-is-blocking-board": {
+      "title": "What is Blocking Board?",
+      "summary": "Blocking Board is a digital rehearsal tool that checks whether people, space and camera work together before you generate video; it will be offered on the web. You draw character positions and movement paths on a floor plan, play the scene on a 3D stage and check sight lines, the 180-degree line and collisions. It can also export a clip of puppets moving through the space, which you can feed into video generation."
+    },
+    "qna/commercial-use": {
+      "title": "Can I use XCONDA output commercially?",
+      "summary": "Under our terms, you own what you create with XCONDA, and no clause restricts commercial use. Uploading or creating content that infringes someone else's intellectual property is prohibited, so please confirm that you hold the rights to the images and footage you use."
+    },
+    "qna/output-copyright": {
+      "title": "Who owns the copyright in what I create?",
+      "summary": "Under our terms you own the content you generate with the service. The XCONDA platform itself (software, technology, trademarks) belongs to Cubeberry Co., Ltd. You grant Cubeberry (the Korean and US entities) a non-exclusive licence to use your content only to provide and improve the service. You may not upload or create content that infringes the intellectual property of others."
+    },
+    "qna/hub-languages": {
+      "title": "Is the hub available in other languages?",
+      "summary": "Yes. The language buttons at the top of the hub let you choose Korean, English, Japanese or Chinese. Translated pages also have their own URLs — for example English answers live under /en/, so you can share a link that opens in English."
+    },
+    "qna/what-is-xconda-claude-skill": {
+      "title": "What is an XCONDA skill for Claude?",
+      "summary": "A skill is a task tool for XCONDA work that you add to Claude. There are two. The FLEXBOARD skill splits a scenario into shots and checks the total running time, how much action each shot carries, whether similar shots sit next to each other and jar, and how many characters are on screen. The XCONDA Prompt skill builds Seedance 2.5 prompts from the key images you locked in FLEXBOARD, written as if four directors — overall, camera, lighting and art — each had a say."
+    },
+    "qna/what-is-flexboard": {
+      "title": "What is FLEXBOARD?",
+      "summary": "FLEXBOARD is a storyboard tool that splits a scenario into shots and previews each shot with text and an image. You check framing and characters before generating video, then fix only the shots you dislike. It is designed to be used together with Seedance 2.5."
+    },
+    "qna/what-is-turn": {
+      "title": "What is Turn?",
+      "summary": "Turn builds a virtual set you can orbit 360 degrees from a single photo or a written description. Because you create one space and rotate the camera inside it, doors, windows and props stay where they were as shots change. You can add a character at the angle you like and produce key images from it."
+    },
+    "qna/cancel-subscription": {
+      "title": "How do I cancel my subscription?",
+      "summary": "You can cancel yourself at any time in Account Settings — no need to contact support. Cancelling stops automatic billing from the next renewal date. Charges already paid are not refunded pro rata, but you can request a refund within 7 days if the credits are unused, subject to our refund policy. After cancelling, remaining subscription credits stay usable for up to one year from the date they were granted."
+    }
+  }
+}

@@ -46,6 +46,16 @@ import {
   howToJsonLd,
   jsonLdGraph,
   listJsonLd,
+  EXTRA_INDEX_PAGES,
+  SITE_LANGS,
+  hreflangAlternates,
+  langByCode,
+  llmsTxt,
+  localizedUrl,
+  localOgImageUrl,
+  relatedArticles,
+  ogManifestKey,
+  OG_MANIFEST_PATH,
   modifiedDateOf,
   pickProp,
   resolveArticleMeta,
@@ -86,6 +96,257 @@ export function applyHead(template, head) {
   return html.replace(headEnd, () => `    <!-- SEO:START -->\n${head}\n    <!-- SEO:END -->\n  ${headEnd}`);
 }
 
+/* ------------------------------ 공용 자산 분리 ------------------------------ */
+
+/**
+ * 단일 파일 빌드(`vite-plugin-singlefile`)가 index.html 안에 인라인으로 넣은
+ * **JS·CSS 를 공용 파일로 분리**합니다.
+ *
+ * 배경: 인라인 번들은 약 447KB(JS) + 46KB(CSS)이고, 글마다 같은 내용이 복사되어
+ * 100개 페이지 × 약 490KB ≈ 49MB 가 저장소·전송에 실렸습니다. 크롤러 입장에서는
+ * 페이지마다 같은 바이트를 다시 받는 셈이라 크롤 예산·LCP 에 불리합니다.
+ * → `assets/app.js` · `assets/app.css` 한 벌로 빼고, 모든 페이지가 그 주소를 가리킵니다.
+ *   (페이지 주소 깊이가 달라도 되도록 사이트 기준 절대 주소를 씁니다)
+ *
+ * 이미 분리된 템플릿(빌드 결과 index.html)을 다시 넣어도 아무 것도 하지 않습니다(멱등).
+ */
+export function externalizeAssets(template, siteUrl = DEFAULT_SITE_URL) {
+  const base = absoluteUrl(siteUrl, "");
+  let html = template;
+  let js = null;
+  let css = null;
+
+  const script = /<script type="module" crossorigin>([\s\S]*?)<\/script>/.exec(html);
+  if (script) {
+    js = script[1];
+    html = html.replace(script[0], () => `<script type="module" crossorigin src="${base}assets/app.js"></script>`);
+  }
+  const style = /<style rel="stylesheet" crossorigin>([\s\S]*?)<\/style>/.exec(html);
+  if (style) {
+    css = style[1];
+    html = html.replace(style[0], () => `<link rel="stylesheet" href="${base}assets/app.css" />`);
+  }
+  return { template: html, js, css };
+}
+
+/** 언어별 번역 파일 위치 — 사람이 검수한 번역만 여기에 둡니다. */
+export const I18N_DIR = "content/i18n";
+
+/**
+ * `content/i18n/*.json` 을 읽어 `{ en: {...}, ja: {...} }` 로 돌려줍니다.
+ * 파일이 없거나 깨졌으면 그 언어는 건너뛰고 경고만 남깁니다(빌드는 계속).
+ */
+export function loadTranslations(root) {
+  const dir = path.join(root, I18N_DIR);
+  const out = {};
+  const warnings = [];
+  if (!fs.existsSync(dir)) return { translations: out, warnings };
+  for (const name of fs.readdirSync(dir).sort()) {
+    if (!name.endsWith(".json")) continue;
+    const code = name.replace(/\.json$/, "");
+    if (!langByCode(code) || code === "ko") continue;
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, name), "utf8"));
+      if (!data?.entries || typeof data.entries !== "object") throw new Error("entries 가 없습니다");
+      out[code] = { ...data, lang: code };
+    } catch (e) {
+      warnings.push(`${I18N_DIR}/${name} 를 읽지 못했습니다: ${e?.message ?? e}`);
+    }
+  }
+  return { translations: out, warnings };
+}
+
+/**
+ * 번역 페이지용 템플릿 — 앱 번들을 **떼어 냅니다**.
+ * 영어·일본어·중국어 페이지는 번역문 정적 HTML 만 서빙합니다. 앱을 함께 싣으면
+ * React 가 정적 본문을 지우고 한국어 화면을 그려서, /en/ 주소에 한국어가 뜹니다.
+ */
+export function staticOnlyTemplate(template) {
+  return template
+    .replace(/\s*<script type="module"[^>]*src="[^"]*assets\/app\.js"[^>]*><\/script>/g, "")
+    .replace(/\s*<script type="module" crossorigin>[\s\S]*?<\/script>/g, "");
+}
+
+/** `<html lang="ko">` → 원하는 언어 코드로 (없으면 그대로) */
+export function applyHtmlLang(html, htmlLang) {
+  return html.replace(/<html\s+lang="[^"]*"/i, `<html lang="${htmlLang}"`);
+}
+
+/**
+ * 언어별 정적 페이지(`/en/`, `/ja/`, `/zh/`)를 만듭니다. 번역이 있는 글만 대상입니다.
+ * 반환값의 `urls` 는 사이트맵에, `missing` 은 경고에 씁니다.
+ *
+ * @param {{ site: string, translations: Record<string, object>, template: string,
+ *           pageRecords: object[], defaultImageUrl: string }} input
+ */
+export function localizedPages({ site, translations = {}, template, pageRecords = [], defaultImageUrl }) {
+  const files = new Map();
+  const urls = [];
+  const missing = [];
+  /** 언어 → 번역이 있는 경로 목록(앱 언어 전환기가 /en/ 주소로 보낼 때 씁니다) */
+  const paths = {};
+  const base = staticOnlyTemplate(template);
+  // 한국어 원문 주소를 찾기 위한 색인 — `qna/slug` → 페이지 기록
+  const byKey = new Map(pageRecords.map((p) => [`${ROUTE_PREFIX[p.type] ?? p.type}/${p.slug}`, p]));
+
+  for (const code of Object.keys(translations).sort()) {
+    const lang = langByCode(code);
+    const t = translations[code];
+    if (!lang || !t) continue;
+    const ui = t.ui ?? {};
+    const homeTitle = t.site?.title ?? lang.name;
+    const homeDescription = t.site?.description ?? "";
+    const homeUrl = localizedUrl(site, code, "");
+    const homePath = "";
+    const homeAlternates = hreflangAlternates(site, homePath, [code]);
+
+    // 번역이 실제 글과 맞는지 확인 (원문이 사라졌으면 만들지 않음)
+    const items = [];
+    for (const key of Object.keys(t.entries ?? {}).sort()) {
+      const record = byKey.get(key);
+      if (!record) {
+        missing.push(`${I18N_DIR}/${code}.json › ${key} (원문 글이 없어 건너뜀)`);
+        continue;
+      }
+      const [prefix] = key.split("/");
+      items.push({ key, prefix, record, tr: t.entries[key] });
+    }
+    if (!items.length) continue;
+
+    // 글 페이지
+    for (const it of items) {
+      const path = `${it.prefix}/${it.record.slug}/`;
+      const url = localizedUrl(site, code, path);
+      const koUrl = localizedUrl(site, "ko", path);
+      const title = it.tr.title ?? it.record.title;
+      const description = it.tr.summary ?? it.record.description;
+      const sectionTitle = t.sections?.[it.prefix]?.title ?? it.prefix;
+      const siblings = items.filter((x) => x.prefix === it.prefix && x.key !== it.key).slice(0, 4);
+      const head = headBlock({
+        title: `${title} | ${homeTitle}`,
+        description,
+        url,
+        ogType: "article",
+        ogTitle: title,
+        ogDescription: description,
+        image: it.record.image || defaultImageUrl,
+        publishedTime: it.record.date ?? "",
+        ogLocale: lang.ogLocale,
+        alternates: hreflangAlternates(site, path, [code]),
+        siteLd: jsonLdGraph(site, [
+          {
+            "@type": "WebPage",
+            "@id": `${url}#webpage`,
+            url,
+            name: title,
+            inLanguage: lang.hreflang,
+            isPartOf: { "@id": `${absoluteUrl(site, "")}#website` },
+          },
+        ]),
+      });
+      const body = [
+        `<div id="root"><main class="seo-article" data-lang="${code}">`,
+        `<nav aria-label="breadcrumb"><a href="../../">${escapeHtml(ui.home ?? homeTitle)}</a> / <a href="../">${escapeHtml(sectionTitle)}</a></nav>`,
+        `<article>`,
+        `<h1>${escapeHtml(title)}</h1>`,
+        `<p class="seo-meta">${escapeHtml(lang.name)} · ${escapeHtml(ui.brand ?? "XCONDA Hub")}</p>`,
+        paragraphsHtml(description),
+        `<p><a href="${escapeHtml(koUrl)}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
+        `</article>`,
+        siblings.length
+          ? [
+              `<nav class="seo-related" aria-label="More">`,
+              `<h2>${escapeHtml(sectionTitle)}</h2>`,
+              `<ul>`,
+              ...siblings.map((x) => `<li><a href="../${escapeHtml(x.record.slug)}/">${escapeHtml(x.tr.title ?? x.record.title)}</a></li>`),
+              `</ul>`,
+              `</nav>`,
+            ].join("")
+          : "",
+        ui.note ? `<p class="seo-note">${escapeHtml(ui.note)}</p>` : "",
+        `</main></div>`,
+      ]
+        .filter(Boolean)
+        .join("\n");
+      files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+      urls.push({ loc: url, lastmod: it.record.modified || it.record.date || undefined });
+      (paths[code] ??= []).push(path);
+    }
+
+    // 섹션 목록 (/en/qna/ 등)
+    const prefixes = [...new Set(items.map((i) => i.prefix))].sort();
+    for (const prefix of prefixes) {
+      const list = items.filter((i) => i.prefix === prefix).sort((a, b) => (a.record.seq ?? 0) - (b.record.seq ?? 0));
+      const path = `${prefix}/`;
+      const url = localizedUrl(site, code, path);
+      const sec = t.sections?.[prefix] ?? {};
+      const title = sec.title ?? `${prefix} · ${homeTitle}`;
+      const description = sec.description ?? homeDescription;
+      const head = headBlock({
+        title: `${title} | ${homeTitle}`,
+        description,
+        url,
+        ogType: "website",
+        ogTitle: title,
+        ogDescription: description,
+        image: defaultImageUrl,
+        publishedTime: "",
+        ogLocale: lang.ogLocale,
+        alternates: hreflangAlternates(site, path, [code]),
+      });
+      const body = [
+        `<div id="root"><main class="seo-article" data-lang="${code}">`,
+        `<nav aria-label="breadcrumb"><a href="../">${escapeHtml(ui.home ?? homeTitle)}</a> / ${escapeHtml(title)}</nav>`,
+        `<h1>${escapeHtml(title)}</h1>`,
+        `<p>${escapeHtml(description)}</p>`,
+        `<ul>`,
+        ...list.map((it) => `<li><a href="./${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+        `</ul>`,
+        `<p><a href="${escapeHtml(localizedUrl(site, "ko", path))}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
+        `</main></div>`,
+      ].join("\n");
+      files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+      urls.push({ loc: url });
+    }
+
+    // 언어 홈 (/en/)
+    const head = headBlock({
+      title: homeTitle,
+      description: homeDescription,
+      url: homeUrl,
+      ogType: "website",
+      ogTitle: homeTitle,
+      ogDescription: homeDescription,
+      image: defaultImageUrl,
+      publishedTime: "",
+      ogLocale: lang.ogLocale,
+      alternates: homeAlternates,
+    });
+    const body = [
+      `<div id="root"><main class="seo-article" data-lang="${code}">`,
+      `<nav aria-label="breadcrumb"><a href="${escapeHtml(localizedUrl(site, "ko", ""))}" hreflang="ko">${escapeHtml(SITE_NAME)}</a> / ${escapeHtml(lang.name)}</nav>`,
+      `<h1>${escapeHtml(homeTitle)}</h1>`,
+      `<p>${escapeHtml(homeDescription)}</p>`,
+      ...prefixes.map((prefix) => {
+        const sec = t.sections?.[prefix] ?? {};
+        const list = items.filter((i) => i.prefix === prefix);
+        return [
+          `<h2><a href="./${escapeHtml(prefix)}/">${escapeHtml(sec.title ?? prefix)}</a></h2>`,
+          `<ul>`,
+          ...list.map((it) => `<li><a href="./${escapeHtml(prefix)}/${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+          `</ul>`,
+        ].join("\n");
+      }),
+      ui.note ? `<p class="seo-note">${escapeHtml(ui.note)}</p>` : "",
+      `</main></div>`,
+    ].join("\n");
+    files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+    urls.push({ loc: homeUrl });
+  }
+
+  return { files, urls, missing, paths };
+}
+
 const ROOT_OPEN = '<div id="root">';
 
 /**
@@ -124,14 +385,17 @@ export function headBlock(meta) {
     `<meta name="description" content="${e(meta.description)}" />`,
     meta.robots ? `<meta name="robots" content="${e(meta.robots)}" />` : "",
     `<link rel="canonical" href="${e(meta.url)}" />`,
-    // 언어 신호 — 이 주소의 기준 언어는 한국어임을 명시합니다.
-    // (허브는 언어별 URL 을 만들지 않고 한 주소에서 화면 언어만 바꾸므로, hreflang 을
-    //  비워 두면 검색엔진·AI 가 "무엇이 기준인지" 확정하지 못합니다. ko + x-default 자기 참조.)
-    `<link rel="alternate" hreflang="ko" href="${e(meta.url)}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${e(meta.url)}" />`,
+    // 언어 신호 — 기준 언어(ko) + x-default 는 항상 자기 자신을 가리킵니다.
+    // 번역 주소가 있는 페이지는 meta.alternates 로 언어 전체를 서로 연결합니다(hreflang 묶음).
+    ...(meta.alternates?.length
+      ? meta.alternates.map((a) => `<link rel="alternate" hreflang="${e(a.hreflang)}" href="${e(a.href)}" />`)
+      : [
+          `<link rel="alternate" hreflang="ko" href="${e(meta.url)}" />`,
+          `<link rel="alternate" hreflang="x-default" href="${e(meta.url)}" />`,
+        ]),
     `<meta property="og:type" content="${meta.ogType}" />`,
     `<meta property="og:site_name" content="${e(SITE_NAME)}" />`,
-    `<meta property="og:locale" content="ko_KR" />`,
+    `<meta property="og:locale" content="${e(meta.ogLocale ?? "ko_KR")}" />`,
     `<meta property="og:title" content="${e(meta.ogTitle)}" />`,
     `<meta property="og:description" content="${e(meta.ogDescription)}" />`,
     `<meta property="og:image" content="${e(meta.image)}" />`,
@@ -164,7 +428,7 @@ const paragraphsHtml = (text) =>
  * 글 한 건의 #root 내용. 앱이 로드되면 React 가 이 내용을 지우고 상세 화면으로 바꿉니다.
  * 자바스크립트를 실행하지 않는 크롤러와 공유 미리보기 확인용으로도 쓰입니다.
  */
-export function articleBodyHtml({ prefix, type, title, date, author, summary, cover, blocks }) {
+export function articleBodyHtml({ prefix, type, title, date, author, summary, cover, blocks, related = [] }) {
   // 허브 메인으로 가는 상대 경로 (post/{slug}/ 기준 두 단계 위)
   const hubHref = "../../";
   const section = SECTION_LABELS[type] ?? "";
@@ -186,6 +450,20 @@ export function articleBodyHtml({ prefix, type, title, date, author, summary, co
     showSummary ? paragraphsHtml(summary) : "",
     hasBody ? blocksToHtml(blocks, { alt: title }) : "",
     `</article>`,
+    // 관련 글 — 글에서 글로 이어지는 크롤 경로(색인·AI 인용에 도움). 후보가 없으면 아무것도 넣지 않습니다.
+    related.length
+      ? [
+          `<nav class="seo-related" aria-label="관련 글">`,
+          `<h2>${type === "faq" ? "관련 안내" : "관련 글"}</h2>`,
+          `<ul>`,
+          ...related.map(
+            (r) =>
+              `<li><a href="${escapeHtml(relHref(routePathFor(r.type, r.slug), "../../"))}">${escapeHtml(r.title)}</a></li>`,
+          ),
+          `</ul>`,
+          `</nav>`,
+        ].join("")
+      : "",
     `<p><a href="${hubHref}">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -295,6 +573,10 @@ export function sectionPageHtml({ page, items }) {
     `<p>${escapeHtml(page.description)}</p>`,
     `<p class="seo-meta">${items.length}개</p>`,
     serverListHtml(items, linkOf),
+    // 툴 사용법 목록에는 스튜디오 전체 사용자 가이드(정적 페이지)로 가는 길을 둡니다.
+    page.types.includes("guide")
+      ? `<p class="seo-more"><a href="../user-guide.html">XCONDA 스튜디오 19개 툴 완전 사용자 가이드</a></p>`
+      : "",
     `<p><a href="../">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -379,8 +661,12 @@ const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh
  * @param {{ rows: object[], pages?: object, template: string, siteUrl?: string }} input
  * @returns {{ files: Map<string, string>, pages: object[], skipped: object[], warnings: string[], siteUrl: string }}
  */
-export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SITE_URL }) {
+export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, translations: translationsInput } = {}) {
+  let template = inputTemplate;
   const site = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
+  // 인라인 번들 → 공용 자산(assets/app.js · app.css). 이미 분리된 템플릿이면 그대로 둡니다.
+  const assetSplit = externalizeAssets(template, site);
+  template = assetSplit.template;
   const warnings = [];
   const skipped = [];
   const seen = new Set();
@@ -409,8 +695,40 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     candidates.push({ row, type, slug: eligibility.slug, title, prefix: ROUTE_PREFIX[type] });
   }
 
+  // 관련 글 후보 — 본문을 만들기 전에 제목·요약·날짜를 모아 둡니다(A5).
+  const relatedPool = candidates.map((c) => ({
+    type: c.type,
+    slug: c.slug,
+    title: c.row.Title ?? c.title,
+    summary: seoFieldsOf(c.row).seoDescription || textOf(c.row.Summary),
+    date: textOf(c.row.Date),
+    // 관련 글 판단에 쓰는 노션 속성 — Category · Tool · Tags
+    category: textOf(pickProp(c.row, ["Category", "카테고리"])),
+    tool: textOf(pickProp(c.row, ["Tool"])),
+    tags: pickProp(c.row, ["Tags"]),
+  }));
+
+  // 언어별 번역(사람이 검수한 것만) — 있으면 /en/ 같은 주소를 만듭니다(B).
+  let translations = translationsInput;
+  if (!translations) {
+    const loaded = loadTranslations(REPO_ROOT);
+    translations = loaded.translations;
+    warnings.push(...loaded.warnings);
+  }
+  // `qna/refund/` 같은 키에 번역이 있는 언어 목록 — ko 페이지의 hreflang 묶음에 씁니다.
+  const translatedKeys = new Map();
+  for (const code of Object.keys(translations ?? {})) {
+    for (const key of Object.keys(translations[code]?.entries ?? {})) {
+      if (!translatedKeys.has(key)) translatedKeys.set(key, []);
+      translatedKeys.get(key).push(code);
+    }
+  }
+  const langsForPath = (p) => ["ko", ...(translatedKeys.get(String(p).replace(/\/+$/, "")) ?? [])];
+
   const pageRecords = [];
   const files = new Map();
+  if (assetSplit.js) files.set("assets/app.js", assetSplit.js);
+  if (assetSplit.css) files.set("assets/app.css", assetSplit.css);
 
   /* 공유 이미지 · 로고 존재 확인 (없으면 경고만) */
   const defaultImageUrl = absoluteUrl(site, DEFAULT_OG_IMAGE_PATH);
@@ -423,14 +741,38 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
 
   const siteLd = jsonLdGraph(site);
 
+  // 글별 공유 이미지 로컬 사본 목록(있으면 로컬 주소를 우선 사용 — 노션 프록시 만료 대비)
+  // (테스트에서는 ogManifest 를 직접 주입할 수 있습니다)
+  let ogManifest = ogManifestInput;
+  if (!ogManifest) {
+    ogManifest = {};
+    try {
+      const manifestPath = path.join(REPO_ROOT, OG_MANIFEST_PATH);
+      if (fs.existsSync(manifestPath)) ogManifest = JSON.parse(fs.readFileSync(manifestPath, "utf8")) ?? {};
+    } catch (e) {
+      warnings.push(`공유 이미지 목록(${OG_MANIFEST_PATH})을 읽지 못했습니다: ${e?.message ?? e}`);
+    }
+  }
+
   for (const c of candidates) {
     const { row, type, slug, title } = c;
     const seo = seoFieldsOf(row);
     const coverRaw = fileUrlOf(pickProp(row, COVER_KEYS)) || textOf(row.__cover) || derivedCover(pages, row.id);
     const summary = textOf(row.Summary);
     const date = DATE_RE.test(textOf(row.Date)) ? textOf(row.Date) : "";
+    // 우선순위: 노션 OG 이미지 속성 → **우리 도메인에 복사해 둔 사본** → 커버(노션 프록시) → 기본 이미지
+    const localOg = localOgImageUrl(ogManifest, ogManifestKey(type, slug), site);
     const meta = resolveArticleMeta(
-      { title, summary, seoTitle: seo.seoTitle, seoDescription: seo.seoDescription, cover: coverRaw, ogImage: seo.ogImage, date, type },
+      {
+        title,
+        summary,
+        seoTitle: seo.seoTitle,
+        seoDescription: seo.seoDescription,
+        cover: coverRaw,
+        ogImage: localOg || seo.ogImage,
+        date,
+        type,
+      },
       { defaultImageUrl }
     );
     const url = absoluteUrl(site, routePathFor(type, slug));
@@ -491,10 +833,41 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       image: meta.image,
       publishedTime: meta.publishedTime,
       modifiedTime: dateModified,
+      // 번역이 있는 글은 언어 전체를 서로 연결(hreflang 묶음). 없으면 ko + x-default.
+      alternates: hreflangAlternates(site, `${c.prefix}/${slug}/`, langsForPath(`${c.prefix}/${slug}/`)),
       siteLd,
       articleLd,
       howToLd,
     });
+    const relatedSubject = {
+      type,
+      slug,
+      title,
+      summary: seo.seoDescription || summary,
+      date,
+      category: textOf(pickProp(row, ["Category", "카테고리"])),
+      tool: textOf(pickProp(row, ["Tool"])),
+      tags: pickProp(row, ["Tags"]),
+    };
+    // Q&A 는 같은 Q&A 끼리보다 가이드·블로그로 이어 주는 편이 낫습니다(같은 Q&A 는 뒤에서 채움).
+    const related =
+      type === "faq"
+        ? [
+            ...relatedArticles(relatedSubject, relatedPool, { skipType: "faq" }),
+            ...relatedArticles(relatedSubject, relatedPool, { limit: 2 }),
+          ].filter((v, i, arr) => arr.findIndex((w) => w.type === v.type && w.slug === v.slug) === i).slice(0, 4)
+        : relatedArticles(relatedSubject, relatedPool);
+    // 관련도가 낮아 아무것도 못 고른 글은 **같은 섹션 최신 글**로 채웁니다.
+    // (크롤러가 막다른 문서에 도착하지 않도록 — 글 → 글 경로는 항상 하나 이상 둡니다.)
+    const byNewest = (a, b) =>
+      String(b.date ?? "").localeCompare(String(a.date ?? "")) || String(a.slug).localeCompare(String(b.slug));
+    const others = relatedPool.filter((p) => !(p.type === type && p.slug === slug));
+    const relatedFinal = related.length
+      ? related
+      : [...others.filter((p) => p.type === type).sort(byNewest), ...others.filter((p) => p.type !== type).sort(byNewest)].slice(
+          0,
+          3,
+        );
     const body = articleBodyHtml({
       prefix: c.prefix,
       type,
@@ -504,6 +877,7 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       summary,
       cover: coverRaw,
       blocks,
+      related: relatedFinal,
     });
     const html = injectRoot(applyHead(template, head), body);
     files.set(`${c.prefix}/${slug}/index.html`, html);
@@ -553,6 +927,11 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     ogDescription: home.ogDescription,
     image: defaultImageUrl,
     publishedTime: "",
+    alternates: hreflangAlternates(site, "", [
+      "ko",
+      // 번역이 한 건이라도 있으면 그 언어의 홈(/en/ 등)이 만들어집니다.
+      ...Object.keys(translations ?? {}).filter((code) => Object.keys(translations[code]?.entries ?? {}).length > 0),
+    ]),
     siteLd: jsonLdGraph(site, [
       appJsonLd(),
       listJsonLd({
@@ -590,6 +969,12 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       ogDescription: page.description,
       image: defaultImageUrl,
       publishedTime: "",
+      alternates: hreflangAlternates(site, `${page.prefix}/`, [
+        "ko",
+        ...Object.keys(translations ?? {}).filter((code) =>
+          Object.keys(translations[code]?.entries ?? {}).some((k) => k.startsWith(`${page.prefix}/`)),
+        ),
+      ]),
       siteLd: jsonLdGraph(site, [
         listJsonLd({
           url,
@@ -601,7 +986,7 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       ]),
     });
     files.set(`${page.prefix}/index.html`, injectRoot(applyHead(template, head), sectionPageHtml({ page, items })));
-    sectionRecords.push({ prefix: page.prefix, url, lastmod, count: items.length });
+    sectionRecords.push({ prefix: page.prefix, url, lastmod, count: items.length, heading: page.heading, description: page.description });
   }
 
   // 404 페이지 (GitHub Pages 가 없는 주소에 이 파일을 404 상태로 냅니다 — 보고서 A7)
@@ -639,9 +1024,44 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
     { loc: site, lastmod: newest },
     ...sectionRecords.map((s) => ({ loc: s.url, lastmod: s.lastmod })),
     ...pageRecords.map((p) => ({ loc: p.url, lastmod: p.modified || p.date || undefined })),
+    // 노션 밖 정적 페이지(예: 스튜디오 19개 툴 사용자 가이드) — lastmod 는 생략
+    ...EXTRA_INDEX_PAGES.map((file) => ({ loc: absoluteUrl(site, file) })),
   ];
+  // (언어별 주소는 아래에서 합친 뒤 생성합니다)
+  // 언어별 정적 페이지(/en/ 등) — 번역이 있는 글만. 앱 번들을 떼어 낸 정적 HTML 입니다.
+  const localized = localizedPages({
+    site,
+    translations: translations ?? {},
+    template, // 인라인 번들을 이미 걷어 낸(외부화된) 템플릿
+    pageRecords,
+    defaultImageUrl,
+  });
+  for (const [file, html] of localized.files) files.set(file, html);
+  for (const msg of localized.missing) warnings.push(msg);
+  for (const u of localized.urls) sitemapUrls.push(u);
+  // 앱(React)의 언어 전환기가 "이 경로에 번역 주소가 있나?" 를 확인하는 목록.
+  // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
+  if (Object.keys(localized.paths).length) {
+    files.set("assets/i18n-paths.json", `${JSON.stringify(localized.paths, null, 2)}\n`);
+  }
   files.set("sitemap.xml", sitemapXml(sitemapUrls));
+
   files.set("robots.txt", robotsTxt(site));
+  // llms.txt — AI 도우미용 사이트 안내문(섹션 + 대표 글). 사이트맵과 같은 목록에서 만들어 항상 일치합니다.
+  files.set(
+    "llms.txt",
+    llmsTxt({
+      siteUrl: site,
+      title: home.title,
+      description: home.description,
+      sections: [
+        { heading: "XCONDA허브 홈", url: site, description: home.description },
+        ...sectionRecords.map((s) => ({ heading: s.heading, url: s.url, description: s.description })),
+        { heading: "스튜디오 19개 툴 완전 사용자 가이드", url: absoluteUrl(site, "user-guide.html") },
+      ],
+      pages: pageRecords.map((p) => ({ type: p.type, title: p.pageTitle || p.title, url: p.url, summary: p.summary })),
+    }),
+  );
 
   return { files, pages: pageRecords, sections: sectionRecords, skipped, warnings, siteUrl: site };
 }

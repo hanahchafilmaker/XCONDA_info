@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { hubBaseFromPathname } from "../content/seo";
 import { setCurrentLang, translate, type Lang } from "./dict";
 import { applyGoogtransCookie, isTarget, loadTranslateWidget, readGoogtransTarget, type Target } from "./google";
 
@@ -193,6 +194,47 @@ function applyDocumentLanguage(target: Target): void {
   }
 }
 
+/* ------------------------- 언어별 주소(/en/ 등)로 보내기 (B) -------------------------
+ * 번역이 있는 글은 /en/qna/... 처럼 자기 주소를 갖습니다(빌드: scripts/build-seo.mjs).
+ * 앱에서 언어를 고를 때 그 주소가 있으면 **이동**하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
+ * 목록은 빌드가 만드는 `assets/i18n-paths.json` 이고, 실패하면 조용히 무시합니다.
+ */
+const LOCALIZED_PATHS_URL = "assets/i18n-paths.json";
+let localizedPaths: Record<string, string[]> | null = null;
+
+/** 목표 언어(Target) → 번역 파일의 언어 코드 */
+const langCodeOf = (t: Target): string => (t === "zh-CN" ? "zh" : t);
+
+/** 번역 주소 목록을 미리 받아 둡니다(없거나 실패해도 앱은 그대로 동작). */
+export function prefetchLocalizedPaths(): void {
+  if (localizedPaths || typeof window === "undefined" || typeof fetch !== "function") return;
+  try {
+    fetch(LOCALIZED_PATHS_URL, { cache: "force-cache" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && typeof data === "object") localizedPaths = data as Record<string, string[]>;
+      })
+      .catch(() => {});
+  } catch {
+    /* noop */
+  }
+}
+
+/**
+ * 지금 보고 있는 경로에 그 언어의 번역 페이지가 있으면 이동할 주소를 돌려줍니다.
+ * 예: `/qna/contact-inquiry/` + EN → `/en/qna/contact-inquiry/` (없으면 null)
+ */
+export function localizedHrefFor(target: Target, pathname: string): string | null {
+  if (!localizedPaths || target === "ko") return null;
+  const code = langCodeOf(target);
+  const list = localizedPaths[code];
+  if (!Array.isArray(list) || !list.length) return null;
+  const base = hubBaseFromPathname(pathname);
+  const rel = String(pathname).slice(base.length);
+  if (!list.includes(rel)) return null;
+  return `${base}${code}/${rel}`;
+}
+
 let bootedTarget: Target | null = null;
 
 /**
@@ -212,6 +254,7 @@ export function bootstrapLanguage(): Target {
       /* noop */
     }
     applyDocumentLanguage(target);
+    prefetchLocalizedPaths();
     try {
       loadTranslateWidget(target);
     } catch {
@@ -276,6 +319,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         // 단, 자동 감지된 KO 를 직접 KO 로 고정하는 경우에는 브라우저 자체 번역 잠금이
         // 깨끗한 로드부터 적용되도록 한 번 리로드합니다(이미 번역된 화면 복구 포함).
         if (t !== "ko" || alreadyChosen) return;
+      }
+      // 번역 페이지가 있는 글·목록·홈이면 그 주소로 이동합니다(같은 내용을 두 주소로 만들지 않음).
+      try {
+        const localized = typeof window !== "undefined" ? localizedHrefFor(t, window.location.pathname) : null;
+        if (localized) {
+          window.location.href = localized;
+          return;
+        }
+      } catch {
+        /* noop — 실패하면 아래 번역 위젯 경로로 */
       }
       applyGoogtransCookie(t);
       // 리로드 전 렌더(·jsdom 스모크)에서 즉시 새 언어로 반영되도록 동기 갱신

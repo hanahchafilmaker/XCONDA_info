@@ -272,11 +272,22 @@ XCONDA_info/
 | `dateModified` · `article:modified_time` · 사이트맵 `lastmod` | `seo.js` › `modifiedDateOf` | 노션 `수정일` → 동기화가 기록한 `__modified`(last_edited_time) 순. **작성일과 같으면 넣지 않습니다** |
 | `hreflang` | `build-seo.mjs` · `src/seo.ts` | 모든 페이지 `ko` + `x-default` 자기 참조. 허브는 언어별 URL 이 없으므로 "기준 언어 = 한국어"를 명시하는 용도 |
 | 크롤러 언어 고정 | `src/i18n/index.tsx` › `isCrawlerUA` | 봇 UA 에는 **항상 한국어 원문** + 번역 위젯 미로드. 사람은 예전처럼 자동 감지, `?lang=en` 으로 고정 가능 |
+| 공용 번들 `assets/app.js` · `assets/app.css` | `build-seo.mjs` › `externalizeAssets` | 글마다 500KB 를 복사하던 인라인 번들을 **한 벌**로 분리(2026-10-25 A2). 홈 592→68KB·글 553→30KB. 산출물은 `build-site.yml` 이 `assets` 로 커밋합니다 |
+| 공유 이미지(OG) 로컬 사본 `assets/img/og/posts/` | `scripts/localize-og-images.mjs` + `manifest.json` | 노션 프록시(`www.notion.so/image/...`)는 만료 위험. 동기화(`notion-sync.yml`)가 이미지를 내려받아 우리 도메인 주소를 씁니다. 우선순위: **로컬 사본 → OG 이미지 속성 → Cover → 기본 이미지**(2026-10-25 A3). 손으로 받으려면 `npm run og:localize` |
+| 관련 글 (`aria-label="관련 글"`) | `seo.js` › `relatedArticles` | 노션 `Category`(+6) · `Tool`(+4) · `Tags`(+4) · 제목 2-gram(+1, 최대 4) 점수로 최대 4건. Q&A 는 같은 Q&A 를 뒤로 미룹니다. 후보가 없으면 같은 섹션 최신 글로 채워 **막다른 문서를 만들지 않습니다**(2026-10-25 A5) |
+| `llms.txt` | `seo.js` › `llmsTxt` | AI 도우미용 요약 + 섹션/대표 글 링크(절대 주소, 요약 160자). 사이트맵과 같은 목록에서 만들어 서로 어긋나지 않습니다(2026-10-25 A6) |
+| 언어별 주소 `/en/` · `/ja/` · `/zh/` | `build-seo.mjs` › `localizedPages` + `content/i18n/<언어>.json` | **사람이 검수한 번역이 있는 글만** 정적 페이지를 만듭니다(없으면 한국어만). 번역 페이지에는 앱 번들을 넣지 않고(`staticOnlyTemplate`) ko ↔ 번역을 hreflang 으로 서로 연결합니다. 영어 Q&A 15건이 현재 대상. 새 번역은 json 에 추가하고 `npm run build` |
+| `assets/i18n-paths.json` | `build-seo.mjs` › `localizedPages` | 앱의 언어 전환기가 "이 경로에 번역 주소가 있나" 확인하는 목록. 있으면 `/en/…` 으로 이동, 없으면 기존 Google 번역 위젯으로 폴백(`src/i18n/index.tsx` › `localizedHrefFor`) |
+| `user-guide.html` · `admin-guide.html` | 정적 HTML (저장소 루트) | `user-guide.html` = 공개 가이드 → canonical + 사이트맵(`EXTRA_INDEX_PAGES`). `admin-guide.html` = 내부 운영 매뉴얼 → `noindex, nofollow`, 사이트맵 제외(2026-10-25 A4) |
 
 ⚠️ 함께 지킬 것
 - 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
 - 언어별 URL(`/en/` 등)은 아직 만들지 않았습니다. 기계번역 대신 검수된 영문을 쓰려면 `SECTION_PAGES`·슬러그 체계와 함께 설계해야 합니다(백로그).
+- **`notion-sync.yml` 은 `main` 에서만 돕니다**(`arena/**` 제거, 2026-10-25 A1). 생성 산출물만 바뀐 커밋(`paths-ignore`)으로는 다시 돌지 않습니다 — 이 둘이 없으면 봇 커밋과 PR 이 계속 충돌합니다.
+- 노션 커버·OG 이미지는 동기화 때 `assets/img/og/posts/` 로 복사됩니다. 네트워크 실패는 경고만 남기고 빌드를 막지 않지만, 그때는 그 글만 노션 주소를 그대로 씁니다.
+- **번역은 기계번역을 넣지 않습니다.** `content/i18n/en.json` 의 `entries` 키는 `qna/contact-inquiry` 처럼 `주소/슬러그` 이고, 원문 글이 없으면 빌드가 경고하고 그 주소를 만들지 않습니다. 블로그·가이드는 본문 번역이 없어 아직 영어 주소가 없습니다(노션 `Title EN`/본문 번역이 생기면 같은 방식으로 확장).
+- 번역 페이지에는 **앱 번들이 들어가지 않습니다**. 넣으면 React 가 정적 번역문을 지우고 한국어 화면을 그려서 `/en/` 주소에 한국어가 뜹니다.
 
 ---
 
