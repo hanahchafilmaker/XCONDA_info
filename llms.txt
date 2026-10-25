@@ -69,5 +69,5 @@
 - [엑스콘다 데이터는 어디에서 운영되나요?](https://hub.xconda.ai/qna/data-operation-location/)
 - [허브에는 어떻게 들어가나요?](https://hub.xconda.ai/qna/how-to-access-hub/)
 - [스킬을 쓰려면 Claude 유료 플랜이 필요한가요?](https://hub.xconda.ai/qna/skills-claude-paid-plan/)
-- [결과가 마음에 안 들면 프롬프트를 처음부터 다시 써야 하나요?](https://hub.xconda.ai/qna/seedance-prompt-retry/): 아닙니다. XCONDA 프롬프트 스킬에서 결과를 보고 고칠 점을 대화로 요청하면 편집기의 프롬프트가 수정되고, 그걸로 다시 생성합니다. 완성도가 오를 때까지 이 과정을 반복합니다.
+- [결과가 마음에 안 들면 프롬프트를 처음부터 다시 써야 하나요?](https://hub.xconda.ai/qna/seedance-prompt-retry/)
 - … 외 53건은 https://hub.xconda.ai/sitemap.xml 참고
