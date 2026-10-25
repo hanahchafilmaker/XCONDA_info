@@ -10,7 +10,9 @@
 - [Q&A](https://hub.xconda.ai/qna/): XCONDA(엑스콘다) 사용 중 자주 묻는 질문과 답변 — 요금·크레딧·환불, FLEXBOARD·Turn·블로킹 보드 사용법, 저작권·개인정보까지 정리했습니다.
 - [툴 사용법](https://hub.xconda.ai/guide/): XCONDA(엑스콘다)의 FLEXBOARD·Turn·블로킹 보드를 실제 화면 순서대로 따라 하는 사용 가이드입니다.
 - [스튜디오 19개 툴 완전 사용자 가이드](https://hub.xconda.ai/user-guide.html)
-- [English hub (English)](https://hub.xconda.ai/en/): English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry.
+- [English hub](https://hub.xconda.ai/en/): English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry.
+- [日本語 hub](https://hub.xconda.ai/ja/): XCONDA についての日本語での回答。料金と返金、プライバシーと決済、FLEXBOARD・Turn・Blocking Board の使い方まで。Cubeberry 提供。
+- [中文 hub](https://hub.xconda.ai/zh/): 关于 XCONDA 的中文解答：价格与退款、隐私与支付，以及 FLEXBOARD、Turn、Blocking Board 工具的使用方法。由 Cubeberry 发布。
 
 ## 툴 사용법
 

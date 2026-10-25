@@ -860,33 +860,87 @@ test("번역이 하나도 없으면 언어별 페이지를 만들지 않는다(�
 });
 
 /* ---------------------------------------------------------------------------
- * 영어 번역 커버리지 — 2026-10-25 (B 확장)
- *   content/i18n/en.json 이 실제 글과 1:1 로 맞는지, 빈 번역이 없는지 검사합니다.
+ * 번역 커버리지 — 2026-10-25 (B 확장 · ja/zh 추가)
+ *   content/i18n/*.json 이 실제 글과 1:1 로 맞는지, 빈 번역이 없는지 **모든 언어**에 대해
+ *   검사합니다. 언어를 추가하면 이 테스트가 자동으로 함께 늘어납니다.
  * ------------------------------------------------------------------------ */
-test("영어 번역 파일의 모든 키가 실제 글과 연결되고, 빈 번역이 없다", () => {
-  const dict = JSON.parse(fs.readFileSync(path.join(here, "..", "content/i18n/en.json"), "utf8"));
-  const snapshot = JSON.parse(fs.readFileSync(path.join(here, "..", "notion-content.json"), "utf8"));
-  const prefixOf = { faq: "qna", blog: "post", news: "post", notice: "notice", guide: "guide" };
-  const slugs = new Set(
-    (snapshot.rows ?? [])
-      .map((r) => `${prefixOf[r.__type] ?? r.__type}/${String(r.Slug ?? "").trim()}`)
-      .filter((k) => !k.endsWith("/")),
-  );
-  const keys = Object.keys(dict.entries ?? {});
-  assert.ok(keys.length >= 70, `번역 항목이 ${keys.length}개뿐입니다`);
-  const dead = keys.filter((k) => !slugs.has(k));
-  assert.deepEqual(dead, [], `원문이 없는 번역 키: ${dead.slice(0, 5).join(", ")}`);
-  for (const key of keys) {
-    const e = dict.entries[key];
-    assert.ok(e.title && e.title.length >= 10, `${key}: 영어 제목이 없거나 너무 짧습니다`);
-    assert.ok(e.summary && e.summary.length >= 40, `${key}: 영어 본문이 없거나 너무 짧습니다`);
-    // 번역 누락 검사 — 한글 비중이 20% 를 넘으면 번역이 안 된 것으로 봅니다.
-    // (법인명 "주식회사 큐브베리", 사업자등록번호 "2026-광주동구-0289" 같은 고유표기는 남는 게 정상)
-    const hangul = (e.summary.match(/[가-힣]/g) ?? []).length;
-    assert.ok(hangul / e.summary.length < 0.2, `${key}: 영어 본문의 한글 비중이 ${Math.round((hangul / e.summary.length) * 100)}% 입니다`);
+const I18N_LANGS = ["en", "ja", "zh"];
+
+for (const lang of I18N_LANGS) {
+  test(`${lang} 번역 파일의 모든 키가 실제 글과 연결되고, 빈 번역이 없다`, () => {
+    const dict = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+    const snapshot = JSON.parse(fs.readFileSync(path.join(here, "..", "notion-content.json"), "utf8"));
+    const prefixOf = { faq: "qna", blog: "post", news: "post", notice: "notice", guide: "guide" };
+    const slugs = new Set(
+      (snapshot.rows ?? [])
+        .map((r) => `${prefixOf[r.__type] ?? r.__type}/${String(r.Slug ?? "").trim()}`)
+        .filter((k) => !k.endsWith("/")),
+    );
+    const entries = dict.entries ?? {};
+    const keys = Object.keys(entries);
+    assert.ok(keys.length >= 70, `${lang}: 번역 항목이 ${keys.length}개뿐입니다`);
+    const dead = keys.filter((k) => !slugs.has(k));
+    assert.deepEqual(dead, [], `${lang}: 원문이 없는 번역 키: ${dead.slice(0, 5).join(", ")}`);
+    for (const key of keys) {
+      const e = entries[key];
+      // 중국어는 한 글자가 담는 정보가 많아 제목이 짧습니다(예: 如何安装技能？).
+      const minTitle = lang === "zh" ? 5 : 8;
+      assert.ok(e.title && e.title.length >= minTitle, `${lang}/${key}: 제목이 없거나 너무 짧습니다`);
+      assert.ok(e.summary && e.summary.length >= 40, `${lang}/${key}: 본문이 없거나 너무 짧습니다`);
+      // 번역 누락 검사 — 한글 비중이 20% 를 넘으면 번역이 안 된 것으로 봅니다.
+      // (법인명 "주식회사 큐브베리", 사업자등록번호 "2026-광주동구-0289" 같은 고유표기는 남는 게 정상)
+      const hangul = (e.summary.match(/[가-힣]/g) ?? []).length;
+      assert.ok(hangul / e.summary.length < 0.2, `${lang}/${key}: 본문의 한글 비중이 ${Math.round((hangul / e.summary.length) * 100)}% 입니다`);
+      // 제목에 원문 노트가 붙은 경우("…?답변") 방지
+      assert.doesNotMatch(e.title, /답변$/, `${lang}/${key}: 제목 끝에 "답변" 이 붙어 있습니다`);
+    }
+    // Q&A 는 전부 번역되어 있어야 합니다
+    const faqSlugs = new Set((snapshot.rows ?? []).filter((r) => r.__type === "faq").map((r) => `qna/${String(r.Slug ?? "").trim()}`));
+    const missingKeys = [...faqSlugs].filter((k) => !keys.includes(k));
+    assert.deepEqual(missingKeys, [], `${lang}: 번역이 없는 Q&A: ${missingKeys.slice(0, 5).join(", ")}`);
+  });
+}
+
+test("언어 파일은 같은 키 구조를 쓴다(사이트 정보 · UI 문구 · 섹션)", () => {
+  const read = (lang) => JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+  const base = read("en");
+  for (const lang of I18N_LANGS) {
+    const dict = read(lang);
+    assert.equal(dict.lang, lang, `${lang}: lang 값이 파일 이름과 다릅니다`);
+    for (const key of ["site", "ui", "sections", "entries"]) {
+      assert.equal(typeof dict[key], "object", `${lang}: ${key} 가 없습니다`);
+    }
+    assert.deepEqual(Object.keys(dict.site).sort(), Object.keys(base.site).sort(), `${lang}: site 키 불일치`);
+    assert.deepEqual(Object.keys(dict.ui).sort(), Object.keys(base.ui).sort(), `${lang}: ui 키 불일치`);
+    assert.deepEqual(Object.keys(dict.sections).sort(), Object.keys(base.sections).sort(), `${lang}: sections 키 불일치`);
+    assert.ok(dict.site.description.length >= 40, `${lang}: 사이트 설명이 너무 짧습니다`);
   }
-  // Q&A 는 전부 번역되어 있어야 합니다
-  const faqSlugs = new Set((snapshot.rows ?? []).filter((r) => r.__type === "faq").map((r) => `qna/${String(r.Slug ?? "").trim()}`));
-  const missing = [...faqSlugs].filter((k) => !keys.includes(k));
-  assert.deepEqual(missing, [], `영어 번역이 없는 Q&A: ${missing.slice(0, 5).join(", ")}`);
+});
+
+test("여러 언어 번역이 있으면 hreflang 이 서로를 모두 가리킨다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {
+      en: EN_FIXTURE.en,
+      ja: { ...EN_FIXTURE.en, lang: "ja", entries: { "qna/refund-policy": { title: "返金の仕組みは？", summary: "7日以内に未使用なら全額返金。" } } },
+      zh: { ...EN_FIXTURE.en, lang: "zh", entries: { "qna/refund-policy": { title: "退款流程是怎样的？", summary: "7 天内且点数未使用可全额退款。" } } },
+    },
+  });
+  for (const lang of ["en", "ja", "zh"]) {
+    const html = out.files.get(`${lang}/qna/refund-policy/index.html`);
+    assert.ok(html, `${lang} 페이지가 없습니다`);
+    for (const code of ["ko", "en", "ja", "zh-Hans"]) {
+      assert.match(html, new RegExp(`hreflang="${code}"`), `${lang} 페이지에 hreflang ${code} 가 없습니다`);
+    }
+    assert.match(html, /hreflang="x-default"/, `${lang} 페이지에 x-default 가 없습니다`);
+  }
+  // 한국어 원문도 세 언어를 모두 알려 줍니다
+  const ko = out.files.get("qna/refund-policy/index.html");
+  for (const code of ["en", "ja", "zh-Hans"]) assert.match(ko, new RegExp(`hreflang="${code}"`));
+  // 언어별 홈도 만들어집니다
+  for (const lang of ["en", "ja", "zh"]) assert.ok(out.files.get(`${lang}/index.html`), `${lang} 홈이 없습니다`);
 });
