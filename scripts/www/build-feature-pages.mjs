@@ -252,13 +252,31 @@ for (const page of pages) {
 /* 공유 카드 PNG — 파이썬·Pillow·한글 폰트가 있으면 실제 PNG 카드를 만듭니다.
    없으면 위에서 만든 SVG 카드를 쓰고, meta og:image 도 SVG 로 바꿉니다. */
 let hasPngCards = false;
-{
+if (process.env.WWW_NO_PNG === "1") {
+  console.log("  · 공유 카드: WWW_NO_PNG=1 → SVG 사용");
+} else {
   const py = spawnSync("python3", [path.join(ROOT, "scripts/www/render-og-png.py"), OUT], { encoding: "utf8" });
   hasPngCards = py.status === 0 && fs.existsSync(path.join(OUT, "features/flexboard/og.png"));
   if (!hasPngCards) {
     const why = (py.stderr || py.stdout || "").trim().split("\n").slice(-1)[0] || "python3/Pillow/한글 폰트 없음";
     console.log(`  · 공유 카드: PNG 생성 건너뜀 (${why}) → SVG 사용`);
   }
+}
+
+/* 목록 페이지 공유 카드(SVG 폴백) — 파이썬/Pillow 가 없으면 이 파일을 씁니다 */
+for (const lang of ["ko", "en"]) {
+  const title = lang === "ko" ? "XCONDA 기능" : "XCONDA features";
+  const sub = lang === "ko" ? "AI 스토리보드부터 영상 생성까지, 제작 도구 20가지" : "20 production tools, from AI storyboards to video";
+  const card = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="${escapeHtml(title)}">
+  <rect width="1200" height="630" fill="#0b0b0b"/>
+  <text x="72" y="96" fill="#facc15" font-family="Pretendard, Arial, sans-serif" font-size="30" font-weight="700">XCONDA</text>
+  <text x="220" y="96" fill="#a1a1aa" font-family="Pretendard, Arial, sans-serif" font-size="30">· FEATURES</text>
+  <text x="72" y="270" fill="#ffffff" font-family="Pretendard, Arial, sans-serif" font-size="76" font-weight="800">${escapeHtml(title)}</text>
+  <text x="72" y="350" fill="#a1a1aa" font-family="Pretendard, Arial, sans-serif" font-size="32">${escapeHtml(sub)}</text>
+  <text x="72" y="560" fill="#71717a" font-family="Pretendard, Arial, sans-serif" font-size="26">www.xconda.ai/${lang === "ko" ? "ko/" : ""}${base}</text>
+</svg>
+`;
+  write(`${lang === "ko" ? "ko/" : ""}${base}/og.svg`, card);
 }
 
 /* 목록 페이지 */
