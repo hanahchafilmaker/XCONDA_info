@@ -46,7 +46,29 @@
       },
       "en": {
         "title": "FLEXBOARD — Shot-by-shot AI storyboard tool",
-        "description": "Split a scenario into shots, preview each shot with an image, and fix only the shots you dislike before generating video with Seedance 2.5."
+        "description": "Split a scenario into shots, preview each shot with an image, and fix only the shots you dislike before generating video with Seedance 2.5.",
+        "h1": "FLEXBOARD",
+        "intro": "FLEXBOARD splits a scenario into shots and previews each one with an image, a line of dialogue and a sound cue. You catch problem shots before rendering, so you spend fewer credits on regeneration.",
+        "features": [
+          "Split a scenario into shots automatically and review them in Panel or Sheet view",
+          "Fix one shot at a time — a one-sentence Quick Edit, or set shot size, angle and camera movement in Detailed Edit",
+          "Send locked frames straight into a Seedance 2.5 prompt",
+          "Download all frames as a CUT ZIP, or the whole sheet as one image"
+        ],
+        "faq": [
+          {
+            "q": "Is FLEXBOARD free?",
+            "a": "During the beta, storyboarding — split, revise and download — is free. Credits are only used when you generate video."
+          },
+          {
+            "q": "Can I fix just one shot?",
+            "a": "Yes. Open Panel view, press Edit on that shot and regenerate it alone. Every other shot stays as it is."
+          },
+          {
+            "q": "Can I share a storyboard with my team?",
+            "a": "Download CUT ZIP from Panel view, or Download Sheet from Sheet view, and share the file."
+          }
+        ]
       }
     },
     {
@@ -82,7 +104,29 @@
       },
       "en": {
         "title": "Blocking Board — digital rehearsal for camera and blocking",
-        "description": "Draw positions and movement on a floor plan, play the scene on a 3D stage, and check sight lines, the 180-degree line and collisions."
+        "description": "Draw positions and movement on a floor plan, play the scene on a 3D stage, and check sight lines, the 180-degree line and collisions.",
+        "h1": "Blocking Board",
+        "intro": "Blocking Board is a digital rehearsal tool: check that people, space and camera do not collide before you generate a single frame. It replaces written movement notes that models interpret in unexpected directions.",
+        "features": [
+          "Draw positions and movement paths on a floor plan and play the scene on a 3D stage",
+          "Automatic checks for sight lines, the 180-degree line and collisions",
+          "Export a puppet walk-through clip to feed into Seedance",
+          "Export the English prompt, shot list, floor-plan PNG and a shot-book PDF"
+        ],
+        "faq": [
+          {
+            "q": "Can I use Blocking Board today?",
+            "a": "It is rolling out as a free beta. The schedule is announced in the hub notices."
+          },
+          {
+            "q": "Why do I need a puppet clip?",
+            "a": "Multi-character movement is hard to direct in words. A puppet clip lets the video model read the blocking from motion instead of text."
+          },
+          {
+            "q": "Do I need 3D modelling skills?",
+            "a": "No. Drawing on the floor plan is enough to build the 3D space."
+          }
+        ]
       }
     },
     {
@@ -118,7 +162,29 @@
       },
       "en": {
         "title": "360 Turn Studio — a 360° virtual set from one photo",
-        "description": "Build an orbitable set from a single photo or a written description, then shoot key images from any angle with the background kept intact."
+        "description": "Build an orbitable set from a single photo or a written description, then shoot key images from any angle with the background kept intact.",
+        "h1": "360 Turn Studio",
+        "intro": "Turn builds an orbitable set from one photo or a written description. Because you build one space and only move the camera inside it, doors, windows and props stay where they were from shot to shot.",
+        "features": [
+          "Generate a 360° space from a single reference image or a prompt",
+          "Add or remove objects with the mask brush",
+          "Place a character at any angle and capture key images",
+          "Keep background and lighting stable across consecutive shots"
+        ],
+        "faq": [
+          {
+            "q": "What is Turn for?",
+            "a": "It builds one space you can rotate and then shoots from any angle, which solves backgrounds drifting between shots."
+          },
+          {
+            "q": "What can I upload?",
+            "a": "A reference image, or nothing at all — you can describe the space in words and generate it."
+          },
+          {
+            "q": "Does it work with storyboards?",
+            "a": "Yes. The usual flow is to capture key images in Turn and place them into FLEXBOARD shots."
+          }
+        ]
       }
     },
     {
@@ -154,7 +220,29 @@
       },
       "en": {
         "title": "Director's Cut — 9-shot storyboards in a director's style",
-        "description": "Set the era, place and scenario, choose a director style and art direction, and get a 9-shot storyboard you can fix shot by shot."
+        "description": "Set the era, place and scenario, choose a director style and art direction, and get a 9-shot storyboard you can fix shot by shot.",
+        "h1": "Director's Cut",
+        "intro": "Director's Cut turns a scenario into a nine-shot storyboard with direction baked in. Set the era, the place, a director style and art direction, and every shot inherits the same camera and lighting language.",
+        "features": [
+          "Enter era, place and scenario and get a nine-shot board",
+          "Director-style and art-direction settings keep the tone consistent",
+          "Fix one shot's prompt and regenerate without rebuilding the board",
+          "Download the finished board for a client presentation"
+        ],
+        "faq": [
+          {
+            "q": "Can I use a different shot count?",
+            "a": "The default is nine shots. Add or remove shots in FLEXBOARD to reach the length you need."
+          },
+          {
+            "q": "Can I put this straight into a pitch?",
+            "a": "Yes — download the frames and dialogue as a sheet and drop it into your deck."
+          },
+          {
+            "q": "Can I keep a brand character consistent?",
+            "a": "Upload a face reference to lock the character; faces and wardrobe hold across shots."
+          }
+        ]
       }
     },
     {
@@ -190,7 +278,29 @@
       },
       "en": {
         "title": "AI image generation — Grok, Seedream, Nano Banana Pro",
-        "description": "Pick from Grok Imagine, Seedream Lite, Z Image and Nano Banana Pro, with each provider's own parameters exposed in one workspace."
+        "description": "Pick from Grok Imagine, Seedream Lite, Z Image and Nano Banana Pro, with each provider's own parameters exposed in one workspace.",
+        "h1": "AI Image Generation",
+        "intro": "Compare image models from several providers in one workspace. Prompts and reference images carry over when you switch models, so you can render the same scene four ways without rewriting anything.",
+        "features": [
+          "Grok Imagine, Seedream Lite, Z Image and Nano Banana Pro, among others",
+          "Each provider's own parameters exposed, not flattened",
+          "Keep a look with reference and style images",
+          "Send results straight into storyboard shots and video generation"
+        ],
+        "faq": [
+          {
+            "q": "Which models are available?",
+            "a": "Grok Imagine, Seedream Lite, Z Image, Nano Banana Pro and more — the live list is in the studio."
+          },
+          {
+            "q": "Can I generate several images at once?",
+            "a": "Yes. Run one prompt for multiple images and pick the one you want."
+          },
+          {
+            "q": "Do image generations use credits?",
+            "a": "Credits are charged per model and resolution. Credit packs are one-time purchases and stay valid for one year."
+          }
+        ]
       }
     },
     {
@@ -226,7 +336,29 @@
       },
       "en": {
         "title": "AI video generation — Seedance 2.5, Kling, Veo",
-        "description": "Generate video from text, images, start and end frames or references. Seedance 2.5 produces up to 30 seconds with audio in one pass."
+        "description": "Generate video from text, images, start and end frames or references. Seedance 2.5 produces up to 30 seconds with audio in one pass.",
+        "h1": "AI Video Generation",
+        "intro": "Generate video from text, from an image, from start and end frames, or from references. Specifying both ends of a shot gives you control over the transition, and every result records its resolution, aspect ratio and length.",
+        "features": [
+          "Text-to-video, image-to-video, start/end frames and Ref-to-video",
+          "Seedance 2.5 up to 30 seconds with simultaneous audio",
+          "Up to 30 reference images, 10 reference videos and 10 audio clips",
+          "Set length to the second, plus aspect ratio and resolution"
+        ],
+        "faq": [
+          {
+            "q": "How long can a clip be?",
+            "a": "With Seedance 2.5, up to 30 seconds in a single pass, and you can set the length to the second."
+          },
+          {
+            "q": "How many references can I use?",
+            "a": "Up to 30 images, 10 videos and 10 audio clips per generation."
+          },
+          {
+            "q": "What if a generation fails?",
+            "a": "Credits lost to a failed generation or a service outage are refunded automatically."
+          }
+        ]
       }
     },
     {
@@ -262,7 +394,29 @@
       },
       "en": {
         "title": "Upscaler — take images up to 6K",
-        "description": "Upscale storyboard frames and photos up to 6K so they hold up in print, pitch decks and on large screens."
+        "description": "Upscale storyboard frames and photos up to 6K so they hold up in print, pitch decks and on large screens.",
+        "h1": "Upscaler",
+        "intro": "Storyboard frames and photos rarely survive a big screen or a print run. The upscaler lifts images up to 6K while keeping edges and texture, so sheets and posters stay crisp.",
+        "features": [
+          "Upscale images up to 6K",
+          "Preserve edges and texture rather than smoothing them away",
+          "Output for storyboard sheets, posters and decks",
+          "Feed the upscaled result back into video generation"
+        ],
+        "faq": [
+          {
+            "q": "What files can I upload?",
+            "a": "Common image formats such as PNG and JPG."
+          },
+          {
+            "q": "Does upscaling use credits?",
+            "a": "Yes, charged the same way as image generation."
+          },
+          {
+            "q": "Can I batch several images?",
+            "a": "We recommend one at a time; repeat for each image."
+          }
+        ]
       }
     },
     {
@@ -298,7 +452,29 @@
       },
       "en": {
         "title": "Face Swap — swap faces while keeping pose and light",
-        "description": "Replace a face while keeping expression, lighting and framing, so you can test characters on the same storyboard shot."
+        "description": "Replace a face while keeping expression, lighting and framing, so you can test characters on the same storyboard shot.",
+        "h1": "Face Swap",
+        "intro": "When you want the same framing and lighting with a different face, swap instead of regenerating. Useful for testing characters on a storyboard shot or comparing two casts on identical compositions.",
+        "features": [
+          "Swap the face only; expression, lighting and framing stay",
+          "Compare characters shot by shot",
+          "Feed the swapped image back into the storyboard",
+          "Use faces you have consent for, or invented characters"
+        ],
+        "faq": [
+          {
+            "q": "Can I use a real person's face?",
+            "a": "Our terms prohibit infringing others' intellectual property and objectionable content. Use faces you have consent for, or invented characters."
+          },
+          {
+            "q": "Will the result look natural?",
+            "a": "The swap matches lighting and skin tone; run the upscaler afterwards if you need more detail."
+          },
+          {
+            "q": "Can I use it on video?",
+            "a": "Face swapping works on images. For video, use the swapped image as a key image and generate from it."
+          }
+        ]
       }
     },
     {
@@ -334,7 +510,29 @@
       },
       "en": {
         "title": "ClothSwap — keep outfits consistent across shots",
-        "description": "Brush the clothing area, upload the outfit you want, and swap only that region so every shot keeps the same costume."
+        "description": "Brush the clothing area, upload the outfit you want, and swap only that region so every shot keeps the same costume.",
+        "h1": "ClothSwap",
+        "intro": "Wardrobe that changes between shots makes a sequence read as a different scene. ClothSwap paints only the clothing area and redraws it from your reference, so a costume survives every cut.",
+        "features": [
+          "Brush the clothing area only",
+          "Upload the outfit you want as a reference",
+          "Keep face, pose and background untouched",
+          "Apply the same costume across shots"
+        ],
+        "faq": [
+          {
+            "q": "Does the garment have to match the original shape?",
+            "a": "No — the selected area is redrawn from your reference image."
+          },
+          {
+            "q": "Can I swap several outfits at once?",
+            "a": "One outfit at a time gives the cleanest result."
+          },
+          {
+            "q": "Is commercial use allowed?",
+            "a": "You own what you generate, but check the rights to the clothing images you upload."
+          }
+        ]
       }
     },
     {
@@ -370,7 +568,29 @@
       },
       "en": {
         "title": "Scene Snap — a 6-keyframe storyboard from one image",
-        "description": "Upload one image and get a cinematic 6-keyframe storyboard, then refine shots and generate video."
+        "description": "Upload one image and get a cinematic 6-keyframe storyboard, then refine shots and generate video.",
+        "h1": "Scene Snap",
+        "intro": "Start from a single image and expand it into six keyframes. It is the fastest way to lock a shot flow when you have a look but no scenario yet, and everything lands in FLEXBOARD for the details.",
+        "features": [
+          "One image becomes a six-keyframe cinematic storyboard",
+          "Transitions and camera flow composed for you",
+          "Continue editing in FLEXBOARD",
+          "Use the frames as video generation input"
+        ],
+        "faq": [
+          {
+            "q": "Do I need a scenario first?",
+            "a": "No. One image is enough to start; add dialogue and refine shots in FLEXBOARD afterwards."
+          },
+          {
+            "q": "Is it always six frames?",
+            "a": "Generation starts with six keyframes; you can add or remove shots afterwards."
+          },
+          {
+            "q": "Can I take it to video?",
+            "a": "Yes. The generated keyframes can be used directly as video input."
+          }
+        ]
       }
     },
     {
@@ -406,7 +626,29 @@
       },
       "en": {
         "title": "YouTube Ref — turn a video link into a 9-shot storyboard",
-        "description": "Paste a YouTube link to get a 9-shot storyboard, then bring in your own character reference."
+        "description": "Paste a YouTube link to get a 9-shot storyboard, then bring in your own character reference.",
+        "h1": "YouTube Ref",
+        "intro": "When a video's structure and camera flow are worth studying, paste the link and get it broken down into nine shots. You borrow the grammar, not the footage — every frame is generated fresh and re-cast with your own character.",
+        "features": [
+          "A YouTube link becomes a nine-shot storyboard",
+          "Bring a character reference to re-cast the shots",
+          "Edit any shot's prompt",
+          "Continue in FLEXBOARD"
+        ],
+        "faq": [
+          {
+            "q": "Does any video work?",
+            "a": "Use a public YouTube link. Very long videos tend to simplify into a looser shot structure."
+          },
+          {
+            "q": "Does it copy the original?",
+            "a": "Only structure and flow are referenced; frames are newly generated. Rights to the original stay with its owner."
+          },
+          {
+            "q": "Can I swap in my own character?",
+            "a": "Yes. Upload a character reference and faces and wardrobe are matched to it."
+          }
+        ]
       }
     },
     {
@@ -442,7 +684,29 @@
       },
       "en": {
         "title": "SpinAngle — draw a circle to set the camera angle",
-        "description": "Draw a circle for camera position and an arrow for direction to render the scene from that viewpoint, without 3D modelling."
+        "description": "Draw a circle for camera position and an arrow for direction to render the scene from that viewpoint, without 3D modelling.",
+        "h1": "SpinAngle",
+        "intro": "To see the same space from another angle, draw a circle for the camera position and an arrow for the direction, and the view is rendered from that point. Backgrounds hold because the space is preserved.",
+        "features": [
+          "Circle for position, arrow for direction",
+          "Realistic render from the chosen viewpoint",
+          "Change angle without 3D modelling",
+          "Use the new view as a storyboard shot"
+        ],
+        "faq": [
+          {
+            "q": "What kind of image works best?",
+            "a": "Interiors and exteriors where the space is visible."
+          },
+          {
+            "q": "Can I rotate more than 180 degrees?",
+            "a": "Areas outside the original image are inferred, so larger rotations drift further from the source."
+          },
+          {
+            "q": "How is this different from Turn?",
+            "a": "Turn builds the whole space in 360°. SpinAngle moves the viewpoint on an existing image."
+          }
+        ]
       }
     },
     {
@@ -478,7 +742,29 @@
       },
       "en": {
         "title": "CineGrade AI — film-still colour grading",
-        "description": "Upload a film still as reference and apply its grade, contrast and mood to your own images so every shot matches."
+        "description": "Upload a film still as reference and apply its grade, contrast and mood to your own images so every shot matches.",
+        "h1": "CineGrade AI",
+        "intro": "Shots that do not share a grade do not read as one film. CineGrade AI transfers the colour of a reference still onto your own images so a whole sequence sits in the same world.",
+        "features": [
+          "Grade from a film still reference",
+          "Automatic contrast, saturation and mood matching",
+          "Apply one look across every shot",
+          "Pair with the upscaler for print-ready output"
+        ],
+        "faq": [
+          {
+            "q": "Can I build a look from scratch?",
+            "a": "The workflow is to swap references until the grade matches what you want."
+          },
+          {
+            "q": "Does it work on video?",
+            "a": "Grading is applied to images today; generate video from graded key images for the usual flow."
+          },
+          {
+            "q": "Can each shot have its own look?",
+            "a": "You can, though a single look across a sequence usually reads better."
+          }
+        ]
       }
     },
     {
@@ -514,7 +800,29 @@
       },
       "en": {
         "title": "Cinematic Image Blender — composite people into scenes",
-        "description": "Combine a portrait and a background photo into one cinematic frame with matched lighting and colour temperature."
+        "description": "Combine a portrait and a background photo into one cinematic frame with matched lighting and colour temperature.",
+        "h1": "Cinematic Image Blender",
+        "intro": "Prepare a person and a background separately and composite them into one frame. Lighting direction and colour temperature are matched so the seam does not show, and one portrait can be placed in as many locations as you need.",
+        "features": [
+          "Composite from a portrait and a background photo",
+          "Lighting direction and colour temperature matched",
+          "Place the same person in multiple locations",
+          "Use the composite as storyboard or video input"
+        ],
+        "faq": [
+          {
+            "q": "Do I need to cut out the subject?",
+            "a": "No. Upload the two photos and the blending is handled."
+          },
+          {
+            "q": "Can I change only the background?",
+            "a": "Yes — reuse the same portrait against different backgrounds."
+          },
+          {
+            "q": "Will the composite look real?",
+            "a": "Lighting and colour temperature are matched; a pass through CineGrade tightens it further."
+          }
+        ]
       }
     },
     {
@@ -550,7 +858,29 @@
       },
       "en": {
         "title": "Auto Angle Generator — reshoot one scene from many angles",
-        "description": "Turn a single scene into multiple shot sizes and angles so consecutive cuts read as one continuous space."
+        "description": "Turn a single scene into multiple shot sizes and angles so consecutive cuts read as one continuous space.",
+        "h1": "Auto Angle Generator",
+        "intro": "Take one scene and shoot it as a close-up, a medium and a wide. When consecutive cuts need the camera to move within the same space, this gives you the coverage in one step.",
+        "features": [
+          "One scene converted into multiple shot sizes",
+          "Choose angle and aspect ratio",
+          "Use for coverage within a single scene",
+          "Drop results into the storyboard"
+        ],
+        "faq": [
+          {
+            "q": "How many angles do I get?",
+            "a": "Pick the shot sizes and angles you need and generate as many as required."
+          },
+          {
+            "q": "Will the background change?",
+            "a": "Everything derives from the original scene, so the space is preserved."
+          },
+          {
+            "q": "Can I take it to video?",
+            "a": "Yes, the generated images work as key images."
+          }
+        ]
       }
     },
     {
@@ -586,7 +916,29 @@
       },
       "en": {
         "title": "Expression Transformer — change expression, keep the face",
-        "description": "Change a character's expression with one prompt while keeping facial identity, so emotion carries across cuts."
+        "description": "Change a character's expression with one prompt while keeping facial identity, so emotion carries across cuts.",
+        "h1": "Expression Transformer",
+        "intro": "When the same character has to feel something different from cut to cut, change the expression instead of the face. Identity holds while the emotion moves, so a performance stays continuous.",
+        "features": [
+          "Change expression with a single prompt",
+          "Keep facial identity intact",
+          "Build cuts that carry an emotional line",
+          "Reflect results back into the storyboard"
+        ],
+        "faq": [
+          {
+            "q": "Which expressions can I get?",
+            "a": "Common emotions — joy, surprise, sadness, anger — specified in the prompt."
+          },
+          {
+            "q": "Will the face change?",
+            "a": "Identity is preserved; only the expression changes."
+          },
+          {
+            "q": "Does it work on group photos?",
+            "a": "Process one person at a time for the best accuracy."
+          }
+        ]
       }
     },
     {
@@ -622,7 +974,29 @@
       },
       "en": {
         "title": "Directors Sequence — 8 continuous shots from one keyframe",
-        "description": "Upload one keyframe and get eight continuous shots with time and transitions, then regenerate only what you need."
+        "description": "Upload one keyframe and get eight continuous shots with time and transitions, then regenerate only what you need.",
+        "h1": "Directors Sequence",
+        "intro": "One keyframe becomes eight continuous shots with time passing between them. Build the sequence fast, then regenerate only the shots that miss — much quicker than shooting shot by shot from scratch.",
+        "features": [
+          "One keyframe becomes eight continuous shots",
+          "Time flow and transitions composed automatically",
+          "Regenerate individual shots",
+          "Take the sequence into video generation"
+        ],
+        "faq": [
+          {
+            "q": "Is it always eight shots?",
+            "a": "Generation starts with eight; adjust individual shots afterwards."
+          },
+          {
+            "q": "Is the character consistent?",
+            "a": "Shots are generated around the same character; add a face reference if identity must be locked."
+          },
+          {
+            "q": "Does it work with FLEXBOARD?",
+            "a": "Yes. Bring the sequence into FLEXBOARD to tune dialogue and shot lengths."
+          }
+        ]
       }
     },
     {
@@ -658,7 +1032,29 @@
       },
       "en": {
         "title": "Arrow View — point an arrow, get that camera view",
-        "description": "Draw an arrow on an image to set camera direction and render the scene from that side, with no 3D modelling."
+        "description": "Draw an arrow on an image to set camera direction and render the scene from that side, with no 3D modelling.",
+        "h1": "Arrow View",
+        "intro": "Draw an arrow to say \"seen from this side\" and the scene is rendered from that direction. It is the lightest way to change camera direction from cut to cut, with no setup and no modelling.",
+        "features": [
+          "Set camera direction with an arrow",
+          "Render the scene from that direction",
+          "No 3D modelling required",
+          "Use the result directly as a storyboard shot"
+        ],
+        "faq": [
+          {
+            "q": "How is this different from SpinAngle?",
+            "a": "SpinAngle uses a circle for position; Arrow View uses an arrow for direction. Pick whichever matches how you think."
+          },
+          {
+            "q": "Can I create several directions at once?",
+            "a": "One direction at a time is recommended."
+          },
+          {
+            "q": "How much can it deviate from the original?",
+            "a": "Unseen areas are inferred, so large angle changes drift further."
+          }
+        ]
       }
     },
     {
@@ -694,7 +1090,29 @@
       },
       "en": {
         "title": "Seedance 2.5 — 30-second video with audio in one pass",
-        "description": "Seedance 2.5 on XCONDA: up to 30 seconds with simultaneous audio, up to 50 references, timestamp editing and green-screen replacement."
+        "description": "Seedance 2.5 on XCONDA: up to 30 seconds with simultaneous audio, up to 50 references, timestamp editing and green-screen replacement.",
+        "h1": "Seedance 2.5",
+        "intro": "Seedance 2.5, from ByteDance Seed, generates up to 30 seconds of video with audio in a single pass. Combine references with start and end frames to control the scene, with model parameters exposed rather than hidden.",
+        "features": [
+          "Up to 30 seconds with simultaneous video and audio",
+          "Up to 50 references",
+          "Timestamp-based editing",
+          "Green-screen background replacement"
+        ],
+        "faq": [
+          {
+            "q": "Can I set the length to the second?",
+            "a": "Yes. Results record resolution, aspect ratio and length — for example 720P, 16:9, 20 seconds — and you choose the duration."
+          },
+          {
+            "q": "Does it produce audio too?",
+            "a": "Yes, video and audio are generated together."
+          },
+          {
+            "q": "How is it priced?",
+            "a": "Credits, with promotions up to 30% off during the campaign period. See the pricing page for current amounts."
+          }
+        ]
       }
     },
     {
@@ -730,7 +1148,29 @@
       },
       "en": {
         "title": "Nano Banana Pro — precise generation and editing",
-        "description": "Use Nano Banana Pro inside XCONDA to follow references closely, keeping products and characters consistent across shots."
+        "description": "Use Nano Banana Pro inside XCONDA to follow references closely, keeping products and characters consistent across shots.",
+        "h1": "Nano Banana Pro",
+        "intro": "Nano Banana Pro follows references closely for generation and editing. It is the model for keeping a product or a character intact while changing the world around it, and for placing that character consistently across shots.",
+        "features": [
+          "Generation that follows reference images closely",
+          "Product and character consistency",
+          "Edit the background or props while keeping the subject",
+          "Compare against other models with the same prompt"
+        ],
+        "faq": [
+          {
+            "q": "Can I compare models?",
+            "a": "Use the same prompt and reference, switch models, and compare the results side by side."
+          },
+          {
+            "q": "Does it work for product images?",
+            "a": "Yes — a common pattern is a product photo as reference with only the background and mood changed."
+          },
+          {
+            "q": "What resolution do I get?",
+            "a": "Choose per model settings; the upscaler can take output to 6K when you need it bigger."
+          }
+        ]
       }
     }
   ]

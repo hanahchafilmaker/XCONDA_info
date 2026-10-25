@@ -85,6 +85,239 @@
     "qna/cancel-subscription": {
       "title": "How do I cancel my subscription?",
       "summary": "You can cancel yourself at any time in Account Settings — no need to contact support. Cancelling stops automatic billing from the next renewal date. Charges already paid are not refunded pro rata, but you can request a refund within 7 days if the credits are unused, subject to our refund policy. After cancelling, remaining subscription credits stay usable for up to one year from the date they were granted."
+    },
+    "qna/ai-video-training-courses": {
+      "title": "Do you run AI video production courses or webinars?",
+      "summary": "Yes. We are planning regular webinars, with the first session in October and one session each month after that. Dates and how to sign up are announced in the hub notices."
+    },
+    "qna/payment-seller-name": {
+      "title": "Whose name appears as the seller when I pay?",
+      "summary": "The company you bought from appears on the payment screen and receipt. Payments through Stripe show Cubeberry Co., Ltd (Delaware); payments through Toss Payments, KakaoPay or Eximbay (PortOne) show Cubeberry Co., Ltd (Korea). Refunds are returned to the original payment method by the company you purchased from."
+    },
+    "qna/access-edit-delete-data": {
+      "title": "How do I view, correct or delete my data?",
+      "summary": "Email cubeberry@cuberry.kr, call +82-70-8095-2302 (weekdays 10:00–17:00 KST), or make the request in your XCONDA account settings. After verifying your identity we forward the request to the relevant company and answer within 45 days, at no charge. Requests through an authorised representative are also accepted. The data protection officer is the CEO, Jinseo Lee."
+    },
+    "qna/prohibited-actions": {
+      "title": "What is prohibited on XCONDA?",
+      "summary": "Using the service for unlawful purposes; uploading or creating content that infringes someone else's intellectual property; reverse engineering, decompiling or hacking the service; creating harmful, offensive or otherwise inappropriate content; sharing account credentials; and accessing the service by automated means without written permission. Violations can lead to restricted access or account termination."
+    },
+    "qna/uploaded-content-usage": {
+      "title": "Does Cubeberry use the images and videos I upload?",
+      "summary": "You own the images and videos you upload and the work you create. Cubeberry may use that content to provide and improve the service. It is used to train XCONDA models only with your consent. We do not sell personal data and do not share it for targeted advertising."
+    },
+    "qna/personal-data-sale-ads": {
+      "title": "Do you sell my data or use it for advertising?",
+      "summary": "No. We do not sell personal data to third parties and do not share it for targeted advertising. Sensitive personal data is not used for anything beyond delivering the service you requested, security and legal obligations."
+    },
+    "qna/error-support": {
+      "title": "What should I do if something goes wrong?",
+      "summary": "Credits charged for a failed generation or a service outage are refunded automatically. For any other error, email cubeberry@cuberry.kr (phone +82-70-8095-2302, weekdays 10:00–17:00 KST). Include your account email, a screenshot of the error and the time it happened so we can look into it quickly."
+    },
+    "qna/commission-video-production": {
+      "title": "Can Cubeberry produce a video for me?",
+      "summary": "Yes. Cubeberry handles planning, story, AI generation, editing and post-production in one team, built on XCONDA. We have produced web dramas, animation, documentaries, advertising and corporate films. Contact us to discuss a project."
+    },
+    "qna/governing-law-disputes": {
+      "title": "Which law applies if there is a dispute?",
+      "summary": "If you contracted with the Korean entity (Cubeberry Co., Ltd.), Korean law applies and unresolved disputes go to the Korean courts. If you contracted with the US entity (Cubeberry Co., Ltd, Delaware), New York law applies and disputes go to the state or federal courts in New York County. Mandatory consumer protections in your country of residence still apply."
+    },
+    "qna/data-operation-location": {
+      "title": "Where is XCONDA data processed and stored?",
+      "summary": "XCONDA runs on Amazon Web Services, and stored data is encrypted in transit and at rest. Personal data may be processed and stored in Korea, our primary location, and in the United States (our US entity, Stripe and cloud providers) and other countries where our service providers operate. Cross-border transfers rely on standard contractual clauses and data processing agreements."
+    },
+    "qna/how-to-access-hub": {
+      "title": "How do I get to the hub?",
+      "summary": "On the XCONDA website (xconda.ai), open the Resources menu and choose Hub."
+    },
+    "qna/skills-claude-paid-plan": {
+      "title": "Do I need a paid Claude plan to use the skills?",
+      "summary": "Anthropic's help centre states that skills are available on the Free, Pro, Max, Team and Enterprise plans, with code execution enabled in settings. Usage limits differ by plan, so a paid plan is easier if you work on long scenarios often. Claude's policy can change — check the Claude help centre for the current rules."
+    },
+    "qna/seedance-prompt-retry": {
+      "title": "Do I have to rewrite the prompt from scratch if I dislike the result?",
+      "summary": "No. In the XCONDA Prompt skill you tell it in conversation what to fix, the prompt in the editor is updated, and you generate again with it. Repeat until the shot reaches the standard you want."
+    },
+    "qna/how-to-install-skills": {
+      "title": "How do I install a skill?",
+      "summary": "Per the Claude help centre: 1) download the skill ZIP from the hub (one ZIP per skill); 2) in Claude go to Customize > Skills; 3) press '+' and choose Create skill; 4) choose Upload a skill and upload the ZIP; 5) when it appears in the list, switch it on. Code execution must be enabled under Capabilities in settings."
+    },
+    "qna/flexboard-panel-vs-sheet": {
+      "title": "What is the difference between Panel and Sheet view?",
+      "summary": "Panel view shows one card per shot with its image, scene description, dialogue, sound cues and an Edit button — use it to read and fix individual shots. Sheet view shows the shot images large, without descriptions — use it to judge whether the sequence flows. The recommended order is Sheet first for flow, then Panel shot by shot."
+    },
+    "qna/flexboard-edit-single-cut": {
+      "title": "Can I fix just one shot I don't like?",
+      "summary": "Yes. In Edit Panel's Panel view, press Edit on the shot you want to change and only that shot is revised. For a simple change, write one sentence in Quick Edit (for example, \"change only the glasses, keep the pose and background\"). To change the camera, pick Shot Size, Camera Angle and Camera Movement in Detailed Edit and regenerate. Every other shot stays as it is."
+    },
+    "qna/where-to-get-skills": {
+      "title": "Where do I get the skills?",
+      "summary": "The Claude skills for the XCONDA production workflow (FLEXBOARD skill and XCONDA Prompt skill) are downloaded from the XCONDA hub. Add the downloaded file to Claude using the installation steps."
+    },
+    "qna/flexboard-download-storyboard": {
+      "title": "Can I download the storyboard I made in FLEXBOARD?",
+      "summary": "Yes. From the top right of the Edit Panel, choose Download CUT ZIP in Panel view to get all shot images at once, or Download Sheet in Sheet view to get a single sheet. It is the easiest way to share a board with a team or a client."
+    },
+    "qna/blocking-board-export": {
+      "title": "What can I export from Blocking Board?",
+      "summary": "For a reviewed scene you can export the English prompt (for Seedance), a shot list, floor-plan and frame PNGs, and a shot-book PDF. Playing the scene also exports a previs clip as WebM."
+    },
+    "qna/flexboard-auto-refine-instant-apply": {
+      "title": "When should I use Auto Refine and Instant Apply?",
+      "summary": "Auto Refine refines an idea or a rough scenario and breaks it into shots. Instant Apply applies a scenario you have already organised, quickly and as written. If you prepared a written board with the FLEXBOARD skill first, Instant Apply is the easier path."
+    },
+    "qna/seedance-reference-limits": {
+      "title": "How many reference images and videos can I add?",
+      "summary": "In the Reference mode of XCONDA video generation you can add up to 30 images, 10 videos and 10 audio clips at a time. Assets you add are kept in the Input Assets library, and you type @ in the prompt to point at the asset you mean."
+    },
+    "qna/why-puppet-video": {
+      "title": "Why do I need a puppet clip?",
+      "summary": "Movement like \"enters through the left door, walks around the table and stops by the window\" often goes the wrong way when written as text, and several characters moving at once is hard to control in words. Adding a puppet clip lets Seedance read the blocking from video rather than text. The puppet does not need to look human — position, direction and speed are enough."
+    },
+    "qna/real-person-celebrity-reference": {
+      "title": "Can I use a real person's or a celebrity's face as a reference?",
+      "summary": "Our terms prohibit uploading or creating content that infringes the intellectual property of others and content that is harmful or inappropriate. There is no separate clause dealing only with real people's faces. We recommend using faces you have consent for, or invented characters."
+    },
+    "qna/seedance-2-5-length-resolution": {
+      "title": "What length and resolution can Seedance 2.5 produce?",
+      "summary": "In the XCONDA Video Generator, choosing Seedance 2.5 lets you generate from text, images, start and end frames, or references (Ref-to-video). Per the model's developer ByteDance Seed, Seedance 2.5 produces up to 30 seconds of video with audio in one pass. Results record resolution, aspect ratio and length — for example 720P, 16:9, 20 or 27 seconds — so you can set the duration to the second. The settings bar under the prompt box controls aspect ratio (e.g. 16:9), resolution (e.g. 720p), length (e.g. 20s) and High Quality, and prompts can be up to 30,000 characters. Available values are listed in each settings menu."
+    },
+    "qna/seedance-prompt-language": {
+      "title": "Do I have to write prompts in English?",
+      "summary": "With the XCONDA Prompt skill you edit prompts in a side-by-side Korean and English editor. Check the meaning in Korean, then paste the English working version into video generation. You do not need to write English yourself."
+    },
+    "qna/before-chargeback": {
+      "title": "What should I do before filing a chargeback?",
+      "summary": "Contact cubeberry@cuberry.kr before filing a chargeback — support often resolves the issue faster. Stripe disputes are handled by the US entity and PortOne disputes by the Korean entity. A chargeback found to be unjustified may lead to the account being suspended or terminated under our terms."
+    },
+    "qna/xconda-video-workflow-overview": {
+      "title": "What is the full workflow for making a video with XCONDA?",
+      "summary": "Cubeberry's production flow has seven steps: 1) write the scenario; 2) secure reference images (character sheet, Turn backgrounds); 3) write the written board and storyboard prompts (FLEXBOARD skill); 4) build the storyboard and blocking clip (FLEXBOARD, Blocking Board); 5) write the Seedance prompts and generate video; 6) produce sound; 7) combine video and sound. Step 4, the storyboard, is where preparation hands over to generation. The hub blog post \"From one scenario to a finished video\" walks through it."
+    },
+    "qna/turn-image-usage": {
+      "title": "Where do images made in Turn get used?",
+      "summary": "Three places. Empty-space images (Freeze Frame) become background references for Seedance video generation; key images with a character become FLEXBOARD storyboard shots; and the space image becomes the stage for blocking in Blocking Board."
+    },
+    "qna/multiple-face-photos-accuracy": {
+      "title": "Does adding more face photos of the same person improve accuracy?",
+      "summary": "Often the opposite. Adding several photos of the same face can blend the features and blur the result. The rule is one face image per character."
+    },
+    "qna/why-faces-change-between-cuts": {
+      "title": "Why does the face change from shot to shot in AI video?",
+      "summary": "Given only text, a video model imagines each frame anew, so faces, clothing and framing drift even when you describe the same character. Anything that must stay the same has to be pinned visually: faces and wardrobe with reference images, the space with a background image, and framing with a storyboard. XCONDA's workflow is built so that pinning happens before video generation."
+    },
+    "qna/turn-without-photos": {
+      "title": "Can I use Turn without any photos?",
+      "summary": "Yes. Leave all four reference slots (Front, Left, Right, Back) empty and the space is built from your written description alone. One front photo is also enough, and you can add photos of whichever directions you have."
+    },
+    "qna/mixing-with-live-footage": {
+      "title": "Can I mix live-action footage with AI video?",
+      "summary": "In Reference mode you can add up to 10 videos as references, so footage you shot yourself can be used as reference material. How strongly a referenced video shapes the output depends on the prompt and the footage, so test with a short clip first."
+    },
+    "qna/turn-props-wallpaper": {
+      "title": "Can I add props or change wallpaper in Turn?",
+      "summary": "Yes. In Wall Edit, choose one of the six direction cards, upload a reference image, paint the area you want to change and run it. Use INPAINT for a single prop (only the painted area is edited), REGEN to regenerate a whole wall of that direction, and REPLACE to swap a specific object. For broad surfaces such as wallpaper, pair the reference image with an instruction like \"remove the moulding and change only the wallpaper\" for a clean result."
+    },
+    "qna/flexboard-cut-count-and-length": {
+      "title": "How many shots can FLEXBOARD hold, and how long can each be?",
+      "summary": "Up to 36 shots per board. Set the count in Number of Panels and each shot's length in Shot Length, between 4 and 30 seconds. For example, 9 shots at 15 seconds add up to roughly 2 minutes 15 seconds."
+    },
+    "qna/video-generation-inputs": {
+      "title": "What should I put into the video generation screen?",
+      "summary": "Four things together: 1) reference images (character sheet, background sheet, props) to pin faces, wardrobe and space; 2) a storyboard (per-shot images) to pin framing and shot order; 3) a Seedance prompt in English for movement, timing and camera; 4) a blocking puppet clip to pin blocking and movement paths. Whatever you leave out, the model fills in on its own."
+    },
+    "qna/best-stage-to-edit": {
+      "title": "At which stage is editing most efficient?",
+      "summary": "At the storyboard stage. Once video is generated with the wrong framing you end up regenerating at the video stage several times. Fix framing, characters and props on the per-shot images in FLEXBOARD first, then move to video, and you regenerate far less."
+    },
+    "qna/current-discount-events": {
+      "title": "Are there any discounts running now?",
+      "summary": "We are running a Seedance 2.5 promotion to mark the FLEXBOARD launch. In Korea, 30% usage discount plus 10% price discount adds up to 40%; in the US, up to 30% usage discount. It runs from 11:00 on 7 October 2026 to 11:00 on 6 November 2026 (KST)."
+    },
+    "qna/payment-failed": {
+      "title": "What should I do if a payment fails?",
+      "summary": "Common causes are insufficient balance or limit, an expired card, overseas payments blocked, a wrong billing address or CVV, and the card issuer's fraud prevention. Ask your card issuer whether overseas payments are allowed, then check balance, expiry and billing details. If it still fails, try another payment method or email cubeberry@cuberry.kr. For a payment page that will not open, or for declined authorisations, support will check with the payment provider (Stripe, PortOne and others)."
+    },
+    "qna/flexboard-character-consistency": {
+      "title": "How do I keep the same character across shots?",
+      "summary": "Register a character (Cast) card and a background card under Reference Assets in Scene Settings. Each card carries a token such as @image1 or @image2, and including that token in a shot description shows which character and background were used. Register one card per character."
+    },
+    "qna/sound-and-editing": {
+      "title": "How are sound and editing handled?",
+      "summary": "In Cubeberry's production flow, sound is created in Suno to match the mood and length of the finished video, then video and sound are combined in Premiere Pro, where cuts, levels and subtitles are checked before final output."
+    },
+    "qna/turn-room-size-credits": {
+      "title": "Does changing the room size in Turn cost more credits?",
+      "summary": "No. Change the room's width, depth and ceiling height in Room Size · Camera, then press \"Apply Room Size · No Additional Generation\" — the proportions change using the existing wall images without generating new ones, and props stay in place."
+    },
+    "qna/international-payment": {
+      "title": "Can I pay from outside Korea?",
+      "summary": "Yes, through two payment paths. With Stripe, the seller is the US entity Cubeberry Co., Ltd (Delaware) and billing is in US dollars, with tax added at checkout depending on where you live. With Toss Payments, KakaoPay or Eximbay (via PortOne), the seller is the Korean entity Cubeberry Co., Ltd and Korean billing is in won. The seller's name appears on the payment screen and the receipt."
+    },
+    "qna/how-to-sign-up": {
+      "title": "How do I sign up?",
+      "summary": "Create an account on the XCONDA website (xconda.ai). You can sign in with Google, Facebook or X, or use an email address and password. You must be 18 or older, provide accurate details and keep your credentials secure. Do not share an account with anyone else. Signing up does not currently include free credits."
+    },
+    "qna/credit-transfer-cash-withdrawal": {
+      "title": "Can I transfer credits or cash them out? What happens to credits if I leave?",
+      "summary": "No. Credits have no cash value and cannot be transferred or sold. If you close your account or it is terminated, remaining credits lapse. Purchases that qualify for a refund are refunded first."
+    },
+    "qna/credit-packs-and-price": {
+      "title": "What are credit packs and how much do they cost?",
+      "summary": "A credit pack is a one-time purchase that gives you a fixed number of credits. It does not renew automatically. In Korea (KRW, VAT included): Starter Pack V1 ₩10,450 (2,020 credits), Starter Pack V2 ₩31,350 (6,200), Pro Pack V1 ₩52,250 (10,500), Pro Pack V2 ₩99,000 (21,500), Master Pack ₩495,000 (114,000). Outside Korea (USD, tax excluded): $6.90, $20.90, $34.90, $67.90 and $369.90. Credits are valid for one year from purchase."
+    },
+    "qna/how-to-request-refund": {
+      "title": "How do I request a refund, and how long does it take?",
+      "summary": "Contact support (cubeberry@cuberry.kr or +82-70-8095-2302, weekdays 10:00–17:00 KST) with your account email, order number, payment date and reason. Requests are reviewed within 2–3 business days, and once approved the charge is reversed to the original payment method; the amount can take 7–14 business days to appear. The same rule applies to a first subscription payment, a renewal, an upgrade and credit packs: a full refund within 7 days if none of the credits from that purchase have been used. Refunds are processed by the company you bought from — the US entity for Stripe payments, the Korean entity for PortOne payments."
+    },
+    "qna/who-made-xconda": {
+      "title": "Who made XCONDA?",
+      "summary": "XCONDA is developed and operated by Cubeberry Co., Ltd., based in Korea. Cubeberry was founded in 2023 and designed by CEO Jinseo Lee, a former KBS drama PD, together with a broadcast writer, working directors and AI video artists. The XCONDA pipeline produced KBS 1TV's \"Legend of the Haunted: Gumiho\" (May 2025 — the first AI animation broadcast in prime time by a Korean broadcaster), KBS documentary \"Korean War Mobile Trauma Centre\" (June 2025) and the generative AI parts of KBS 1TV documentary \"Sacred Object\" (aired March 2026), and is producing four AI web dramas in KOCCA's New Media Technology Content Lab. Cubeberry has delivered more than 3,100 broadcast-grade AI shots."
+    },
+    "qna/supported-ai-models": {
+      "title": "Which AI models can I use?",
+      "summary": "Video generation supports Seedance 2.5, and Cubeberry is an Authorized Dealer for BytePlus. Image models differ by tool: in FLEXBOARD you can choose among GPT Image 2, Seedream 5.0 Pro, GPT Image 2.5 Flare and GPT Image 2.5 Sunburst, and in Turn between Gemini 3.1 Flash and GPT Image 2. Supported models change with releases — check each tool's screen for the current list."
+    },
+    "qna/non-refundable-cases": {
+      "title": "When is a refund not available?",
+      "summary": "No refund is available after 7 days from payment, if any credit from that purchase has been used, or if the account was terminated for breaching the terms. These conditions are shown and agreed before payment. Credits lost to a service outage or a failed generation are restored automatically rather than refunded."
+    },
+    "qna/what-is-xconda": {
+      "title": "What is XCONDA?",
+      "summary": "XCONDA is an AI video and image production platform run by Cubeberry (xconda.ai). It gives you several generative models in one place plus production tools — FLEXBOARD, Turn, Blocking Board and others — that carry a project from scenario to storyboard to generated video. The focus is not a single clip but work in which many shots hold the same characters in the same space."
+    },
+    "qna/credit-expiry-and-refund-policy": {
+      "title": "What are the credit validity and refund rules?",
+      "summary": "Subscription credits are valid for up to one year from the date they are granted, and credit packs for one year from purchase; unused credits then lapse automatically. A full refund can be requested within 7 days of payment if none of the credits from that purchase have been used. After 7 days, or if any credit has been used, no refund is available. On refund, only the credits from that purchase are reclaimed; credits rolled over from earlier are kept. Nothing in the terms limits statutory refund or withdrawal rights in your country of residence. See the refund section below for the process."
+    },
+    "qna/is-tax-included": {
+      "title": "Is tax included in the price?",
+      "summary": "Korean prices include 10% VAT. Prices outside Korea exclude tax, and sales tax, VAT or GST may be added at checkout depending on where you live. The final amount including tax is shown before you confirm the payment."
+    },
+    "qna/subscription-auto-renewal": {
+      "title": "Does a subscription renew automatically?",
+      "summary": "Yes. Until you cancel, a subscription is charged automatically each month on the same date to the stored payment method. Before the first payment we show the price, billing cycle, renewal terms and how to cancel, and you agree to them; after purchase we send a confirmation email with the renewal terms and cancellation steps."
+    },
+    "qna/subscription-credit-rollover": {
+      "title": "Do unused subscription credits roll over to the next month?",
+      "summary": "Yes. Unused subscription credits roll over to the next billing cycle and are valid for up to one year from the date they were granted. Expired credits lapse automatically, and credits are consumed starting with the earliest expiry date."
+    },
+    "qna/xconda-vs-other-ai-video-tools": {
+      "title": "How is XCONDA different from other AI video tools?",
+      "summary": "XCONDA puts more weight on the stage before generation. Give a video model text alone and faces, wardrobe and framing drift from shot to shot. XCONDA's workflow pins faces, space, framing and blocking first — with FLEXBOARD (per-shot storyboard), Turn (360° virtual set) and Blocking Board (movement paths) — and then generates video. It is broadcast drama practice transferred to AI video."
+    },
+    "qna/eu-uk-withdrawal-refund": {
+      "title": "Can I withdraw or get a refund in Europe or the UK?",
+      "summary": "Consumers in the EEA and the UK have a 14-day right of withdrawal for digital services. Before payment you confirm that you agree to immediate delivery of the service and credits, and that the withdrawal right ends when you use credits from that purchase. If you have not used any credits, you can withdraw within 14 days of payment and receive a full refund."
+    },
+    "qna/terms-change-notice": {
+      "title": "Will you tell me in advance if prices or terms change?",
+      "summary": "Yes. Price changes are announced 30 days before they take effect, and amounts already paid are charged at the old price. For subscriptions, the new price applies from the first billing date after the notice period, and you can cancel before then. Changes to the terms are announced 7 days in advance (30 days for changes unfavourable to members), and material changes to the privacy policy at least 30 days in advance."
+    },
+    "qna/how-credits-are-deducted": {
+      "title": "How are credits deducted?",
+      "summary": "Credits are charged differently depending on the feature and model used. The credit cost per generation is shown on the generate button or the selection screen, so check before generating. In Turn, for example, the cost per generation is shown for each image model, and FLEXBOARD's image regenerate button shows the credits it needs. Credits lost to a service outage or a failed generation are restored automatically. When you hold several batches of credits, the ones expiring earliest are used first."
     }
-  }
+  },
+  "review": "2026-10-25 AI 1차 번역(초안) — 원어민 검수 전"
 }

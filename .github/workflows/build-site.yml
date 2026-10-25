@@ -21,6 +21,7 @@ on:
       - "vite.config.ts"
       - "tsconfig.json"
       - "scripts/build-seo.mjs"
+      - "www/**"
   workflow_dispatch:
 
 concurrency:
@@ -47,6 +48,13 @@ jobs:
 
       - name: 분류 · 동기화 규칙 테스트
         run: npm run test:unit
+
+      - name: www 기능 페이지 원고 · 산출물 검사
+        # www 저장소로 옮기기 전에 원고 형식과 정적 산출물(JSON-LD·canonical·hreflang·링크)을 먼저 검증합니다.
+        # 배포는 하지 않고, 검사만 해서 main 이 깨지지 않게 막습니다.
+        run: |
+          npm run www:check
+          npm run www:build
 
       - name: 빌드 (dist/dev.html → index.html + 글별 페이지 · sitemap · robots)
         # 이 단계의 SEO 산출물은 체크아웃 시점의 스냅샷 기준입니다. 아래 게시 단계가
