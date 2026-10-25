@@ -11,10 +11,24 @@ import SearchOverlay from "./components/SearchOverlay";
 import ArticleModal from "./components/ArticleModal";
 import { ContentProvider } from "./content/ContentContext";
 import { useLang } from "./i18n";
+import { sectionPageFromPathname } from "./content/seo";
 
 export default function App() {
   const { t } = useLang();
   const [searchOpen, setSearchOpen] = useState(false);
+
+  /**
+   * 섹션 목록 주소(`/post/` · `/notice/` · `/qna/` · `/guide/`)로 들어온 경우.
+   * 이 주소는 크롤러용 정적 목록이므로, 앱이 뜨면 해당 섹션으로 이동해 화면과 주소를 맞춥니다.
+   */
+  useEffect(() => {
+    const section = sectionPageFromPathname(window.location.pathname);
+    if (!section) return;
+    const id = window.setTimeout(() => {
+      document.getElementById(section.anchor)?.scrollIntoView?.({ block: "start" });
+    }, 250);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

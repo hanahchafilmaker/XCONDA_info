@@ -32,15 +32,21 @@ import { blocksToHtml, parseLegacyRecordMap } from "../src/content/body.js";
 import {
   DEFAULT_OG_IMAGE_PATH,
   DEFAULT_SITE_URL,
+  ORG_LOGO_PATH,
+  SECTION_PAGES,
   ROUTE_PREFIX,
   SEO_DESCRIPTION_MAX,
   SEO_TITLE_MAX,
   SITE_NAME,
   absoluteUrl,
+  appJsonLd,
   articleJsonLd,
   escapeHtml,
   fileUrlOf,
+  howToJsonLd,
   jsonLdGraph,
+  listJsonLd,
+  modifiedDateOf,
   pickProp,
   resolveArticleMeta,
   robotsTxt,
@@ -80,6 +86,30 @@ export function applyHead(template, head) {
   return html.replace(headEnd, () => `    <!-- SEO:START -->\n${head}\n    <!-- SEO:END -->\n  ${headEnd}`);
 }
 
+const ROOT_OPEN = '<div id="root">';
+
+/**
+ * 템플릿의 #root 를 **빈 상태로 정규화**합니다.
+ * 빌드 결과(index.html)를 다시 템플릿으로 넣어도(멱등·재생성) 안전하도록, 이미 들어 있는
+ * 정적 본문을 걷어 냅니다. #root 는 </body> 바로 앞의 마지막 요소라는 전제를 씁니다.
+ */
+export function emptyRoot(input) {
+  // 정적 스타일은 #root 바깥에 있으므로, 다시 만들 때 옛 스타일 블록을 먼저 걷어 냅니다.
+  // (앞쪽 공백까지만 지우고 뒤쪽 들여쓰기는 남겨, 첫 생성과 완전히 같은 문자열이 되게 합니다)
+  const template = input.replace(/\s*<style>\.seo-article\{[\s\S]*?<\/style>/g, "");
+  const start = template.indexOf(ROOT_OPEN);
+  if (start < 0) throw new Error('템플릿에 <div id="root"> 가 없습니다 — 빌드 결과(index.html)를 넣어 주세요');
+  const bodyEnd = template.lastIndexOf("</body>");
+  const close = template.lastIndexOf("</div>", bodyEnd > start ? bodyEnd : template.length);
+  if (close < start) throw new Error("템플릿의 #root 닫는 태그를 찾지 못했습니다");
+  return `${template.slice(0, start)}<div id="root"></div>${template.slice(close + "</div>".length)}`;
+}
+
+/** #root 안에 정적 본문(body 는 `<div id="root">…</div>` 형태)을 넣습니다. */
+function injectRoot(html, body) {
+  return emptyRoot(html).replace('<div id="root"></div>', () => `${STATIC_STYLE}\n    ${body}`);
+}
+
 /** 구조화 데이터 객체 → <script type="application/ld+json"> (</script> 가 값을 깨지 않게 < 를 이스케이프) */
 const jsonLdScript = (data, article = false) =>
   data
@@ -94,6 +124,11 @@ export function headBlock(meta) {
     `<meta name="description" content="${e(meta.description)}" />`,
     meta.robots ? `<meta name="robots" content="${e(meta.robots)}" />` : "",
     `<link rel="canonical" href="${e(meta.url)}" />`,
+    // 언어 신호 — 이 주소의 기준 언어는 한국어임을 명시합니다.
+    // (허브는 언어별 URL 을 만들지 않고 한 주소에서 화면 언어만 바꾸므로, hreflang 을
+    //  비워 두면 검색엔진·AI 가 "무엇이 기준인지" 확정하지 못합니다. ko + x-default 자기 참조.)
+    `<link rel="alternate" hreflang="ko" href="${e(meta.url)}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${e(meta.url)}" />`,
     `<meta property="og:type" content="${meta.ogType}" />`,
     `<meta property="og:site_name" content="${e(SITE_NAME)}" />`,
     `<meta property="og:locale" content="ko_KR" />`,
@@ -102,12 +137,14 @@ export function headBlock(meta) {
     `<meta property="og:image" content="${e(meta.image)}" />`,
     `<meta property="og:url" content="${e(meta.url)}" />`,
     meta.publishedTime ? `<meta property="article:published_time" content="${e(meta.publishedTime)}" />` : "",
+    meta.modifiedTime ? `<meta property="article:modified_time" content="${e(meta.modifiedTime)}" />` : "",
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${e(meta.ogTitle)}" />`,
     `<meta name="twitter:description" content="${e(meta.ogDescription)}" />`,
     `<meta name="twitter:image" content="${e(meta.image)}" />`,
     jsonLdScript(meta.siteLd),
     jsonLdScript(meta.articleLd, true),
+    jsonLdScript(meta.howToLd, true),
   ].filter(Boolean);
   return lines.map((line) => `    ${line}`).join("\n");
 }
@@ -154,6 +191,136 @@ export function articleBodyHtml({ prefix, type, title, date, author, summary, co
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+/* ------------------------------ 목록 · 요약 (서버 렌더 · 크롤러용) ------------------------------ */
+
+/** 요약 → 목록 한 줄 (줄바꿈 제거 + 길이 제한) */
+const oneLine = (value, max = 150) => summarize(String(value ?? "").replace(/\s+/g, " ").trim(), max);
+
+const byDateDesc = (a, b) => String(b.date ?? "").localeCompare(String(a.date ?? ""));
+
+/** 노션 `Pinned`(맨 위 고정) 값 → boolean */
+const isPinned = (row) =>
+  ["true", "yes", "1", "예", "y"].includes(textOf(pickProp(row, ["Pinned", "고정", "Pin"])).toLowerCase());
+const byPinnedThenDate = (a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || byDateDesc(a, b);
+
+/** 글 주소 → 페이지 기준 상대 주소 (앞의 / 제거) */
+const relHref = (path, prefix = "") => `${prefix}${String(path).replace(/^\/+/, "")}`;
+
+/**
+ * 글 목록 → 정적 <ul>. `linkOf` 가 글 주소를 만듭니다(홈은 `post/x/`, 목록 페이지는 `../post/x/`).
+ * 자바스크립트 없이도 크롤러가 모든 글을 1~2단계 안에서 볼 수 있게 하는 장치입니다.
+ */
+export function serverListHtml(items, linkOf) {
+  const rows = items.map((it) => {
+    const meta = [it.date && `<time datetime="${escapeHtml(it.date)}">${escapeHtml(it.date)}</time>`, it.author && escapeHtml(it.author)]
+      .filter(Boolean)
+      .join(" · ");
+    const summary = it.summary ? ` — ${escapeHtml(it.summary)}` : "";
+    return `<li><a href="${escapeHtml(linkOf(it))}">${escapeHtml(it.title)}</a>${meta ? ` <span class="seo-meta">${meta}</span>` : ""}${summary}</li>`;
+  });
+  return `<ul>${rows.join("")}</ul>`;
+}
+
+/** 섹션 하나 (제목 + 목록 + 전체 보기 링크) */
+function sectionHtml({ anchor, heading, items, linkOf, moreHref, moreLabel }) {
+  if (!items.length) return "";
+  return [
+    `<section${anchor ? ` id="${escapeHtml(anchor)}"` : ""}>`,
+    `<h2>${escapeHtml(heading)} <span class="seo-meta">${items.length}개</span></h2>`,
+    serverListHtml(items, linkOf),
+    moreHref ? `<p><a href="${escapeHtml(moreHref)}">${escapeHtml(moreLabel ?? `${heading} 전체 보기`)}</a></p>` : "",
+    `</section>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+/**
+ * 홈 요약본 — 공지 · 뉴스 · 툴 사용법 · 블로그 · Q&A 전체 목록.
+ * 앱이 뜨면 React 가 #root 를 통째로 바꾸므로 화면에는 영향이 없고,
+ * 자바스크립트를 실행하지 않는 AI 크롤러만 이 내용을 읽습니다.
+ */
+export function homeDigestHtml({ groups, description, total, updated }) {
+  const linkOf = (it) => relHref(routePathFor(it.type, it.slug));
+  const toc = [
+    ["notices", "공지사항"],
+    ["news", "뉴스"],
+    ["guides", "툴 사용법"],
+    ["blog", "블로그"],
+    ["faq", "Q&A"],
+  ]
+    .filter(([id]) => groups[id]?.length)
+    .map(([id, label]) => `<a href="#${id}">${escapeHtml(label)} ${groups[id].length}</a>`)
+    .join(" · ");
+
+  return [
+    `<div id="root"><main class="seo-article seo-home">`,
+    `<h1>${escapeHtml(siteMetaFor("ko").title)}</h1>`,
+    `<p>${escapeHtml(description)}</p>`,
+    `<p class="seo-meta">문서 ${total}개${updated ? ` · 최근 갱신 ${escapeHtml(updated)}` : ""}</p>`,
+    toc ? `<nav class="seo-toc" aria-label="섹션 바로가기">${toc}</nav>` : "",
+    sectionHtml({
+      anchor: "notices",
+      heading: SECTION_LABELS.notice,
+      items: groups.notices,
+      linkOf,
+      moreHref: "notice/",
+    }),
+    sectionHtml({ anchor: "news", heading: SECTION_LABELS.news, items: groups.news, linkOf, moreHref: "post/" }),
+    sectionHtml({
+      anchor: "guides",
+      heading: SECTION_LABELS.guide,
+      items: groups.guides,
+      linkOf,
+      moreHref: "guide/",
+    }),
+    sectionHtml({ anchor: "blog", heading: SECTION_LABELS.blog, items: groups.blog, linkOf, moreHref: "post/" }),
+    sectionHtml({ anchor: "faq", heading: "Q&A", items: groups.faq, linkOf, moreHref: "qna/" }),
+    `<p><a href="https://www.xconda.ai/">XCONDA 스튜디오 열기</a></p>`,
+    `</main></div>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+/** 섹션 인덱스 페이지 본문 (/post/ · /notice/ · /qna/ · /guide/) */
+export function sectionPageHtml({ page, items }) {
+  const linkOf = (it) => relHref(routePathFor(it.type, it.slug), "../");
+  return [
+    `<div id="root"><main class="seo-article">`,
+    `<nav aria-label="breadcrumb"><a href="../">${escapeHtml(SITE_NAME)}</a> / ${escapeHtml(page.heading)}</nav>`,
+    `<h1>${escapeHtml(page.heading)}</h1>`,
+    `<p>${escapeHtml(page.description)}</p>`,
+    `<p class="seo-meta">${items.length}개</p>`,
+    serverListHtml(items, linkOf),
+    `<p><a href="../">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
+    `</main></div>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+/** 본문 블록 → HowTo 단계 (소제목 = 단계 이름, 바로 뒤 첫 문단 = 설명) */
+export function howToSteps(blocks) {
+  const steps = [];
+  let current = null;
+  for (const b of blocks ?? []) {
+    if (b.type === "h2" || b.type === "h3") {
+      if (current) steps.push(current);
+      current = { name: blocksToText([b]).trim(), text: "" };
+    } else if (current && !current.text && ["p", "ul", "ol", "quote", "callout"].includes(b.type)) {
+      current.text = blocksToText([b]).slice(0, 320);
+    }
+  }
+  if (current) steps.push(current);
+  const all = steps.filter((s) => s.name);
+  // "1단계 …" 처럼 순서가 드러난 소제목을 우선 사용합니다.
+  const numbered = all.filter((s) => /^(\d+\s*[).]?\s*|step\s*\d|제\s*\d+\s*단계|\d+\s*단계)/i.test(s.name));
+  if (numbered.length >= 2) return numbered;
+  // 번호가 없으면 안내·마무리 성격의 소제목을 빼고 절차만 남깁니다.
+  return all.filter((s) => !/(자주 하는 실수|다음 편|마무리|참고|문의|시작하시는|맺음말)/.test(s.name));
 }
 
 const richText = (value) =>
@@ -203,7 +370,7 @@ function blocksToText(blocks) {
 }
 
 /** 정적 페이지가 로드되기 전에만 보이는 최소 스타일 (앱이 뜨면 #root 와 함께 사라집니다) */
-const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}</style>`;
+const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}</style>`;
 
 /* ------------------------------ 생성 (순수 함수) ------------------------------ */
 
@@ -219,9 +386,6 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
   const seen = new Set();
   const candidates = [];
 
-  if (!template.includes('<div id="root"></div>')) {
-    throw new Error('템플릿에 <div id="root"></div> 가 없습니다 — 빌드 결과(index.html)를 넣어 주세요');
-  }
 
   for (const row of rows ?? []) {
     const title = textOf(row.Title) || textOf(row.title) || "(제목 없음)";
@@ -248,25 +412,16 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
   const pageRecords = [];
   const files = new Map();
 
-  // 홈 — 기본 메타 + 공유 이미지
+  /* 공유 이미지 · 로고 존재 확인 (없으면 경고만) */
   const defaultImageUrl = absoluteUrl(site, DEFAULT_OG_IMAGE_PATH);
   if (!fs.existsSync(path.join(REPO_ROOT, DEFAULT_OG_IMAGE_PATH))) {
     warnings.push(`기본 공유 이미지(${DEFAULT_OG_IMAGE_PATH})가 없습니다 — 링크 미리보기에 이미지가 나오지 않습니다.`);
   }
+  if (!fs.existsSync(path.join(REPO_ROOT, ORG_LOGO_PATH))) {
+    warnings.push(`로고(${ORG_LOGO_PATH})가 없습니다 — 지식 패널의 회사 로고가 비어 보입니다.`);
+  }
+
   const siteLd = jsonLdGraph(site);
-  const home = siteMetaFor("ko");
-  const homeHead = headBlock({
-    title: home.title,
-    description: home.description,
-    url: site,
-    ogType: "website",
-    ogTitle: home.ogTitle,
-    ogDescription: home.ogDescription,
-    image: defaultImageUrl,
-    publishedTime: "",
-    siteLd,
-  });
-  files.set("index.html", applyHead(template, homeHead));
 
   for (const c of candidates) {
     const { row, type, slug, title } = c;
@@ -292,6 +447,10 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
 
     const blocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id) : [];
     const author = textOf(pickProp(row, AUTHOR_KEYS));
+    // 수정일 — 노션 `수정일`(또는 동기화가 기록한 `__modified`)만 인정합니다.
+    // 작성일과 같으면 dateModified 를 넣지 않습니다(내용 없는 신호를 만들지 않기 위해).
+    const modified = modifiedDateOf(row);
+    const dateModified = modified && modified !== date ? modified : "";
     // Q&A 답변 텍스트: 요약(답변) + 본문. 본문만 길게 싣지 않고 적당한 길이로 자릅니다.
     const answerText =
       type === "faq" ? [summary, blocksToText(blocks)].filter(Boolean).join(" ").replace(/\s+/g, " ").trim().slice(0, 2000) : "";
@@ -304,10 +463,24 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
         description: meta.description,
         image: meta.image,
         date,
+        dateModified,
         author,
         answerText,
       }),
     };
+    // 가이드(사용법)는 본문 소제목을 HowTo 단계로도 알려 줍니다 (절차형 인용 대응).
+    const howToLd =
+      type === "guide"
+        ? howToJsonLd({
+            url,
+            name: meta.pageTitle,
+            description: meta.description,
+            image: meta.image,
+            date,
+            author,
+            steps: howToSteps(blocks),
+          })
+        : null;
     const head = headBlock({
       title: meta.title,
       description: meta.description,
@@ -317,8 +490,10 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       ogDescription: meta.ogDescription,
       image: meta.image,
       publishedTime: meta.publishedTime,
+      modifiedTime: dateModified,
       siteLd,
       articleLd,
+      howToLd,
     });
     const body = articleBodyHtml({
       prefix: c.prefix,
@@ -330,9 +505,103 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
       cover: coverRaw,
       blocks,
     });
-    const html = applyHead(template, head).replace('<div id="root"></div>', () => `${STATIC_STYLE}\n    ${body}`);
+    const html = injectRoot(applyHead(template, head), body);
     files.set(`${c.prefix}/${slug}/index.html`, html);
-    pageRecords.push({ title, type, slug, url, description: meta.description, image: meta.image, pageTitle: meta.pageTitle, date, bodyBlocks: blocks.length });
+    pageRecords.push({
+      title,
+      type,
+      slug,
+      url,
+      description: meta.description,
+      image: meta.image,
+      pageTitle: meta.pageTitle,
+      date,
+      modified: dateModified || date,
+      summary: oneLine(summary),
+      author,
+      pinned: isPinned(row),
+      seq: pageRecords.length,
+      bodyBlocks: blocks.length,
+    });
+  }
+
+  /* ------------------------------ 홈(요약본) · 섹션 인덱스 ------------------------------ */
+  // 홈과 목록 주소 4개(/post/ · /notice/ · /qna/ · /guide/)를 **정적 HTML** 로 만듭니다.
+  // 앱(React)은 이 내용을 지우고 화면을 그리므로 사용자 화면은 그대로이고,
+  // 자바스크립트를 실행하지 않는 AI 크롤러만 이 목록을 읽습니다.
+  const groups = {
+    notices: pageRecords.filter((p) => p.type === "notice").sort(byPinnedThenDate),
+    news: pageRecords.filter((p) => p.type === "news").sort(byDateDesc),
+    guides: pageRecords.filter((p) => p.type === "guide").sort((a, b) => a.seq - b.seq),
+    blog: pageRecords.filter((p) => p.type === "blog").sort(byDateDesc),
+    faq: pageRecords.filter((p) => p.type === "faq").sort((a, b) => a.seq - b.seq),
+  };
+  const allItems = [...groups.notices, ...groups.news, ...groups.guides, ...groups.blog, ...groups.faq];
+  const newest = pageRecords
+    .map((p) => p.modified || p.date)
+    .filter(Boolean)
+    .sort()
+    .pop();
+
+  const home = siteMetaFor("ko");
+  const homeHead = headBlock({
+    title: home.title,
+    description: home.description,
+    url: site,
+    ogType: "website",
+    ogTitle: home.ogTitle,
+    ogDescription: home.ogDescription,
+    image: defaultImageUrl,
+    publishedTime: "",
+    siteLd: jsonLdGraph(site, [
+      appJsonLd(),
+      listJsonLd({
+        url: site,
+        siteUrl: site,
+        name: home.title,
+        description: home.description,
+        items: allItems.map((p) => ({ url: p.url, name: p.pageTitle })),
+      }),
+    ]),
+  });
+  const homeBody = homeDigestHtml({
+    groups,
+    description: home.description,
+    total: pageRecords.length,
+    updated: newest,
+  });
+  files.set("index.html", injectRoot(applyHead(template, homeHead), homeBody));
+
+  /* 섹션 인덱스 페이지 — 홈 → 목록 → 글 로 이어지는 크롤 경로 */
+  const sectionRecords = [];
+  for (const page of SECTION_PAGES) {
+    const items = [
+      ...page.types.flatMap((t) => pageRecords.filter((p) => p.type === t)),
+    ].sort((a, b) => (a.type === "notice" ? byPinnedThenDate(a, b) : byDateDesc(a, b)));
+    if (!items.length) continue; // 해당 섹션이 비어 있으면 목록 주소를 만들지 않습니다.
+    const url = absoluteUrl(site, `${page.prefix}/`);
+    const lastmod = items.map((p) => p.modified || p.date).filter(Boolean).sort().pop();
+    const head = headBlock({
+      title: page.title,
+      description: page.description,
+      url,
+      ogType: "website",
+      ogTitle: page.title,
+      ogDescription: page.description,
+      image: defaultImageUrl,
+      publishedTime: "",
+      siteLd: jsonLdGraph(site, [
+        listJsonLd({
+          url,
+          siteUrl: site,
+          name: page.heading,
+          description: page.description,
+          items: items.map((p) => ({ url: p.url, name: p.pageTitle })),
+        }),
+      ]),
+    });
+    files.set(`${page.prefix}/index.html`, injectRoot(applyHead(template, head), sectionPageHtml({ page, items })));
+    sectionRecords.push({ prefix: page.prefix, url, lastmod, count: items.length });
   }
 
   // 404 페이지 (GitHub Pages 가 없는 주소에 이 파일을 404 상태로 냅니다 — 보고서 A7)
@@ -362,19 +631,19 @@ export function renderSeoSite({ rows, pages = {}, template, siteUrl = DEFAULT_SI
   ]
     .filter(Boolean)
     .join("\n");
-  files.set(
-    "404.html",
-    applyHead(template, notFoundHead).replace('<div id="root"></div>', () => `${STATIC_STYLE}\n    ${notFoundBody}`)
-  );
+  files.set("404.html", injectRoot(applyHead(template, notFoundHead), notFoundBody));
 
+  // 사이트맵 — 홈(전체 최신 갱신일) → 섹션 인덱스 → 글 순.
+  // lastmod 는 "작성일 → 수정일" 순으로 채워, 날짜 속성이 없는 글도 값이 비지 않게 합니다.
   const sitemapUrls = [
-    { loc: site },
-    ...pageRecords.map((p) => ({ loc: p.url, lastmod: p.date || undefined })),
+    { loc: site, lastmod: newest },
+    ...sectionRecords.map((s) => ({ loc: s.url, lastmod: s.lastmod })),
+    ...pageRecords.map((p) => ({ loc: p.url, lastmod: p.modified || p.date || undefined })),
   ];
   files.set("sitemap.xml", sitemapXml(sitemapUrls));
   files.set("robots.txt", robotsTxt(site));
 
-  return { files, pages: pageRecords, skipped, warnings, siteUrl: site };
+  return { files, pages: pageRecords, sections: sectionRecords, skipped, warnings, siteUrl: site };
 }
 
 /** 페이지 커버가 있으면 그 이미지를, 없으면 본문 첫 이미지를 씁니다 (스냅샷 __cover 가 없을 때의 보조) */

@@ -31,7 +31,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** 브라우저 한 개(쿠키 · localStorage 가 리로드를 넘어 유지됨)
  *  `languages` 를 따로 주면 UI 언어(`language`)와 웹 선호 목록을 다르게 재현할 수 있다. */
-function browser({ language, languages, url = PAGES_URL, storage = {}, cookies = [], storageBlocked = false }) {
+function browser({ language, languages, url = PAGES_URL, storage = {}, cookies = [], storageBlocked = false, userAgent }) {
   const jar = new CookieJar();
   for (const [cookie, cookieUrl] of cookies) jar.setCookieSync(cookie, cookieUrl ?? url);
   let saved = { ...storage };
@@ -57,6 +57,8 @@ function browser({ language, languages, url = PAGES_URL, storage = {}, cookies =
       pretendToBeVisual: true,
       virtualConsole: vc,
       beforeParse(w) {
+        // 크롤러 재현용 — UA 를 바꿔 "해외 데이터센터에서 온 AI 봇"을 흉내냅니다.
+        if (userAgent) Object.defineProperty(w.navigator, "userAgent", { value: userAgent, configurable: true });
         Object.defineProperty(w.navigator, "language", { value: language, configurable: true });
         // jsdom 의 languages 는 기본값(en-US)에 머물러 있어, 지정이 없으면 UI 언어와 같은 목록으로 맞춰 둔다.
         const effectiveLanguages = languages ?? (language ? [language] : null);
@@ -304,6 +306,30 @@ for (const [language, code] of [["ja-JP", "JA"], ["zh-TW", "ZH"]]) {
   page = (await page.click("JA")).page;
   expect("저장소 차단 + JA 클릭 → 리로드 후 JA (쿠키로 유지)", page.state(), { active: "JA", cookie: "/ko/ja", widget: true });
   noProblems("저장소 차단", page);
+  page.close();
+}
+
+// 10) 검색엔진 · AI 크롤러 — 같은 주소에서 언어가 흔들리면 안 됩니다 (2026-10 GEO 진단)
+//     해외 데이터센터의 영어 UA 로 들어와도 **항상 한국어 원문** + 번역 위젯 없음.
+const CRAWLERS = [
+  ["GPTBot", "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)"],
+  ["OAI-SearchBot", "Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)"],
+  ["PerplexityBot", "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)"],
+  ["ClaudeBot", "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"],
+];
+for (const [name, ua] of CRAWLERS) {
+  const page = await browser({ language: "en-US", userAgent: ua }).open();
+  expect(`${name} (영어 UA) → KO 원문 · 위젯 미로드 · 저장 안 함`, page.state(), {
+    active: "KO", korean: true, cookie: null, widget: false, htmlLang: "ko", saved: null,
+  });
+  noProblems(name, page);
+  page.close();
+}
+
+// 11) ?lang= 로 명시한 언어는 자동 감지보다 우선합니다
+{
+  const page = await browser({ language: "ko-KR", url: `${PAGES_URL}?lang=en` }).open();
+  expect("?lang=en → EN (사람이 주소로 고정)", page.state(), { active: "EN", widget: true });
   page.close();
 }
 

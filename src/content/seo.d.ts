@@ -74,6 +74,8 @@ export const WWW_URL: string;
 export const ORG_LOGO_PATH: string;
 export const OFFICIAL_SAME_AS: string[];
 export function siteJsonLd(siteUrl?: string): Record<string, unknown>[];
+export const BRAND_NAME: string;
+export const APP_ID: string;
 export type ArticleJsonLdInput = {
   type: string;
   url: string;
@@ -81,10 +83,52 @@ export type ArticleJsonLdInput = {
   description?: string;
   image?: string;
   date?: string;
+  dateModified?: string;
   author?: string;
   answerText?: string;
+  siteUrl?: string;
 };
 export function articleJsonLd(input: ArticleJsonLdInput): Record<string, unknown>;
+
+/** 제품 명찰 — 허브 홈에만 넣습니다(가격 Offer 는 가격이 적힌 www 페이지 몫). */
+export function appJsonLd(): Record<string, unknown>;
+
+/** 목록형 페이지 명찰 (홈 · 섹션 인덱스) — ItemList 로 글 목록을 기계에 알립니다. */
+export function listJsonLd(input: {
+  url: string;
+  name?: string;
+  description?: string;
+  items?: { url: string; name?: string }[];
+  siteUrl?: string;
+}): Record<string, unknown>;
+
+/** 사용법 글의 절차 명찰 (Article 과 나란히 넣습니다). 단계가 2개 미만이면 null. */
+export function howToJsonLd(input: {
+  url: string;
+  name: string;
+  description?: string;
+  image?: string;
+  date?: string;
+  author?: string;
+  steps: { name: string; text?: string }[];
+}): Record<string, unknown> | null;
+
+/** 수정일 속성 이름 · 값 추출 (없으면 빈 문자열) */
+export const MODIFIED_KEYS: string[];
+export function modifiedDateOf(row: Record<string, unknown>, fallback?: string): string;
+
+/** 섹션 인덱스 페이지(/post/ · /notice/ · /qna/ · /guide/) 정보 */
+export type SectionPage = {
+  prefix: "post" | "notice" | "qna" | "guide";
+  anchor: string;
+  types: string[];
+  heading: string;
+  title: string;
+  description: string;
+};
+export const SECTION_PAGES: SectionPage[];
+export function sectionPageForPrefix(prefix: string): SectionPage | null;
+export function sectionPageFromPathname(pathname: string): SectionPage | null;
 export function jsonLdGraph(
   siteUrl?: string,
   extra?: Record<string, unknown>[]

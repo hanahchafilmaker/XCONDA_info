@@ -584,6 +584,10 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
     const decision = classifyRow(row);
     // 사이트가 그대로 쓰는 확정 섹션 — 노션 Type/내용으로 판정한 결과를 스냅샷에 함께 기록합니다.
     row.__type = decision.type;
+    // 마지막 수정일 — 빌드가 JSON-LD `dateModified` · `article:modified_time` · 사이트맵 `lastmod`
+    // 로 씁니다(작성일과 다를 때만 노출). 노션 블록의 last_edited_time 을 그대로 옮겨 둡니다.
+    const editedDate = msToDate(block.last_edited_time);
+    if (editedDate) row.__modified = editedDate;
     const link = pickRow(row, ["Link", "URL", "링크"]);
     const info = {
       title,

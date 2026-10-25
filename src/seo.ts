@@ -12,6 +12,7 @@ import {
   hubBaseFromPathname,
   resolveArticleMeta,
   routePathFor,
+  sectionPageFromPathname,
   siteMetaFor,
 } from "./content/seo";
 import type { Entry } from "./content/types";
@@ -81,6 +82,18 @@ function applyHead(v: HeadValues) {
     document.head.appendChild(link);
   }
   link.href = v.url;
+  // hreflang — 정적 페이지(scripts/build-seo.mjs)와 같은 규칙으로 함께 갱신합니다.
+  // (한 주소에서 화면 언어만 바뀌는 구조라 "기준 언어 = 한국어"를 항상 자기 참조로 둡니다.)
+  for (const lang of ["ko", "x-default"]) {
+    let alt = document.head.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${lang}"]`);
+    if (!alt) {
+      alt = document.createElement("link");
+      alt.rel = "alternate";
+      alt.hreflang = lang;
+      document.head.appendChild(alt);
+    }
+    alt.href = v.url;
+  }
 }
 
 /** 홈 화면 — 언어별 사이트 기본 메타 */
@@ -90,6 +103,9 @@ export function applySiteMeta(target: string): void {
   // 명찰이 남지 않게 걷어 냅니다(사이트 공통 명찰은 data-article-jsonld 가 없어 유지됨).
   document.head.querySelectorAll("script[data-article-jsonld]").forEach((el) => el.remove());
   const m = siteMetaFor(target);
+  // `/post/` 같은 섹션 목록 주소에서는 그 목록 자신이 정식 주소입니다.
+  // (홈 주소로 덮어쓰면 정적 페이지의 canonical 과 어긋납니다 — 빌드와 같은 규칙 유지)
+  const section = sectionPageFromPathname(window.location.pathname);
   applyHead({
     title: m.title,
     description: m.description,
@@ -97,7 +113,7 @@ export function applySiteMeta(target: string): void {
     ogDescription: m.ogDescription,
     ogType: "website",
     image: defaultImage(),
-    url: homeUrl(),
+    url: section ? hubAbsolute(`${section.prefix}/`) : homeUrl(),
   });
 }
 

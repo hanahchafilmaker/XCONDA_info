@@ -313,7 +313,9 @@ test("주소 조건을 통과한 글만 파일이 만들어지고, 나머지는 
     "404.html",
     "index.html",
     "post/deepseek-official-harness/index.html",
+    "post/index.html",
     "post/opus-5-5-trending/index.html",
+    "qna/index.html",
     "qna/refund-policy/index.html",
     "robots.txt",
     "sitemap.xml",
@@ -335,6 +337,9 @@ test("글 파일의 head 는 글별 값이고, <title> 은 한 번만 나온다"
   assert.match(a, /<meta property="og:url" content="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\/" \/>/);
   assert.match(a, /<meta name="twitter:card" content="summary_large_image" \/>/);
   assert.match(a, /<meta property="og:site_name" content="XCONDA허브" \/>/);
+  // 언어 신호 — 자기 참조 hreflang(ko · x-default)
+  assert.match(a, /<link rel="alternate" hreflang="ko" href="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\/" \/>/);
+  assert.match(a, /<link rel="alternate" hreflang="x-default" href="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\/" \/>/);
   assert.match(b, /<title>Opus 5\.5 공개 일주일, GitHub 트렌딩 \| XCONDA허브<\/title>/);
   assert.match(b, /<meta property="og:image" content="https:\/\/www\.notion\.so\/image\/cover\.png" \/>/);
   assert.notEqual(a.match(/<link rel="canonical"[^>]*>/)[0], b.match(/<link rel="canonical"[^>]*>/)[0]);
@@ -367,16 +372,32 @@ test("사이트맵은 조건을 통과한 글과 홈만 담고, robots.txt 는 �
   assert.match(sitemap, /<lastmod>2026-10-02<\/lastmod>/);
   assert.doesNotMatch(sitemap, /maintenance/);
   assert.doesNotMatch(sitemap, /slug-없는|슬러그/);
-  assert.equal((sitemap.match(/<url>/g) ?? []).length, 4);
+  // 홈 + 섹션 목록 2개(글 있는 섹션만) + 글 3개
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 6);
+  // 표준 네임스페이스(복수형 sitemaps.org) — 단수형은 도구에 따라 사이트맵을 통째로 무시합니다
+  assert.match(sitemap, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
+  assert.doesNotMatch(sitemap, /www\.sitemap\.org\//);
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/post\/<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/qna\/<\/loc>/);
+  // 홈도 lastmod 를 갖습니다(전에는 비어 있었습니다)
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/<\/loc>\n    <lastmod>/);
   assert.match(pageOf("robots.txt"), /Sitemap: https:\/\/example\.test\/XCONDA_info\/sitemap\.xml/);
 });
 
-test("홈 index.html 은 한국어 기본 메타를 한 번만 갖고, 본문 영역은 비어 있다", () => {
+test("홈 index.html 은 한국어 기본 메타를 한 번만 갖고, 크롤러용 글 목록을 정적 HTML 로 담는다", () => {
   const home = pageOf("index.html");
   assert.equal((home.match(/<title>/g) ?? []).length, 1);
   assert.match(home, /<meta name="description" content="XCONDA허브에서 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&amp;A를 한곳에 확인하세요\." \/>/);
-  assert.match(home, /<div id="root"><\/div>/);
   assert.match(home, /<link rel="canonical" href="https:\/\/example\.test\/XCONDA_info\/" \/>/);
+  // 자바스크립트 없이도 목록이 보여야 합니다(빈 껍데기 금지)
+  assert.doesNotMatch(home, /<div id="root"><\/div>/);
+  assert.match(home, /<div id="root"><main class="seo-article seo-home">/);
+  assert.match(home, /<h1>XCONDA허브/);
+  assert.match(home, /<h2>뉴스 /);
+  assert.match(home, /href="post\/deepseek-official-harness\/"/);
+  assert.match(home, /href="qna\/refund-policy\/"/);
+  // 섹션 목록으로 가는 링크
+  assert.match(home, /href="post\/">/);
 });
 
 test("같은 입력으로 다시 만들어도 결과가 같다 (멱등)", () => {
@@ -418,6 +439,11 @@ test("구조화 데이터: 전 페이지에 운영사·사이트 명찰이 들�
     assert.equal(org["@id"], "https://www.xconda.ai/#org");
     assert.ok(org.sameAs.includes("https://www.youtube.com/@xconda_korea"), rel);
     assert.ok(org.sameAs.includes("https://blog.naver.com/dramajustice"), rel);
+    // 회사와 제품을 분리 — AI 가 "XCONDA" 를 제품 엔터티로 인식하게 합니다
+    assert.equal(org.brand["@type"], "Brand");
+    assert.equal(org.brand.name, "XCONDA");
+    // 구글 로고 규격은 래스터 112px 이상입니다 (SVG 는 표시되지 않음)
+    assert.match(org.logo, /xconda-logo-512\.png$/);
     assert.ok(graph["@graph"].some((n) => n["@type"] === "WebSite"), rel);
   }
   // 단위: 사이트 주소를 바꾸면 WebSite @id 와 sameAs 의 허브 주소도 따라간다
@@ -453,4 +479,114 @@ test("404.html 이 함께 만들어지고 noindex 와 메인·최근 글 링크�
   assert.match(notFound, /페이지를 찾을 수 없습니다/);
   // 임의의 깊이에서 서빙되므로 링크는 절대 주소여야 한다
   assert.match(notFound, /href="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\/"/);
+});
+
+/* ------------------------------ 9) GEO 보강 (2026-10-25) ------------------------------ */
+
+test("목록 주소(/post/ 등)는 정적 목록 페이지가 되고, 홈·목록에 ItemList 명찰이 붙는다", () => {
+  const post = pageOf("post/index.html");
+  assert.match(post, /<link rel="canonical" href="https:\/\/example\.test\/XCONDA_info\/post\/" \/>/);
+  assert.match(post, /<h1>뉴스 · 블로그<\/h1>/);
+  // 목록에서 글 주소로 바로 갈 수 있어야 합니다(홈 → 목록 → 글)
+  assert.match(post, /href="\.\.\/post\/deepseek-official-harness\/"/);
+  assert.match(post, /href="\.\.\/post\/opus-5-5-trending\/"/);
+  assert.match(post, /href="\.\.\/">XCONDA허브<\/a>/);
+
+  const postLd = ldJsonOf(post)["@graph"];
+  const collection = postLd.find((n) => n["@type"] === "CollectionPage");
+  assert.ok(collection, "섹션 목록에 CollectionPage 명찰이 없습니다");
+  assert.equal(collection.mainEntity["@type"], "ItemList");
+  assert.equal(collection.mainEntity.numberOfItems, 2);
+  assert.ok(collection.mainEntity.itemListElement.every((el) => el.url && el.name));
+  // 사이트(@graph)와 같은 개체 묶음으로 연결
+  assert.equal(collection.isPartOf["@id"], "https://example.test/XCONDA_info/#website");
+
+  const homeLd = ldJsonOf(pageOf("index.html"))["@graph"];
+  assert.ok(homeLd.some((n) => n["@type"] === "SoftwareApplication"), "제품 명찰이 없습니다");
+  const homeList = homeLd.find((n) => n["@type"] === "CollectionPage");
+  assert.equal(homeList.mainEntity.numberOfItems, 3);
+});
+
+test("가이드 글은 Article 과 함께 HowTo(단계) 명찰을 갖는다", () => {
+  const guideRows = [
+    {
+      id: "99999999-0000-4000-8000-000000000001",
+      Title: "FLEXBOARD 스토리보드 만들기 7단계",
+      __type: "guide",
+      Published: true,
+      Date: "2026-10-19",
+      Slug: "flexboard-guide",
+      Summary: "컷별 스토리보드를 만드는 순서입니다.",
+      Author: "김재환 PD",
+    },
+  ];
+  const guidePages = {
+    "99999999-0000-4000-8000-000000000001": {
+      "99999999-0000-4000-8000-000000000001": {
+        value: { id: "99999999-0000-4000-8000-000000000001", type: "page", content: ["c1", "c2", "c3", "c4", "c5", "c6"] },
+      },
+      c1: { value: { id: "c1", type: "sub_header", properties: { title: [["1단계: 프로젝트 설정"]] } } },
+      c2: { value: { id: "c2", type: "text", properties: { title: [["새 프로젝트를 만들고 이름을 정합니다."]] } } },
+      c3: { value: { id: "c3", type: "sub_header", properties: { title: [["2단계: 컷 수 정하기"]] } } },
+      c4: { value: { id: "c4", type: "text", properties: { title: [["9컷을 기준으로 시작합니다."]] } } },
+      c5: { value: { id: "c5", type: "sub_header", properties: { title: [["자주 하는 실수"]] } } },
+      c6: { value: { id: "c6", type: "text", properties: { title: [["컷을 너무 많이 잡는 것입니다."]] } } },
+    },
+  };
+  const guide = renderSeoSite({ rows: guideRows, pages: guidePages, template: TEMPLATE, siteUrl: SITE });
+  const html = guide.files.get("guide/flexboard-guide/index.html");
+  const nodes = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) =>
+    JSON.parse(m[1])
+  );
+  const howTo = nodes.find((n) => n["@type"] === "HowTo");
+  assert.ok(howTo, "HowTo 명찰이 없습니다");
+  assert.equal(howTo["@type"], "HowTo");
+  assert.equal(howTo["@id"], "https://example.test/XCONDA_info/guide/flexboard-guide/#howto");
+  assert.deepEqual(
+    howTo.step.map((s) => s.name),
+    ["1단계: 프로젝트 설정", "2단계: 컷 수 정하기"]
+  );
+  assert.match(howTo.step[0].text, /새 프로젝트를 만들고/);
+  // 번호 없는 안내성 소제목은 단계에서 빠집니다
+  assert.ok(!howTo.step.some((s) => s.name === "자주 하는 실수"));
+  // 같은 페이지에 Article 명찰도 함께 남습니다
+  const article = nodes.find((n) => n["@type"] === "Article");
+  assert.ok(article, "Article 명찰이 사라졌습니다");
+  assert.equal(article["@id"], "https://example.test/XCONDA_info/guide/flexboard-guide/#article");
+  assert.equal(howTo.isPartOf["@id"], article["@id"]);
+});
+
+test("수정일이 작성일과 다를 때만 dateModified 를 넣는다", () => {
+  const rows = [
+    {
+      id: "88888888-0000-4000-8000-000000000001",
+      Title: "고친 글",
+      __type: "blog",
+      Published: true,
+      Date: "2026-10-01",
+      __modified: "2026-10-20",
+      Slug: "edited-post",
+      Summary: "요약",
+    },
+    {
+      id: "88888888-0000-4000-8000-000000000002",
+      Title: "안 고친 글",
+      __type: "blog",
+      Published: true,
+      Date: "2026-10-02",
+      Slug: "untouched-post",
+      Summary: "요약",
+      수정일: "2026-10-02",
+    },
+  ];
+  const out = renderSeoSite({ rows, pages: {}, template: TEMPLATE, siteUrl: SITE });
+  const edited = out.files.get("post/edited-post/index.html");
+  assert.equal(ldJsonOf(edited, true).dateModified, "2026-10-20");
+  assert.match(edited, /<meta property="article:modified_time" content="2026-10-20" \/>/);
+  // 작성일과 같으면 신호를 만들지 않습니다
+  const untouched = out.files.get("post/untouched-post/index.html");
+  assert.equal(ldJsonOf(untouched, true).dateModified, undefined);
+  assert.doesNotMatch(untouched, /article:modified_time/);
+  // 사이트맵 lastmod 는 수정일을 우선합니다
+  assert.match(out.files.get("sitemap.xml"), /post\/edited-post\/<\/loc>\n    <lastmod>2026-10-20<\/lastmod>/);
 });

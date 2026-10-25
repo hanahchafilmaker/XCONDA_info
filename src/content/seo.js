@@ -80,6 +80,64 @@ export const ROUTE_TYPES = {
   guide: ["guide"],
 };
 
+/**
+ * 섹션 인덱스 페이지 — `/post/` 처럼 **목록 주소**를 정적으로 만듭니다.
+ * -----------------------------------------------------------------------------
+ * 전에는 글 95개가 사이트맵에만 있고 서로를 가리키지 않아, 크롤러가 홈에서 1단계 더
+ * 들어갈 곳이 없었습니다. 이 4개 페이지가 그 다리 역할을 합니다(홈 → 목록 → 글).
+ * `anchor` 는 앱에서 같은 주소로 들어왔을 때 스크롤할 섹션 id 입니다.
+ */
+export const SECTION_PAGES = [
+  {
+    prefix: "post",
+    anchor: "news",
+    types: ["news", "blog"],
+    heading: "뉴스 · 블로그",
+    title: "뉴스 · 블로그 | XCONDA허브",
+    description:
+      "XCONDA(엑스콘다)의 새 AI 모델 소식, 영상 제작 워크플로우, 컷 연결·캐릭터 일관성 같은 제작 심화 글을 모았습니다.",
+  },
+  {
+    prefix: "notice",
+    anchor: "notices",
+    types: ["notice"],
+    heading: "공지사항",
+    title: "공지사항 | XCONDA허브",
+    description: "XCONDA(엑스콘다)의 서비스 변경, 점검, 요금·정책 업데이트와 프로모션 소식을 모았습니다.",
+  },
+  {
+    prefix: "qna",
+    anchor: "faq",
+    types: ["faq"],
+    heading: "Q&A",
+    title: "Q&A | XCONDA허브",
+    description:
+      "XCONDA(엑스콘다) 사용 중 자주 묻는 질문과 답변 — 요금·크레딧·환불, FLEXBOARD·Turn·블로킹 보드 사용법, 저작권·개인정보까지 정리했습니다.",
+  },
+  {
+    prefix: "guide",
+    anchor: "guides",
+    types: ["guide"],
+    heading: "툴 사용법",
+    title: "툴 사용법 | XCONDA허브",
+    description: "XCONDA(엑스콘다)의 FLEXBOARD·Turn·블로킹 보드를 실제 화면 순서대로 따라 하는 사용 가이드입니다.",
+  },
+];
+
+/** 주소 앞부분으로 섹션 인덱스 정보 찾기 (없으면 null) */
+export function sectionPageForPrefix(prefix) {
+  return SECTION_PAGES.find((page) => page.prefix === prefix) ?? null;
+}
+
+/**
+ * 현재 주소가 섹션 인덱스(`/post/` 등, 하위 경로 포함)면 그 정보를 돌려줍니다.
+ * 글 주소(`/post/{slug}/`)는 해당되지 않습니다.
+ */
+export function sectionPageFromPathname(pathname) {
+  const m = /(?:^|\/)(post|notice|qna|guide)\/?$/.exec(String(pathname ?? ""));
+  return m ? sectionPageForPrefix(m[1]) : null;
+}
+
 /** 영문 소문자 · 숫자 · 하이픈 (예: flexboard-storyboard) */
 export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -94,6 +152,19 @@ export const SEO_TITLE_KEYS = ["SEO 제목"];
 export const SEO_DESCRIPTION_KEYS = ["SEO 설명"];
 export const OG_IMAGE_KEYS = ["OG 이미지", "OG Image", "OG Image URL"];
 export const SEO_READY_KEYS = ["SEO 준비됨"];
+/**
+ * 수정일 속성 이름. 우선순위: `수정일` → `Modified` → 스냅샷이 기록한 `__modified`(노션
+ * last_edited_time) → 작성일(`Date`). 값이 없으면 dateModified 자체를 넣지 않습니다.
+ */
+export const MODIFIED_KEYS = ["수정일", "Modified", "최종 수정일"];
+
+/** 행에서 "마지막으로 고친 날짜"를 고릅니다 (YYYY-MM-DD). 없으면 빈 문자열. */
+export function modifiedDateOf(row, fallback = "") {
+  const raw = [textOf(pickProp(row, MODIFIED_KEYS)), textOf(row?.__modified), textOf(fallback)].find((v) =>
+    /^\d{4}-\d{2}-\d{2}/.test(v)
+  );
+  return raw ? raw.slice(0, 10) : "";
+}
 
 const isRecord = (v) => typeof v === "object" && v !== null && !Array.isArray(v);
 
@@ -266,7 +337,10 @@ export function sitemapXml(urls) {
   const body = urls
     .map(({ loc, lastmod }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>${lastmod ? `\n    <lastmod>${escapeXml(lastmod)}</lastmod>` : ""}\n  </url>`)
     .join("\n");
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+  // 표준 네임스페이스는 `http://www.sitemaps.org/schemas/sitemap/0.9` 입니다(복수형).
+  // 한동안 `sitemap.org`(단수)로 나가 있었습니다 — Google 은 너그럽게 넘기지만
+  // 일부 검증 도구 · AI 크롤러는 스키마 불일치로 사이트맵을 통째로 무시합니다.
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
 /** robots.txt — 모든 크롤러 허용 + 사이트맵 위치 */
@@ -303,8 +377,17 @@ export function escapeXml(value) {
 export const ORG_ID = "https://www.xconda.ai/#org";
 /** 메인 사이트(제품) 주소 */
 export const WWW_URL = "https://www.xconda.ai";
-/** 저장소에 실제로 있는 로고 파일 (Organization logo) */
-export const ORG_LOGO_PATH = "assets/img/logo/xconda-mark.svg";
+/**
+ * 저장소에 실제로 있는 로고 파일 (Organization logo).
+ * 구글 로고 규격은 **래스터(PNG·JPG) 112×112 이상**입니다 — SVG 는 지식 패널·리치 결과에서
+ * 표시되지 않아, 같은 도안을 512×512 PNG 로 렌더해 둔 파일을 씁니다
+ * (`assets/img/logo/xconda-logo-512.png`, 원본 SVG 는 `xconda-mark.svg`).
+ */
+export const ORG_LOGO_PATH = "assets/img/logo/xconda-logo-512.png";
+/** 제품(서비스) 이름 — 회사(큐브베리)와 구분해 Brand 로 선언합니다. */
+export const BRAND_NAME = "XCONDA";
+/** 제품(SoftwareApplication)의 전역 식별자 — www 에서 같은 @id 를 쓰면 하나로 합쳐집니다. */
+export const APP_ID = "https://www.xconda.ai/#app";
 
 /**
  * 공식 채널 (Organization sameAs) — `src/content/channels.tsx` 의 CHANNELS 와 같은
@@ -329,6 +412,9 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
       alternateName: ["큐브베리", "주식회사 큐브베리"],
       url: WWW_URL,
       logo: absoluteUrl(siteUrl, ORG_LOGO_PATH),
+      // 회사(큐브베리)와 제품(XCONDA)을 분리해 선언합니다. 이게 없으면 AI 는
+      // "XCONDA" 라는 이름을 회사 별칭으로만 보고, 제품 엔터티로 인식하지 못합니다.
+      brand: { "@type": "Brand", name: BRAND_NAME, alternateName: ["엑스콘다"] },
       sameAs: [WWW_URL, site.replace(/\/$/, ""), ...OFFICIAL_SAME_AS],
     },
     {
@@ -343,14 +429,65 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
 }
 
 /**
+ * 제품 명찰 (SoftwareApplication). 가격(Offer)은 **가격이 실제로 적힌 페이지**(www 요금·패키지)에
+ * 선언해야 합니다 — 허브에서 숫자를 따로 적으면 화면 값과 어긋나 검색엔진이 불일치로 봅니다.
+ * 그래서 여기서는 제품 정체성만 선언하고 `offers` 는 넣지 않습니다.
+ */
+export function appJsonLd() {
+  return {
+    "@type": "SoftwareApplication",
+    "@id": APP_ID,
+    name: BRAND_NAME,
+    alternateName: ["엑스콘다"],
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Web",
+    url: WWW_URL,
+    inLanguage: "ko-KR",
+    publisher: { "@id": ORG_ID },
+    description:
+      "광고·드라마용 AI 스토리보드와 영상을 만드는 SaaS 플랫폼. 시나리오 한 편으로 컷별 스토리보드(FLEXBOARD)를 만들고, 360도 가상 세트(Turn)와 블로킹 보드로 인물·공간·구도를 고정한 뒤 영상으로 넘깁니다.",
+  };
+}
+
+/**
+ * 목록형 페이지 명찰 (홈·섹션 인덱스). `ItemList` 로 "이 페이지에 어떤 글이 있는지"를
+ * 기계가 순서대로 읽게 합니다 — AI 가 "XCONDA 허브에 무슨 자료가 있나"를 한 번에 파악합니다.
+ */
+export function listJsonLd({ url, name, description, items = [], siteUrl = DEFAULT_SITE_URL }) {
+  return {
+    "@type": "CollectionPage",
+    "@id": `${url}#collection`,
+    url,
+    name: textOf(name),
+    description: textOf(description),
+    inLanguage: "ko-KR",
+    isPartOf: { "@id": `${absoluteUrl(siteUrl, "")}#website` },
+    publisher: { "@id": ORG_ID },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: item.url,
+        name: textOf(item.name),
+      })),
+    },
+  };
+}
+
+
+/**
  * 글 한 건의 명찰. 블로그 → BlogPosting, 뉴스 → NewsArticle, 공지·가이드 → Article,
  * Q&A → FAQPage(질문=제목, 답변=answerText). 값은 resolveArticleMeta 와 같은 재료로 만듭니다.
  */
-export function articleJsonLd({ type, url, headline, description, image, date, author, answerText }) {
+export function articleJsonLd({ type, url, headline, description, image, date, dateModified, author, answerText, siteUrl = DEFAULT_SITE_URL }) {
   const base = { publisher: { "@id": ORG_ID }, inLanguage: "ko-KR" };
   if (type === "faq") {
     return {
       "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      url,
       ...base,
       mainEntity: [
         {
@@ -363,16 +500,54 @@ export function articleJsonLd({ type, url, headline, description, image, date, a
   }
   const article = {
     "@type": type === "blog" ? "BlogPosting" : type === "news" ? "NewsArticle" : "Article",
+    "@id": `${url}#article`,
     ...base,
     headline: textOf(headline),
     description: textOf(description),
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    // 사이트(@graph)와 글을 같은 개체 묶음으로 연결 — 다른 스크립트에 있어도 @id 로 이어집니다.
+    isPartOf: { "@id": `${absoluteUrl(siteUrl, "")}#website` },
   };
   if (textOf(image)) article.image = [textOf(image)];
   if (/^\d{4}-\d{2}-\d{2}/.test(textOf(date))) article.datePublished = textOf(date).slice(0, 10);
+  // 최신성 신호 — 없으면 AI 가 "이 글이 언제 고쳐졌는지" 판단하지 못합니다.
+  if (/^\d{4}-\d{2}-\d{2}/.test(textOf(dateModified))) article.dateModified = textOf(dateModified).slice(0, 10);
   article.author = textOf(author) ? { "@type": "Person", name: textOf(author) } : { "@id": ORG_ID };
   return article;
 }
+
+/**
+ * 사용법(가이드) 글의 절차 명찰. 본문 소제목을 단계로 삼아 "무엇을 어떤 순서로 하는지"를
+ * 기계가 읽게 합니다. Article 명찰과 나란히 넣습니다(같은 페이지에 둘 다 두는 구성은 허용됩니다).
+ * @param {{ url: string, name: string, description?: string, image?: string, date?: string,
+ *           author?: string, steps: {name: string, text?: string}[] }} input
+ */
+export function howToJsonLd({ url, name, description, image, date, author, steps = [] }) {
+  const clean = steps
+    .map((s) => ({ name: textOf(s.name), text: textOf(s.text) }))
+    .filter((s) => s.name);
+  if (clean.length < 2) return null; // 단계가 2개 미만이면 HowTo 로 보기 어렵습니다.
+  const howTo = {
+    "@type": "HowTo",
+    "@id": `${url}#howto`,
+    name: textOf(name),
+    inLanguage: "ko-KR",
+    isPartOf: { "@id": `${url}#article` },
+    publisher: { "@id": ORG_ID },
+    step: clean.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      ...(s.text ? { text: s.text } : {}),
+    })),
+  };
+  if (textOf(description)) howTo.description = textOf(description);
+  if (textOf(image)) howTo.image = textOf(image);
+  if (/^\d{4}-\d{2}-\d{2}/.test(textOf(date))) howTo.datePublished = textOf(date).slice(0, 10);
+  if (textOf(author)) howTo.author = { "@type": "Person", name: textOf(author) };
+  return howTo;
+}
+
 
 /** 사이트 공통 + 페이지별 명찰을 하나의 @graph 스크립트로 묶습니다. */
 export function jsonLdGraph(siteUrl = DEFAULT_SITE_URL, extra = []) {
