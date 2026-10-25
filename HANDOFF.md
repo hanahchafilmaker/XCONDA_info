@@ -286,6 +286,9 @@ XCONDA_info/
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
 - 언어별 URL 은 **Q&A 73건에만** 있습니다(ko/en/ja/zh). 블로그·가이드·공지는 본문 번역이 없어 한국어 주소만 씁니다 — 노션에 언어별 본문이 생기면 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 추가하는 방식으로 확장합니다(백로그).
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
+- 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
+- **번역 품질 점검**: `npm run i18n:qc` — 연락처·주소 불일치(오류), 숫자 누락·통화 표기·미번역 영어·제목 중복·길이 비율·브랜드 표기(경고)를 봅니다. `-- --write` 로 `reports/i18n-qc-<날짜>.md` 갱신. 의도된 차이는 `content/i18n/qc-allow.json` 에 근거와 함께 적습니다.
+- **워크플로 설정 회귀 방지**: `scripts/workflows.test.mjs` 가 (1) PR 자동 생성 금지 (2) notion-sync 는 main 전용 (3) `www/**`·`content/i18n/**` 트리거 (4) `en/ja/zh` 커밋 대상 포함을 검사합니다.
 - **Cloudflare `Workers Builds: xconda-info-news`** 는 main 이 아닌 브랜치에서 실패합니다(main 에서는 `skipped`). Cloudflare 대시보드 → Workers & Pages → `xconda-info-news` → Settings → Build → **Branch control 을 `main` 으로 제한**하거나 빌드에 필요한 환경변수를 넣어야 사라집니다. 저장소 코드로는 고칠 수 없습니다.
 - **`notion-sync.yml` 은 `main` 에서만 돕니다**(`arena/**` 제거, 2026-10-25 A1). 생성 산출물만 바뀐 커밋(`paths-ignore`)으로는 다시 돌지 않습니다 — 이 둘이 없으면 봇 커밋과 PR 이 계속 충돌합니다.
 - 노션 커버·OG 이미지는 동기화 때 `assets/img/og/posts/` 로 복사됩니다. 네트워크 실패는 경고만 남기고 빌드를 막지 않지만, 그때는 그 글만 노션 주소를 그대로 씁니다.

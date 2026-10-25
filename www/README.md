@@ -77,6 +77,8 @@ npm run www:build     # → www/dist/
 
 - 빌드가 스스로 검사합니다: JSON-LD 120개 파싱 · canonical · hreflang(en/ko/x-default) · 내부 링크 200개.
 - `www/dist/` 는 커밋하지 않습니다(`.gitignore`). 정적 호스팅/CDN 루트에 그대로 올리면 동작합니다.
+- **내려받는 방법**: Actions → **www 기능 페이지 산출물** → 최근 실행 → Artifacts → `www-dist`(30일 보관).
+  `www/**`·`scripts/www/**` 가 main 에 들어오면 자동으로 돌고, `Run workflow` 로 수동 실행도 됩니다.
 - 공유 카드는 PNG(1200×630)가 기본이고, **Pillow·한글 폰트가 없는 환경에서는 자동으로 SVG 로 폴백**합니다
   (`WWW_NO_PNG=1` 로 강제 가능). 한글 폰트는 `OG_FONT_KO` 환경변수로 지정할 수 있습니다.
 - CI(`사이트 빌드`)는 `www/**`·`scripts/www/**` 변경에도 다시 돌며, 이때 `www:check` + `www:build` 를 실행합니다.
