@@ -1,0 +1,737 @@
+{
+  "_readme": [
+    "www.xconda.ai 기능 페이지 20개 원고 + 메타. 현재 모든 툴 화면(/ko/studio/*)이 로그인 뒤에 있어서 검색에 잡히는 공개 페이지가 하나도 없습니다(2026-10-25 확인).",
+    "각 항목은 `features/<slug>` 공개 페이지 하나에 대응합니다. 스튜디오(로그인 뒤 앱)는 그대로 두고, 이 페이지만 공개로 여는 구성입니다.",
+    "경로 규칙: 영어 www.xconda.ai/features/<slug>, 한국어 www.xconda.ai/ko/features/<slug>.",
+    "글자수 상한은 scripts/www/validate-feature-pages.mjs 가 검사합니다(제목 60자 · 설명 155자).",
+    "hub 값은 hub.xconda.ai 의 실제 글 주소(슬러그)입니다 — 기능 페이지 → 허브 가이드로 내부 링크를 걸어 검색·AI 인용을 이어 붙입니다."
+  ],
+  "basePath": "features",
+  "cta": {
+    "ko": "스튜디오에서 써보기",
+    "en": "Try it in the studio",
+    "loginRedirect": "/ko/studio/"
+  },
+  "pages": [
+    {
+      "slug": "flexboard",
+      "name": "FLEXBOARD",
+      "studio": "flexboard",
+      "hub": "flexboard-storyboard-7-steps",
+      "ko": {
+        "title": "플렉스보드(FLEXBOARD) — 컷별 AI 스토리보드 제작 도구 | XCONDA",
+        "description": "시나리오를 컷으로 나누고 컷마다 이미지·대사·효과음을 붙이는 AI 스토리보드 도구. 마음에 안 드는 컷만 골라 고친 뒤 Seedance 2.5로 영상을 만듭니다.",
+        "h1": "플렉스보드(FLEXBOARD)",
+        "intro": "플렉스보드는 시나리오를 컷으로 나누고, 컷마다 구도·인물·대사를 미리 확인하는 스토리보드 도구입니다. 영상을 생성하기 전에 문제 컷을 걸러내기 때문에 재생성 횟수와 크레딧 소모가 줄어듭니다.",
+        "features": [
+          "시나리오 한 편을 컷 단위로 자동 분할하고 Panel·Sheet 두 화면으로 검토",
+          "고칠 컷만 Edit — Quick Edit 한 문장 또는 카메라(샷 사이즈·앵글·무브먼트) 지정",
+          "확정한 컷 이미지를 Seedance 2.5 프롬프트로 바로 전달",
+          "Panel 보기에서 컷 이미지 ZIP, Sheet 보기에서 시트 한 장으로 내려받기"
+        ],
+        "faq": [
+          {
+            "q": "플렉스보드는 무료로 쓸 수 있나요?",
+            "a": "베타 기간에는 영상 생성 전 단계(스토리보드 제작·수정·내려받기)를 무료로 제공합니다. 영상을 생성할 때만 크레딧이 차감됩니다."
+          },
+          {
+            "q": "컷 하나만 고칠 수 있나요?",
+            "a": "네. Panel 보기에서 해당 컷의 Edit를 눌러 그 컷만 다시 만듭니다. 나머지 컷은 그대로 유지됩니다."
+          },
+          {
+            "q": "다른 팀원과 콘티를 공유할 수 있나요?",
+            "a": "Panel 보기의 Download CUT ZIP이나 Sheet 보기의 Download Sheet로 내려받아 공유하면 됩니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "FLEXBOARD — Shot-by-shot AI storyboard tool",
+        "description": "Split a scenario into shots, preview each shot with an image, and fix only the shots you dislike before generating video with Seedance 2.5."
+      }
+    },
+    {
+      "slug": "blocking-board",
+      "name": "Blocking Board",
+      "studio": "blocking-board",
+      "hub": "why-puppet-video",
+      "ko": {
+        "title": "블로킹 보드 — 카메라·동선을 미리 짜는 디지털 리허설 | XCONDA",
+        "description": "평면도에 인물 위치와 이동 경로를 그리고 3D 무대에서 재생해 시선·180도 축·충돌을 점검합니다. 퍼펙 영상과 샷 리스트까지 내보냅니다.",
+        "h1": "블로킹 보드(Blocking Board)",
+        "intro": "블로킹 보드는 영상을 생성하기 전에 인물·공간·카메라가 서로 부딪히지 않는지 확인하는 디지털 리허설 도구입니다. 움직임을 글로만 지시할 때 생기는 엉뚱한 동선을 미리 잡습니다.",
+        "features": [
+          "평면도에 인물 위치와 이동 경로를 그리고 3D 무대에서 재생",
+          "시선, 180도 축, 인물·오브젝트 충돌을 자동 점검",
+          "퍼펙(인형) 이동 영상을 만들어 Seedance에 함께 입력",
+          "영어 프롬프트·샷 리스트·평면도 PNG·샷북 PDF로 내보내기"
+        ],
+        "faq": [
+          {
+            "q": "블로킹 보드는 지금 쓸 수 있나요?",
+            "a": "무료 베타로 순차 공개 중입니다. 허브 공지사항에서 공개 일정을 안내합니다."
+          },
+          {
+            "q": "퍼펙 영상은 왜 필요한가요?",
+            "a": "여러 인물이 동시에 움직이는 장면은 글로 통제하기 어렵습니다. 퍼펙 영상을 함께 넣으면 모델이 동선을 영상으로 읽습니다."
+          },
+          {
+            "q": "3D 모델링을 할 줄 알아야 하나요?",
+            "a": "아니요. 평면도에 그리는 것만으로 3D 공간이 구성됩니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Blocking Board — digital rehearsal for camera and blocking",
+        "description": "Draw positions and movement on a floor plan, play the scene on a 3D stage, and check sight lines, the 180-degree line and collisions."
+      }
+    },
+    {
+      "slug": "turn",
+      "name": "360 Turn Studio",
+      "studio": "turn",
+      "hub": "what-is-turn",
+      "ko": {
+        "title": "360 Turn Studio — 한 장의 사진으로 360° 가상 세트 | XCONDA",
+        "description": "사진 한 장이나 설명으로 360도 돌려볼 수 있는 공간을 만들고, 원하는 각도에서 인물을 넣어 컷마다 배경이 유지되는 키 이미지를 뽑습니다.",
+        "h1": "360 Turn Studio",
+        "intro": "Turn은 사진 한 장이나 글 설명으로 360도 회전하는 가상 세트를 만듭니다. 한 공간을 만들어 두고 그 안에서 카메라만 돌리기 때문에, 컷이 바뀌어도 문·창문·소품 위치가 그대로 유지됩니다.",
+        "features": [
+          "참조 이미지 한 장 또는 프롬프트로 360° 공간 생성",
+          "마스크 브러시로 오브젝트 추가·삭제",
+          "원하는 앵글에서 캐릭터를 배치해 키 이미지 제작",
+          "컷이 이어져도 배경·조명이 흔들리지 않는 연속 촬영"
+        ],
+        "faq": [
+          {
+            "q": "Turn은 어떤 도구인가요?",
+            "a": "한 공간을 360도로 만들어 두고 그 안에서 카메라 각도를 골라 이미지를 만드는 도구입니다. 컷마다 배경이 달라지는 문제를 없앱니다."
+          },
+          {
+            "q": "어떤 파일을 올릴 수 있나요?",
+            "a": "참조용 이미지 파일을 올리거나, 글로 공간을 설명해 생성할 수 있습니다."
+          },
+          {
+            "q": "스토리보드와 함께 쓸 수 있나요?",
+            "a": "네. Turn에서 만든 키 이미지를 FLEXBOARD 컷에 넣어 스토리보드를 구성하는 흐름을 권장합니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "360 Turn Studio — a 360° virtual set from one photo",
+        "description": "Build an orbitable set from a single photo or a written description, then shoot key images from any angle with the background kept intact."
+      }
+    },
+    {
+      "slug": "directors-cut",
+      "name": "Director's Cut",
+      "studio": "directors-cut",
+      "hub": "ai-video-9-cut-curse-fix",
+      "ko": {
+        "title": "디렉터스 컷 — 감독 스타일로 9컷 광고 영상 만들기 | XCONDA",
+        "description": "연도와 장소, 시나리오를 넣고 감독 스타일과 아트 분위기를 고르면 9컷 스토리보드를 만듭니다. 마음에 안 드는 컷만 프롬프트를 고쳐 다시 만듭니다.",
+        "h1": "디렉터스 컷(Director's Cut)",
+        "intro": "디렉터스 컷은 시나리오에 연출을 입혀 9컷 광고·웹드라마 스토리보드로 만들어 주는 도구입니다. 감독 스타일과 아트 분위기를 지정하면 컷마다 카메라와 조명이 그 방향으로 통일됩니다.",
+        "features": [
+          "연도·장소·시나리오를 입력하면 9컷으로 구성",
+          "감독 스타일·아트 분위기 선택으로 컷 전체 톤 통일",
+          "컷별 프롬프트만 수정해 재생성 — 전체를 다시 만들지 않음",
+          "완성한 스토리보드를 프레젠테이션용으로 내려받기"
+        ],
+        "faq": [
+          {
+            "q": "9컷 말고 다른 컷 수도 되나요?",
+            "a": "기본 구성은 9컷이며, FLEXBOARD에서 컷을 추가·삭제해 원하는 길이로 조정할 수 있습니다."
+          },
+          {
+            "q": "광고 제안서에 바로 쓸 수 있나요?",
+            "a": "네. 컷 이미지와 대사를 시트로 내려받아 클라이언트 제안서에 붙일 수 있습니다."
+          },
+          {
+            "q": "브랜드 캐릭터를 유지할 수 있나요?",
+            "a": "얼굴 사진을 참조로 올려 캐릭터를 고정하면 컷이 바뀌어도 얼굴과 의상이 유지됩니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Director's Cut — 9-shot storyboards in a director's style",
+        "description": "Set the era, place and scenario, choose a director style and art direction, and get a 9-shot storyboard you can fix shot by shot."
+      }
+    },
+    {
+      "slug": "image",
+      "name": "AI Image Generator",
+      "studio": "image",
+      "hub": "skillry-ai-video-prompt-reference",
+      "ko": {
+        "title": "AI 이미지 생성 — Grok·Seedream·Nano Banana Pro 한곳에서 | XCONDA",
+        "description": "Grok Imagine, Seedream Lite, Z Image, Nano Banana Pro 등 모델을 골라 이미지를 만듭니다. 모델사 고유 파라미터까지 워크스페이스 안에서 그대로 씁니다.",
+        "h1": "AI 이미지 생성",
+        "intro": "여러 모델사에서 제공하는 이미지 생성 모델을 한 화면에서 비교하며 쓸 수 있습니다. 모델을 바꿔도 프롬프트와 참조 이미지가 그대로 유지되어, 같은 장면을 모델만 바꿔 뽑아보기 쉽습니다.",
+        "features": [
+          "Grok Imagine · Seedream Lite · Z Image · Nano Banana Pro 등 선택",
+          "모델사 고유 파라미터까지 그대로 노출",
+          "참조 이미지·스타일 레퍼런스로 톤 유지",
+          "만든 이미지를 스토리보드 컷과 영상 생성에 바로 연결"
+        ],
+        "faq": [
+          {
+            "q": "어떤 모델을 쓸 수 있나요?",
+            "a": "Grok Imagine, Seedream Lite, Z Image, Nano Banana Pro 등 계속 늘어나며, 모델 목록은 스튜디오 안에서 확인할 수 있습니다."
+          },
+          {
+            "q": "한 번에 여러 장 만들 수 있나요?",
+            "a": "네. 하나의 프롬프트로 여러 장을 만들고 마음에 드는 결과를 고를 수 있습니다."
+          },
+          {
+            "q": "이미지 생성에 크레딧이 드나요?",
+            "a": "모델과 해상도에 따라 크레딧이 차감됩니다. 크레딧은 1회성 패키지로 구매하며 결제일로부터 1년간 유효합니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "AI image generation — Grok, Seedream, Nano Banana Pro",
+        "description": "Pick from Grok Imagine, Seedream Lite, Z Image and Nano Banana Pro, with each provider's own parameters exposed in one workspace."
+      }
+    },
+    {
+      "slug": "video",
+      "name": "AI Video Generator",
+      "studio": "video",
+      "hub": "seedance-2-5-length-resolution",
+      "ko": {
+        "title": "AI 영상 생성 — Seedance 2.5·Kling·Veo 한 화면에서 | XCONDA",
+        "description": "글, 이미지, 시작·끝 프레임, 레퍼런스로 영상을 만듭니다. Seedance 2.5는 최대 30초까지 소리와 함께 생성하고, 컷마다 길이와 화면비를 직접 정합니다.",
+        "h1": "AI 영상 생성",
+        "intro": "글·이미지·레퍼런스 어느 방식으로도 영상을 만들 수 있고, 시작과 끝 프레임을 지정해 장면 전환을 통제할 수 있습니다. 생성된 영상에는 해상도·화면비·길이가 함께 기록됩니다.",
+        "features": [
+          "Text-to-video · Image-to-video · 시작·끝 프레임 · Ref-to-video",
+          "Seedance 2.5 최대 30초, 영상·오디오 동시 생성",
+          "레퍼런스 이미지 최대 30장, 영상·오디오 각 10개",
+          "컷별 길이·화면비·해상도를 초 단위로 지정"
+        ],
+        "faq": [
+          {
+            "q": "영상은 몇 초까지 만들 수 있나요?",
+            "a": "Seedance 2.5 기준 한 번에 최대 30초입니다. 길이를 초 단위로 지정할 수 있습니다."
+          },
+          {
+            "q": "레퍼런스는 몇 개까지 넣을 수 있나요?",
+            "a": "이미지 최대 30장, 영상 최대 10개, 오디오 최대 10개까지 참조로 넣을 수 있습니다."
+          },
+          {
+            "q": "생성 실패로 크레딧이 사라지면?",
+            "a": "생성 실패나 서비스 장애로 차감된 크레딧은 자동으로 복구됩니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "AI video generation — Seedance 2.5, Kling, Veo",
+        "description": "Generate video from text, images, start and end frames or references. Seedance 2.5 produces up to 30 seconds with audio in one pass."
+      }
+    },
+    {
+      "slug": "upscale",
+      "name": "Upscaler",
+      "studio": "upscale",
+      "hub": "seedance-storyboard-before-render",
+      "ko": {
+        "title": "업스케일러 — 이미지를 6K 화질로 | XCONDA",
+        "description": " 낮은 해상도의 컷 이미지나 사진을 6K까지 끌어올립니다. 스토리보드 시트를 인쇄하거나 큰 화면에 띄울 때 유용하며, 결과를 다시 영상 생성 입력으로 쓸 수 있습니다.",
+        "h1": "업스케일러(Upscaler)",
+        "intro": "생성한 이미지를 더 큰 화면이나 인쇄에 쓰려면 해상도가 부족합니다. 업스케일러는 디테일을 살린 채 6K까지 키워 스토리보드 시트나 포스터에 바로 쓸 수 있게 합니다.",
+        "features": [
+          "이미지를 최대 6K까지 업스케일",
+          "윤곽·텍스처 디테일 유지",
+          "스토리보드 시트·포스터·프레젠테이션용 출력",
+          "업스케일 결과를 다시 영상 생성 입력으로 사용"
+        ],
+        "faq": [
+          {
+            "q": "어떤 파일을 올릴 수 있나요?",
+            "a": "일반적인 이미지 파일(PNG·JPG 등)을 올릴 수 있습니다."
+          },
+          {
+            "q": "업스케일에도 크레딧이 드나요?",
+            "a": "네. 이미지 생성과 같은 방식으로 크레딧이 차감됩니다."
+          },
+          {
+            "q": "여러 장을 한 번에 올릴 수 있나요?",
+            "a": "한 장씩 처리하는 것을 권장합니다. 여러 장은 반복해 올리면 됩니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Upscaler — take images up to 6K",
+        "description": "Upscale storyboard frames and photos up to 6K so they hold up in print, pitch decks and on large screens."
+      }
+    },
+    {
+      "slug": "face-swap",
+      "name": "Face Swap",
+      "studio": "face-swap",
+      "hub": "real-person-celebrity-reference",
+      "ko": {
+        "title": "페이스 스왑 — 원하는 얼굴로 자연스럽게 교체 | XCONDA",
+        "description": " 인물 사진의 얼굴을 다른 얼굴로 교체합니다. 표정과 조명은 유지하면서 캐릭터만 바꿔야 할 때 쓰이며, 컷마다 다른 인물을 넣어 비교할 수 있습니다.",
+        "h1": "페이스 스왑(Face Swap)",
+        "intro": "같은 구도·조명에서 얼굴만 바꾸고 싶을 때 쓰는 도구입니다. 스토리보드에서 캐릭터를 교체하거나, 컷마다 다른 인물을 넣어 비교할 때 유용합니다.",
+        "features": [
+          "얼굴만 교체하고 표정·조명·구도는 유지",
+          "컷별 캐릭터 비교에 활용",
+          "교체 결과를 스토리보드에 다시 반영",
+          "본인 동의를 받은 얼굴 또는 가상 인물 사용 권장"
+        ],
+        "faq": [
+          {
+            "q": "실존 인물 얼굴을 써도 되나요?",
+            "a": "약관은 타인의 지식재산권 침해와 부적절한 콘텐츠를 금지합니다. 본인 동의를 받은 얼굴이나 직접 만든 가상 인물을 권장합니다."
+          },
+          {
+            "q": "얼굴이 자연스럽게 합성되나요?",
+            "a": "조명과 피부 톤을 맞춰 합성하며, 필요하면 업스케일러로 디테일을 보강할 수 있습니다."
+          },
+          {
+            "q": "영상에도 쓸 수 있나요?",
+            "a": "얼굴 교체는 이미지 기준이며, 영상은 교체한 이미지를 키 이미지로 삼아 생성하는 방식을 권장합니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Face Swap — swap faces while keeping pose and light",
+        "description": "Replace a face while keeping expression, lighting and framing, so you can test characters on the same storyboard shot."
+      }
+    },
+    {
+      "slug": "cloth-swap",
+      "name": "ClothSwap",
+      "studio": "cloth-swap",
+      "hub": "ai-video-background-consistency",
+      "ko": {
+        "title": "클로스 스왑 — 컷마다 의상을 일정하게 유지 | XCONDA",
+        "description": "교체할 의상 영역을 브러시로 칠하고 원하는 의상 이미지를 올리면 그 부분만 바뀝니다. 컷이 이어져도 의상이 흔들리지 않게 맞춥니다.",
+        "h1": "클로스 스왑(ClothSwap)",
+        "intro": "컷마다 의상이 달라지면 같은 장면으로 보이지 않습니다. 클로스 스왑은 바꾸려는 영역만 칠해 지정한 의상으로 교체하므로, 여러 컷에 같은 의상을 유지할 수 있습니다.",
+        "features": [
+          "브러시로 의상 영역만 지정",
+          "원하는 의상 이미지를 참조로 업로드",
+          "얼굴·포즈·배경은 그대로 유지",
+          "컷 전체에 같은 의상 적용"
+        ],
+        "faq": [
+          {
+            "q": "옷 모양이 완전히 달라도 되나요?",
+            "a": "네. 지정한 영역의 의상을 참조 이미지 기준으로 다시 그립니다."
+          },
+          {
+            "q": "여러 벌을 동시에 입힐 수 있나요?",
+            "a": "한 번에 한 벌씩 교체하는 것을 권장합니다."
+          },
+          {
+            "q": "상업용으로 써도 되나요?",
+            "a": "생성 결과물의 소유권은 회원에게 있습니다. 다만 사용하는 의상 이미지의 권리는 직접 확인해 주세요."
+          }
+        ]
+      },
+      "en": {
+        "title": "ClothSwap — keep outfits consistent across shots",
+        "description": "Brush the clothing area, upload the outfit you want, and swap only that region so every shot keeps the same costume."
+      }
+    },
+    {
+      "slug": "scene-snap",
+      "name": "Scene Snap",
+      "studio": "scene-snap",
+      "hub": "scenario-to-final-video",
+      "ko": {
+        "title": "씬 스냅 — 이미지 한 장으로 6키프레임 스토리보드 | XCONDA",
+        "description": " 이미지를 올리면 영화 같은 6키프레임 스토리보드로 확장합니다. 장면 전환과 카메라 흐름을 빠르게 잡고, 결과를 FLEXBOARD에서 다시 편집할 수 있습니다.",
+        "h1": "씬 스냅(Scene Snap)",
+        "intro": "한 장의 이미지에서 시작해 6개의 키프레임으로 장면을 확장합니다. 시나리오가 아직 없을 때 이미지 하나로 컷 흐름을 빠르게 잡는 용도입니다. 시나리오가 아직 없어도 이미지 한 장으로 컷 흐름을 먼저 잡고, 이후 FLEXBOARD에서 대사와 컷 길이를 다듬으면 됩니다.",
+        "features": [
+          "이미지 한 장 → 6키프레임 시네마틱 스토리보드",
+          "장면 전환과 카메라 흐름 자동 구성",
+          "결과를 FLEXBOARD에서 다시 편집",
+          "만든 프레임을 영상 생성 입력으로 사용"
+        ],
+        "faq": [
+          {
+            "q": "시나리오가 없어도 되나요?",
+            "a": "네. 이미지 한 장이면 시작할 수 있습니다. 이후 FLEXBOARD에서 대사와 컷을 다듬으면 됩니다."
+          },
+          {
+            "q": "6컷으로 고정되나요?",
+            "a": "기본 생성은 6키프레임이며, 이후 컷을 추가·수정할 수 있습니다."
+          },
+          {
+            "q": "영상까지 만들 수 있나요?",
+            "a": "네. 만든 키프레임을 그대로 영상 생성에 넣을 수 있습니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Scene Snap — a 6-keyframe storyboard from one image",
+        "description": "Upload one image and get a cinematic 6-keyframe storyboard, then refine shots and generate video."
+      }
+    },
+    {
+      "slug": "youtube-ref",
+      "name": "YouTube Ref",
+      "studio": "youtube-ref",
+      "hub": "ai-video-motion-ideas",
+      "ko": {
+        "title": "유튜브 레퍼런스 — 영상 링크로 9컷 스토리보드 | XCONDA",
+        "description": "유튜브 링크를 붙여넣으면 9컷 스토리보드를 만들고, 필요하면 캐릭터 레퍼런스를 더해 내 캐릭터와 톤으로 다시 만듭니다. 구성만 참고하고 컷은 새로 생성됩니다.",
+        "h1": "유튜브 레퍼런스(YouTube Ref)",
+        "intro": "잘 만든 영상의 구성과 카메라 흐름을 참고하고 싶을 때, 링크만 붙여넣으면 9컷 스토리보드로 정리해 줍니다. 참고용 구조를 그대로 배우는 대신 내 캐릭터와 톤으로 다시 만듭니다.",
+        "features": [
+          "유튜브 링크 → 9컷 스토리보드 자동 구성",
+          "캐릭터 레퍼런스를 올려 내 캐릭터로 교체",
+          "컷별 프롬프트 수정",
+          "결과를 FLEXBOARD에서 이어서 편집"
+        ],
+        "faq": [
+          {
+            "q": "어떤 영상이든 되나요?",
+            "a": "공개된 유튜브 영상 링크를 사용합니다. 길이가 긴 영상은 컷 구성이 단순해질 수 있습니다."
+          },
+          {
+            "q": "참고 영상을 그대로 복제하나요?",
+            "a": "구성과 흐름만 참고하며, 컷은 새로 생성됩니다. 원본 영상의 권리는 원작자에게 있습니다."
+          },
+          {
+            "q": "내 캐릭터로 바꿀 수 있나요?",
+            "a": "네. 캐릭터 레퍼런스 이미지를 올리면 얼굴과 의상을 맞춰 다시 만듭니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "YouTube Ref — turn a video link into a 9-shot storyboard",
+        "description": "Paste a YouTube link to get a 9-shot storyboard, then bring in your own character reference."
+      }
+    },
+    {
+      "slug": "spin-angle",
+      "name": "SpinAngle",
+      "studio": "spin-angle",
+      "hub": "physics-inversion-patent-verify-before-render",
+      "ko": {
+        "title": "스핀 앵글 — 원을 그려 카메라 위치 지정 | XCONDA",
+        "description": "이미지 위에 원을 그려 카메라 위치를, 화살표로 방향을 지정하면 그 시점에서 본 장면을 생성합니다. 3D 모델링 없이 앵글을 바꿉니다.",
+        "h1": "스핀 앵글(SpinAngle)",
+        "intro": "같은 공간을 다른 각도에서 보고 싶을 때, 원을 그려 카메라 위치를 지정하면 그 시점에서의 뷰를 만들어 줍니다. 컷마다 배경이 바뀌지 않도록 공간을 유지하는 데 유용합니다.",
+        "features": [
+          "원으로 카메라 위치, 화살표로 방향 지정",
+          "지정한 시점에서의 사실적인 뷰 생성",
+          "3D 모델링 없이 앵글 변경",
+          "만든 뷰를 스토리보드 컷으로 사용"
+        ],
+        "faq": [
+          {
+            "q": "어떤 이미지에 쓸 수 있나요?",
+            "a": "실내·실외 공간이 보이는 이미지에 적합합니다."
+          },
+          {
+            "q": "180도 이상 돌려도 되나요?",
+            "a": "이미지에 담기지 않은 영역은 추정해 그리므로, 크게 돌릴수록 원본과 달라질 수 있습니다."
+          },
+          {
+            "q": "Turn과 무엇이 다른가요?",
+            "a": "Turn은 공간 자체를 360도로 만들고, 스핀 앵글은 기존 이미지 한 장에서 시점을 바꿉니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "SpinAngle — draw a circle to set the camera angle",
+        "description": "Draw a circle for camera position and an arrow for direction to render the scene from that viewpoint, without 3D modelling."
+      }
+    },
+    {
+      "slug": "cine-grade",
+      "name": "CineGrade AI",
+      "studio": "cine-grade",
+      "hub": "kbs-documentary-seongmul-xconda",
+      "ko": {
+        "title": "시네그레이드 AI — 영화 스틸로 색보정 | XCONDA",
+        "description": " 영화 스틸 이미지를 참조로 올리면 색보정·대비·분위기를 내 사진에 즉시 적용합니다. 컷 전체 톤을 한 번에 맞출 때 쓰는 도구입니다.",
+        "h1": "시네그레이드 AI(CineGrade AI)",
+        "intro": "컷마다 색이 다르면 한 영상으로 보이지 않습니다. 시네그레이드 AI는 참조 스틸의 색감을 그대로 옮겨 컷 전체 톤을 통일합니다. 참조 스틸만 바꾸면 같은 장면을 다른 영화 톤으로 비교할 수 있어, 클라이언트 취향을 맞출 때 시간이 줄어듭니다.",
+        "features": [
+          "영화 스틸을 참조로 색보정",
+          "대비·채도·분위기 자동 매칭",
+          "컷 전체에 같은 룩 적용",
+          "업스케일러와 함께 쓰면 인쇄용 화질까지"
+        ],
+        "faq": [
+          {
+            "q": "룩을 직접 만들 수 있나요?",
+            "a": "참조 이미지를 바꿔가며 원하는 룩을 찾는 방식입니다."
+          },
+          {
+            "q": "영상에도 적용되나요?",
+            "a": "현재는 이미지 기준이며, 색을 맞춘 이미지를 키 이미지로 영상을 생성하는 흐름을 권장합니다."
+          },
+          {
+            "q": "컷마다 다른 룩을 줄 수 있나요?",
+            "a": "네. 다만 한 영상 안에서는 하나의 룩으로 통일하는 편이 자연스럽습니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "CineGrade AI — film-still colour grading",
+        "description": "Upload a film still as reference and apply its grade, contrast and mood to your own images so every shot matches."
+      }
+    },
+    {
+      "slug": "background-blend",
+      "name": "Cinematic Image Blender",
+      "studio": "background-blend",
+      "hub": "ai-video-background-consistency",
+      "ko": {
+        "title": "시네마틱 이미지 블렌더 — 인물과 배경 합성 | XCONDA",
+        "description": "인물 사진과 배경 사진을 올리면 자연스럽게 합성해 영화 같은 장면을 만듭니다. 촬영 없이 원하는 배경에 인물을 세울 때 씁니다.",
+        "h1": "시네마틱 이미지 블렌더(Cinematic Image Blender)",
+        "intro": "인물과 배경을 따로 준비해 한 장면으로 합칩니다. 조명 방향과 색온도를 맞춰 붙이기 때문에 티가 덜 나고, 같은 인물을 여러 배경에 세울 수 있습니다.",
+        "features": [
+          "인물·배경 사진 두 장으로 장면 합성",
+          "조명 방향·색온도 자동 매칭",
+          "같은 인물을 여러 배경에 배치",
+          "합성 결과를 스토리보드·영상 입력으로 사용"
+        ],
+        "faq": [
+          {
+            "q": "누끼를 따로 따야 하나요?",
+            "a": "아니요. 인물 사진과 배경 사진을 올리면 합성까지 처리합니다."
+          },
+          {
+            "q": "배경만 바꿀 수 있나요?",
+            "a": "네. 같은 인물 사진에 다른 배경을 반복해 붙일 수 있습니다."
+          },
+          {
+            "q": "합성 티가 나지 않나요?",
+            "a": "조명과 색온도를 맞춰 합성하며, 필요하면 시네그레이드로 톤을 한 번 더 정리하면 좋습니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Cinematic Image Blender — composite people into scenes",
+        "description": "Combine a portrait and a background photo into one cinematic frame with matched lighting and colour temperature."
+      }
+    },
+    {
+      "slug": "auto-angle",
+      "name": "Auto Angle Generator",
+      "studio": "auto-angle",
+      "hub": "ai-video-9-cut-curse-fix",
+      "ko": {
+        "title": "오토 앵글 제너레이터 — 샷을 자동으로 바꿔 생성 | XCONDA",
+        "description": " 한 장면을 다양한 샷 사이즈와 앵글로 자동 변환합니다. 같은 장면을 여러 컷으로 나눌 때 카메라 변화를 빠르게 확보할 수 있습니다.",
+        "h1": "오토 앵글 제너레이터(Auto Angle Generator)",
+        "intro": "장면 하나를 클로즈업·미디엄·와이드 등 여러 샷으로 나눠 뽑아 줍니다. 같은 공간에서 카메라만 바꾼 컷이 필요할 때 유용합니다. 한 장면을 클로즈업·미디엄·와이드로 나눠 뽑으면, 같은 공간에서 카메라만 움직인 것처럼 컷이 자연스럽게 이어집니다.",
+        "features": [
+          "원본 장면을 여러 샷 사이즈로 자동 변환",
+          "앵글·화면비 선택",
+          "같은 장면의 컷 연결에 사용",
+          "결과를 스토리보드에 바로 반영"
+        ],
+        "faq": [
+          {
+            "q": "몇 가지 앵글이 나오나요?",
+            "a": "샷 사이즈와 앵글을 골라 원하는 만큼 만들 수 있습니다."
+          },
+          {
+            "q": "배경이 달라지지 않나요?",
+            "a": "원본 장면을 기준으로 변환하므로 공간이 유지됩니다."
+          },
+          {
+            "q": "영상에도 쓸 수 있나요?",
+            "a": "생성한 이미지를 키 이미지로 영상을 만들 수 있습니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Auto Angle Generator — reshoot one scene from many angles",
+        "description": "Turn a single scene into multiple shot sizes and angles so consecutive cuts read as one continuous space."
+      }
+    },
+    {
+      "slug": "expression",
+      "name": "Expression Transformer",
+      "studio": "expression",
+      "hub": "ai-video-background-consistency",
+      "ko": {
+        "title": "표정 변환 — 얼굴은 그대로, 표정만 바꾸기 | XCONDA",
+        "description": "텍스트 한 줄로 인물의 표정을 바꿉니다. 얼굴 정체성은 유지하면서 웃음·놀람·슬픔 등 감정만 바꿀 때 쓰는 도구입니다. 감정선이 이어지는 컷을 만들 수 있습니다.",
+        "h1": "표정 변환(Expression Transformer)",
+        "intro": "같은 인물이 컷마다 다른 감정을 보여야 할 때, 얼굴을 다시 만들지 않고 표정만 바꿉니다. 캐릭터가 흔들리지 않으면서 감정선을 이어갈 수 있습니다.",
+        "features": [
+          "프롬프트 한 줄로 표정 변경",
+          "얼굴 정체성 유지",
+          "감정선이 이어지는 컷 구성",
+          "결과를 스토리보드에 반영"
+        ],
+        "faq": [
+          {
+            "q": "어떤 표정을 만들 수 있나요?",
+            "a": "웃음, 놀람, 슬픔, 분노 등 일반적인 감정 표현을 프롬프트로 지정할 수 있습니다."
+          },
+          {
+            "q": "얼굴이 달라지지 않나요?",
+            "a": "표정만 바꾸고 얼굴 정체성은 유지합니다."
+          },
+          {
+            "q": "여러 명이 있는 사진도 되나요?",
+            "a": "한 명씩 처리하는 것을 권장합니다. 여러 명이 있는 사진은 인물별로 나눠 처리하면 정확도가 높아집니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Expression Transformer — change expression, keep the face",
+        "description": "Change a character's expression with one prompt while keeping facial identity, so emotion carries across cuts."
+      }
+    },
+    {
+      "slug": "drct-seq",
+      "name": "Directors Sequence",
+      "studio": "drct-seq",
+      "hub": "scenario-to-final-video",
+      "ko": {
+        "title": "디렉터스 시퀀스 — 키프레임 한 장으로 8연속 장면 | XCONDA",
+        "description": " 키프레임 한 장을 올리면 이어지는 8개 장면을 자동으로 만듭니다. 시간 흐름이 있는 시퀀스를 빠르게 확보하고 필요한 컷만 다시 만듭니다.",
+        "h1": "디렉터스 시퀀스(Directors Sequence)",
+        "intro": "한 장면에서 시작해 시간이 흐르는 8개의 연속 장면을 만듭니다. 짧은 시퀀스를 빠르게 구성하고, 필요한 컷만 다시 만드는 방식으로 다듬습니다. 짧은 시퀀스를 먼저 만들고 마음에 드는 컷만 남기는 방식이, 처음부터 한 컷씩 만드는 것보다 빠릅니다.",
+        "features": [
+          "키프레임 1장 → 8연속 장면",
+          "시간 흐름·장면 전환 자동 구성",
+          "컷별 재생성",
+          "시퀀스를 영상 생성으로 연결"
+        ],
+        "faq": [
+          {
+            "q": "8장면으로 고정되나요?",
+            "a": "기본 생성은 8장면이며, 이후 컷을 조정할 수 있습니다."
+          },
+          {
+            "q": "인물이 유지되나요?",
+            "a": "같은 인물 기준으로 생성되며, 얼굴 고정이 필요하면 참조 이미지를 함께 사용하세요."
+          },
+          {
+            "q": "FLEXBOARD와 함께 쓸 수 있나요?",
+            "a": "네. 결과를 FLEXBOARD로 가져와 대사와 컷 길이를 다듬는 흐름을 권장합니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Directors Sequence — 8 continuous shots from one keyframe",
+        "description": "Upload one keyframe and get eight continuous shots with time and transitions, then regenerate only what you need."
+      }
+    },
+    {
+      "slug": "arw-view",
+      "name": "Arrow View",
+      "studio": "arw-view",
+      "hub": "physics-inversion-patent-verify-before-render",
+      "ko": {
+        "title": "애로우 뷰 — 화살표만 그려 카메라 시점 생성 | XCONDA",
+        "description": "이미지를 올리고 화살표로 카메라 방향을 지정하면 그 시점의 장면을 생성합니다. 3D 모델링 없이 컷마다 다른 방향을 확보합니다.",
+        "h1": "애로우 뷰(Arrow View)",
+        "intro": "이미지 위에 화살표를 그려 '이쪽에서 본다'를 지정하면 그 방향의 장면을 만들어 줍니다. 복잡한 설정 없이 컷마다 카메라 방향을 바꿀 때 씁니다.",
+        "features": [
+          "화살표로 카메라 방향 지정",
+          "지정 방향의 장면 생성",
+          "3D 모델링 불필요",
+          "스토리보드 컷으로 바로 사용"
+        ],
+        "faq": [
+          {
+            "q": "스핀 앵글과 무엇이 다른가요?",
+            "a": "스핀 앵글은 원으로 위치를, 애로우 뷰는 화살표로 방향을 지정합니다. 원하는 방식대로 고르면 됩니다."
+          },
+          {
+            "q": "여러 방향을 한 번에 만들 수 있나요?",
+            "a": "한 번에 한 방향씩 지정하는 것을 권장합니다."
+          },
+          {
+            "q": "원본과 많이 달라질 수 있나요?",
+            "a": "이미지에 없는 영역은 추정해 그리므로, 큰 각도 변화는 결과가 달라질 수 있습니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Arrow View — point an arrow, get that camera view",
+        "description": "Draw an arrow on an image to set camera direction and render the scene from that side, with no 3D modelling."
+      }
+    },
+    {
+      "slug": "seedance-2-5",
+      "name": "Seedance 2.5",
+      "studio": "video",
+      "hub": "seedance-2-5-length-resolution",
+      "ko": {
+        "title": "Seedance 2.5 — 30초 영상·오디오 동시 생성 | XCONDA",
+        "description": "ByteDance Seed의 Seedance 2.5를 XCONDA에서 제공합니다. 최대 30초, 영상·오디오 동시 생성, 레퍼런스 최대 50개, 타임스탬프 편집을 지원합니다.",
+        "h1": "Seedance 2.5",
+        "intro": "Seedance 2.5는 한 번에 최대 30초 영상을 소리와 함께 만드는 모델입니다. 레퍼런스와 시작·끝 프레임을 조합해 장면을 통제할 수 있고, XCONDA에서는 모델 파라미터까지 그대로 노출합니다.",
+        "features": [
+          "최대 30초, 영상·오디오 동시 생성",
+          "레퍼런스 최대 50개까지 참조",
+          "타임스탬프 기반 편집",
+          "그린스크린 배경 교체"
+        ],
+        "faq": [
+          {
+            "q": "영상 길이를 초 단위로 정할 수 있나요?",
+            "a": "네. 720P·16:9·20초처럼 결과에 해상도·화면비·길이가 함께 기록되며, 초 단위로 지정할 수 있습니다."
+          },
+          {
+            "q": "오디오도 같이 나오나요?",
+            "a": "네. 영상과 오디오를 동시에 생성합니다."
+          },
+          {
+            "q": "요금은 어떻게 되나요?",
+            "a": "크레딧 기반이며, 프로모션 기간에는 최대 30% 할인이 적용됩니다. 자세한 금액은 요금 페이지를 확인하세요."
+          }
+        ]
+      },
+      "en": {
+        "title": "Seedance 2.5 — 30-second video with audio in one pass",
+        "description": "Seedance 2.5 on XCONDA: up to 30 seconds with simultaneous audio, up to 50 references, timestamp editing and green-screen replacement."
+      }
+    },
+    {
+      "slug": "nano-banana-pro",
+      "name": "Nano Banana Pro",
+      "studio": "image",
+      "hub": "flux-3-image-release",
+      "ko": {
+        "title": "나노 바나나 프로 — 정밀한 이미지 생성·편집 | XCONDA",
+        "description": "나노 바나나 프로를 XCONDA 워크스페이스에서 그대로 씁니다. 참조 이미지와 프롬프트를 조합해 일관된 캐릭터·제품 이미지를 만듭니다.",
+        "h1": "나노 바나나 프로(Nano Banana Pro)",
+        "intro": "나노 바나나 프로는 참조를 정확히 따르는 이미지 생성·편집에 강한 모델입니다. 제품 사진을 유지하면서 배경만 바꾸거나, 캐릭터를 여러 컷에 일관되게 배치할 때 유용합니다.",
+        "features": [
+          "참조 이미지를 정확히 반영하는 생성",
+          "제품·캐릭터 일관성 유지",
+          "배경·소품만 바꾸는 편집",
+          "다른 모델과 같은 프롬프트로 비교"
+        ],
+        "faq": [
+          {
+            "q": "다른 모델과 비교할 수 있나요?",
+            "a": "같은 프롬프트와 참조 이미지로 모델만 바꿔 결과를 비교할 수 있습니다."
+          },
+          {
+            "q": "제품 이미지에 쓸 수 있나요?",
+            "a": "네. 제품 사진을 참조로 올려 배경과 분위기만 바꾸는 방식이 많이 쓰입니다."
+          },
+          {
+            "q": "해상도는 어떻게 되나요?",
+            "a": "모델 설정에 따라 선택할 수 있고, 더 큰 출력이 필요하면 업스케일러로 6K까지 키울 수 있습니다."
+          }
+        ]
+      },
+      "en": {
+        "title": "Nano Banana Pro — precise generation and editing",
+        "description": "Use Nano Banana Pro inside XCONDA to follow references closely, keeping products and characters consistent across shots."
+      }
+    }
+  ]
+}

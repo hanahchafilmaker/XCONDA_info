@@ -10,7 +10,8 @@
     "test:smoke": "vite build --config scripts/vite.smoke.config.ts && node scripts/smoke.mjs && node scripts/smoke-sync.mjs && node scripts/smoke-lang.mjs && node scripts/smoke-seo.mjs",
     "postbuild": "node -e \"const fs=require('fs');fs.copyFileSync('dist/dev.html','index.html');console.log('✔ dist/dev.html → index.html (GitHub Pages 배포 파일 갱신)')\" && node scripts/build-seo.mjs",
     "preview": "vite preview",
-    "og:localize": "node scripts/localize-og-images.mjs"
+    "og:localize": "node scripts/localize-og-images.mjs",
+    "www:check": "node scripts/www/validate-feature-pages.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",
