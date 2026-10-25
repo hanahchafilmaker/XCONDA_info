@@ -22,6 +22,7 @@ on:
       - "tsconfig.json"
       - "scripts/build-seo.mjs"
       - "www/**"
+      - "scripts/www/**"
   workflow_dispatch:
 
 concurrency:
