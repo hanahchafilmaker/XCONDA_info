@@ -61,6 +61,25 @@
 
 ---
 
+## 1-1. 바로 배포할 수 있는 정적 산출물 (소스 저장소 없이도 가능)
+
+```bash
+npm run www:build     # → www/dist/
+```
+
+| 산출물 | 내용 |
+|---|---|
+| `www/dist/features/<slug>/index.html` | 영어 기능 페이지 **20개** |
+| `www/dist/ko/features/<slug>/index.html` | 한국어 기능 페이지 **20개** |
+| `www/dist/features/index.html` · `ko/features/index.html` | 기능 목록 2개 |
+| `www/dist/**/og.svg` | 공유 카드 40개(SVG) — 제품 스크린샷이 준비되면 PNG 로 교체 |
+| `www/dist/sitemap.xml` · `robots.txt` · `llms.txt` | 44 URL · 언어 대체 링크 포함 |
+
+- 빌드가 스스로 검사합니다: JSON-LD 120개 파싱 · canonical · hreflang(en/ko/x-default) · 내부 링크 200개.
+- `www/dist/` 는 커밋하지 않습니다(`.gitignore`). 정적 호스팅/CDN 루트에 그대로 올리면 동작합니다.
+- 단, `/studio/*`·`/pricing`·`/legal/*` 링크는 www 본사이트에만 있으므로, **같은 도메인에 올려야** 합니다
+  (별도 도메인에 올릴 경우 그 링크들을 www 절대 주소로 바꿔야 합니다).
+
 ## 2. 옮기는 방법
 
 ```bash
@@ -103,6 +122,8 @@ cp <XCONDA_info>/www/snippets/llms.txt  public/llms.txt
 | 항목 | 상태 |
 |---|---|
 | 원고 20개 형식·길이·허브 링크 유효성 | ✅ `npm run www:check` (실행됨, PASS) |
+| 정적 산출물 42페이지(20×2언어+목록2) · JSON-LD 120 · 링크 0 깨짐 | ✅ `npm run www:build` (실행됨, PASS) |
+| 영문 본문 20개 | ✅ 완료(한국어와 같은 구성: intro·features 4·FAQ 3) |
 | 허브 → www 내부 링크(관련 글·llms.txt) | ✅ 허브 쪽은 이미 반영 |
 | www 실제 배포 결과(상태코드·JSON-LD·OG) | ⏳ www 저장소 접근 필요 — 적용 후 확인 |
 
@@ -111,6 +132,5 @@ cp <XCONDA_info>/www/snippets/llms.txt  public/llms.txt
 ## 5. 남은 것 (D·E 그룹, 코드 아님)
 
 - Search Console·네이버 서치어드바이저에 기능 페이지 색인 요청, IndexNow 는 허브만 연결되어 있음
-- 20개 페이지 **영문 본문** 번역(현재 영문은 제목·설명만) — `feature-pages.json` 의 `en` 에 `intro`·`features`·`faq` 를 채우면 코드 수정 없이 반영됩니다
 - 기능 페이지용 제품 스크린샷·GIF(현재 OG 카드는 텍스트 카드)
 - GEO 모니터링: Perplexity·ChatGPT 에서 "xconda flexboard" 류 질의 추적

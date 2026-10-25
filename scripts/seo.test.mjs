@@ -858,3 +858,35 @@ test("번역이 하나도 없으면 언어별 페이지를 만들지 않는다(�
   assert.equal([...out.files.keys()].filter((f) => /^(en|ja|zh)\//.test(f)).length, 0);
   assert.doesNotMatch(out.files.get("index.html"), /hreflang="en"/);
 });
+
+/* ---------------------------------------------------------------------------
+ * 영어 번역 커버리지 — 2026-10-25 (B 확장)
+ *   content/i18n/en.json 이 실제 글과 1:1 로 맞는지, 빈 번역이 없는지 검사합니다.
+ * ------------------------------------------------------------------------ */
+test("영어 번역 파일의 모든 키가 실제 글과 연결되고, 빈 번역이 없다", () => {
+  const dict = JSON.parse(fs.readFileSync(path.join(here, "..", "content/i18n/en.json"), "utf8"));
+  const snapshot = JSON.parse(fs.readFileSync(path.join(here, "..", "notion-content.json"), "utf8"));
+  const prefixOf = { faq: "qna", blog: "post", news: "post", notice: "notice", guide: "guide" };
+  const slugs = new Set(
+    (snapshot.rows ?? [])
+      .map((r) => `${prefixOf[r.__type] ?? r.__type}/${String(r.Slug ?? "").trim()}`)
+      .filter((k) => !k.endsWith("/")),
+  );
+  const keys = Object.keys(dict.entries ?? {});
+  assert.ok(keys.length >= 70, `번역 항목이 ${keys.length}개뿐입니다`);
+  const dead = keys.filter((k) => !slugs.has(k));
+  assert.deepEqual(dead, [], `원문이 없는 번역 키: ${dead.slice(0, 5).join(", ")}`);
+  for (const key of keys) {
+    const e = dict.entries[key];
+    assert.ok(e.title && e.title.length >= 10, `${key}: 영어 제목이 없거나 너무 짧습니다`);
+    assert.ok(e.summary && e.summary.length >= 40, `${key}: 영어 본문이 없거나 너무 짧습니다`);
+    // 번역 누락 검사 — 한글 비중이 20% 를 넘으면 번역이 안 된 것으로 봅니다.
+    // (법인명 "주식회사 큐브베리", 사업자등록번호 "2026-광주동구-0289" 같은 고유표기는 남는 게 정상)
+    const hangul = (e.summary.match(/[가-힣]/g) ?? []).length;
+    assert.ok(hangul / e.summary.length < 0.2, `${key}: 영어 본문의 한글 비중이 ${Math.round((hangul / e.summary.length) * 100)}% 입니다`);
+  }
+  // Q&A 는 전부 번역되어 있어야 합니다
+  const faqSlugs = new Set((snapshot.rows ?? []).filter((r) => r.__type === "faq").map((r) => `qna/${String(r.Slug ?? "").trim()}`));
+  const missing = [...faqSlugs].filter((k) => !keys.includes(k));
+  assert.deepEqual(missing, [], `영어 번역이 없는 Q&A: ${missing.slice(0, 5).join(", ")}`);
+});

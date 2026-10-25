@@ -5,3 +5,4 @@ env
 .env
 .env.local
 .env.*
+www/dist/

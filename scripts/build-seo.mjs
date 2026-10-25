@@ -1058,6 +1058,12 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
         { heading: "XCONDA허브 홈", url: site, description: home.description },
         ...sectionRecords.map((s) => ({ heading: s.heading, url: s.url, description: s.description })),
         { heading: "스튜디오 19개 툴 완전 사용자 가이드", url: absoluteUrl(site, "user-guide.html") },
+        // 번역 사이트가 있으면 llms.txt 에도 알려 줍니다(AI 가 영어 페이지를 찾도록).
+        ...Object.keys(localized.paths ?? {}).map((code) => ({
+          heading: `English hub (${langByCode(code)?.name ?? code})`,
+          url: localizedUrl(site, code, ""),
+          description: translations?.[code]?.site?.description ?? "",
+        })),
       ],
       pages: pageRecords.map((p) => ({ type: p.type, title: p.pageTitle || p.title, url: p.url, summary: p.summary })),
     }),
