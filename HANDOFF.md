@@ -260,6 +260,24 @@ XCONDA_info/
 | `src/components/common.tsx` | 콘텐츠 공용 컴포넌트(`CategoryBadge`, `TypeLabel`, `Byline`, `NewBadge`, `SyncButton`, `SyncStatus`, `SmartImage`, `RichText`, `Blocks`) | `SyncStatus`가 동기화 배지 |
 | `scripts/notion-snapshot.mjs` (720줄) | 스냅샷 생성기 + Actions Summary 리포트 + 하트비트 판정(`shouldWriteSnapshot`) | Notion 비공개 API(`www.notion.so/api/v3`) 사용 → 노션 변경 시 깨질 수 있는 **유일한 취약 지점** |
 
+### 7.1 SEO · GEO 출력물 (2026-10-25 정비)
+
+검색엔진·AI 크롤러가 **자바스크립트 없이** 읽는 것들이 정해져 있습니다. 손대기 전에 이 표를 보세요.
+
+| 출력물 | 만드는 곳 | 규칙 |
+|---|---|---|
+| 홈 `index.html` | `build-seo.mjs` › `homeDigestHtml` | `<div id="root">` 안에 95개 글 목록(공지·뉴스·가이드·블로그·Q&A)을 정적으로 넣습니다. 앱이 뜨면 React 가 지우고 화면을 그립니다 — **`#root` 를 빈 껍데기로 되돌리지 마세요** |
+| 섹션 목록 `/post/` · `/notice/` · `/qna/` · `/guide/` | `build-seo.mjs` › `sectionPageHtml` + `SECTION_PAGES`(`seo.js`) | 홈 → 목록 → 글 크롤 경로. 앱은 같은 주소로 들어오면 해당 섹션으로 스크롤합니다(`App.tsx`) |
+| JSON-LD | `seo.js` › `siteJsonLd` / `appJsonLd` / `listJsonLd` / `articleJsonLd` / `howToJsonLd` | 회사(Organization)와 제품(Brand · SoftwareApplication)을 분리. **가격 Offer 는 허브에 넣지 않습니다** — 가격이 적힌 www 페이지 몫입니다 |
+| `dateModified` · `article:modified_time` · 사이트맵 `lastmod` | `seo.js` › `modifiedDateOf` | 노션 `수정일` → 동기화가 기록한 `__modified`(last_edited_time) 순. **작성일과 같으면 넣지 않습니다** |
+| `hreflang` | `build-seo.mjs` · `src/seo.ts` | 모든 페이지 `ko` + `x-default` 자기 참조. 허브는 언어별 URL 이 없으므로 "기준 언어 = 한국어"를 명시하는 용도 |
+| 크롤러 언어 고정 | `src/i18n/index.tsx` › `isCrawlerUA` | 봇 UA 에는 **항상 한국어 원문** + 번역 위젯 미로드. 사람은 예전처럼 자동 감지, `?lang=en` 으로 고정 가능 |
+
+⚠️ 함께 지킬 것
+- 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
+- `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
+- 언어별 URL(`/en/` 등)은 아직 만들지 않았습니다. 기계번역 대신 검수된 영문을 쓰려면 `SECTION_PAGES`·슬러그 체계와 함께 설계해야 합니다(백로그).
+
 ---
 
 ## 8. 데이터 모델

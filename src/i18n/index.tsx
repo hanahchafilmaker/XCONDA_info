@@ -100,8 +100,44 @@ function browserPrefersKorean(): boolean {
  * `/ko/en` 쿠키를 매번 다시 써서 — 영어/일본어/중국어 브라우저에서는 KO 를 눌러도
  * 리로드 후 원래 언어로 되돌아갔습니다(2026-10 수정, scripts/smoke-lang.mjs 가 회귀 방지).
  */
+/**
+ * 검색엔진·AI 크롤러의 User-Agent 인가?
+ *
+ * 같은 주소(`hub.xconda.ai/`)가 접속자 언어에 따라 다른 언어로 렌더링되면, 크롤러는
+ * **그 주소의 언어를 확정하지 못합니다.** 정적 HTML 의 `<html lang="ko">`·
+ * hreflang(`ko` · `x-default`)·JSON-LD `inLanguage: ko-KR` 와 실제 내용이 어긋나기 때문입니다.
+ * (해외 데이터센터에서 온 크롤러가 영어 화면을 받아가는 것을 실제로 확인 — 2026-10 GEO 진단)
+ * 그래서 크롤러에게는 **항상 한국어 원문**을 돌려주고, 기계번역 위젯도 띄우지 않습니다.
+ */
+export function isCrawlerUA(ua: string = typeof navigator === "undefined" ? "" : navigator.userAgent): boolean {
+  if (!ua) return false;
+  // `bot` 는 반드시 `/`·`;`·`)` 가 뒤따를 때만 봅니다 — `CUBOT X19` 처럼 기기 이름에 들어간
+  // "BOT" 를 크롤러로 오인해 실제 사용자의 언어를 한국어로 고정하는 일을 막기 위해서입니다.
+  return /bot[/;)]|crawler|crawling|spider|gptbot|oai-searchbot|chatgpt-user|claudebot|claude-web|anthropic-ai|perplexity|google-extended|googlebot|bingbot|yandex|baiduspider|yeti|duckduck|applebot|facebookexternalhit|slackbot|telegrambot|discordbot|linkedinbot|twitterbot|embedly|iframely|headlesschrome|lighthouse|python-requests|python-urllib|curl\/|wget\//i.test(
+    ua
+  );
+}
+
+/**
+ * `?lang=` 로 명시한 언어 (있으면 최우선). 크롤러·자동 감지와 무관하게 주소로 언어를 고정할 때 씁니다.
+ * 예: `https://hub.xconda.ai/?lang=en`
+ */
+function urlTarget(): Target | null {
+  try {
+    const value = new URLSearchParams(window.location.search).get("lang");
+    return isTarget(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
 export function detectInitialTarget(): Target {
   if (typeof window === "undefined") return "ko";
+  // ① 크롤러 — 항상 한국어 원문 (위 isCrawlerUA 설명)
+  if (isCrawlerUA()) return "ko";
+  // ② 주소로 명시한 언어
+  const fromUrl = urlTarget();
+  if (fromUrl) return fromUrl;
   const saved = readSavedTarget();
   if (saved) return saved;
   if (saved === undefined) {
