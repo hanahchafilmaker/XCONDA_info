@@ -1,0 +1,64 @@
+name: www 기능 페이지 산출물
+
+# `www/dist/` 는 커밋하지 않습니다(생성물 · .gitignore).
+# 그래서 배포할 파일을 잃지 않도록, 빌드 결과를 **아티팩트로 올려** 언제든 내려받게 합니다.
+#   Actions → www 기능 페이지 산출물 → 최근 실행 → Artifacts → www-dist
+#
+# 적용은 두 가지 길입니다.
+#   1) 아티팩트를 풀어 www.xconda.ai 정적 호스팅 루트에 업로드 (도메인이 같아야 함)
+#   2) `www/snippets/*` 를 www 저장소로 옮겨 같은 주소를 서버에서 렌더
+# 어느 쪽이든 `npm run www:check` 를 통과한 원고만 나갑니다.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "www/**"
+      - "scripts/www/**"
+      - "package.json"
+      - ".github/workflows/www-artifact.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: www-artifact
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: 원고 검사 (형식 · 길이 · 허브 링크)
+        run: npm run www:check
+
+      - name: 산출물 생성 (42 HTML · 공유 카드 · 사이트맵)
+        run: npm run www:build
+
+      - name: 결과 요약
+        run: |
+          echo "### www 기능 페이지 산출물" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- HTML: $(find www/dist -name '*.html' | wc -l)개" >> "$GITHUB_STEP_SUMMARY"
+          echo "- 공유 카드: $(find www/dist -name 'og.svg' -o -name 'og.png' | wc -l)개" >> "$GITHUB_STEP_SUMMARY"
+          echo "- 사이트맵 URL: $(grep -c '<loc>' www/dist/sitemap.xml || true)개" >> "$GITHUB_STEP_SUMMARY"
+          echo "- 크기: $(du -sh www/dist | cut -f1)" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: www-dist
+          path: www/dist
+          retention-days: 30
+          if-no-files-found: error

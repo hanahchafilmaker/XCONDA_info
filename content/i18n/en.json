@@ -67,8 +67,8 @@
       "summary": "Under our terms you own the content you generate with the service. The XCONDA platform itself (software, technology, trademarks) belongs to Cubeberry Co., Ltd. You grant Cubeberry (the Korean and US entities) a non-exclusive licence to use your content only to provide and improve the service. You may not upload or create content that infringes the intellectual property of others."
     },
     "qna/hub-languages": {
-      "title": "Is the hub available in other languages?",
-      "summary": "Yes. The language buttons at the top of the hub let you choose Korean, English, Japanese or Chinese. Translated pages also have their own URLs — for example English answers live under /en/, so you can share a link that opens in English."
+      "title": "Can I read the hub in other languages?",
+      "summary": "Yes. The language buttons at the top of the hub switch between Korean, English, Japanese and Chinese. Each language also has its own address — Korean at the root, and English, Japanese and Chinese under /en/, /ja/ and /zh/ — so you can share a link that opens in the language you want."
     },
     "qna/what-is-xconda-claude-skill": {
       "title": "What is an XCONDA skill for Claude?",
