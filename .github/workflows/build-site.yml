@@ -21,6 +21,7 @@ on:
       - "vite.config.ts"
       - "tsconfig.json"
       - "scripts/build-seo.mjs"
+      - "content/i18n/**"
       - "www/**"
       - "scripts/www/**"
   workflow_dispatch:
@@ -86,7 +87,8 @@ jobs:
             # 공용 번들(assets/app.js · app.css)도 커밋 대상입니다.
             # (예전에는 페이지마다 인라인이라 100페이지 × 약 490KB 가 중복 저장됐습니다)
             git add -A -- index.html sitemap.xml robots.txt llms.txt assets
-            for d in post notice qna guide; do git add -A -- "$d" 2>/dev/null || true; done
+            # 언어별 정적 페이지(/en/ · /ja/ · /zh/)도 같은 빌드 산출물입니다.
+            for d in post notice qna guide en ja zh; do git add -A -- "$d" 2>/dev/null || true; done
             if git diff --cached --quiet; then
               echo "index.html · 글별 페이지 변경 없음 — 커밋 생략"
               echo "changed=false" >> "$GITHUB_OUTPUT"

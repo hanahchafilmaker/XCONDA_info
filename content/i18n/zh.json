@@ -1,0 +1,323 @@
+{
+  "_readme": [
+    "XCONDA허브 zh 번역본. 이 파일에 있는 글만 /zh/ 주소가 만들어집니다(빌드: scripts/build-seo.mjs).",
+    "번역은 사람이 검수해 넣습니다. 기계번역을 그대로 넣지 마세요.",
+    "키 규칙: entries 의 키는 `주소/슬러그`(예: qna/contact-inquiry). 원문 글이 사라지면 빌드가 경고하고 그 주소는 만들지 않습니다.",
+    "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변)."
+  ],
+  "lang": "zh",
+  "updated": "2026-10-25",
+  "site": {
+    "title": "XCONDA Hub — 问答、指南与公告",
+    "description": "关于 XCONDA 的中文解答：价格与退款、隐私与支付，以及 FLEXBOARD、Turn、Blocking Board 工具的使用方法。由 Cubeberry 发布。"
+  },
+  "ui": {
+    "home": "首页",
+    "hubHome": "XCONDA Hub 首页",
+    "koreanOriginal": "이 글의 한국어 원문 보기 (Read this in Korean)",
+    "allSections": "全部主题",
+    "note": "中文页面由 XCONDA 团队翻译。韩语 Hub 为原始版本，如内容有出入请联系 cubeberry@cuberry.kr。",
+    "articleCount": "篇文章"
+  },
+  "sections": {
+    "qna": {
+      "title": "XCONDA 问答（中文）",
+      "description": "针对 XCONDA 用户最常提出的问题的中文解答：价格与取消、隐私与支付、工具与制作流程。"
+    }
+  },
+  "entries": {
+    "qna/contact-inquiry": {
+      "title": "咨询应该联系哪里？",
+      "summary": "客服对所有客户统一在一处受理。邮箱 cubeberry@cuberry.kr，电话 +82-70-8095-2302，工作日 10:00~17:00（韩国时间，午休 12:00~13:00）。美国法人（Cubeberry Co., Ltd, Delaware）的联系方式为 info@cuberry.ai、电话 +1-888-202-1989，纽约地址是 276 5th Ave, Ste 704-2816, New York, NY 10001。通过美国法人购买的项目，退款也请向同一客服窗口申请。"
+    },
+    "qna/card-information-security": {
+      "title": "银行卡信息会被安全保存吗？",
+      "summary": "银行卡信息由 Stripe 或 PortOne（Toss Payments、KakaoPay、Eximbay）处理，Cubeberry 的服务器不会保存完整的卡号。为便于核对，仅保留卡号后四位和有效期。"
+    },
+    "qna/ai-video-training-courses": {
+      "title": "是否提供 AI 视频制作培训或课程？",
+      "summary": "有。我们计划定期举办网络研讨会。首场将在 10 月内举行，此后每月举办一次。日程和报名方式将通过 Hub 公告通知。"
+    },
+    "qna/company-business-info": {
+      "title": "能否告知运营 XCONDA 的公司工商信息？",
+      "summary": "XCONDA 由株式会社 Cubeberry（Cubeberry Co., Ltd.）开发和运营。代表理事为李珍瑞，营业执照号为 480-88-03079，通信销售业申报号为 2026-광주동구-0289。地址为 2F, 69-12 Chungjang-ro, Dong-gu, Jeonnam-Gwangju 61482, Republic of Korea，电话 +82-70-8095-2302，邮箱 cubeberry@cuberry.kr，运营时间为工作日 10:00~17:00（韩国时间）。服务器运行在 Amazon Web Services 上。工商信息可在韩国公平交易委员会网站（https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079）查询。"
+    },
+    "qna/payment-seller-name": {
+      "title": "付款时商家名称会显示为谁？",
+      "summary": "付款页面和收据上会显示您购买所属的公司。使用 Stripe 付款时，商家为 Cubeberry Co., Ltd（Delaware）；使用 Toss Payments、KakaoPay、Eximbay（PortOne）付款时，商家为株式会社 Cubeberry（韩国）。退款将按购买公司最初使用的支付方式处理。"
+    },
+    "qna/personal-data-retention": {
+      "title": "个人信息的保存期限是多久？",
+      "summary": "账户信息在注销后保存 90 天，支付记录按税务和会计法规保存 7 年，使用数据保存 2 年，客服记录保存 3 年，营销同意在撤回后保存 30 天。保存期满后将安全删除或匿名化处理。用于登录的 Google Firebase 认证信息会在收到删除请求后 180 天内从服务器和备份中清除。"
+    },
+    "qna/access-edit-delete-data": {
+      "title": "如何查看、更正或删除我的信息？",
+      "summary": "您可以通过邮箱 cubeberry@cuberry.kr、电话 +82-70-8095-2302（工作日 10:00~17:00 韩国时间），或在 XCONDA 账户设置中提出请求。我们会在核实身份后转交相应公司，并在 45 天内答复，不收取任何费用。也可通过代理人提出请求。个人信息保护负责人为代表理事李珍瑞。"
+    },
+    "qna/personal-data-collected": {
+      "title": "会收集哪些个人信息？",
+      "summary": "我们会收集邮箱、姓名、账户名、IP 地址、设备信息等识别信息，订阅和点数购买及使用记录，卡种、后四位、有效期、账单地址等支付信息，平台使用记录和 Cookie，基于 IP 的大致位置（国家/地区），以及您制作的内容和上传的文件。我们不会收集精确位置、健康、种族、宗教、性取向等信息，也不会收集居民身份证号或护照号码。"
+    },
+    "qna/prohibited-actions": {
+      "title": "哪些行为是被禁止的？",
+      "summary": "禁止将服务用于违法行为，上传或制作侵犯他人知识产权的内容，对服务进行逆向工程、反编译或黑客攻击，制作有害、令人反感或不适当的内容，与他人共享账户信息，以及未经书面许可使用自动化方式访问服务。违规可能导致使用受限或账户被终止。"
+    },
+    "qna/uploaded-content-usage": {
+      "title": "Cubeberry 会使用我上传的图片和视频吗？",
+      "summary": "您上传的图片、视频以及生成成果的所有权归会员所有。Cubeberry 可在提供和改进服务的范围内使用这些内容。只有在会员同意的情况下，才会将其用于训练 XCONDA AI 模型。我们不会出售个人信息，也不会将其共享用于定向广告。"
+    },
+    "qna/personal-data-sale-ads": {
+      "title": "会出售我的个人信息或将其用于广告吗？",
+      "summary": "不会。我们不会向第三方出售个人信息，也不会为定向广告而共享。敏感个人信息不会用于提供您所请求的服务、安全保障和履行法律义务之外的目的。"
+    },
+    "qna/cookies": {
+      "title": "是否使用 Cookie？",
+      "summary": "是。我们使用登录和安全所需的必要 Cookie、用于使用统计和错误追踪的分析 Cookie，以及记住语言等设置的偏好 Cookie。您可以在浏览器中拒绝或删除 Cookie，但部分功能可能受限。对于欧洲和英国用户，非必要 Cookie 仅在取得同意后使用，且同意可随时撤回。"
+    },
+    "qna/minors-eligibility": {
+      "title": "未成年人可以使用吗？",
+      "summary": "不可以。XCONDA 仅限年满 18 周岁的用户使用。我们不会收集未满 18 周岁者的个人信息，一旦发现已收集将立即删除。"
+    },
+    "qna/error-support": {
+      "title": "使用过程中出现错误该怎么办？",
+      "summary": "因生成失败或服务故障而扣除的点数会自动恢复。其他错误请通过客服邮箱 cubeberry@cuberry.kr 告知我们（电话 +82-70-8095-2302，工作日 10:00~17:00 韩国时间）。请一并提供账户邮箱、错误画面截图和发生时间，以便我们更快核查。"
+    },
+    "qna/commission-video-production": {
+      "title": "可以委托 Cubeberry 制作视频吗？",
+      "summary": "可以。Cubeberry 基于 XCONDA，由同一团队负责企划、故事、AI 生成、剪辑和后期制作。我们制作过网络剧、动画、纪录片、广告和企业宣传片等。请通过下方联系方式咨询。"
+    },
+    "qna/governing-law-disputes": {
+      "title": "发生争议时适用哪国法律？",
+      "summary": "如与韩国法人（株式会社 Cubeberry）签约，适用大韩民国法律，协商无法解决的争议由韩国法院管辖。如与美国法人（Cubeberry Co., Ltd, Delaware）签约，适用美国纽约州法律，由纽约县的州法院或联邦法院管辖。您所在地强制性消费者法提供的保护依然有效。"
+    },
+    "qna/data-operation-location": {
+      "title": "XCONDA 的数据在哪里运营？",
+      "summary": "XCONDA 运行在 Amazon Web Services 上，存储的数据在传输和存储过程中均加密。个人信息可能在主要运营地韩国，以及美国（美国法人、Stripe、云服务商）和服务提供商所在国家/地区处理或存储。跨境传输适用标准合同条款和数据处理协议等。"
+    },
+    "qna/how-to-access-hub": {
+      "title": "如何进入 Hub？",
+      "summary": "在 XCONDA 网站（xconda.ai）打开 Resources 菜单，选择 Hub 即可进入。"
+    },
+    "qna/skills-claude-paid-plan": {
+      "title": "使用技能需要 Claude 付费方案吗？",
+      "summary": "根据 Anthropic 帮助中心，技能在 Free、Pro、Max、Team 和 Enterprise 方案中均可使用，并需在设置中启用代码执行。各方案的使用上限不同，若经常处理长剧本，付费方案会更方便。Claude 的政策可能调整，最新规定请查阅 Claude 帮助中心。"
+    },
+    "qna/seedance-prompt-retry": {
+      "title": "如果不满意结果，需要从头重写提示词吗？",
+      "summary": "不需要。在 XCONDA Prompt 技能中，您只需在对话中说明想修改的地方，编辑器中的提示词就会更新，然后直接用其重新生成。反复调整直至达到您想要的效果。"
+    },
+    "qna/how-to-install-skills": {
+      "title": "如何安装技能？",
+      "summary": "以下依据 Claude 帮助中心的说明。1) 从 Hub 下载技能 ZIP 文件（每个技能一个 ZIP 文件）。2) 在 Claude 中进入 Customize > Skills。3) 点击「+」按钮并选择 Create skill。4) 选择 Upload a skill，上传 ZIP 文件。5) 技能出现在列表中后开启即可使用。需在设置的 Capabilities 中启用代码执行。"
+    },
+    "qna/flexboard-panel-vs-sheet": {
+      "title": "Panel 视图与 Sheet 视图有什么区别？",
+      "summary": "Panel 视图每个镜头显示为一张卡片，包含画面、场景说明、台词、音效和 Edit 按钮，适合逐个镜头阅读和修改。Sheet 视图不显示说明，仅将镜头画面放大集中展示，适合查看整体节奏是否自然连贯。建议先用 Sheet 看整体流程，再用 Panel 逐个镜头确认。"
+    },
+    "qna/flexboard-edit-single-cut": {
+      "title": "可以只修改一个不满意的镜头吗？",
+      "summary": "可以。在 Edit Panel 的 Panel 视图中点击要修改镜头的 Edit，即可只修改该镜头。简单调整可在 Quick Edit 中用一句话说明（例如「只换眼镜，姿势和背景保持不变」）；若需改变机位，则在 Detailed Edit 中选择 Shot Size、Camera Angle、Camera Movement 后重新生成。其余镜头保持不变。"
+    },
+    "qna/what-is-blocking-board": {
+      "title": "Blocking Board 是什么工具？",
+      "summary": "Blocking Board 是一款数字化排练工具，用于在生成视频前预先确认人物、空间和机位之间是否相互冲突，计划以网页形式提供。您可以在平面图上绘制人物位置和移动路线，在 3D 舞台中播放并检查视线、180 度轴线和碰撞。它还能生成人物模型（Puppet）在空间中移动的视频，用于视频生成时一并输入。"
+    },
+    "qna/where-to-get-skills": {
+      "title": "在哪里可以获取技能？",
+      "summary": "用于 XCONDA 制作工作流的 Claude 技能（FLEXBOARD 技能、XCONDA 提示词技能）可在 XCONDA Hub 下载。下载后请按下方安装方法添加到 Claude 中使用。"
+    },
+    "qna/commercial-use": {
+      "title": "用 XCONDA 制作的视频可以商用吗？",
+      "summary": "根据条款，使用 XCONDA 生成的成果所有权归会员所有，没有禁止商业使用的条款。但禁止上传或制作侵犯他人知识产权的内容，请确认所使用图片和视频的权利归属。"
+    },
+    "qna/flexboard-download-storyboard": {
+      "title": "可以下载在 FLEXBOARD 中制作的分镜吗？",
+      "summary": "可以。在 Edit Panel 右上角，Panel 视图下可用 Download CUT ZIP 一次性下载所有镜头画面，Sheet 视图下可用 Download Sheet 下载单张汇总表。适合与团队成员或客户分享分镜。"
+    },
+    "qna/blocking-board-export": {
+      "title": "Blocking Board 可以导出哪些内容？",
+      "summary": "审阅完成的场景可导出为英文提示词（用于 Seedance）、镜头清单、平面图与帧 PNG、以及镜头册 PDF。也可以播放场景并导出预演视频（WebM）。"
+    },
+    "qna/output-copyright": {
+      "title": "生成成果的版权归谁？",
+      "summary": "根据条款，通过服务生成的内容所有权归会员所有。XCONDA 平台本身（软件、技术、商标）归株式会社 Cubeberry 所有。会员授予 Cubeberry（韩国及美国法人）非独占使用权，以便在提供和改进服务的范围内使用会员内容。不得上传或制作侵犯他人知识产权的内容。"
+    },
+    "qna/flexboard-auto-refine-instant-apply": {
+      "title": "什么时候使用 Auto Refine 和 Instant Apply？",
+      "summary": "Auto Refine 用于把想法或粗略剧本整理并拆分为镜头。Instant Apply 用于直接快速应用已经整理好的剧本。若已使用 FLEXBOARD 技能提前做好文字分镜，使用 Instant Apply 会更方便。"
+    },
+    "qna/seedance-reference-limits": {
+      "title": "最多可以添加多少个参考图像和参考视频？",
+      "summary": "在 XCONDA 视频生成的 Reference 模式下，一次最多可添加 30 张图片、10 个视频和 10 个音频作为参考。添加的素材会保存在 Input Assets 素材库中，在提示词中输入 @ 即可指定要引用的素材。"
+    },
+    "qna/hub-languages": {
+      "title": "Hub 可以查看其他语言吗？",
+      "summary": "可以。通过 Hub 顶部的语言按钮可切换韩语、英语、日语和中文。每种语言都有专用地址（/en/、/ja/、/zh/），仅显示已翻译为该语言的页面。"
+    },
+    "qna/why-puppet-video": {
+      "title": "为什么需要 Puppet 视频？",
+      "summary": "像「从左边的门进入，绕过桌子站到窗边」这类动作，若只用文字描述，经常会出现走错方向的情况；多人同时移动时文字更难控制。加入 Puppet 视频后，Seedance 会以视频而非文字来读取走位。Puppet 不需要看起来像真人，只要位置、方向、速度准确即可。"
+    },
+    "qna/real-person-celebrity-reference": {
+      "title": "可以使用真实人物或明星的脸作为参考吗？",
+      "summary": "条款禁止上传或制作侵犯他人知识产权的内容以及有害、不当的内容，但没有专门针对真实人物面孔的条款。建议使用已获得本人同意的面孔，或您自行创建的虚拟人物作为参考。"
+    },
+    "qna/seedance-2-5-length-resolution": {
+      "title": "使用 Seedance 2.5 可以制作多长、多高分辨率的视频？",
+      "summary": "在 XCONDA 的 Video Generator 中选择 Seedance 2.5，可通过文本、图片、首尾帧、Reference（Ref-to-video）方式生成视频。根据开发方 ByteDance Seed 的发布说明，Seedance 2.5 一次最多可生成 30 秒带声音的视频。生成结果会记录分辨率、画面比例和时长，例如 720P、16:9、20 秒或 27 秒，因此时长可按秒设定。在提示词输入框下方的设置栏中可选择画面比例（如 16:9）、分辨率（如 720p）、时长（如 20s）以及是否开启 High Quality，提示词最多可输入 30,000 个字符。可选数值请在各设置项中查看。"
+    },
+    "qna/what-is-xconda-claude-skill": {
+      "title": "XCONDA 的 Claude 技能是什么？",
+      "summary": "这是添加到 Claude 中使用的 XCONDA 专用工作工具，共有两种。FLEXBOARD 技能把剧本拆分为镜头，并检查镜头时长总和、单个镜头的动作量、相似镜头相连导致画面跳跃的问题以及出场人物数量。XCONDA 提示词技能基于 FLEXBOARD 确定的关键画面，制作 Seedance 2.5 的提示词，按照总导演、摄影、灯光、美术四位分工的方式撰写。"
+    },
+    "qna/seedance-prompt-language": {
+      "title": "提示词必须用英文写吗？",
+      "summary": "使用 XCONDA 提示词技能，可在中英并排显示的编辑器中编写和修改提示词。用中文核对，生成视频时填入英文实际使用版即可。对英文提示词感到负担的用户也可以轻松使用。"
+    },
+    "qna/what-is-flexboard": {
+      "title": "FLEXBOARD 是什么工具？",
+      "summary": "FLEXBOARD 是一款把剧本拆分为镜头，并用文字和画面逐镜头预览的故事板工具。在生成视频前可确认每个镜头的构图和人物，只挑选不满意的镜头进行修改。它专为配合 Seedance 2.5 使用而设计。"
+    },
+    "qna/before-chargeback": {
+      "title": "申请拒付（chargeback）前应该怎么做？",
+      "summary": "在申请拒付前，请先联系 cubeberry@cuberry.kr。客服往往能更快地解决问题。Stripe 支付的争议由美国法人处理，PortOne 支付的争议由韩国法人处理。若被认定为无正当理由的拒付，依据条款可能会暂停或终止账户。"
+    },
+    "qna/what-is-turn": {
+      "title": "Turn 是什么工具？",
+      "summary": "Turn 是一款通过一张照片或一段文字描述生成可 360 度环视虚拟场景的工具。先建立一个空间，再在其中转动相机选取所需角度，因此即使切换镜头，门、窗和道具的位置也能保持一致。还可以在满意的角度加入人物，直接制作关键画面。"
+    },
+    "qna/xconda-video-workflow-overview": {
+      "title": "想了解用 XCONDA 制作视频的完整流程。",
+      "summary": "Cubeberry 的制作流程分为 7 个步骤：1) 撰写剧本 2) 准备参考图像（角色设定图、Turn 背景）3) 编写文字分镜与故事板提示词（FLEXBOARD 技能）4) 制作故事板与走位视频（FLEXBOARD、Blocking Board）5) 编写 Seedance 提示词并生成视频 6) 制作声音 7) 合成画面与声音完成作品。其中第 4 步故事板是连接准备阶段与视频制作阶段的节点。详情可见 Hub 博客文章《从一份剧本到成片》。"
+    },
+    "qna/turn-image-usage": {
+      "title": "用 Turn 制作的图像用在哪里？",
+      "summary": "用在三个地方。空白空间图像（Freeze Frame）作为 Seedance 视频生成的背景参考；加入人物的关键画面作为 FLEXBOARD 故事板的镜头；空间图像则作为 Blocking Board 中规划走位的舞台。"
+    },
+    "qna/multiple-face-photos-accuracy": {
+      "title": "放入多张同一人物的脸部照片会更准确吗？",
+      "summary": "往往相反。放入同一人物的多张脸部图像可能导致面部混合而变模糊。原则上每个人物的脸部图像只放 1 张。"
+    },
+    "qna/why-faces-change-between-cuts": {
+      "title": "为什么 AI 视频在每个镜头中脸部会变化？",
+      "summary": "如果只给视频 AI 输入文字（提示词），AI 每次都会重新想象并绘制。因此即使写明是同一个人物，不同镜头的脸部、服装和构图也会略有差异。要避免这一点，需要用图像固定可见的部分：脸部与服装用参考图像、空间用背景图像、构图用故事板来传达。XCONDA 的制作流程正是把这项固定工作安排在视频生成之前完成。"
+    },
+    "qna/turn-without-photos": {
+      "title": "没有照片也能使用 Turn 吗？",
+      "summary": "可以。将参考照片栏（Front、Left、Right、Back）全部留空，仅凭文字描述（提示词）即可生成空间。只有一张正面照片也可以，也可以补充您拥有的其他方向照片。"
+    },
+    "qna/mixing-with-live-footage": {
+      "title": "可以与实拍视频混合使用吗？",
+      "summary": "在 Reference 模式下，除图像外还可最多添加 10 个视频作为参考，因此可以把自行拍摄的视频用作参考资料。参考视频在结果中的体现程度取决于提示词和素材，建议先用短镜头测试。"
+    },
+    "qna/turn-props-wallpaper": {
+      "title": "在 Turn 中可以添加道具或更换壁纸吗？",
+      "summary": "可以。在 Wall Edit 中选择六个方向卡片之一并上传参考图像，用画笔涂抹要修改的部分后执行。单个道具用 INPAINT（仅修改涂抹区域），整面墙用 REGEN（重新生成），替换特定物品用 REPLACE。像壁纸这样的大面积，配合参考图像加入「去掉线条，只更换壁纸」这类指令，效果会更干净。"
+    },
+    "qna/flexboard-cut-count-and-length": {
+      "title": "FLEXBOARD 最多可以做多少个镜头、每个镜头多长？",
+      "summary": "一个画面最多可编排 36 个镜头。镜头数量在 Number of Panels 中设置，单个镜头时长在 Shot Length 中设置为 4 秒至 30 秒。例如设置为 9 个镜头 × 15 秒，简单相加约为 2 分 15 秒。"
+    },
+    "qna/video-generation-inputs": {
+      "title": "视频生成界面中应该放入什么？",
+      "summary": "建议同时放入四项内容：1) 参考图像（角色设定图、背景图、道具）：固定脸部、服装和空间。2) 故事板（逐镜头图像）：固定构图和镜头顺序。3) Seedance 提示词（英文）：指示动作、节奏和机位。4) 走位 Puppet 视频：固定人物走位与移动路线。缺少任何一项，AI 都会自行填补该部分。"
+    },
+    "qna/best-stage-to-edit": {
+      "title": "在哪个阶段修改最高效？",
+      "summary": "故事板阶段。若在构图错误的情况下生成视频，就需要在视频阶段反复重新生成。在 FLEXBOARD 中先逐镜头检查并修正构图、人物和道具，再进入视频阶段，可以减少重新生成的次数。"
+    },
+    "qna/current-discount-events": {
+      "title": "目前有正在进行的优惠活动吗？",
+      "summary": "为纪念 FLEXBOARD 上线，我们正在进行 Seedance 2.5 优惠活动。韩国为使用折扣 30% 加价格折扣 10%，最高合计 40%；美国为使用折扣最高 30%。活动时间为 2026 年 10 月 7 日上午 11 点至 11 月 6 日上午 11 点（韩国时间）。"
+    },
+    "qna/payment-failed": {
+      "title": "支付失败该怎么办？",
+      "summary": "常见原因包括余额或额度不足、卡片过期、海外支付被拦截、账单地址或 CVV 有误，以及发卡行的防欺诈系统触发。请向发卡行确认是否允许海外支付，并核对余额、有效期和账单信息。若仍不成功，可更换支付方式或联系 cubeberry@cuberry.kr。支付页面无法打开等技术问题以及授权被拒，客服会与支付服务商（Stripe、PortOne 等）核实。"
+    },
+    "qna/flexboard-character-consistency": {
+      "title": "如何让不同镜头中保持同一个人物？",
+      "summary": "在 Scene Settings 的 Reference Assets 中登记人物（Cast）卡片和背景（Background）卡片。每张卡片会带有 @image1、@image2 这类标记，镜头说明中出现该标记即可显示使用了哪个人物和背景。每个人物请只登记一张卡片。"
+    },
+    "qna/sound-and-editing": {
+      "title": "声音和剪辑怎么做？",
+      "summary": "在 Cubeberry 的制作流程中，会依据成片的氛围和时长用 Suno 制作声音，再在 Premiere Pro 中合成画面与声音，确认镜头衔接、音量和字幕后再最终输出。"
+    },
+    "qna/turn-room-size-credits": {
+      "title": "在 Turn 中改变房间尺寸会再扣点数吗？",
+      "summary": "在 Room Size · Camera 中调整房间宽度、深度和层高后，点击「Apply Room Size · No Additional Generation」，就不会重新生成图像，而是用现有墙面图像调整比例。道具也会保持在原位。"
+    },
+    "qna/international-payment": {
+      "title": "海外可以付款吗？",
+      "summary": "可以。付款路径有两种。使用 Stripe 付款时，由美国法人 Cubeberry Co., Ltd（Delaware）作为商家以美元（$）计价，视所在地区可能在付款页面追加税费。使用 Toss Payments、KakaoPay、Eximbay（经 PortOne）付款时，由韩国法人株式会社 Cubeberry 作为商家，韩国境内付款以韩元（₩）计价。销售公司在付款页面和收据上会显示。"
+    },
+    "qna/how-to-sign-up": {
+      "title": "如何注册会员？",
+      "summary": "在 XCONDA 官网（xconda.ai）创建账户即可开始。可使用 Google、Facebook、X 社交登录，或使用邮箱和密码注册。仅限年满 18 周岁者使用，须以真实准确的信息注册，并请自行管理账户信息。请勿与他人共享账户。目前注册不赠送免费点数。"
+    },
+    "qna/credit-transfer-cash-withdrawal": {
+      "title": "点数可以转让他人或兑换现金吗？注销后点数会怎样？",
+      "summary": "不可以。点数不具有现金价值，不能转让或出售给他人。注销或账户被终止后，剩余点数将失效。但符合退款条件的付款优先办理退款。"
+    },
+    "qna/cancel-subscription": {
+      "title": "如何取消订阅？",
+      "summary": "可在账户设置（Account Settings）中随时自行取消，无需联系客服。取消后自下个付款日起停止自动扣款。已支付金额不按日折算退还，但若符合 7 日内且未使用的条件，可申请退款。取消后剩余订阅点数自发放日起最长可使用 1 年。"
+    },
+    "qna/credit-packs-and-price": {
+      "title": "什么是点数包，价格是多少？",
+      "summary": "点数包是一次付款获得固定点数的商品，不会自动续费。韩国（韩元，含增值税）：Starter Pack V1 10,450 韩元（2,020 点数）、Starter Pack V2 31,350 韩元（6,200）、Pro Pack V1 52,250 韩元（10,500）、Pro Pack V2 99,000 韩元（21,500）、Master Pack 495,000 韩元（114,000）。海外（美元，不含税）为 $6.90、$20.90、$34.90、$67.90、$369.90。有效期为付款日起 1 年。"
+    },
+    "qna/how-to-request-refund": {
+      "title": "如何申请退款，需要多久？",
+      "summary": "请通过客服（cubeberry@cuberry.kr 或 +82-70-8095-2302，工作日 10:00~17:00 韩国时间）申请。请一并提供账户邮箱、订单（交易）号、付款日期和退款原因。我们会在 2~3 个工作日内审核，批准后按最初付款方式办理撤销，金额显示可能需要 7~14 个工作日。订阅首次付款、续费、升级和点数包均按同一标准（7 日内且该次付款获得的点数未使用）全额退款。退款由购买所属公司办理（Stripe 付款由美国法人，PortOne 付款由韩国法人）。"
+    },
+    "qna/who-made-xconda": {
+      "title": "XCONDA 是谁开发的？",
+      "summary": "XCONDA 由韩国株式会社 Cubeberry（Cubeberry Co., Ltd.）开发和运营。Cubeberry 成立于 2023 年，由出身 KBS 电视剧 PD 的代表李珍瑞与编剧、在职导演、AI 影像艺术家共同设计。使用 XCONDA 流程制作了 KBS 1TV《传说中的故乡：九尾狐》（2025 年 5 月，韩国电视台首次播出 AI 动画正片）、KBS 纪录片《韩国战争 移动创伤中心》（2025 年 6 月）、KBS 1TV 纪录片《圣物》的生成式 AI 部分（2026 年 3 月播出），并在韩国内容振兴院（KOCCA）新媒体新技术内容实验室制作 4 部 AI 网络剧。累计制作了 3,100 多个达到播出水准的 AI 内容镜头。"
+    },
+    "qna/supported-ai-models": {
+      "title": "可以使用哪些 AI 模型？",
+      "summary": "视频生成支持 Seedance 2.5，Cubeberry 是 BytePlus 的 Authorized Dealer（授权经销商）。图像模型因工具而异。FLEXBOARD 可选择 GPT Image 2、Seedream 5.0 Pro、GPT Image 2.5 Flare、GPT Image 2.5 Sunburst，Turn 可选择 Gemini 3.1 Flash 和 GPT Image 2。支持的模型可能随更新变化，请在各工具界面确认。"
+    },
+    "qna/non-refundable-cases": {
+      "title": "哪些情况无法退款？",
+      "summary": "付款超过 7 天、该次付款获得的点数已使用（哪怕只用了一个）、或因违反条款导致账户被终止的情况不予退款。这些内容会在付款前告知并取得同意。因服务故障或生成失败而损失的点数不属于退款，而是自动恢复。"
+    },
+    "qna/what-is-xconda": {
+      "title": "XCONDA 是什么服务？",
+      "summary": "XCONDA 是 Cubeberry 运营的 AI 视频与图像制作平台（xconda.ai）。可在同一处使用多种生成式 AI 模型，并提供从剧本到故事板、再到视频生成的制作工具（FLEXBOARD、Turn、Blocking Board 等）。它的重点不是生成单个片段，而是制作多个镜头以相同人物、相同空间连贯呈现的作品。"
+    },
+    "qna/credit-expiry-and-refund-policy": {
+      "title": "点数有有效期和退款规则吗？",
+      "summary": "有效期为：订阅点数自发放日起最长 1 年，点数包自付款日起 1 年，逾期自动失效。退款须在付款后 7 日内，且该次付款获得的点数一个都未使用时可申请全额退款。若已使用（哪怕一个）或超过 7 日则不予退款。退款时仅收回该次付款获得的点数，此前结转的点数仍然保留。您所在国家消费者法赋予的退款与撤销权利不受条款限制。详细流程请见下方退款条目。"
+    },
+    "qna/is-tax-included": {
+      "title": "价格中是否包含税费？",
+      "summary": "韩国价格已包含 10% 增值税。海外价格不含税，视所在地区可能在付款页面追加销售税、VAT、GST 等税费。含税的最终金额会在确认付款前显示在页面上。"
+    },
+    "qna/subscription-auto-renewal": {
+      "title": "订阅会自动续费吗？",
+      "summary": "会。在取消之前，每月同一天会通过登记的支付方式自动扣款。首次付款前会展示价格、扣款周期、续费条件和取消方式并取得同意，购买后会发送包含续费条件和取消方式的确认邮件。"
+    },
+    "qna/subscription-credit-rollover": {
+      "title": "剩余订阅点数会结转到下个月吗？",
+      "summary": "会。未使用的订阅点数会结转到下一个扣款周期，自发放日起最长 1 年有效。到期点数自动失效，扣减时按到期日由近及远顺序使用。"
+    },
+    "qna/xconda-vs-other-ai-video-tools": {
+      "title": "与其他 AI 视频工具的区别是什么？",
+      "summary": "XCONDA 更专注于视频生成之前的阶段。若只给视频 AI 输入文字，每个镜头的脸部、服装和构图很容易出现差异。XCONDA 通过 FLEXBOARD（逐镜头故事板）、Turn（360 度虚拟场景）和 Blocking Board（人物走位）先固定脸部、空间、构图和走位，再生成视频，制作流程正是按此设计。这套结构把电视连续剧现场的制作方式移植到了 AI 视频上。"
+    },
+    "qna/eu-uk-withdrawal-refund": {
+      "title": "在欧洲或英国也可以退款（撤销）吗？",
+      "summary": "欧洲经济区（EEA）和英国的消费者对数字服务享有 14 天撤销权。付款前需确认同意立即获得服务与点数，并知晓一旦使用该次付款获得的点数即丧失撤销权。若未使用点数，可在付款后 14 天内撤销并获得全额退款。"
+    },
+    "qna/terms-change-notice": {
+      "title": "如果价格或条款变更，会提前通知吗？",
+      "summary": "会。价格变更会在生效前 30 天通知，已支付的金额适用变更前的价格。订阅在通知期结束后的首个付款日起适用新价格，在此之前可以取消。条款变更提前 7 天通知（对会员不利的变更提前 30 天），隐私政策的重要变更至少提前 30 天通知。"
+    },
+    "qna/how-credits-are-deducted": {
+      "title": "点数是如何扣减的？",
+      "summary": "点数按所使用的功能和模型不同而扣减。生成按钮或选择界面会显示单次生成所需的点数，请在生成前确认。例如 Turn 中每种图像引擎显示的单次生成点数不同，FLEXBOARD 的图像重新生成按钮也会显示所需点数。因服务故障或生成失败而扣减的点数会自动恢复。若点数分为多批，将按到期日由近及远扣减。"
+    }
+  },
+  "review": "2026-10-25 AI 1차 번역(초안) — 원어민 검수 전"
+}

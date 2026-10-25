@@ -32,6 +32,10 @@ on:
       - "notice/**"
       - "qna/**"
       - "guide/**"
+      - "en/**"
+      - "ja/**"
+      - "zh/**"
+      - "assets/**"
       - "sitemap.xml"
       - "robots.txt"
       - "llms.txt"
@@ -103,7 +107,8 @@ jobs:
             node scripts/localize-og-images.mjs --snapshot notion-content.json || echo "::warning::공유 이미지 일부를 받지 못했습니다(빌드는 계속)"
             node scripts/build-seo.mjs --snapshot notion-content.json
             git add -A -- notion-content.json index.html sitemap.xml robots.txt llms.txt assets
-            for d in post notice qna guide; do git add -A -- "$d" 2>/dev/null || true; done
+            # 언어별 정적 페이지(/en/ · /ja/ · /zh/)도 같은 빌드 산출물입니다.
+            for d in post notice qna guide en ja zh; do git add -A -- "$d" 2>/dev/null || true; done
             if git diff --cached --quiet; then
               echo "변경 없음 — 커밋 생략"
               echo "changed=false" >> "$GITHUB_OUTPUT"

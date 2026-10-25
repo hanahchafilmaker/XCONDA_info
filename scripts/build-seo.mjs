@@ -189,16 +189,52 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
   // 한국어 원문 주소를 찾기 위한 색인 — `qna/slug` → 페이지 기록
   const byKey = new Map(pageRecords.map((p) => [`${ROUTE_PREFIX[p.type] ?? p.type}/${p.slug}`, p]));
 
-  for (const code of Object.keys(translations).sort()) {
+  /**
+   * 키(`qna/slug`) → 그 글의 번역이 있는 언어 코드 목록.
+   * hreflang 은 **서로를 가리키는** 링크여야 다국어 묶음으로 인식되므로,
+   * 각 언어 페이지는 자기 언어만이 아니라 그 글을 가진 모든 언어를 나열합니다.
+   */
+  const localesByKey = new Map();
+  for (const code of Object.keys(translations)) {
+    for (const key of Object.keys(translations[code]?.entries ?? {})) {
+      if (!byKey.has(key)) continue;
+      if (!localesByKey.has(key)) localesByKey.set(key, []);
+      localesByKey.get(key).push(code);
+    }
+  }
+  const codesForKey = (key) => [...new Set(["ko", ...(localesByKey.get(key) ?? [])])];
+
+  /**
+   * 언어 전환 링크 — 번역이 있는 언어만, 지금 언어는 굵게(링크 없이) 표시합니다.
+   * 크롤러에게도 "이 글은 4개 언어로 있다"는 신호가 되고, 사람은 주소를 직접 고칠 필요가 없습니다.
+   */
+  const langSwitcher = (path, codes) =>
+    [
+      `<nav class="seo-langs" aria-label="Language">`,
+      ...SITE_LANGS.filter((l) => codes.includes(l.code))
+        .map((l) =>
+          l.code === currentLangCode
+            ? `<strong aria-current="true">${escapeHtml(l.name)}</strong>`
+            : `<a href="${escapeHtml(localizedUrl(site, l.code, path))}" hreflang="${escapeHtml(l.hreflang)}">${escapeHtml(l.name)}</a>`,
+        ),
+      `</nav>`,
+    ].join("");
+
+  const langCodes = Object.keys(translations).sort();
+
+  let currentLangCode = "ko";
+
+  for (const code of langCodes) {
     const lang = langByCode(code);
     const t = translations[code];
     if (!lang || !t) continue;
     const ui = t.ui ?? {};
+    currentLangCode = code;
     const homeTitle = t.site?.title ?? lang.name;
     const homeDescription = t.site?.description ?? "";
     const homeUrl = localizedUrl(site, code, "");
     const homePath = "";
-    const homeAlternates = hreflangAlternates(site, homePath, [code]);
+    const homeAlternates = hreflangAlternates(site, homePath, langCodes);
 
     // 번역이 실제 글과 맞는지 확인 (원문이 사라졌으면 만들지 않음)
     const items = [];
@@ -232,7 +268,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         image: it.record.image || defaultImageUrl,
         publishedTime: it.record.date ?? "",
         ogLocale: lang.ogLocale,
-        alternates: hreflangAlternates(site, path, [code]),
+        alternates: hreflangAlternates(site, path, codesForKey(it.key)),
         siteLd: jsonLdGraph(site, [
           {
             "@type": "WebPage",
@@ -247,6 +283,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
         `<nav aria-label="breadcrumb"><a href="../../">${escapeHtml(ui.home ?? homeTitle)}</a> / <a href="../">${escapeHtml(sectionTitle)}</a></nav>`,
+        langSwitcher(path, codesForKey(it.key)),
         `<article>`,
         `<h1>${escapeHtml(title)}</h1>`,
         `<p class="seo-meta">${escapeHtml(lang.name)} · ${escapeHtml(ui.brand ?? "XCONDA Hub")}</p>`,
@@ -292,11 +329,12 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         image: defaultImageUrl,
         publishedTime: "",
         ogLocale: lang.ogLocale,
-        alternates: hreflangAlternates(site, path, [code]),
+        alternates: hreflangAlternates(site, path, langCodes),
       });
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
         `<nav aria-label="breadcrumb"><a href="../">${escapeHtml(ui.home ?? homeTitle)}</a> / ${escapeHtml(title)}</nav>`,
+        langSwitcher(path, langCodes),
         `<h1>${escapeHtml(title)}</h1>`,
         `<p>${escapeHtml(description)}</p>`,
         `<ul>`,
@@ -324,7 +362,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
     });
     const body = [
       `<div id="root"><main class="seo-article" data-lang="${code}">`,
-      `<nav aria-label="breadcrumb"><a href="${escapeHtml(localizedUrl(site, "ko", ""))}" hreflang="ko">${escapeHtml(SITE_NAME)}</a> / ${escapeHtml(lang.name)}</nav>`,
+      `<nav aria-label="breadcrumb"><a href="${escapeHtml(localizedUrl(site, "ko", ""))}" hreflang="ko">${escapeHtml(ui.brand ?? "XCONDA Hub")}</a> / ${escapeHtml(lang.name)}</nav>`,
+      langSwitcher("", langCodes),
       `<h1>${escapeHtml(homeTitle)}</h1>`,
       `<p>${escapeHtml(homeDescription)}</p>`,
       ...prefixes.map((prefix) => {
@@ -341,6 +380,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       `</main></div>`,
     ].join("\n");
     files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+    // 앱의 언어 전환기가 홈에서도 그 언어 주소로 보낼 수 있게 빈 경로를 넣어 둡니다.
+    (paths[code] ??= []).unshift("");
     urls.push({ loc: homeUrl });
   }
 
@@ -652,7 +693,7 @@ function blocksToText(blocks) {
 }
 
 /** 정적 페이지가 로드되기 전에만 보이는 최소 스타일 (앱이 뜨면 #root 와 함께 사라집니다) */
-const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}</style>`;
+const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>`;
 
 /* ------------------------------ 생성 (순수 함수) ------------------------------ */
 
@@ -723,7 +764,8 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       translatedKeys.get(key).push(code);
     }
   }
-  const langsForPath = (p) => ["ko", ...(translatedKeys.get(String(p).replace(/\/+$/, "")) ?? [])];
+  // 번역 키는 `qna/slug`(끝 슬래시 없음)이고 페이지 경로는 `qna/slug/` 입니다 — 둘 다 맞춰 조회합니다.
+  const langsForPath = (p) => ["ko", ...(translatedKeys.get(String(p).replace(/^\/+|\/+$/g, "")) ?? [])];
 
   const pageRecords = [];
   const files = new Map();
@@ -1060,7 +1102,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
         { heading: "스튜디오 19개 툴 완전 사용자 가이드", url: absoluteUrl(site, "user-guide.html") },
         // 번역 사이트가 있으면 llms.txt 에도 알려 줍니다(AI 가 영어 페이지를 찾도록).
         ...Object.keys(localized.paths ?? {}).map((code) => ({
-          heading: `English hub (${langByCode(code)?.name ?? code})`,
+          heading: `${langByCode(code)?.name ?? code} hub`,
           url: localizedUrl(site, code, ""),
           description: translations?.[code]?.site?.description ?? "",
         })),
