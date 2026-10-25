@@ -10,7 +10,7 @@
 | 저장소 | https://github.com/hanahchafilmaker/XCONDA_info |
 | 운영 사이트 | https://hub.xconda.ai/ — Pages 커스텀 도메인 **등록 완료**(2026-10-12) · ⚠️ **DNS 연결 대기 중**. 등록 이후 저장소 주소 https://hanahchafilmaker.github.io/XCONDA_info/ 도 hub.xconda.ai 로 넘어가므로, DNS 가 연결되기 전에는 두 주소 모두 열리지 않습니다 → 「10.3 배포」 |
 | 기본 브랜치 | `main` |
-| 관련 문서 | [`NOTION_SETUP.md`](./NOTION_SETUP.md) (노션 연동 · 콘텐츠 운영자용), [`admin-guide.html`](./admin-guide.html), [`user-guide.html`](./user-guide.html) (사용자용 가이드 페이지) |
+| 관련 문서 | [`README.md`](./README.md) (저장소 첫 화면 · 10초 요약), [`NOTION_SETUP.md`](./NOTION_SETUP.md) (노션 연동 · 콘텐츠 운영자용), [`admin-guide.html`](./admin-guide.html), [`user-guide.html`](./user-guide.html) (사용자용 가이드 페이지) |
 | 읽는 데 걸리는 시간 | 전체 30~40분 / 실무 투입은 「2. 30분 온보딩」까지만 읽고 시작 가능 |
 
 ---
@@ -537,6 +537,8 @@ npm run build
 | `npm run test:unit` | `node --test` (notion-snapshot / classify / fields / seo) **+** `scripts/smoke-sections.mjs` | ~3초 |
 | `npm run test:smoke` | `vite build --config scripts/vite.smoke.config.ts` (IIFE 번들 → `dist-test/`) → `smoke.mjs` + `smoke-sync.mjs` + `smoke-lang.mjs` + `smoke-seo.mjs` | ~40초 |
 
+**둘 다 CI 에서 돕니다**(2026-10-25). `build-site.yml` 이 `test:unit` → `test:smoke` → `www:check`·`www:build` → 빌드 → 게시 순으로 실행하므로, 스모크가 실패하면 **게시(배포) 단계가 실행되지 않습니다**. `scripts/docs.test.mjs` 가 "스모크가 게시 단계보다 앞에 있는지"까지 검사합니다.
+
 ### 12.1 각 테스트가 지키는 것
 
 | 파일 | 검증 |
@@ -622,7 +624,7 @@ npm run build
 | 5 | 표(데이터베이스)를 **2개까지만** 읽음 (메인 표 + 허브 Q&A 표) | 그 밖의 표는 무시됨 → `NOTION_DATABASE_ID` · `NOTION_FAQ_DATABASE_ID`로 지정하거나 표를 합치기 |
 | 6 | 노션에 직접 업로드한 이미지의 서명 URL은 약 1시간 후 만료 | 만료되지 않는 notion.so 프록시 주소로 변환(`fields.js` `signNotionImage`) + `coverFallback`. 장기 노출 커버는 외부 URL 권장 |
 | 7 | `redesign-xconda-website-ui/`는 **미사용 프로토타입** | 삭제해도 무방하나, Tailwind 스캔에서 제외되어 있으므로 혼동 주의. 우선순위 낮음 |
-| 8 | 저장소에 `README.md`가 없음 | 본 문서(`HANDOFF.md`)가 개발자 진입점, `NOTION_SETUP.md`가 운영자 진입점 |
+| 8 | 저장소 첫 화면(`README.md`)은 요약만 | 상세는 본 문서(`HANDOFF.md`), 운영은 `NOTION_SETUP.md`. README 의 링크·명령은 `scripts/docs.test.mjs` 가 실제 파일·`package.json` 과 대조합니다 |
 | 9 | `src/i18n/dict.ts`가 모듈 전역 `_current` 언어를 둠 | 비 React 유틸(날짜 포맷)이 언어를 참조하기 위한 의도된 설계. SSR 없음 |
 | 10 | 루트 `index.html`(약 507 KB)이 저장소에 커밋됨 | 의도된 설계(Pages 브랜치 배포). 히스토리가 커지면 Pages Actions 배포로 전환 검토 |
 | 11 | **언어 전환 시 페이지 리로드** (Google 번역 위젯 제약) | 위젯은 쿠키를 리로드 시점에 읽어 적용. EN/JA/ZH 전환은 재로딩됨(단일 파일이라 빠름). 리로드 없이는 동적 재번역이 불안정해서 의도적으로 유지 |
@@ -747,10 +749,10 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 우선순위 | 항목 | 이유 |
 |---|---|---|
 | 높음 | **스냅샷 생성의 비공개 API 의존 제거** — 공식 Notion API + Integration 토큰을 Actions Secret으로 쓰는 방식으로 전환 | 현재 구조의 단일 취약점(#4). 토큰은 Secret이라 유출 위험 낮고, 스케줄러는 그대로 사용 가능 |
-| 높음 | `README.md` 신설 (본 문서로 리다이렉트되는 3줄 요약 + 링크) | 저장소 첫 화면에 진입점이 없음 |
+| — | ~~`README.md` 신설~~ (2026-10-25 완료) | 저장소 첫 화면에 진입점 추가 · 링크/명령은 `scripts/docs.test.mjs` 가 검사 |
 | 중간 | `redesign-xconda-website-ui/` 정리(삭제 또는 `docs/` 이동) | 혼동 방지 |
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
-| 중간 | 스모크 테스트를 CI에 연결(`test:smoke`는 현재 로컬 전용) | 회귀 방지 자동화 |
+| — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
 
 ---
