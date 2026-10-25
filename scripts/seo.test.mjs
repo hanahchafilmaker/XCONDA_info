@@ -21,7 +21,10 @@ import { fileURLToPath } from "node:url";
 import {
   DEFAULT_SITE_URL,
   OG_LOCAL_DIR,
+  hreflangAlternates,
+  langFromPathname,
   localOgImageUrl,
+  localizedUrl,
   ogManifestKey,
   relatedArticles,
   tagSetOf,
@@ -775,4 +778,83 @@ test("llms.txt — 사이트 요약 · 섹션 · 대표 글 링크를 절대 주
   // 같은 입력이면 같은 파일(멱등)
   const again = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
   assert.equal(again.files.get("llms.txt"), txt);
+});
+
+/* ---------------------------------------------------------------------------
+ * 언어별 주소 — 2026-10-25 B
+ *   번역이 있는 글만 /en/ 주소를 만들고, ko ↔ en 을 hreflang 으로 묶습니다.
+ * ------------------------------------------------------------------------ */
+const EN_FIXTURE = {
+  en: {
+    lang: "en",
+    site: { title: "XCONDA Hub", description: "English answers." },
+    ui: { home: "Home", brand: "XCONDA Hub" },
+    sections: { qna: { title: "XCONDA Q&A (English)", description: "Reviewed English answers." } },
+    entries: {
+      "qna/refund-policy": { title: "How do refunds work?", summary: "Ask within 7 days for unused credits." },
+    },
+  },
+};
+
+test("언어별 주소·hreflang — 기준 언어는 접두사 없이, 나머지는 /en/ 처럼 붙는다", () => {
+  assert.equal(localizedUrl("https://hub.example.test/", "ko", "qna/a/"), "https://hub.example.test/qna/a/");
+  assert.equal(localizedUrl("https://hub.example.test/", "en", "qna/a/"), "https://hub.example.test/en/qna/a/");
+  assert.equal(localizedUrl("https://hub.example.test/", "zh", ""), "https://hub.example.test/zh/");
+  const alt = hreflangAlternates("https://hub.example.test/", "qna/a/", ["ko", "en"]);
+  assert.deepEqual(alt.map((a) => a.hreflang), ["ko", "en", "x-default"]);
+  assert.equal(alt.at(-1).href, "https://hub.example.test/qna/a/"); // x-default = 한국어 원문
+  // 중복 코드는 한 번만
+  assert.equal(hreflangAlternates("https://hub.example.test/", "", ["ko", "ko"]).length, 2);
+  assert.equal(langFromPathname("/en/qna/a/"), "en");
+  assert.equal(langFromPathname("/qna/a/"), "ko");
+  assert.equal(langFromPathname("/english/"), "ko"); // /en/ 접두사만 인정
+});
+
+test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 으로 서로를 가리킨다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: EN_FIXTURE,
+  });
+  const en = out.files.get("en/qna/refund-policy/index.html");
+  assert.ok(en, "영어 글 페이지가 없습니다");
+  assert.match(en, /<html lang="en"/);
+  assert.match(en, /<link rel="canonical" href="https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/" \/>/);
+  assert.match(en, /hreflang="ko" href="https:\/\/example\.test\/XCONDA_info\/qna\/refund-policy\/"/);
+  assert.match(en, /hreflang="en" href="https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/"/);
+  assert.match(en, /How do refunds work\?/);
+  // 앱 번들은 영어 페이지에 넣지 않습니다(React 가 정적 번역문을 지우고 한국어 화면을 그리는 것 방지)
+  assert.doesNotMatch(en, /assets\/app\.js/);
+  // 영어 홈 · 섹션 목록
+  assert.ok(out.files.get("en/index.html"));
+  assert.ok(out.files.get("en/qna/index.html"));
+  // ko 쪽에서도 영어 주소를 알려 줍니다
+  const ko = out.files.get("qna/refund-policy/index.html");
+  assert.match(ko, /hreflang="en" href="https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/"/);
+  // 번역이 없는 글에는 영어 주소를 만들지 않습니다(중복 방지)
+  assert.equal([...out.files.keys()].filter((f) => f.startsWith("en/") && f.includes("deepseek")).length, 0);
+  // 사이트맵에도 들어갑니다
+  assert.match(out.files.get("sitemap.xml"), /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/<\/loc>/);
+});
+
+test("번역 파일에 원문이 없는 글이 있으면 경고만 남기고 건너뛴다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: { en: { ...EN_FIXTURE.en, entries: { "qna/does-not-exist": { title: "x", summary: "y" } } } },
+  });
+  assert.equal(out.files.has("en/qna/does-not-exist/index.html"), false);
+  assert.ok(out.warnings.some((w) => w.includes("qna/does-not-exist")));
+});
+
+test("번역이 하나도 없으면 언어별 페이지를 만들지 않는다(기존 동작 유지)", () => {
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: {} });
+  assert.equal([...out.files.keys()].filter((f) => /^(en|ja|zh)\//.test(f)).length, 0);
+  assert.doesNotMatch(out.files.get("index.html"), /hreflang="en"/);
 });

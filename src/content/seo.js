@@ -180,6 +180,62 @@ export const SITE_META = {
   },
 };
 
+/* ---------------------------------------------------------------------------
+ * 언어별 주소 (2026-10-25 B)
+ *   전에는 한 주소에서 번역 위젯으로 언어만 바꿔서, 영어 화면을 공유해도 주소가
+ *   한국어 그대로였습니다("URL 이 안 찢어짐"). 이제 언어마다 주소를 나눕니다.
+ *     ko(기준)  https://hub.xconda.ai/qna/refund/
+ *     en        https://hub.xconda.ai/en/qna/refund/
+ *     ja        https://hub.xconda.ai/ja/qna/refund/
+ *     zh        https://hub.xconda.ai/zh/qna/refund/
+ *   ⚠️ 번역이 **없는** 글에는 다른 언어 주소를 만들지 않습니다(같은 내용 중복 방지).
+ *      번역은 `content/i18n/<언어>.json` 에 사람이 검수해 넣습니다.
+ * ------------------------------------------------------------------------ */
+export const SITE_LANGS = [
+  { code: "ko", htmlLang: "ko", prefix: "", hreflang: "ko", ogLocale: "ko_KR", name: "한국어" },
+  { code: "en", htmlLang: "en", prefix: "en/", hreflang: "en", ogLocale: "en_US", name: "English" },
+  { code: "ja", htmlLang: "ja", prefix: "ja/", hreflang: "ja", ogLocale: "ja_JP", name: "日本語" },
+  { code: "zh", htmlLang: "zh-Hans", prefix: "zh/", hreflang: "zh-Hans", ogLocale: "zh_CN", name: "中文" },
+];
+
+/** 언어 코드 → 언어 정보 (모르는 코드면 null) */
+export const langByCode = (code) => SITE_LANGS.find((l) => l.code === code) ?? null;
+
+/**
+ * 언어 + 사이트 안 경로 → 절대 주소. 기준 언어(ko)는 접두사를 붙이지 않습니다.
+ * @param {string} siteUrl 사이트 주소(끝 / 허용)
+ * @param {string} code 언어 코드(ko·en·ja·zh)
+ * @param {string} [path] `qna/refund/` 같은 사이트 안 경로
+ */
+export function localizedUrl(siteUrl, code, path = "") {
+  const lang = langByCode(code);
+  const rel = String(path ?? "").replace(/^\/+/, "");
+  return absoluteUrl(siteUrl, `${lang ? lang.prefix : ""}${rel}`);
+}
+
+/**
+ * hreflang 목록 — 넘긴 언어들 + `x-default`(기준 언어 = 한국어).
+ * 검색엔진은 서로를 가리키는 링크가 있어야 다국어 묶음으로 인식합니다.
+ * @param {string} siteUrl
+ * @param {string} path 사이트 안 경로
+ * @param {string[]} codes 이 경로에 실제로 존재하는 언어들
+ */
+export function hreflangAlternates(siteUrl, path, codes = ["ko"]) {
+  const uniq = [...new Set(["ko", ...codes])].filter((c) => langByCode(c));
+  const out = uniq.map((code) => ({
+    hreflang: langByCode(code).hreflang,
+    href: localizedUrl(siteUrl, code, path),
+  }));
+  out.push({ hreflang: "x-default", href: localizedUrl(siteUrl, "ko", path) });
+  return out;
+}
+
+/** /en/ · /ja/ · /zh/ 로 시작하는 주소에서 언어 코드를 읽습니다(앱 부트스트랩용). */
+export function langFromPathname(pathname) {
+  const m = /^\/(en|ja|zh)(\/|$)/.exec(String(pathname ?? ""));
+  return m ? m[1] : "ko";
+}
+
 /** 섹션 유형 → 주소 앞부분 (route prefix) */
 export const ROUTE_PREFIX = {
   news: "post",

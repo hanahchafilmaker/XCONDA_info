@@ -47,7 +47,11 @@ import {
   jsonLdGraph,
   listJsonLd,
   EXTRA_INDEX_PAGES,
+  SITE_LANGS,
+  hreflangAlternates,
+  langByCode,
   llmsTxt,
+  localizedUrl,
   localOgImageUrl,
   relatedArticles,
   ogManifestKey,
@@ -125,6 +129,224 @@ export function externalizeAssets(template, siteUrl = DEFAULT_SITE_URL) {
   return { template: html, js, css };
 }
 
+/** 언어별 번역 파일 위치 — 사람이 검수한 번역만 여기에 둡니다. */
+export const I18N_DIR = "content/i18n";
+
+/**
+ * `content/i18n/*.json` 을 읽어 `{ en: {...}, ja: {...} }` 로 돌려줍니다.
+ * 파일이 없거나 깨졌으면 그 언어는 건너뛰고 경고만 남깁니다(빌드는 계속).
+ */
+export function loadTranslations(root) {
+  const dir = path.join(root, I18N_DIR);
+  const out = {};
+  const warnings = [];
+  if (!fs.existsSync(dir)) return { translations: out, warnings };
+  for (const name of fs.readdirSync(dir).sort()) {
+    if (!name.endsWith(".json")) continue;
+    const code = name.replace(/\.json$/, "");
+    if (!langByCode(code) || code === "ko") continue;
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, name), "utf8"));
+      if (!data?.entries || typeof data.entries !== "object") throw new Error("entries 가 없습니다");
+      out[code] = { ...data, lang: code };
+    } catch (e) {
+      warnings.push(`${I18N_DIR}/${name} 를 읽지 못했습니다: ${e?.message ?? e}`);
+    }
+  }
+  return { translations: out, warnings };
+}
+
+/**
+ * 번역 페이지용 템플릿 — 앱 번들을 **떼어 냅니다**.
+ * 영어·일본어·중국어 페이지는 번역문 정적 HTML 만 서빙합니다. 앱을 함께 싣으면
+ * React 가 정적 본문을 지우고 한국어 화면을 그려서, /en/ 주소에 한국어가 뜹니다.
+ */
+export function staticOnlyTemplate(template) {
+  return template
+    .replace(/\s*<script type="module"[^>]*src="[^"]*assets\/app\.js"[^>]*><\/script>/g, "")
+    .replace(/\s*<script type="module" crossorigin>[\s\S]*?<\/script>/g, "");
+}
+
+/** `<html lang="ko">` → 원하는 언어 코드로 (없으면 그대로) */
+export function applyHtmlLang(html, htmlLang) {
+  return html.replace(/<html\s+lang="[^"]*"/i, `<html lang="${htmlLang}"`);
+}
+
+/**
+ * 언어별 정적 페이지(`/en/`, `/ja/`, `/zh/`)를 만듭니다. 번역이 있는 글만 대상입니다.
+ * 반환값의 `urls` 는 사이트맵에, `missing` 은 경고에 씁니다.
+ *
+ * @param {{ site: string, translations: Record<string, object>, template: string,
+ *           pageRecords: object[], defaultImageUrl: string }} input
+ */
+export function localizedPages({ site, translations = {}, template, pageRecords = [], defaultImageUrl }) {
+  const files = new Map();
+  const urls = [];
+  const missing = [];
+  /** 언어 → 번역이 있는 경로 목록(앱 언어 전환기가 /en/ 주소로 보낼 때 씁니다) */
+  const paths = {};
+  const base = staticOnlyTemplate(template);
+  // 한국어 원문 주소를 찾기 위한 색인 — `qna/slug` → 페이지 기록
+  const byKey = new Map(pageRecords.map((p) => [`${ROUTE_PREFIX[p.type] ?? p.type}/${p.slug}`, p]));
+
+  for (const code of Object.keys(translations).sort()) {
+    const lang = langByCode(code);
+    const t = translations[code];
+    if (!lang || !t) continue;
+    const ui = t.ui ?? {};
+    const homeTitle = t.site?.title ?? lang.name;
+    const homeDescription = t.site?.description ?? "";
+    const homeUrl = localizedUrl(site, code, "");
+    const homePath = "";
+    const homeAlternates = hreflangAlternates(site, homePath, [code]);
+
+    // 번역이 실제 글과 맞는지 확인 (원문이 사라졌으면 만들지 않음)
+    const items = [];
+    for (const key of Object.keys(t.entries ?? {}).sort()) {
+      const record = byKey.get(key);
+      if (!record) {
+        missing.push(`${I18N_DIR}/${code}.json › ${key} (원문 글이 없어 건너뜀)`);
+        continue;
+      }
+      const [prefix] = key.split("/");
+      items.push({ key, prefix, record, tr: t.entries[key] });
+    }
+    if (!items.length) continue;
+
+    // 글 페이지
+    for (const it of items) {
+      const path = `${it.prefix}/${it.record.slug}/`;
+      const url = localizedUrl(site, code, path);
+      const koUrl = localizedUrl(site, "ko", path);
+      const title = it.tr.title ?? it.record.title;
+      const description = it.tr.summary ?? it.record.description;
+      const sectionTitle = t.sections?.[it.prefix]?.title ?? it.prefix;
+      const siblings = items.filter((x) => x.prefix === it.prefix && x.key !== it.key).slice(0, 4);
+      const head = headBlock({
+        title: `${title} | ${homeTitle}`,
+        description,
+        url,
+        ogType: "article",
+        ogTitle: title,
+        ogDescription: description,
+        image: it.record.image || defaultImageUrl,
+        publishedTime: it.record.date ?? "",
+        ogLocale: lang.ogLocale,
+        alternates: hreflangAlternates(site, path, [code]),
+        siteLd: jsonLdGraph(site, [
+          {
+            "@type": "WebPage",
+            "@id": `${url}#webpage`,
+            url,
+            name: title,
+            inLanguage: lang.hreflang,
+            isPartOf: { "@id": `${absoluteUrl(site, "")}#website` },
+          },
+        ]),
+      });
+      const body = [
+        `<div id="root"><main class="seo-article" data-lang="${code}">`,
+        `<nav aria-label="breadcrumb"><a href="../../">${escapeHtml(ui.home ?? homeTitle)}</a> / <a href="../">${escapeHtml(sectionTitle)}</a></nav>`,
+        `<article>`,
+        `<h1>${escapeHtml(title)}</h1>`,
+        `<p class="seo-meta">${escapeHtml(lang.name)} · ${escapeHtml(ui.brand ?? "XCONDA Hub")}</p>`,
+        paragraphsHtml(description),
+        `<p><a href="${escapeHtml(koUrl)}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
+        `</article>`,
+        siblings.length
+          ? [
+              `<nav class="seo-related" aria-label="More">`,
+              `<h2>${escapeHtml(sectionTitle)}</h2>`,
+              `<ul>`,
+              ...siblings.map((x) => `<li><a href="../${escapeHtml(x.record.slug)}/">${escapeHtml(x.tr.title ?? x.record.title)}</a></li>`),
+              `</ul>`,
+              `</nav>`,
+            ].join("")
+          : "",
+        ui.note ? `<p class="seo-note">${escapeHtml(ui.note)}</p>` : "",
+        `</main></div>`,
+      ]
+        .filter(Boolean)
+        .join("\n");
+      files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+      urls.push({ loc: url, lastmod: it.record.modified || it.record.date || undefined });
+      (paths[code] ??= []).push(path);
+    }
+
+    // 섹션 목록 (/en/qna/ 등)
+    const prefixes = [...new Set(items.map((i) => i.prefix))].sort();
+    for (const prefix of prefixes) {
+      const list = items.filter((i) => i.prefix === prefix).sort((a, b) => (a.record.seq ?? 0) - (b.record.seq ?? 0));
+      const path = `${prefix}/`;
+      const url = localizedUrl(site, code, path);
+      const sec = t.sections?.[prefix] ?? {};
+      const title = sec.title ?? `${prefix} · ${homeTitle}`;
+      const description = sec.description ?? homeDescription;
+      const head = headBlock({
+        title: `${title} | ${homeTitle}`,
+        description,
+        url,
+        ogType: "website",
+        ogTitle: title,
+        ogDescription: description,
+        image: defaultImageUrl,
+        publishedTime: "",
+        ogLocale: lang.ogLocale,
+        alternates: hreflangAlternates(site, path, [code]),
+      });
+      const body = [
+        `<div id="root"><main class="seo-article" data-lang="${code}">`,
+        `<nav aria-label="breadcrumb"><a href="../">${escapeHtml(ui.home ?? homeTitle)}</a> / ${escapeHtml(title)}</nav>`,
+        `<h1>${escapeHtml(title)}</h1>`,
+        `<p>${escapeHtml(description)}</p>`,
+        `<ul>`,
+        ...list.map((it) => `<li><a href="./${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+        `</ul>`,
+        `<p><a href="${escapeHtml(localizedUrl(site, "ko", path))}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
+        `</main></div>`,
+      ].join("\n");
+      files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+      urls.push({ loc: url });
+    }
+
+    // 언어 홈 (/en/)
+    const head = headBlock({
+      title: homeTitle,
+      description: homeDescription,
+      url: homeUrl,
+      ogType: "website",
+      ogTitle: homeTitle,
+      ogDescription: homeDescription,
+      image: defaultImageUrl,
+      publishedTime: "",
+      ogLocale: lang.ogLocale,
+      alternates: homeAlternates,
+    });
+    const body = [
+      `<div id="root"><main class="seo-article" data-lang="${code}">`,
+      `<nav aria-label="breadcrumb"><a href="${escapeHtml(localizedUrl(site, "ko", ""))}" hreflang="ko">${escapeHtml(SITE_NAME)}</a> / ${escapeHtml(lang.name)}</nav>`,
+      `<h1>${escapeHtml(homeTitle)}</h1>`,
+      `<p>${escapeHtml(homeDescription)}</p>`,
+      ...prefixes.map((prefix) => {
+        const sec = t.sections?.[prefix] ?? {};
+        const list = items.filter((i) => i.prefix === prefix);
+        return [
+          `<h2><a href="./${escapeHtml(prefix)}/">${escapeHtml(sec.title ?? prefix)}</a></h2>`,
+          `<ul>`,
+          ...list.map((it) => `<li><a href="./${escapeHtml(prefix)}/${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+          `</ul>`,
+        ].join("\n");
+      }),
+      ui.note ? `<p class="seo-note">${escapeHtml(ui.note)}</p>` : "",
+      `</main></div>`,
+    ].join("\n");
+    files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+    urls.push({ loc: homeUrl });
+  }
+
+  return { files, urls, missing, paths };
+}
+
 const ROOT_OPEN = '<div id="root">';
 
 /**
@@ -163,14 +385,17 @@ export function headBlock(meta) {
     `<meta name="description" content="${e(meta.description)}" />`,
     meta.robots ? `<meta name="robots" content="${e(meta.robots)}" />` : "",
     `<link rel="canonical" href="${e(meta.url)}" />`,
-    // 언어 신호 — 이 주소의 기준 언어는 한국어임을 명시합니다.
-    // (허브는 언어별 URL 을 만들지 않고 한 주소에서 화면 언어만 바꾸므로, hreflang 을
-    //  비워 두면 검색엔진·AI 가 "무엇이 기준인지" 확정하지 못합니다. ko + x-default 자기 참조.)
-    `<link rel="alternate" hreflang="ko" href="${e(meta.url)}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${e(meta.url)}" />`,
+    // 언어 신호 — 기준 언어(ko) + x-default 는 항상 자기 자신을 가리킵니다.
+    // 번역 주소가 있는 페이지는 meta.alternates 로 언어 전체를 서로 연결합니다(hreflang 묶음).
+    ...(meta.alternates?.length
+      ? meta.alternates.map((a) => `<link rel="alternate" hreflang="${e(a.hreflang)}" href="${e(a.href)}" />`)
+      : [
+          `<link rel="alternate" hreflang="ko" href="${e(meta.url)}" />`,
+          `<link rel="alternate" hreflang="x-default" href="${e(meta.url)}" />`,
+        ]),
     `<meta property="og:type" content="${meta.ogType}" />`,
     `<meta property="og:site_name" content="${e(SITE_NAME)}" />`,
-    `<meta property="og:locale" content="ko_KR" />`,
+    `<meta property="og:locale" content="${e(meta.ogLocale ?? "ko_KR")}" />`,
     `<meta property="og:title" content="${e(meta.ogTitle)}" />`,
     `<meta property="og:description" content="${e(meta.ogDescription)}" />`,
     `<meta property="og:image" content="${e(meta.image)}" />`,
@@ -436,7 +661,7 @@ const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh
  * @param {{ rows: object[], pages?: object, template: string, siteUrl?: string }} input
  * @returns {{ files: Map<string, string>, pages: object[], skipped: object[], warnings: string[], siteUrl: string }}
  */
-export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput } = {}) {
+export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, translations: translationsInput } = {}) {
   let template = inputTemplate;
   const site = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
   // 인라인 번들 → 공용 자산(assets/app.js · app.css). 이미 분리된 템플릿이면 그대로 둡니다.
@@ -482,6 +707,23 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     tool: textOf(pickProp(c.row, ["Tool"])),
     tags: pickProp(c.row, ["Tags"]),
   }));
+
+  // 언어별 번역(사람이 검수한 것만) — 있으면 /en/ 같은 주소를 만듭니다(B).
+  let translations = translationsInput;
+  if (!translations) {
+    const loaded = loadTranslations(REPO_ROOT);
+    translations = loaded.translations;
+    warnings.push(...loaded.warnings);
+  }
+  // `qna/refund/` 같은 키에 번역이 있는 언어 목록 — ko 페이지의 hreflang 묶음에 씁니다.
+  const translatedKeys = new Map();
+  for (const code of Object.keys(translations ?? {})) {
+    for (const key of Object.keys(translations[code]?.entries ?? {})) {
+      if (!translatedKeys.has(key)) translatedKeys.set(key, []);
+      translatedKeys.get(key).push(code);
+    }
+  }
+  const langsForPath = (p) => ["ko", ...(translatedKeys.get(String(p).replace(/\/+$/, "")) ?? [])];
 
   const pageRecords = [];
   const files = new Map();
@@ -591,6 +833,8 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       image: meta.image,
       publishedTime: meta.publishedTime,
       modifiedTime: dateModified,
+      // 번역이 있는 글은 언어 전체를 서로 연결(hreflang 묶음). 없으면 ko + x-default.
+      alternates: hreflangAlternates(site, `${c.prefix}/${slug}/`, langsForPath(`${c.prefix}/${slug}/`)),
       siteLd,
       articleLd,
       howToLd,
@@ -683,6 +927,11 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     ogDescription: home.ogDescription,
     image: defaultImageUrl,
     publishedTime: "",
+    alternates: hreflangAlternates(site, "", [
+      "ko",
+      // 번역이 한 건이라도 있으면 그 언어의 홈(/en/ 등)이 만들어집니다.
+      ...Object.keys(translations ?? {}).filter((code) => Object.keys(translations[code]?.entries ?? {}).length > 0),
+    ]),
     siteLd: jsonLdGraph(site, [
       appJsonLd(),
       listJsonLd({
@@ -720,6 +969,12 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       ogDescription: page.description,
       image: defaultImageUrl,
       publishedTime: "",
+      alternates: hreflangAlternates(site, `${page.prefix}/`, [
+        "ko",
+        ...Object.keys(translations ?? {}).filter((code) =>
+          Object.keys(translations[code]?.entries ?? {}).some((k) => k.startsWith(`${page.prefix}/`)),
+        ),
+      ]),
       siteLd: jsonLdGraph(site, [
         listJsonLd({
           url,
@@ -772,7 +1027,25 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     // 노션 밖 정적 페이지(예: 스튜디오 19개 툴 사용자 가이드) — lastmod 는 생략
     ...EXTRA_INDEX_PAGES.map((file) => ({ loc: absoluteUrl(site, file) })),
   ];
+  // (언어별 주소는 아래에서 합친 뒤 생성합니다)
+  // 언어별 정적 페이지(/en/ 등) — 번역이 있는 글만. 앱 번들을 떼어 낸 정적 HTML 입니다.
+  const localized = localizedPages({
+    site,
+    translations: translations ?? {},
+    template, // 인라인 번들을 이미 걷어 낸(외부화된) 템플릿
+    pageRecords,
+    defaultImageUrl,
+  });
+  for (const [file, html] of localized.files) files.set(file, html);
+  for (const msg of localized.missing) warnings.push(msg);
+  for (const u of localized.urls) sitemapUrls.push(u);
+  // 앱(React)의 언어 전환기가 "이 경로에 번역 주소가 있나?" 를 확인하는 목록.
+  // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
+  if (Object.keys(localized.paths).length) {
+    files.set("assets/i18n-paths.json", `${JSON.stringify(localized.paths, null, 2)}\n`);
+  }
   files.set("sitemap.xml", sitemapXml(sitemapUrls));
+
   files.set("robots.txt", robotsTxt(site));
   // llms.txt — AI 도우미용 사이트 안내문(섹션 + 대표 글). 사이트맵과 같은 목록에서 만들어 항상 일치합니다.
   files.set(
