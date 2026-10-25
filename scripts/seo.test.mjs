@@ -917,6 +917,20 @@ test("언어 파일은 같은 키 구조를 쓴다(사이트 정보 · UI 문구
   }
 });
 
+test("번역 언어의 UI 문구는 한국어를 그대로 두지 않는다", () => {
+  for (const lang of I18N_LANGS) {
+    const dict = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+    for (const [key, value] of Object.entries(dict.ui)) {
+      if (typeof value !== "string") continue;
+      const hangul = (value.match(/[가-힣]/g) ?? []).length;
+      assert.ok(hangul === 0, `${lang}: ui.${key} 에 한국어가 남아 있습니다 — ${value}`);
+    }
+    // 사이트 제목·설명도 번역문이어야 합니다.
+    assert.ok(!/[가-힣]/.test(dict.site.title), `${lang}: site.title 에 한국어가 남아 있습니다`);
+    assert.ok(!/[가-힣]/.test(dict.site.description), `${lang}: site.description 에 한국어가 남아 있습니다`);
+  }
+});
+
 test("여러 언어 번역이 있으면 hreflang 이 서로를 모두 가리킨다", () => {
   const out = renderSeoSite({
     rows: fixtureRows,
