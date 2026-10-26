@@ -156,6 +156,86 @@ export function loadTranslations(root) {
   return { translations: out, warnings };
 }
 
+/* ------------------------------ 번역 본문(blocks) ------------------------------
+ * 번역 파일(`content/i18n/<언어>.json`)의 `entries[키].blocks` 는 **사람이 쓰는 최소 형식**입니다.
+ * 노션 블록 구조를 그대로 번역하지 않고 아래 6가지만 받습니다(번역가가 다루기 쉬운 형태).
+ *   {"type":"p" | "h2" | "h3" | "quote", "text":"..."} · {"type":"ul" | "ol", "items":["...", "..."]}
+ * 본문 이미지는 번역하지 않습니다 — 한국어 원문의 이미지를 **같은 위치**에 자동으로 넣습니다.
+ * ------------------------------------------------------------------------ */
+export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote"];
+
+/** 번역 본문 블록의 형식 문제를 문자열 목록으로 돌려줍니다(비어 있으면 정상). */
+export function localizedBlockProblems(blocks) {
+  if (blocks == null) return [];
+  if (!Array.isArray(blocks)) return ["blocks 가 배열이 아닙니다"];
+  const problems = [];
+  blocks.forEach((block, index) => {
+    const at = `blocks[${index}]`;
+    if (!block || typeof block !== "object") {
+      problems.push(`${at}: 객체가 아닙니다`);
+      return;
+    }
+    if (!LOCALIZED_BLOCK_TYPES.includes(block.type)) {
+      problems.push(`${at}: 지원하지 않는 type(${block.type}) — ${LOCALIZED_BLOCK_TYPES.join(" · ")} 만 됩니다`);
+      return;
+    }
+    if (block.type === "ul" || block.type === "ol") {
+      if (!Array.isArray(block.items) || block.items.length === 0) {
+        problems.push(`${at}: ${block.type} 에 items 배열이 필요합니다`);
+        return;
+      }
+      if (block.items.some((item) => typeof item !== "string" || !item.trim())) {
+        problems.push(`${at}: items 원소는 비어 있지 않은 문자열이어야 합니다`);
+      }
+      return;
+    }
+    if (typeof block.text !== "string" || !block.text.trim()) problems.push(`${at}: text 가 비어 있습니다`);
+  });
+  return problems;
+}
+
+/**
+ * 번역 블록 + 한국어 원문 이미지 → 렌더 가능한 블록 배열.
+ * `images` 는 `{ after, src, caption }` 이고, `after` 는 그 이미지 **앞에 있던 글 블록 수**입니다.
+ * 번역문의 블록 수가 모자라면 마지막에 붙입니다(이미지가 사라지지 않게).
+ */
+export function mergeLocalizedBlocks(blocks, images = []) {
+  const list = (Array.isArray(blocks) ? blocks : []).filter((b) => b && LOCALIZED_BLOCK_TYPES.includes(b.type));
+  if (!images.length) return list.map(stripBlockOrder);
+  const out = [];
+  const buckets = new Map();
+  for (const img of images) {
+    const at = Math.max(0, Math.min(list.length, Number(img.after) || 0));
+    if (!buckets.has(at)) buckets.set(at, []);
+    buckets.get(at).push(img);
+  }
+  list.forEach((block, index) => {
+    for (const img of buckets.get(index) ?? []) out.push(imageBlock(img));
+    out.push(stripBlockOrder(block));
+  });
+  for (const img of buckets.get(list.length) ?? []) out.push(imageBlock(img));
+  return out;
+}
+
+const imageBlock = (img) => ({ type: "img", src: img.src, caption: img.caption || undefined });
+
+/** `{type,text}` / `{type,items}` 만 남깁니다(여분 키가 렌더러로 새지 않게). */
+function stripBlockOrder(block) {
+  if (block.type === "ul" || block.type === "ol") return { type: block.type, items: block.items.map((i) => String(i)) };
+  return { type: block.type, text: String(block.text) };
+}
+
+/** 한국어 원문 블록 → 본문 이미지 위치 목록(`after` = 앞에 있는 글 블록 수) */
+export function bodyImagesOf(blocks = []) {
+  const out = [];
+  let textBlocks = 0;
+  for (const block of blocks ?? []) {
+    if (block?.type === "img" && block.src) out.push({ after: textBlocks, src: block.src, caption: block.caption });
+    else if (block?.type !== "video") textBlocks += 1;
+  }
+  return out;
+}
+
 /**
  * 번역 페이지용 템플릿 — 앱 번들을 **떼어 냅니다**.
  * 영어·일본어·중국어 페이지는 번역문 정적 HTML 만 서빙합니다. 앱을 함께 싣으면
@@ -185,6 +265,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
   const missing = [];
   /** 언어 → 번역이 있는 경로 목록(앱 언어 전환기가 /en/ 주소로 보낼 때 씁니다) */
   const paths = {};
+  /** 언어 → 번역 본문(blocks)이 있는 페이지 수 */
+  const bodyCount = {};
   const base = staticOnlyTemplate(template);
   // 한국어 원문 주소를 찾기 위한 색인 — `qna/slug` → 페이지 기록
   const byKey = new Map(pageRecords.map((p) => [`${ROUTE_PREFIX[p.type] ?? p.type}/${p.slug}`, p]));
@@ -280,6 +362,12 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
           },
         ]),
       });
+      // 본문 번역(blocks)이 있으면 요약 아래에 싣습니다. 이미지는 한국어 원문 위치를 그대로 따릅니다.
+      const bodyProblems = localizedBlockProblems(it.tr.blocks);
+      for (const problem of bodyProblems) missing.push(`${I18N_DIR}/${code}.json › ${it.key} ${problem}`);
+      const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, it.record.bodyImages);
+      const bodyHtml = bodyBlocks.length ? blocksToHtml(bodyBlocks, { alt: title }) : "";
+      if (bodyHtml) bodyCount[code] = (bodyCount[code] ?? 0) + 1;
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
         `<nav aria-label="breadcrumb"><a href="../../">${escapeHtml(ui.home ?? homeTitle)}</a> / <a href="../">${escapeHtml(sectionTitle)}</a></nav>`,
@@ -288,6 +376,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `<h1>${escapeHtml(title)}</h1>`,
         `<p class="seo-meta">${escapeHtml(lang.name)} · ${escapeHtml(ui.brand ?? "XCONDA Hub")}</p>`,
         paragraphsHtml(description),
+        bodyHtml,
         `<p><a href="${escapeHtml(koUrl)}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
         `</article>`,
         siblings.length
@@ -385,7 +474,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
     urls.push({ loc: homeUrl });
   }
 
-  return { files, urls, missing, paths };
+  return { files, urls, missing, paths, bodyCount };
 }
 
 const ROOT_OPEN = '<div id="root">';
@@ -938,6 +1027,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       pinned: isPinned(row),
       seq: pageRecords.length,
       bodyBlocks: blocks.length,
+      bodyImages: bodyImagesOf(blocks),
     });
   }
 
@@ -1080,6 +1170,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
   });
   for (const [file, html] of localized.files) files.set(file, html);
   for (const msg of localized.missing) warnings.push(msg);
+  const localizedBodies = localized.bodyCount ?? {};
   for (const u of localized.urls) sitemapUrls.push(u);
   // 앱(React)의 언어 전환기가 "이 경로에 번역 주소가 있나?" 를 확인하는 목록.
   // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
@@ -1111,7 +1202,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     }),
   );
 
-  return { files, pages: pageRecords, sections: sectionRecords, skipped, warnings, siteUrl: site };
+  return { files, pages: pageRecords, sections: sectionRecords, skipped, warnings, siteUrl: site, localizedBodies };
 }
 
 /** 페이지 커버가 있으면 그 이미지를, 없으면 본문 첫 이미지를 씁니다 (스냅샷 __cover 가 없을 때의 보조) */
@@ -1201,6 +1292,10 @@ function main() {
   writeSite(result, opts.root);
 
   console.log(`✔ 글별 주소 ${result.pages.length}개 · 제외 ${result.skipped.length}개 · 사이트맵·robots.txt 갱신 (${result.siteUrl})`);
+  const bodies = Object.entries(result.localizedBodies ?? {});
+  if (bodies.length) {
+    console.log(`  번역 본문(blocks) 있음 — ${bodies.map(([code, n]) => `${code} ${n}편`).join(" · ")}`);
+  }
   for (const s of result.skipped) console.warn(`⚠️ [SEO] 주소 없음 — "${s.title}" (${s.type || "-"}): ${s.reasons.join(" / ")}`);
   for (const w of result.warnings) console.warn(`⚠️ [SEO] ${w}`);
 

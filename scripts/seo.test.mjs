@@ -43,7 +43,14 @@ import {
   summarize,
 } from "../src/content/seo.js";
 import { blocksToHtml, parseLegacyRecordMap } from "../src/content/body.js";
-import { applyHead, renderSeoSite } from "./build-seo.mjs";
+import {
+  applyHead,
+  renderSeoSite,
+  localizedBlockProblems,
+  mergeLocalizedBlocks,
+  bodyImagesOf,
+  LOCALIZED_BLOCK_TYPES,
+} from "./build-seo.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE = fs.readFileSync(path.join(here, "../index.html"), "utf8");
@@ -857,6 +864,111 @@ test("번역이 하나도 없으면 언어별 페이지를 만들지 않는다(�
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: {} });
   assert.equal([...out.files.keys()].filter((f) => /^(en|ja|zh)\//.test(f)).length, 0);
   assert.doesNotMatch(out.files.get("index.html"), /hreflang="en"/);
+});
+
+/* ---------------------------------------------------------------------------
+ * 번역 본문(blocks) — 2026-10-25 (①-1)
+ *   Q&A 는 summary 가 곧 답변이지만, 블로그·가이드·공지는 **본문**이 있어야
+ *   번역 주소를 만들 가치가 있습니다. 번역가는 6가지 블록만 쓰고,
+ *   본문 이미지는 한국어 원문 위치를 그대로 따라갑니다.
+ * ------------------------------------------------------------------------ */
+test("번역 본문 블록 — 지원 타입만 통과하고 형식 오류는 이유를 알려 준다", () => {
+  assert.deepEqual(localizedBlockProblems(undefined), []);
+  assert.deepEqual(localizedBlockProblems([{ type: "p", text: "본문" }]), []);
+  assert.deepEqual(localizedBlockProblems([{ type: "ul", items: ["하나", "둘"] }]), []);
+  const bad = localizedBlockProblems([
+    { type: "image", src: "x" }, // 번역가는 이미지를 직접 넣지 않습니다
+    { type: "p", text: "  " },
+    { type: "ol", items: [] },
+    { type: "h2" },
+  ]);
+  assert.equal(bad.length, 4);
+  assert.match(bad[0], /지원하지 않는 type\(image\)/);
+  assert.match(bad[1], /text 가 비어/);
+  assert.match(bad[2], /items 배열/);
+  assert.match(bad[3], /text 가 비어/);
+  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote"]);
+});
+
+test("본문 이미지 위치는 '앞에 있던 글 블록 수'로 계산한다", () => {
+  const images = bodyImagesOf([
+    { type: "p", text: "a" },
+    { type: "img", src: "s1.png" },
+    { type: "h2", text: "b" },
+    { type: "p", text: "c" },
+    { type: "img", src: "s2.png", caption: "캡션" },
+    { type: "img", src: "" }, // 주소 없는 이미지는 무시
+  ]);
+  assert.deepEqual(images, [
+    { after: 1, src: "s1.png", caption: undefined },
+    { after: 3, src: "s2.png", caption: "캡션" },
+  ]);
+});
+
+test("번역 블록과 원문 이미지를 합치면 이미지가 같은 자리에 들어간다", () => {
+  const merged = mergeLocalizedBlocks(
+    [{ type: "p", text: "one" }, { type: "h2", text: "two" }, { type: "p", text: "three" }],
+    [{ after: 1, src: "s1.png" }, { after: 99, src: "s2.png" }],
+  );
+  assert.deepEqual(
+    merged.map((b) => b.type),
+    ["p", "img", "h2", "p", "img"],
+  );
+  assert.equal(merged.at(-1).src, "s2.png"); // 범위를 넘는 위치는 마지막에 붙습니다
+  // 이미지가 없으면 번역 블록만 그대로
+  assert.deepEqual(mergeLocalizedBlocks([{ type: "p", text: "x" }]).map((b) => b.type), ["p"]);
+});
+
+test("번역 본문이 있으면 번역 페이지에 본문·이미지가 렌더된다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {
+      en: {
+        ...EN_FIXTURE.en,
+        entries: {
+          "qna/refund-policy": {
+            title: "How do refunds work?",
+            summary: "Ask within 7 days for unused credits.",
+            blocks: [{ type: "h2", text: "Refund window" }, { type: "p", text: "Seven days from payment." }],
+          },
+        },
+      },
+    },
+  });
+  const en = out.files.get("en/qna/refund-policy/index.html");
+  assert.match(en, /<h2>Refund window<\/h2>/);
+  assert.match(en, /<p[^>]*>Seven days from payment\.<\/p>/);
+});
+
+test("번역 본문 형식이 틀리면 페이지에 넣지 않고 경고를 남긴다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {
+      en: {
+        ...EN_FIXTURE.en,
+        entries: {
+          "qna/refund-policy": {
+            title: "How do refunds work?",
+            summary: "Ask within 7 days for unused credits.",
+            blocks: [{ type: "image", src: "x.png" }],
+          },
+        },
+      },
+    },
+  });
+  assert.ok(out.warnings.some((w) => w.includes("지원하지 않는 type(image)")), "형식 경고가 없습니다");
+  const en = out.files.get("en/qna/refund-policy/index.html");
+  assert.doesNotMatch(en, /<img /, "이미지 블록이 새어 들어가면 안 됩니다");
+  // 요약(답변)은 그대로 남습니다
+  assert.match(en, /Ask within 7 days for unused credits\./);
 });
 
 /* ---------------------------------------------------------------------------

@@ -20,6 +20,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { LOCALIZED_BLOCK_TYPES } from "./build-seo.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(here, "..");
@@ -257,14 +258,49 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
       else seenTitles.set(t, key);
     }
 
-    // 6) 길이 비율
+    // 6) 본문 번역(blocks) — 형식 오류, 한글 잔존, 미번역 영어
+    const blocks = tr.blocks;
+    if (blocks != null) {
+      if (!Array.isArray(blocks)) {
+        errors.push({ key, kind: "blocks-not-array", detail: "blocks 가 배열이 아닙니다" });
+      } else {
+        const bodyText = blocks
+          .map((b) => (Array.isArray(b?.items) ? b.items.join(" ") : String(b?.text ?? "")))
+          .join("\n");
+        for (const block of blocks) {
+          if (!LOCALIZED_BLOCK_TYPES.includes(block?.type)) {
+            errors.push({ key, kind: "block-type", detail: `지원하지 않는 type(${block?.type})` });
+          }
+          if ((block?.type === "ul" || block?.type === "ol") && (!Array.isArray(block.items) || !block.items.length)) {
+            errors.push({ key, kind: "block-items", detail: `${block?.type} 에 items 가 없습니다` });
+          }
+          if (["p", "h2", "h3", "quote"].includes(block?.type) && !String(block?.text ?? "").trim()) {
+            errors.push({ key, kind: "block-empty", detail: `${block?.type} 의 text 가 비었습니다` });
+          }
+        }
+        const bodyHangul = (bodyText.match(/[가-힣]/g) ?? []).length;
+        if (bodyText.length > 0 && bodyHangul / bodyText.length >= 0.2) {
+          errors.push({
+            key,
+            kind: "block-hangul",
+            detail: `본문 한글 비중 ${Math.round((bodyHangul / bodyText.length) * 100)}% — 번역이 남아 있습니다`,
+          });
+        }
+        // 원문 본문이 있는데 번역 본문이 없으면 경고(SEO 상 이득이 큰 글)
+        if (!blocks.length && (ko.summary?.length ?? 0) > 0) {
+          warnings.push({ key, kind: "body-missing", detail: "본문 번역 없음(요약만)" });
+        }
+      }
+    }
+
+    // 7) 길이 비율
     if (ko.summary) {
       const flag = ratioFlag(ko.summary, String(tr.summary ?? ""));
       if (flag) warnings.push({ key, kind: `length-${flag.kind}`, detail: `${flag.ratio.toFixed(2)}×` });
     }
   }
 
-  // 7) 브랜드 표기 일관성 — 언어 전체에서 대소문자가 섞이면 알려 줍니다.
+  // 8) 브랜드 표기 일관성 — 언어 전체에서 대소문자가 섞이면 알려 줍니다.
   // 주소·도메인(xconda.ai)은 소문자가 정상이므로 표기 검사에서 제외합니다.
   const corpus = Object.values(entries)
     .map((e) => `${e.title ?? ""} ${e.summary ?? ""}`)
@@ -341,12 +377,20 @@ function main() {
   const allow = loadAllowlist(ROOT);
   const results = {};
   let errorCount = 0;
+  // 본문 번역 현황 — 사람이 "무엇이 남았는지" 바로 알 수 있게
+  const bodyStats = {};
+  for (const [lang, dict] of Object.entries(dicts)) {
+    const entries = Object.values(dict.entries ?? {});
+    const withBody = entries.filter((e) => Array.isArray(e.blocks) && e.blocks.length).length;
+    bodyStats[lang] = { withBody, total: entries.length };
+  }
+
   for (const [lang, dict] of Object.entries(dicts)) {
     const r = qcLanguage(lang, dict, sources, allow);
     results[lang] = r;
     errorCount += r.errors.length;
     console.log(
-      `${lang}: 항목 ${Object.keys(dict.entries ?? {}).length} · 오류 ${r.errors.length} · 경고 ${r.warnings.length}` +
+      `${lang}: 항목 ${Object.keys(dict.entries ?? {}).length} · 본문 ${bodyStats[lang].withBody}편 · 오류 ${r.errors.length} · 경고 ${r.warnings.length}` +
         (r.suppressed ? ` (허용 ${r.suppressed})` : ""),
     );
     for (const e of r.errors.slice(0, 10)) console.log(`   ✗ ${e.key} ${e.kind} ${e.detail}`);

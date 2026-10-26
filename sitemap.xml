@@ -404,6 +404,10 @@
     <loc>https://hub.xconda.ai/user-guide.html</loc>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/en/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/en/qna/access-edit-delete-data/</loc>
     <lastmod>2026-10-11</lastmod>
   </url>
@@ -696,10 +700,17 @@
     <lastmod>2026-10-11</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/en/post/</loc>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/en/qna/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/access-edit-delete-data/</loc>
@@ -994,10 +1005,17 @@
     <lastmod>2026-10-11</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/ja/post/</loc>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/ja/qna/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/access-edit-delete-data/</loc>
@@ -1290,6 +1308,9 @@
   <url>
     <loc>https://hub.xconda.ai/zh/qna/xconda-vs-other-ai-video-tools/</loc>
     <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/</loc>
