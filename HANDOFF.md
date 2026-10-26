@@ -167,8 +167,7 @@ XCONDA_info/
 ├── notion-worker/worker.js     (선택) Cloudflare Worker 프록시 — 비공개 Notion DB용
 ├── .github/workflows/          notion-sync.yml · build-site.yml
 ├── assets/img/                 로고 · 툴 커버 이미지
-├── admin-guide.html  user-guide.html   운영자/사용자용 정적 가이드 페이지
-└── redesign-xconda-website-ui/ ⚠️ 과거 UI 프로토타입 — 빌드에 포함되지 않음(참고용)
+└── admin-guide.html  user-guide.html   운영자/사용자용 정적 가이드 페이지
 ```
 
 ### 5.1 커밋된 산출물 vs 소스 (가장 흔한 실수)
@@ -289,6 +288,7 @@ XCONDA_info/
 - 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
+- **검수 진행률**: `npm run i18n:progress` — `content/i18n/<언어>.json` 의 `review` 표기를 세어 **95항목 × 3언어 = 285** 중 검수 완료/초안/번역 없음을 보여 주고, `reports/i18n-progress-<날짜>.md` 에 언어별 표 + 「기계 점검이 문제를 찾은 항목」(검수 우선순위)을 남깁니다. 완료로 인정하는 표기는 **`YYYY-MM-DD 검수 완료(검수자)`** 하나뿐이고, 항목별 표시가 없으면 파일 맨 위 `review`(현재는 초안)를 따릅니다. 원어민 검수가 끝난 항목부터 `entries[키].review` 를 바꾸고 이 명령을 다시 돌리면 진행률이 올라갑니다(2026-10-26 ①-4).
 - **번역 품질 점검**: `npm run i18n:qc` — 연락처·주소 불일치(오류), 숫자 누락·통화 표기·미번역 영어·제목 중복·길이 비율·브랜드 표기(경고)를 봅니다. `-- --write` 로 `reports/i18n-qc-<날짜>.md` 갱신. 의도된 차이는 `content/i18n/qc-allow.json` 에 근거와 함께 적습니다.
 - **워크플로 설정 회귀 방지**: `scripts/workflows.test.mjs` 가 (1) PR 자동 생성 금지 (2) notion-sync 는 main 전용 (3) `www/**`·`content/i18n/**` 트리거 (4) `en/ja/zh` 커밋 대상 포함을 검사합니다.
 - **Cloudflare `Workers Builds: xconda-info-news`** 는 main 이 아닌 브랜치에서 실패합니다(main 에서는 `skipped`). Cloudflare 대시보드 → Workers & Pages → `xconda-info-news` → Settings → Build → **Branch control 을 `main` 으로 제한**하거나 빌드에 필요한 환경변수를 넣어야 사라집니다. 저장소 코드로는 고칠 수 없습니다.
@@ -594,7 +594,7 @@ npm run build
 @import "tailwindcss" source("../src");
 ```
 
-루트의 `redesign-xconda-website-ui/`(참고용 프로토타입) 클래스가 CSS에 섞이지 않도록 **스캔 범위를 `src/`로 제한**하고 있습니다. 이 줄을 지우거나 범위를 넓히면 CSS가 비대해집니다.
+**스캔 범위는 `src/` 로 제한**합니다(2026-10-26 ①-6 에서 미사용 프로토타입 `redesign-xconda-website-ui/` 를 삭제했지만, 이 줄은 그대로 두세요). 범위를 넓히면 저장소 루트의 정적 가이드 HTML(`user-guide.html`) 등에 쓰인 클래스까지 CSS 에 섞여 커집니다.
 
 ---
 
@@ -627,7 +627,7 @@ npm run build
 | 4 | `scripts/notion-snapshot.mjs`가 **Notion 비공개 API**(`www.notion.so/api/v3`)에 의존 | 공식 지원 API가 아님 → 노션이 바꾸면 동기화가 깨질 수 있는 **단일 취약점**. 증상: 스냅샷 실패, Summary에 HTTP 오류 |
 | 5 | 표(데이터베이스)를 **2개까지만** 읽음 (메인 표 + 허브 Q&A 표) | 그 밖의 표는 무시됨 → `NOTION_DATABASE_ID` · `NOTION_FAQ_DATABASE_ID`로 지정하거나 표를 합치기 |
 | 6 | 노션에 직접 업로드한 이미지의 서명 URL은 약 1시간 후 만료 | 만료되지 않는 notion.so 프록시 주소로 변환(`fields.js` `signNotionImage`) + `coverFallback`. 장기 노출 커버는 외부 URL 권장 |
-| 7 | `redesign-xconda-website-ui/`는 **미사용 프로토타입** | 삭제해도 무방하나, Tailwind 스캔에서 제외되어 있으므로 혼동 주의. 우선순위 낮음 |
+| 7 | ~~`redesign-xconda-website-ui/` 미사용 프로토타입~~ | **2026-10-26 ①-6 에서 삭제** — `src/` 가 같은 화면의 정본이라 중복. 필요하면 `git log --all -- redesign-xconda-website-ui` 로 되살립니다 |
 | 8 | 저장소 첫 화면(`README.md`)은 요약만 | 상세는 본 문서(`HANDOFF.md`), 운영은 `NOTION_SETUP.md`. README 의 링크·명령은 `scripts/docs.test.mjs` 가 실제 파일·`package.json` 과 대조합니다 |
 | 9 | `src/i18n/dict.ts`가 모듈 전역 `_current` 언어를 둠 | 비 React 유틸(날짜 포맷)이 언어를 참조하기 위한 의도된 설계. SSR 없음 |
 | 10 | 루트 `index.html`(약 507 KB)이 저장소에 커밋됨 | 의도된 설계(Pages 브랜치 배포). 히스토리가 커지면 Pages Actions 배포로 전환 검토 |
@@ -754,10 +754,11 @@ git checkout <정상 커밋> -- index.html notion-content.json
 |---|---|---|
 | 높음 | **스냅샷 생성의 비공개 API 의존 제거** — 공식 Notion API + Integration 토큰을 Actions Secret으로 쓰는 방식으로 전환 | 현재 구조의 단일 취약점(#4). 토큰은 Secret이라 유출 위험 낮고, 스케줄러는 그대로 사용 가능 |
 | — | ~~`README.md` 신설~~ (2026-10-25 완료) | 저장소 첫 화면에 진입점 추가 · 링크/명령은 `scripts/docs.test.mjs` 가 검사 |
-| 중간 | `redesign-xconda-website-ui/` 정리(삭제 또는 `docs/` 이동) | 혼동 방지 |
+| 완료 | ~~`redesign-xconda-website-ui/` 정리~~ (2026-10-26 ①-6 삭제) | `src/` 와 중복되는 옛 프로토타입 — 혼동 방지. 기록은 git 이력에 남습니다 |
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
+| 완료 | **①-4 검수 진행률 도구** — `npm run i18n:progress`(285항목 진행률 + 검수 우선순위 리포트) | 원어민에게 "무엇이 남았는지" 를 숫자로 전달 |
 | 완료 | **①-5 언어별 공유 카드** — 언어 홈 · 목록 · 커버 없는 글 44장(ko·en·ja·zh 각 11장) | 공유 미리보기에 그 언어의 제목이 나옵니다. `npm run og:cards` |
 | 완료 | **①-1 본문 번역** — 본문이 있는 글 **20편 전부** + Q&A 73건(en·ja·zh) | 표·콜아웃·체크리스트까지 번역, Q&A 는 「게시용 출처」 블록 포함 |
 
