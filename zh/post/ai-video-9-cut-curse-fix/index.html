@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-Hans" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>减少九镜头诅咒的方法：让镜头不跳的五个步骤 | XCONDA Hub — 问答、指南与公告</title>
+    <meta name="description" content="视频 AI 不记得上一个镜头。用 Turn 固定空间、用 FLEXBOARD 固定脸和构图、用参考图与提示词固定必须延续的状态——五个步骤整理如下。" />
+    <link rel="canonical" href="https://hub.xconda.ai/zh/post/ai-video-9-cut-curse-fix/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/ai-video-9-cut-curse-fix/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/ai-video-9-cut-curse-fix/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/ai-video-9-cut-curse-fix/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="减少九镜头诅咒的方法：让镜头不跳的五个步骤" />
+    <meta property="og:description" content="视频 AI 不记得上一个镜头。用 Turn 固定空间、用 FLEXBOARD 固定脸和构图、用参考图与提示词固定必须延续的状态——五个步骤整理如下。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-9-cut-curse-fix.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/zh/post/ai-video-9-cut-curse-fix/" />
+    <meta property="article:published_time" content="2026-10-20" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="减少九镜头诅咒的方法：让镜头不跳的五个步骤" />
+    <meta name="twitter:description" content="视频 AI 不记得上一个镜头。用 Turn 固定空间、用 FLEXBOARD 固定脸和构图、用参考图与提示词固定必须延续的状态——五个步骤整理如下。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-9-cut-curse-fix.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/zh/post/ai-video-9-cut-curse-fix/#webpage","url":"https://hub.xconda.ai/zh/post/ai-video-9-cut-curse-fix/","name":"减少九镜头诅咒的方法：让镜头不跳的五个步骤","inLanguage":"zh-Hans","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="zh">
+<nav aria-label="breadcrumb"><a href="../../">首页</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/ai-video-9-cut-curse-fix/" hreflang="en">English</a><a href="https://hub.xconda.ai/ja/post/ai-video-9-cut-curse-fix/" hreflang="ja">日本語</a><strong aria-current="true">中文</strong></nav>
+<article>
+<h1>减少九镜头诅咒的方法：让镜头不跳的五个步骤</h1>
+<p class="seo-meta">中文 · XCONDA Hub</p>
+<p class="notion-default">你好，我是做 XCONDA 的 Cubeberry 代表李珍瑞。</p>
+<p class="notion-default">上一篇《AI 视频的「九镜头诅咒」》里，我展示了镜头切换时绷带跑到另一只手臂、血迹消失、窗框从木头变成金属的例子。也答应过下一篇讲解决办法。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1a47cdfe-88ba-44f9-aafa-0e7a7869b571%3Aimage.png?table=block&amp;id=7e1c0b86-be35-4a23-8d2b-b1d93a674c6d&amp;cache=v2" alt="KBS 다큐&lt;한국전쟁이동외상센터&gt;의 부상병  재연 장면" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae85d1bd5-c166-452f-b9a5-9f6627dd3daf%3Aimage.png?table=block&amp;id=5a9d0c9d-a529-4291-a9b3-4beebb8a29a5&amp;cache=v2" alt="다음 컷부터 붕대 위치와 혈흔이 바뀐 장면" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>先说结论。</strong> 视频 AI 不记得上一个镜头。所以不要让它来记，而要由人确定、每个镜头重新告诉它。空间用 Turn 固定，脸和构图用 FLEXBOARD 固定，必须延续的状态用参考图和提示词固定。本文整理成只用手头 XCONDA 工具就能照着做的顺序。</p>
+<h3>为什么 AI 会忘记上一个镜头</h3>
+<p class="notion-default">视频 AI 每做一个镜头都从头画。它不会单独记住上一个镜头里步枪的战术灯已经打开。即使在提示词里写「同一个贤宇」，AI 也只是重新想象一张符合「贤宇」这个名字的画。于是战术灯灭了、对讲机跑到另一侧肩膀、背心上凭空出现一件外套。</p>
+<p class="notion-default">在真实剧组里，这件事由人来解决。片场有场记。他逐个镜头记下演员的衣着、手里的步枪、对讲机位置、穿了哪些层、被雨淋湿到什么程度，拍下一个镜头前再核对回来。镜头不跳，不是演员记性好，而是有人记录并比对。</p>
+<p class="notion-default">AI 视频也需要这个角色。下面五个步骤，就是把场记的工作分给 XCONDA 里的各个环节。</p>
+<h3>第 1 步：先把空间固定下来——Turn</h3>
+<p class="notion-default">窗框每个镜头都变，多半是因为每次都让 AI 重新想象空间。就像实拍先搭景、在里面拍好几天一样，AI 视频也要先把空间建好。</p>
+<ul><li>在 Turn 的 Reference 阶段放入这个空间的照片。可以放前、左、右、后（Front、Left、Right、Back）的照片，没有照片只写说明（Description）也行。</li><li>用 Generate 生成 360 度虚拟场景，在 3D Preview 里确定机位。</li><li>把镜头需要的视点用 Freeze Frame 保存下来。这些图会成为所有镜头的背景参考。</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3A0bc35531-7764-4c96-bcad-7b99f45813a5%3Aimage.png?table=block&amp;id=3ff2ebc0-17ad-8072-bff3-e59c18dac933&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Adf16d5fa-4d7d-47bf-b9af-568c1ad86e1d%3Aimage.png?table=block&amp;id=3ff2ebc0-17ad-80b8-bcbe-d72700410ebd&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<p class="notion-default">&lt;XCONDA「TURN」预览画面&gt;</p>
+<p class="notion-default">实际作品里是这样用的。下面是我们《冷站》衍生篇的空间用 Turn 制作的过程。</p>
+<p><a href="https://www.youtube.com/watch?v=IzXOdq2BCnE" rel="noopener noreferrer">TURN으로 〈콜드사이트〉 공간 만드는 과정</a></p>
+<p class="notion-default">《冷站》的过肩镜头，可以先用 Turn 建好女主角推门进去的房间，再从男主角一侧和女主角一侧分别取视点，都出自同一个场景。同一个房间只是转了机位，窗框没有理由变。</p>
+<h3>第 2 步：先写状态台账</h3>
+<p class="notion-default">这一步不是工具，而是习惯。而且效果最大。</p>
+<p class="notion-default">在制作场景之前，简短写下这个场景期间不能变的东西。等于提前写场记的记录表。我们《零号部门》S#4（废弃仓库外，雨夜）会是这样。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>项目</td><td>状态</td><td>确认方法</td></tr><tr><td>步枪战术灯</td><td>每支步枪都装，从第一帧就亮着</td><td>检查每个镜头是否都能看到光</td></tr><tr><td>对讲机</td><td>固定在人物右肩背带（正面画面里在画面左侧）</td><td>在关键图上看背带位置</td></tr><tr><td>队形</td><td>贤宇在前，俊基和要员1在后方两米两侧，要员2在后方3.5米</td><td>在远景里确认四人的位置</td></tr><tr><td>服装</td><td>白衬衫、黑领带、黑背心、黑裤、战靴（无外套）</td><td>每个镜头确认颜色和层次</td></tr><tr><td>天气</td><td>暴雨，初冬所以没有呵气</td><td>检查有没有呵气</td></tr><tr><td>红色裂纹</td><td>只在 S#4 最后一个镜头出现，之前的镜头没有</td><td>检查前面镜头有没有提前出现</td></tr></tbody></table></div>
+<p class="notion-default">这里有一点要注意。<strong>左右一定要先确定是「人物视角」还是「画面视角」再写。</strong> 人物右肩的背带在正面镜头里出现在画面左侧。混着写人会乱，AI 更乱。我们两种都写：「人物右肩背带（正面画面里在左侧）」。</p>
+<p class="notion-default">这份台账在第 3、4 步当对照表用，第 5 步直接搬进提示词。</p>
+<h3>第 3 步：把关键图摊在一个画面里比对——FLEXBOARD</h3>
+<p class="notion-default">在跑视频之前，先把每个镜头都出成图片。一个镜头错了，视频要整套重跑，图片只要重出那一张。</p>
+<ul><li>放入剧本，FLEXBOARD 会切分镜头并为每个镜头生成关键图。一个画面最多能摊开 36 个镜头。</li><li>把人物照片挂成参考图，从第一个到最后一个镜头都是同一张脸。第 1 步做的 Turn 图也一起作为背景参考放进去。</li><li>在 Sheet 画面里一次看完全部镜头，对照第 2 步的状态台账。</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3Aba1da291-6572-4d1c-bf06-f46e9d55e754%3A%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2026-10-18_155551.png?table=block&amp;id=3fd2ebc0-17ad-8046-aacf-fd873c8ef33b&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<ul><li>只在 Panel 画面里打开出错的那几个镜头重出，其余镜头保持不动。</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3Abb1ca1b4-46b7-4782-bf4f-8d4dce837907%3Aimage.png?table=block&amp;id=3fd2ebc0-17ad-8045-bf3d-ce825dfa9be8&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<p class="notion-default">九个镜头用视频检查，光是找出错的镜头就要很久。摊成图片只要几秒。这一步的目的，是别把第一篇里说的「每个镜头 15～20 分钟修正」带进视频环节。同一支《冷站》预告片在 FLEXBOARD 里按镜头设计的全过程也有视频可以看。</p>
+<p><a href="https://youtu.be/yd4f9UBEfmI" rel="noopener noreferrer">FLEXBOARD로 〈콜드사이트〉 연출을 설계한 과정</a></p>
+<aside class="callout notion-default"><p>💡 <strong>切分镜头有困难的话：FLEXBOARD 的 Claude 技能</strong><br><br>从头自己写要放进 FLEXBOARD 的提示词并不容易。我们把实际制作中用的方法打包成了 Claude 技能。在 Claude 里装好这个技能并贴上剧本，它会同时产出两样东西。<br><br><br><br>顺序也和真实片场一样。先确定人物、背景、道具参考，再切分镜头，最后确认后给你可直接复制的文件。还会一并检查镜头时长加起来对不对、有没有把太多动作塞进一个镜头、出场人物数量对不对。<br><br>FLEXBOARD 技能可以在本文下方「下载 FLEXBOARD 技能」直接获取。</p></aside>
+<h3>第 4 步：放入带状态的参考图——Seedance 2.5</h3>
+<p class="notion-default">关键图定下来后，在 XCONDA 的视频生成（Video Generator）里用 Seedance 2.5。这里的关键不是只放「人物照片」，而是放入<strong>「把状态画进去的图」</strong>。在《零号部门》里我们不放贤宇一个人的脸照，而是放上白衬衫、黑领带、黑色防弹背心、战术灯亮着的步枪全都齐备的全身板。</p>
+<ul><li>把模式选成参考（Ref-to-video）。一次最多可放 30 张图片、10 段视频、10 个音频。</li><li>参考图上传后可以反复开关。只有 Reference 标签里勾选（✓）的图才会以 @Image1、@Image2 编号进入生成。打叉表示没有删除、只是这次生成不用的（Inactive）图。每个镜头只打开需要的参考图，其余待命即可。</li><li>常用的人物、道具、空间存进 Asset Library，其他场景也能直接调用。《零号部门》里把贤宇、敏熙的角色板存好，按场景调用。</li><li>放入在 FLEXBOARD 确定的关键图。《零号部门》里，画着贤宇在前、俊基和要员1在后方两米两侧、要员2在后方3.5米策应的菱形队形的那个镜头，本身就是状态的证据。</li><li>道具重要的话，也放单独拍道具的图。步枪战术灯必须从第一帧就亮，对讲机必须在右肩背带上。这类细节单独放入步枪和背带的特写各一张，镜头之间就不太会变。</li><li>在提示词里输入 @ 指定哪张参考图是什么。《零号部门》把脸和服装分开用。例如「@image1：只要贤宇的脸和头发。@image2：只要贤宇的服装。脸按 @image1。@image4：只要车内座椅和材质，不参考人物和灯光」——每张参考图都写清「只参考什么」。这样分清角色，脸、服装、背景就不会互相串。</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3A78716324-6862-48e2-a089-7543eb69fcc9%3A06_seedance_ref_draft.png?table=block&amp;id=3fd2ebc0-17ad-805f-b783-f721131dbb36&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae6e131b6-5e63-42a8-99f5-c057c6c8e470%3A06b_asset_library.png?table=block&amp;id=3fd2ebc0-17ad-809e-a06c-d7f1e3d047bc&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A6b08c280-472b-4d6e-84b8-765480c30cd6%3A07_reference_tab.png?table=block&amp;id=3fd2ebc0-17ad-8011-a228-f17b878082b4&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<p class="notion-default">用这个方法做的例子就是 FLEXBOARD 上线广告。15 张关键图当参考，15 个镜头的 30 秒用 Seedance 2.5 一次生成，再剪成 26 秒。</p>
+<p><a href="https://www.youtube.com/watch?v=NF00L9NHB_Q" rel="noopener noreferrer">FLEXBOARD 키 이미지를 레퍼런스로 넣어 만든 광고</a></p>
+<h3>第 5 步：把台账搬进提示词，连接之前再看一遍</h3>
+<p class="notion-default">把第 2 步的台账原样搬进提示词。Seedance 提示词最多能写 30,000 字，不用担心长度。画幅、分辨率、时长、High Quality 在 Options 标签里选。黄色的 High Quality 按钮是开启状态，按一下会关闭。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A15ddde12-1526-4b46-b74c-19c2036d8ba5%3A08_seedance_options.png?table=block&amp;id=3fd2ebc0-17ad-807a-8d6d-f50b1afd8c34&amp;cache=v2" alt="减少九镜头诅咒的方法：让镜头不跳的五个步骤" loading="lazy" decoding="async"></figure>
+<p class="notion-default">用 XCONDA 的提示词技能，可以根据关键图搭出 Seedance 提示词，还能把韩语和英语并排修改。用韩语写好台账，只确认英语有没有正确对应就行。</p>
+<p class="notion-default">视频出来后，在连接镜头之前拿着台账再看最后一遍。</p>
+<ul class="todo"><li><input type="checkbox" disabled> 手里的道具和周围道具变了没有</li><li><input type="checkbox" disabled> 服装的颜色、扣子、袖口一样吗</li><li><input type="checkbox" disabled> 背景的窗、门、家具位置一样吗</li><li><input type="checkbox" disabled> 每个镜头的人数对不对</li></ul>
+<p class="notion-default">有跑偏的镜头就只重新生成那个场景。这时也是回到第 3 步改一张关键图再放进去，比只改提示词反复重跑更省积分。</p>
+<p class="notion-default">动线复杂的场景，比如多个人物交错移动的场景，最好先用 Blocking Board 定好人物位置和移动路径。Blocking Board 现在可以在 XCONDA 网页上使用。详细用法会在下一篇单独介绍。</p>
+<h3>总结一下</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>步骤</td><td>做什么</td><td>防住的问题</td></tr><tr><td>1. Turn</td><td>先把空间固定成 360 度场景</td><td>窗框、墙面、家具变化</td></tr><tr><td>2. 状态台账</td><td>提前记下要延续的状态</td><td>战术灯、对讲机、服装变化</td></tr><tr><td>3. FLEXBOARD</td><td>摊开关键图对照台账，只修错的镜头</td><td>视频环节反复重跑</td></tr><tr><td>4. Seedance 参考</td><td>用 @ 指定带状态的图和道具图</td><td>生成过程中状态丢失</td></tr><tr><td>5. 提示词与检查</td><td>把台账搬进提示词，连接前确认</td><td>漏掉的偏差留在成片里</td></tr></tbody></table></div>
+<p class="notion-default">九镜头诅咒不是 AI 偷懒，而是没有人记住。就像片场有场记一样，AI 视频只要有了记录和比对的顺序，镜头就会稳得多。</p>
+<h3>下载 FLEXBOARD 技能</h3>
+<p class="notion-default">这是第 3 步介绍的 FLEXBOARD Claude 技能。下载下方的 zip 文件并在 Claude 里安装。zip 不要解压，直接上传。</p>
+<ol><li>下载下方的 `flexboard-script-prompt.zip`。</li><li>在 Claude 里进入 <strong>Customize &gt; Skills</strong>。</li><li>点 <strong>+</strong>，选择 <strong>Create skill &gt; Upload a skill</strong>，上传 zip 文件。</li><li>在新对话里贴上剧本，输入「帮我做文字分镜」。不带剧本只调用技能，它也会先告诉你需要准备什么。</li></ol>
+<a class="notion-file" href="https://www.notion.so/image/attachment%3A700a9a24-8521-479d-b550-8fb3296c8914%3Aflexboard-skill-guide_%EC%95%95%EC%B6%95%EB%B3%B8.zip?table=block&amp;id=4012ebc0-17ad-8087-a86c-e084c55d6d67&amp;cache=v2" download>flexboard-skill-guide 압축본.zip</a>
+<h3>结语</h3>
+<p class="notion-default">最后用一支按这个顺序做出的成片收尾：全部镜头都用 AI 制作的《冷站》衍生预告片。</p>
+<p><a href="https://www.youtube.com/watch?v=mBHKRZfiMgM" rel="noopener noreferrer">〈콜드사이트〉 스핀오프 트레일러</a></p>
+<p class="notion-default">XCONDA 正在做 FLEXBOARD 上线纪念的 Seedance 折扣。韩国是使用折扣 30% 加价格折扣 10%，最高 40%，到 11 月 6 日上午 11 点（韩国时间）。第 5 步介绍的 XCONDA 提示词技能也正在准备上线 XCONDA 枢纽供下载。</p>
+<p class="notion-default">前往 XCONDA</p>
+<ul><li><strong>咨询：</strong> cubeberry@cuberry.kr</li><li><strong>电话：</strong> +82-70-8095-2302（工作日 10:00～17:00）</li></ul>
+<p><a href="https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/" hreflang="ko">查看韩语原文</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-background-consistency/">AI 视频背景跳动的原因与镜头一致性的解决</a></li><li><a href="../ai-video-motion-ideas/">AI 视频没有动作灵感时可以看的网站</a></li><li><a href="../deepseek-official-harness/">DeepSeek 以 MIT 许可证发布官方 harness</a></li><li><a href="../flux-3-image-release/">Black Forest Labs 发布 FLUX 3 Image</a></li></ul></nav>
+<p class="seo-note">中文页面由 XCONDA 团队翻译。韩语 Hub 为原始版本，如内容有出入请联系 cubeberry@cuberry.kr。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

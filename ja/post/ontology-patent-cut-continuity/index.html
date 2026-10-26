@@ -61,21 +61,21 @@
 <p class="notion-default">そこで AI 映像にも「ここでつながりが飛びます」と先に教えてくれる仕組みが必要だと考え、その方法を特許として出願しました。</p>
 <h3>今回登録された特許</h3>
 <div class="notion-table-wrap"><table><tbody><tr><td>項目</td><td>内容</td></tr><tr><td>特許番号</td><td>第 10-3036790 号</td></tr><tr><td>発明の名称</td><td>オントロジー制約に基づく違反検証および状態遷移伝播を用いたシーケンス型コンテンツ生成手法</td></tr><tr><td>出願日</td><td>2026 年 2 月 12 日</td></tr><tr><td>登録日</td><td>2026 年 10 月 19 日（出願から約 8 か月）</td></tr><tr><td>特許権者</td><td>株式会社 Cubeberry</td></tr><tr><td>発明者</td><td>イ・ジンソ</td></tr></tbody></table></div>
-<h3>やさしく解いた 3 つの原理</h3>
 <figure><img src="https://www.notion.so/image/attachment%3A2efd5d7d-8505-4298-8c40-a8592f421aef%3A05_%ED%8A%B9%ED%97%88%EC%A6%9D__%EB%B0%8F_%EA%B0%9C%EC%8B%9C%EB%81%BC%EC%95%BC_%EC%97%B0%EA%B2%B0_%ED%8A%80%EB%8A%94_%EC%BB%B7%EB%93%A4_%EC%A0%95%EB%A6%AC_%EC%A3%BC%EC%86%8C%EA%B0%80%EB%A6%BC.jpg?table=block&amp;id=4032ebc0-17ad-80e9-a123-e1e908c65318&amp;cache=v2" alt="カットのつながり崩れを捕まえるオントロジー特許、FLEXBOARD 適用計画" loading="lazy" decoding="async"></figure>
+<h3>やさしく解いた 3 つの原理</h3>
 <p class="notion-default">名前が長くて難しく感じますが、現場の言葉に直せば「つながりをシステムが面倒を見る」という意味です。以下は特許名称に込められた概念をわかりやすく説明したもので、特許請求の範囲の法的解釈ではありません。</p>
 <p class="notion-default"><strong>1. ルールの辞書を作ります（オントロジー）</strong><br>人物、小道具、衣装、場所が何で、どんな状態になりうるかを整理しておきます。たとえば「靴は履いている、脱げている、手に持っている」のように。</p>
 <p class="notion-default"><strong>2. 作る前にルール違反を捕まえます（違反検証）</strong><br>「脱ぎ捨てた靴が次のカットでまた足に履かれている」のように前後が合わないカットを、映像を作る前にふるい落とします。</p>
 <p class="notion-default"><strong>3. 変わった状態を後ろのカットに渡します（状態遷移伝播）</strong><br>5 番カットで靴を脱いだなら、6 番から最後のカットまで「靴下だけ」が続くようにします。靴が当たった子どもの額の跡のように、一度生じた変化も後ろのカットまで引き継がれます。</p>
-<h3>FLEXBOARD に載せる計画</h3>
 <figure><img src="https://www.notion.so/image/attachment%3A556db31f-3c30-401e-bee4-2d711e760b7d%3A03_state_propagation_EN.jpg?table=block&amp;id=4032ebc0-17ad-8011-beeb-e1bb3bf854df&amp;cache=v2" alt="カットのつながり崩れを捕まえるオントロジー特許、FLEXBOARD 適用計画" loading="lazy" decoding="async"></figure>
+<h3>FLEXBOARD に載せる計画</h3>
 <p class="notion-default">FLEXBOARD はカットを 1 つだけ選んで作り直せるので便利です。ただし 5 番カットだけを直した結果、6 番から 10 番が直した 5 番と合わなくなることがあります。現場でいえば、1 カットのリテイクのせいで後ろの場面のつながりが次々に飛ぶのと同じです。今回の特許はこの問題を減らす方向で FLEXBOARD に適用する計画です。</p>
 <div class="notion-table-wrap"><table><tbody><tr><td>区分</td><td>内容</td><td>状態</td></tr><tr><td>同じ人物を保つ</td><td>顔固定（Face Lock）でカットが変わっても同じ人物が出る</td><td>現在利用可能</td></tr><tr><td>カット単位の修正</td><td>気に入らないカットだけを選んで再生成</td><td>現在利用可能</td></tr><tr><td>文字コンテの点検</td><td>FLEXBOARD スキルがカット長の合計、動作過多、ジャンプカット、人数を点検</td><td>現在利用可能</td></tr><tr><td>状態表の作成</td><td>カット設計とともに人物・小道具・衣装の状態表を作成</td><td>開発計画</td></tr><tr><td>つながり検査</td><td>キー画像を作る前に前後が合わないカットを表示</td><td>開発計画</td></tr><tr><td>後続カットの通知</td><td>カットを 1 つ直すと影響を受ける後ろのカットを知らせる</td><td>開発計画</td></tr><tr><td>プロンプトへの伝達</td><td>確定した状態表を XCONDA プロンプトスキル経由で Seedance 2.5 プロンプトまで渡す</td><td>開発計画</td></tr></tbody></table></div>
 <p class="notion-default">計画どおりになれば、制作の流れに 1 ステップが加わります。</p>
 <div class="notion-table-wrap"><table><tbody><tr><td>順序</td><td>やること</td><td>使うツール</td></tr><tr><td>1</td><td>シナリオを準備します</td><td>シナリオ、台本</td></tr><tr><td>2</td><td>カットを分けて状態表を書きます</td><td>FLEXBOARD スキル</td></tr><tr><td>3</td><td>つながり検査をします（開発計画）</td><td>FLEXBOARD</td></tr><tr><td>4</td><td>キー画像を作って確認します</td><td>FLEXBOARD</td></tr><tr><td>5</td><td>Seedance 用プロンプトを作ります</td><td>XCONDA プロンプトスキル</td></tr><tr><td>6</td><td>映像を生成します</td><td>Seedance 2.5</td></tr></tbody></table></div>
 <p class="notion-default">要点は 3 番と 4 番です。つながりのエラーを映像ではなく画像の段階で見つければ、映像を回し直すクレジットを節約できます。</p>
-<h3>今年登録された特許は 2 件です</h3>
 <figure><img src="https://www.notion.so/image/attachment%3A84456f8a-1610-40cb-b6da-709f40597237%3A04_patent_flow_development_plan_EN.jpg?table=block&amp;id=4032ebc0-17ad-8061-baf8-df45bdb99c4a&amp;cache=v2" alt="カットのつながり崩れを捕まえるオントロジー特許、FLEXBOARD 適用計画" loading="lazy" decoding="async"></figure>
+<h3>今年登録された特許は 2 件です</h3>
 <p class="notion-default">今年出願した特許 2 件がどちらも登録されました。2 つの特許は見る場所が違います。</p>
 <div class="notion-table-wrap"><table><tbody><tr><td>特許</td><td>見る場所</td><td>登録</td></tr><tr><td>第 10-3002930 号 物理シミュレーションデータの逆算を用いた生成型人工知能コンテンツの多重検証および自動補正システム</td><td>1 つの場面の中の動きが物理的に筋が通るか</td><td>2026 年 8 月 6 日（1 月出願）</td></tr><tr><td>第 10-3036790 号 オントロジー制約に基づく違反検証および状態遷移伝播を用いたシーケンス型コンテンツ生成手法</td><td>場面と場面のつながり</td><td>2026 年 10 月 19 日（2 月出願）</td></tr></tbody></table></div>
 <p class="notion-default">物理逆算の特許は Blocking Board の拡張に適用する開発を計画しています。2 つの特許が言っていることは結局同じです。回して捨てるのではなく、確認してから回すということです。</p>
@@ -94,7 +94,7 @@
 <p class="notion-default">本日も長い記事をお読みいただきありがとうございました！</p>
 <p><a href="https://hub.xconda.ai/post/ontology-patent-cut-continuity/" hreflang="ko">韓国語の原文を見る</a></p>
 </article>
-<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-background-consistency/">AI 映像の背景が飛ぶ理由とカット一貫性の解決</a></li><li><a href="../ai-video-motion-ideas/">AI 映像のモーションアイデアが浮かばないときに見るサイト</a></li><li><a href="../deepseek-official-harness/">DeepSeek が公式ハーネスを MIT ライセンスで公開</a></li><li><a href="../flux-3-image-release/">Black Forest Labs が FLUX 3 Image を公開</a></li></ul></nav>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-9-cut-curse-fix/">9 カットの呪いを減らす方法、カットが飛ばない 5 ステップ</a></li><li><a href="../ai-video-background-consistency/">AI 映像の背景が飛ぶ理由とカット一貫性の解決</a></li><li><a href="../ai-video-motion-ideas/">AI 映像のモーションアイデアが浮かばないときに見るサイト</a></li><li><a href="../deepseek-official-harness/">DeepSeek が公式ハーネスを MIT ライセンスで公開</a></li></ul></nav>
 <p class="seo-note">日本語ページは XCONDA チームが翻訳しています。韓国語ハブが原文であり、内容に相違がある場合は cubeberry@cuberry.kr までご連絡ください。</p>
 </main></div>
     <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.

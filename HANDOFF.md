@@ -756,7 +756,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
-| 진행 중 | **①-1 본문 번역** — 본문이 있는 글 20편 중 **16편** 완료(en·ja·zh). 남은 4편은 장문 블로그·가이드 | 남은 글은 `content/i18n/*.json` 에 `blocks` 추가만 하면 `/en/…` 페이지·사이트맵·hreflang 이 함께 생성 |
+| 진행 중 | **①-1 본문 번역** — 본문이 있는 글 20편 중 **17편** 완료(en·ja·zh). 남은 3편은 장문 블로그 | 남은 글은 `content/i18n/*.json` 에 `blocks` 추가만 하면 `/en/…` 페이지·사이트맵·hreflang 이 함께 생성 |
 
 ---
 

@@ -362,7 +362,8 @@ export function bodyMediaOf(blocks = []) {
   let textBlocks = 0;
   for (const block of flattenBlocks(blocks)) {
     if (MEDIA_BLOCK_TYPES.includes(block.type)) out.push({ after: textBlocks, block });
-    else textBlocks += 1;
+    // 구분선처럼 글자가 없는 블록은 번역 파일에 없으므로 자리 계산에서도 빼야 합니다.
+    else if (blockHasText(block)) textBlocks += 1;
   }
   return out;
 }
