@@ -745,6 +745,298 @@
         }
       ]
     },
+    "post/ai-video-9-cut-curse-fix": {
+      "title": "Nine Cuts Without the Curse: Five Steps That Keep AI Video Consistent",
+      "summary": "Video AI does not remember the previous cut. Five steps: space in Turn, faces and framing in FLEXBOARD, then references and prompts to pin whatever has to stay consistent.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hello, this is Jinseo Lee, CEO of Cubeberry, the team building XCONDA."
+        },
+        {
+          "type": "p",
+          "text": "In the previous post, \"The curse of nine cuts in AI video\", we showed bandages switching to the wrong arm, blood stains disappearing and window frames changing from wood to metal as the video moved from cut to cut. We promised a follow-up with the fix."
+        },
+        {
+          "type": "p",
+          "text": "**Here is the short answer.** Video AI does not remember the previous cut. So do not leave memory to the AI: decide it yourself and restate it on every cut. Space is fixed in Turn, faces and framing in FLEXBOARD, and anything that has to stay consistent is pinned with references and prompts. Everything below can be done with the tools XCONDA already has."
+        },
+        {
+          "type": "h3",
+          "text": "Why does the AI forget the previous cut?"
+        },
+        {
+          "type": "p",
+          "text": "Video AI draws every cut from scratch. It does not keep the fact that the tactical light on the rifle was switched on in the previous cut. Even if the prompt says \"the same Hyunwoo\", the AI simply imagines a picture that fits the name Hyunwoo. So the tactical light goes out, the radio moves to the other shoulder, and a jacket appears over a vest that never had one."
+        },
+        {
+          "type": "p",
+          "text": "On a real drama set a person solves this. The set has a script supervisor. Cut by cut they note the actor's clothing, the rifle in hand, where the radio sits, which layers are worn, even how wet the costume is, and they match it before the next cut. Cuts do not jump because the actor has a good memory, but because somebody writes it down and compares."
+        },
+        {
+          "type": "p",
+          "text": "AI video needs that role too. The five steps below are a way to split the script supervisor's job across XCONDA."
+        },
+        {
+          "type": "h3",
+          "text": "Step 1. Fix the space first: Turn"
+        },
+        {
+          "type": "p",
+          "text": "The window frame that changes on every cut usually comes from letting the AI re-imagine the space each time. Just as a real set is built first and shot inside for days, an AI video needs its space built first."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Put photos of the space into the Reference stage of Turn. You can add Front, Left, Right and Back photos, or use only a Description if you have no photos.",
+            "Press Generate to build a 360-degree virtual set, then set the camera position in 3D Preview.",
+            "Save the viewpoints the cuts need as Freeze Frames. Those images become the background reference for every cut."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "<XCONDA \"TURN\" preview screen>"
+        },
+        {
+          "type": "p",
+          "text": "Here is how we use it on real work. This is the space of our Cold Site spin-off, built in Turn."
+        },
+        {
+          "type": "p",
+          "text": "For the over-the-shoulder scene in Cold Site, build the room the heroine walks into in Turn first, then pull the view from the male lead's side and the view from the heroine's side out of the same set. It is one room with the camera moved, so the window frame has no reason to change."
+        },
+        {
+          "type": "h3",
+          "text": "Step 2. Write the state ledger first"
+        },
+        {
+          "type": "p",
+          "text": "This step is a habit, not a tool. And it has the biggest effect."
+        },
+        {
+          "type": "p",
+          "text": "Before you build the scene, write down briefly what must not change during it. It is the script supervisor's sheet, written in advance. For scene 4 of our Division Zero (outside an abandoned warehouse, a rainy night) it looks like this."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "State",
+              "How to check"
+            ],
+            [
+              "Rifle tactical light",
+              "Fitted to every rifle and on from the first frame",
+              "Is the light visible in every cut?"
+            ],
+            [
+              "Radio",
+              "Fixed to the character's right shoulder strap (screen left in a frontal shot)",
+              "Check the strap position on the key image"
+            ],
+            [
+              "Formation",
+              "Hyunwoo leads, Junki and Agent 1 two metres behind on either side, Agent 2 3.5 metres behind",
+              "Check the four positions in the long shot"
+            ],
+            [
+              "Costume",
+              "White shirt, black tie, black vest, black trousers, combat boots (no jacket)",
+              "Check colour and layers in every cut"
+            ],
+            [
+              "Weather",
+              "Heavy rain, early winter so no breath vapour",
+              "Is any breath vapour showing?"
+            ],
+            [
+              "Red hairline crack",
+              "Appears only in the last cut of scene 4, absent before that",
+              "Did it appear early in an earlier cut?"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "One thing to be careful about here. **Decide whether left and right mean \"the character's\" or \"the screen's\" and write that down.** A character's right shoulder strap appears on screen left in a frontal shot. Mix the two and people get confused, and the AI gets more confused. We write both: \"the character's right shoulder strap (screen left in a frontal shot)\"."
+        },
+        {
+          "type": "p",
+          "text": "This ledger is used as a checklist in steps 3 and 4, and copied into the prompt in step 5."
+        },
+        {
+          "type": "h3",
+          "text": "Step 3. Lay the key images out on one screen and compare: FLEXBOARD"
+        },
+        {
+          "type": "p",
+          "text": "Before you run video, pull every cut as an image first. When one cut is wrong the video has to be re-run whole, but an image only needs that one frame pulled again."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Put the scenario in and FLEXBOARD splits it into cuts and makes a key image for each. Up to 36 cuts fit on one screen.",
+            "Attach the cast photos as references and the same face runs from the first cut to the last. The Turn images from step 1 go in as background references too.",
+            "In the Sheet view, see all cuts at once and compare them with the state ledger from step 2."
+          ]
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Open only the wrong cuts in the Panel view and pull them again. Leave the rest alone."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Checking nine cuts as video takes ages just to find the wrong one. Laid out as images, it takes seconds. The point of this step is to keep the \"15 to 20 minutes of fixing per cut\" from the first post out of the video stage. You can also watch the Cold Site trailer being designed cut by cut in FLEXBOARD."
+        },
+        {
+          "type": "callout",
+          "icon": "💡",
+          "text": "**If splitting a scenario into cuts is hard: the FLEXBOARD Claude skill**\n\nWriting the prompt that goes into FLEXBOARD from scratch is not easy. We packaged the method we use in production as a Claude skill. Install the skill in Claude and paste in a scenario, and it builds two things at once.\n\n\n\nThe order follows a real production. First it locks the cast, background and prop references, then splits the cuts, and finally hands you a copy-ready file after your confirmation. It also checks that the cut lengths add up, that no single cut is crammed with too much action, and that the number of characters is right.\n\nYou can download the FLEXBOARD skill from \"Download the FLEXBOARD skill\" further down this article."
+        },
+        {
+          "type": "h3",
+          "text": "Step 4. Feed in references that carry the state: Seedance 2.5"
+        },
+        {
+          "type": "p",
+          "text": "Once the key images are final you move to video generation in XCONDA and use Seedance 2.5. What matters here is not feeding in \"a photo of the character\" but **\"an image that has the state drawn into it\"**. On Division Zero we do not just add Hyunwoo's face: we add the full-body board with the white shirt, black tie, black plate carrier vest and the rifle with its tactical light on."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Choose the reference mode (Ref-to-video). You can attach up to 30 images, 10 videos and 10 audio files at once.",
+            "References stay uploaded and can be switched on and off. Only the images ticked (check mark) in the Reference tab are numbered @Image1, @Image2 and enter generation. A cross means the image is kept but inactive for this run. Switch on only the references a cut needs and leave the rest waiting.",
+            "Cast, props and spaces you use often can be saved to the Asset Library and loaded straight into other scenes. On Division Zero we save the character boards for Hyunwoo and Minhee and load them scene by scene.",
+            "Add the key image you finalised in FLEXBOARD. On Division Zero, the cut that shows the diamond formation - Hyunwoo at the front, Junki and Agent 1 two metres behind on either side, Agent 2 covering 3.5 metres back - is the evidence of the state.",
+            "If a prop matters, add an image of the prop alone. The tactical light has to be on from the first frame, and the radio has to sit on the right shoulder strap. Details like these change less from cut to cut when you add a close-up of the rifle and of the strap as separate images.",
+            "In the prompt, type @ to say which reference is what. On Division Zero we split face and costume. For example: \"@image1: Hyunwoo's face and hair only. @image2: Hyunwoo's costume only. The face follows @image1. @image4: only the seats and materials of the car interior, do not reference people or lighting\" - every reference says what alone to reference. Split the roles like this and face, costume and background do not bleed into each other."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The FLEXBOARD launch advert was made this way. Fifteen key images went in as references, fifteen cuts of 30 seconds were generated in Seedance 2.5 in one run, then trimmed to 26 seconds."
+        },
+        {
+          "type": "h3",
+          "text": "Step 5. Move the ledger into the prompt and look once more before you assemble"
+        },
+        {
+          "type": "p",
+          "text": "Copy the ledger from step 2 into the prompt. A Seedance prompt takes up to 30,000 characters, so length is not a concern. Aspect ratio, resolution, duration and High Quality are chosen in the Options tab. The yellow High Quality button is on, and pressing it switches it off."
+        },
+        {
+          "type": "p",
+          "text": "With the XCONDA prompt skill you can build a Seedance prompt from the key image and edit Korean and English side by side. Write the ledger in Korean and just confirm that the English carried it over."
+        },
+        {
+          "type": "p",
+          "text": "When the video comes back, hold the ledger and look once more before you join the cuts."
+        },
+        {
+          "type": "todo",
+          "items": [
+            "Are the props in hand and around them unchanged?",
+            "Are the costume colour, buttons and sleeves the same?",
+            "Are the windows, doors and furniture in the background in the same place?",
+            "Is the number of people right in every cut?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "If a cut is off, regenerate only that scene. Here too it costs fewer credits to go back to step 3, fix one key image and feed it in again than to rewrite the prompt and run it several times."
+        },
+        {
+          "type": "p",
+          "text": "For scenes with complicated blocking - several characters crossing paths, for example - it helps to set the positions and paths first in the Blocking Board. The Blocking Board is now available on the web in XCONDA. We will cover how to use it in a separate post."
+        },
+        {
+          "type": "h3",
+          "text": "In summary"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "What you do",
+              "What it prevents"
+            ],
+            [
+              "1. Turn",
+              "Fix the space as a 360-degree set first",
+              "Window frames, walls and furniture changing"
+            ],
+            [
+              "2. State ledger",
+              "Record what has to stay the same in advance",
+              "Tactical lights, radios and costumes changing"
+            ],
+            [
+              "3. FLEXBOARD",
+              "Lay out key images, compare with the ledger, fix only the wrong cuts",
+              "Repeated regeneration at the video stage"
+            ],
+            [
+              "4. Seedance references",
+              "Point at state-carrying images and prop images with @",
+              "State dropping out during generation"
+            ],
+            [
+              "5. Prompt and check",
+              "Copy the ledger into the prompt and check before joining",
+              "Missed mismatches surviving into the final cut"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The curse of nine cuts is not the AI being lazy. It comes from nobody remembering. Just as a drama set has a script supervisor, AI video needs an order for recording and comparing - and the cuts jump far less."
+        },
+        {
+          "type": "h3",
+          "text": "Download the FLEXBOARD skill"
+        },
+        {
+          "type": "p",
+          "text": "This is the FLEXBOARD Claude skill from step 3. Download the zip file below and install it in Claude. Do not unzip it: upload the zip as it is."
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Download `flexboard-script-prompt.zip` below.",
+            "In Claude, open **Customize > Skills**.",
+            "Press **+**, choose **Create skill > Upload a skill**, and upload the zip file.",
+            "In a new chat, paste in a scenario and type \"make me a written storyboard\". If you call the skill without a scenario it first tells you what to prepare."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "To close"
+        },
+        {
+          "type": "p",
+          "text": "I will finish with one finished piece made this way: the Cold Site spin-off trailer, every cut made with AI."
+        },
+        {
+          "type": "p",
+          "text": "XCONDA is currently running a Seedance discount to mark the FLEXBOARD launch. In Korea it is 30% off usage plus 10% off price, up to 40%, until 11:00 on 6 November (Korea time). The XCONDA prompt skill from step 5 is also being prepared for download from the XCONDA Hub."
+        },
+        {
+          "type": "p",
+          "text": "Go to XCONDA"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Enquiries:** cubeberry@cuberry.kr",
+            "**Phone:** +82-70-8095-2302 (weekdays 10:00-17:00)"
+          ]
+        }
+      ]
+    },
     "post/ai-video-background-consistency": {
       "title": "Why AI video backgrounds jump — and how to hold cuts consistent",
       "summary": "Why the background changes from cut to cut in AI video, and how to solve cut consistency, drawing on the ByteDance workshop and the Cubeberry pipeline.",

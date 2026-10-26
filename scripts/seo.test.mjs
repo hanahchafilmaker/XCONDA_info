@@ -1026,6 +1026,7 @@ test("번역 블록 구조가 원문과 다르면 빌드 경고를 남긴다", (
 test("2단 배치는 펼쳐서 글만 번역하고 이미지·영상은 원문 자리에 그대로 넣는다", () => {
   const ko = [
     { type: "p", text: [{ text: "앞 문단" }] },
+    { type: "divider" }, // 글자가 없는 블록은 번역 파일에 없으므로 이미지 자리 계산에서 빠집니다
     {
       type: "column_list",
       children: [
@@ -1037,7 +1038,7 @@ test("2단 배치는 펼쳐서 글만 번역하고 이미지·영상은 원문 �
     { type: "p", text: [{ text: "뒤 문단" }] },
   ];
   const flat = flattenBlocks(ko);
-  assert.deepEqual(flat.map((b) => b.type), ["p", "img", "p", "video", "p"]);
+  assert.deepEqual(flat.map((b) => b.type), ["p", "divider", "img", "p", "video", "p"]);
   const media = bodyMediaOf(ko);
   assert.deepEqual(media.map((m) => [m.after, m.block.type]), [[1, "img"], [2, "video"]]);
 
