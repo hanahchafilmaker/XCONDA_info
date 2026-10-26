@@ -319,7 +319,16 @@ pagesFixture["15d20857-0000-4000-8000-000000000001"] = {
   },
 };
 
-const result = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE });
+// 번역은 일부러 빈 값을 넘깁니다 — 실제 content/i18n/*.json 은 번역이 늘어나는 파일이라,
+// 이 파일 목록·사이트맵 테스트가 번역 진행 상황에 흔들리면 안 됩니다.
+// 번역 페이지 자체는 아래의 localizedPages 테스트가 따로 확인합니다.
+const result = renderSeoSite({
+  rows: fixtureRows,
+  pages: pagesFixture,
+  template: TEMPLATE,
+  siteUrl: SITE,
+  translations: {},
+});
 const pageOf = (rel) => result.files.get(rel);
 
 test("주소 조건을 통과한 글만 파일이 만들어지고, 나머지는 사유와 함께 제외된다", () => {
@@ -417,7 +426,13 @@ test("홈 index.html 은 한국어 기본 메타를 한 번만 갖고, 크롤러
 });
 
 test("같은 입력으로 다시 만들어도 결과가 같다 (멱등)", () => {
-  const again = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: result.files.get("index.html"), siteUrl: SITE });
+  const again = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: result.files.get("index.html"),
+    siteUrl: SITE,
+    translations: {},
+  });
   assert.equal(again.files.get("index.html"), result.files.get("index.html"));
   assert.equal(again.files.get("post/opus-5-5-trending/index.html"), result.files.get("post/opus-5-5-trending/index.html"));
   assert.equal(again.files.get("sitemap.xml"), result.files.get("sitemap.xml"));
@@ -942,6 +957,35 @@ test("번역 본문이 있으면 번역 페이지에 본문·이미지가 렌더
   const en = out.files.get("en/qna/refund-policy/index.html");
   assert.match(en, /<h2>Refund window<\/h2>/);
   assert.match(en, /<p[^>]*>Seven days from payment\.<\/p>/);
+});
+
+test("본문이 있으면 요약을 첫 문단으로 중복 출력하지 않는다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {
+      en: {
+        ...EN_FIXTURE.en,
+        entries: {
+          "qna/refund-policy": {
+            title: "How do refunds work?",
+            summary: "Ask within 7 days for unused credits.",
+            blocks: [{ type: "p", text: "Seven days from payment." }],
+          },
+        },
+      },
+    },
+  });
+  const en = out.files.get("en/qna/refund-policy/index.html");
+  const body = en.slice(en.indexOf("<article>"), en.indexOf("</article>"));
+  const summaryHits = body.split("Ask within 7 days for unused credits.").length - 1;
+  assert.equal(summaryHits, 0, "본문이 있으면 요약은 메타 설명으로만 씁니다");
+  assert.match(body, /Seven days from payment\./);
+  // 메타 설명에는 남아 있어야 합니다
+  assert.match(en, /<meta name="description" content="Ask within 7 days for unused credits\."/);
 });
 
 test("번역 본문 형식이 틀리면 페이지에 넣지 않고 경고를 남긴다", () => {

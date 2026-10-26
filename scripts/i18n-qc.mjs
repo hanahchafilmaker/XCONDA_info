@@ -115,6 +115,17 @@ export const BRAND_TOKENS = [
   "AWS",
   "Firebase",
   "Google",
+  "Black Forest Labs",
+  "FLUX",
+  "DeepSeek",
+  "Hugging Face",
+  "Skillry",
+  "Lemo-Opuscar",
+  "OPUSCAR",
+  "Clawd",
+  "Kling",
+  "veo",
+  "Nano Banana",
 ];
 
 /** 통화 표기 — 원문에 통화가 있으면 번역문에도 있어야 합니다. */
@@ -190,13 +201,24 @@ export const LATIN_ALLOW = [
   "Cut ZIP",
 ];
 
-function ratioFlag(ko, tr) {
+/**
+ * 길이 비율. 일본어·중국어는 같은 내용을 한국어보다 훨씬 적은 글자로 씁니다
+ * (한자 한 자에 담기는 정보량이 크기 때문). 가중치 없이 비교하면 짧은 제목에서
+ * 거의 항상 '너무 짧음' 오탐이 납니다.
+ */
+const DENSITY = { ja: 1.7, zh: 1.7 };
+
+function ratioFlag(ko, tr, lang) {
   const a = [...ko].length;
-  const b = [...tr].length;
+  const raw = [...tr].length;
   if (!a) return null;
-  const r = b / a;
-  if (r < 0.45) return { kind: "short", ratio: r };
-  if (r > 2.6) return { kind: "long", ratio: r };
+  const w = DENSITY[lang] ?? 1;
+  // 짧음: 글자당 정보량 가중치를 적용 (한자·가나가 같은 내용을 더 적게 씁니다)
+  const shortRatio = (raw * w) / a;
+  if (shortRatio < 0.45) return { kind: "short", ratio: shortRatio };
+  // 김: 가중치를 빼고 원래 글자 수로 비교 (가나가 풀어 쓰는 것은 정상)
+  const longRatio = raw / a;
+  if (longRatio > 2.6) return { kind: "long", ratio: longRatio };
   return null;
 }
 
@@ -295,7 +317,7 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
 
     // 7) 길이 비율
     if (ko.summary) {
-      const flag = ratioFlag(ko.summary, String(tr.summary ?? ""));
+      const flag = ratioFlag(ko.summary, String(tr.summary ?? ""), lang);
       if (flag) warnings.push({ key, kind: `length-${flag.kind}`, detail: `${flag.ratio.toFixed(2)}×` });
     }
   }
@@ -359,7 +381,7 @@ export function reportMarkdown(results, { date, dicts, notes = "" }) {
     "- `currency-*`: 원문에 통화가 있는데 번역문에 통화 표기가 없음",
     "- `latin-run`: 일본어·중국어에 번역되지 않은 영어 문장(브랜드명은 제외)",
     "- `duplicate-title`: 같은 언어 안에서 제목 중복",
-    "- `length-short` / `length-long`: 원문 대비 0.45× 미만 또는 2.6× 초과",
+    "- `length-short` / `length-long`: 원문 대비 0.45× 미만 또는 2.6× 초과 (일본어·중국어는 짧음 판정에만 글자당 정보량 1.7배 가중)",
     "- `brand-case`: 브랜드 표기 대소문자 혼용",
     "");
   return lines.join("\n");

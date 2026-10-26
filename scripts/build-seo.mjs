@@ -362,7 +362,9 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
           },
         ]),
       });
-      // 본문 번역(blocks)이 있으면 요약 아래에 싣습니다. 이미지는 한국어 원문 위치를 그대로 따릅니다.
+      // 본문 번역(blocks)이 있으면 한국어 원문과 같은 구조(h1·메타·본문)로 싣습니다.
+      // 이미지는 한국어 원문 위치를 그대로 따릅니다. 요약은 메타 설명으로만 쓰고,
+      // 본문이 있으면 첫 문단을 요약으로 중복 출력하지 않습니다(Q&A 는 본문이 없어 요약이 곧 답변).
       const bodyProblems = localizedBlockProblems(it.tr.blocks);
       for (const problem of bodyProblems) missing.push(`${I18N_DIR}/${code}.json › ${it.key} ${problem}`);
       const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, it.record.bodyImages);
@@ -375,7 +377,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `<article>`,
         `<h1>${escapeHtml(title)}</h1>`,
         `<p class="seo-meta">${escapeHtml(lang.name)} · ${escapeHtml(ui.brand ?? "XCONDA Hub")}</p>`,
-        paragraphsHtml(description),
+        bodyHtml ? "" : paragraphsHtml(description),
         bodyHtml,
         `<p><a href="${escapeHtml(koUrl)}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
         `</article>`,
