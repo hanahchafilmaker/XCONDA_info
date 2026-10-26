@@ -90,14 +90,24 @@ const metaOf = (html, prop) => {
   return m ? decode(m[1]) : "";
 };
 
-/** 카드가 필요한 페이지인지 판단하고 카드 정보를 만듭니다. */
-function planCard(page, html, defaultUrl, langCardPrefix) {
+/**
+ * 카드가 필요한 페이지인지 판단하고 카드 정보를 만듭니다.
+ *
+ * Q&A 개별 글(219편 × 4언어 = 876장, 약 25~30MB)은 기본으로 **만들지 않습니다** —
+ * 목록 카드가 이미 언어별로 있고, 저장소·전송 비용이 이득보다 큽니다.
+ * 필요하면 `npm run og:cards -- --include-qna` 로 켤 수 있습니다.
+ * @param {{code: string, path: string}} page
+ * @param {string} html
+ * @param {{defaultUrl?: string, langCardPrefix?: string, includeQna?: boolean}} [opts]
+ */
+export function planCard(page, html, { defaultUrl = "", langCardPrefix = "", includeQna = false } = {}) {
   const image = metaOf(html, "og:image");
   const usesDefault = !image || image === defaultUrl || image.startsWith(langCardPrefix);
   if (!usesDefault) return null;
   const segs = page.path.split("/").filter(Boolean);
   const kind = segs.length === 0 ? "home" : segs.length === 1 ? "section" : "article";
-  if (kind === "article" && !ARTICLE_PREFIXES.includes(segs[0])) return null;
+  const allowed = includeQna ? [...ARTICLE_PREFIXES, "qna"] : ARTICLE_PREFIXES;
+  if (kind === "article" && !allowed.includes(segs[0])) return null;
 
   const title = metaOf(html, "og:title");
   if (!title) return null;
@@ -167,6 +177,8 @@ function runBuild(label) {
 }
 
 function main() {
+  const args = process.argv.slice(2);
+  const includeQna = args.includes("--include-qna");
   console.log("· 1/4 현재 상태로 빌드 (페이지 HTML 확보)");
   runBuild("빌드");
 
@@ -180,11 +192,11 @@ function main() {
     const page = pageOf(rel);
     if (!page) continue;
     const html = fs.readFileSync(path.join(ROOT, rel), "utf8");
-    const card = planCard(page, html, defaultUrl, langCardPrefix);
+    const card = planCard(page, html, { defaultUrl, langCardPrefix, includeQna });
     if (card) plans.push(card);
   }
   plans.sort((a, b) => a.key.localeCompare(b.key));
-  console.log(`· 2/4 카드 대상 ${plans.length}장 (언어 홈 · 목록 · 커버 없는 글)`);
+  console.log(`· 2/4 카드 대상 ${plans.length}장 (언어 홈 · 목록 · 커버 없는 글${includeQna ? " · Q&A 개별 글" : ""})`);
   if (!plans.length) {
     console.log("  카드가 필요한 페이지가 없습니다 — 그대로 둡니다");
     return;
@@ -236,4 +248,5 @@ function main() {
   console.log(`✔ 언어별 카드 ${plans.length}장 · ${Object.entries(byLang).map(([c, n]) => `${c} ${n}`).join(" · ")}`);
 }
 
-main();
+// 직접 실행할 때만 동작합니다(테스트에서 planCard 만 가져다 쓸 수 있게).
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

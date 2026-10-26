@@ -68,11 +68,17 @@ export function progressOf({ sources, dict, qc }) {
   const count = (state) => items.filter((i) => i.state === state).length;
   const total = items.length;
   const reviewed = count("reviewed");
+  // 번역이 없는 원문 — 노션 동기화로 **새 글이 들어왔는데 번역이 없을 때** 여기에 나타납니다.
+  // (주소·제목을 함께 남겨야 운영자가 무엇을 번역해야 하는지 바로 압니다)
+  const missingList = items
+    .filter((i) => i.state === "missing")
+    .map((i) => ({ key: i.key, title: sources.get(i.key)?.title ?? "" }));
   return {
     total,
     reviewed,
     draft: count("draft"),
     missing: count("missing"),
+    missingList,
     orphan,
     percent: total ? Math.round((reviewed / total) * 100) : 0,
     errors: (qc?.errors ?? []).length,
@@ -110,6 +116,37 @@ const bar = (percent, width = 20) => {
   return `${"█".repeat(filled)}${"░".repeat(Math.max(0, width - filled))} ${String(percent).padStart(3)}%`;
 };
 
+/**
+ * GitHub Actions 실행 요약용 **짧은** Markdown.
+ *
+ *   npm run i18n:progress -- --summary >> "$GITHUB_STEP_SUMMARY"
+ *
+ * 파일을 쓰지 않고 표준출력으로만 냅니다(CI 요약은 저장소를 바꾸지 않아야 합니다).
+ * 전체 리포트는 `reports/i18n-progress-<날짜>.md` 에 남습니다.
+ */
+export function summaryMarkdown(byLang, { date, overall: all } = {}) {
+  const lines = [`### 번역 검수 진행률 — ${date}`, ""];
+  lines.push(
+    `전체 **${all?.total ?? 0}항목**(95 × ${all?.languages ?? 0}언어) · 검수 완료 **${all?.reviewed ?? 0}** (${all?.percent ?? 0}%) · 초안 ${all?.draft ?? 0} · 번역 없음 ${all?.missing ?? 0}`,
+    "",
+    "| 언어 | 완료 / 항목 | 진행률 | QC 오류 | QC 경고 |",
+    "|---|---|---|---|---|",
+  );
+  for (const [lang, p] of Object.entries(byLang)) {
+    lines.push(`| ${lang} | ${p.reviewed} / ${p.total} | ${p.percent}% | ${p.errors} | ${p.warnings}${p.suppressed ? ` (허용 ${p.suppressed})` : ""} |`);
+  }
+  const untranslated = Object.entries(byLang).flatMap(([lang, p]) => (p.missingList ?? []).map((m) => ({ lang, ...m })));
+  if (untranslated.length) {
+    lines.push("", `**번역이 없는 원문 ${untranslated.length}건** — 새 글이 들어왔는지 확인하세요:`, "");
+    for (const u of untranslated.slice(0, 10)) lines.push(`- \`${u.key}\` (${u.lang}) ${u.title.slice(0, 60)}`);
+    if (untranslated.length > 10) lines.push(`- … 남은 ${untranslated.length - 10}건은 \`reports/i18n-progress-*.md\` 참고`);
+  } else {
+    lines.push("", "번역이 없는 원문 없음 — 모든 원문 글에 3언어 번역이 있습니다.");
+  }
+  lines.push("");
+  return lines.join("\n");
+}
+
 /** 사람이 읽는 리포트(Markdown). */
 export function progressMarkdown(byLang, { date, overall: all } = {}) {
   const lines = [];
@@ -142,6 +179,16 @@ export function progressMarkdown(byLang, { date, overall: all } = {}) {
       lines.push(`| ${t.lang} | \`${t.key}\` | ${t.state === "missing" ? "번역 없음" : "초안"} | ${t.errors} | ${t.warnings} |`);
     }
     if (todo.length > 40) lines.push(`| … | 남은 ${todo.length - 40}건은 \`npm run i18n:qc -- --write\` 리포트를 보세요 | | | |`);
+    lines.push("");
+  }
+
+  const untranslated = Object.entries(byLang).filter(([, p]) => p.missingList?.length);
+  if (untranslated.length) {
+    lines.push("## 번역이 없는 원문 — 새로 들어온 글부터", "");
+    lines.push("| 언어 | 항목 | 한국어 제목 |", "|---|---|---|");
+    const rows = untranslated.flatMap(([lang, p]) => p.missingList.map((m) => ({ lang, ...m })));
+    for (const r of rows.slice(0, 40)) lines.push(`| ${r.lang} | \`${r.key}\` | ${r.title.replace(/\|/g, "\\|").slice(0, 60)} |`);
+    if (rows.length > 40) lines.push(`| … | 남은 ${rows.length - 40}건 | |`);
     lines.push("");
   }
 
@@ -179,6 +226,12 @@ function main() {
     byLang[lang] = progressOf({ sources, dict, qc });
   }
   const all = overall(byLang);
+
+  // CI 실행 요약 — 파일을 쓰지 않고 표준출력만 합니다.
+  if (args.includes("--summary")) {
+    process.stdout.write(summaryMarkdown(byLang, { date, overall: all }));
+    return;
+  }
 
   if (!args.includes("--quiet")) {
     console.log(`번역 검수 진행률 — ${date}`);
