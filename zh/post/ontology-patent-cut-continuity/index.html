@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hans" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划 | XCONDA Hub — 问答、指南与公告</title>
+    <meta name="description" content="AI 视频记不住前一个镜头，切换镜头时衔接就会跳：脱下的鞋又穿上了，淋湿的人物干着。本文展示一支广告中实际跳掉的镜头，并整理新注册的 Ontology 专利原理与在 FLEXBOARD 的应用计划。" />
+    <link rel="canonical" href="https://hub.xconda.ai/zh/post/ontology-patent-cut-continuity/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/ontology-patent-cut-continuity/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/ontology-patent-cut-continuity/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/ontology-patent-cut-continuity/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/ontology-patent-cut-continuity/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/ontology-patent-cut-continuity/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划" />
+    <meta property="og:description" content="AI 视频记不住前一个镜头，切换镜头时衔接就会跳：脱下的鞋又穿上了，淋湿的人物干着。本文展示一支广告中实际跳掉的镜头，并整理新注册的 Ontology 专利原理与在 FLEXBOARD 的应用计划。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ontology-patent-cut-continuity.jpg" />
+    <meta property="og:url" content="https://hub.xconda.ai/zh/post/ontology-patent-cut-continuity/" />
+    <meta property="article:published_time" content="2026-10-24" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划" />
+    <meta name="twitter:description" content="AI 视频记不住前一个镜头，切换镜头时衔接就会跳：脱下的鞋又穿上了，淋湿的人物干着。本文展示一支广告中实际跳掉的镜头，并整理新注册的 Ontology 专利原理与在 FLEXBOARD 的应用计划。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ontology-patent-cut-continuity.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/zh/post/ontology-patent-cut-continuity/#webpage","url":"https://hub.xconda.ai/zh/post/ontology-patent-cut-continuity/","name":"捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划","inLanguage":"zh-Hans","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="zh">
+<nav aria-label="breadcrumb"><a href="../../">首页</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/ontology-patent-cut-continuity/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/ontology-patent-cut-continuity/" hreflang="en">English</a><a href="https://hub.xconda.ai/ja/post/ontology-patent-cut-continuity/" hreflang="ja">日本語</a><strong aria-current="true">中文</strong></nav>
+<article>
+<h1>捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划</h1>
+<p class="seo-meta">中文 · XCONDA Hub</p>
+<p class="notion-default">大家好，这里是 XCONDA。</p>
+<aside class="callout notion-default"><p>📌 <strong>要点</strong> AI 视频记不住前一个镜头，所以切换时会脱下的鞋子又穿上了、淋湿的人物干着。Cubeberry 已于 2026 年 10 月 19 日注册了处理该问题的 Ontology 专利（第 10-3036790 号）。本文整理一支广告中衔接跳掉的实例、专利的原理以及在 FLEXBOARD 的应用计划。</p></aside>
+<aside class="callout notion-default"><p>🛠️ <strong>先说明一下</strong> 本文介绍的「衔接检查」功能属于开发计划，目前尚未应用到 FLEXBOARD，上线时间也未确定。现在可用的功能与计划中的功能已在下方表格中区分。</p></aside>
+<p class="notion-default"><strong>适合人群</strong>: 因 AI 视频每个镜头道具或服装变化而烦恼的人；制作电视剧、广告这类镜头连续的视频的人；好奇 Cubeberry 的专利到底是什么的人</p>
+<h3>11 秒和 23 秒，鞋子回来了</h3>
+<p class="notion-default">上面这支广告里有衔接跳掉的地方。把同一支广告的两个画面并排看一下。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>区间</td><td>画面</td><td>大孩子的脚</td></tr><tr><td>11 秒</td><td>用鱼眼镜头把两个孩子一起收进画面的镜头</td><td>两只脚都只穿袜子，鞋放在地上</td></tr><tr><td>23 秒</td><td>举起传单的最后一个镜头</td><td>一只脚穿着鞋</td></tr></tbody></table></div>
+<p class="notion-default">中间并没有重新穿鞋的画面。这不是演出意图，而是衔接错误。它产生于一次性生成 30 秒的过程，因为这是广告，就这样播出了。</p>
+<p class="notion-default">这类事情之所以发生，是因为视频生成 AI 的工作方式记不住前一个镜头发生的事——它把每个镜头都当作第一次看到场景来画——所以不分模型都可能出现。</p>
+<h3>在电视剧里这叫作「衔接」</h3>
+<p class="notion-default">打造 XCONDA 的 Cubeberry 李珍瑞代表，作为电视剧 PD 执导了 20 年。在现场最小心的事情之一就是衔接。</p>
+<p class="notion-default">原本左手拿杯子的演员，下一个镜头变成右手拿，镜头切换的瞬间画面就会跳。观众虽然不知道原因，也会觉得「咦，有点怪」。现场漏掉的衔接会在剪辑室暴露，那时再补拍也很难。在电视剧里，这是不允许出现的错误。</p>
+<p class="notion-default">所以我们认为 AI 视频也需要一个能先说「这里衔接会跳」的装置，并把该方法申请为专利。</p>
+<h3>本次注册的专利</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>项目</td><td>内容</td></tr><tr><td>专利号</td><td>第 10-3036790 号</td></tr><tr><td>发明名称</td><td>利用基于本体约束的违规验证及状态转移传播的序列型内容生成方法</td></tr><tr><td>申请日</td><td>2026 年 2 月 12 日</td></tr><tr><td>注册日</td><td>2026 年 10 月 19 日（申请后约 8 个月）</td></tr><tr><td>专利权人</td><td>Cubeberry 株式会社</td></tr><tr><td>发明人</td><td>李珍瑞</td></tr></tbody></table></div>
+<h3>用通俗的话解释三条原理</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A2efd5d7d-8505-4298-8c40-a8592f421aef%3A05_%ED%8A%B9%ED%97%88%EC%A6%9D__%EB%B0%8F_%EA%B0%9C%EC%8B%9C%EB%81%BC%EC%95%BC_%EC%97%B0%EA%B2%B0_%ED%8A%80%EB%8A%94_%EC%BB%B7%EB%93%A4_%EC%A0%95%EB%A6%AC_%EC%A3%BC%EC%86%8C%EA%B0%80%EB%A6%BC.jpg?table=block&amp;id=4032ebc0-17ad-80e9-a123-e1e908c65318&amp;cache=v2" alt="捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划" loading="lazy" decoding="async"></figure>
+<p class="notion-default">名字很长让人觉得难，但换成现场的说法，就是「系统帮忙看着衔接」。以下是把专利名称中的概念讲得易懂的说明，并非对专利权利要求范围的法律解释。</p>
+<p class="notion-default"><strong>1. 建立规则词典（Ontology）</strong><br>整理人物、道具、服装、地点是什么，以及可以有怎样的状态。例如「鞋子是穿着的、脱下的、拿在手里的」。</p>
+<p class="notion-default"><strong>2. 在制作前抓出规则违规（违规验证）</strong><br>把「踢掉的鞋在下一个镜头又穿在脚上」这类前后不一致的镜头，在生成视频之前筛掉。</p>
+<p class="notion-default"><strong>3. 把改变的状态传给后面的镜头（状态转移传播）</strong><br>如果在第 5 个镜头脱了鞋，就让第 6 个到最后一个镜头都保持「只穿袜子」。像被鞋打到的孩子额头上的痕迹一样，一旦发生的变化也会延续到后面的镜头。</p>
+<h3>接入 FLEXBOARD 的计划</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A556db31f-3c30-401e-bee4-2d711e760b7d%3A03_state_propagation_EN.jpg?table=block&amp;id=4032ebc0-17ad-8011-beeb-e1bb3bf854df&amp;cache=v2" alt="捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划" loading="lazy" decoding="async"></figure>
+<p class="notion-default">FLEXBOARD 可以只挑一个镜头重做，很方便。但只改了第 5 个镜头后，第 6 到第 10 个镜头可能就与改好的第 5 个对不上了。换成现场的说法，就是一个镜头重拍导致后面场景的衔接接连跳掉。本次专利计划以减轻该问题的方向应用到 FLEXBOARD。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>区分</td><td>内容</td><td>状态</td></tr><tr><td>保持同一人物</td><td>用脸部固定（Face Lock）让镜头切换时仍是同一人物</td><td>当前可用</td></tr><tr><td>按镜头修改</td><td>只挑选不满意的镜头重新生成</td><td>当前可用</td></tr><tr><td>文字分镜检查</td><td>FLEXBOARD 技能检查镜头总时长、动作过多、跳切、人数</td><td>当前可用</td></tr><tr><td>状态表编写</td><td>在设计镜头的同时编写人物、道具、服装的状态表</td><td>开发计划</td></tr><tr><td>衔接检查</td><td>在生成关键画面之前标出前后不一致的镜头</td><td>开发计划</td></tr><tr><td>后续镜头提示</td><td>修改一个镜头时告知受影响的后续镜头</td><td>开发计划</td></tr><tr><td>传给提示词</td><td>把确定的状态表经 XCONDA 提示词技能传到 Seedance 2.5 提示词</td><td>开发计划</td></tr></tbody></table></div>
+<p class="notion-default">如果按计划落地，制作流程会多出一个步骤。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>顺序</td><td>做什么</td><td>使用的工具</td></tr><tr><td>1</td><td>准备剧本</td><td>剧本、脚本</td></tr><tr><td>2</td><td>拆分镜头并编写状态表</td><td>FLEXBOARD 技能</td></tr><tr><td>3</td><td>做衔接检查（开发计划）</td><td>FLEXBOARD</td></tr><tr><td>4</td><td>制作并确认关键画面</td><td>FLEXBOARD</td></tr><tr><td>5</td><td>制作 Seedance 提示词</td><td>XCONDA 提示词技能</td></tr><tr><td>6</td><td>生成视频</td><td>Seedance 2.5</td></tr></tbody></table></div>
+<p class="notion-default">关键是第 3 和第 4 步。在图像阶段而不是视频阶段发现衔接错误，可以省下重跑视频的点数。</p>
+<h3>今年注册的专利有两项</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A84456f8a-1610-40cb-b6da-709f40597237%3A04_patent_flow_development_plan_EN.jpg?table=block&amp;id=4032ebc0-17ad-8061-baf8-df45bdb99c4a&amp;cache=v2" alt="捕捉镜头衔接错误的 Ontology 专利，以及 FLEXBOARD 应用计划" loading="lazy" decoding="async"></figure>
+<p class="notion-default">今年申请的两项专利都已注册。两项专利看的地方不同。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>专利</td><td>看的地方</td><td>注册</td></tr><tr><td>第 10-3002930 号 利用物理模拟数据逆算的生成式人工智能内容多重验证及自动校正系统</td><td>单个场景内的动作是否在物理上说得通</td><td>2026 年 8 月 6 日（1 月申请）</td></tr><tr><td>第 10-3036790 号 利用基于本体约束的违规验证及状态转移传播的序列型内容生成方法</td><td>场景与场景之间的衔接</td><td>2026 年 10 月 19 日（2 月申请）</td></tr></tbody></table></div>
+<p class="notion-default">物理逆算专利计划应用于 Blocking Board 的扩展。两项专利说的其实是一件事：不是跑了再丢，而是先确认再跑。</p>
+<h3>常见问题</h3>
+<p class="notion-default"><strong>Q. 衔接检查功能现在能用吗？</strong><br>还不能。目前处于开发计划阶段，上线时间未定。上表中标为「当前可用」的功能可以马上使用。</p>
+<p class="notion-default"><strong>Q. 现在怎样减少镜头跳动？</strong><br>人物用 FLEXBOARD 的脸部固定，延续的状态用参考与提示词固定，并用 Sheet 视图只对着画面确认衔接。详细方法整理在下方《9 个镜头的诅咒》文章的 5 个步骤里。</p>
+<p class="notion-default"><strong>Q. 稻田广告的错误是 Seedance 的问题吗？</strong><br>我们不认为是某个模型的问题。视频生成 AI 的工作方式不记忆前一个镜头，因此在镜头连续的视频里，任何模型都可能出现。</p>
+<h3>值得一起阅读的文章</h3>
+<ul><li>解决镜头跳动: ‣</li><li>FLEXBOARD 介绍: ‣</li><li>画面顺序指南: ‣</li><li>全局地图: ‣</li></ul>
+<h3>给现在就要开始的你</h3>
+<p class="notion-default">XCONDA 正在同时进行 Seedance 2.5 折扣与 FLEXBOARD 上线的发布活动。</p>
+<ul><li>韩国: 使用折扣 30% + 价格折扣 10%，最高 40%</li><li>美国: 使用折扣最高 30%</li><li>期间: 10 月 7 日 11 点至 11 月 6 日 11 点（韩国时间）</li></ul>
+<p class="notion-default">👉 前往 XCONDA: https://www.xconda.ai/</p>
+<p class="notion-default">导入或合作咨询请联系下方。</p>
+<ul><li>邮箱: cubeberry@cuberry.kr</li><li>电话: +82-70-8095-2302（工作日 10:00〜17:00）</li></ul>
+<p class="notion-default">感谢您今天也读完这篇长文！</p>
+<p><a href="https://hub.xconda.ai/post/ontology-patent-cut-continuity/" hreflang="ko">查看韩语原文</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-background-consistency/">AI 视频背景跳动的原因与镜头一致性的解决</a></li><li><a href="../ai-video-motion-ideas/">AI 视频没有动作灵感时可以看的网站</a></li><li><a href="../deepseek-official-harness/">DeepSeek 以 MIT 许可证发布官方 harness</a></li><li><a href="../flux-3-image-release/">Black Forest Labs 发布 FLUX 3 Image</a></li></ul></nav>
+<p class="seo-note">中文页面由 XCONDA 团队翻译。韩语 Hub 为原始版本，如内容有出入请联系 cubeberry@cuberry.kr。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>
