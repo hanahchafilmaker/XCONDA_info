@@ -51,6 +51,7 @@ import {
   bodyImagesOf,
   bodyMediaOf,
   flattenBlocks,
+  needsTranslation,
   LOCALIZED_BLOCK_TYPES,
 } from "./build-seo.mjs";
 
@@ -1048,6 +1049,18 @@ test("2단 배치는 펼쳐서 글만 번역하고 이미지·영상은 원문 �
   );
   assert.deepEqual(merged.map((b) => b.type), ["p", "img", "p", "video", "p"]);
   assert.match(blocksToHtml(merged, { alt: "" }), /<video[^>]*src="https:\/\/cdn\.example\/v\.mp4"/);
+});
+
+test("이모지·링크·해시태그만 있는 블록은 번역 대상에서 뺀다", () => {
+  assert.equal(needsTranslation({ type: "callout", icon: "📷", text: "" }), false);
+  assert.equal(needsTranslation({ type: "quote", text: "📷" }), false);
+  assert.equal(needsTranslation({ type: "quote", text: "🔗 xconda.ai" }), false);
+  assert.equal(needsTranslation({ type: "quote", text: "#ai #seedance #aivideo" }), false);
+  assert.equal(needsTranslation({ type: "quote", text: "🍿" }), false);
+  assert.equal(needsTranslation({ type: "p", text: [{ text: "컷이 튀는 이유" }] }), true);
+  assert.equal(needsTranslation({ type: "p", text: "🔗 xconda.ai 바로가기" }), true);
+  assert.equal(needsTranslation({ type: "ul", items: [{ text: "…" }] }), true);
+  assert.equal(needsTranslation({ type: "table", rows: [["A"]] }), true);
 });
 
 test("표(table) 블록은 번역 문자열 2차원 배열로 받고 칸 수가 다르면 알려 준다", () => {
