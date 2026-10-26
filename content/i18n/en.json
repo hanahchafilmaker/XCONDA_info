@@ -26,54 +26,379 @@
     }
   },
   "entries": {
-    "post/deepseek-official-harness": {
-      "title": "DeepSeek releases its official harness under MIT",
-      "summary": "DeepSeek's official harness is out under the MIT licence. Everything is a plugin: models, tools, skills, sessions, sandboxes and UI can all be swapped.",
+    "notice/blocking-board-beta-free-open": {
+      "title": "Blocking Board beta is free: 3D blocking from a prompt, straight through to Seedance",
+      "summary": "The Blocking Board beta is open free of charge, up to the step before video generation.\n\nPaste a scene prompt and a 3D space with characters is built, then send the mannequin video straight to Seedance to generate the video.",
       "blocks": [
         {
           "type": "p",
-          "text": "DeepSeek's official harness has been announced! It is out under the MIT licence, so dig in."
+          "text": "Highlights"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Prompt to 3D: a scene prompt alone builds the space and characters as 3D models",
+            "Place actors and cameras: position characters and the camera yourself",
+            "Mannequin video: check the arrangement as a grey mannequin video",
+            "Seedance hand-off: send the mannequin video straight to Seedance to generate the real video"
+          ]
         },
         {
           "type": "p",
-          "text": "True to form for an architecture-obsessed lab, this time the design is \"everything is a plugin\"."
+          "text": "How to use it"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Paste the scene prompt → Create",
+            "Add a camera with Add camera",
+            "Send to Seedance from the Output tab"
+          ]
         },
         {
           "type": "p",
-          "text": "Models, tools, skills, sessions, sandboxes, repositories, loops, scheduling and UI can all be composed and swapped as plugins."
-        },
-        {
-          "type": "p",
-          "text": "The official repo is github.com/deepseek-ai/de…"
+          "text": "It will keep being updated during the beta."
         }
       ]
     },
-    "post/flux-3-image-release": {
-      "title": "Black Forest Labs releases FLUX 3 Image",
-      "summary": "Black Forest Labs has released FLUX 3 Image, with precise editing that changes only the part you want, bounding-box placement and combination of up to 10 reference images.",
+    "notice/seedance-2-5-promotion-30-off": {
+      "title": "Seedance 2.5 promotion: up to 30% off (10/7–11/6)",
+      "summary": "XCONDA is running a Seedance 2.5 promotion: up to 30% off from 11:00 on 7 October to 11:00 on 6 November 2026 (KST), celebrating the launch of the 36-cut storyboard engine FLEXBOARD.",
       "blocks": [
         {
           "type": "p",
-          "text": "🚨 Black Forest Labs has released FLUX 3 Image."
+          "text": "The XCONDA Seedance 2.5 promotion starts now."
+        },
+        {
+          "type": "h2",
+          "text": "Promotion at a glance"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Details"
+            ],
+            [
+              "Period",
+              "7 October 2026, 11:00 → 6 November 2026, 11:00 (KST)"
+            ],
+            [
+              "Benefit",
+              "Up to 30% off"
+            ],
+            [
+              "Applies to",
+              "Seedance 2.5"
+            ]
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "More than a discount"
         },
         {
           "type": "p",
-          "text": "The headline feature is precise editing: change only the part you want and the rest of the image stays exactly as it was. It also handles several rounds of edits, or changing several elements at once."
+          "text": "This is a launch promotion timed to the official release of FLEXBOARD, the 36-cut storyboard engine designed to work hand in hand with Seedance 2.5."
         },
         {
           "type": "p",
-          "text": "You can place people and objects precisely with bounding boxes, and combine up to 10 reference images into a new image."
+          "text": "👉 Go to xconda.ai"
+        },
+        {
+          "type": "h3",
+          "text": "Original post (X)"
+        },
+        {
+          "type": "quote",
+          "text": "Seedance 2.5 promotion begins today at 11 AM (KST) on XCONDA. 🎉"
+        },
+        {
+          "type": "quote",
+          "text": "📅 October 7, 11 AM – November 6, 11 AM (KST)"
+        },
+        {
+          "type": "quote",
+          "text": "✅ Up to 30% off"
+        },
+        {
+          "type": "quote",
+          "text": "This promotion is more than just a discount."
+        },
+        {
+          "type": "quote",
+          "text": "To celebrate the launch of FLEXBOARD, our new 36-shot storyboard engine designed specifically to work seamlessly with Seedance 2.5, we're introducing a special launch promotion."
+        },
+        {
+          "type": "quote",
+          "text": "👉 xconda.ai"
+        },
+        {
+          "type": "quote",
+          "text": "#ai #seedance #seedance25 #aivideo"
+        },
+        {
+          "type": "p",
+          "text": "See the original post on X (@Xconda_official, 2026.10.07)"
         }
       ]
+    },
+    "notice/seedance-2-5-update": {
+      "title": "Seedance 2.5 update: 30-second video, simultaneous video and audio, and three more",
+      "summary": "The Seedance 2.5 API is now generally available on XCONDA: up to 30 seconds of video, simultaneous video and audio, up to 50 references, timestamp editing and green screen.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The Seedance 2.5 API is now generally available (GA). You can use it right away on XCONDA. 🚀"
+        },
+        {
+          "type": "h2",
+          "text": "The five updates"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Feature",
+              "What it does"
+            ],
+            [
+              "Long video",
+              "Generate up to 30 seconds of seamless video"
+            ],
+            [
+              "Video + audio",
+              "Generate picture and sound in one pass"
+            ],
+            [
+              "Large reference set",
+              "Reference up to 50 image, video and audio files"
+            ],
+            [
+              "Timestamp editing",
+              "Pick a point in time and edit only that section"
+            ],
+            [
+              "Green screen",
+              "Background replacement"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "🔗 Go to xconda.ai"
+        },
+        {
+          "type": "h3",
+          "text": "Original post (X)"
+        },
+        {
+          "type": "quote",
+          "text": "Seedance 2.5, has been updated. 🚀"
+        },
+        {
+          "type": "quote",
+          "text": "✨Generate up to 30 seconds of video seamlessly"
+        },
+        {
+          "type": "quote",
+          "text": "✨Generate video and audio simultaneously"
+        },
+        {
+          "type": "quote",
+          "text": "✨Reference up to 50 images, videos, and audio files"
+        },
+        {
+          "type": "quote",
+          "text": "✨Timestamp-based editing"
+        },
+        {
+          "type": "quote",
+          "text": "✨green screen background replacement"
+        },
+        {
+          "type": "quote",
+          "text": "🔗 xconda.ai"
+        },
+        {
+          "type": "p",
+          "text": "See the original post on X (@Xconda_official, 2026.08.25)"
+        }
+      ]
+    },
+    "notice/seedance-25-draft-480p-preview": {
+      "title": "Seedance 2.5 Draft: check in 480p, finish in 1080p",
+      "summary": "Seedance 2.5 on XCONDA now has Draft. Generate as many 480p drafts as you like, then finish only the one you like in 1080p and save credits.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Check the result as a 480p draft first, then finish only the draft you like as the final 1080p cut. You can generate drafts as many times as you need until you get what you want, which saves credits."
+        },
+        {
+          "type": "h2",
+          "text": "How to use it"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Generate a draft from the input panel",
+            "Check the result and pick the draft you like",
+            "Finish it with the final generate button"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Good to know"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "This is a Seedance 2.5 only feature.",
+            "Drafts are valid for 7 days after generation; after that they cannot be finished into a final cut.",
+            "The final cut is newly generated from the same assets, so some detail may differ.",
+            "If final generation fails, the charged credits are refunded."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "👉 Go to xconda.ai"
+        }
+      ]
+    },
+    "notice/seedance-30-off-package-quantities": {
+      "title": "Seedance 30% credit discount: how many videos each package now makes",
+      "summary": "How many Seedance videos each package can produce with the 30% credit discount applied. Package prices are unchanged.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Applying the 30% credit discount keeps the package price the same while letting the same package make more videos. Below are the credits per clip length and how many videos each package can produce."
+        },
+        {
+          "type": "h2",
+          "text": "Credits by clip length"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Clip length",
+              "Credits before",
+              "Credits after"
+            ],
+            [
+              "4-second clip",
+              "368 cr",
+              "about 258 cr"
+            ],
+            [
+              "5-second clip",
+              "460 cr",
+              "322 cr"
+            ],
+            [
+              "15-second clip",
+              "1,380 cr",
+              "966 cr"
+            ]
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Videos per package (before → after)"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Package",
+              "Starter V1",
+              "Starter V2",
+              "Pro V1",
+              "Pro V2"
+            ],
+            [
+              "4-second clip",
+              "5 → 7",
+              "16 → 24",
+              "28 → 40",
+              "58 → 83"
+            ],
+            [
+              "5-second clip",
+              "4 → 6",
+              "13 → 19",
+              "22 → 32",
+              "46 → 66"
+            ],
+            [
+              "15-second clip",
+              "1 → 2",
+              "4 → 6",
+              "7 → 10",
+              "15 → 22"
+            ]
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Master package (based on 114,000 cr)"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Clip length",
+              "Before",
+              "After"
+            ],
+            [
+              "4-second clip",
+              "309",
+              "442"
+            ],
+            [
+              "5-second clip",
+              "247",
+              "354"
+            ],
+            [
+              "15-second clip",
+              "82",
+              "118"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Note · Package prices are the same; we applied a usage figure 30% lower than the credits previously shown. Results are rounded to the nearest whole credit and video count."
+        },
+        {
+          "type": "p",
+          "text": "cr = credits"
+        },
+        {
+          "type": "p",
+          "text": "Related notice: ‣"
+        },
+        {
+          "type": "p",
+          "text": "👉 Go to xconda.ai"
+        }
+      ]
+    },
+    "post/deepseek-official-harness": {
+      "title": "DeepSeek releases its official harness under MIT",
+      "summary": "DeepSeek's official harness is out under the MIT licence. Everything is a plugin: models, tools, skills, sessions, sandboxes and UI can all be swapped."
+    },
+    "post/flux-3-image-release": {
+      "title": "Black Forest Labs releases FLUX 3 Image",
+      "summary": "Black Forest Labs has released FLUX 3 Image, with precise editing that changes only the part you want, bounding-box placement and combination of up to 10 reference images."
     },
     "post/opus-5-5-github-trending": {
       "title": "A week after Opus 5.5, 8 of GitHub's top 10 are video and animation — a film made only with code, 'OPUSCAR 98'",
       "summary": "Within a week of Claude Opus 5.5's release, most of GitHub's trending repos shifted to video and animation, led by Lemo-Opuscar's 43 film styles in code and OPUSCAR 98, 98 years of award winners in 6 minutes 25 seconds.",
       "blocks": [
-        {
-          "type": "p",
-          "text": "Within a week of Claude Opus 5.5's release, most of GitHub's popular repos tilted towards video and animation. The standouts are Lemo-Opuscar, which implements 43 film styles in code alone, and 'OPUSCAR 98', which packs 98 years of award-winning films into 6 minutes 25 seconds."
-        },
         {
           "type": "p",
           "text": "X (Twitter) creator 鸟哥 (@NFTCPS) wrote about what changed on GitHub in the week after Claude Opus 5.5 launched: of the week's 10 hottest repos, 8 were video or animation related."
@@ -123,7 +448,7 @@
           "text": "AI writing code is no longer the point: code itself is becoming the video production tool, and that shift is now clear. If you are a creator interested in automating video production, this is worth studying."
         },
         {
-          "type": "p",
+          "type": "quote",
           "text": "💡 XCONDA tip: borrow the approach of encoding direction per style, and the 98 visual style references, as material for your own XCONDA video generation workflow."
         }
       ]
@@ -132,10 +457,6 @@
       "title": "'The Pinterest of AI video': Skillry publishes the real prompt next to the result",
       "summary": "Skillry is a reference site that shows high-end 3D and motion-graphics results side by side with the actual prompts used and the remakes they produce.",
       "blocks": [
-        {
-          "type": "p",
-          "text": "Skillry, a reference site where you can compare high-end 3D and motion-graphics results with the prompts that actually produced them, side by side with the originals, is drawing attention on X."
-        },
         {
           "type": "p",
           "text": "X (Twitter) user 숙이 (@sook_ee_) shared a story: a friend's presentation images and videos looked so clean that they asked how, and the friend pointed them to Skillry. The original poster described it as something like 'Pinterest for the AI video world'."
@@ -189,7 +510,7 @@
           "text": "When you are making a promo video or a deck, pick a result in the mood you want on Skillry first, then adapt its prompt to your situation. That saves a large amount of time compared with writing prompts from zero."
         },
         {
-          "type": "p",
+          "type": "quote",
           "text": "💡 XCONDA tip: study the direction and prompt structure of a reference you like, then adapt it to your own brand inside XCONDA's video generation workflow."
         },
         {
@@ -204,10 +525,6 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Cubeberry's AI video starts with a scenario, is produced in XCONDA, gets its sound in Suno and is finished in Premiere Pro. This post lays the whole order out as a single map, with the input, deliverable and checks for each step; the detailed how-tos continue in the series."
-        },
-        {
-          "type": "p",
           "text": "AI video production EP.00 — the full map. Start here if this is your first time."
         },
         {
@@ -215,11 +532,8 @@
           "text": "Hello, this is XCONDA. Cubeberry's AI video starts with a scenario, is produced in XCONDA, gets its sound in Suno, and is finished in Premiere Pro. This post shows the whole sequence as one map, with an explanation for each step. The detailed method for every step continues in the series below."
         },
         {
-          "type": "p",
-          "text": "📌"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "📌",
           "text": "Key summary: the process is 7 steps — preparation (01–04), video (05) and post (06–07). This post shows that order as a single map and sets out, for each step, what goes in, what comes out and what to check before moving on."
         },
         {
@@ -237,6 +551,59 @@
         {
           "type": "p",
           "text": "Scenario → references → text storyboard → storyboard and blocking → video generation → sound → edit and finish"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Stage",
+              "Step",
+              "What you do",
+              "Tools"
+            ],
+            [
+              "Prep",
+              "01 Scenario",
+              "Lock the scenario that everything else starts from",
+              "Scenario, script"
+            ],
+            [
+              "Prep",
+              "02 References",
+              "Build the reference images for characters and spaces (character sheet, background sheet)",
+              "Claude, FLEXBOARD skill, GPT Image, XCONDA Turn"
+            ],
+            [
+              "Prep",
+              "03 Text storyboard and FLEXBOARD prompts",
+              "Write the cuts out in words first",
+              "Claude, FLEXBOARD skill"
+            ],
+            [
+              "Prep",
+              "04 Storyboard and blocking video",
+              "Check the key image per cut and set the movement as video",
+              "XCONDA FLEXBOARD, XCONDA Blocking Board"
+            ],
+            [
+              "Video",
+              "05 Seedance prompts and video generation",
+              "Feed in every earlier output and generate the video",
+              "Claude, Seedance prompt skill, prompt editor, XCONDA"
+            ],
+            [
+              "Post",
+              "06 Sound",
+              "Make the sound for the video",
+              "Suno"
+            ],
+            [
+              "Post",
+              "07 Edit picture and sound together",
+              "Combine picture and sound to finish",
+              "Premiere Pro"
+            ]
+          ]
         },
         {
           "type": "p",
@@ -259,15 +626,25 @@
           "text": "The key here is the division of labour between text and images. Each does what the other cannot."
         },
         {
+          "type": "table",
+          "rows": [
+            [
+              "What the text owns",
+              "What the images own"
+            ],
+            [
+              "Cut order, framing, movement, action, timing",
+              "Faces, costumes, texture, period detail"
+            ]
+          ]
+        },
+        {
           "type": "p",
           "text": "However precisely you describe a face or an outfit in words, it never conveys what an image does, and conversely the order and timing of cuts are hard to convey with images. So characters and spaces are handled by images, and flow and movement by text."
         },
         {
-          "type": "p",
-          "text": "🔎"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "🔎",
           "text": "Why cuts jump is covered in the post on background and cut consistency, and practical fixes in the guide to the 9-cut curse."
         },
         {
@@ -312,11 +689,8 @@
           "text": "If you already have references, use them as they are alongside the scenario. If not, the FLEXBOARD skill reads the scenario and writes the prompts that make a character sheet and a background sheet. Copy those prompts into GPT Image to make the images, then feed the images back in."
         },
         {
-          "type": "p",
-          "text": "🎥"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "🎥",
           "text": "Using XCONDA Turn: two things from a 360° virtual set. Turn builds a virtual set you can look around 360° from a single photo or a text description. Because you build one space first and then turn the camera inside it to pick angles, doors, windows and props stay in place as the cuts change. Method A — build a background sheet: 1) put one face of the background sheet (the front image) into Turn. 2) Build the left, right and back sides from it. 3) Use the four sides together as the background reference; this feeds the background reference for 05 video generation. Method B — build storyboard cut images: 1) create the 360° virtual set. 2) Place characters and props inside it. 3) Turn to the angle you want and pull the cut image; this goes straight into the 04 storyboard as a cut image."
         },
         {
@@ -324,11 +698,8 @@
           "text": "Why do it this way? Generate the background separately for each cut and the windows, furniture and props move from cut to cut. On a real set you build the set once and only move the camera inside it — the same idea: fix the space first, then change the angle. Method B is especially useful when you want to place a complex composition yourself, because text alone rarely produces it."
         },
         {
-          "type": "p",
-          "text": "⚠️"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "⚠️",
           "text": "Common mistake: putting several face images of the same person in at once blends and smears the face. The rule is one face image per character."
         },
         {
@@ -366,11 +737,8 @@
           "text": "FLEXBOARD is a storyboard tool that splits the scenario into cuts, generates an image for each cut and lays them out on one screen. It holds up to 36 cuts on a screen, and you can leave the good cuts alone and fix only the ones with problems. The click-by-click walkthrough is written up in the FLEXBOARD guide."
         },
         {
-          "type": "p",
-          "text": "🎬"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "🎬",
           "text": "XCONDA Blocking Board: showing character movement as video. Movement like \"enters through the left door, walks around the table and stops at the window\" invites the model to walk the wrong way when it is only written down, and scenes with several characters moving at once drift easily. Blocking Board produces a video of grey mannequins (puppets) moving inside the space; add that video to video generation and Seedance reads the movement from video rather than text. The division of labour: reference images handle faces and costumes, the puppet video handles paths and timing."
         },
         {
@@ -382,11 +750,8 @@
           "text": "The puppet does not need to look human. Position, direction and speed are enough. Just remember to attach the puppet video at 05 video generation."
         },
         {
-          "type": "p",
-          "text": "💰"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "💰",
           "text": "Fixing here is the cheapest. Generate video with the wrong composition and you regenerate several times at the video stage. Fix it in the storyboard first."
         },
         {
@@ -407,11 +772,8 @@
           "text": "The Seedance prompt skill builds prompts for Seedance 2.5 from the key images. It organises them with a four-director system and a ten-block structure, and lets you revise with Korean and English side by side. Revise in Korean and the English is rewritten to match, so you never have to edit the English separately. The skill is being prepared for download from the XCONDA hub."
         },
         {
-          "type": "p",
-          "text": "✅"
-        },
-        {
-          "type": "p",
+          "type": "callout",
+          "icon": "✅",
           "text": "What goes into the XCONDA video generation screen: all four are required. ① Reference images (character sheets, background sheets, Turn sheets, props): they fix faces, costumes and spaces. ② The storyboard (the per-cut images made at 04): it fixes composition, movement and cut order. ③ The Seedance prompt (finished in the editor): it directs movement, timing and camera. ④ The blocking puppet video (made in Blocking Board at 04): it fixes the character's path and travel route."
         },
         {
@@ -469,6 +831,59 @@
           "text": "So you can check as you read the map, the input, deliverable and pre-handover checks are gathered in one table."
         },
         {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "Input",
+              "Deliverable",
+              "Check before moving on"
+            ],
+            [
+              "01 Scenario",
+              "Idea, proposal",
+              "A locked scenario",
+              "Are the characters and locations decided?"
+            ],
+            [
+              "02 References",
+              "The scenario",
+              "Character sheet, background sheet, Turn cut images",
+              "Does every character have a face image, do you have the location images, and did you build the hard cuts in Turn?"
+            ],
+            [
+              "03 Text storyboard",
+              "The scenario, reference images",
+              "Text storyboard, FLEXBOARD prompts",
+              "Does every cut state a start and end action?"
+            ],
+            [
+              "04 Storyboard and blocking",
+              "FLEXBOARD prompts, Turn cut images",
+              "Key image per cut, blocking puppet video",
+              "Do the key-frame framing and the puppet movement match your intent?"
+            ],
+            [
+              "05 Video generation",
+              "References, storyboard, prompts, puppet video",
+              "Two-column prompt editor, generated video",
+              "Did you put all four in?"
+            ],
+            [
+              "06 Sound",
+              "The mood and length of the finished video",
+              "Sound file",
+              "Does it fit the video's length and mood?"
+            ],
+            [
+              "07 Finish",
+              "Video clips, sound",
+              "Finished video",
+              "Cut continuity, levels, subtitles"
+            ]
+          ]
+        },
+        {
           "type": "h3",
           "text": "Five common mistakes"
         },
@@ -489,6 +904,65 @@
         {
           "type": "p",
           "text": "AI video production continues one step per post. Posts already published are linked, and the rest will be released in order."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Episode",
+              "Title",
+              "What it covers",
+              "Read"
+            ],
+            [
+              "EP.00",
+              "The full map",
+              "How the seven steps connect",
+              "You are reading it"
+            ],
+            [
+              "EP.01",
+              "It starts with a scenario",
+              "How to write a scenario that suits AI video",
+              "In preparation"
+            ],
+            [
+              "EP.02",
+              "Building references",
+              "Character sheets, XCONDA Turn background sheets and cut images",
+              "In preparation"
+            ],
+            [
+              "EP.03",
+              "Text storyboard and FLEXBOARD prompts",
+              "How to use the skill and read its output",
+              "In preparation"
+            ],
+            [
+              "EP.04",
+              "Storyboard and Blocking Board",
+              "Nailing key frames, locking movement with the puppet video",
+              "‣, ‣"
+            ],
+            [
+              "EP.05",
+              "Seedance prompts and video generation",
+              "Reading the editor, before-and-after comparisons",
+              "In preparation"
+            ],
+            [
+              "EP.06",
+              "Sound with Suno",
+              "Making sound that fits the video",
+              "In preparation"
+            ],
+            [
+              "EP.07",
+              "Finishing in Premiere Pro",
+              "Cutting picture and sound together for the final export",
+              "In preparation"
+            ]
+          ]
         },
         {
           "type": "p",
