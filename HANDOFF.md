@@ -285,7 +285,7 @@ XCONDA_info/
 ⚠️ 함께 지킬 것
 - 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
-- 언어별 URL 은 **Q&A 73건에만** 있습니다(ko/en/ja/zh). 블로그·가이드·공지는 본문 번역이 없어 한국어 주소만 씁니다 — 노션에 언어별 본문이 생기면 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 추가하는 방식으로 확장합니다(백로그).
+- 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
 - **번역 품질 점검**: `npm run i18n:qc` — 연락처·주소 불일치(오류), 숫자 누락·통화 표기·미번역 영어·제목 중복·길이 비율·브랜드 표기(경고)를 봅니다. `-- --write` 로 `reports/i18n-qc-<날짜>.md` 갱신. 의도된 차이는 `content/i18n/qc-allow.json` 에 근거와 함께 적습니다.
@@ -756,6 +756,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
+| 진행 중 | **①-1 본문 번역** — 본문이 있는 글 20편 중 **12편** 완료(en·ja·zh). 남은 8편은 장문 블로그·가이드 | 남은 글은 `content/i18n/*.json` 에 `blocks` 추가만 하면 `/en/…` 페이지·사이트맵·hreflang 이 함께 생성 |
 
 ---
 
