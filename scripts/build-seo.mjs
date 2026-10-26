@@ -162,7 +162,7 @@ export function loadTranslations(root) {
  *   {"type":"p" | "h2" | "h3" | "quote", "text":"..."} · {"type":"ul" | "ol", "items":["...", "..."]}
  * 본문 이미지는 번역하지 않습니다 — 한국어 원문의 이미지를 **같은 위치**에 자동으로 넣습니다.
  * ------------------------------------------------------------------------ */
-export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout", "code"];
+export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout", "code", "todo"];
 
 /**
  * 번역문의 **굵게** 표기와 줄바꿈을 렌더러가 이해하는 rich text 로 바꿉니다.
@@ -202,6 +202,17 @@ export function localizedBlockProblems(blocks) {
       }
       if (block.items.some((item) => typeof item !== "string" || !item.trim())) {
         problems.push(`${at}: items 원소는 비어 있지 않은 문자열이어야 합니다`);
+      }
+      return;
+    }
+    // 체크리스트 — 항목 문자열 배열
+    if (block.type === "todo") {
+      if (!Array.isArray(block.items) || block.items.length === 0) {
+        problems.push(`${at}: todo 에 items 배열이 필요합니다`);
+        return;
+      }
+      if (block.items.some((item) => typeof item !== "string" || !item.trim())) {
+        problems.push(`${at}: todo items 원소는 비어 있지 않은 문자열이어야 합니다`);
       }
       return;
     }
@@ -252,20 +263,21 @@ export function mergeLocalizedBlocks(blocks, images = []) {
   if (!images.length) return list.map(stripBlockOrder);
   const out = [];
   const buckets = new Map();
-  for (const img of images) {
-    const at = Math.max(0, Math.min(list.length, Number(img.after) || 0));
+  for (const media of images) {
+    const at = Math.max(0, Math.min(list.length, Number(media.after) || 0));
     if (!buckets.has(at)) buckets.set(at, []);
-    buckets.get(at).push(img);
+    buckets.get(at).push(media);
   }
   list.forEach((block, index) => {
-    for (const img of buckets.get(index) ?? []) out.push(imageBlock(img));
+    for (const media of buckets.get(index) ?? []) out.push(mediaBlock(media));
     out.push(stripBlockOrder(block));
   });
-  for (const img of buckets.get(list.length) ?? []) out.push(imageBlock(img));
+  for (const media of buckets.get(list.length) ?? []) out.push(mediaBlock(media));
   return out;
 }
 
-const imageBlock = (img) => ({ type: "img", src: img.src, caption: img.caption || undefined });
+/** {after, block} 또는 옛 모양 {after, src, caption} 둘 다 받습니다. */
+const mediaBlock = (media) => media.block ?? { type: "img", src: media.src, caption: media.caption || undefined };
 
 /** `{type,text}` / `{type,items}` 만 남깁니다(여분 키가 렌더러로 새지 않게). */
 function stripBlockOrder(block) {
@@ -282,6 +294,9 @@ function stripBlockOrder(block) {
   if (block.type === "callout") {
     return { type: "callout", icon: String(block.icon ?? ""), color: "default", text: localizedRichText(block.text) };
   }
+  if (block.type === "todo") {
+    return { type: "todo", items: block.items.map((item) => ({ text: localizedRichText(item), checked: false })) };
+  }
   if (block.type === "code") {
     // 언어명은 클래스로 들어가므로 공백이 있으면 넣지 않습니다(plain text 등).
     const lang = String(block.language ?? "");
@@ -296,7 +311,7 @@ function stripBlockOrder(block) {
  */
 export function blockHasText(block) {
   if (!block) return false;
-  if (block.type === "table" || block.type === "ul" || block.type === "ol" || block.type === "code") return true;
+  if (["table", "ul", "ol", "code", "todo"].includes(block.type)) return true;
   const text = block.text;
   if (Array.isArray(text)) return text.some((seg) => String(seg?.text ?? "").trim());
   if (String(text ?? "").trim()) return true;
@@ -317,6 +332,37 @@ export function bodyImagesOf(blocks = []) {
   for (const block of blocks ?? []) {
     if (block?.type === "img" && block.src) out.push({ after: textBlocks, src: block.src, caption: block.caption });
     else if (block?.type !== "video") textBlocks += 1;
+  }
+  return out;
+}
+
+/**
+ * 2단 배치(`column_list` · `column`)를 풀어 한 줄로 만듭니다.
+ * 번역가는 2단 배치를 다루지 않고, 글은 글대로 옮기고 이미지·영상은 원문 자리에 그대로 넣습니다.
+ */
+export function flattenBlocks(blocks = []) {
+  const out = [];
+  for (const block of blocks ?? []) {
+    if (!block) continue;
+    if (block.type === "column_list" || block.type === "column") out.push(...flattenBlocks(block.children ?? []));
+    else out.push(block);
+  }
+  return out;
+}
+
+/** 번역하지 않고 원문 그대로 옮기는 블록(이미지·영상·첨부) */
+export const MEDIA_BLOCK_TYPES = ["img", "video", "file", "audio", "pdf"];
+
+/**
+ * 한국어 원문 블록 → 원문 그대로 옮길 미디어 위치 목록.
+ * `after` = 그 미디어 **앞에 있던 번역 대상 블록 수**(2단 배치는 펼친 뒤 셉니다).
+ */
+export function bodyMediaOf(blocks = []) {
+  const out = [];
+  let textBlocks = 0;
+  for (const block of flattenBlocks(blocks)) {
+    if (MEDIA_BLOCK_TYPES.includes(block.type)) out.push({ after: textBlocks, block });
+    else textBlocks += 1;
   }
   return out;
 }
@@ -452,13 +498,14 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       // 본문이 있으면 첫 문단을 요약으로 중복 출력하지 않습니다(Q&A 는 본문이 없어 요약이 곧 답변).
       const bodyProblems = localizedBlockProblems(it.tr.blocks);
       for (const problem of bodyProblems) missing.push(`${I18N_DIR}/${code}.json › ${it.key} ${problem}`);
-      const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, it.record.bodyImages);
+      const carried = it.record.bodyMedia ?? it.record.bodyImages ?? [];
+      const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, carried);
       const bodyHtml = bodyBlocks.length ? blocksToHtml(bodyBlocks, { alt: title }) : "";
       // 구조 검사 — 번역 블록 수/종류가 원문과 다르면 이미지가 엉뚱한 자리에 들어갑니다.
       if (!bodyProblems.length && it.tr.blocks?.length) {
         // 빈 문단·빈 인용은 원문의 줄 간격일 뿐이라 구조 비교에서 뺍니다(번역 파일에는 넣지 않습니다).
         const shape = (blocks) =>
-          blocks
+          flattenBlocks(blocks)
             .filter((b) => !["img", "video", "divider"].includes(b.type))
             .filter((b) => blockHasText(b))
             .map((b) => b.type);
@@ -1133,6 +1180,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       // 번역 정렬 검사·번역 도구용 — 본문 블록 원형(번역 파일과 구조를 맞춰야 합니다)
       blocks,
       bodyImages: bodyImagesOf(blocks),
+      bodyMedia: bodyMediaOf(blocks),
     });
   }
 

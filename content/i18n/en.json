@@ -26,6 +26,364 @@
     }
   },
   "entries": {
+    "guide/flexboard-storyboard-guide": {
+      "title": "FLEXBOARD Storyboards in 7 Steps - AI Video Production Workflow",
+      "summary": "How to make a cut-by-cut storyboard from one scenario, fix only the cuts that have problems, and hand it to Seedance 2.5 - the FLEXBOARD workflow in seven steps.",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "**What this article covers**: how to make a cut-by-cut storyboard from one scenario, fix only the cuts that have problems, and hand it over to Seedance 2.5"
+        },
+        {
+          "type": "quote",
+          "text": "**Who it is for**: people making AI video for the first time, and anyone who has burned credits re-rolling video"
+        },
+        {
+          "type": "quote",
+          "text": "**What you need**: an XCONDA account with credits, one scene of your scenario and, if you have one, a background image made in Turn. The credit cost is shown on the image generation and regenerate buttons."
+        },
+        {
+          "type": "p",
+          "text": "This is the storyboard episode of the AI video production workflow series. It uses the backgrounds and key images made in the previous post, \"Building a 360-degree set with XCONDA Turn\"."
+        },
+        {
+          "type": "p",
+          "text": "**Where is FLEXBOARD**\n\nIn XCONDA, open Studio then Storyboard from the left menu and the FLEXBOARD card appears — the one labelled \"a storyboard tool tuned for Seedance 2.5\". Click the card and choose New Project."
+        },
+        {
+          "type": "h3",
+          "text": "**Step 1: Project settings**"
+        },
+        {
+          "type": "p",
+          "text": "The top of the screen shows the three working stages as buttons."
+        },
+        {
+          "type": "ol",
+          "items": [
+            "**Project settings**: the basic setup of the project",
+            "**Scene Settings**: scenario, cast and backgrounds, number of cuts",
+            "**Edit Panel**: review and fix the cuts you generated"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Steps 1-5 of this article live in the first two buttons; steps 6-7 live in Edit Panel. Start with three choices."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Working method**",
+            "**Image model**: pick the model that draws the cut images from the dropdown at the top left. Four models are available today.",
+            "**Project name**: something you can find in the list later. Example: \"webdrama_ep1_daecheongmaru_scene\""
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "**Step 2: Write the scenario, genre and mood**"
+        },
+        {
+          "type": "p",
+          "text": "Write the scene in the **Scenario** field. If it answers who, where, what and with what feeling, the cuts are easier to review. When several things happen, write them in order."
+        },
+        {
+          "type": "p",
+          "text": "For example:"
+        },
+        {
+          "type": "quote",
+          "text": "A rainy night on a hanok's wooden veranda. Suyeon stands holding a shard of broken pottery. Footsteps approach from the gate and she hides the shard behind her back. The door opens and her mother walks in. The two look at each other without a word."
+        },
+        {
+          "type": "p",
+          "text": "Then choose **Genre** (for example, Suspense) and **Tone / Mood** (for example, Tense), and save with **Save project**."
+        },
+        {
+          "type": "h3",
+          "text": "**Step 3: Register the cast and backgrounds (Reference Assets)**"
+        },
+        {
+          "type": "p",
+          "text": "This is the step that keeps the same person and the same place across cuts. In the **Reference Assets** area you register **Cast** cards and **Background** cards."
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Click **Add Cast** to create a cast card. Each card automatically gets a label (a token) such as **@image1** or **@image2**.",
+            "Add a face image and an easy-to-recognise name to the card. Example: Suyeon, Mother",
+            "Props that come back can be registered as cards too. Example: broken pottery",
+            "Add a Background card. This is a good place for the space image you made in Turn in the previous post."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**What the tokens do**: a cut description shows \"@image1\", so you can see at a glance who appears in that cut. Video prompts point at characters the same way."
+        },
+        {
+          "type": "p",
+          "text": "**Caution**: register one card per person. After you replace or delete a card, check again that the token numbers still match the cut descriptions."
+        },
+        {
+          "type": "h3",
+          "text": "**Step 4: Set the number of cuts and the shot length**"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Number of Panels**: how many cuts you want. The example screen uses 9.",
+            "**Shot Length**: the length of one cut, adjustable between 4 and 30 seconds."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "For example, 9 cuts x 15 seconds adds up to about 2 minutes 15 seconds. The finished length depends on what you do in the video stage."
+        },
+        {
+          "type": "p",
+          "text": "Choose cut counts at the points where the scene changes. With the example above you could split it as \"Suyeon holding the pottery / footsteps / the hand hiding it / the door opens / the mother enters / the two facing each other\"."
+        },
+        {
+          "type": "h3",
+          "text": "**Step 5: Check the text before you spend on images (Text Preview)**"
+        },
+        {
+          "type": "p",
+          "text": "Press the yellow **Text Preview Generate** button at the bottom of the screen and you get a written storyboard for each cut before any image is made. On each CUT card, check three things."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Do the scene descriptions come in the order you intended?",
+            "Do the @image tokens point at the right people?",
+            "Does the SFX note underneath match the mood of the scene?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "If the cut order, the cast or the transitions feel wrong, go back to the scenario or the cut count and fix it **before you generate images**. Fixing at the text stage is always the cheapest."
+        },
+        {
+          "type": "h3",
+          "text": "**Step 6: Review the cuts in Edit Panel (Panel and Sheet views)**"
+        },
+        {
+          "type": "p",
+          "text": "Generating images moves you to the **Edit Panel** stage. The **Panel / Sheet** buttons next to the model selector switch how you look at the result."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "**View**",
+              "**What you see**",
+              "**When to use it**"
+            ],
+            [
+              "**Panel**",
+              "One card per cut, with an Edit button, the scene description, dialogue and SFX under the image",
+              "Reading and fixing cuts one by one"
+            ],
+            [
+              "**Sheet**",
+              "All cut images in one large sheet, without the text",
+              "Seeing the whole flow at a glance"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Start with Sheet to read the flow.** Looking at the pictures alone, with no text, makes it easier to judge whether the cuts play like an actual video."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Is any cut out of order or missing?",
+            "Do neighbouring cuts connect naturally (costume, props, lighting, eyeline)?",
+            "Does the same person have the same face in every cut?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "There are three buttons at the top right of the screen."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Download CUT ZIP** (Panel view) / **Download Sheet** (Sheet view): download all cut images at once, or the sheet as one image. Useful for sharing a storyboard with teammates or a client.",
+            "**Regenerate images**: generate the images again. The button shows the credits it costs, so check before you press it.",
+            "**Clear Sheet**: empties the sheet. It may be hard to undo, so download first."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "**Step 7: Fix only the cuts that need it**"
+        },
+        {
+          "type": "p",
+          "text": "Leave the good cuts alone and fix only the ones with problems. In **Panel view**, press **Edit** on the cut you want to change and you can revise that cut by itself. Each cut card has these tools."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "**Tool**",
+              "**What it does**"
+            ],
+            [
+              "Edit",
+              "Open the quick edit window"
+            ],
+            [
+              "+",
+              "Add an element used by the cut"
+            ],
+            [
+              "Trash",
+              "Delete the cut"
+            ],
+            [
+              "Down / Up arrows",
+              "Download the cut image / replace it with an outside image"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The upload button (up arrow) lets you drop a key image made in Turn straight into that cut. It is handy when a prompt will not produce the composition you want."
+        },
+        {
+          "type": "p",
+          "text": "**Quick Edit**"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Press **Edit** on the cut and check that the cut number at the top of the window (for example CUT 04) is the one you meant.",
+            "Add reference images under **Reference images** if you need them.",
+            "Write the change in one sentence in **Edit prompt**. You can point at a person with an @ token.",
+            "Check the target cut, the instruction and the credit notice, then press **Apply edit**."
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "**How to write the instruction**: state what changes and what stays. Example: \"change only the glasses, keep the pose and the background\". Example: \"only @image1's expression becomes surprised, keep the pottery in hand and the background\"."
+        },
+        {
+          "type": "p",
+          "text": "**Detailed Edit** is for changing the camera. Adjust three things on the right."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Shot Size**: how much of the scene fills the frame (for example Extreme Wide Shot, Close-up)",
+            "**Camera Angle**: camera height and tilt (for example Low Angle, Dutch Angle)",
+            "**Camera Movement**: how the camera moves (for example Handheld, Track Out)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "In the example screen, a tense close composition of \"POV - Low Angle - Handheld\" was rebuilt as \"Extreme Wide Shot - Dutch Angle - Track Out\": a wide, tilted frame with the camera pulling back. Check the settings and press **Regenerate**, and again watch the credits shown on screen."
+        },
+        {
+          "type": "p",
+          "text": "**Reordering the reference images** The cast and background cards used to generate cuts are managed as lists. You can drag cast among cast and background among background to change the order, and **Reset to automatic selection** returns to the default selection. After reordering, regenerate the cut images for the change to take effect."
+        },
+        {
+          "type": "h3",
+          "text": "**Final check before you hand over to Seedance**"
+        },
+        {
+          "type": "p",
+          "text": "When the storyboard is finished you move to the video stage. Check the list below first."
+        },
+        {
+          "type": "todo",
+          "items": [
+            "Did you check in Sheet view that the cuts connect naturally?",
+            "Do the image and the description match on every cut?",
+            "Are the cast tokens correct on every cut?",
+            "Is any cut missing?",
+            "Do shot length, frame size, camera angle and camera movement match the intent of the cut?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The cut images you approve here become the reference for the video prompt. Fixing composition is cheapest at this stage: once you are in video, a composition fix means re-rolling the video several times."
+        },
+        {
+          "type": "h3",
+          "text": "**Common mistakes**"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Skipping the written storyboard and generating images straight away**: if the cut order is wrong, the images have to be made again.",
+            "**Registering the same person on several cards**: the tokens get confusing and faces get mixed.",
+            "**Writing only what changes in the edit instruction**: if you do not say what to keep, other parts change too.",
+            "**Regenerating cuts that already work**: pick the problem cuts and fix them with Edit in Panel view.",
+            "**Reviewing only in Panel view**: reading text makes it easy to miss whether the pictures actually connect. Always take the step of reading the pictures alone in Sheet view.",
+            "**Switching image models halfway**: the look can shift from cut to cut."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "**Next episode**"
+        },
+        {
+          "type": "p",
+          "text": "The next post covers **building a puppet video in the Blocking Board to fix screen direction**, for scenes where several characters move and their paths would otherwise tangle."
+        },
+        {
+          "type": "p",
+          "text": "**AI video production workflow series**"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "EP.00 The whole map: from one scenario to a finished video",
+            "EP.02 References: building a 360-degree set with XCONDA Turn",
+            "EP.03 Storyboard: cut-by-cut storyboards in FLEXBOARD (this article)",
+            "EP.04 Blocking: fixing screen direction with the Blocking Board (upcoming)",
+            "EP.05 Video generation: the four things you feed Seedance (upcoming)"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "**If you want to start now**"
+        },
+        {
+          "type": "p",
+          "text": "The FLEXBOARD launch promotion is running a Seedance 2.5 discount."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Korea: 30% usage discount + 10% price discount, up to 40%",
+            "United States: up to 30% usage discount (in USD)",
+            "Period: until 11:00 on 6 November (Korea time)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Go to XCONDA: https://www.xconda.ai/"
+        },
+        {
+          "type": "p",
+          "text": "For adoption or partnership enquiries, contact us below."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: cubeberry@cuberry.kr",
+            "Phone: +82-70-8095-2302 (weekdays 10:00-17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Thank you for reading another long one today!"
+        }
+      ]
+    },
     "notice/blocking-board-beta-free-open": {
       "title": "Blocking Board beta is free: 3D blocking from a prompt, straight through to Seedance",
       "summary": "The Blocking Board beta is open free of charge, up to the step before video generation.\n\nPaste a scene prompt and a 3D space with characters is built, then send the mannequin video straight to Seedance to generate the video.",

@@ -404,6 +404,10 @@
     <loc>https://hub.xconda.ai/user-guide.html</loc>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/en/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/en/notice/blocking-board-beta-free-open/</loc>
     <lastmod>2026-10-23</lastmod>
   </url>
@@ -764,6 +768,9 @@
     <lastmod>2026-10-11</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/en/guide/</loc>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/en/notice/</loc>
   </url>
   <url>
@@ -774,6 +781,10 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/notice/blocking-board-beta-free-open/</loc>
@@ -1136,6 +1147,9 @@
     <lastmod>2026-10-11</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/ja/guide/</loc>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/ja/notice/</loc>
   </url>
   <url>
@@ -1146,6 +1160,10 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/notice/blocking-board-beta-free-open/</loc>
@@ -1506,6 +1524,9 @@
   <url>
     <loc>https://hub.xconda.ai/zh/qna/xconda-vs-other-ai-video-tools/</loc>
     <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/guide/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/notice/</loc>
