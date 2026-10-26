@@ -92,6 +92,11 @@ export function applyHead(template, head) {
   html = html.replace(/[ \t]*<meta\s+name="description"[^>]*>[ \t]*\r?\n?/gi, "");
   html = html.replace(/[ \t]*<link\s+rel="canonical"[^>]*>[ \t]*\r?\n?/gi, "");
   html = html.replace(/[ \t]*<meta\s+(?:property|name)="(?:og|twitter|article):[^"]*"[^>]*>[ \t]*\r?\n?/gi, "");
+  // 개발 진입점 전용 meta — dev.html 은 저장소 루트에 커밋되어 /dev.html 로도 열리므로
+  // noindex 를 두는데, 빌드 결과(index.html)가 물려받으면 **홈페이지가 검색에서 빠집니다**.
+  // `<!-- DEV-ONLY:START --> … <!-- DEV-ONLY:END -->` 블록과 `data-dev-only` meta 를 지웁니다.
+  html = html.replace(/[ \t]*<!-- DEV-ONLY:START[\s\S]*?<!-- DEV-ONLY:END -->[ \t]*\r?\n?/g, "");
+  html = html.replace(/[ \t]*<meta\b[^>]*\bdata-dev-only\b[^>]*>[ \t]*\r?\n?/gi, "");
   const headEnd = "</head>";
   if (!html.includes(headEnd)) throw new Error("템플릿에 </head> 가 없습니다");
   // 함수형 치환 — 제목·본문에 $ 기호가 있어도 특수 치환 패턴으로 해석되지 않게 합니다.

@@ -658,6 +658,33 @@ test("OG 목록에 있으면 우리 도메인 주소를, 없으면 null 을 돌�
 });
 
 /* ---------------------------------------------------------------------------
+ * 개발 진입점 noindex — dev.html 은 저장소 루트에 커밋되어 /dev.html 로도 열립니다.
+ *   검색에 "개발 껍데기"가 노출되지 않게 noindex 를 두되, 빌드 결과 index.html 이
+ *   물려받으면 홈페이지가 검색에서 빠지므로 applyHead 가 지웁니다.
+ * ------------------------------------------------------------------------ */
+test("dev.html 의 noindex 는 빌드 결과(index.html)로 넘어가지 않는다", () => {
+  const dev = fs.readFileSync(path.join(REPO_ROOT, "dev.html"), "utf8");
+  assert.match(dev, /DEV-ONLY:START/);
+  assert.match(dev, /<meta name="robots" content="noindex, nofollow" \/>/);
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: dev, // 개발 진입점을 그대로 템플릿으로 씁니다(빌드가 하는 일과 같음)
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {},
+  });
+  const home = out.files.get("index.html");
+  assert.ok(home, "index.html 이 만들어져야 합니다");
+  assert.equal(/name="robots"/.test(home), false, "홈이 noindex 를 물려받았습니다");
+  assert.equal(home.includes("DEV-ONLY"), false, "DEV-ONLY 주석이 배포본에 남았습니다");
+  assert.equal(home.includes("data-dev-only"), false);
+  // 제목·canonical 등 일반 head 는 정상적으로 들어갑니다.
+  assert.match(home, /<title>XCONDA허브/);
+  assert.match(home, /<link rel="canonical"/);
+});
+
+/* ---------------------------------------------------------------------------
  * 언어별 공유 카드 — 2026-10-26 ①-5
  *   커버가 없는 글 · 언어 홈 · 언어 목록은 같은 기본 카드를 써서 공유 미리보기에
  *   언어도 제목도 없었습니다. 카드 목록(manifest)에 있으면 그 카드를 먼저 씁니다.

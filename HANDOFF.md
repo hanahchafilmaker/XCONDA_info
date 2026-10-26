@@ -288,6 +288,7 @@ XCONDA_info/
 - 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
+- **`dev.html` 은 noindex**: 이 파일은 개발 진입점이면서 저장소 루트에 커밋되어 **`/dev.html` 로도 열립니다**. 검색에 개발 껍데기가 노출되지 않도록 `<!-- DEV-ONLY:START --> … <!-- DEV-ONLY:END -->` 안에 `noindex` 를 두고, 빌드(`applyHead`)가 **그 블록을 지웁니다**. 지우지 않으면 배포되는 `index.html` 이 noindex 를 물려받아 **홈페이지가 검색에서 빠집니다** — `seo.test.mjs` 가 회귀를 막습니다(2026-10-26).
 - **검수 진행률**: `npm run i18n:progress` — `content/i18n/<언어>.json` 의 `review` 표기를 세어 **95항목 × 3언어 = 285** 중 검수 완료/초안/번역 없음을 보여 주고, `reports/i18n-progress-<날짜>.md` 에 언어별 표 + 「기계 점검이 문제를 찾은 항목」(검수 우선순위)을 남깁니다. 완료로 인정하는 표기는 **`YYYY-MM-DD 검수 완료(검수자)`** 하나뿐이고, 항목별 표시가 없으면 파일 맨 위 `review`(현재는 초안)를 따릅니다. 원어민 검수가 끝난 항목부터 `entries[키].review` 를 바꾸고 이 명령을 다시 돌리면 진행률이 올라갑니다(2026-10-26 ①-4).
 - **번역 품질 점검**: `npm run i18n:qc` — 연락처·주소 불일치(오류), 숫자 누락·통화 표기·미번역 영어·제목 중복·길이 비율·브랜드 표기(경고)를 봅니다. `-- --write` 로 `reports/i18n-qc-<날짜>.md` 갱신. 의도된 차이는 `content/i18n/qc-allow.json` 에 근거와 함께 적습니다.
 - **워크플로 설정 회귀 방지**: `scripts/workflows.test.mjs` 가 (1) PR 자동 생성 금지 (2) notion-sync 는 main 전용 (3) `www/**`·`content/i18n/**` 트리거 (4) `en/ja/zh` 커밋 대상 포함을 검사합니다.
