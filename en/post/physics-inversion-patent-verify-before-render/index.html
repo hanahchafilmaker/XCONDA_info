@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>The physics-inversion patent that fixes AI video instead of throwing it away | XCONDA Hub — Q&amp;A, Guides and Notices</title>
+    <meta name="description" content="You generate ten AI videos and keep one or two. We summarise patent 10-3002930, which checks setting violations and physics errors twice before rendering and tells the AI where and how badly it went wrong." />
+    <link rel="canonical" href="https://hub.xconda.ai/en/post/physics-inversion-patent-verify-before-render/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/physics-inversion-patent-verify-before-render/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/physics-inversion-patent-verify-before-render/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/physics-inversion-patent-verify-before-render/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="The physics-inversion patent that fixes AI video instead of throwing it away" />
+    <meta property="og:description" content="You generate ten AI videos and keep one or two. We summarise patent 10-3002930, which checks setting violations and physics errors twice before rendering and tells the AI where and how badly it went wrong." />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-physics-inversion-patent-verify-before-render.jpg" />
+    <meta property="og:url" content="https://hub.xconda.ai/en/post/physics-inversion-patent-verify-before-render/" />
+    <meta property="article:published_time" content="2026-10-24" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The physics-inversion patent that fixes AI video instead of throwing it away" />
+    <meta name="twitter:description" content="You generate ten AI videos and keep one or two. We summarise patent 10-3002930, which checks setting violations and physics errors twice before rendering and tells the AI where and how badly it went wrong." />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-physics-inversion-patent-verify-before-render.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/en/post/physics-inversion-patent-verify-before-render/#webpage","url":"https://hub.xconda.ai/en/post/physics-inversion-patent-verify-before-render/","name":"The physics-inversion patent that fixes AI video instead of throwing it away","inLanguage":"en","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="en">
+<nav aria-label="breadcrumb"><a href="../../">Home</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/" hreflang="ko">한국어</a><strong aria-current="true">English</strong><a href="https://hub.xconda.ai/ja/post/physics-inversion-patent-verify-before-render/" hreflang="ja">日本語</a><a href="https://hub.xconda.ai/zh/post/physics-inversion-patent-verify-before-render/" hreflang="zh-Hans">中文</a></nav>
+<article>
+<h1>The physics-inversion patent that fixes AI video instead of throwing it away</h1>
+<p class="seo-meta">English · XCONDA Hub</p>
+<p class="notion-default">Hello, this is XCONDA.</p>
+<aside class="callout notion-default"><p>📌 <strong>Key summary</strong> Generate ten AI videos and one or two are usable; the rest get thrown away and re-run. Cubeberry registered a patent (No. 10-3002930) for checking twice before rendering and telling the AI where, and by how much, something was wrong. This post covers the principle and the plan to bring it into XCONDA.</p></aside>
+<aside class="callout notion-default"><p>🛠️ <strong>Before we start</strong> The verification and correction features described here are a development plan. They are not live in XCONDA yet and no release date is fixed.</p></aside>
+<p class="notion-default"><strong>Who this is for</strong>: people who resent burning credits picking one usable take out of many, people worn down by hands passing through tables or objects floating in mid-air, and anyone curious about what Cubeberry has patented.</p>
+<figure><img src="https://www.notion.so/image/attachment%3Af2ef478b-1eef-4806-99bd-6a3e69833527%3Apatent_cert_10-3002930_masked.jpg?table=block&amp;id=3619fc78-8227-4eba-8d67-eac9394dc2f1&amp;cache=v2" alt="Korean Patent Certificate No. 10-3002930" loading="lazy" decoding="async"></figure>
+<h3>Generate ten, keep one or two</h3>
+<p class="notion-default">Anyone who has made AI video knows. Generate ten and one or two are usable; the rest look like this.</p>
+<ul><li>A hand passes through a table.</li><li>A cup floats in mid-air.</li><li>Someone running suddenly freezes.</li></ul>
+<p class="notion-default">So what do you do? Throw it away and run it again. Until it works.</p>
+<p class="notion-default">This kept bothering CEO Jinseo Lee, because the cost of making the video is already spent by the time you throw it away. Work like that on a drama set and the producer yells at you.</p>
+<h3>On a drama set, checking comes first</h3>
+<p class="notion-default">Shooting a drama follows a fixed order. Check the storyboard, walk the blocking, and only then roll the camera. Checking first, shooting later. Over 20 years directing dramas as a PD, Jinseo Lee learned how much money that order saves.</p>
+<p class="notion-default">This patent moves that order into AI.</p>
+<h3>Two checks before you render</h3>
+<p class="notion-default">Below is a plain-language explanation of the patent&#39;s concept. It is not a legal reading of the claims.</p>
+<p class="notion-default"><strong>First check: does it break the settings already decided?</strong><br>We see whether the scene fits the settings established in advance. An introverted character suddenly turning violent, or a car appearing in a medieval setting, is caught here.</p>
+<p class="notion-default"><strong>Second check: does the movement make physical sense?</strong><br>If it passes the first, we stand the people and objects up as simple shapes and turn them gently — a rehearsal before the shoot. Here we catch objects passing through each other, defying gravity, or movement that stops unnaturally. Because this happens before the real video, it costs almost nothing.</p>
+<p class="notion-default"><strong>When a problem is caught: tell, do not throw away</strong><br>When a problem is found, we do not just discard it. We extract where and how badly it went wrong and turn that into a form the AI can understand, then feed it back. The goal is for the same mistake not to happen in the same place next time.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>Step</td><td>What we look at</td><td>Example that gets caught</td></tr><tr><td>1. Setting check</td><td>Whether it breaks the settings already decided</td><td>An introverted character suddenly turning violent, a car in a medieval setting</td></tr><tr><td>2. Physics rehearsal</td><td>Turn it gently as simple shapes and see whether the movement makes sense</td><td>Objects passing through each other, defying gravity, movement stopping unnaturally</td></tr><tr><td>3. Auto-correction</td><td>Feed the wrong position and magnitude back in a form the AI understands</td><td>So the same mistake does not repeat in the same place</td></tr></tbody></table></div>
+<figure><img src="https://www.notion.so/image/attachment%3Aa26ec21d-2fb1-4cb7-867e-23e68a441541%3A02_check_before_render_development_plan_EN.jpg?table=block&amp;id=f1be7995-42dd-4ee3-ad07-ad948c7f623c&amp;cache=v2" alt="Check before you render — development plan" loading="lazy" decoding="async"></figure>
+<h3>What it looks like in cost</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>Item</td><td>Throw away after making it</td><td>Check before making it</td></tr><tr><td>When problems are found</td><td>After the video is finished</td><td>Before the video is made</td></tr><tr><td>Cost when wrong</td><td>Credits for one full video</td><td>Almost nothing</td></tr><tr><td>Next attempt</td><td>Run it again from zero</td><td>Tell it where and how much was wrong, then try again</td></tr></tbody></table></div>
+<h3>Unpacking the patent&#39;s name</h3>
+<p class="notion-default">The name looks long and intimidating, but everything we described above is in it.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>Words in the name</td><td>Plain meaning</td></tr><tr><td>Inversion of physics simulation data</td><td>Working backwards from the physical result to find what went wrong</td></tr><tr><td>Multiple verification</td><td>Checking more than once, not once</td></tr><tr><td>Automatic correction</td><td>Finding the problem and feeding it back to the AI to fix</td></tr></tbody></table></div>
+<h3>The patent at a glance</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>Item</td><td>Details</td></tr><tr><td>Patent number</td><td>No. 10-3002930</td></tr><tr><td>Title</td><td>A system for multiple verification and automatic correction of generative AI content using inversion of physics simulation data</td></tr><tr><td>Filed</td><td>January 2026</td></tr><tr><td>Registered</td><td>6 August 2026 (about six months after filing)</td></tr><tr><td>Patent holder</td><td>Cubeberry Inc.</td></tr><tr><td>Inventor</td><td>Jinseo Lee</td></tr></tbody></table></div>
+<h3>The plan for XCONDA</h3>
+<p class="notion-default">Cubeberry aims to develop this technology into something usable in XCONDA. The first step planned is extending Blocking Board, because Blocking Board is the tool that sets the movement of several characters crossing paths first, which pairs naturally with a patent about checking whether movement makes physical sense.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>Item</td><td>Details</td><td>Status</td></tr><tr><td>Setting check before rendering</td><td>Filter out scenes that break the settings already decided</td><td>Planned</td></tr><tr><td>Physics rehearsal</td><td>Run the movement in advance as simple shapes</td><td>Planned</td></tr><tr><td>Automatic correction</td><td>Pass the wrong position and magnitude back to the AI</td><td>Planned</td></tr></tbody></table></div>
+<h3>Two patents registered this year</h3>
+<p class="notion-default">Both patents filed this year have been registered. The one in this post looks at movement inside a single scene. The second, which keeps consistency between scenes, was covered in ‣. Both say the same thing in the end: do not render and throw away — check, then render.</p>
+<h3>Frequently asked</h3>
+<p class="notion-default"><strong>Q. Can I use this feature now?</strong><br>Not yet. It is at the planning stage and no release date is set.</p>
+<p class="notion-default"><strong>Q. How do I waste fewer videos today?</strong><br>Before rendering, confirm the cuts as images in FLEXBOARD. A wrong cut costs one image to remake, which uses far fewer credits than re-running the whole video. The detailed method is in the post below.</p>
+<p class="notion-default"><strong>Q. How is this different from the problem of cuts jumping?</strong><br>The continuity problem is about props or costumes changing between cuts; this patent looks at whether movement within a single scene makes physical sense. They are different problems, which is why there are two patents.</p>
+<h3>Worth reading together</h3>
+<ul><li>Consistency between scenes: ‣</li><li>Storyboard before video: ‣</li><li>Fixing cuts that jump: ‣</li><li>The full map: ‣</li></ul>
+<h3>If you are starting now</h3>
+<p class="notion-default">XCONDA is running a Seedance 2.5 discount alongside the FLEXBOARD launch promotion.</p>
+<ul><li>Korea: 30% off usage + 10% off price, up to 40%</li><li>US: up to 30% off usage</li><li>Period: 7 October, 11:00 to 6 November, 11:00 (Korea time)</li></ul>
+<p class="notion-default">👉 Go to XCONDA: https://www.xconda.ai/</p>
+<p class="notion-default">For adoption or partnership enquiries, contact us below.</p>
+<ul><li>Email: cubeberry@cuberry.kr</li><li>Phone: +82-70-8095-2302 (weekdays 10:00–17:00)</li></ul>
+<p class="notion-default">Thank you for reading a long post today!</p>
+<p><a href="https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/" hreflang="ko">Read this in Korean</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-background-consistency/">Why AI video backgrounds jump — and how to hold cuts consistent</a></li><li><a href="../ai-video-motion-ideas/">Where to look when you run out of motion ideas for AI video</a></li><li><a href="../deepseek-official-harness/">DeepSeek releases its official harness under MIT</a></li><li><a href="../flux-3-image-release/">Black Forest Labs releases FLUX 3 Image</a></li></ul></nav>
+<p class="seo-note">English pages are translated by the XCONDA team. The Korean hub is the primary source; contact cubeberry@cuberry.kr if anything here disagrees with it.</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

@@ -162,7 +162,7 @@ export function loadTranslations(root) {
  *   {"type":"p" | "h2" | "h3" | "quote", "text":"..."} · {"type":"ul" | "ol", "items":["...", "..."]}
  * 본문 이미지는 번역하지 않습니다 — 한국어 원문의 이미지를 **같은 위치**에 자동으로 넣습니다.
  * ------------------------------------------------------------------------ */
-export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout"];
+export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout", "code"];
 
 /**
  * 번역문의 **굵게** 표기와 줄바꿈을 렌더러가 이해하는 rich text 로 바꿉니다.
@@ -205,6 +205,11 @@ export function localizedBlockProblems(blocks) {
       }
       return;
     }
+    // 코드/도식 — 파이프라인 그림처럼 고정폭으로 보여 줄 글
+    if (block.type === "code") {
+      if (typeof block.text !== "string" || !block.text.trim()) problems.push(`${at}: code 에 text 가 필요합니다`);
+      return;
+    }
     // 콜아웃(아이콘 + 한 덩어리 글) — 원문의 📌 · ⚠️ · 💡 안내 상자
     if (block.type === "callout") {
       if (typeof block.text !== "string" || !block.text.trim()) problems.push(`${at}: callout 에 text 가 필요합니다`);
@@ -221,8 +226,9 @@ export function localizedBlockProblems(blocks) {
         problems.push(`${at}: table 의 각 행은 문자열 배열이어야 합니다`);
         return;
       }
-      if (block.rows.some((row) => row.some((cell) => typeof cell !== "string" || !cell.trim()))) {
-        problems.push(`${at}: table 칸은 비어 있지 않은 문자열이어야 합니다`);
+      // 칸 하나가 비는 것은 정상입니다(표 왼쪽 위 모서리 칸). 형식만 봅니다.
+      if (block.rows.some((row) => row.some((cell) => typeof cell !== "string"))) {
+        problems.push(`${at}: table 칸은 문자열이어야 합니다`);
         return;
       }
       const width = block.rows[0].length;
@@ -276,6 +282,11 @@ function stripBlockOrder(block) {
   if (block.type === "callout") {
     return { type: "callout", icon: String(block.icon ?? ""), color: "default", text: localizedRichText(block.text) };
   }
+  if (block.type === "code") {
+    // 언어명은 클래스로 들어가므로 공백이 있으면 넣지 않습니다(plain text 등).
+    const lang = String(block.language ?? "");
+    return { type: "code", text: String(block.text), language: /^[\w+#.-]+$/.test(lang) ? lang : "" };
+  }
   return { type: block.type, text: localizedRichText(block.text) };
 }
 
@@ -285,7 +296,7 @@ function stripBlockOrder(block) {
  */
 export function blockHasText(block) {
   if (!block) return false;
-  if (block.type === "table" || block.type === "ul" || block.type === "ol") return true;
+  if (block.type === "table" || block.type === "ul" || block.type === "ol" || block.type === "code") return true;
   const text = block.text;
   if (Array.isArray(text)) return text.some((seg) => String(seg?.text ?? "").trim());
   if (String(text ?? "").trim()) return true;
