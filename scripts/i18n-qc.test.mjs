@@ -56,6 +56,39 @@ test("연락처가 있으면 통과하고, 숫자는 글자 표기까지 인정�
   assert.deepEqual(r.warnings, []);
 });
 
+test("본문 번역(blocks)의 형식 오류와 한글 잔존을 잡는다", () => {
+  const ok = qcLanguage("en", {
+    entries: {
+      "qna/a": {
+        title: "Where do I ask?",
+        summary: "Email cubeberry@cuberry.kr. Last four digits, 10,450 KRW.",
+        blocks: [{ type: "h2", text: "Heading" }, { type: "p", text: "Body text." }, { type: "ul", items: ["one"] }],
+      },
+    },
+  }, sources);
+  assert.deepEqual(ok.errors, []);
+
+  const bad = qcLanguage("en", {
+    entries: {
+      "qna/a": {
+        title: "Where do I ask?",
+        summary: "Email cubeberry@cuberry.kr. Last four digits, 10,450 KRW.",
+        blocks: [
+          { type: "image", src: "x.png" },
+          { type: "p", text: "" },
+          { type: "ul" },
+          { type: "p", text: "문의는 큐브베리 고객센터로 연락 주시면 확인 후 안내드립니다." },
+        ],
+      },
+    },
+  }, sources);
+  const kinds = bad.errors.map((e) => e.kind);
+  assert.ok(kinds.includes("block-type"));
+  assert.ok(kinds.includes("block-empty"));
+  assert.ok(kinds.includes("block-items"));
+  assert.ok(kinds.includes("block-hangul"), "한글이 남은 본문을 잡지 못했습니다");
+});
+
 test("허용 목록에 적은 (키, 유형)은 경고에서 빠진다", () => {
   const dict = { entries: { "qna/a": { title: "Where do I ask?", summary: "Email cubeberry@cuberry.kr. " + "x".repeat(400) } } };
   const plain = qcLanguage("en", dict, sources);
