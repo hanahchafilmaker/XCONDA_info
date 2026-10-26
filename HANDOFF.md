@@ -277,7 +277,7 @@ XCONDA_info/
 | 관련 글 (`aria-label="관련 글"`) | `seo.js` › `relatedArticles` | 노션 `Category`(+6) · `Tool`(+4) · `Tags`(+4) · 제목 2-gram(+1, 최대 4) 점수로 최대 4건. Q&A 는 같은 Q&A 를 뒤로 미룹니다. 후보가 없으면 같은 섹션 최신 글로 채워 **막다른 문서를 만들지 않습니다**(2026-10-25 A5) |
 | `llms.txt` | `seo.js` › `llmsTxt` | AI 도우미용 요약 + 섹션/대표 글 링크(절대 주소, 요약 160자). 사이트맵과 같은 목록에서 만들어 서로 어긋나지 않습니다(2026-10-25 A6). 번역 언어가 있으면 `<언어> hub` 항목(`/en/`·`/ja/`·`/zh/`)이 자동으로 붙습니다 |
 | www 기능 페이지 산출물 | `scripts/www/build-feature-pages.mjs` (`npm run www:build`) | `www/feature-pages.json` → `www/dist/` 정적 HTML(20×2언어 + 목록 2). canonical·hreflang·JSON-LD·내부 링크를 스스로 검사합니다. 산출물은 커밋하지 않습니다(`www/dist/` 는 .gitignore) |
-| 번역 본문(`blocks`) | `build-seo.mjs` › `localizedBlockProblems` · `mergeLocalizedBlocks` · `bodyImagesOf` | `content/i18n/<언어>.json` 의 `entries[키].blocks` 에 **p · h2 · h3 · ul · ol · quote 6종만** 씁니다(번역가가 다루는 최소 형식). 본문 이미지는 번역하지 않고 **한국어 원문 위치**(앞에 있던 글 블록 수)에 자동으로 들어갑니다. 형식이 틀리면 그 글의 본문만 빼고 빌드 경고를 남깁니다 |
+| 번역 본문(`blocks`) | `build-seo.mjs` › `localizedBlockProblems` · `mergeLocalizedBlocks` · `bodyImagesOf` | `content/i18n/<언어>.json` 의 `entries[키].blocks` 에 **p · h2 · h3 · ul · ol · quote · table · callout · code · todo 10종**을 씁니다(번역가가 다루는 최소 형식). 본문 이미지는 번역하지 않고 **한국어 원문 위치**(앞에 있던 글 블록 수)에 자동으로 들어갑니다. 형식이 틀리면 그 글의 본문만 빼고 빌드 경고를 남깁니다 |
 | 언어별 주소 `/en/` · `/ja/` · `/zh/` | `build-seo.mjs` › `localizedPages` + `content/i18n/<언어>.json` | **사람이 검수한 번역이 있는 글만** 정적 페이지를 만듭니다(없으면 한국어만). 번역 페이지에는 앱 번들을 넣지 않고(`staticOnlyTemplate`) ko ↔ 번역을 hreflang 으로 서로 연결합니다. 2026-10-25 기준 **Q&A 73건 × 3언어(영어·일본어·중국어) 전체**, 즉 `/en/`·`/ja/`·`/zh/` 각 75페이지(홈+목록+73). 번역은 모두 `review: "AI 1차 번역(초안)"` 상태라 원어민 검수가 남아 있습니다. 새 번역은 json 에 추가하고 `npm run build` — 언어 파일만 늘리면 페이지·사이트맵·hreflang 이 함께 늘어납니다 |
 | `assets/i18n-paths.json` | `build-seo.mjs` › `localizedPages` | 앱의 언어 전환기가 "이 경로에 번역 주소가 있나" 확인하는 목록. 있으면 `/en/…` 으로 이동, 없으면 기존 Google 번역 위젯으로 폴백(`src/i18n/index.tsx` › `localizedHrefFor`) |
 | `user-guide.html` · `admin-guide.html` | 정적 HTML (저장소 루트) | `user-guide.html` = 공개 가이드 → canonical + 사이트맵(`EXTRA_INDEX_PAGES`). `admin-guide.html` = 내부 운영 매뉴얼 → `noindex, nofollow`, 사이트맵 제외(2026-10-25 A4) |
@@ -296,7 +296,7 @@ XCONDA_info/
 - **번역은 기계번역을 넣지 않습니다.** `content/i18n/<언어>.json` 의 `entries` 키는 `qna/contact-inquiry` 처럼 `주소/슬러그` 이고, 원문 글이 없으면 빌드가 경고하고 그 주소를 만들지 않습니다. 블로그·가이드는 본문 번역이 없어 아직 번역 주소가 없습니다(노션 `Title EN`/본문 번역이 생기면 같은 방식으로 확장).
 - **번역 검수 절차(2026-10-25 현재 3개 언어 모두 초안)**: `en`·`ja`·`zh` 각 73건은 AI 1차 번역이며 `review` 필드에 그 사실이 적혀 있습니다. 원어민이 검수한 항목부터 `review` 를 `YYYY-MM-DD 검수 완료(검수자)` 로 바꿔 주세요. 검수 중 발견한 수정은 `entries` 의 `title`/`summary` 를 직접 고치면 되고, `npm run test:unit` 이 **키 1:1·빈 번역·한글 잔존(20% 초과)·Q&A 누락·제목 끝 "답변"** 을 자동으로 잡습니다.
 - 언어를 더 늘리려면 `content/i18n/<코드>.json` 만 추가하면 됩니다(`seo.js` 의 `SITE_LANGS` 에 코드가 있어야 함). 페이지·사이트맵·hreflang·`llms.txt` 항목·`assets/i18n-paths.json` 이 같은 빌드에서 함께 만들어집니다.
-- **본문 번역은 `blocks` 로 넣습니다** — Q&A 는 `summary` 가 곧 답변이지만 블로그·가이드·공지는 본문이 있어야 번역 주소를 만들 가치가 있습니다. 형식: `{"type":"p","text":"…"}`, `{"type":"h2"|"h3","text":"…"}`, `{"type":"ul"|"ol","items":["…"]}`, `{"type":"quote","text":"…"}`, `{"type":"callout","icon":"📌","text":"…"}`, `{"type":"table","rows":[["칸","칸"],…]}`, `{"type":"code","text":"…"}`, `{"type":"todo","items":["…"]}`. 강조는 `**굵게**`, 줄바꿈은 그대로(렌더 시 `<br>`). 빈 문단·빈 인용은 넣지 않습니다. 이미지·영상·첨부 블록은 넣지 마세요(2단 배치는 펼친 뒤 원문 위치를 따라 자동 삽입). `npm run i18n:qc` 가 형식 오류·한글 잔존(20% 이상)을 잡습니다.
+- **본문 번역은 `blocks` 로 넣습니다** — Q&A 는 `summary` 가 곧 답변이지만 블로그·가이드·공지는 본문이 있어야 번역 주소를 만들 가치가 있습니다. 형식: `{"type":"p","text":"…"}`, `{"type":"h2"|"h3","text":"…"}`, `{"type":"ul"|"ol","items":["…"]}`, `{"type":"quote","text":"…"}`, `{"type":"callout","icon":"📌","text":"…"}`, `{"type":"table","rows":[["칸","칸"],…]}`, `{"type":"code","text":"…"}`, `{"type":"todo","items":["…"]}`, `{"type":"callout","icon":"📌","text":"…"}`. 강조는 `**굵게**`, 줄바꿈은 그대로(렌더 시 `<br>`). 빈 문단·빈 인용은 넣지 않습니다. 이미지·영상·첨부 블록은 넣지 마세요(2단 배치는 펼친 뒤 원문 위치를 따라 자동 삽입). 이모지·링크·해시태그만 있는 블록(빈 인용, `🔗 xconda.ai`, 이미지 전용 콜아웃)은 번역하지 않고 뺍니다 — 빌드가 `needsTranslation()` 으로 같은 기준으로 세어 **블록 수가 원문과 다르면 경고**합니다. Q&A 의 「게시용 출처」 블록은 `/tmp/w/qna_sources.py` 로 정책명만 바꿔 채웁니다. `npm run i18n:qc` 가 형식 오류·한글 잔존(20% 이상)을 잡습니다.
 - 번역 페이지에는 **앱 번들이 들어가지 않습니다**. 넣으면 React 가 정적 번역문을 지우고 한국어 화면을 그려서 `/en/` 주소에 한국어가 뜹니다.
 
 ---
@@ -756,7 +756,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
-| 진행 중 | **①-1 본문 번역** — 본문이 있는 글 **20편 전부** 완료(en·ja·zh) — ①-1 번역 완료 | 남은 글은 `content/i18n/*.json` 에 `blocks` 추가만 하면 `/en/…` 페이지·사이트맵·hreflang 이 함께 생성 |
+| 완료 | **①-1 본문 번역** — 본문이 있는 글 **20편 전부** + Q&A 73건(en·ja·zh) | 표·콜아웃·체크리스트까지 번역, Q&A 는 「게시용 출처」 블록 포함 |
 
 ---
 

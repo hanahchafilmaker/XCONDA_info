@@ -336,6 +336,28 @@ export function bodyImagesOf(blocks = []) {
   return out;
 }
 
+const plainTextOf = (value) =>
+  typeof value === "string" ? value : Array.isArray(value) ? value.map((seg) => String(seg?.text ?? "")).join("") : "";
+
+/**
+ * 번역이 필요한 블록인가 — 이모지·링크·해시태그만 있는 인용(엑스 게시글 조각)이나
+ * 이미지 캡션용 빈 콜아웃은 번역 파일에 넣지 않습니다.
+ */
+export function needsTranslation(block) {
+  if (!block) return false;
+  if (block.type === "ul" || block.type === "ol" || block.type === "todo") return (block.items ?? []).length > 0;
+  if (block.type === "table") return true;
+  const text = block.text;
+  let raw = typeof text === "string" ? text : Array.isArray(text) ? text.map((seg) => String(seg?.text ?? "")).join("") : "";
+  if (block.type === "callout" && !raw.trim()) raw = (block.children ?? []).map((c) => plainTextOf(c?.text)).join(" ");
+  const rest = raw
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/[#@][\w-]+/g, " ")
+    .replace(/xconda\.ai/gi, " ")
+    .replace(/[\p{Extended_Pictographic}\p{Emoji_Component}\p{S}\p{P}\s]/gu, "");
+  return rest.length > 0;
+}
+
 /**
  * 2단 배치(`column_list` · `column`)를 풀어 한 줄로 만듭니다.
  * 번역가는 2단 배치를 다루지 않고, 글은 글대로 옮기고 이미지·영상은 원문 자리에 그대로 넣습니다.
@@ -498,6 +520,18 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       // 이미지는 한국어 원문 위치를 그대로 따릅니다. 요약은 메타 설명으로만 쓰고,
       // 본문이 있으면 첫 문단을 요약으로 중복 출력하지 않습니다(Q&A 는 본문이 없어 요약이 곧 답변).
       const bodyProblems = localizedBlockProblems(it.tr.blocks);
+      // 구조 검사 — 번역 블록 수/종류가 원문과 다르면 이미지가 엉뚱한 자리에 들어갑니다.
+      if (!it.prefix.startsWith("qna")) {
+        const koText = flattenBlocks(it.record.blocks ?? []).filter(
+          (b) => !MEDIA_BLOCK_TYPES.includes(b.type) && b.type !== "divider" && needsTranslation(b),
+        );
+        const trText = (Array.isArray(it.tr.blocks) ? it.tr.blocks : []).filter((b) => needsTranslation(b));
+        if (koText.length && trText.length !== koText.length) {
+          missing.push(
+            `${I18N_DIR}/${code}.json › ${it.key} 블록 구조가 원문과 다릅니다(원문 ${koText.length} · 번역 ${trText.length}) — 이미지·첨부 위치가 어긋날 수 있습니다`,
+          );
+        }
+      }
       for (const problem of bodyProblems) missing.push(`${I18N_DIR}/${code}.json › ${it.key} ${problem}`);
       const carried = it.record.bodyMedia ?? it.record.bodyImages ?? [];
       const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, carried);
