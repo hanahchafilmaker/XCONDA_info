@@ -387,6 +387,48 @@
         }
       ]
     },
+    "post/ai-video-motion-ideas": {
+      "title": "Where to look when you run out of motion ideas for AI video",
+      "summary": "Two sites worth bookmarking. Browse motion clips on Prompt Motion and adapt the prompts their makers publish, or install a skill like CreatorMotion on your agent in Skillry and build motion that fits your script.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(Sharing a guide) Stuck for motion ideas when making AI video? 🎬"
+        },
+        {
+          "type": "p",
+          "text": "Here are two sites worth a look."
+        },
+        {
+          "type": "p",
+          "text": "① Prompt Motion\nBrowse the motion clips, copy the prompt the maker published, and adapt it to your own video."
+        },
+        {
+          "type": "p",
+          "text": "② Skillry\nInstall a skill such as CreatorMotion on your agent and build motion that fits your script.\n※ CreatorMotion is Pro only and is built around 16:9 video."
+        },
+        {
+          "type": "p",
+          "text": "The guide covers the site links, the main menus, and how to copy prompts and install skills."
+        },
+        {
+          "type": "p",
+          "text": "💬 Leave 'motion' in the comments.\nWe'll send you the guide by DM!"
+        },
+        {
+          "type": "p",
+          "text": "Save this and pull it out the next time you make a video.\nAI news and how-tos at"
+        },
+        {
+          "type": "p",
+          "text": "@data.popcorn"
+        },
+        {
+          "type": "p",
+          "text": "🍿"
+        }
+      ]
+    },
     "post/deepseek-official-harness": {
       "title": "DeepSeek releases its official harness under MIT",
       "summary": "DeepSeek's official harness is out under the MIT licence. Everything is a plugin: models, tools, skills, sessions, sandboxes and UI can all be swapped."
@@ -394,6 +436,79 @@
     "post/flux-3-image-release": {
       "title": "Black Forest Labs releases FLUX 3 Image",
       "summary": "Black Forest Labs has released FLUX 3 Image, with precise editing that changes only the part you want, bounding-box placement and combination of up to 10 reference images."
+    },
+    "post/kbs-documentary-seongmul-xconda": {
+      "title": "KBS documentary 'Seongmul — The Invitation', made with XCONDA",
+      "summary": "KBS documentary 'Seongmul' — The Invitation, on the Shroud of Turin and the confession of a blind nun, is out. The film was made with the all-in-one AI video platform XCONDA.",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "**Can you believe without seeing?**"
+        },
+        {
+          "type": "p",
+          "text": "This is 'The Invitation', the episode of **Seongmul**, a KBS documentary on the **Shroud of Turin** and the confession of a blind nun."
+        },
+        {
+          "type": "p",
+          "text": "The film was made with **XCONDA**, the all-in-one AI video production platform."
+        },
+        {
+          "type": "h2",
+          "text": "Watch it"
+        },
+        {
+          "type": "p",
+          "text": "You can watch it on the YouTube channel **'KBS 다큐'** (KBS Docu)."
+        },
+        {
+          "type": "h2",
+          "text": "Get started with XCONDA"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "🔗 Go to xconda.ai",
+            "🎁 **100 welcome credits** on sign-up"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Original post (X)"
+        },
+        {
+          "type": "quote",
+          "text": "Can you believe without seeing?"
+        },
+        {
+          "type": "quote",
+          "text": "We filmed the Shroud of Turin and the confession of a blind nun."
+        },
+        {
+          "type": "quote",
+          "text": "You can watch 'The Invitation', the episode of the KBS documentary Seongmul, on YouTube 'KBS 다큐'."
+        },
+        {
+          "type": "quote",
+          "text": "https://youtu.be/bNsbSW4vqCM?si=dmEjUT7JG4k892BJ"
+        },
+        {
+          "type": "quote",
+          "text": "This film was made with XCONDA, the all-in-one AI video production platform."
+        },
+        {
+          "type": "quote",
+          "text": "🔗 xconda.ai"
+        },
+        {
+          "type": "quote",
+          "text": "🎁 100 welcome credits"
+        },
+        {
+          "type": "p",
+          "text": "See the original post on X (@Xconda_ai, 2026.03.20)"
+        }
+      ]
     },
     "post/opus-5-5-github-trending": {
       "title": "A week after Opus 5.5, 8 of GitHub's top 10 are video and animation — a film made only with code, 'OPUSCAR 98'",
@@ -516,6 +631,188 @@
         {
           "type": "p",
           "text": "Go to Skillry"
+        }
+      ]
+    },
+    "post/xconda-global-beta-launch": {
+      "title": "Cubeberry launches XCONDA, an AI video production platform",
+      "summary": "Cubeberry has begun the global beta of its AI video production SaaS, XCONDA. It brings together eight of its own AI tools plus Veo3, Kling 2.6 Pro and Runway Gen 4.5, with the 9-cut auto storyboard 'Director's Cut'.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "AI content company **Cubeberry (CEO Jinseo Lee)** has begun the global beta of **XCONDA**, its AI video production SaaS platform, TechWorld reported."
+        },
+        {
+          "type": "h2",
+          "text": "The strategy for entering the global market"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "It enters a market already claimed by overseas AI platforms such as Higgsfield and Freepik.",
+            "Its differentiator is technology that unifies fragmented AI tools and guarantees **logical completeness in video production**."
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "AI models offered in one place"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Eight AI tools developed in-house** by Cubeberry",
+            "The latest generative models — **Veo3, Kling 2.6 Pro, Runway Gen 4.5** — integrated through their APIs",
+            "Users spend less time and money switching tools and can focus on the production itself"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Headline feature — the 9-cut auto storyboard, Director's Cut"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Set the **year and city** of the setting and choose a directing style.",
+            "Apply a range of **art styles** — live action (Arri Alexa), Ghibli animation, Pixar and more.",
+            "Add a product image or model photo and enter a scenario, and **a 9-cut storyboard, per-cut director's notes and detailed prompts** are generated automatically.",
+            "You can edit the prompt of a single cut, or regenerate just that cut on its own."
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Other built-in features"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Lipsync-2-Pro** — lip-sync that matches multiple speakers",
+            "**33 Auto Angle Generator** — turns one shot into 33 different angles"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "What the CEO said"
+        },
+        {
+          "type": "p",
+          "text": "CEO Jinseo Lee said the aim was to fill the gaps left by existing global tools and deliver the detail working productions need, transplanting the directing know-how he gained over 28 years as a KBS PD into AI. He added that XCONDA would become \"a partner global creators can use in real work\"."
+        },
+        {
+          "type": "h2",
+          "text": "What comes next"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Last year Cubeberry was selected as an **'Export Voucher Tech Service' company** by the Korea SMEs and Startups Agency.",
+            "It plans to deepen its business model by linking with **Acconda**, a matching platform for commissioning demanding work to experts (CPs)."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Read the original TechWorld article"
+        },
+        {
+          "type": "p",
+          "text": "Source: TechWorld News / reporter Kyungjoo Kim (2026.03.03)"
+        }
+      ]
+    },
+    "post/xconda-open-100-credits": {
+      "title": "XCONDA launch offer: 100 free credits for every new sign-up",
+      "summary": "To mark the launch of its all-in-one AI video platform XCONDA, Cubeberry is giving every new user 100 free credits. The 9-cut auto storyboard 'Art Director Pro', the first to implement basic causality, also ships officially.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "To mark the launch of **XCONDA**, its all-in-one AI video production platform, AI content company **Cubeberry (CEO Jinseo Lee)** is running an opening promotion that gives every new sign-up 100 credits free."
+        },
+        {
+          "type": "h2",
+          "text": "Opening promotion — 100 free credits"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Details"
+            ],
+            [
+              "Who",
+              "**Every new sign-up**"
+            ],
+            [
+              "Benefit",
+              "**100** free credits"
+            ],
+            [
+              "How it arrives",
+              "**Automatic** on sign-up (no extra conditions or verification)"
+            ],
+            [
+              "Period",
+              "**No end date** until further notice"
+            ],
+            [
+              "How to get it",
+              "Applied automatically when you sign up on the official site"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Sign up and you can try every core XCONDA feature right away."
+        },
+        {
+          "type": "h2",
+          "text": "Also shipping officially — Art Director Pro"
+        },
+        {
+          "type": "p",
+          "text": "Cubeberry's in-house 9-cut auto storyboard is **the first in the world to implement 'basic causality'**. The result of one cut automatically becomes the reference for the next, so the story carries like a film."
+        },
+        {
+          "type": "h3",
+          "text": "The 'context collapse' problem of existing AI tools"
+        },
+        {
+          "type": "p",
+          "text": "Existing tools do not understand the link between cuts, so a character's clothes change or the situation resets. Art Director Pro keeps visual and situational information consistent across every cut."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**The coffee stain from a spill in the café scene is still there in the next cut**",
+            "A character soaked by heavy rain **stays wet even in the following indoor scene**"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "This is AI that understands the logic of a story rather than just generating images, and XCONDA is the only commercially available service that implements it."
+        },
+        {
+          "type": "h2",
+          "text": "Next step — ontology-based refinement"
+        },
+        {
+          "type": "p",
+          "text": "A next version is in development that refines the causality technology on an **ontology basis**. By structurally defining and reasoning about the relationships between objects, characters and situations in a scene, it will hold context far more precisely than the current version. Cubeberry plans to grow this into the core engine of its next product."
+        },
+        {
+          "type": "h2",
+          "text": "What the CEO said"
+        },
+        {
+          "type": "p",
+          "text": "CEO Jinseo Lee explained that causality-based technology solves **\"contextual continuity\"** — the problem existing AI tools could not. He added that the ontology work will take AI beyond generating scenes to the level of understanding a story."
+        },
+        {
+          "type": "p",
+          "text": "Read the original Digital Times article"
+        },
+        {
+          "type": "p",
+          "text": "Source: Digital Times / reporter Daesung Kim (2026.03.10)"
         }
       ]
     },
