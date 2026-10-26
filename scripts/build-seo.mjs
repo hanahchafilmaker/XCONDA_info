@@ -52,7 +52,9 @@ import {
   langByCode,
   llmsTxt,
   localizedUrl,
+  localizedOgImageUrl,
   localOgImageUrl,
+  OG_LANG_MANIFEST_PATH,
   relatedArticles,
   ogManifestKey,
   OG_MANIFEST_PATH,
@@ -413,7 +415,7 @@ export function applyHtmlLang(html, htmlLang) {
  * @param {{ site: string, translations: Record<string, object>, template: string,
  *           pageRecords: object[], defaultImageUrl: string }} input
  */
-export function localizedPages({ site, translations = {}, template, pageRecords = [], defaultImageUrl }) {
+export function localizedPages({ site, translations = {}, template, pageRecords = [], defaultImageUrl, ogLangManifest = {} }) {
   const files = new Map();
   const urls = [];
   const missing = [];
@@ -501,7 +503,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         ogType: "article",
         ogTitle: title,
         ogDescription: description,
-        image: it.record.image || defaultImageUrl,
+        // 언어별 카드(제목을 그 언어로 그린 카드) → 글 커버 → 기본 카드 순서
+        image: localizedOgImageUrl(ogLangManifest, code, path, site) || it.record.image || defaultImageUrl,
         publishedTime: it.record.date ?? "",
         ogLocale: lang.ogLocale,
         alternates: hreflangAlternates(site, path, codesForKey(it.key)),
@@ -537,7 +540,9 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, carried);
       const bodyHtml = bodyBlocks.length ? blocksToHtml(bodyBlocks, { alt: title }) : "";
       // 구조 검사 — 번역 블록 수/종류가 원문과 다르면 이미지가 엉뚱한 자리에 들어갑니다.
-      if (!bodyProblems.length && it.tr.blocks?.length) {
+      // `qna/*` 는 답변(요약)이 본문이고 한국어 본문이 비어 있는 항목이 있어(출처 블록만 번역)
+      // 원문과 비교할 수 없습니다 → 위 첫 검사와 같은 기준으로 제외합니다.
+      if (!it.prefix.startsWith("qna") && !bodyProblems.length && it.tr.blocks?.length) {
         // 빈 문단·빈 인용은 원문의 줄 간격일 뿐이라 구조 비교에서 뺍니다(번역 파일에는 넣지 않습니다).
         const shape = (blocks) =>
           flattenBlocks(blocks)
@@ -600,7 +605,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         ogType: "website",
         ogTitle: title,
         ogDescription: description,
-        image: defaultImageUrl,
+        image: localizedOgImageUrl(ogLangManifest, code, path, site) || defaultImageUrl,
         publishedTime: "",
         ogLocale: lang.ogLocale,
         alternates: hreflangAlternates(site, path, langCodes),
@@ -629,7 +634,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       ogType: "website",
       ogTitle: homeTitle,
       ogDescription: homeDescription,
-      image: defaultImageUrl,
+      image: localizedOgImageUrl(ogLangManifest, code, homePath, site) || defaultImageUrl,
       publishedTime: "",
       ogLocale: lang.ogLocale,
       alternates: homeAlternates,
@@ -969,6 +974,25 @@ function blocksToText(blocks) {
 /** 정적 페이지가 로드되기 전에만 보이는 최소 스타일 (앱이 뜨면 #root 와 함께 사라집니다) */
 const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>`;
 
+/* ------------------------------ 언어별 공유 카드 ------------------------------ */
+
+/**
+ * 언어별 카드 목록(manifest)을 읽습니다. 없으면 빈 객체 — 빌드는 그대로 진행되고
+ * 해당 페이지는 기존처럼 커버 이미지/기본 카드를 씁니다.
+ * (manifest 는 `npm run og:cards` 가 만듭니다 — scripts/og/build-og-cards.mjs)
+ */
+export function readOgLangManifest(warnings = []) {
+  const file = path.join(REPO_ROOT, OG_LANG_MANIFEST_PATH);
+  if (!fs.existsSync(file)) return {};
+  try {
+    const data = JSON.parse(fs.readFileSync(file, "utf8"));
+    return data && typeof data === "object" ? data : {};
+  } catch (e) {
+    warnings.push(`언어별 카드 목록(${OG_LANG_MANIFEST_PATH})을 읽지 못했습니다: ${e?.message ?? e}`);
+    return {};
+  }
+}
+
 /* ------------------------------ 생성 (순수 함수) ------------------------------ */
 
 /**
@@ -976,7 +1000,7 @@ const STATIC_STYLE = `<style>.seo-article{box-sizing:border-box;min-height:100vh
  * @param {{ rows: object[], pages?: object, template: string, siteUrl?: string }} input
  * @returns {{ files: Map<string, string>, pages: object[], skipped: object[], warnings: string[], siteUrl: string }}
  */
-export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, translations: translationsInput } = {}) {
+export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, ogLangManifest: ogLangManifestInput, translations: translationsInput } = {}) {
   let template = inputTemplate;
   const site = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
   // 인라인 번들 → 공용 자산(assets/app.js · app.css). 이미 분리된 템플릿이면 그대로 둡니다.
@@ -1048,6 +1072,9 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
 
   /* 공유 이미지 · 로고 존재 확인 (없으면 경고만) */
   const defaultImageUrl = absoluteUrl(site, DEFAULT_OG_IMAGE_PATH);
+  // 언어별 카드 목록 — 홈/목록/글의 og:image 가 기본 카드 대신 이 카드를 쓰게 합니다.
+  // (manifest 는 `npm run og:cards` 가 만듭니다. 없으면 빈 객체 — 기존 동작 그대로)
+  const ogLangManifest = ogLangManifestInput ?? readOgLangManifest(warnings);
   if (!fs.existsSync(path.join(REPO_ROOT, DEFAULT_OG_IMAGE_PATH))) {
     warnings.push(`기본 공유 이미지(${DEFAULT_OG_IMAGE_PATH})가 없습니다 — 링크 미리보기에 이미지가 나오지 않습니다.`);
   }
@@ -1078,6 +1105,8 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     const date = DATE_RE.test(textOf(row.Date)) ? textOf(row.Date) : "";
     // 우선순위: 노션 OG 이미지 속성 → **우리 도메인에 복사해 둔 사본** → 커버(노션 프록시) → 기본 이미지
     const localOg = localOgImageUrl(ogManifest, ogManifestKey(type, slug), site);
+    // 언어별 카드 — 커버가 없는 글에만 씁니다(커버가 있으면 그 사진이 더 좋은 미리보기).
+    const langCard = localizedOgImageUrl(ogLangManifest, "ko", routePathFor(type, slug), site);
     const meta = resolveArticleMeta(
       {
         title,
@@ -1085,7 +1114,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
         seoTitle: seo.seoTitle,
         seoDescription: seo.seoDescription,
         cover: coverRaw,
-        ogImage: localOg || seo.ogImage,
+        ogImage: localOg || seo.ogImage || (coverRaw ? "" : langCard),
         date,
         type,
       },
@@ -1245,7 +1274,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     ogType: "website",
     ogTitle: home.ogTitle,
     ogDescription: home.ogDescription,
-    image: defaultImageUrl,
+    image: localizedOgImageUrl(ogLangManifest, "ko", "", site) || defaultImageUrl,
     publishedTime: "",
     alternates: hreflangAlternates(site, "", [
       "ko",
@@ -1287,7 +1316,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       ogType: "website",
       ogTitle: page.title,
       ogDescription: page.description,
-      image: defaultImageUrl,
+      image: localizedOgImageUrl(ogLangManifest, "ko", `${page.prefix}/`, site) || defaultImageUrl,
       publishedTime: "",
       alternates: hreflangAlternates(site, `${page.prefix}/`, [
         "ko",
@@ -1355,6 +1384,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     template, // 인라인 번들을 이미 걷어 낸(외부화된) 템플릿
     pageRecords,
     defaultImageUrl,
+    ogLangManifest,
   });
   for (const [file, html] of localized.files) files.set(file, html);
   for (const msg of localized.missing) warnings.push(msg);
