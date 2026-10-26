@@ -387,6 +387,238 @@
         }
       ]
     },
+    "post/ai-video-background-consistency": {
+      "title": "Why AI video backgrounds jump — and how to hold cuts consistent",
+      "summary": "Why the background changes from cut to cut in AI video, and how to solve cut consistency, drawing on the ByteDance workshop and the Cubeberry pipeline.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hello, this is XCONDA."
+        },
+        {
+          "type": "p",
+          "text": "If you have made video with AI, you have met a fatal frustration at least once."
+        },
+        {
+          "type": "p",
+          "text": "The first cut comes out exactly how you wanted, and then **from the second cut the background shifts subtly, the character's jawline changes, and the room you had is suddenly a completely different room**."
+        },
+        {
+          "type": "p",
+          "text": "In the end you hit regenerate six, seven times to get the scene you want."
+        },
+        {
+          "type": "quote",
+          "text": "**More regenerations means a higher production cost.**"
+        },
+        {
+          "type": "p",
+          "text": "Every credit spent is money, so people do not experiment freely, and most end up never finishing even a single video."
+        },
+        {
+          "type": "p",
+          "text": "On 31 July, Cubeberry CEO Jinseo Lee addressed exactly this 'cut consistency' problem at a **workshop of the Korea AI Drama Creators Association**. It was a diagnosis grounded in the field, from a PD with 28 years directing dramas at KBS."
+        },
+        {
+          "type": "quote",
+          "text": "\"The line a director least wants to hear on set was 'the cut jumps'. And the very same problem turns up on AI video sets.\""
+        },
+        {
+          "type": "p",
+          "text": "This post shares the key points and the fixes presented at that workshop."
+        },
+        {
+          "type": "h3",
+          "text": "Sponsoring the association workshop & Seedance 2.0 credits"
+        },
+        {
+          "type": "p",
+          "text": "On Friday 31 July 2026, the Korea AI Drama Creators Association workshop was held at the **ByteDance Korea office** in Gangnam, Seoul. Around 80 members attended."
+        },
+        {
+          "type": "p",
+          "text": "Cubeberry took part as an official sponsor and provided attendees with **Seedance 2.0 credits** through the XCONDA platform, set up so people could try it hands-on on the spot."
+        },
+        {
+          "type": "p",
+          "text": "CEO Jinseo Lee, who serves as a director of the association, explained why they supported the event."
+        },
+        {
+          "type": "quote",
+          "text": "\"When I meet creators they say the same thing: AI tools are everywhere, but they have never carried one piece through to the end. I deeply related to the line that credits are too precious to press a single button."
+        },
+        {
+          "type": "h3",
+          "text": "A finished piece that pushes past the limits of AI video"
+        },
+        {
+          "type": "p",
+          "text": "👉 **Watch the <Cold Sight> spin-off trailer**"
+        },
+        {
+          "type": "p",
+          "text": "It adapts a disaster-SF original IP into the zombie genre. **Every cut was AI-generated**, with not a single live-action shot."
+        },
+        {
+          "type": "p",
+          "text": "We are sharing Cubeberry's production pipeline: what was hard while making this trailer and how we solved it. The finished piece alone gets a \"that looks good\", but what matters is the part before it."
+        },
+        {
+          "type": "h3",
+          "text": "⚙️ Cubeberry's AI video production pipeline"
+        },
+        {
+          "type": "p",
+          "text": "Plaintext"
+        },
+        {
+          "type": "code",
+          "text": "[Space / cut consistency]\nTURN (build the virtual set) ➔ FLEXBOARD (lock the key image per cut)\n\n[Model use and generation]\nSeedance 2.0 (feed the references) ➔ generate a 15-second clip ➔ repeat N times ➔ finish the feature trailer"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Seedance 2.0:** ByteDance's high-performance AI model",
+            "**TURN & FLEXBOARD:** Cubeberry's in-house causality-based directing engine",
+            "This was written against Seedance 2.0 at the time of the workshop; XCONDA now offers Seedance 2.5."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Fix ① Lock the space first — `TURN`"
+        },
+        {
+          "type": "p",
+          "text": "👉 **See how <Cold Sight> was built with TURN**"
+        },
+        {
+          "type": "p",
+          "text": "Feed in a single photo and you get a **360° virtual set**. You place characters inside the set and move the camera angle freely, so the same space holds perfectly as the cuts change."
+        },
+        {
+          "type": "h3",
+          "text": "Why did AI backgrounds keep jumping?"
+        },
+        {
+          "type": "p",
+          "text": "Think about a live-action set and the answer is obvious. The director builds the set first and then shoots inside it for days, moving the camera. **Because the space is fixed, the camera can go anywhere.**"
+        },
+        {
+          "type": "p",
+          "text": "Existing AI video, by contrast, **imagines and generates a new space for every cut**. However precisely you write the prompt, the room in cut two cannot be the room in cut one."
+        },
+        {
+          "type": "p",
+          "text": "Polishing the prompt has a ceiling, because **the order itself is wrong**. `TURN` is an engine that corrects the generation order to match a real set: lock the space first. (Currently in commercial beta as v1.0.)"
+        },
+        {
+          "type": "h3",
+          "text": "Fix ② Decide the directing intent before generating — `FLEXBOARD`"
+        },
+        {
+          "type": "p",
+          "text": "👉 **See how <Cold Sight> was directed with FLEXBOARD**"
+        },
+        {
+          "type": "p",
+          "text": "Design the storyboard for up to 36 cuts on one screen. You direct while seeing the whole narrative, and fix only the cuts that need it, one by one. The confirmed key images are passed to Seedance 2.0 as references."
+        },
+        {
+          "type": "h3",
+          "text": "Fewer regenerations"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Fewer regenerations:** down from 6–7 to 3–4",
+            "**Budget saved:** the **same budget now makes roughly twice the video**"
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "\"The original purpose of a director's storyboard is to put the same picture in every crew member's head before the shoot. In AI video you have to convey the director's intent to the AI the same way.\""
+        },
+        {
+          "type": "h3",
+          "text": "Where the AI video market stands, and where Cubeberry sits"
+        },
+        {
+          "type": "p",
+          "text": "Cubeberry divides the AI video market into **three stages**."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Stage 1 | the short-clip era:** competing on the quality of a single cut (done)",
+            "**Stage 2 | the web-drama era:** securing consistency across cuts (under way)",
+            "**Stage 3 | the AI feature era:** the composition to carry one long narrative to the end"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Most tools on the market are still at stage 1. Cubeberry is building **the tools stage 2 and 3 need to produce long-form narrative**."
+        },
+        {
+          "type": "quote",
+          "text": "\"People ask why a tool maker makes its own films. It is because the hard-won experience of getting stuck while producing becomes the next feature of the tool.\""
+        },
+        {
+          "type": "p",
+          "text": "The AI short film <In Love with Mir>, released last March, proved a 10-minute piece could hold up. <Cold Sight> is the next step: proving feature-length narrative capability."
+        },
+        {
+          "type": "quote",
+          "text": "\"I do not think this method is ours alone. For me, an AI feature coming out in Korea matters more than our own revenue.\""
+        },
+        {
+          "type": "p",
+          "text": "👉 **See the production case study for the AI film <In Love with Mir>**"
+        },
+        {
+          "type": "h3",
+          "text": "🤝 Projects Cubeberry is running now"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**KOCCA New Media New Technology Content Lab operator:** producing 4 AI web dramas",
+            "**Contractor for the Korean Film Council (KOFIC):** demonstrating narrative workflows for AI feature animation",
+            "**BytePlus Seedance Authorized Dealer:** providing Seedance 2.5 today, with enterprise credit rates"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Looking for partners to work with Cubeberry & XCONDA"
+        },
+        {
+          "type": "p",
+          "text": "** CPP promotion and marketing programme:** AI content influencers and creators to work with XCONDA"
+        },
+        {
+          "type": "p",
+          "text": "You can try XCONDA's production pipeline yourself on the official site."
+        },
+        {
+          "type": "p",
+          "text": "👉 **Go to the XCONDA official site**"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Partnerships and enquiries:** cubeberry@cuberry.kr",
+            "**Phone:** +82-70-8095-2302 (weekdays 10:00–17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Thank you for reading a long post today!"
+        },
+        {
+          "type": "p",
+          "text": "**Tags:** `#AIvideo` `#AIdrama` `#cutcontinuity` `#AIbackground` `#Seedance` `#virtualset` `#AIstoryboard` `#XCONDA` `#Cubeberry` `#AIfeaturefilm` `#AIwebdrama` `#ByteDance` `#generativeAI`"
+        }
+      ]
+    },
     "post/ai-video-motion-ideas": {
       "title": "Where to look when you run out of motion ideas for AI video",
       "summary": "Two sites worth bookmarking. Browse motion clips on Prompt Motion and adapt the prompts their makers publish, or install a skill like CreatorMotion on your agent in Skillry and build motion that fits your script.",
@@ -565,6 +797,311 @@
         {
           "type": "quote",
           "text": "💡 XCONDA tip: borrow the approach of encoding direction per style, and the 98 visual style references, as material for your own XCONDA video generation workflow."
+        }
+      ]
+    },
+    "post/physics-inversion-patent-verify-before-render": {
+      "title": "The physics-inversion patent that fixes AI video instead of throwing it away",
+      "summary": "You generate ten AI videos and keep one or two. We summarise patent 10-3002930, which checks setting violations and physics errors twice before rendering and tells the AI where and how badly it went wrong.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hello, this is XCONDA."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**Key summary** Generate ten AI videos and one or two are usable; the rest get thrown away and re-run. Cubeberry registered a patent (No. 10-3002930) for checking twice before rendering and telling the AI where, and by how much, something was wrong. This post covers the principle and the plan to bring it into XCONDA."
+        },
+        {
+          "type": "callout",
+          "icon": "🛠️",
+          "text": "**Before we start** The verification and correction features described here are a development plan. They are not live in XCONDA yet and no release date is fixed."
+        },
+        {
+          "type": "p",
+          "text": "**Who this is for**: people who resent burning credits picking one usable take out of many, people worn down by hands passing through tables or objects floating in mid-air, and anyone curious about what Cubeberry has patented."
+        },
+        {
+          "type": "h3",
+          "text": "Generate ten, keep one or two"
+        },
+        {
+          "type": "p",
+          "text": "Anyone who has made AI video knows. Generate ten and one or two are usable; the rest look like this."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "A hand passes through a table.",
+            "A cup floats in mid-air.",
+            "Someone running suddenly freezes."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "So what do you do? Throw it away and run it again. Until it works."
+        },
+        {
+          "type": "p",
+          "text": "This kept bothering CEO Jinseo Lee, because the cost of making the video is already spent by the time you throw it away. Work like that on a drama set and the producer yells at you."
+        },
+        {
+          "type": "h3",
+          "text": "On a drama set, checking comes first"
+        },
+        {
+          "type": "p",
+          "text": "Shooting a drama follows a fixed order. Check the storyboard, walk the blocking, and only then roll the camera. Checking first, shooting later. Over 20 years directing dramas as a PD, Jinseo Lee learned how much money that order saves."
+        },
+        {
+          "type": "p",
+          "text": "This patent moves that order into AI."
+        },
+        {
+          "type": "h3",
+          "text": "Two checks before you render"
+        },
+        {
+          "type": "p",
+          "text": "Below is a plain-language explanation of the patent's concept. It is not a legal reading of the claims."
+        },
+        {
+          "type": "p",
+          "text": "**First check: does it break the settings already decided?**\nWe see whether the scene fits the settings established in advance. An introverted character suddenly turning violent, or a car appearing in a medieval setting, is caught here."
+        },
+        {
+          "type": "p",
+          "text": "**Second check: does the movement make physical sense?**\nIf it passes the first, we stand the people and objects up as simple shapes and turn them gently — a rehearsal before the shoot. Here we catch objects passing through each other, defying gravity, or movement that stops unnaturally. Because this happens before the real video, it costs almost nothing."
+        },
+        {
+          "type": "p",
+          "text": "**When a problem is caught: tell, do not throw away**\nWhen a problem is found, we do not just discard it. We extract where and how badly it went wrong and turn that into a form the AI can understand, then feed it back. The goal is for the same mistake not to happen in the same place next time."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "What we look at",
+              "Example that gets caught"
+            ],
+            [
+              "1. Setting check",
+              "Whether it breaks the settings already decided",
+              "An introverted character suddenly turning violent, a car in a medieval setting"
+            ],
+            [
+              "2. Physics rehearsal",
+              "Turn it gently as simple shapes and see whether the movement makes sense",
+              "Objects passing through each other, defying gravity, movement stopping unnaturally"
+            ],
+            [
+              "3. Auto-correction",
+              "Feed the wrong position and magnitude back in a form the AI understands",
+              "So the same mistake does not repeat in the same place"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "What it looks like in cost"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Throw away after making it",
+              "Check before making it"
+            ],
+            [
+              "When problems are found",
+              "After the video is finished",
+              "Before the video is made"
+            ],
+            [
+              "Cost when wrong",
+              "Credits for one full video",
+              "Almost nothing"
+            ],
+            [
+              "Next attempt",
+              "Run it again from zero",
+              "Tell it where and how much was wrong, then try again"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Unpacking the patent's name"
+        },
+        {
+          "type": "p",
+          "text": "The name looks long and intimidating, but everything we described above is in it."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Words in the name",
+              "Plain meaning"
+            ],
+            [
+              "Inversion of physics simulation data",
+              "Working backwards from the physical result to find what went wrong"
+            ],
+            [
+              "Multiple verification",
+              "Checking more than once, not once"
+            ],
+            [
+              "Automatic correction",
+              "Finding the problem and feeding it back to the AI to fix"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "The patent at a glance"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Details"
+            ],
+            [
+              "Patent number",
+              "No. 10-3002930"
+            ],
+            [
+              "Title",
+              "A system for multiple verification and automatic correction of generative AI content using inversion of physics simulation data"
+            ],
+            [
+              "Filed",
+              "January 2026"
+            ],
+            [
+              "Registered",
+              "6 August 2026 (about six months after filing)"
+            ],
+            [
+              "Patent holder",
+              "Cubeberry Inc."
+            ],
+            [
+              "Inventor",
+              "Jinseo Lee"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "The plan for XCONDA"
+        },
+        {
+          "type": "p",
+          "text": "Cubeberry aims to develop this technology into something usable in XCONDA. The first step planned is extending Blocking Board, because Blocking Board is the tool that sets the movement of several characters crossing paths first, which pairs naturally with a patent about checking whether movement makes physical sense."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Details",
+              "Status"
+            ],
+            [
+              "Setting check before rendering",
+              "Filter out scenes that break the settings already decided",
+              "Planned"
+            ],
+            [
+              "Physics rehearsal",
+              "Run the movement in advance as simple shapes",
+              "Planned"
+            ],
+            [
+              "Automatic correction",
+              "Pass the wrong position and magnitude back to the AI",
+              "Planned"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Two patents registered this year"
+        },
+        {
+          "type": "p",
+          "text": "Both patents filed this year have been registered. The one in this post looks at movement inside a single scene. The second, which keeps consistency between scenes, was covered in ‣. Both say the same thing in the end: do not render and throw away — check, then render."
+        },
+        {
+          "type": "h3",
+          "text": "Frequently asked"
+        },
+        {
+          "type": "p",
+          "text": "**Q. Can I use this feature now?**\nNot yet. It is at the planning stage and no release date is set."
+        },
+        {
+          "type": "p",
+          "text": "**Q. How do I waste fewer videos today?**\nBefore rendering, confirm the cuts as images in FLEXBOARD. A wrong cut costs one image to remake, which uses far fewer credits than re-running the whole video. The detailed method is in the post below."
+        },
+        {
+          "type": "p",
+          "text": "**Q. How is this different from the problem of cuts jumping?**\nThe continuity problem is about props or costumes changing between cuts; this patent looks at whether movement within a single scene makes physical sense. They are different problems, which is why there are two patents."
+        },
+        {
+          "type": "h3",
+          "text": "Worth reading together"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Consistency between scenes: ‣",
+            "Storyboard before video: ‣",
+            "Fixing cuts that jump: ‣",
+            "The full map: ‣"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "If you are starting now"
+        },
+        {
+          "type": "p",
+          "text": "XCONDA is running a Seedance 2.5 discount alongside the FLEXBOARD launch promotion."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Korea: 30% off usage + 10% off price, up to 40%",
+            "US: up to 30% off usage",
+            "Period: 7 October, 11:00 to 6 November, 11:00 (Korea time)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "👉 Go to XCONDA: https://www.xconda.ai/"
+        },
+        {
+          "type": "p",
+          "text": "For adoption or partnership enquiries, contact us below."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: cubeberry@cuberry.kr",
+            "Phone: +82-70-8095-2302 (weekdays 10:00–17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Thank you for reading a long post today!"
         }
       ]
     },

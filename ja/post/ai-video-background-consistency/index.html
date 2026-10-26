@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>AI 映像の背景が飛ぶ理由とカット一貫性の解決 | XCONDA ハブ — Q&amp;A・ガイド・お知らせ</title>
+    <meta name="description" content="AI 映像でカットごとに背景が飛ぶ理由と、カット一貫性の問題の解決法を ByteDance ワークショップの内容とともに整理しました。" />
+    <link rel="canonical" href="https://hub.xconda.ai/ja/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/ai-video-background-consistency/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content="AI 映像の背景が飛ぶ理由とカット一貫性の解決" />
+    <meta property="og:description" content="AI 映像でカットごとに背景が飛ぶ理由と、カット一貫性の問題の解決法を ByteDance ワークショップの内容とともに整理しました。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-background-consistency.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/ja/post/ai-video-background-consistency/" />
+    <meta property="article:published_time" content="2026-10-09" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI 映像の背景が飛ぶ理由とカット一貫性の解決" />
+    <meta name="twitter:description" content="AI 映像でカットごとに背景が飛ぶ理由と、カット一貫性の問題の解決法を ByteDance ワークショップの内容とともに整理しました。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-background-consistency.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/ja/post/ai-video-background-consistency/#webpage","url":"https://hub.xconda.ai/ja/post/ai-video-background-consistency/","name":"AI 映像の背景が飛ぶ理由とカット一貫性の解決","inLanguage":"ja","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="ja">
+<nav aria-label="breadcrumb"><a href="../../">ホーム</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/ai-video-background-consistency/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/ai-video-background-consistency/" hreflang="en">English</a><strong aria-current="true">日本語</strong><a href="https://hub.xconda.ai/zh/post/ai-video-background-consistency/" hreflang="zh-Hans">中文</a></nav>
+<article>
+<h1>AI 映像の背景が飛ぶ理由とカット一貫性の解決</h1>
+<p class="seo-meta">日本語 · XCONDA Hub</p>
+<p class="notion-default">こんにちは、XCONDA です。</p>
+<p class="notion-default">AI で映像を作ったことがある方なら、一度は経験したであろう致命的な悩みがあります。</p>
+<p class="notion-default">最初のカットは思いどおりにきれいに出たのに、<strong>2 カット目から背景が微妙に変わり、人物の顔の線も変わり、さっきの部屋がまったく別の部屋になってしまう現象</strong>です。</p>
+<p class="notion-default">結局ほしい場面を得るために、6 回、7 回と再生成ボタンを押し続けることになります。</p>
+<blockquote><p><strong>再生成の回数が増えるということは、そのまま「制作費の増加」を意味します。</strong></p></blockquote>
+<p class="notion-default">クレジットの消費がそのまま費用なので、気軽に試せず、結局 1 本の映像も最後まで完成できないことがほとんどです。</p>
+<p class="notion-default">昨年 7 月 31 日、Cubeberry のイ・ジンソ代表が <strong>韓国 AI ドラマクリエイター協会のワークショップ</strong>で、まさにこの「カット一貫性」の問題を取り上げました。KBS 28 年目のドラマ演出 PD 出身として、現場の本当の悩みを突いた診断でした。</p>
+<blockquote><p>「撮影現場で監督が最も聞きたくない言葉が『カットが飛んでる』でした。ところが AI 映像制作の現場でもまったく同じ問題が起きていました」</p></blockquote>
+<p class="notion-default">この記事では、そのワークショップで発表した要点と解決策を整理してお伝えします。</p>
+<h3>協会ワークショップの後援 &amp; Seedance 2.0 クレジット提供</h3>
+<p class="notion-default">2026 年 7 月 31 日（金）、ソウル・江南の <strong>ByteDance Korea オフィス</strong>で韓国 AI ドラマクリエイター協会のワークショップが開かれました。80 名余りの協会員が参加し、場を盛り上げてくださいました。</p>
+<p class="notion-default">Cubeberry は今回のイベントに公式スポンサーとして参加し、参加者の皆さまに <strong>Seedance 2.0 クレジット</strong>を XCONDA プラットフォーム経由で提供しました。会場ですぐハンズオンで試せるよう準備しました。</p>
+<p class="notion-default">協会の理事を務めるイ・ジンソ代表は、今回の支援の理由を次のように話しました。</p>
+<blockquote><p>「クリエイターの方々にお会いすると、いつも同じことを言われます。AI ツールはあふれているのに、最後まで完成させた経験がない、と。クレジットがもったいなくてボタン一つ押すのにもためらう、という言葉に深く共感しました。</p></blockquote>
+<h3>AI 映像の限界を越えた完成品を観る</h3>
+<p class="notion-default">👉 <strong>&lt;コールドサイト&gt; スピンオフトレーラーを観る</strong></p>
+<p class="notion-default">災害 SF の原作 IP をゾンビジャンルに脚色した作品です。<strong>全カット AI 生成</strong>で制作され、実写のカットは 1 つも入っていません。</p>
+<p class="notion-default">このトレーラーを制作する中でどんな難関があり、どう解決したのか、Cubeberry の制作パイプラインを公開します。完成品だけを見ると「よくできている」で終わりますが、本当に重要なのはその手前です。</p>
+<h3>⚙️ Cubeberry の AI 映像制作パイプライン</h3>
+<p class="notion-default">Plaintext</p>
+<pre><code>[空間／カットの一貫性を確保]
+TURN（仮想セット生成）➔ FLEXBOARD（カットごとのキー画像を確定）
+
+[AI モデルの活用と生成]
+Seedance 2.0（レファレンス投入）➔ 15 秒クリップ生成 ➔ N 回繰り返し ➔ 長編トレーラー完成</code></pre>
+<ul><li><strong>Seedance 2.0:</strong> ByteDance の高性能 AI モデル</li><li><strong>TURN &amp; FLEXBOARD:</strong> Cubeberry が自社開発した因果律ベースの演出エンジン</li><li>ワークショップ当時は Seedance 2.0 基準で、現在の XCONDA では Seedance 2.5 を提供しています。</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3Afa5cea7d-a972-41fc-a653-06df87c39d6d%3Aimage.png?table=block&amp;id=3f42ebc0-17ad-80bc-99ef-fccc8cb99dce&amp;cache=v2" alt="AI 映像の背景が飛ぶ理由とカット一貫性の解決" loading="lazy" decoding="async"></figure>
+<h3>解決策 ① 空間を先に固定する — `TURN`</h3>
+<p class="notion-default">👉 <strong>TURN で &lt;コールドサイト&gt; を作る過程を見る</strong></p>
+<p class="notion-default">写真 1 枚を入れるだけで <strong>360° の仮想セット</strong>が実現します。空間セットの中に人物を配置し、カメラアングルを自由に動かせるので、カットが変わっても同じ空間が完璧に保たれます。</p>
+<h3>なぜこれまで AI の背景は飛び続けたのか</h3>
+<p class="notion-default">実写の撮影現場を思い浮かべれば答えは出ます。監督はセットを先に建て、その中で何日もカメラアングルを変えながら撮ります。<strong>空間が固定されているからこそ、カメラを自由に回せる</strong>のです。</p>
+<p class="notion-default">一方、既存の AI 映像は <strong>カットごとに空間を新しく想像して生成</strong>します。プロンプトをどれだけ精密に書いても、2 カット目の部屋は 1 カット目の部屋と同じにはなりません。</p>
+<p class="notion-default">プロンプトを磨くだけでは限界があります。<strong>順序そのものが間違っているから</strong>です。`TURN` はこの生成順序を実写現場と同じ「空間優先の固定」に正したエンジンです（現在 v1.0 の商用ベータを運用中）。</p>
+<h3>解決策 ② 生成前に演出意図を確定する — `FLEXBOARD`</h3>
+<p class="notion-default">👉 <strong>FLEXBOARD で &lt;コールドサイト&gt; の演出を設計する過程を見る</strong></p>
+<p class="notion-default">最大 36 カットまで 1 画面でコンテを設計します。物語全体の流れを見ながら演出を組み、修正が必要なカットだけを選んで個別に補正します。確定したキー画像は Seedance 2.0 にレファレンスとして渡されます。</p>
+<h3>再生成が減ります</h3>
+<ul><li><strong>再生成回数の短縮:</strong> 従来の 6、7 回から 3、4 回に減少</li><li><strong>予算の節約:</strong> 同じ予算で <strong>約 2 倍の量の映像を制作可能</strong></li></ul>
+<blockquote><p>「監督がコンテを描く本来の目的は、撮影前にスタッフ全員が同じ頭の中の絵を共有するためです。AI 映像制作でも、AI に監督の意図を同じように伝える必要があります」</p></blockquote>
+<h3>AI 映像市場の現在地と Cubeberry の位置</h3>
+<p class="notion-default">Cubeberry は現在の AI 映像市場を <strong>3 段階</strong>に分けています。</p>
+<ul><li><strong>第 1 段階 | ショートクリップの時代:</strong> 1 カットの画質・品質を競う（すでに完了）</li><li><strong>第 2 段階 | ウェブドラマの時代:</strong> カットとカットをつなぐ一貫性の確保（現在進行中）</li><li><strong>第 3 段階 | AI 長編映画の時代:</strong> 1 本の長い物語を最後まで引っ張る構成力</li></ul>
+<p class="notion-default">市販のツールの大半は依然として第 1 段階にとどまっています。Cubeberry は <strong>第 2・第 3 段階の長編叙事制作に必要な道具</strong>を作っています。</p>
+<blockquote><p>「ツール制作会社がなぜ自分たちで作品を作るのかと聞かれることがあります。自分たちで映像を作る中で行き詰まった現場の血の滲む経験が、そのまま新しいツールの機能になるからです」</p></blockquote>
+<p class="notion-default">昨年 3 月に公開した AI 短編映画 &lt;ミルに恋して&gt; が 10 分の完成度を検証した作品だとすれば、今回の &lt;コールドサイト&gt; は長編叙事の制作能力を実証する段階です。</p>
+<blockquote><p>「この方法論が Cubeberry だけのものだとは思いません。国内で AI 長編が出ることが、私にとっては自社の売上より先です」</p></blockquote>
+<p class="notion-default">👉 <strong>AI 映画 &lt;ミルに恋して&gt; の制作事例を見る</strong></p>
+<h3>🤝 Cubeberry が現在進めているプロジェクト</h3>
+<ul><li><strong>KOCCA ニューメディア新技術コンテンツラボの運営機関:</strong> AI ウェブドラマ 4 本を制作中</li><li><strong>韓国映画振興委員会（KOFIC）主管の受託事業者:</strong> AI 長編アニメーション分野の叙事ワークフローを実証</li><li><strong>BytePlus Seedance Authorized Dealer（公認ディーラー）:</strong> 現在 Seedance 2.5 を提供、エンタープライズ向けクレジット単価を提供</li></ul>
+<h3>Cubeberry &amp; XCONDA と共に進むパートナーを募集します！</h3>
+<p class="notion-default"><strong> CPP 広報・マーケティングプログラム:</strong> XCONDA と協業する AI コンテンツのインフルエンサーとクリエイター</p>
+<p class="notion-default">XCONDA の制作パイプラインは公式サイトで直接体験できます。</p>
+<p class="notion-default">👉 <strong>XCONDA 公式サイトへ</strong></p>
+<ul><li><strong>提携・お問い合わせ:</strong> cubeberry@cuberry.kr</li><li><strong>電話:</strong> +82-70-8095-2302（平日 10:00〜17:00）</li></ul>
+<p class="notion-default">本日も長い記事をお読みいただきありがとうございました！</p>
+<p class="notion-default"><strong>タグ:</strong> `#AI映像制作` `#AIドラマ` `#カット一貫性` `#AI背景` `#Seedance` `#AIバーチャルセット` `#AIストーリーボード` `#XCONDA` `#Cubeberry` `#AI長編映画` `#AIウェブドラマ` `#ByteDance` `#生成AI`</p>
+<p><a href="https://hub.xconda.ai/post/ai-video-background-consistency/" hreflang="ko">韓国語の原文を見る</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-motion-ideas/">AI 映像のモーションアイデアが浮かばないときに見るサイト</a></li><li><a href="../deepseek-official-harness/">DeepSeek が公式ハーネスを MIT ライセンスで公開</a></li><li><a href="../flux-3-image-release/">Black Forest Labs が FLUX 3 Image を公開</a></li><li><a href="../kbs-documentary-seongmul-xconda/">KBS ドキュメンタリー『聖物』「招待」、XCONDA で制作</a></li></ul></nav>
+<p class="seo-note">日本語ページは XCONDA チームが翻訳しています。韓国語ハブが原文であり、内容に相違がある場合は cubeberry@cuberry.kr までご連絡ください。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

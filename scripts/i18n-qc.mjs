@@ -318,7 +318,7 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
             else if (rows.some((r) => !Array.isArray(r) || !r.length)) errors.push({ key, kind: "block-table", detail: "table 행이 비었습니다" });
             else if (rows.some((r) => r.length !== rows[0].length)) errors.push({ key, kind: "block-table", detail: "table 행마다 칸 수가 다릅니다" });
           }
-          if (["p", "h2", "h3", "quote", "callout"].includes(block?.type) && !String(block?.text ?? "").trim()) {
+          if (["p", "h2", "h3", "quote", "callout", "code"].includes(block?.type) && !String(block?.text ?? "").trim()) {
             errors.push({ key, kind: "block-empty", detail: `${block?.type} 의 text 가 비었습니다` });
           }
         }

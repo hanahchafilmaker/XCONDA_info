@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>Why AI video backgrounds jump — and how to hold cuts consistent | XCONDA Hub — Q&amp;A, Guides and Notices</title>
+    <meta name="description" content="Why the background changes from cut to cut in AI video, and how to solve cut consistency, drawing on the ByteDance workshop and the Cubeberry pipeline." />
+    <link rel="canonical" href="https://hub.xconda.ai/en/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/ai-video-background-consistency/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/ai-video-background-consistency/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Why AI video backgrounds jump — and how to hold cuts consistent" />
+    <meta property="og:description" content="Why the background changes from cut to cut in AI video, and how to solve cut consistency, drawing on the ByteDance workshop and the Cubeberry pipeline." />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-background-consistency.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/en/post/ai-video-background-consistency/" />
+    <meta property="article:published_time" content="2026-10-09" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why AI video backgrounds jump — and how to hold cuts consistent" />
+    <meta name="twitter:description" content="Why the background changes from cut to cut in AI video, and how to solve cut consistency, drawing on the ByteDance workshop and the Cubeberry pipeline." />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-background-consistency.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/en/post/ai-video-background-consistency/#webpage","url":"https://hub.xconda.ai/en/post/ai-video-background-consistency/","name":"Why AI video backgrounds jump — and how to hold cuts consistent","inLanguage":"en","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="en">
+<nav aria-label="breadcrumb"><a href="../../">Home</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/ai-video-background-consistency/" hreflang="ko">한국어</a><strong aria-current="true">English</strong><a href="https://hub.xconda.ai/ja/post/ai-video-background-consistency/" hreflang="ja">日本語</a><a href="https://hub.xconda.ai/zh/post/ai-video-background-consistency/" hreflang="zh-Hans">中文</a></nav>
+<article>
+<h1>Why AI video backgrounds jump — and how to hold cuts consistent</h1>
+<p class="seo-meta">English · XCONDA Hub</p>
+<p class="notion-default">Hello, this is XCONDA.</p>
+<p class="notion-default">If you have made video with AI, you have met a fatal frustration at least once.</p>
+<p class="notion-default">The first cut comes out exactly how you wanted, and then <strong>from the second cut the background shifts subtly, the character&#39;s jawline changes, and the room you had is suddenly a completely different room</strong>.</p>
+<p class="notion-default">In the end you hit regenerate six, seven times to get the scene you want.</p>
+<blockquote><p><strong>More regenerations means a higher production cost.</strong></p></blockquote>
+<p class="notion-default">Every credit spent is money, so people do not experiment freely, and most end up never finishing even a single video.</p>
+<p class="notion-default">On 31 July, Cubeberry CEO Jinseo Lee addressed exactly this &#39;cut consistency&#39; problem at a <strong>workshop of the Korea AI Drama Creators Association</strong>. It was a diagnosis grounded in the field, from a PD with 28 years directing dramas at KBS.</p>
+<blockquote><p>&quot;The line a director least wants to hear on set was &#39;the cut jumps&#39;. And the very same problem turns up on AI video sets.&quot;</p></blockquote>
+<p class="notion-default">This post shares the key points and the fixes presented at that workshop.</p>
+<h3>Sponsoring the association workshop &amp; Seedance 2.0 credits</h3>
+<p class="notion-default">On Friday 31 July 2026, the Korea AI Drama Creators Association workshop was held at the <strong>ByteDance Korea office</strong> in Gangnam, Seoul. Around 80 members attended.</p>
+<p class="notion-default">Cubeberry took part as an official sponsor and provided attendees with <strong>Seedance 2.0 credits</strong> through the XCONDA platform, set up so people could try it hands-on on the spot.</p>
+<p class="notion-default">CEO Jinseo Lee, who serves as a director of the association, explained why they supported the event.</p>
+<blockquote><p>&quot;When I meet creators they say the same thing: AI tools are everywhere, but they have never carried one piece through to the end. I deeply related to the line that credits are too precious to press a single button.</p></blockquote>
+<h3>A finished piece that pushes past the limits of AI video</h3>
+<p class="notion-default">👉 <strong>Watch the &lt;Cold Sight&gt; spin-off trailer</strong></p>
+<p class="notion-default">It adapts a disaster-SF original IP into the zombie genre. <strong>Every cut was AI-generated</strong>, with not a single live-action shot.</p>
+<p class="notion-default">We are sharing Cubeberry&#39;s production pipeline: what was hard while making this trailer and how we solved it. The finished piece alone gets a &quot;that looks good&quot;, but what matters is the part before it.</p>
+<h3>⚙️ Cubeberry&#39;s AI video production pipeline</h3>
+<p class="notion-default">Plaintext</p>
+<pre><code>[Space / cut consistency]
+TURN (build the virtual set) ➔ FLEXBOARD (lock the key image per cut)
+
+[Model use and generation]
+Seedance 2.0 (feed the references) ➔ generate a 15-second clip ➔ repeat N times ➔ finish the feature trailer</code></pre>
+<ul><li><strong>Seedance 2.0:</strong> ByteDance&#39;s high-performance AI model</li><li><strong>TURN &amp; FLEXBOARD:</strong> Cubeberry&#39;s in-house causality-based directing engine</li><li>This was written against Seedance 2.0 at the time of the workshop; XCONDA now offers Seedance 2.5.</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3Afa5cea7d-a972-41fc-a653-06df87c39d6d%3Aimage.png?table=block&amp;id=3f42ebc0-17ad-80bc-99ef-fccc8cb99dce&amp;cache=v2" alt="Why AI video backgrounds jump — and how to hold cuts consistent" loading="lazy" decoding="async"></figure>
+<h3>Fix ① Lock the space first — `TURN`</h3>
+<p class="notion-default">👉 <strong>See how &lt;Cold Sight&gt; was built with TURN</strong></p>
+<p class="notion-default">Feed in a single photo and you get a <strong>360° virtual set</strong>. You place characters inside the set and move the camera angle freely, so the same space holds perfectly as the cuts change.</p>
+<h3>Why did AI backgrounds keep jumping?</h3>
+<p class="notion-default">Think about a live-action set and the answer is obvious. The director builds the set first and then shoots inside it for days, moving the camera. <strong>Because the space is fixed, the camera can go anywhere.</strong></p>
+<p class="notion-default">Existing AI video, by contrast, <strong>imagines and generates a new space for every cut</strong>. However precisely you write the prompt, the room in cut two cannot be the room in cut one.</p>
+<p class="notion-default">Polishing the prompt has a ceiling, because <strong>the order itself is wrong</strong>. `TURN` is an engine that corrects the generation order to match a real set: lock the space first. (Currently in commercial beta as v1.0.)</p>
+<h3>Fix ② Decide the directing intent before generating — `FLEXBOARD`</h3>
+<p class="notion-default">👉 <strong>See how &lt;Cold Sight&gt; was directed with FLEXBOARD</strong></p>
+<p class="notion-default">Design the storyboard for up to 36 cuts on one screen. You direct while seeing the whole narrative, and fix only the cuts that need it, one by one. The confirmed key images are passed to Seedance 2.0 as references.</p>
+<h3>Fewer regenerations</h3>
+<ul><li><strong>Fewer regenerations:</strong> down from 6–7 to 3–4</li><li><strong>Budget saved:</strong> the <strong>same budget now makes roughly twice the video</strong></li></ul>
+<blockquote><p>&quot;The original purpose of a director&#39;s storyboard is to put the same picture in every crew member&#39;s head before the shoot. In AI video you have to convey the director&#39;s intent to the AI the same way.&quot;</p></blockquote>
+<h3>Where the AI video market stands, and where Cubeberry sits</h3>
+<p class="notion-default">Cubeberry divides the AI video market into <strong>three stages</strong>.</p>
+<ul><li><strong>Stage 1 | the short-clip era:</strong> competing on the quality of a single cut (done)</li><li><strong>Stage 2 | the web-drama era:</strong> securing consistency across cuts (under way)</li><li><strong>Stage 3 | the AI feature era:</strong> the composition to carry one long narrative to the end</li></ul>
+<p class="notion-default">Most tools on the market are still at stage 1. Cubeberry is building <strong>the tools stage 2 and 3 need to produce long-form narrative</strong>.</p>
+<blockquote><p>&quot;People ask why a tool maker makes its own films. It is because the hard-won experience of getting stuck while producing becomes the next feature of the tool.&quot;</p></blockquote>
+<p class="notion-default">The AI short film &lt;In Love with Mir&gt;, released last March, proved a 10-minute piece could hold up. &lt;Cold Sight&gt; is the next step: proving feature-length narrative capability.</p>
+<blockquote><p>&quot;I do not think this method is ours alone. For me, an AI feature coming out in Korea matters more than our own revenue.&quot;</p></blockquote>
+<p class="notion-default">👉 <strong>See the production case study for the AI film &lt;In Love with Mir&gt;</strong></p>
+<h3>🤝 Projects Cubeberry is running now</h3>
+<ul><li><strong>KOCCA New Media New Technology Content Lab operator:</strong> producing 4 AI web dramas</li><li><strong>Contractor for the Korean Film Council (KOFIC):</strong> demonstrating narrative workflows for AI feature animation</li><li><strong>BytePlus Seedance Authorized Dealer:</strong> providing Seedance 2.5 today, with enterprise credit rates</li></ul>
+<h3>Looking for partners to work with Cubeberry &amp; XCONDA</h3>
+<p class="notion-default"><strong> CPP promotion and marketing programme:</strong> AI content influencers and creators to work with XCONDA</p>
+<p class="notion-default">You can try XCONDA&#39;s production pipeline yourself on the official site.</p>
+<p class="notion-default">👉 <strong>Go to the XCONDA official site</strong></p>
+<ul><li><strong>Partnerships and enquiries:</strong> cubeberry@cuberry.kr</li><li><strong>Phone:</strong> +82-70-8095-2302 (weekdays 10:00–17:00)</li></ul>
+<p class="notion-default">Thank you for reading a long post today!</p>
+<p class="notion-default"><strong>Tags:</strong> `#AIvideo` `#AIdrama` `#cutcontinuity` `#AIbackground` `#Seedance` `#virtualset` `#AIstoryboard` `#XCONDA` `#Cubeberry` `#AIfeaturefilm` `#AIwebdrama` `#ByteDance` `#generativeAI`</p>
+<p><a href="https://hub.xconda.ai/post/ai-video-background-consistency/" hreflang="ko">Read this in Korean</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-motion-ideas/">Where to look when you run out of motion ideas for AI video</a></li><li><a href="../deepseek-official-harness/">DeepSeek releases its official harness under MIT</a></li><li><a href="../flux-3-image-release/">Black Forest Labs releases FLUX 3 Image</a></li><li><a href="../kbs-documentary-seongmul-xconda/">KBS documentary &#39;Seongmul — The Invitation&#39;, made with XCONDA</a></li></ul></nav>
+<p class="seo-note">English pages are translated by the XCONDA team. The Korean hub is the primary source; contact cubeberry@cuberry.kr if anything here disagrees with it.</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

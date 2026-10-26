@@ -904,7 +904,7 @@ test("번역 본문 블록 — 지원 타입만 통과하고 형식 오류는 �
   assert.match(bad[1], /text 가 비어/);
   assert.match(bad[2], /items 배열/);
   assert.match(bad[3], /text 가 비어/);
-  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout"]);
+  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout", "code"]);
 });
 
 test("본문 이미지 위치는 '앞에 있던 글 블록 수'로 계산한다", () => {
@@ -974,8 +974,10 @@ test("표 블록은 문자열 2차원 배열로 쓰고, 칸 수가 다르면 거
   const empty = { type: "table", rows: [] };
   assert.match(localizedBlockProblems([empty])[0], /rows 배열이 필요/);
 
-  const blank = { type: "table", rows: [["플랜", " "]] };
-  assert.match(localizedBlockProblems([blank])[0], /비어 있지 않은/);
+  // 모서리 칸이 비는 것은 정상 — 오류로 보지 않습니다
+  assert.deepEqual(localizedBlockProblems([{ type: "table", rows: [["", "가격"], ["Starter", "10,450원"]] }]), []);
+  const notString = { type: "table", rows: [["플랜", 3]] };
+  assert.match(localizedBlockProblems([notString])[0], /문자열/);
 });
 
 test("콜아웃 블록과 **굵게** 표기가 원문 강조를 잃지 않고 렌더된다", () => {
@@ -988,6 +990,9 @@ test("콜아웃 블록과 **굵게** 표기가 원문 강조를 잃지 않고 �
   assert.match(html, /<aside class="callout notion-default"><p>📌 <strong>Key summary<\/strong>/);
   assert.match(html, /<li><strong>Input<\/strong>: the scenario<\/li>/);
   assert.match(localizedBlockProblems([{ type: "callout", icon: "📌", text: " " }])[0] || "", /callout 에 text/);
+  // 코드/도식 블록 — 파이프라인 그림은 고정폭으로 그대로 보여 줍니다
+  const codeHtml = blocksToHtml(mergeLocalizedBlocks([{ type: "code", text: "TURN ➔ FLEXBOARD" }]), { alt: "" });
+  assert.match(codeHtml, /<pre><code>TURN ➔ FLEXBOARD<\/code><\/pre>/);
 });
 
 test("번역 블록 구조가 원문과 다르면 빌드 경고를 남긴다", () => {
