@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>シナリオから完成動画まで、XCONDA 制作 7 ステップ | XCONDA ハブ — Q&amp;A・ガイド・お知らせ</title>
+    <meta name="description" content="キューブベリーの AI 動画はシナリオから出発し、XCONDA で動画を作り、Suno でサウンドを付け、Premiere Pro で仕上げます。全体の順番を 1 枚の地図と 7 ステップで示します。" />
+    <link rel="canonical" href="https://hub.xconda.ai/ja/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/scenario-to-final-video/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content="シナリオから完成動画まで、XCONDA 制作 7 ステップ" />
+    <meta property="og:description" content="キューブベリーの AI 動画はシナリオから出発し、XCONDA で動画を作り、Suno でサウンドを付け、Premiere Pro で仕上げます。全体の順番を 1 枚の地図と 7 ステップで示します。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-scenario-to-final-video.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/ja/post/scenario-to-final-video/" />
+    <meta property="article:published_time" content="2026-10-10" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="シナリオから完成動画まで、XCONDA 制作 7 ステップ" />
+    <meta name="twitter:description" content="キューブベリーの AI 動画はシナリオから出発し、XCONDA で動画を作り、Suno でサウンドを付け、Premiere Pro で仕上げます。全体の順番を 1 枚の地図と 7 ステップで示します。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-scenario-to-final-video.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/ja/post/scenario-to-final-video/#webpage","url":"https://hub.xconda.ai/ja/post/scenario-to-final-video/","name":"シナリオから完成動画まで、XCONDA 制作 7 ステップ","inLanguage":"ja","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="ja">
+<nav aria-label="breadcrumb"><a href="../../">ホーム</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/scenario-to-final-video/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/scenario-to-final-video/" hreflang="en">English</a><strong aria-current="true">日本語</strong><a href="https://hub.xconda.ai/zh/post/scenario-to-final-video/" hreflang="zh-Hans">中文</a></nav>
+<article>
+<h1>シナリオから完成動画まで、XCONDA 制作 7 ステップ</h1>
+<p class="seo-meta">日本語 · XCONDA Hub</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1ef4cf7c-5019-4847-af77-07b0e9174243%3Axconda_map_without_06_07.png?table=block&amp;id=831ccd14-35f7-4f36-93d2-aa629ac95f91&amp;cache=v2" alt="シナリオから完成動画まで、XCONDA 制作 7 ステップ" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>AI 動画制作の流れ EP.00 全体マップ</strong> · 初めて読む方はここから</p>
+<p class="notion-default">こんにちは、XCONDA です。キューブベリーの AI 動画はシナリオから出発し、XCONDA で動画を作り、Suno でサウンドを付け、Premiere Pro で仕上げます。この記事はその全体の順番を 1 枚の地図と段階ごとの説明でお見せします。各段階の詳しい方法は連載で続きます。</p>
+<aside class="callout notion-default"><p>📌 <strong>要点</strong> 全体は準備（01〜04）、動画（05）、後半（06〜07）の 7 段階です。この記事は、段階ごとに何を入れて何が出て、次に進む前に何を確認するかをまとめました。詰まった段階があれば、その段階の詳細記事へ進んでください。</p></aside>
+<p class="notion-default"><strong>こんな方へ</strong>：AI 動画を初めて作る方、ツールは使ったことがあるがカットがつながらず苦労した方、チームで制作順を共有する必要がある方</p>
+<h3>一目でわかる流れ</h3>
+<p class="notion-default"><strong>シナリオ → リファレンス → 文字コンテ → ストーリーボード・ブロッキング → 動画生成 → サウンド → 編集・完成</strong></p>
+<div class="notion-table-wrap"><table><tbody><tr><td>区間</td><td>段階</td><td>やること</td><td>使うツール</td></tr><tr><td>準備</td><td>01 シナリオ</td><td>すべての出発点になるシナリオを確定します</td><td>シナリオ、台本</td></tr><tr><td>準備</td><td>02 リファレンス画像の用意</td><td>人物と空間の基準画像（キャラクターシート、背景シート）を作ります</td><td>Claude、フレックスボードスキル、GPT 画像、XCONDA Turn</td></tr><tr><td>準備</td><td>03 文字コンテとフレックスボードのプロンプト</td><td>カットごとに文字で先に整理します</td><td>Claude、フレックスボードスキル</td></tr><tr><td>準備</td><td>04 ストーリーボードとブロッキング動画</td><td>カットごとのキーイメージを確認し、人物の動線を動画で決めます</td><td>XCONDA FLEXBOARD、XCONDA ブロッキングボード</td></tr><tr><td>動画</td><td>05 Seedance プロンプトと動画生成</td><td>前段階の成果物をすべて入れて動画を生成します</td><td>Claude、Seedance プロンプトスキル、プロンプトエディタ、XCONDA</td></tr><tr><td>後半</td><td>06 サウンド制作</td><td>動画に使うサウンドを作ります</td><td>Suno</td></tr><tr><td>後半</td><td>07 動画とサウンドを合わせる</td><td>動画とサウンドを合わせて完成させます</td><td>Premiere Pro</td></tr></tbody></table></div>
+<p class="notion-default">地図で黄色い枠で示したのが 04 ストーリーボードとブロッキングです。準備作業と動画作業をつなぐ橋だからです。前の段階の成果物がここに集まり、ここで確定したキーイメージが 05 プロンプトの基準になります。05 で結果が気に入らなければ、問題の部分を直してまた生成する循環になります。</p>
+<h3>なぜ動画生成の前に 4 段階も準備するのか</h3>
+<p class="notion-default">動画 AI に文字だけを入れると、毎回違う顔、違う服、違う構図が出ます。カットをつなぐと、カットごとに別の人が演じたように見えます。準備の段階は、この揺れを動画を作る前に押さえておく作業です。</p>
+<p class="notion-default">代表が KBS でドラマを演出していた頃のたとえが一番分かりやすいです。撮影現場ではカメラを回す前に俳優を決め、セットを建て、コンテでカットの順番と構図を合わせます。紙の上で直すコストはほぼゼロですが、撮影が終わってから直すには撮り直しになるからです。AI 動画も 1 回回すたびにクレジットがかかります。構図が違う動画を確認して最初から回し直すのは、撮影を丸ごとやり直すのと同じです。</p>
+<p class="notion-default">ここでの核心は文字と画像の役割分担です。2 つは互いにできないことを担います。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>文字が担うもの</td><td>画像が担うもの</td></tr><tr><td>カット順、構図、動線、アクション、タイミング</td><td>顔、衣装、質感、時代考証</td></tr></tbody></table></div>
+<p class="notion-default">顔や服装をどれだけ細かく文字で書いても、画像ほど正確には伝わりません。逆に、カットの順番とタイミングは画像では伝えにくいです。だから人物と空間は画像で、流れと動きは文字で分担します。</p>
+<aside class="callout notion-default"><p>📌 カットが飛ぶ問題がなぜ起きるかは ‣ で、実践的な解決法は ‣ でより詳しく扱っています。</p></aside>
+<h3>段階ごとの詳細</h3>
+<p class="notion-default">各段階を <strong>入力 → 成果物 → 次に進む前の確認</strong> の順にまとめました。確認は次の段階へ進む前に自分で点検する項目です。</p>
+<h3>01. シナリオを書く</h3>
+<ul><li><strong>入力</strong>：アイデア、企画案</li><li><strong>成果物</strong>：確定したシナリオ</li><li><strong>確認</strong>：登場人物と場所が決まっているか</li></ul>
+<p class="notion-default">すべての作業がここから出発します。人物と場所が決まっていないと、次の段階のリファレンスを作れません。感情は「悲しい」のように名前だけ書かず、「割れた陶磁器の破片を背中に隠す」のように目に見える行動で書いておくと、あとでカットに分けやすくなります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A04218fad-14d3-45a6-88a8-ae4dc7b711b7%3Aflex_05.png?table=block&amp;id=55ba6d09-83bf-42a4-8049-cba6ce8255aa&amp;cache=v2" alt="시나리오에는 누가, 어디서, 무엇을 하는지 적고 장르와 분위기를 고릅니다 (FLEXBOARD 입력 화면)" loading="lazy" decoding="async"></figure>
+<h3>02. リファレンス画像を用意する</h3>
+<ul><li><strong>使うツール</strong>：Claude、XCONDA フレックスボードスキル、GPT 画像、XCONDA Turn</li><li><strong>入力</strong>：シナリオ</li><li><strong>成果物</strong>：人物ごとの顔画像（キャラクターシート）、場所の画像（背景シート）、必要なら Turn で作ったカット画像</li><li><strong>確認</strong>：人物ごとに顔画像があるか、場所の画像があるか、実現が難しいカットは Turn で作ったか</li></ul>
+<p class="notion-default">すでに持っているリファレンスがあれば、シナリオと一緒にそのまま入れてください。なければフレックスボードスキルがシナリオを読み、キャラクターシートと背景シートを作るプロンプトを書いてくれます。そのプロンプトをコピーして GPT 画像で画像を作り、できた画像をまた入れる順番です。</p>
+<aside class="callout notion-default"><p>📌 <strong>XCONDA Turn の活用：360 度の仮想セットで 2 つを作ります</strong><br>Turn は写真 1 枚か文字の説明から、360 度見回せる仮想セットを作るツールです。1 つの空間を先に作っておき、その中でカメラを回して角度を選ぶので、カットが変わってもドア、窓、小道具の位置が保たれます。<br><br><strong>方法 A. 背景シートを作る</strong><br>1. 背景シートの 1 面（正面の画像）を Turn に入れます。<br>2. その面を基準に左、右、背面を作ります。<br>3. 4 面をまとめて背景リファレンスとして使います。この結果は 05 動画生成の背景リファレンスに入ります。<br><br><strong>方法 B. ストーリーボードのカット画像を作る</strong><br>1. 360 度の仮想セットを作ります。<br>2. セットの中に人物と小道具を置きます。<br>3. 欲しい角度に回してカット画像を出します。この結果は 04 ストーリーボードにカット画像としてそのまま入ります。</p></aside>
+<p class="notion-default">なぜこうするのか。背景をカットごとに別々に生成すると、窓や家具、小道具の配置がカットごとに変わります。実際の撮影現場でセットを先に建て、その中でカメラだけを動かすように、空間を先に固定して角度だけを変える方式です。方法 B は、文字だけでは出にくい複雑な構図を自分で配置して出すときに特に有効です。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A0bc35531-7764-4c96-bcad-7b99f45813a5%3Aimage.png?table=block&amp;id=484104bd-0f71-489a-a931-681964f0fefe&amp;cache=v2" alt="XCONDA Turn Preview 화면" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Adf16d5fa-4d7d-47bf-b9af-568c1ad86e1d%3Aimage.png?table=block&amp;id=21e317dc-5ec4-425f-b02e-03e9ed841b17&amp;cache=v2" alt="360도 세트에서 원하는 각도를 골라 컷 이미지로 저장합니다 (Turn)" loading="lazy" decoding="async"></figure>
+<aside class="callout notion-default"><p>📌 <strong>よくある失敗</strong> 同じ人物の顔画像を何枚も一度に入れると、顔が混ざってつぶれます。人物 1 人につき顔画像 1 枚が原則です。</p></aside>
+<h3>03. 文字コンテとフレックスボードのプロンプト</h3>
+<ul><li><strong>使うツール</strong>：Claude、XCONDA フレックスボードスキル</li><li><strong>入力</strong>：シナリオ、02 で作ったリファレンス画像</li><li><strong>成果物</strong>：文字コンテ（カットごとの長さ、カメラ、アクション、セリフ、効果音）、フレックスボード用プロンプト</li><li><strong>確認</strong>：カットごとに開始動作と終了動作が書かれているか</li></ul>
+<p class="notion-default">文字コンテは場面を文字で先に書いたコンテです。カットの長さの合計が合っているか、1 つのカットに動作を詰め込みすぎていないか、カットが不自然に飛ばないか、登場人物の数が合っているかをこの段階で一緒に点検します。スキルのダウンロードとインストール方法は ‣ の下にあります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae3ac7370-221c-4b9f-a81c-e9bb338c7a37%3Aflex_09.png?table=block&amp;id=f8aefc1b-ce97-4be8-88a9-7d671ff0cd81&amp;cache=v2" alt="이미지를 만들기 전, 컷별 글 콘티가 먼저 나오는 화면 (FLEXBOARD Text Preview)" loading="lazy" decoding="async"></figure>
+<h3>04. ストーリーボードとブロッキング動画</h3>
+<ul><li><strong>使うツール</strong>：XCONDA FLEXBOARD、XCONDA ブロッキングボード</li><li><strong>入力</strong>：03 のフレックスボード用プロンプト、02 の Turn で作ったカット画像（実現が難しいカット）</li><li><strong>成果物</strong>：カットごとのキーイメージ（ストーリーボード画像）、ブロッキングのパペット動画</li><li><strong>確認</strong>：カットごとのキーフレームが意図した構図か、パペット動画の動線が意図と合っているか</li></ul>
+<p class="notion-default">FLEXBOARD はシナリオをカットに分け、カットごとに画像を作って 1 画面に並べて見せるストーリーボードツールです。1 画面に最大 36 カットまで構成でき、うまく出たカットはそのままに、問題のあるカットだけを選んで直せます。画面の順番どおりに進める方法は ‣ にまとめてあります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A530ff496-b095-475b-82c6-3829a2d4ca6c%3Aflex_10.png?table=block&amp;id=d0265e19-1c74-4290-b87a-d61d54a61108&amp;cache=v2" alt="컷 이미지를 한 장에 모아 보는 Sheet 보기. 컷이 자연스럽게 이어지는지 한눈에 확인합니다" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A7d56a367-8a08-436f-8ad2-bc8ec0ccae78%3Aflex_13.png?table=block&amp;id=23d3af00-ede7-4504-916b-7e839e3f62dc&amp;cache=v2" alt="수정 전: POV · Low Angle · Handheld" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae11c7f02-c85d-4ffd-93c3-5d3f7742586f%3Aflex_14.png?table=block&amp;id=bb059692-7624-48bd-9189-4467f0ad2c2a&amp;cache=v2" alt="수정 후: Extreme Wide Shot · Dutch Angle · Track Out" loading="lazy" decoding="async"></figure>
+<aside class="callout notion-default"><p>📌 <strong>XCONDA ブロッキングボード：人物の動線を動画で見せる</strong><br>「左のドアから入り、テーブルを回って窓辺に立つ」といった動きは、文字だけで書くとモデルが思わぬ方向に歩かせることがあります。特に複数の人物が同時に動く場面は崩れやすいです。ブロッキングボードは空間の中で灰色のマネキン（パペット）が動く動画を作り、この動画を生成時に入れると、Seedance が動線を文字ではなく動画として読み取ります。<br><br>顔と衣装はリファレンス画像が、動きの経路とタイミングはパペット動画が担う役割分担です。</p></aside>
+<p class="notion-default">ブロッキングボードは現在ベータで無料公開中です（動画生成の前段階まで）。場面のプロンプトを貼り付けて Create を押すと 3D 空間と人物が構成され、Add camera でカメラを追加したあと Output タブから Seedance に送れます。詳しい紹介は ‣ のお知らせをご覧ください。</p>
+<p class="notion-default">パペットは人間に見える必要はありません。位置、方向、速度だけが合っていれば十分です。05 動画生成のときにパペット動画を一緒に添付する点だけ覚えておいてください。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ab088bc45-c238-47b4-8063-d9e26f31c07f%3Astep04_blocking.png?table=block&amp;id=4002ebc0-17ad-803c-be35-e368f07af463&amp;cache=v2" alt="シナリオから完成動画まで、XCONDA 制作 7 ステップ" loading="lazy" decoding="async"></figure>
+<aside class="callout notion-default"><p>📌 <strong>ここで直すのが一番安い。</strong> 構図が違うまま動画を出すと、動画の段階で何度も再生成することになります。ストーリーボードで先に直してください。</p></aside>
+<h3>05. Seedance プロンプトの作成と動画生成</h3>
+<ul><li><strong>使うツール</strong>：Claude、Seedance プロンプトスキル、プロンプトエディタ、XCONDA</li><li><strong>入力</strong>：フレックスボード用プロンプトと文字コンテ、リファレンス画像、ストーリーボード、04 のブロッキングパペット動画、必要なら音声リファレンス</li><li><strong>成果物</strong>：韓国語と英語を並べた 2 列プロンプトエディタ、XCONDA で生成した動画</li><li><strong>修正方法</strong>：結果を見て直したい点を対話で伝えるとエディタが修正し、また生成します。気に入るまでこの循環を繰り返します。</li></ul>
+<p class="notion-default">Seedance プロンプトスキルは、キーイメージをもとに Seedance 2.5 用のプロンプトを組みます。4 人の監督システムと 10 ブロック構造で整理し、韓国語と英語を並べて直せます。韓国語を直すと英語もそれに合わせて書き直されるので、英語を別に直す必要はありません。このスキルは XCONDA ハブからダウンロードできるよう準備しています。</p>
+<aside class="callout notion-default"><p>📌 <strong>XCONDA 動画生成画面に入れるもの：4 つすべて必須</strong><br><br>① <strong>リファレンス画像</strong>（キャラクターシート、背景シート、Turn シート、小道具）：顔、衣装、空間を固定します。<br>② <strong>ストーリーボード</strong>（04 で作ったカットごとの画像）：構図、動線、カット順を固定します。<br>③ <strong>Seedance 用プロンプト</strong>（エディタで完成）：動き、タイミング、カメラを指示します。<br>④ <strong>ブロッキングパペット動画</strong>（04 ブロッキングボードで作った動画）：人物の動線と移動経路を固定します。</p></aside>
+<p class="notion-default">4 つのうち 1 つでも欠けると、AI がその部分を勝手に埋めます。たとえばリファレンス画像を抜くと、プロンプトに「@image1 の女性」と書いてあっても誰か分からず、カットごとに違う顔になります。ストーリーボードを抜くと、同じプロンプトでも構図が毎回変わります。パペット動画を抜くと、人物がプロンプトと違う方向に歩いたり、複数の人物の動線が食い違ったりします。</p>
+<p class="notion-default">動画生成画面ではモードをリファレンス（Ref-to-video）にし、プロンプトで @ を入力してどのリファレンスが何かを指定します。アスペクト比、解像度、長さ、High Quality は Options タブで選び、Seedance 2.5 は一度に最大 30 秒まで作れます。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A78716324-6862-48e2-a089-7543eb69fcc9%3A06_seedance_ref_draft.png?table=block&amp;id=b424f490-4478-4cad-ae59-9936b14f28a4&amp;cache=v2" alt="XCONDA 영상 생성 화면: 시댄스 2.5 레퍼런스 모드" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A15ddde12-1526-4b46-b74c-19c2036d8ba5%3A08_seedance_options.png?table=block&amp;id=119de8fc-8a2e-47b0-b02c-0e01361935d8&amp;cache=v2" alt="Options 탭에서 화면비, 해상도, 길이, High Quality를 고릅니다" loading="lazy" decoding="async"></figure>
+<p class="notion-default">修正と再生成を繰り返す段階では、最近追加された Draft 機能が役立ちます。480p の下書きで結果を先に確認し、気に入った下書きだけを 1080p の最終版にできます。ただし最終版は下書きと同じアセットから新しく生成されるため細部が一部変わる場合があり、下書きは生成後 7 日間だけ有効です。詳しくは ‣ をご覧ください。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A89923c2b-8220-486e-803b-e12fdd95d887%3Astep05_draft.png?table=block&amp;id=4002ebc0-17ad-803b-aedf-f6d48f2cf104&amp;cache=v2" alt="シナリオから完成動画まで、XCONDA 制作 7 ステップ" loading="lazy" decoding="async"></figure>
+<h3>06. サウンド制作</h3>
+<ul><li><strong>使うツール</strong>：Suno</li><li><strong>入力</strong>：05 で完成した動画の雰囲気と長さ</li><li><strong>成果物</strong>：動画に使うサウンドファイル</li><li><strong>確認</strong>：動画の長さと雰囲気に合っているか</li></ul>
+<p class="notion-default">サウンドは動画が完成したあとに、動画の雰囲気と長さを基準に作ります。この段階の詳しい方法は連載で続きます。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A26e76eb8-dcbf-4cc4-b709-2206deba8746%3Astep06_sound.png?table=block&amp;id=4002ebc0-17ad-8092-b11f-c48d322084b1&amp;cache=v2" alt="シナリオから完成動画まで、XCONDA 制作 7 ステップ" loading="lazy" decoding="async"></figure>
+<h3>07. 動画とサウンドを合わせて完成</h3>
+<ul><li><strong>使うツール</strong>：Premiere Pro</li><li><strong>入力</strong>：05 で生成した動画クリップ、06 で作ったサウンド</li><li><strong>成果物</strong>：完成動画</li><li><strong>確認</strong>：カットのつながり、音量、字幕</li></ul>
+<p class="notion-default">最後の段階です。カットをつなぐ前に 02 のリファレンスと 03 の文字コンテを手元に置き、衣装や小道具、背景がカットごとに変わっていないかもう一度ざっと見てください。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A75d3978c-c21a-45c5-8e27-153f1e988637%3Astep07_edit.png?table=block&amp;id=4002ebc0-17ad-8078-bc0c-e83bf9196b06&amp;cache=v2" alt="シナリオから完成動画まで、XCONDA 制作 7 ステップ" loading="lazy" decoding="async"></figure>
+<h3>段階ごとの 1 枚まとめ</h3>
+<p class="notion-default">地図を見ながらすぐ点検できるよう、入力、成果物、次に進む前の確認を 1 つの表にまとめました。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>段階</td><td>入力</td><td>成果物</td><td>次に進む前の確認</td></tr><tr><td>01 シナリオ</td><td>アイデア、企画案</td><td>確定したシナリオ</td><td>登場人物と場所が決まっているか</td></tr><tr><td>02 リファレンス</td><td>シナリオ</td><td>キャラクターシート、背景シート、Turn カット画像</td><td>人物ごとの顔画像があるか、場所の画像があるか、難しいカットは Turn で作ったか</td></tr><tr><td>03 文字コンテ</td><td>シナリオ、リファレンス画像</td><td>文字コンテ、フレックスボード用プロンプト</td><td>カットごとに開始・終了動作が書かれているか</td></tr><tr><td>04 ストーリーボード・ブロッキング</td><td>フレックスボード用プロンプト、Turn カット画像</td><td>カットごとのキーイメージ、ブロッキングパペット動画</td><td>キーフレームの構図とパペットの動線が意図と合っているか</td></tr><tr><td>05 動画生成</td><td>リファレンス、ストーリーボード、プロンプト、パペット動画</td><td>2 列プロンプトエディタ、生成動画</td><td>4 つをすべて入れたか</td></tr><tr><td>06 サウンド</td><td>完成動画の雰囲気と長さ</td><td>サウンドファイル</td><td>動画の長さと雰囲気に合っているか</td></tr><tr><td>07 完成</td><td>動画クリップ、サウンド</td><td>完成動画</td><td>カットのつながり、音量、字幕</td></tr></tbody></table></div>
+<h3>よくある失敗 5 つ</h3>
+<ul><li><strong>動画から回す</strong>：画像で先に確認すれば、間違ったカット 1 枚を出し直すだけで済みます。動画は丸ごと回し直しになります。</li><li><strong>同じ人物の顔画像を何枚も入れる</strong>：顔が混ざります。人物 1 人につき 1 枚が原則です。</li><li><strong>動画生成に 4 つのうち一部だけ入れる</strong>：リファレンス、ストーリーボード、プロンプト、パペット動画のうち欠けた部分は AI が勝手に埋めます。</li><li><strong>パペット動画に顔や表情まで期待する</strong>：パペットは位置、方向、速度だけを担います。顔はリファレンス画像の役割です。</li><li><strong>うまく出たカットまで再生成する</strong>：問題のあるカットだけを選んで直してください。</li></ul>
+<h3>連載目次</h3>
+<p class="notion-default">AI 動画制作の流れは 1 回に 1 段階ずつ続きます。公開済みの記事はリンクにしてあり、残りは順番に公開予定です。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>回</td><td>タイトル</td><td>扱う内容</td><td>読む</td></tr><tr><td>EP.00</td><td>全体マップ</td><td>7 段階がどうつながるか</td><td>いま読んでいる記事</td></tr><tr><td>EP.01</td><td>シナリオから始める</td><td>AI 動画に向くシナリオの書き方</td><td>準備中</td></tr><tr><td>EP.02</td><td>リファレンスを作る</td><td>キャラクターシート、XCONDA Turn の背景シートとカット画像</td><td>準備中</td></tr><tr><td>EP.03</td><td>文字コンテとフレックスボードのプロンプト</td><td>スキルの使い方と成果物の読み方</td><td>準備中</td></tr><tr><td>EP.04</td><td>ストーリーボードとブロッキングボード</td><td>キーフレームの決め方、パペット動画で動線を固定</td><td>‣、‣</td></tr><tr><td>EP.05</td><td>Seedance プロンプトと動画生成</td><td>エディタの読み方、修正前後の比較</td><td>準備中</td></tr><tr><td>EP.06</td><td>Suno でサウンドを作る</td><td>動画に合うサウンドの作り方</td><td>準備中</td></tr><tr><td>EP.07</td><td>Premiere Pro で仕上げる</td><td>動画とサウンドを合わせて最終出力</td><td>準備中</td></tr></tbody></table></div>
+<p class="notion-default">あわせて読みたい記事として、動画の前にコンテを出す理由をまとめた ‣ と、Turn と FLEXBOARD でカットの一貫性を確保した制作事例をまとめた ‣ があります。</p>
+<h3>いま始める方へ</h3>
+<p class="notion-default">XCONDA は FLEXBOARD リリースのオープンプロモーションとして Seedance 2.5 の割引キャンペーンを実施しています。</p>
+<ul><li>韓国：利用割引 30% + 価格割引 10%、最大 40%</li><li>米国：利用割引 最大 30%</li><li>期間：11 月 6 日午前 11 時まで（韓国時間）</li></ul>
+<p class="notion-default">XCONDA はこちら</p>
+<p class="notion-default">導入や協業のご相談は以下までご連絡ください。</p>
+<ul><li><strong>お問い合わせ：</strong> cubeberry@cuberry.kr</li><li><strong>電話：</strong> +82-70-8095-2302（平日 10:00〜17:00）</li></ul>
+<p class="notion-default">キューブベリー AI 動画制作ガイド · 2026 年 10 月 21 日時点の内容です。ツールが更新されると内容が変わる場合があります。今日も長い記事を読んでいただきありがとうございます！</p>
+<p><a href="https://hub.xconda.ai/post/scenario-to-final-video/" hreflang="ko">韓国語の原文を見る</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-9-cut-curse-fix/">9 カットの呪いを減らす方法、カットが飛ばない 5 ステップ</a></li><li><a href="../ai-video-background-consistency/">AI 映像の背景が飛ぶ理由とカット一貫性の解決</a></li><li><a href="../ai-video-motion-ideas/">AI 映像のモーションアイデアが浮かばないときに見るサイト</a></li><li><a href="../deepseek-official-harness/">DeepSeek が公式ハーネスを MIT ライセンスで公開</a></li></ul></nav>
+<p class="seo-note">日本語ページは XCONDA チームが翻訳しています。韓国語ハブが原文であり、内容に相違がある場合は cubeberry@cuberry.kr までご連絡ください。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

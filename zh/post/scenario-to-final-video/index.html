@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hans" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>从剧本到成片：XCONDA 制作七步 | XCONDA Hub — 问答、指南与公告</title>
+    <meta name="description" content="Cubeberry 的 AI 视频从剧本出发，在 XCONDA 生成视频，用 Suno 加上声音，在 Premiere Pro 收尾。本文用一张地图和七个阶段展示全流程。" />
+    <link rel="canonical" href="https://hub.xconda.ai/zh/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/scenario-to-final-video/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/scenario-to-final-video/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="从剧本到成片：XCONDA 制作七步" />
+    <meta property="og:description" content="Cubeberry 的 AI 视频从剧本出发，在 XCONDA 生成视频，用 Suno 加上声音，在 Premiere Pro 收尾。本文用一张地图和七个阶段展示全流程。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-scenario-to-final-video.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/zh/post/scenario-to-final-video/" />
+    <meta property="article:published_time" content="2026-10-10" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="从剧本到成片：XCONDA 制作七步" />
+    <meta name="twitter:description" content="Cubeberry 的 AI 视频从剧本出发，在 XCONDA 生成视频，用 Suno 加上声音，在 Premiere Pro 收尾。本文用一张地图和七个阶段展示全流程。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-scenario-to-final-video.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/zh/post/scenario-to-final-video/#webpage","url":"https://hub.xconda.ai/zh/post/scenario-to-final-video/","name":"从剧本到成片：XCONDA 制作七步","inLanguage":"zh-Hans","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="zh">
+<nav aria-label="breadcrumb"><a href="../../">首页</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/scenario-to-final-video/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/scenario-to-final-video/" hreflang="en">English</a><a href="https://hub.xconda.ai/ja/post/scenario-to-final-video/" hreflang="ja">日本語</a><strong aria-current="true">中文</strong></nav>
+<article>
+<h1>从剧本到成片：XCONDA 制作七步</h1>
+<p class="seo-meta">中文 · XCONDA Hub</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1ef4cf7c-5019-4847-af77-07b0e9174243%3Axconda_map_without_06_07.png?table=block&amp;id=831ccd14-35f7-4f36-93d2-aa629ac95f91&amp;cache=v2" alt="从剧本到成片：XCONDA 制作七步" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>AI 视频制作流程 EP.00 全貌图</strong> · 第一次阅读请从这里开始</p>
+<p class="notion-default">你好，这里是 XCONDA。Cubeberry 的 AI 视频从剧本出发，在 XCONDA 生成视频，用 Suno 加上声音，最后在 Premiere Pro 收尾。本文用一张地图加分段说明，展示整个顺序。每个阶段的详细做法会在连载里继续。</p>
+<aside class="callout notion-default"><p>📌 <strong>要点</strong> 整体分为准备（01～04）、视频（05）、后期（06～07）七个阶段。本文整理每个阶段放什么进去、产出什么、交接前要确认什么。卡在某个阶段时，就跳到该阶段的详解文章。</p></aside>
+<p class="notion-default"><strong>适合谁读</strong>：第一次做 AI 视频的人、用过工具但镜头接不上的人、需要在团队里共享制作顺序的人</p>
+<h3>一眼看清流程</h3>
+<p class="notion-default"><strong>剧本 → 参考图 → 文字分镜 → 故事板与走位 → 视频生成 → 声音 → 剪辑与完成</strong></p>
+<div class="notion-table-wrap"><table><tbody><tr><td>区间</td><td>阶段</td><td>做什么</td><td>使用的工具</td></tr><tr><td>准备</td><td>01 剧本</td><td>确定一切工作的起点——剧本</td><td>剧本、台本</td></tr><tr><td>准备</td><td>02 准备参考图</td><td>做出人物与空间的基准图（角色设定图、背景设定图）</td><td>Claude、Flexboard 技能、GPT 图像、XCONDA Turn</td></tr><tr><td>准备</td><td>03 文字分镜与 Flexboard 提示词</td><td>先用文字把镜头整理出来</td><td>Claude、Flexboard 技能</td></tr><tr><td>准备</td><td>04 故事板与走位视频</td><td>确认每个镜头的关键图，用视频定下人物动线</td><td>XCONDA FLEXBOARD、XCONDA Blocking Board</td></tr><tr><td>视频</td><td>05 Seedance 提示词与视频生成</td><td>把前面所有成果放进去并生成视频</td><td>Claude、Seedance 提示词技能、提示词编辑器、XCONDA</td></tr><tr><td>后期</td><td>06 声音制作</td><td>制作视频要用的声音</td><td>Suno</td></tr><tr><td>后期</td><td>07 合成视频与声音</td><td>把视频和声音合起来完成</td><td>Premiere Pro</td></tr></tbody></table></div>
+<p class="notion-default">地图上标黄色边框的是 04 故事板与走位。它是连接准备和视频的桥梁：前面阶段的成果在这里汇总，这里确定的关键图又成为 05 提示词的基准。05 的结果不满意，就修掉出问题的部分再生成——这个循环是正常做法。</p>
+<h3>为什么生成视频前要准备四个阶段</h3>
+<p class="notion-default">只把文字丢给视频 AI，每次都会出现不同的脸、不同的衣服、不同的构图。把镜头连起来，就像每个镜头都是不同的人在演。准备阶段就是在做视频之前把这些抖动按住。</p>
+<p class="notion-default">用我们代表在 KBS 导电视剧时的比喻最好懂。片场在开机前要定演员、搭景、用分镜核对镜头顺序和构图。纸上修改几乎不花钱，拍完再改就得重拍。AI 视频同样每跑一次都要花积分。发现构图错的视频再从头跑，等于把整场戏重拍一遍。</p>
+<p class="notion-default">这里的关键是文字和图片的分工。两者各做对方做不到的事。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>文字负责什么</td><td>图片负责什么</td></tr><tr><td>镜头顺序、构图、走位、动作、节奏</td><td>脸、服装、质感、年代考据</td></tr></tbody></table></div>
+<p class="notion-default">脸和打扮写得再细，也不如图片精确；反过来，镜头顺序和节奏用图片很难传达。所以人物和空间交给图片，流程和运动交给文字。</p>
+<aside class="callout notion-default"><p>📌 镜头跳动的原因在 ‣ 有更详细的说明，实战解法在 ‣。</p></aside>
+<h3>逐阶段详解</h3>
+<p class="notion-default">每个阶段按 <strong>输入 → 产出 → 交接前确认</strong> 整理。确认是进入下一阶段前自己检查的项目。</p>
+<h3>01. 写剧本</h3>
+<ul><li><strong>输入</strong>：想法、企划案</li><li><strong>产出</strong>：定稿的剧本</li><li><strong>确认</strong>：人物和地点定了吗</li></ul>
+<p class="notion-default">所有工作都从这里出发。人物和地点没定，下一阶段的参考图就做不出来。情绪不要只写名字（比如「悲伤」），写成看得见的动作，比如「把碎瓷片藏到身后」，之后切分镜头会容易得多。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A04218fad-14d3-45a6-88a8-ae4dc7b711b7%3Aflex_05.png?table=block&amp;id=55ba6d09-83bf-42a4-8049-cba6ce8255aa&amp;cache=v2" alt="시나리오에는 누가, 어디서, 무엇을 하는지 적고 장르와 분위기를 고릅니다 (FLEXBOARD 입력 화면)" loading="lazy" decoding="async"></figure>
+<h3>02. 准备参考图</h3>
+<ul><li><strong>使用的工具</strong>：Claude、XCONDA Flexboard 技能、GPT 图像、XCONDA Turn</li><li><strong>输入</strong>：剧本</li><li><strong>产出</strong>：每个人物的脸部图（角色设定图）、地点图（背景设定图），必要时用 Turn 做的镜头图</li><li><strong>确认</strong>：每个人物都有脸部图吗、有地点图吗、难实现的镜头用 Turn 做了吗</li></ul>
+<p class="notion-default">如果已经有参考图，和剧本一起直接放进去即可。如果没有，Flexboard 技能会读剧本，写出制作角色设定图和背景设定图的提示词。复制那些提示词到 GPT 图像出图，再把图放回来，就是这个顺序。</p>
+<aside class="callout notion-default"><p>📌 <strong>活用 XCONDA Turn：用 360 度虚拟场景做两件事</strong><br>Turn 是能用一张照片或一段文字说明做出可 360 度环视的虚拟场景的工具。先建好一个空间，在里面转动相机挑选角度，所以换镜头时门、窗、道具的位置都能保持。<br><br><strong>方法 A. 做背景设定图</strong><br>1. 把背景设定图的一面（正面图）放进 Turn。<br>2. 以那一面为基准做出左、右、背面。<br>3. 把四面合起来当作背景参考。这个结果会进入 05 视频生成的背景参考。<br><br><strong>方法 B. 做故事板镜头图</strong><br>1. 做出 360 度虚拟场景。<br>2. 在场景里放置人物和道具。<br>3. 转到想要的角度取出镜头图。这个结果会直接作为镜头图进入 04 故事板。</p></aside>
+<p class="notion-default">为什么要这样？背景按镜头分别生成，窗、家具、道具的位置每个镜头都不一样。就像真实片场先搭景、里面只移动相机一样，先固定空间，只改变角度。方法 B 在文字很难生成、需要自己摆放复杂构图时特别有用。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A0bc35531-7764-4c96-bcad-7b99f45813a5%3Aimage.png?table=block&amp;id=484104bd-0f71-489a-a931-681964f0fefe&amp;cache=v2" alt="XCONDA Turn Preview 화면" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Adf16d5fa-4d7d-47bf-b9af-568c1ad86e1d%3Aimage.png?table=block&amp;id=21e317dc-5ec4-425f-b02e-03e9ed841b17&amp;cache=v2" alt="360도 세트에서 원하는 각도를 골라 컷 이미지로 저장합니다 (Turn)" loading="lazy" decoding="async"></figure>
+<aside class="callout notion-default"><p>📌 <strong>常见错误</strong> 把同一个人物的多张脸部图一次放进去，脸会混杂糊掉。一个人物一张脸部图是原则。</p></aside>
+<h3>03. 文字分镜与 Flexboard 提示词</h3>
+<ul><li><strong>使用的工具</strong>：Claude、XCONDA Flexboard 技能</li><li><strong>输入</strong>：剧本、02 做好的参考图</li><li><strong>产出</strong>：文字分镜（每个镜头的时长、机位、动作、台词、音效）、Flexboard 用提示词</li><li><strong>确认</strong>：每个镜头都写了起始动作和结束动作吗</li></ul>
+<p class="notion-default">文字分镜就是先把场面写成文字的镜头表。在这一步同时检查镜头时长加起来对不对、单个镜头动作是否太多、镜头是否不自然地跳、出场人物数量对不对。技能下载与安装方法在 ‣ 下方。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae3ac7370-221c-4b9f-a81c-e9bb338c7a37%3Aflex_09.png?table=block&amp;id=f8aefc1b-ce97-4be8-88a9-7d671ff0cd81&amp;cache=v2" alt="이미지를 만들기 전, 컷별 글 콘티가 먼저 나오는 화면 (FLEXBOARD Text Preview)" loading="lazy" decoding="async"></figure>
+<h3>04. 故事板与走位视频</h3>
+<ul><li><strong>使用的工具</strong>：XCONDA FLEXBOARD、XCONDA Blocking Board</li><li><strong>输入</strong>：03 的 Flexboard 提示词、02 用 Turn 做的镜头图（难实现的镜头）</li><li><strong>产出</strong>：逐镜头关键图（故事板图片）、走位玩偶视频</li><li><strong>确认</strong>：每个镜头的关键帧是想要的构图吗、玩偶视频的动线符合意图吗</li></ul>
+<p class="notion-default">FLEXBOARD 是把剧本切成镜头、为每个镜头出图并摊在一个画面里的故事板工具。一个画面最多排 36 个镜头，已经不错的镜头保持不动，只挑有问题的修改。按屏幕顺序操作的完整方法整理在 ‣。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A530ff496-b095-475b-82c6-3829a2d4ca6c%3Aflex_10.png?table=block&amp;id=d0265e19-1c74-4290-b87a-d61d54a61108&amp;cache=v2" alt="컷 이미지를 한 장에 모아 보는 Sheet 보기. 컷이 자연스럽게 이어지는지 한눈에 확인합니다" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A7d56a367-8a08-436f-8ad2-bc8ec0ccae78%3Aflex_13.png?table=block&amp;id=23d3af00-ede7-4504-916b-7e839e3f62dc&amp;cache=v2" alt="수정 전: POV · Low Angle · Handheld" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae11c7f02-c85d-4ffd-93c3-5d3f7742586f%3Aflex_14.png?table=block&amp;id=bb059692-7624-48bd-9189-4467f0ad2c2a&amp;cache=v2" alt="수정 후: Extreme Wide Shot · Dutch Angle · Track Out" loading="lazy" decoding="async"></figure>
+<aside class="callout notion-default"><p>📌 <strong>XCONDA Blocking Board：用视频展示人物动线</strong><br>「从左门进来，绕过桌子站到窗边」这类移动，只写成文字，模型可能走错方向。多个人物同时移动的场面尤其容易乱。Blocking Board 会做出一段灰色人偶（玩偶）在空间里移动的视频，生成时把这段视频一起放进去，Seedance 就会把动线当视频来读，而不是当文字读。<br><br>这就是分工：脸和服装交给参考图，移动路径和节奏交给玩偶视频。</p></aside>
+<p class="notion-default">Blocking Board 目前正在免费公测（到视频生成前的阶段）。贴上场面提示词按 Create，就会搭好 3D 空间和人物；用 Add camera 添加相机，然后在 Output 标签里送到 Seedance。详细介绍请看 ‣ 的通知。</p>
+<p class="notion-default">玩偶不需要像人。位置、方向、速度对上就够。只要记住 05 视频生成时要一起附上玩偶视频。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ab088bc45-c238-47b4-8063-d9e26f31c07f%3Astep04_blocking.png?table=block&amp;id=4002ebc0-17ad-803c-be35-e368f07af463&amp;cache=v2" alt="从剧本到成片：XCONDA 制作七步" loading="lazy" decoding="async"></figure>
+<aside class="callout notion-default"><p>📌 <strong>在这里改最便宜。</strong> 构图错了还去跑视频，在视频阶段就得反复重跑。请先在故事板里改对。</p></aside>
+<h3>05. Seedance 提示词与视频生成</h3>
+<ul><li><strong>使用的工具</strong>：Claude、Seedance 提示词技能、提示词编辑器、XCONDA</li><li><strong>输入</strong>：Flexboard 提示词与文字分镜、参考图、故事板、04 的走位玩偶视频，必要时加音频参考</li><li><strong>产出</strong>：韩语与英语并排的两栏提示词编辑器、在 XCONDA 生成的视频</li><li><strong>修改方式</strong>：看完结果用对话提出要改的地方，编辑器修改后再生成。反复这个循环直到满意。</li></ul>
+<p class="notion-default">Seedance 提示词技能会根据关键图搭出 Seedance 2.5 的提示词。用四位导演系统和十个区块结构整理，可以把韩语和英语并排修改。改韩语时英语会同步重写，不必单独改英语。这个技能正在准备上线 XCONDA 枢纽供下载。</p>
+<aside class="callout notion-default"><p>📌 <strong>放进 XCONDA 视频生成画面的四样，缺一不可</strong><br><br>① <strong>参考图</strong>（角色设定图、背景设定图、Turn 设定图、道具）：固定脸、服装、空间。<br>② <strong>故事板</strong>（04 做的逐镜头图片）：固定构图、动线、镜头顺序。<br>③ <strong>Seedance 提示词</strong>（在编辑器里完成）：指示运动、节奏、机位。<br>④ <strong>走位玩偶视频</strong>（04 Blocking Board 做的视频）：固定人物动线和移动路径。</p></aside>
+<p class="notion-default">四样缺一样，AI 就会自己随意填。比如缺了参考图，提示词里写「@image1 的女人」它也不知道是谁，每个镜头的脸都不一样。缺了故事板，同样的提示词每次构图都变。缺了玩偶视频，人物会朝提示词以外的方向走，或者几个人物的动线互相打架。</p>
+<p class="notion-default">在视频生成画面里把模式选成参考（Ref-to-video），在提示词里输入 @ 指定哪张参考图是什么。画幅、分辨率、时长、High Quality 在 Options 标签里选，Seedance 2.5 一次最多可做 30 秒。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A78716324-6862-48e2-a089-7543eb69fcc9%3A06_seedance_ref_draft.png?table=block&amp;id=b424f490-4478-4cad-ae59-9936b14f28a4&amp;cache=v2" alt="XCONDA 영상 생성 화면: 시댄스 2.5 레퍼런스 모드" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A15ddde12-1526-4b46-b74c-19c2036d8ba5%3A08_seedance_options.png?table=block&amp;id=119de8fc-8a2e-47b0-b02c-0e01361935d8&amp;cache=v2" alt="Options 탭에서 화면비, 해상도, 길이, High Quality를 고릅니다" loading="lazy" decoding="async"></figure>
+<p class="notion-default">在反复修改和重生成的阶段，最近新增的 Draft 功能很有用。先用 480p 草稿确认结果，只把满意的草稿做成 1080p 成片。不过成片是用同一批素材重新生成的，细节可能有些不同；草稿在生成后 7 天内有效。详情请看 ‣。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A89923c2b-8220-486e-803b-e12fdd95d887%3Astep05_draft.png?table=block&amp;id=4002ebc0-17ad-803b-aedf-f6d48f2cf104&amp;cache=v2" alt="从剧本到成片：XCONDA 制作七步" loading="lazy" decoding="async"></figure>
+<h3>06. 声音制作</h3>
+<ul><li><strong>使用的工具</strong>：Suno</li><li><strong>输入</strong>：05 完成的视频氛围与时长</li><li><strong>产出</strong>：视频要用的声音文件</li><li><strong>确认</strong>：符合视频的时长和氛围吗</li></ul>
+<p class="notion-default">声音是在视频完成之后，以视频的氛围和时长为准制作的。这一阶段的详细方法会在连载里继续。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A26e76eb8-dcbf-4cc4-b709-2206deba8746%3Astep06_sound.png?table=block&amp;id=4002ebc0-17ad-8092-b11f-c48d322084b1&amp;cache=v2" alt="从剧本到成片：XCONDA 制作七步" loading="lazy" decoding="async"></figure>
+<h3>07. 合成视频与声音</h3>
+<ul><li><strong>使用的工具</strong>：Premiere Pro</li><li><strong>输入</strong>：05 生成的视频片段、06 做好的声音</li><li><strong>产出</strong>：完成的视频</li><li><strong>确认</strong>：镜头衔接、音量、字幕</li></ul>
+<p class="notion-default">最后一步。连接镜头之前，把 02 的参考图和 03 的文字分镜放在旁边，再看一遍服装、道具、背景有没有在镜头之间变化。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A75d3978c-c21a-45c5-8e27-153f1e988637%3Astep07_edit.png?table=block&amp;id=4002ebc0-17ad-8078-bc0c-e83bf9196b06&amp;cache=v2" alt="从剧本到成片：XCONDA 制作七步" loading="lazy" decoding="async"></figure>
+<h3>七个阶段一张表</h3>
+<p class="notion-default">为了能对着地图直接检查，把输入、产出、交接前确认汇总在一张表里。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>阶段</td><td>输入</td><td>产出</td><td>交接前确认</td></tr><tr><td>01 剧本</td><td>想法、企划案</td><td>定稿的剧本</td><td>人物和地点定了吗</td></tr><tr><td>02 参考图</td><td>剧本</td><td>角色设定图、背景设定图、Turn 镜头图</td><td>每个人物有脸部图吗、有地点图吗、难镜头用 Turn 做了吗</td></tr><tr><td>03 文字分镜</td><td>剧本、参考图</td><td>文字分镜、Flexboard 用提示词</td><td>每个镜头都写了起始和结束动作吗</td></tr><tr><td>04 故事板与走位</td><td>Flexboard 提示词、Turn 镜头图</td><td>逐镜头关键图、走位玩偶视频</td><td>关键帧构图和玩偶动线符合意图吗</td></tr><tr><td>05 视频生成</td><td>参考图、故事板、提示词、玩偶视频</td><td>两栏提示词编辑器、生成的视频</td><td>四样都放进去了吗</td></tr><tr><td>06 声音</td><td>完成视频的氛围与时长</td><td>声音文件</td><td>符合视频时长和氛围吗</td></tr><tr><td>07 完成</td><td>视频片段、声音</td><td>完成的视频</td><td>镜头衔接、音量、字幕</td></tr></tbody></table></div>
+<h3>五个常见错误</h3>
+<ul><li><strong>先跑视频</strong>：先用图片确认，只要重出那一张错的镜头。视频则要整套重跑。</li><li><strong>把同一个人物的多张脸部图放进去</strong>：脸会混。一个人物一张是原则。</li><li><strong>视频生成只放四样中的一部分</strong>：参考图、故事板、提示词、玩偶视频缺的部分，AI 会自己随意填。</li><li><strong>期待玩偶视频连脸和表情都有</strong>：玩偶只负责位置、方向、速度。脸是参考图的任务。</li><li><strong>把已经不错的镜头也重新生成</strong>：只挑有问题的镜头修改。</li></ul>
+<h3>连载目录</h3>
+<p class="notion-default">AI 视频制作流程每期讲一个阶段。已发布的文章都放了链接，其余会按顺序发布。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>期</td><td>标题</td><td>内容</td><td>阅读</td></tr><tr><td>EP.00</td><td>全貌图</td><td>七个阶段怎么衔接</td><td>正在阅读</td></tr><tr><td>EP.01</td><td>从剧本开始</td><td>适合 AI 视频的剧本写法</td><td>准备中</td></tr><tr><td>EP.02</td><td>做参考图</td><td>角色设定图、XCONDA Turn 背景设定图与镜头图</td><td>准备中</td></tr><tr><td>EP.03</td><td>文字分镜与 Flexboard 提示词</td><td>技能用法与如何读产出</td><td>准备中</td></tr><tr><td>EP.04</td><td>故事板与 Blocking Board</td><td>定关键帧、用玩偶视频固定动线</td><td>‣、‣</td></tr><tr><td>EP.05</td><td>Seedance 提示词与视频生成</td><td>如何读编辑器、修改前后对比</td><td>准备中</td></tr><tr><td>EP.06</td><td>用 Suno 做声音</td><td>做出适合视频的声音</td><td>准备中</td></tr><tr><td>EP.07</td><td>用 Premiere Pro 收尾</td><td>合成视频与声音并最终输出</td><td>准备中</td></tr></tbody></table></div>
+<p class="notion-default">推荐一起读的有 ‣（为什么在跑视频之前先出分镜）和 ‣（用 Turn 与 FLEXBOARD 保证镜头一致性的制作案例）。</p>
+<h3>想马上开始的人</h3>
+<p class="notion-default">XCONDA 正在做 FLEXBOARD 上线开放推广，同时进行 Seedance 2.5 折扣活动。</p>
+<ul><li>韩国：使用折扣 30% + 价格折扣 10%，最高 40%</li><li>美国：使用折扣最高 30%</li><li>时间：截至 11 月 6 日上午 11 点（韩国时间）</li></ul>
+<p class="notion-default">前往 XCONDA</p>
+<p class="notion-default">如需引入或合作，请通过以下方式联系我们。</p>
+<ul><li><strong>咨询：</strong> cubeberry@cuberry.kr</li><li><strong>电话：</strong> +82-70-8095-2302（工作日 10:00～17:00）</li></ul>
+<p class="notion-default">Cubeberry AI 视频制作指南 · 内容截至 2026 年 10 月 21 日。工具更新后内容可能变化。感谢你今天也读完了这么长的文章！</p>
+<p><a href="https://hub.xconda.ai/post/scenario-to-final-video/" hreflang="ko">查看韩语原文</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-9-cut-curse-fix/">减少九镜头诅咒的方法：让镜头不跳的五个步骤</a></li><li><a href="../ai-video-background-consistency/">AI 视频背景跳动的原因与镜头一致性的解决</a></li><li><a href="../ai-video-motion-ideas/">AI 视频没有动作灵感时可以看的网站</a></li><li><a href="../deepseek-official-harness/">DeepSeek 以 MIT 许可证发布官方 harness</a></li></ul></nav>
+<p class="seo-note">中文页面由 XCONDA 团队翻译。韩语 Hub 为原始版本，如内容有出入请联系 cubeberry@cuberry.kr。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

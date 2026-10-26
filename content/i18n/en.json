@@ -2085,6 +2085,488 @@
         }
       ]
     },
+    "post/scenario-to-final-video": {
+      "title": "From Scenario to Finished Video: XCONDA Production in 7 Steps",
+      "summary": "Cubeberry's AI video starts from a scenario, is generated in XCONDA, gets sound from Suno and is finished in Premiere Pro. One map plus the seven steps: what goes in, what comes out, what to check.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**The AI video production workflow, EP.00: the whole map** - start here if this is your first read"
+        },
+        {
+          "type": "p",
+          "text": "Hello, this is XCONDA. Cubeberry's AI video starts from a scenario, is generated in XCONDA, gets sound from Suno, and is finished in Premiere Pro. This article shows the whole order as one map plus a step-by-step explanation. The details of each step follow in the series."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**In short** The whole thing is seven steps: preparation (01-04), video (05), finishing (06-07). For each step this article sets out what goes in, what comes out, and what to check before moving on. If you get stuck on a step, jump to the detailed post for it."
+        },
+        {
+          "type": "p",
+          "text": "**Who it is for**: people making AI video for the first time, people who have used the tools but struggle to make cuts connect, and teams that need to share a production order."
+        },
+        {
+          "type": "h3",
+          "text": "The flow at a glance"
+        },
+        {
+          "type": "p",
+          "text": "**Scenario -> references -> written storyboard -> storyboard and blocking -> video generation -> sound -> edit and finish**"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Stage",
+              "Step",
+              "What you do",
+              "Tools"
+            ],
+            [
+              "Prep",
+              "01 Scenario",
+              "Finalise the scenario that everything starts from",
+              "Scenario, script"
+            ],
+            [
+              "Prep",
+              "02 Reference images",
+              "Make the reference images for cast and space (character sheets, background sheets)",
+              "Claude, Flexboard skill, GPT image, XCONDA Turn"
+            ],
+            [
+              "Prep",
+              "03 Written storyboard and Flexboard prompt",
+              "Work out the cuts in text first",
+              "Claude, Flexboard skill"
+            ],
+            [
+              "Prep",
+              "04 Storyboard and blocking video",
+              "Check the key image for each cut and set the paths as video",
+              "XCONDA FLEXBOARD, XCONDA Blocking Board"
+            ],
+            [
+              "Video",
+              "05 Seedance prompt and video generation",
+              "Feed in everything from the previous steps and generate",
+              "Claude, Seedance prompt skill, prompt editor, XCONDA"
+            ],
+            [
+              "Finish",
+              "06 Sound",
+              "Make the sound for the video",
+              "Suno"
+            ],
+            [
+              "Finish",
+              "07 Combine video and sound",
+              "Put video and sound together to finish",
+              "Premiere Pro"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "On the map, the yellow outline marks 04 storyboard and blocking. It is the link between preparation and video: the output of the earlier steps gathers here, and the key images finalised here become the basis of the 05 prompt. If you dislike the result at 05, you fix the problem part and generate again - that loop is the normal way to work."
+        },
+        {
+          "type": "h3",
+          "text": "Why four steps of preparation before generating video?"
+        },
+        {
+          "type": "p",
+          "text": "Put text alone into video AI and you get a different face, different clothes and different framing every time. Join the cuts and it looks like a different actor in each one. The preparation steps pin that wobble down before any video is made."
+        },
+        {
+          "type": "p",
+          "text": "The easiest comparison is how our CEO used to direct dramas at KBS. Before the camera rolls on set you cast the actors, build the set, and check cut order and framing on a storyboard. Fixing on paper costs almost nothing, while fixing after the shoot means shooting again. AI video also spends credits every time you run it. Checking a video with the wrong framing and starting over is the same as shooting the whole day again."
+        },
+        {
+          "type": "p",
+          "text": "The key here is the division of labour between text and image. Each does what the other cannot."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "What text is responsible for",
+              "What images are responsible for"
+            ],
+            [
+              "Cut order, framing, blocking, action, timing",
+              "Faces, costume, texture, period detail"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "However carefully you describe a face or an outfit in words, it never lands as precisely as an image, and cut order and timing are hard to convey with images. So cast and space are carried by images, and flow and movement by text."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "Why cuts jump is covered in more depth at ‣, and the practical fix at ‣."
+        },
+        {
+          "type": "h3",
+          "text": "Step by step"
+        },
+        {
+          "type": "p",
+          "text": "Each step is set out as **input -> output -> check before moving on**. The check is what you verify yourself before going to the next step."
+        },
+        {
+          "type": "h3",
+          "text": "01. Write the scenario"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Input**: idea, pitch",
+            "**Output**: a final scenario",
+            "**Check**: are the characters and locations decided?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Everything starts here. If the characters and places are not settled you cannot make the references for the next step. Do not write an emotion as a label (\"sad\"); write a visible action such as \"hides the shard of broken pottery behind her back\", which makes splitting into cuts much easier later."
+        },
+        {
+          "type": "h3",
+          "text": "02. Get the reference images"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Tools**: Claude, the XCONDA Flexboard skill, GPT image, XCONDA Turn",
+            "**Input**: the scenario",
+            "**Output**: a face image per character (character sheet), location images (background sheets), and cut images made in Turn where needed",
+            "**Check**: does every character have a face image, is there a location image, and were the hard cuts made in Turn?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "If you already have references, put them in with the scenario as they are. If not, the Flexboard skill reads the scenario and writes the prompts that create character sheets and background sheets. Copy those prompts, make the images in GPT image, then feed the images back in."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**Using XCONDA Turn: build two things from a 360-degree virtual set**\nTurn builds a virtual set you can look around in 360 degrees from one photo or a text description. You build the space once and pick angles by moving the camera inside it, so doors, windows and props keep their positions across cuts.\n\n**Method A. Make a background sheet**\n1. Put one face of the background sheet (the front image) into Turn.\n2. Build the left, right and back from that face.\n3. Use the four faces together as the background reference. The result goes into 05 video generation as a background reference.\n\n**Method B. Make storyboard cut images**\n1. Build a 360-degree virtual set.\n2. Place the cast and props inside the set.\n3. Rotate to the angles you want and pull the cut images. The result goes straight into the 04 storyboard as cut images."
+        },
+        {
+          "type": "p",
+          "text": "Why do it this way? Generate the background separately for each cut and the windows, furniture and props end up in different places in every cut. On a real set you build the set first and move only the camera inside it; the same idea: fix the space, then change the angle. Method B is especially useful when a composition is too complex for text alone and you want to place it yourself."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**Common mistake** Putting several face images of the same character in at once blends and smears the faces. One face image per character is the rule."
+        },
+        {
+          "type": "h3",
+          "text": "03. Written storyboard and Flexboard prompt"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Tools**: Claude, the XCONDA Flexboard skill",
+            "**Input**: the scenario and the reference images from 02",
+            "**Output**: a written storyboard (length, camera, action, dialogue, sound effects per cut) and a Flexboard prompt",
+            "**Check**: does every cut state a start action and an end action?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "A written storyboard is the storyboard written out in text first. At this stage you also check that the cut lengths add up, that no cut crams in too much action, that cuts do not jump awkwardly, and that the number of characters is right. Where to download and install the skill is at the bottom of ‣."
+        },
+        {
+          "type": "h3",
+          "text": "04. Storyboard and blocking video"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Tools**: XCONDA FLEXBOARD, XCONDA Blocking Board",
+            "**Input**: the Flexboard prompt from 03, the cut images made in Turn at 02 (for the hard cuts)",
+            "**Output**: a key image per cut (storyboard images), a blocking puppet video",
+            "**Check**: is the key frame of each cut the framing you intended, and does the puppet video match the paths you meant?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "FLEXBOARD is a storyboard tool that splits a scenario into cuts, makes an image for each, and lays them out on one screen. Up to 36 cuts fit on a screen, and you can leave the good cuts alone and fix only the ones with problems. The screen-by-screen walkthrough is at ‣."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**XCONDA Blocking Board: show the paths as video**\nA movement like \"enters from the left door, walks round the table and stands at the window\" written only in text can send the model walking in the wrong direction. Scenes with several characters moving at once go wrong especially easily. The Blocking Board makes a video of grey mannequins (puppets) moving inside the space, and when you feed that video into generation, Seedance reads the paths as video rather than text.\n\nThat is the division of labour: faces and costume come from reference images, path and timing from the puppet video."
+        },
+        {
+          "type": "p",
+          "text": "The Blocking Board is currently in free beta (up to the pre-generation stage). Paste a scene prompt and press Create to build the 3D space and the characters, add cameras with Add camera, then send to Seedance from the Output tab. See the notice at ‣ for the full introduction."
+        },
+        {
+          "type": "p",
+          "text": "The puppet does not need to look human. Position, direction and speed are enough. Just remember to attach the puppet video when you generate at 05."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**Fixing here is the cheapest.** Generate video with the wrong framing and you will regenerate several times at the video stage. Fix it in the storyboard first."
+        },
+        {
+          "type": "h3",
+          "text": "05. Seedance prompt and video generation"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Tools**: Claude, the Seedance prompt skill, the prompt editor, XCONDA",
+            "**Input**: the Flexboard prompt and written storyboard, reference images, storyboard, the blocking puppet video from 04, and an audio reference if needed",
+            "**Output**: a two-column prompt editor with Korean and English side by side, and the video generated in XCONDA",
+            "**How to revise**: ask for the changes in conversation after seeing the result, let the editor revise, and generate again. Repeat until you are happy."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The Seedance prompt skill builds a Seedance 2.5 prompt from the key images. It organises it with a four-director system and a ten-block structure and lets you edit Korean and English side by side. Change the Korean and the English is rewritten to match, so you never edit English separately. This skill is being prepared for download from the XCONDA Hub."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**What goes into the XCONDA video generation screen: all four are required**\n\n① **Reference images** (character sheets, background sheets, Turn sheets, props): they pin faces, costume and space.\n② **Storyboard** (the cut images made at 04): it pins framing, paths and cut order.\n③ **The Seedance prompt** (finished in the editor): it directs movement, timing and camera.\n④ **The blocking puppet video** (made in the 04 Blocking Board): it pins the paths and routes of the characters."
+        },
+        {
+          "type": "p",
+          "text": "If any one of the four is missing, the AI fills that part in as it likes. Leave out the reference images and even a prompt saying \"@image1's woman\" has no idea who that is, so faces differ from cut to cut. Leave out the storyboard and the framing changes every time even with the same prompt. Leave out the puppet video and characters walk in a different direction from the prompt, or several characters' paths cross each other."
+        },
+        {
+          "type": "p",
+          "text": "In the generation screen you choose reference mode (Ref-to-video) and type @ in the prompt to say which reference is what. Aspect ratio, resolution, duration and High Quality are chosen in the Options tab, and Seedance 2.5 can make up to 30 seconds at a time."
+        },
+        {
+          "type": "p",
+          "text": "In the stage where you revise and regenerate, the recently added Draft feature helps. Check the result as a 480p draft first and turn only the drafts you like into a 1080p final. The final is generated fresh from the same assets, so some fine detail may differ, and drafts stay valid for seven days after generation. See ‣ for details."
+        },
+        {
+          "type": "h3",
+          "text": "06. Sound"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Tool**: Suno",
+            "**Input**: the mood and length of the video finished at 05",
+            "**Output**: a sound file for the video",
+            "**Check**: does it match the length and mood of the video?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Sound is made after the video is finished, using the video's mood and length as the brief. The detail of this step follows in the series."
+        },
+        {
+          "type": "h3",
+          "text": "07. Combine video and sound"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Tool**: Premiere Pro",
+            "**Input**: the video clips generated at 05, the sound made at 06",
+            "**Output**: the finished video",
+            "**Check**: cut joins, levels, subtitles"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The last step. Before joining the cuts, keep the 02 references and the 03 written storyboard beside you and skim once more for costume, props and background that changed between cuts."
+        },
+        {
+          "type": "h3",
+          "text": "The seven steps on one page"
+        },
+        {
+          "type": "p",
+          "text": "So you can check straight from the map, here are input, output and the pre-handover check in a single table."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "Input",
+              "Output",
+              "Check before moving on"
+            ],
+            [
+              "01 Scenario",
+              "Idea, pitch",
+              "Final scenario",
+              "Are characters and locations decided?"
+            ],
+            [
+              "02 References",
+              "Scenario",
+              "Character sheets, background sheets, Turn cut images",
+              "Does every character have a face image, is there a location image, were hard cuts made in Turn?"
+            ],
+            [
+              "03 Written storyboard",
+              "Scenario, reference images",
+              "Written storyboard, Flexboard prompt",
+              "Does every cut state its start and end action?"
+            ],
+            [
+              "04 Storyboard and blocking",
+              "Flexboard prompt, Turn cut images",
+              "Key image per cut, blocking puppet video",
+              "Do key frame framing and puppet paths match the intent?"
+            ],
+            [
+              "05 Video generation",
+              "References, storyboard, prompt, puppet video",
+              "Two-column prompt editor, generated video",
+              "Did you feed in all four?"
+            ],
+            [
+              "06 Sound",
+              "Mood and length of the finished video",
+              "Sound file",
+              "Does it match the video length and mood?"
+            ],
+            [
+              "07 Finish",
+              "Video clips, sound",
+              "Finished video",
+              "Cut joins, levels, subtitles"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Five common mistakes"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Running video first**: checking as images means regenerating only the one wrong cut. Video has to be re-run whole.",
+            "**Putting several face images of the same character in**: the faces blend. One per character is the rule.",
+            "**Feeding only some of the four into generation**: whatever is missing out of references, storyboard, prompt and puppet video, the AI fills in as it likes.",
+            "**Expecting faces and expressions from the puppet video**: the puppet carries only position, direction and speed. The face is the reference images' job.",
+            "**Regenerating cuts that already work**: fix only the cuts with problems."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Series contents"
+        },
+        {
+          "type": "p",
+          "text": "The AI video production workflow continues one step per episode. Published posts are linked, and the rest will be released in order."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Episode",
+              "Title",
+              "What it covers",
+              "Read"
+            ],
+            [
+              "EP.00",
+              "The whole map",
+              "How the seven steps connect",
+              "This article"
+            ],
+            [
+              "EP.01",
+              "Starting from the scenario",
+              "Writing a scenario that suits AI video",
+              "In preparation"
+            ],
+            [
+              "EP.02",
+              "Making references",
+              "Character sheets, XCONDA Turn background sheets and cut images",
+              "In preparation"
+            ],
+            [
+              "EP.03",
+              "Written storyboard and Flexboard prompt",
+              "Using the skill and reading its output",
+              "In preparation"
+            ],
+            [
+              "EP.04",
+              "Storyboard and Blocking Board",
+              "Landing the key frames, pinning paths with the puppet video",
+              "‣, ‣"
+            ],
+            [
+              "EP.05",
+              "Seedance prompt and video generation",
+              "Reading the editor, before and after",
+              "In preparation"
+            ],
+            [
+              "EP.06",
+              "Sound with Suno",
+              "Making sound that fits the video",
+              "In preparation"
+            ],
+            [
+              "EP.07",
+              "Finishing in Premiere Pro",
+              "Combining video and sound and exporting",
+              "In preparation"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Further reading includes ‣, on why you pull a storyboard before video, and ‣, a production case that secured cut consistency with Turn and FLEXBOARD."
+        },
+        {
+          "type": "h3",
+          "text": "If you want to start now"
+        },
+        {
+          "type": "p",
+          "text": "XCONDA is running a Seedance 2.5 discount as part of the FLEXBOARD launch promotion."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Korea: 30% usage discount + 10% price discount, up to 40%",
+            "United States: up to 30% usage discount",
+            "Period: until 11:00 on 6 November (Korea time)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Go to XCONDA"
+        },
+        {
+          "type": "p",
+          "text": "For adoption or partnership enquiries, contact us below."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Enquiries:** cubeberry@cuberry.kr",
+            "**Phone:** +82-70-8095-2302 (weekdays 10:00-17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Cubeberry AI video production guide - current as of 21 October 2026. Details may change as the tools are updated. Thank you for reading another long one today!"
+        }
+      ]
+    },
     "post/seedance-storyboard-before-render": {
       "title": "Raise Your Seedance Hit Rate: Storyboard Before You Render",
       "summary": "Every Seedance run spends credits. Check a 36-cut storyboard in FLEXBOARD before rendering, then build the prompt with two Claude skills - the XCONDA production flow.",
