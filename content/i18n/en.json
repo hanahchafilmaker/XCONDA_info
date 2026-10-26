@@ -26,13 +26,185 @@
     }
   },
   "entries": {
+    "post/deepseek-official-harness": {
+      "title": "DeepSeek releases its official harness under MIT",
+      "summary": "DeepSeek's official harness is out under the MIT licence. Everything is a plugin: models, tools, skills, sessions, sandboxes and UI can all be swapped.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "DeepSeek's official harness has been announced! It is out under the MIT licence, so dig in."
+        },
+        {
+          "type": "p",
+          "text": "True to form for an architecture-obsessed lab, this time the design is \"everything is a plugin\"."
+        },
+        {
+          "type": "p",
+          "text": "Models, tools, skills, sessions, sandboxes, repositories, loops, scheduling and UI can all be composed and swapped as plugins."
+        },
+        {
+          "type": "p",
+          "text": "The official repo is github.com/deepseek-ai/de…"
+        }
+      ]
+    },
+    "post/flux-3-image-release": {
+      "title": "Black Forest Labs releases FLUX 3 Image",
+      "summary": "Black Forest Labs has released FLUX 3 Image, with precise editing that changes only the part you want, bounding-box placement and combination of up to 10 reference images.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "🚨 Black Forest Labs has released FLUX 3 Image."
+        },
+        {
+          "type": "p",
+          "text": "The headline feature is precise editing: change only the part you want and the rest of the image stays exactly as it was. It also handles several rounds of edits, or changing several elements at once."
+        },
+        {
+          "type": "p",
+          "text": "You can place people and objects precisely with bounding boxes, and combine up to 10 reference images into a new image."
+        }
+      ]
+    },
+    "post/opus-5-5-github-trending": {
+      "title": "A week after Opus 5.5, 8 of GitHub's top 10 are video and animation — a film made only with code, 'OPUSCAR 98'",
+      "summary": "Within a week of Claude Opus 5.5's release, most of GitHub's trending repos shifted to video and animation, led by Lemo-Opuscar's 43 film styles in code and OPUSCAR 98, 98 years of award winners in 6 minutes 25 seconds.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Within a week of Claude Opus 5.5's release, most of GitHub's popular repos tilted towards video and animation. The standouts are Lemo-Opuscar, which implements 43 film styles in code alone, and 'OPUSCAR 98', which packs 98 years of award-winning films into 6 minutes 25 seconds."
+        },
+        {
+          "type": "p",
+          "text": "X (Twitter) creator 鸟哥 (@NFTCPS) wrote about what changed on GitHub in the week after Claude Opus 5.5 launched: of the week's 10 hottest repos, 8 were video or animation related."
+        },
+        {
+          "type": "h2",
+          "text": "What people are building"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Music video (MV) production",
+            "Short film production",
+            "3D games from a single line of prompt"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Standout case: Lemo-Opuscar"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "43 film styles, each finished as a short built only from code",
+            "Pick a style, bring your own story, and a coding agent directs the film",
+            "Newly added styles: copperplate engraving, sci-fi hologram HUD, 1950s mid-century cartoon, silkscreen travel poster"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Special screening: OPUSCAR 98"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "A 6 minute 25 second film covering 98 years of award-winning pictures, 1927 to 2025",
+            "A single character, Clawd, walks through 98 winners, each redrawn in a style that suits that film",
+            "Every frame, note and cut was made by code written by Claude Opus 5.5"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "What it means"
+        },
+        {
+          "type": "p",
+          "text": "AI writing code is no longer the point: code itself is becoming the video production tool, and that shift is now clear. If you are a creator interested in automating video production, this is worth studying."
+        },
+        {
+          "type": "p",
+          "text": "💡 XCONDA tip: borrow the approach of encoding direction per style, and the 98 visual style references, as material for your own XCONDA video generation workflow."
+        }
+      ]
+    },
+    "post/skillry-ai-video-prompt-reference": {
+      "title": "'The Pinterest of AI video': Skillry publishes the real prompt next to the result",
+      "summary": "Skillry is a reference site that shows high-end 3D and motion-graphics results side by side with the actual prompts used and the remakes they produce.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Skillry, a reference site where you can compare high-end 3D and motion-graphics results with the prompts that actually produced them, side by side with the originals, is drawing attention on X."
+        },
+        {
+          "type": "p",
+          "text": "X (Twitter) user 숙이 (@sook_ee_) shared a story: a friend's presentation images and videos looked so clean that they asked how, and the friend pointed them to Skillry. The original poster described it as something like 'Pinterest for the AI video world'."
+        },
+        {
+          "type": "h2",
+          "text": "What Skillry is"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "It is not a tool that makes video for you; it is a collection of prompts and references.",
+            "Each high-quality 3D or motion-graphics result comes with the prompt that was actually used.",
+            "You can compare the original video with the result regenerated from that prompt (a remake) side by side."
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "What kind of videos are on it"
+        },
+        {
+          "type": "p",
+          "text": "At the time of writing there are roughly 475 entries in the Claude Opus 5.5 collection, grouped as follows."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Motion graphics",
+            "Explainer video",
+            "3D scenes",
+            "Games"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "How to use it and what it costs"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "You can browse the videos and prompts without logging in or signing up.",
+            "More detailed production features (premium skills) come with a paid plan at USD 9.99 per month."
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "How to put it to work"
+        },
+        {
+          "type": "p",
+          "text": "When you are making a promo video or a deck, pick a result in the mood you want on Skillry first, then adapt its prompt to your situation. That saves a large amount of time compared with writing prompts from zero."
+        },
+        {
+          "type": "p",
+          "text": "💡 XCONDA tip: study the direction and prompt structure of a reference you like, then adapt it to your own brand inside XCONDA's video generation workflow."
+        },
+        {
+          "type": "p",
+          "text": "Go to Skillry"
+        }
+      ]
+    },
     "post/xconda-production-map": {
       "title": "From one scenario to a finished video: the XCONDA production map in 7 steps",
       "summary": "Cubeberry's AI video starts with a scenario, is produced in XCONDA, gets its sound in Suno and is finished in Premiere Pro. This post lays the whole order out as a single map, with the input, deliverable and checks for each step; the detailed how-tos continue in the series.",
       "blocks": [
         {
           "type": "p",
-          "text": "Cubeberry's AI video starts with a scenario, is produced in XCONDA, gets its sound in Suno, and is finished in Premiere Pro. This post lays out the whole order as a single map, with the input, deliverable and checks for each step; the detailed how-tos follow in the series."
+          "text": "Cubeberry's AI video starts with a scenario, is produced in XCONDA, gets its sound in Suno and is finished in Premiere Pro. This post lays the whole order out as a single map, with the input, deliverable and checks for each step; the detailed how-tos continue in the series."
         },
         {
           "type": "p",

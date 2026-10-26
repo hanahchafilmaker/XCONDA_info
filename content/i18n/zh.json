@@ -26,6 +26,178 @@
     }
   },
   "entries": {
+    "post/deepseek-official-harness": {
+      "title": "DeepSeek 以 MIT 许可证发布官方 harness",
+      "summary": "DeepSeek 的官方 harness 已发布，采用 MIT 许可证。模型、工具、技能、会话、沙箱、UI 全部以插件形式组合与替换。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "DeepSeek 的官方 harness 发布了！以 MIT 许可证开放，欢迎尽情拆解。"
+        },
+        {
+          "type": "p",
+          "text": "不愧是痴迷架构的团队，这次的设计是「一切皆插件」。"
+        },
+        {
+          "type": "p",
+          "text": "模型、工具、技能、会话、沙箱、仓库、循环、调度、UI 都可以作为插件组合与替换。"
+        },
+        {
+          "type": "p",
+          "text": "官方仓库是 github.com/deepseek-ai/de…"
+        }
+      ]
+    },
+    "post/flux-3-image-release": {
+      "title": "Black Forest Labs 发布 FLUX 3 Image",
+      "summary": "Black Forest Labs 发布了 FLUX 3 Image，支持只修改指定区域的精确编辑、用边界框指定位置，并可组合最多 10 张参考图像。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "🚨 Black Forest Labs 发布了 FLUX 3 Image。"
+        },
+        {
+          "type": "p",
+          "text": "最受关注的是精确编辑：只修改想要改动的部分，其余图像保持原样。也支持多次修改，或一次改动多个元素。"
+        },
+        {
+          "type": "p",
+          "text": "可以用边界框直接指定人物与物体位置，还能组合最多 10 张参考图像生成新的图像。"
+        }
+      ]
+    },
+    "post/opus-5-5-github-trending": {
+      "title": "Opus 5.5 发布一周，GitHub 趋势榜 10 个里 8 个是影像与动画——纯代码电影「OPUSCAR 98」",
+      "summary": "Claude Opus 5.5 发布一周内，GitHub 热门仓库大多转向影像与动画：用代码实现 43 种电影风格的 Lemo-Opuscar，以及把 98 年获奖作品装进 6 分 25 秒的「OPUSCAR 98」。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Claude Opus 5.5 发布一周内，GitHub 热门仓库大多转向了影像与动画。用代码实现 43 种电影风格的 Lemo-Opuscar，以及把 98 年获奖作品装进 6 分 25 秒的「OPUSCAR 98」，被作为代表案例介绍。"
+        },
+        {
+          "type": "p",
+          "text": "X（Twitter）创作者 鸟哥（@NFTCPS）介绍了 Claude Opus 5.5 发布后一周内在 GitHub 上发生的变化：本周最热的 10 个仓库里有 8 个与视频、动画相关。"
+        },
+        {
+          "type": "h2",
+          "text": "出现了哪些用法"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "音乐视频（MV）制作",
+            "短片电影制作",
+            "用一行提示词制作 3D 游戏"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "代表案例：Lemo-Opuscar"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "43 种电影风格，每一种都是只用代码完成的短片",
+            "选好风格并带入自己的故事，编码智能体就会以导演的方式呈现电影",
+            "新增风格：铜版画（Copperplate Engraving）、科幻全息 HUD、1950 年代世纪中叶卡通、丝网印刷旅行海报"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "特别放映：OPUSCAR 98"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "1927〜2025 年，把 98 年获奖作品装进 6 分 25 秒的影像",
+            "角色 Clawd 独自依次走过 98 部获奖作品，每部都以契合该片的画风重绘",
+            "所有画面、音符与剪辑，都由 Claude Opus 5.5 编写的代码生成"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "启示"
+        },
+        {
+          "type": "p",
+          "text": "不只是 AI 写代码，代码本身正在成为影像制作工具，这一趋势已十分清晰。关注影像制作自动化的创作者值得参考。"
+        },
+        {
+          "type": "p",
+          "text": "💡 XCONDA 提示：可以把「按风格把演出代码化」的做法，以及 98 种画风参考，用作 XCONDA 视频生成工作流的参考资料。"
+        }
+      ]
+    },
+    "post/skillry-ai-video-prompt-reference": {
+      "title": "「AI 视频界的 Pinterest」Skillry：把成品和实际提示词并排公开",
+      "summary": "Skillry 是一个把高质量 3D·动态图形成品、实际使用的提示词与原创作品并排对比的参考网站，正在 X 上引发关注。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "一个可以把高质量 3D·动态图形成品与实际使用的提示词、原创作品并排对比的参考网站 Skillry，正在 X 上引发关注。"
+        },
+        {
+          "type": "p",
+          "text": "X（Twitter）用户 숙이（@sook_ee_）分享了一段经历：朋友的演示文稿里的图片和视频太干净了，于是询问秘诀，朋友推荐了名为 Skillry 的网站。发布者把它形容为「AI 视频界的 Pinterest」。"
+        },
+        {
+          "type": "h2",
+          "text": "Skillry 是什么样的网站"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "它不是替你制作视频的工具，而是收集提示词与参考作品的合集。",
+            "高质量的 3D·动态图形成品旁边，附有实际使用的提示词。",
+            "可以把原创视频与用该提示词重新生成的版本（复刻）并排对比。"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "上面有哪些视频"
+        },
+        {
+          "type": "p",
+          "text": "目前以使用 Claude Opus 5.5 制作的视频合集为准，约有 475 件作品，分类如下。"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "动态图形",
+            "解说（explainer）视频",
+            "3D 场景",
+            "游戏"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "使用方式与费用"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "无需登录或注册即可浏览视频和提示词。",
+            "更细致的制作功能（高级技能）通过每月 9.99 美元的付费方案提供。"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "可以这样用起来"
+        },
+        {
+          "type": "p",
+          "text": "制作宣传视频或演示文稿时，先在 Skillry 上挑出想要氛围的成品，再把它的提示词按自己的情况调整，比从零开始写提示词能大幅缩短工作时间。"
+        },
+        {
+          "type": "p",
+          "text": "💡 XCONDA 提示：参考喜欢作品的演出方式和提示词结构，在 XCONDA 的视频生成工作流中改造成适合自己品牌的版本。"
+        },
+        {
+          "type": "p",
+          "text": "前往 Skillry"
+        }
+      ]
+    },
     "post/xconda-production-map": {
       "title": "从一份剧本到成片：XCONDA 制作地图 7 个步骤",
       "summary": "Cubeberry 的 AI 视频从剧本出发，在 XCONDA 中制作画面，用 Suno 配上声音，最后在 Premiere Pro 中完成。本文用一张地图梳理整体顺序，并列出每一步的输入、成果与检查项；各步骤的详细做法将在连载中继续。",

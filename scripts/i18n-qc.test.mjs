@@ -89,6 +89,21 @@ test("본문 번역(blocks)의 형식 오류와 한글 잔존을 잡는다", () 
   assert.ok(kinds.includes("block-hangul"), "한글이 남은 본문을 잡지 못했습니다");
 });
 
+test("일본어·중국어는 글자 수가 짧아도 '너무 짧음'으로 보지 않는다", () => {
+  // 같은 내용을 한국어 40자 → 일본어 16자로 적은 경우(한자·가나의 정보량)
+  const ko = new Map([["qna/a", { title: "질문", summary: "가".repeat(40), category: "" }]]);
+  const ja = qcLanguage("ja", { entries: { "qna/a": { title: "質問", summary: "あ".repeat(16) } } }, ko);
+  assert.equal(ja.warnings.some((w) => w.kind === "length-short"), false, "일본어 짧음 오탐");
+
+  // 영어는 같은 비율이면 그대로 짧음으로 잡습니다
+  const en = qcLanguage("en", { entries: { "qna/a": { title: "Question", summary: "a".repeat(16) } } }, ko);
+  assert.ok(en.warnings.some((w) => w.kind === "length-short"), "영어 짧음은 그대로 잡아야 합니다");
+
+  // 진짜로 짧으면 일본어도 잡습니다
+  const tooShort = qcLanguage("ja", { entries: { "qna/a": { title: "質問", summary: "あ".repeat(4) } } }, ko);
+  assert.ok(tooShort.warnings.some((w) => w.kind === "length-short"));
+});
+
 test("허용 목록에 적은 (키, 유형)은 경고에서 빠진다", () => {
   const dict = { entries: { "qna/a": { title: "Where do I ask?", summary: "Email cubeberry@cuberry.kr. " + "x".repeat(400) } } };
   const plain = qcLanguage("en", dict, sources);
