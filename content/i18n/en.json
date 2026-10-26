@@ -742,6 +742,336 @@
         }
       ]
     },
+    "post/ontology-patent-cut-continuity": {
+      "title": "The ontology patent that catches broken cut continuity — and the plan to bring it into FLEXBOARD",
+      "summary": "AI video cannot remember the previous cut, so continuity breaks: shoes that were off are back on, a rain-soaked character is dry. We show a real cut that broke in an ad, the principle of the newly registered ontology patent, and the plan to apply it in FLEXBOARD.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hello, this is XCONDA."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**Key summary** AI video cannot remember the previous cut, so when the cut changes, shoes that were kicked off are back on or a character soaked by rain is dry. Cubeberry registered an ontology-based patent for this problem (No. 10-3036790) on 19 October 2026. This post covers a real case from an ad, the principle of the patent, and the plan to apply it in FLEXBOARD."
+        },
+        {
+          "type": "callout",
+          "icon": "🛠️",
+          "text": "**Before we start** The \"continuity check\" described here is a development plan. It is not in FLEXBOARD yet and no release date is fixed. The table below separates what you can use today from what is planned."
+        },
+        {
+          "type": "p",
+          "text": "**Who this is for**: people bothered by props or costumes changing from cut to cut, people making drama or ads where cuts follow one another, and anyone curious about what Cubeberry has patented."
+        },
+        {
+          "type": "h3",
+          "text": "11 seconds and 23 seconds — the shoe came back"
+        },
+        {
+          "type": "p",
+          "text": "The ad above has a break in continuity. Look at two shots from the same ad side by side."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Time",
+              "Shot",
+              "The older child's feet"
+            ],
+            [
+              "0:11",
+              "A fish-eye shot holding both children together",
+              "Both feet in socks only; the shoes are on the ground"
+            ],
+            [
+              "0:23",
+              "The last cut, lifting the flyer",
+              "One foot is wearing a shoe"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Nothing in between shows the shoe being put back on. It is not a directing choice; it is a continuity error, created while generating 30 seconds in one pass. Because it was an ad, it shipped as it was."
+        },
+        {
+          "type": "p",
+          "text": "This happens because video generation AI does not remember what happened in the previous cut — it draws every cut as if seeing the scene for the first time — so it can happen with any model."
+        },
+        {
+          "type": "h3",
+          "text": "In drama this is called \"continuity\""
+        },
+        {
+          "type": "p",
+          "text": "Cubeberry CEO Jinseo Lee, who built XCONDA, directed dramas for 20 years as a PD. On set, continuity is one of the things you guard most carefully."
+        },
+        {
+          "type": "p",
+          "text": "If an actor held a cup in the left hand and holds it in the right hand in the next cut, the screen jumps the moment the cut changes. The audience does not know why, but they sense \"wait, something is off\". Continuity missed on set surfaces in the edit room, and by then reshooting is hard. In drama it is an error that must not be allowed."
+        },
+        {
+          "type": "p",
+          "text": "So we decided AI video also needs a device that says \"continuity breaks here\" first, and filed that method as a patent."
+        },
+        {
+          "type": "h3",
+          "text": "The patent registered this time"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Details"
+            ],
+            [
+              "Patent number",
+              "No. 10-3036790"
+            ],
+            [
+              "Title",
+              "A method for generating sequential content using ontology constraint-based violation verification and state transition propagation"
+            ],
+            [
+              "Filed",
+              "12 February 2026"
+            ],
+            [
+              "Registered",
+              "19 October 2026 (about eight months after filing)"
+            ],
+            [
+              "Patent holder",
+              "Cubeberry Inc."
+            ],
+            [
+              "Inventor",
+              "Jinseo Lee"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Three principles in plain language"
+        },
+        {
+          "type": "p",
+          "text": "The name looks long and intimidating, but in set language it means \"the system takes care of continuity\". Below is a plain-language explanation of the concepts behind the title. It is not a legal reading of the claims."
+        },
+        {
+          "type": "p",
+          "text": "**1. Build a rule book (ontology)**\nWrite down what characters, props, costumes and locations are, and which states each can be in — for example, \"a shoe is either worn, taken off, or held in the hand\"."
+        },
+        {
+          "type": "p",
+          "text": "**2. Catch rule violations before creating (violation verification)**\nCuts that do not add up — \"a shoe kicked off is back on the foot in the next cut\" — are filtered out before any video is made."
+        },
+        {
+          "type": "p",
+          "text": "**3. Pass the changed state forward (state transition propagation)**\nIf a shoe comes off in cut 5, \"socks only\" carries from cut 6 to the last cut. A change that happened once, like a mark on a child's forehead from being hit by a shoe, follows into later cuts too."
+        },
+        {
+          "type": "h3",
+          "text": "The plan for FLEXBOARD"
+        },
+        {
+          "type": "p",
+          "text": "FLEXBOARD is convenient because you can pick one cut and regenerate it. But fixing cut 5 alone can leave cuts 6 to 10 no longer matching the fixed cut 5 — on set, the equivalent of one retake making every later scene's continuity jump. This patent is planned for FLEXBOARD in a direction that reduces that problem."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "",
+              "Details",
+              "Status"
+            ],
+            [
+              "Keeping the same character",
+              "Face Lock keeps the same person across cuts",
+              "Available now"
+            ],
+            [
+              "Fixing a single cut",
+              "Pick only the cut you dislike and regenerate it",
+              "Available now"
+            ],
+            [
+              "Text storyboard check",
+              "The FLEXBOARD skill checks total cut length, too much action, jump cuts and head count",
+              "Available now"
+            ],
+            [
+              "State table",
+              "Write a state table for characters, props and costumes alongside the cut design",
+              "Planned"
+            ],
+            [
+              "Continuity check",
+              "Flag cuts that do not add up before key images are made",
+              "Planned"
+            ],
+            [
+              "Later-cut notice",
+              "Fixing one cut tells you which later cuts are affected",
+              "Planned"
+            ],
+            [
+              "Prompt hand-off",
+              "Carry the confirmed state table through the XCONDA prompt skill into Seedance 2.5 prompts",
+              "Planned"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "If it works as planned, one step is added to the production flow."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "What you do",
+              "Tools"
+            ],
+            [
+              "1",
+              "Prepare the scenario",
+              "Scenario, script"
+            ],
+            [
+              "2",
+              "Split the cuts and write the state table",
+              "FLEXBOARD skill"
+            ],
+            [
+              "3",
+              "Run the continuity check (planned)",
+              "FLEXBOARD"
+            ],
+            [
+              "4",
+              "Make and check the key images",
+              "FLEXBOARD"
+            ],
+            [
+              "5",
+              "Write the Seedance prompts",
+              "XCONDA prompt skill"
+            ],
+            [
+              "6",
+              "Generate the video",
+              "Seedance 2.5"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Steps 3 and 4 are the point. Finding a continuity error at the image stage rather than the video stage saves the credits of re-running the video."
+        },
+        {
+          "type": "h3",
+          "text": "Two patents registered this year"
+        },
+        {
+          "type": "p",
+          "text": "Both patents filed this year have been registered. They look at different places."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Patent",
+              "What it looks at",
+              "Registered"
+            ],
+            [
+              "No. 10-3002930 — a system for multiple verification and automatic correction of generative AI content using inversion of physics simulation data",
+              "Whether movement inside a single scene makes physical sense",
+              "6 August 2026 (filed January)"
+            ],
+            [
+              "No. 10-3036790 — a method for generating sequential content using ontology constraint-based violation verification and state transition propagation",
+              "Continuity between scenes",
+              "19 October 2026 (filed February)"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The physics-inversion patent is planned for extending Blocking Board. Both say the same thing in the end: do not render and throw away — check, then render."
+        },
+        {
+          "type": "h3",
+          "text": "Frequently asked"
+        },
+        {
+          "type": "p",
+          "text": "**Q. Can I use the continuity check now?**\nNot yet. It is at the planning stage and no release date is set. Anything marked \"Available now\" in the table above can be used right away."
+        },
+        {
+          "type": "p",
+          "text": "**Q. How do I reduce cuts jumping today?**\nLock characters with Face Lock in FLEXBOARD, hold continuing states with references and prompts, and check that the pictures connect in Sheet view. The 5-step method is written up in the \"curse of the 9 cuts\" post below."
+        },
+        {
+          "type": "p",
+          "text": "**Q. Is the error in the rice-paddy ad a Seedance problem?**\nWe do not see it as a problem of one model. Video generation AI works without remembering the previous cut, so it can happen with any model in a video where cuts follow one another."
+        },
+        {
+          "type": "h3",
+          "text": "Worth reading together"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Fixing cuts that jump: ‣",
+            "Introducing FLEXBOARD: ‣",
+            "The on-screen order guide: ‣",
+            "The full map: ‣"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "If you are starting now"
+        },
+        {
+          "type": "p",
+          "text": "XCONDA is running a Seedance 2.5 discount alongside the FLEXBOARD launch promotion."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Korea: 30% off usage + 10% off price, up to 40%",
+            "US: up to 30% off usage",
+            "Period: 7 October, 11:00 to 6 November, 11:00 (Korea time)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "👉 Go to XCONDA: https://www.xconda.ai/"
+        },
+        {
+          "type": "p",
+          "text": "For adoption or partnership enquiries, contact us below."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: cubeberry@cuberry.kr",
+            "Phone: +82-70-8095-2302 (weekdays 10:00–17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Thank you for reading a long post today!"
+        }
+      ]
+    },
     "post/opus-5-5-github-trending": {
       "title": "A week after Opus 5.5, 8 of GitHub's top 10 are video and animation — a film made only with code, 'OPUSCAR 98'",
       "summary": "Within a week of Claude Opus 5.5's release, most of GitHub's trending repos shifted to video and animation, led by Lemo-Opuscar's 43 film styles in code and OPUSCAR 98, 98 years of award winners in 6 minutes 25 seconds.",
