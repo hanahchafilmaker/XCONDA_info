@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>Seedance の当たり率を上げる、動画の前にコンテから | XCONDA ハブ — Q&amp;A・ガイド・お知らせ</title>
+    <meta name="description" content="Seedance は動画を回すたびにクレジットがかかります。回す前に FLEXBOARD で 36 カットのコンテを確認し、2 つの Claude スキルでプロンプトまで作る制作フローをまとめました。" />
+    <link rel="canonical" href="https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content="Seedance の当たり率を上げる、動画の前にコンテから" />
+    <meta property="og:description" content="Seedance は動画を回すたびにクレジットがかかります。回す前に FLEXBOARD で 36 カットのコンテを確認し、2 つの Claude スキルでプロンプトまで作る制作フローをまとめました。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-seedance-storyboard-before-render.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/" />
+    <meta property="article:published_time" content="2026-10-09" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seedance の当たり率を上げる、動画の前にコンテから" />
+    <meta name="twitter:description" content="Seedance は動画を回すたびにクレジットがかかります。回す前に FLEXBOARD で 36 カットのコンテを確認し、2 つの Claude スキルでプロンプトまで作る制作フローをまとめました。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-seedance-storyboard-before-render.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/#webpage","url":"https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/","name":"Seedance の当たり率を上げる、動画の前にコンテから","inLanguage":"ja","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="ja">
+<nav aria-label="breadcrumb"><a href="../../">ホーム</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/seedance-storyboard-before-render/" hreflang="en">English</a><strong aria-current="true">日本語</strong><a href="https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/" hreflang="zh-Hans">中文</a></nav>
+<article>
+<h1>Seedance の当たり率を上げる、動画の前にコンテから</h1>
+<p class="seo-meta">日本語 · XCONDA Hub</p>
+<p class="notion-default">こんにちは、XCONDA です。</p>
+<aside class="callout notion-default"><p>📌 <strong>要点</strong> Seedance 2.5 は動画を 1 回回すたびにクレジットがかかります。だから動画を回す前に、FLEXBOARD でカットごとのコンテ（キーイメージ）を先に作って確認する方法をおすすめします。この記事では FLEXBOARD とは何か、画面はどうなっているか、シナリオから Seedance の動画まで続く XCONDA の制作フローを、実際の画面とともにまとめました。</p></aside>
+<p class="notion-default"><strong>こんな方へ</strong>：Seedance で動画を回してクレジットを惜しく使った経験のある方、AI 動画をこれから始める方、カットごとに顔が変わって困っている方</p>
+<blockquote><p>この記事の冒頭の広告動画もこの方法で作りました。FLEXBOARD でキーイメージを出し、XCONDA スキルでプロンプトを作り、Seedance 2.5 で一度に生成した結果です。</p></blockquote>
+<p><a href="https://www.youtube.com/watch?v=NF00L9NHB_Q" rel="noopener noreferrer">FLEXBOARD 키 이미지를 레퍼런스로 넣어 만든 FLEXBOARD 출시 광고</a></p>
+<figure><img src="https://www.notion.so/image/attachment%3A3391b5e7-b53b-4809-a9b1-75f6721235b2%3Aimage.png?table=block&amp;id=3f42ebc0-17ad-80c1-b270-db79a9924d8d&amp;cache=v2" alt="Seedance の当たり率を上げる、動画の前にコンテから" loading="lazy" decoding="async"></figure>
+<h3>動画から回すともったいないのはなぜか</h3>
+<p class="notion-default">Seedance 2.5 は結果が良いぶん、1 回回すたびにクレジットがかかります。ところが最初に出た動画が意図と違うと、最初から回し直しになります。人物が変わった、背景が飛んだ、カット順が不自然だった、といった場合です。</p>
+<p class="notion-default">動画で確認するより、画像で先に確認するほうが負担はずっと小さいです。2 つの方法を並べると違いは明らかです。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>項目</td><td>動画で先に確認</td><td>コンテ（画像）で先に確認</td></tr><tr><td>間違ったカットが出たとき</td><td>動画を丸ごと再生成</td><td>間違ったカット 1 枚だけ再生成</td></tr><tr><td>確認にかかる時間</td><td>動画を最後まで回して探す</td><td>1 画面に並べて数秒で確認</td></tr><tr><td>直し方</td><td>プロンプトを変えて何度も再生成</td><td>カット 1 つを Edit で修正</td></tr><tr><td>クレジット</td><td>繰り返すほど大きく増える</td><td>画像 1 枚単位で最小限</td></tr></tbody></table></div>
+<p class="notion-default">なので動画を回す前に「このカットで合っているか」を画像で先に見る段階が必要です。ドラマの現場でカメラを回す前にコンテを合わせるのと同じ理由です。</p>
+<h3>FLEXBOARD はストーリーボードエンジンです</h3>
+<p class="notion-default">FLEXBOARD はシナリオをカット単位の画像にするストーリーボードエンジンです。カットごとに文字と画像を一緒に見せるので、動画を作る前にカットごとの構図と人物を確認し、気に入らないカットだけを選んで直せます。Seedance 2.5 と一緒に使うよう設計しました。</p>
+<p class="notion-default">XCONDA の左サイドバーで <strong>Storyboard</strong> を開くと <strong>Flex Board</strong> カードが見えます。「Seedance 2.5 に最適化されたストーリーボードツール」と書かれたカードです。カードを押して <strong>New Project</strong> を選ぶと始まります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aa655b8aa-cccf-4da8-8744-cac40140d1d7%3Aflex_01.png?table=block&amp;id=97aa9b21-46e9-4ca7-ab4c-2454dd774c61&amp;cache=v2" alt="XCONDA Storyboard 메뉴의 Flex Board 카드" loading="lazy" decoding="async"></figure>
+<p class="notion-default">動画制作でよく詰まる部分を解決するように作り、中心となる機能は 3 つです。</p>
+<ul><li><strong>同じ俳優を保ちます。</strong> 顔固定（Face Lock）機能でカットが変わっても同じ人物が出ます。人物と背景はカードとして登録し、カードごとに @image1、@image2 のような名札が自動で付きます。</li><li><strong>直したいカットだけを出し直します。</strong> 全体を作り直す必要はなく、そのカットだけ再生成します。</li><li><strong>画像モデルを選べます。</strong> GPT Image 2、Seedream 5.0 Pro、GPT Image 2.5 Flare、GPT Image 2.5 Sunburst から選べます。初めてなら既定値の GPT Image 2 で始めるのがおすすめです。</li></ul>
+<p class="notion-default">数字で見るとこうです。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>項目</td><td>内容</td></tr><tr><td>1 画面に構成できるカット</td><td>最大 36 カット</td></tr><tr><td>カット 1 つの長さ（Shot Length）</td><td>4 秒〜30 秒</td></tr><tr><td>計算例</td><td>9 カット × 15 秒 = 単純合計で約 2 分 15 秒</td></tr><tr><td>作業方式</td><td>Auto Refine（アイデアを整えてカットに分割）、Instant Apply（整えたシナリオをそのまま適用）</td></tr></tbody></table></div>
+<h3>画面で見る FLEXBOARD</h3>
+<p class="notion-default">実際の画面の順番どおりに要点だけお見せします。段階ごとの詳しい説明は「FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ」にあります。</p>
+<p class="notion-default"><strong>1) プロジェクトとシナリオを入力します</strong></p>
+<p class="notion-default">作業方式、モデル、プロジェクト名を決めてシナリオを書きます。感情は「悲しい」のように名前だけ書かず、「破片を背中に隠す」のように目に見える行動で書くとカットに分けやすくなります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ac6ec396a-0297-471f-88f5-156a5eb48d70%3Aflex_03.png?table=block&amp;id=65822b15-0a26-4c5f-8c11-02572081b242&amp;cache=v2" alt="Project Selection 화면: 작업 방식, 모델, 프로젝트 이름" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A04218fad-14d3-45a6-88a8-ae4dc7b711b7%3Aflex_05.png?table=block&amp;id=24de04ce-da9f-4a22-b897-a0c8137a02cf&amp;cache=v2" alt="시나리오와 장르(Suspense), 분위기(Tense) 입력" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>2) 人物と背景のカードを登録します</strong></p>
+<p class="notion-default">カットが変わっても同じ人物、同じ場所が出るようにする段階です。人でいえばキャスティングとセットの確定にあたります。人物は一人につきカード 1 枚で登録してください。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aac8311d3-6d67-4e72-8eb2-a80876ba7f49%3Aflex_06.png?table=block&amp;id=39d43271-e85f-4f74-a158-42a0cb6022f1&amp;cache=v2" alt="Cast &amp; Face Lock과 Scene Background에 등록된 카드" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>3) カット数と長さを決め、文字コンテを先に見ます</strong></p>
+<p class="notion-default">Number of Panels でカット数、Shot Length でカットの長さを決めます。次に <strong>Text Preview Generate</strong> を押すと、画像を作る前にカットごとの文字コンテが先に出ます。順番や人物が不自然なら、この段階で直すのがいちばん速いです。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A9bb4c641-7db9-426d-ba86-22303303ff70%3Aflex_07.png?table=block&amp;id=a640ea42-4085-4144-bdb4-54587cb55410&amp;cache=v2" alt="Number of Panels와 Shot Length 설정" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae3ac7370-221c-4b9f-a81c-e9bb338c7a37%3Aflex_09.png?table=block&amp;id=9cf41b04-ab9b-4076-85e5-a45d1a51e7a8&amp;cache=v2" alt="이미지 생성 전 글 콘티 그리드" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>4) Sheet で全体の流れを一目で見ます</strong></p>
+<p class="notion-default">画像を生成するとカットグリッドが出ます。<strong>Sheet</strong> 表示は説明なしでカット画像だけを大きくまとめて見せます。文字なしで絵だけを続けて見ると、カットが実際の動画のようにつながるか、衣装や小道具が変わっていないかを判断しやすいです。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A530ff496-b095-475b-82c6-3829a2d4ca6c%3Aflex_10.png?table=block&amp;id=94b38a0b-c5b7-4059-a24c-aed800276939&amp;cache=v2" alt="컷 이미지를 한 장에 모아 보는 Sheet 보기" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>5) 問題のあるカットだけを選んで直します</strong></p>
+<p class="notion-default">ここが FLEXBOARD の核心です。カットカードの Edit で表情や小道具を変えるクイック修正、カメラの構図（Shot Size、Camera Angle、Camera Movement）を変える詳細修正ができます。指示文には変えることと残すことを一緒に書いてください。例：「眼鏡だけ変えて、姿勢と背景はそのまま」</p>
+<figure><img src="https://www.notion.so/image/attachment%3A6207e7f0-52a6-4c08-b60e-cfc9b92f5bca%3Aflex_12.png?table=block&amp;id=8d208846-c75e-443b-875d-7e75bce71783&amp;cache=v2" alt="Quick Edit 창: Reference images, Edit prompt, Apply edit" loading="lazy" decoding="async"></figure>
+<p class="notion-default">同じカットの構図を変えた例です。緊張感のある POV の構図を、広く傾いた画面でカメラが後ろに引く構図に作り直しました。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7d56a367-8a08-436f-8ad2-bc8ec0ccae78%3Aflex_13.png?table=block&amp;id=f9895097-f318-43c7-a2c9-a719a97862fc&amp;cache=v2" alt="수정 전: POV · Low Angle · Handheld" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae11c7f02-c85d-4ffd-93c3-5d3f7742586f%3Aflex_14.png?table=block&amp;id=c651a891-13fd-45f6-8ec2-4fce238b8221&amp;cache=v2" alt="수정 후: Extreme Wide Shot · Dutch Angle · Track Out" loading="lazy" decoding="async"></figure>
+<h3>2 つの Claude スキルが連動します</h3>
+<p class="notion-default">XCONDA には Claude で使うスキルが 2 つあります。</p>
+<p class="notion-default"><strong>1. FLEXBOARD スキル</strong><br>シナリオをカットに切る役割です。切りながら、カットの長さの合計が合っているか、1 つのカットに動作が多すぎないか、カットが不自然に飛ばない（ジャンプカット）か、登場人物の数が合っているかを点検します。結果として FLEXBOARD に貼り付けるプロンプトと、カットごとに長さ・カメラ・動作・セリフ・効果音を書いた文字コンテを一緒に作ります。</p>
+<p class="notion-default"><strong>2. XCONDA プロンプトスキル</strong><br>FLEXBOARD で出したキーイメージをもとに、Seedance 2.5 用のプロンプトを作ります。4 人の監督システムと 10 ブロック構造でプロンプトを整理し、韓国語と英語を並べて編集できます。韓国語を直すと英語も合わせて書き直されるので、英語を別に直す必要はありません。</p>
+<h3>制作フローはこう続きます</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>順序</td><td>やること</td><td>使うツール</td><td>成果物</td></tr><tr><td>1</td><td>シナリオを用意します</td><td>シナリオ、台本</td><td>確定したシナリオ</td></tr><tr><td>2</td><td>カットを分けます</td><td>FLEXBOARD スキル</td><td>文字コンテ、FLEXBOARD 用プロンプト</td></tr><tr><td>3</td><td>キーイメージを出して確認します。気に入らないカットはこの段階で直します</td><td>FLEXBOARD</td><td>カットごとのキーイメージ</td></tr><tr><td>4</td><td>Seedance 用プロンプトを作ります</td><td>XCONDA プロンプトスキル</td><td>韓国語・英語の 2 列プロンプト</td></tr><tr><td>5</td><td>動画を生成します</td><td>Seedance 2.5</td><td>完成した動画クリップ</td></tr></tbody></table></div>
+<p class="notion-default">核心は 3 番です。直す作業を動画ではなく画像の段階で終えれば、動画を回す回数を減らせます。複数の人物が入れ替わりながら動く場面は、ここでブロッキングボードを使って動線を先に決めておくとより安定します。シナリオからサウンド、編集までの全体像は「1 本のシナリオが完成動画になるまで：XCONDA プロダクションマップ 7 ステップ」で 1 枚の地図として見られます。</p>
+<h3>実際にこう作りました</h3>
+<p class="notion-default"><strong>FLEXBOARD リリース広告</strong></p>
+<p class="notion-default">この記事の冒頭の広告は、キーイメージ 15 枚をリファレンスに入れ、15 カットの 30 秒動画を Seedance 2.5 で一度に生成し、26 秒に整えた結果です。Seedance の生成画面ではモードをリファレンス（Ref-to-video）にし、プロンプトで @ を入力して、どの画像が誰で何かを指定します。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A78716324-6862-48e2-a089-7543eb69fcc9%3A06_seedance_ref_draft.png?table=block&amp;id=a8d27c42-252a-4925-b890-27391f099de6&amp;cache=v2" alt="XCONDA 영상 생성 화면: 확정한 키 이미지를 시댄스 2.5의 레퍼런스로 넣습니다" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>〈コールドサイト〉スピンオフ予告編</strong></p>
+<p class="notion-default">全カットを AI で作った予告編も同じ順番で制作しました。FLEXBOARD でカット単位に演出を設計した過程を動画で確認できます。</p>
+<p><a href="https://youtu.be/yd4f9UBEfmI" rel="noopener noreferrer">FLEXBOARD로 〈콜드사이트〉 연출을 설계한 과정</a></p>
+<p><a href="https://www.youtube.com/watch?v=mBHKRZfiMgM" rel="noopener noreferrer">〈콜드사이트〉 스핀오프 트레일러 (전 컷 AI 제작)</a></p>
+<h3>カットが飛ぶ問題は、コンテが先に防ぎます</h3>
+<p class="notion-default">動画 AI は前のカットを覚えていません。だからカットが変わるときに包帯が反対の腕に移り、血痕が消え、窓枠が変わることが起きます。こうしたずれは、動画を回し終えてから見つけると高くつき、コンテの段階で見つければ画像 1 枚を直すだけで済みます。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1a47cdfe-88ba-44f9-aafa-0e7a7869b571%3Aimage.png?table=block&amp;id=f0de22f6-806d-44f7-aea4-66451fcbe733&amp;cache=v2" alt="컷 일관성 사례: 부상병 재연 장면" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae85d1bd5-c166-452f-b9a5-9f6627dd3daf%3Aimage.png?table=block&amp;id=d85092e3-3eef-4693-9292-8f6232349844&amp;cache=v2" alt="다음 컷부터 붕대 위치와 혈흔이 바뀐 장면" loading="lazy" decoding="async"></figure>
+<p class="notion-default">空間は Turn で、顔と構図は FLEXBOARD で、つながるべき状態はリファレンスとプロンプトで固定する方法は、「9 カットの呪い、いま XCONDA で減らす方法」に 5 ステップでまとめてあります。</p>
+<h3>ドラマ現場の「現場コンテ」と同じ原理です</h3>
+<p class="notion-default">ドラマの撮影現場では、台本が直前まで出そろわず、下見もなく撮影に入ることも珍しくありません。そのとき現場でその日のカットを素早く整理するのが現場コンテです。コンテがあれば無駄足が減ります。カメラを回す前に紙の上で直すコストはほぼゼロですが、撮影が終わってから直すには撮り直しになるからです。</p>
+<p class="notion-default">AI 動画も同じです。コンテなしで回すとクレジットが無駄足になります。FLEXBOARD は AI 動画制作の現場コンテの役割をします。</p>
+<h3>Seedance に渡す前のチェックリスト</h3>
+<ul class="todo"><li><input type="checkbox" disabled> Sheet 表示でカットが自然につながるか確認したか</li><li><input type="checkbox" disabled> すべてのカットで画像と場面説明が合っているか</li><li><input type="checkbox" disabled> 人物トークン（@imageN）がカットごとに正確か</li><li><input type="checkbox" disabled> 抜けたカットはないか</li><li><input type="checkbox" disabled> カットの長さ、画面サイズ、カメラアングル、カメラの動きがカットの意図に合っているか</li></ul>
+<h3>よくある失敗</h3>
+<ul><li><strong>文字コンテを飛ばしていきなり画像を作ります。</strong> カット順が違うまま画像を作ると、作り直しになります。</li><li><strong>同じ人物を複数のカードで登録します。</strong> トークンが分かりにくくなり、顔が混ざることがあります。</li><li><strong>うまく出たカットまで再生成します。</strong> 問題のあるカットだけを選び、Edit で直してください。</li><li><strong>Panel 表示だけで確認します。</strong> 文字を読みながらだと、絵が実際につながるかを見落としやすいです。Sheet 表示で絵だけを見てください。</li><li><strong>途中で画像モデルを変えます。</strong> カットごとに絵の雰囲気が変わるので、最初に選んだモデルで最後まで進めてください。</li></ul>
+<h3>よくある質問</h3>
+<p class="notion-default"><strong>Q. FLEXBOARD ではカットをいくつまで、何秒まで作れますか？</strong><br>1 画面に最大 36 カットまで構成でき、1 カットの長さは 4 秒から 30 秒の間で決めます。</p>
+<p class="notion-default"><strong>Q. Seedance 2.5 ではどのくらいの長さの動画を作れますか？</strong><br>開発元の ByteDance Seed の発表によると、一度に最大 30 秒の動画を音声とともに作れます。アスペクト比、解像度、長さは XCONDA の動画生成画面の設定バーで選び、プロンプトは最大 30,000 字まで入力できます。</p>
+<p class="notion-default"><strong>Q. スキルはどこで入手できますか？</strong><br>FLEXBOARD スキルは「9 カットの呪い、いま XCONDA で減らす方法」の記事下部から zip ファイルでダウンロードし、Claude の Customize &gt; Skills でインストールできます。XCONDA プロンプトスキルは、まもなく開く XCONDA ハブからダウンロードできるよう準備しています。オープンしたら別途ご案内します。</p>
+<h3>あわせて読みたい</h3>
+<ul><li>全体マップ：1 本のシナリオが完成動画になるまで：XCONDA プロダクションマップ 7 ステップ</li><li>画面順ガイド：動画を回す前の最終チェック、FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ</li><li>カットが飛ぶ問題の解決：9 カットの呪い、いま XCONDA で減らす方法</li><li>連載 EP.03：FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ（AI 動画制作の流れ EP.03）</li></ul>
+<h3>いま始める方へ</h3>
+<p class="notion-default">XCONDA は Seedance 2.5 の割引と FLEXBOARD リリースのオープンプロモーションを同時に実施しています。</p>
+<ul><li>韓国：利用割引 30% + 価格割引 10%、最大 40%</li><li>米国：利用割引 最大 30%</li><li>期間：10 月 7 日午前 11 時から 11 月 6 日午前 11 時まで（韓国時間）</li></ul>
+<p class="notion-default">XCONDA はこちら：https://www.xconda.ai/</p>
+<p class="notion-default">導入や協業のご相談は以下までご連絡ください。</p>
+<ul><li>メール：cubeberry@cuberry.kr</li><li>電話：+82-70-8095-2302（平日 10:00〜17:00）</li></ul>
+<p class="notion-default">今日も長い記事を読んでいただきありがとうございます！</p>
+<p><a href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" hreflang="ko">韓国語の原文を見る</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-9-cut-curse-fix/">9 カットの呪いを減らす方法、カットが飛ばない 5 ステップ</a></li><li><a href="../ai-video-background-consistency/">AI 映像の背景が飛ぶ理由とカット一貫性の解決</a></li><li><a href="../ai-video-motion-ideas/">AI 映像のモーションアイデアが浮かばないときに見るサイト</a></li><li><a href="../deepseek-official-harness/">DeepSeek が公式ハーネスを MIT ライセンスで公開</a></li></ul></nav>
+<p class="seo-note">日本語ページは XCONDA チームが翻訳しています。韓国語ハブが原文であり、内容に相違がある場合は cubeberry@cuberry.kr までご連絡ください。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

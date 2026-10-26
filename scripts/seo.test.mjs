@@ -1050,6 +1050,20 @@ test("2단 배치는 펼쳐서 글만 번역하고 이미지·영상은 원문 �
   assert.match(blocksToHtml(merged, { alt: "" }), /<video[^>]*src="https:\/\/cdn\.example\/v\.mp4"/);
 });
 
+test("표(table) 블록은 번역 문자열 2차원 배열로 받고 칸 수가 다르면 알려 준다", () => {
+  const blocks = [
+    { type: "table", rows: [["Step", "What you do"], ["1", "Prepare the scenario"]] },
+    { type: "table", rows: [["Item", "Detail"], ["Korea", "30% usage discount + 10% price discount"]] },
+  ];
+  assert.deepEqual(localizedBlockProblems(blocks), []);
+  const html = blocksToHtml(mergeLocalizedBlocks(blocks), { alt: "" });
+  assert.match(html, /<table><tbody><tr><td>Step<\/td><td>What you do<\/td><\/tr>/);
+  assert.match(html, /30% usage discount/);
+  const bad = localizedBlockProblems([{ type: "table", rows: [["A", "B"], ["one"]] }]);
+  assert.equal(bad.length, 1);
+  assert.match(bad[0], /칸|열/);
+});
+
 test("체크리스트(todo) 블록은 항목 배열로 번역한다", () => {
   const blocks = [{ type: "todo", items: ["Did the cuts connect in Sheet view?", "Any missing cuts?"] }];
   assert.deepEqual(localizedBlockProblems(blocks), []);
