@@ -126,6 +126,16 @@ export const BRAND_TOKENS = [
   "Kling",
   "veo",
   "Nano Banana",
+  "Art Director Pro",
+  "Director's Cut",
+  "Prompt Motion",
+  "CreatorMotion",
+  "Lipsync",
+  "Higgsfield",
+  "Freepik",
+  "Runway",
+  "Veo",
+  "Pixar",
 ];
 
 /** 통화 표기 — 원문에 통화가 있으면 번역문에도 있어야 합니다. */

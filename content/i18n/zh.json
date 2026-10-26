@@ -387,6 +387,48 @@
         }
       ]
     },
+    "post/ai-video-motion-ideas": {
+      "title": "AI 视频没有动作灵感时可以看的网站",
+      "summary": "整理了 2 个值得参考的网站。在 Prompt Motion 浏览动作视频，把创作者公开的提示词改造成自己的；在 Skillry 把 CreatorMotion 之类的技能装到智能体里，制作契合脚本的动作（Pro 专用，面向 16:9）。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "（分享指南）制作 AI 视频时动作灵感卡住了？🎬"
+        },
+        {
+          "type": "p",
+          "text": "整理了 2 个值得参考的网站。"
+        },
+        {
+          "type": "p",
+          "text": "① Prompt Motion\n浏览动作视频，复制创作者公开的提示词，改成适合自己视频的版本。"
+        },
+        {
+          "type": "p",
+          "text": "② Skillry\n把 CreatorMotion 这类技能安装到智能体，制作契合脚本的动作。\n※ CreatorMotion 为 Pro 专用，面向 16:9 视频制作。"
+        },
+        {
+          "type": "p",
+          "text": "从网站链接与主要菜单，到复制提示词、安装技能的方法，都整理在指南里了。"
+        },
+        {
+          "type": "p",
+          "text": "💬 在评论里留下「动作」两个字。\n我们会通过私信把指南发给您！"
+        },
+        {
+          "type": "p",
+          "text": "保存下来，下次做视频时打开看看。\nAI 资讯与用法在"
+        },
+        {
+          "type": "p",
+          "text": "@data.popcorn"
+        },
+        {
+          "type": "p",
+          "text": "🍿"
+        }
+      ]
+    },
     "post/deepseek-official-harness": {
       "title": "DeepSeek 以 MIT 许可证发布官方 harness",
       "summary": "DeepSeek 的官方 harness 已发布，采用 MIT 许可证。模型、工具、技能、会话、沙箱、UI 全部以插件形式组合与替换。"
@@ -394,6 +436,79 @@
     "post/flux-3-image-release": {
       "title": "Black Forest Labs 发布 FLUX 3 Image",
       "summary": "Black Forest Labs 发布了 FLUX 3 Image，支持只修改指定区域的精确编辑、用边界框指定位置，并可组合最多 10 张参考图像。"
+    },
+    "post/kbs-documentary-seongmul-xconda": {
+      "title": "KBS 纪录片《圣物》「邀请」，用 XCONDA 制作",
+      "summary": "收录都灵大教堂圣衣与视障修女告白的 KBS 纪录片《圣物》「邀请」篇已公开。该片使用一体化 AI 视频制作平台 XCONDA 制作。",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "**看不见，也能相信吗。**"
+        },
+        {
+          "type": "p",
+          "text": "这是 KBS 纪录片 **《圣物》** 的「邀请」篇，收录了都灵大教堂的 **圣衣** 与视障修女的告白。"
+        },
+        {
+          "type": "p",
+          "text": "该片使用一体化 AI 视频制作平台 **XCONDA** 制作。"
+        },
+        {
+          "type": "h2",
+          "text": "观看"
+        },
+        {
+          "type": "p",
+          "text": "可在 YouTube 频道 **「KBS 다큐」**（KBS 纪录）观看。"
+        },
+        {
+          "type": "h2",
+          "text": "开始使用 XCONDA"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "🔗 前往 xconda.ai",
+            "🎁 新注册自动赠送 **100 欢迎点数**"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "原文（X 帖子）"
+        },
+        {
+          "type": "quote",
+          "text": "看不见，也能相信吗。"
+        },
+        {
+          "type": "quote",
+          "text": "收录了都灵大教堂的圣衣与视障修女的告白。"
+        },
+        {
+          "type": "quote",
+          "text": "KBS 纪录片《圣物》「邀请」可在 YouTube「KBS 다큐」观看。"
+        },
+        {
+          "type": "quote",
+          "text": "https://youtu.be/bNsbSW4vqCM?si=dmEjUT7JG4k892BJ"
+        },
+        {
+          "type": "quote",
+          "text": "该片使用一体化 AI 视频制作平台 XCONDA 制作。"
+        },
+        {
+          "type": "quote",
+          "text": "🔗 xconda.ai"
+        },
+        {
+          "type": "quote",
+          "text": "🎁 100 欢迎点数"
+        },
+        {
+          "type": "p",
+          "text": "查看 X 原文（@Xconda_ai, 2026.03.20）"
+        }
+      ]
     },
     "post/opus-5-5-github-trending": {
       "title": "Opus 5.5 发布一周，GitHub 趋势榜 10 个里 8 个是影像与动画——纯代码电影「OPUSCAR 98」",
@@ -516,6 +631,188 @@
         {
           "type": "p",
           "text": "前往 Skillry"
+        }
+      ]
+    },
+    "post/xconda-global-beta-launch": {
+      "title": "Cubeberry 推出 XCONDA —— AI 视频制作平台",
+      "summary": "Cubeberry 已启动 AI 视频制作 SaaS 平台 XCONDA 的全球测试服务。除 9 画面自动故事板「Director's Cut」外，还整合了自研的 8 款 AI 工具以及 Veo3、Kling 2.6 Pro、Runway Gen 4.5。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "AI 内容解决方案企业 **Cubeberry（代表 李珍瑞）** 已启动 AI 视频制作 SaaS 平台 **XCONDA** 的全球测试服务，TechWorld 报道。"
+        },
+        {
+          "type": "h2",
+          "text": "进入全球市场的战略"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "进入已被 Higgsfield、Freepik 等海外 AI 平台占据的市场。",
+            "以整合碎片化 AI 工具、保证 **视频制作逻辑完整性** 的技术力作为差异点。"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "统一提供的 AI 模型"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Cubeberry **自主研发的 8 款 AI 工具**",
+            "通过 API 整合 **Veo3、Kling 2.6 Pro、Runway Gen 4.5** 等最新生成式 AI 模型",
+            "用户可以省下切换工具的时间与成本，专注在制作本身"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "核心功能 —— 9 画面自动故事板「Director's Cut」"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "设定背景的 **年份与城市**，并选择演出风格。",
+            "可应用实拍（Arri Alexa）、吉卜力动画、皮克斯风格等多种 **美术风格**。",
+            "添加产品图或模特照片并输入剧本，就会自动生成 **9 画面故事板＋逐镜头导演笔记＋详细提示词**。",
+            "可以只修改单个镜头的提示词，或单独重新生成该镜头。"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "其他内置功能"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Lipsync-2-Pro** —— 对齐多位说话者口型的唇形同步方案",
+            "**33 Auto Angle Generator** —— 把一个镜头转换为 33 种角度"
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "代表发言"
+        },
+        {
+          "type": "p",
+          "text": "李珍瑞代表表示，希望弥补现有全球工具的局限、实现现场所需的细节，并把在 KBS 担任 PD 28 年间积累的演出经验移植到 AI 技术中。他还表示，XCONDA 将成为「全球创作者可以在实务中使用的伙伴」。"
+        },
+        {
+          "type": "h2",
+          "text": "未来计划"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Cubeberry 去年入选韩国中小风险企业振兴公团的 **「出口券技术服务」企业**。",
+            "今后将与可把高难度工作委托给专家（CP）的匹配平台 **「Acconda」** 联动，进一步升级商业模式。"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "查看 TechWorld 原文"
+        },
+        {
+          "type": "p",
+          "text": "来源：TechWorld News / 记者 金敬珠（2026.03.03）"
+        }
+      ]
+    },
+    "post/xconda-open-100-credits": {
+      "title": "XCONDA 上线纪念：新注册赠送 100 点数",
+      "summary": "Cubeberry 为纪念 AI 视频制作一体化平台 XCONDA 上线，向所有新注册用户免费提供 100 点数。全球首个体现「基础因果律」的 9 画面自动故事板「Art Director Pro」也正式内置。",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "AI 内容解决方案企业 **Cubeberry（代表 李珍瑞）** 为纪念 AI 视频制作一体化平台 **「XCONDA」** 上线，开展面向所有新注册用户免费提供 100 点数的上线活动。"
+        },
+        {
+          "type": "h2",
+          "text": "上线活动 —— 免费提供 100 点数"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "项目",
+              "内容"
+            ],
+            [
+              "对象",
+              "**所有新注册用户**"
+            ],
+            [
+              "优惠",
+              "免费赠送 **100** 点数"
+            ],
+            [
+              "发放方式",
+              "注册同时 **自动发放**（无附加条件、无认证流程）"
+            ],
+            [
+              "期间",
+              "另行公告前 **无时间限制**"
+            ],
+            [
+              "申请",
+              "在官网新注册时自动适用"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "只要注册，就能立刻体验 XCONDA 的所有核心功能。"
+        },
+        {
+          "type": "h2",
+          "text": "同时正式内置 ——「Art Director Pro」"
+        },
+        {
+          "type": "p",
+          "text": "这是 Cubeberry 自研的 9 画面自动故事板功能，**全球首次体现「基础因果律（Basic Causality）」**。前一镜头的结果会自动成为下一镜头的参考，从而形成电影般的叙事。"
+        },
+        {
+          "type": "h3",
+          "text": "现有 AI 工具的「上下文崩塌」问题"
+        },
+        {
+          "type": "p",
+          "text": "现有工具无法理解镜头之间的关联，人物的衣服会变化，或状况被重置。Art Director Pro 在整个镜头序列中保持视觉与情境信息的一致。"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "在咖啡厅场景打翻咖啡留下的 **污渍会保留到下一个镜头**",
+            "在暴雨中淋湿的人物，衣服 **移动到室内后的场景中依然保持湿态**"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "这是理解「故事逻辑」而非仅仅生成图像的 AI，目前商用服务中实现这一技术的只有 XCONDA。"
+        },
+        {
+          "type": "h2",
+          "text": "下一步 —— 基于本体（Ontology）的升级"
+        },
+        {
+          "type": "p",
+          "text": "正在开发把当前因果律技术以 **本体为基础** 升级的下一版本。通过结构化定义并推理场景中物体、人物、状况之间的关系，可以实现比现版本精细得多的上下文保持。Cubeberry 计划把它发展为下一代产品的核心引擎。"
+        },
+        {
+          "type": "h2",
+          "text": "代表发言"
+        },
+        {
+          "type": "p",
+          "text": "李珍瑞代表说明，现有 AI 工具未能解决的 **「上下文连续性」** 问题，已通过基于因果律的技术解决。他还表示，将通过本体的升级，让 AI 不止于生成场景，而达到理解故事的水平。"
+        },
+        {
+          "type": "p",
+          "text": "查看 Digital Times 原文"
+        },
+        {
+          "type": "p",
+          "text": "来源：Digital Times / 记者 金大成本（2026.03.10）"
         }
       ]
     },
