@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ | XCONDA ハブ — Q&amp;A・ガイド・お知らせ</title>
+    <meta name="description" content="構図が違うまま動画を出すと動画の段階で何度も再生成することになります。FLEXBOARD はシナリオをカットに分け、カットごとに文字と画像で先に見せる XCONDA のストーリーボードツールです。" />
+    <link rel="canonical" href="https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/flexboard-storyboard-7-steps/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/flexboard-storyboard-7-steps/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/flexboard-storyboard-7-steps/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/flexboard-storyboard-7-steps/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content="FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ" />
+    <meta property="og:description" content="構図が違うまま動画を出すと動画の段階で何度も再生成することになります。FLEXBOARD はシナリオをカットに分け、カットごとに文字と画像で先に見せる XCONDA のストーリーボードツールです。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-flexboard-storyboard-7-steps.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ" />
+    <meta name="twitter:description" content="構図が違うまま動画を出すと動画の段階で何度も再生成することになります。FLEXBOARD はシナリオをカットに分け、カットごとに文字と画像で先に見せる XCONDA のストーリーボードツールです。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-flexboard-storyboard-7-steps.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/#webpage","url":"https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/","name":"FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ","inLanguage":"ja","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="ja">
+<nav aria-label="breadcrumb"><a href="../../">ホーム</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/flexboard-storyboard-7-steps/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/flexboard-storyboard-7-steps/" hreflang="en">English</a><strong aria-current="true">日本語</strong><a href="https://hub.xconda.ai/zh/post/flexboard-storyboard-7-steps/" hreflang="zh-Hans">中文</a></nav>
+<article>
+<h1>FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ</h1>
+<p class="seo-meta">日本語 · XCONDA Hub</p>
+<p class="notion-default">こんにちは。XCONDA を作っているキューブベリー代表のイ・ジンソです。</p>
+<aside class="callout notion-default"><p>📌 <strong>要点</strong> 構図が違うまま動画を出すと、動画の段階で何度も再生成することになります。FLEXBOARD はシナリオをカットに分け、カットごとに文字と画像で先に見せてくれる XCONDA のストーリーボードツールです。この記事は、プロジェクト作成から問題のあるカットだけを選んで直し、Seedance に渡す前の点検まで、実際の画面の順番どおり 7 ステップでまとめました。</p></aside>
+<p class="notion-default"><strong>こんな方へ</strong>：AI 動画を初めて作る方、動画を回してクレジットを惜しく使った経験のある方</p>
+<p class="notion-default"><strong>用意するもの</strong>：XCONDA アカウントとクレジット、シナリオの 1 場面、あれば人物の顔画像と背景画像。生成・再生成のボタンには必要なクレジットが画面に表示されます。</p>
+<h3>撮影前にコンテを出す理由、AI 動画も同じです</h3>
+<p class="notion-default">私は KBS で 28 年ドラマを演出してきました。撮影現場でいちばん高いのは時間です。だからカメラを回す前にコンテでカットの順番と構図を先に合わせます。紙の上で直せばコストはほぼかかりませんが、撮影が終わってから直すには撮り直しになるからです。</p>
+<p class="notion-default">AI 動画もまったく同じです。Seedance 2.5 は 1 回回すたびにクレジットがかかります。人物が変わった、背景が飛んだ、カット順が不自然な動画を確認してから最初から回し直すのは、撮影を丸ごとやり直すのと同じです。動画より先に画像で確認すれば、間違ったカット 1 枚を出し直すだけで済みます。FLEXBOARD がその役割を担うツールで、私はこれを AI 映像制作の現場コンテだと思っています。</p>
+<h3>FLEXBOARD はどこにありますか</h3>
+<p class="notion-default">XCONDA の左サイドバーで <strong>Storyboard</strong> を開くと、ツール一覧に <strong>Flex Board</strong> カードが見えます。「Seedance 2.5 に最適化されたストーリーボードツール」と書かれたカードです。カードを押し、作業画面で <strong>New Project</strong> を選ぶとプロジェクト選択ウィンドウが開きます。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aa655b8aa-cccf-4da8-8744-cac40140d1d7%3Aflex_01.png?table=block&amp;id=5e900ef2-7347-4022-9d91-335ed211e278&amp;cache=v2" alt="XCONDA Storyboard 메뉴의 Flex Board 카드" loading="lazy" decoding="async"></figure>
+<h3>ステップ 1．プロジェクトを作り、作業方式を決めます</h3>
+<p class="notion-default">Project Selection 画面で 3 つを決めます。</p>
+<ul><li><strong>作業方式</strong></li><li><strong>モデル</strong>：ガイド画面では文字を作るモデルとして Gemini 3.8 と Sonnet 5 が表示されます。1 つのプロジェクト内でモデルを変えるとカット説明の語り口や雰囲気が変わるので、最初に選んだモデルで最後まで進めることをおすすめします。カット画像を描く画像モデルは画面左上のドロップダウンで選び、初めてなら既定値の GPT Image 2 から始めてみてください。</li><li><strong>プロジェクト名</strong>：後で一覧から探しやすい名前にします。例：「ウェブドラマ_1話_大庁マルシーン」</li></ul>
+<p class="notion-default"><strong>演出のポイント</strong>：現場でスレートに作品名、話数、シーン番号を書いておくのと同じことです。命名規則を最初に決めておくと、カットが増えたときに探す時間が減ります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ac6ec396a-0297-471f-88f5-156a5eb48d70%3Aflex_03.png?table=block&amp;id=6925587e-8e1f-41d0-b936-cf230b9a8bf9&amp;cache=v2" alt="Project Selection 화면 - 작업 방식, 모델, 프로젝트 이름, 시나리오 입력" loading="lazy" decoding="async"></figure>
+<h3>ステップ 2．シナリオ、ジャンル、雰囲気を書きます</h3>
+<p class="notion-default"><strong>Scenario</strong> 欄に場面の状況、人物、行動、感情を書きます。「誰が、どこで、何を、どんな感情で」が入っているとカットを検討しやすくなります。出来事が複数あるときは起きる順に並べます。</p>
+<p class="notion-default">たとえばこんな感じです。</p>
+<blockquote><p>雨の夜、韓屋（ハノク）の大庁マル。スヨンが割れた陶磁器の破片を持って立っている。門の方から足音が聞こえ、スヨンは破片を背中に隠す。扉が開いて母が入ってくる。二人は言葉もなく見つめ合う。</p></blockquote>
+<p class="notion-default">次に <strong>Genre</strong>（例：Suspense）と <strong>Tone / Mood</strong>（例：Tense）を選び、<strong>Save project</strong> で保存します。保存した設定は次の段階で人物とカット構成を整えるときにも引き継がれます。</p>
+<p class="notion-default"><strong>演出のポイント</strong>：シナリオを書くとき、感情は「悲しい」のように名前だけ書かず、行動で書いてください。「破片を背中に隠す」のような見える行動があるとカットに分けやすくなります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A04218fad-14d3-45a6-88a8-ae4dc7b711b7%3Aflex_05.png?table=block&amp;id=6b32e905-802f-4e08-a93b-0a60646167f5&amp;cache=v2" alt="시나리오와 장르(Suspense), 분위기(Tense) 입력 화면" loading="lazy" decoding="async"></figure>
+<h3>ステップ 3．人物と背景を登録します（Cast &amp; Face Lock）</h3>
+<p class="notion-default">カットが変わっても同じ人物、同じ場所が出るようにする段階です。人でいえばキャスティングとセットの確定にあたります。</p>
+<ol><li><strong>Add Cast</strong> で人物カードを作ります。カードごとに <strong>@image1、@image2</strong> のような名札（トークン）が自動で付きます。</li><li>カードに顔画像と分かりやすい名前を入れます。例：スヨン、母。繰り返し出る小道具（割れた陶磁器）もカードとして登録できます。</li><li><strong>Add Scene</strong> で背景カードを追加します。ガイド画面では背景カードが @image7 として表示されます。</li></ol>
+<p class="notion-default">トークンはカット説明の中に「@image1」のように現れ、このカットに誰が出るかが一目で分かるようにします。</p>
+<blockquote><p><strong>注意</strong>：人物は一人につきカード 1 枚で登録してください。カードを差し替えたり削除した後は、トークン番号とカット説明がまだ合っているか再確認が必要です。</p></blockquote>
+<figure><img src="https://www.notion.so/image/attachment%3Aac8311d3-6d67-4e72-8eb2-a80876ba7f49%3Aflex_06.png?table=block&amp;id=ce8b5563-fcfc-4c99-ab19-a1fae86460e6&amp;cache=v2" alt="Cast &amp; Face Lock과 Scene Background에 등록된 카드" loading="lazy" decoding="async"></figure>
+<h3>ステップ 4．カット数とカットの長さを決めます</h3>
+<ul><li><strong>Number of Panels</strong>：カット数を決めます。ガイド画面の例は 9 カットです。</li><li><strong>Shot Length</strong>：スライダーで 1 カットの長さを決めます。画面には 4 秒から 30 秒まで表示され、例は 15 秒です。</li></ul>
+<p class="notion-default">9 カット × 15 秒に設定すると、単純合計で約 2 分 15 秒です。実際の完成尺はその後の動画作業で変わります。1 画面には最大 36 カットまで構成できます。</p>
+<p class="notion-default">カット数は場面が変わる地点を基準に決めてください。上の例なら「陶磁器を持つスヨン／足音／隠す手／扉が開く／母の登場／見つめ合う二人」のように分けられます。</p>
+<p class="notion-default"><strong>演出のポイント</strong>：1 つのカットに動作を入れすぎると、動画のどこがずれたか分かりにくくなります。カットは動作 1 つ、感情 1 つが基準です。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A9bb4c641-7db9-426d-ba86-22303303ff70%3Aflex_07.png?table=block&amp;id=6236645d-a3b7-43f4-94b1-1d4285eb7e17&amp;cache=v2" alt="Scene Background 카드와 Number of Panels, Shot Length 설정" loading="lazy" decoding="async"></figure>
+<h3>ステップ 5．画像より先に文字で確認します（Text Preview）</h3>
+<p class="notion-default">設定画面の下にある黄色い <strong>Text Preview Generate</strong> ボタンを押すと、画像を作る前にカットごとの文字コンテが先に出ます。各 CUT カードで 3 点を確認します。</p>
+<ul><li>場面説明が意図した順番で出ているか</li><li>@image トークンが正しい人物を指しているか</li><li>カード下の SFX（効果音）の説明が場面の雰囲気に合っているか</li></ul>
+<p class="notion-default">カットの順番や人物、場面転換が不自然なら、<strong>画像を作る前に</strong>シナリオやカット数に戻って直します。文字の段階で直すのがいちばん速いです。この段階ではまだ画像がないため、各カードに「No image for this CUT yet」と表示されます。正常なので驚かなくて大丈夫です。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae3ac7370-221c-4b9f-a81c-e9bb338c7a37%3Aflex_09.png?table=block&amp;id=3e2d2714-3876-46b0-86c1-30d459090762&amp;cache=v2" alt="이미지 생성 전 글 콘티 그리드" loading="lazy" decoding="async"></figure>
+<h3>ステップ 6．カットグリッドで全体の流れを見ます</h3>
+<p class="notion-default">画像を生成すると、カットごとに画像が付いたグリッドが出ます。ここでは 2 つの方法で確認します。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td><strong>表示</strong></td><td><strong>画面</strong></td><td><strong>いつ使うか</strong></td></tr><tr><td><strong>Panel</strong></td><td>カットごとにカード 1 枚。画像の下に Edit ボタン、場面説明、セリフ（Dialogue）、効果音（SFX）が並ぶ</td><td>カットを 1 つずつ読んで直すとき</td></tr><tr><td><strong>Sheet</strong></td><td>説明なしでカット画像だけを大きく 1 枚にまとめて表示</td><td>全体の流れを一目で見るとき</td></tr></tbody></table></div>
+<p class="notion-default"><strong>まず Sheet で全体の流れを見ます。</strong> 文字なしで絵だけを続けて見ると、実際の動画のようにカットがつながるか判断しやすくなります。</p>
+<ul><li>カットの順番が入れ替わったり抜けた場面はないか</li><li>前後のカットが自然につながるか（衣装、小道具、照明、視線の方向）</li><li>同じ人物がカットごとに同じ顔で出ているか</li></ul>
+<p class="notion-default"><strong>次に Panel でカットを 1 つずつ確認します。</strong> カードの場面説明には @image トークンが表示され、このカットにどの人物と背景が使われたかがすぐ分かります。各カットの画像が説明の中の人物、場所、行動を捉えているか、セリフと効果音が場面に合っているかを合わせて見ます。</p>
+<p class="notion-default">画面右上には 3 つのボタンがあります。</p>
+<ul><li><strong>Download CUT ZIP</strong>（Panel 表示）／<strong>Download Sheet</strong>（Sheet 表示）：カット画像をまとめて、またはシート 1 枚でダウンロードします。チームやクライアントにコンテを共有するときに使います。</li><li><strong>Regenerate images</strong>：画像を作り直します。ボタンに必要なクレジットが表示されるので、押す前に確認してください。</li><li><strong>Clear Sheet</strong>：シートを空にします。元に戻しにくいので、ダウンロードしてから使うのが安全です。</li></ul>
+<p class="notion-default"><strong>演出のポイント</strong>：編集室でカットをつないで見る前に一度ざっと見るのと同じです。1 枚ずつ見ると問題なく見えても、続けて見ると衣装や小道具が変わっているのが分かります。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A530ff496-b095-475b-82c6-3829a2d4ca6c%3Aflex_10.png?table=block&amp;id=45227380-cdcb-4ee7-bdc8-dff8956e4d07&amp;cache=v2" alt="컷 이미지를 한 장에 모아 보는 Sheet 보기" loading="lazy" decoding="async"></figure>
+<h3>ステップ 7．問題のあるカットだけを選んで直します</h3>
+<p class="notion-default">ここが FLEXBOARD の核心です。うまく出たカットはそのままにし、問題のあるカットだけを直します。カットカードには次のツールがあります。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td><strong>ツール</strong></td><td><strong>役割</strong></td></tr><tr><td>Edit</td><td>クイック修正（Quick Edit）ウィンドウを開く</td></tr><tr><td>＋</td><td>カットで使う要素を追加</td></tr><tr><td>ゴミ箱</td><td>カットを削除</td></tr><tr><td>下／上の矢印</td><td>カット画像をダウンロード／外部画像に差し替え</td></tr></tbody></table></div>
+<p class="notion-default"><strong>クイック修正（Quick Edit）</strong></p>
+<ol><li>直すカットの <strong>Edit</strong> を押し、ウィンドウ上部のカット番号（例：CUT 04）が合っているか確認します。</li><li>必要なら <strong>Reference images</strong> の Add で参考画像を追加します。</li><li><strong>Edit prompt</strong> に変える内容を書きます。@ トークンで参考画像を指定できます。</li><li>対象カットと指示内容、クレジットの案内を確認して <strong>Apply edit</strong> を押します。</li></ol>
+<blockquote><p><strong>指示文のコツ</strong>：変えることと残すことを一緒に書いてください。例：「眼鏡だけ変えて、姿勢と背景はそのまま」 例：「@image1 の表情だけ驚いた表情に、手に持った陶磁器と背景はそのまま」</p></blockquote>
+<figure><img src="https://www.notion.so/image/attachment%3A6207e7f0-52a6-4c08-b60e-cfc9b92f5bca%3Aflex_12.png?table=block&amp;id=d166808f-f199-41d7-a9c9-3fdc18feab39&amp;cache=v2" alt="Quick Edit 창 - Reference images, Edit prompt, Apply edit" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>詳細修正（Detailed Edit）</strong></p>
+<p class="notion-default">カメラを変えたいときに使います。左に現在のカットの大きなプレビュー、右に Scenario と 3 つのカメラ設定があります。</p>
+<ul><li><strong>Shot Size</strong>：画面にどれだけ収めるか（例：Extreme Wide Shot、Close-up）</li><li><strong>Camera Angle</strong>：カメラの高さと傾き（例：Low Angle、Dutch Angle）</li><li><strong>Camera Movement</strong>：カメラの動き（例：Handheld、Track Out）</li></ul>
+<p class="notion-default">ガイドの例では「POV・Low Angle・Handheld」の緊張感のある人物中心の構図を「Extreme Wide Shot・Dutch Angle・Track Out」に変えました。広く傾いた画面でカメラが後ろに引く構図に作り直したものです。設定を確認して <strong>Regenerate</strong> を押します。このときも画面に表示されるクレジットを先に確認してください。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7d56a367-8a08-436f-8ad2-bc8ec0ccae78%3Aflex_13.png?table=block&amp;id=b1f30a3e-0a6b-4365-b8af-2d8c215383f8&amp;cache=v2" alt="수정 전: POV · Low Angle · Handheld" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae11c7f02-c85d-4ffd-93c3-5d3f7742586f%3Aflex_14.png?table=block&amp;id=e3b8b0a7-ceda-4a70-a254-9a40c840f0a7&amp;cache=v2" alt="수정 후: Extreme Wide Shot · Dutch Angle · Track Out" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>参考画像の順番を変える</strong></p>
+<p class="notion-default">カット生成に使われる人物と背景のカードはリストで管理されます。人物は人物同士、背景は背景同士でドラッグして順番を変えられ、必要なら <strong>＋ Character</strong> / <strong>＋ Background</strong> で参考画像を増やせます。<strong>Reset to automatic selection</strong> を押すと既定の選択に戻ります。順番を変えた後はカット画像を再生成しないと反映されません。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A4e5c257a-7f76-4c3c-a159-460194e8711a%3Aflex_15.png?table=block&amp;id=c7c37b60-7e4b-4d17-8734-ea1839cbfe20&amp;cache=v2" alt="순서 변경 전" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Af9a3bb4b-d4d7-4d0b-8917-9597e8c5e7f8%3Aflex_16.png?table=block&amp;id=32d6ded0-7427-4316-a834-98cbf70aec47&amp;cache=v2" alt="순서 변경 후" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>演出のポイント</strong>：現場で気に入らないカットだけリテイクし、全部を撮り直さないのと同じです。プロンプトでは出にくい構図は、上の矢印（アップロード）で自分で作った画像をそのカットに入れる方法もあります。</p>
+<h3>Seedance に渡す前の最終チェック</h3>
+<p class="notion-default">ストーリーボードが終わったら動画の段階に進みます。渡す前に以下を確認してください。</p>
+<ul class="todo"><li><input type="checkbox" disabled> Sheet 表示でカットが自然につながるか確認したか</li><li><input type="checkbox" disabled> すべてのカットで画像と場面説明が合っているか</li><li><input type="checkbox" disabled> 人物トークン（@imageN）がカットごとに正確か</li><li><input type="checkbox" disabled> 抜けたカットはないか</li><li><input type="checkbox" disabled> カットの長さ（Shot Length）、画面サイズ（Shot Size）、カメラアングル、カメラの動きがカットの意図に合っているか</li></ul>
+<p class="notion-default">ここで確認したカット画像が動画プロンプトの基準になります。確定したキーイメージを XCONDA の動画生成で Seedance 2.5 のリファレンスとして入れる方法は、下の連載記事で続きます。構図を直すコストはこの段階がいちばん小さいです。動画に進んだ後に構図を直すには、動画を何度も回し直す必要があるからです。</p>
+<h3>よくある失敗</h3>
+<ul><li><strong>文字コンテを飛ばしていきなり画像を作る</strong>：カット順が違うまま画像を作ると、作り直しになります。</li><li><strong>同じ人物を複数のカードで登録する</strong>：トークンが分かりにくくなり、顔が混ざることがあります。</li><li><strong>修正指示に変えることだけを書く</strong>：残すことを書かないと、他の部分まで変わる場合があります。</li><li><strong>うまく出たカットまで再生成する</strong>：問題のあるカットだけを選び、Edit で直してください。</li><li><strong>Panel 表示だけで確認する</strong>：文字を読みながらだと、絵が実際につながるかを見落としやすいです。Sheet 表示で絵だけを続けて見る段階を必ず入れてください。</li><li><strong>途中でモデルを変える</strong>：カットごとに絵の雰囲気や説明の語り口が変わることがあります。</li></ul>
+<h3>あわせて読みたい</h3>
+<ul><li>全体マップ：1 本のシナリオが完成動画になるまで</li><li>なぜ動画の前にコンテなのか：Seedance の当たり率を上げる、動画を回す前にコンテから</li><li>カットが飛ぶ問題を減らす方法：9 カットの呪い、いま XCONDA で減らす方法</li><li>画面順ガイド：FLEXBOARD でカットごとのストーリーボードを作る 7 ステップ（AI 動画制作の流れ EP.03）</li></ul>
+<h3>いま始める方へ</h3>
+<p class="notion-default">FLEXBOARD リリースのオープンプロモーションとして、Seedance 2.5 の割引キャンペーンを実施しています。</p>
+<ul><li>韓国：利用割引 30% + 価格割引 10%、最大 40%</li><li>米国：利用割引 最大 30%</li><li>期間：11 月 6 日午前 11 時まで（韓国時間）</li></ul>
+<p class="notion-default">XCONDA はこちら</p>
+<p class="notion-default">導入や協業のご相談は以下までご連絡ください。</p>
+<ul><li><strong>お問い合わせ：</strong> cubeberry@cuberry.kr</li><li><strong>電話：</strong> +82-70-8095-2302（平日 10:00〜17:00）</li></ul>
+<p class="notion-default">今日も長い記事を読んでいただきありがとうございます！</p>
+<p><a href="https://hub.xconda.ai/post/flexboard-storyboard-7-steps/" hreflang="ko">韓国語の原文を見る</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-9-cut-curse-fix/">9 カットの呪いを減らす方法、カットが飛ばない 5 ステップ</a></li><li><a href="../ai-video-background-consistency/">AI 映像の背景が飛ぶ理由とカット一貫性の解決</a></li><li><a href="../ai-video-motion-ideas/">AI 映像のモーションアイデアが浮かばないときに見るサイト</a></li><li><a href="../deepseek-official-harness/">DeepSeek が公式ハーネスを MIT ライセンスで公開</a></li></ul></nav>
+<p class="seo-note">日本語ページは XCONDA チームが翻訳しています。韓国語ハブが原文であり、内容に相違がある場合は cubeberry@cuberry.kr までご連絡ください。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

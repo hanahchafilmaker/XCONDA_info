@@ -1315,6 +1315,387 @@
       "title": "DeepSeek releases its official harness under MIT",
       "summary": "DeepSeek's official harness is out under the MIT licence. Everything is a plugin: models, tools, skills, sessions, sandboxes and UI can all be swapped."
     },
+    "post/flexboard-storyboard-7-steps": {
+      "title": "FLEXBOARD: Cut-by-Cut Storyboards in 7 Steps",
+      "summary": "Generating video with the wrong framing means re-running it again and again. FLEXBOARD splits a scenario into cuts and shows each as text and image first - the seven steps, screen by screen.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hello, this is Jinseo Lee, CEO of Cubeberry, the team building XCONDA."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**In short** Generate video with the wrong framing and you will regenerate several times at the video stage. FLEXBOARD is XCONDA's storyboard tool: it splits a scenario into cuts and shows each cut as text and image before you make video. This article follows the real screens in seven steps, from creating a project to fixing only the cuts with problems and checking before handing over to Seedance."
+        },
+        {
+          "type": "p",
+          "text": "**Who it is for**: people making AI video for the first time, and anyone who has burned credits running video."
+        },
+        {
+          "type": "p",
+          "text": "**What you need**: an XCONDA account with credits, one scene of your scenario and, if you have them, face and background images for the cast. The credit cost is shown on the generate and regenerate buttons."
+        },
+        {
+          "type": "h3",
+          "text": "Why a storyboard before the shoot - AI video is the same"
+        },
+        {
+          "type": "p",
+          "text": "I directed dramas at KBS for 28 years. The most expensive thing on a set is time. So before the camera rolls we line up cut order and framing on a storyboard. Fixing on paper costs almost nothing; fixing after the shoot means shooting again."
+        },
+        {
+          "type": "p",
+          "text": "AI video is exactly the same. Seedance 2.5 spends credits every time you run it. Checking a video with a changed character, a jumped background or an awkward cut order and then starting over is the same as re-shooting the whole day. Check as images first and only the one wrong cut needs to be pulled again. FLEXBOARD is the tool that does this, and I think of it as the on-set storyboard of AI video production."
+        },
+        {
+          "type": "h3",
+          "text": "Where is FLEXBOARD"
+        },
+        {
+          "type": "p",
+          "text": "Open **Storyboard** in the left sidebar of XCONDA and the **Flex Board** card appears in the tool list - the one labelled \"a storyboard tool tuned for Seedance 2.5\". Click the card, then choose **New Project** on the working screen and the project selection window opens."
+        },
+        {
+          "type": "h3",
+          "text": "Step 1. Create the project and choose how to work"
+        },
+        {
+          "type": "p",
+          "text": "On the Project Selection screen you decide three things."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Working method**",
+            "**Model**: the guide screen shows Gemini 3.8 and Sonnet 5 as the models that write the text. Switching models inside one project can change the tone and mood of the cut descriptions, so stay with the one you chose first. The image model that draws the cut images is chosen from the dropdown at the top left; if this is new to you, start with the default, GPT Image 2.",
+            "**Project name**: something you can find in the list later. Example: \"webdrama_ep1_daecheongmaru_scene\""
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Directing note**: this is the same as writing the title, episode and scene number on the slate. Set a naming rule at the start and you spend less time hunting once the cuts pile up."
+        },
+        {
+          "type": "h3",
+          "text": "Step 2. Write the scenario, genre and mood"
+        },
+        {
+          "type": "p",
+          "text": "In the **Scenario** field write the situation, the characters, the actions and the feelings. If it answers who, where, what and with what feeling, the cuts are easy to review. When several things happen, list them in the order they occur."
+        },
+        {
+          "type": "p",
+          "text": "For example:"
+        },
+        {
+          "type": "quote",
+          "text": "A rainy night on a hanok's wooden veranda. Suyeon stands holding a shard of broken pottery. Footsteps approach from the gate and she hides the shard behind her back. The door opens and her mother walks in. The two look at each other without a word."
+        },
+        {
+          "type": "p",
+          "text": "Then choose **Genre** (for example, Suspense) and **Tone / Mood** (for example, Tense) and save with **Save project**. The settings carry through to the next step when you refine the cast and the cut structure."
+        },
+        {
+          "type": "p",
+          "text": "**Directing note**: do not name the emotion (\"sad\"); write it as an action. A visible action such as \"hides the shard behind her back\" makes splitting into cuts much easier."
+        },
+        {
+          "type": "h3",
+          "text": "Step 3. Register the cast and backgrounds (Cast & Face Lock)"
+        },
+        {
+          "type": "p",
+          "text": "This is the step that keeps the same person and the same place across cuts. On a set it corresponds to casting and locking the set."
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Create a cast card with **Add Cast**. Each card automatically gets a label (a token) such as **@image1** or **@image2**.",
+            "Add a face image and an easy-to-recognise name to the card. Example: Suyeon, Mother. Props that come back (the broken pottery) can be registered as cards too.",
+            "Add a background card with **Add Scene**. On the guide screen the background card shows as @image7."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Tokens appear inside a cut description as \"@image1\", so you can see at a glance who is in that cut."
+        },
+        {
+          "type": "quote",
+          "text": "**Caution**: register one card per person. After you replace or delete a card, check again that the token numbers still match the cut descriptions."
+        },
+        {
+          "type": "h3",
+          "text": "Step 4. Set the number of cuts and the shot length"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Number of Panels**: how many cuts you want. The guide screen example uses 9.",
+            "**Shot Length**: set the length of one cut with the slider. The screen shows 4 to 30 seconds; the example is 15."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "9 cuts x 15 seconds adds up to about 2 minutes 15 seconds. The finished length depends on the video work that follows. Up to 36 cuts fit on one screen."
+        },
+        {
+          "type": "p",
+          "text": "Choose cut counts at the points where the scene changes. With the example above you could split it as \"Suyeon holding the pottery / footsteps / the hand hiding it / the door opens / the mother enters / the two facing each other\"."
+        },
+        {
+          "type": "p",
+          "text": "**Directing note**: cram too much action into one cut and it is hard to find where the video went wrong. One action, one emotion per cut is the rule."
+        },
+        {
+          "type": "h3",
+          "text": "Step 5. Check the text before the images (Text Preview)"
+        },
+        {
+          "type": "p",
+          "text": "Press the yellow **Text Preview Generate** button below the settings and a written storyboard for each cut appears before any image is made. On each CUT card, check three things."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Do the scene descriptions come in the order you intended?",
+            "Do the @image tokens point at the right people?",
+            "Does the SFX note at the bottom of the card match the mood of the scene?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "If the cut order, the cast or the transitions feel wrong, go back to the scenario or the cut count and fix it **before generating images**. Fixing at the text stage is fastest. At this stage the cards show \"No image for this CUT yet\" because there are no images; that is normal."
+        },
+        {
+          "type": "h3",
+          "text": "Step 6. Read the whole flow in the cut grid"
+        },
+        {
+          "type": "p",
+          "text": "Generating images gives you a grid with an image on every cut. You check it in two ways."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "**View**",
+              "**What you see**",
+              "**When to use it**"
+            ],
+            [
+              "**Panel**",
+              "One card per cut, with an Edit button, the scene description, dialogue and SFX under the image",
+              "Reading and fixing cuts one by one"
+            ],
+            [
+              "**Sheet**",
+              "All cut images large on one sheet, without the text",
+              "Seeing the whole flow at a glance"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Start with Sheet for the whole flow.** Looking at the pictures alone makes it easy to judge whether the cuts play like real video."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Is any cut out of order or missing?",
+            "Do neighbouring cuts connect naturally (costume, props, lighting, eyeline)?",
+            "Does the same person have the same face in every cut?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Then check cut by cut in Panel.** The scene description on each card shows the @image tokens, so you can see immediately which cast and background were used for that cut. Check that the image carries the people, place and action in the description, and that the dialogue and SFX fit the scene."
+        },
+        {
+          "type": "p",
+          "text": "There are three buttons at the top right of the screen."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Download CUT ZIP** (Panel view) / **Download Sheet** (Sheet view): download all cut images at once, or the sheet as one image. Useful for sharing a storyboard with teammates or a client.",
+            "**Regenerate images**: generate the images again. The button shows the credits it costs, so check before you press it.",
+            "**Clear Sheet**: empties the sheet. It may be hard to undo, so download first."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Directing note**: this is the skim you do before watching the cuts joined in the edit. A cut looks fine on its own, and then costume or props visibly change once the cuts run in sequence."
+        },
+        {
+          "type": "h3",
+          "text": "Step 7. Fix only the cuts that need it"
+        },
+        {
+          "type": "p",
+          "text": "This is the heart of FLEXBOARD. Leave the good cuts alone and fix only the ones with problems. Each cut card has these tools."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "**Tool**",
+              "**What it does**"
+            ],
+            [
+              "Edit",
+              "Open the quick edit (Quick Edit) window"
+            ],
+            [
+              "+",
+              "Add an element used by the cut"
+            ],
+            [
+              "Trash",
+              "Delete the cut"
+            ],
+            [
+              "Down / Up arrows",
+              "Download the cut image / replace it with an outside image"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Quick Edit**"
+        },
+        {
+          "type": "ol",
+          "items": [
+            "Press **Edit** on the cut and check that the cut number at the top of the window (for example CUT 04) is the one you meant.",
+            "Add reference images with Add under **Reference images** if you need them.",
+            "Write the change in **Edit prompt**. You can point at a reference image with an @ token.",
+            "Check the target cut, the instruction and the credit notice, then press **Apply edit**."
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "**How to write the instruction**: state what changes and what stays. Example: \"change only the glasses, keep the pose and the background\". Example: \"only @image1's expression becomes surprised, keep the pottery in hand and the background\"."
+        },
+        {
+          "type": "p",
+          "text": "**Detailed Edit**"
+        },
+        {
+          "type": "p",
+          "text": "Use it when you want to change the camera. A large preview of the current cut sits on the left, and Scenario plus three camera settings on the right."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Shot Size**: how much of the scene fills the frame (for example Extreme Wide Shot, Close-up)",
+            "**Camera Angle**: camera height and tilt (for example Low Angle, Dutch Angle)",
+            "**Camera Movement**: how the camera moves (for example Handheld, Track Out)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "In the guide example, a tense character-centred composition of \"POV - Low Angle - Handheld\" was rebuilt as \"Extreme Wide Shot - Dutch Angle - Track Out\": a wide, tilted frame with the camera pulling back. Check the settings and press **Regenerate**, and again check the credits shown on screen first."
+        },
+        {
+          "type": "p",
+          "text": "**Reordering the reference images**"
+        },
+        {
+          "type": "p",
+          "text": "The cast and background cards used to generate cuts are managed as lists. You can drag cast among cast and background among background to change the order, and add more references with **+ Character** / **+ Background**. **Reset to automatic selection** returns to the default selection. After reordering, regenerate the cut images for the change to take effect."
+        },
+        {
+          "type": "p",
+          "text": "**Directing note**: this is the same as re-taking only the cut you dislike on set instead of shooting everything again. For a composition a prompt will not produce, you can also upload your own image with the up arrow and drop it into that cut."
+        },
+        {
+          "type": "h3",
+          "text": "Final check before handing over to Seedance"
+        },
+        {
+          "type": "p",
+          "text": "When the storyboard is done you move to the video stage. Check the list below first."
+        },
+        {
+          "type": "todo",
+          "items": [
+            "Did you check in Sheet view that the cuts connect naturally?",
+            "Do the image and the scene description match on every cut?",
+            "Are the cast tokens (@imageN) correct on every cut?",
+            "Is any cut missing?",
+            "Do shot length, shot size, camera angle and camera movement match the intent of the cut?"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The cut images you approve here become the reference for the video prompt. How to feed the final key images into Seedance 2.5 as references in XCONDA video generation continues in the series. Fixing composition is cheapest at this stage: once you are in video, a composition fix means re-running the video several times."
+        },
+        {
+          "type": "h3",
+          "text": "Common mistakes"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Skipping the written storyboard and generating images**: if the cut order is wrong, the images have to be made again.",
+            "**Registering the same person on several cards**: the tokens get confusing and faces get mixed.",
+            "**Writing only what changes in the edit instruction**: if you do not say what to keep, other parts change too.",
+            "**Regenerating cuts that already work**: pick the problem cuts and fix them with Edit.",
+            "**Reviewing only in Panel view**: reading text makes it easy to miss whether the pictures connect. Always take the step of reading the pictures alone in Sheet view.",
+            "**Switching models halfway**: the look and the tone of the descriptions can shift from cut to cut."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Further reading"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "The whole map: from one scenario to a finished video",
+            "Why a storyboard comes before video: raise your Seedance hit rate and pull the storyboard first",
+            "Cutting down jumping cuts: nine cuts without the curse - how to cut it down with XCONDA today",
+            "Screen-by-screen guide: FLEXBOARD storyboards in 7 steps (AI video production workflow EP.03)"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "If you want to start now"
+        },
+        {
+          "type": "p",
+          "text": "The FLEXBOARD launch promotion is running a Seedance 2.5 discount."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Korea: 30% usage discount + 10% price discount, up to 40%",
+            "United States: up to 30% usage discount",
+            "Period: until 11:00 on 6 November (Korea time)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Go to XCONDA"
+        },
+        {
+          "type": "p",
+          "text": "For adoption or partnership enquiries, contact us below."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Enquiries:** cubeberry@cuberry.kr",
+            "**Phone:** +82-70-8095-2302 (weekdays 10:00-17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Thank you for reading another long one today!"
+        }
+      ]
+    },
     "post/flux-3-image-release": {
       "title": "Black Forest Labs releases FLUX 3 Image",
       "summary": "Black Forest Labs has released FLUX 3 Image, with precise editing that changes only the part you want, bounding-box placement and combination of up to 10 reference images."
