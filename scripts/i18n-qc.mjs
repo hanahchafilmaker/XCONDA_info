@@ -287,7 +287,13 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
         errors.push({ key, kind: "blocks-not-array", detail: "blocks 가 배열이 아닙니다" });
       } else {
         const bodyText = blocks
-          .map((b) => (Array.isArray(b?.items) ? b.items.join(" ") : String(b?.text ?? "")))
+          .map((b) =>
+            Array.isArray(b?.items)
+              ? b.items.join(" ")
+              : Array.isArray(b?.rows)
+                ? b.rows.map((r) => (Array.isArray(r) ? r.join(" ") : "")).join(" ")
+                : String(b?.text ?? ""),
+          )
           .join("\n");
         for (const block of blocks) {
           if (!LOCALIZED_BLOCK_TYPES.includes(block?.type)) {
@@ -296,7 +302,13 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
           if ((block?.type === "ul" || block?.type === "ol") && (!Array.isArray(block.items) || !block.items.length)) {
             errors.push({ key, kind: "block-items", detail: `${block?.type} 에 items 가 없습니다` });
           }
-          if (["p", "h2", "h3", "quote"].includes(block?.type) && !String(block?.text ?? "").trim()) {
+          if (block?.type === "table") {
+            const rows = block.rows;
+            if (!Array.isArray(rows) || !rows.length) errors.push({ key, kind: "block-table", detail: "table 에 rows 가 없습니다" });
+            else if (rows.some((r) => !Array.isArray(r) || !r.length)) errors.push({ key, kind: "block-table", detail: "table 행이 비었습니다" });
+            else if (rows.some((r) => r.length !== rows[0].length)) errors.push({ key, kind: "block-table", detail: "table 행마다 칸 수가 다릅니다" });
+          }
+          if (["p", "h2", "h3", "quote", "callout"].includes(block?.type) && !String(block?.text ?? "").trim()) {
             errors.push({ key, kind: "block-empty", detail: `${block?.type} 의 text 가 비었습니다` });
           }
         }

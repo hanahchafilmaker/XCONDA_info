@@ -891,6 +891,7 @@ test("번역 본문 블록 — 지원 타입만 통과하고 형식 오류는 �
   assert.deepEqual(localizedBlockProblems(undefined), []);
   assert.deepEqual(localizedBlockProblems([{ type: "p", text: "본문" }]), []);
   assert.deepEqual(localizedBlockProblems([{ type: "ul", items: ["하나", "둘"] }]), []);
+  assert.equal(localizedBlockProblems([{ type: "table", rows: [["가", "나"]] }]).length, 0);
   const bad = localizedBlockProblems([
     { type: "image", src: "x" }, // 번역가는 이미지를 직접 넣지 않습니다
     { type: "p", text: "  " },
@@ -898,11 +899,12 @@ test("번역 본문 블록 — 지원 타입만 통과하고 형식 오류는 �
     { type: "h2" },
   ]);
   assert.equal(bad.length, 4);
+  // 지원 타입이 늘면(표 등) 위 목록이 4개가 아니게 되므로, 개수 대신 내용을 확인합니다.
   assert.match(bad[0], /지원하지 않는 type\(image\)/);
   assert.match(bad[1], /text 가 비어/);
   assert.match(bad[2], /items 배열/);
   assert.match(bad[3], /text 가 비어/);
-  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote"]);
+  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout"]);
 });
 
 test("본문 이미지 위치는 '앞에 있던 글 블록 수'로 계산한다", () => {
@@ -957,6 +959,61 @@ test("번역 본문이 있으면 번역 페이지에 본문·이미지가 렌더
   const en = out.files.get("en/qna/refund-policy/index.html");
   assert.match(en, /<h2>Refund window<\/h2>/);
   assert.match(en, /<p[^>]*>Seven days from payment\.<\/p>/);
+});
+
+test("표 블록은 문자열 2차원 배열로 쓰고, 칸 수가 다르면 거부한다", () => {
+  const table = { type: "table", rows: [["플랜", "가격"], ["Starter", "10,450원"]] };
+  assert.deepEqual(localizedBlockProblems([table]), []);
+  const html = blocksToHtml(mergeLocalizedBlocks([table]), { alt: "" });
+  assert.match(html, /<table>/, "표가 렌더되지 않았습니다");
+  assert.match(html, /<td>플랜<\/td>/);
+
+  const ragged = { type: "table", rows: [["플랜", "가격"], ["Starter"]] };
+  assert.match(localizedBlockProblems([ragged])[0], /같은 칸 수/);
+
+  const empty = { type: "table", rows: [] };
+  assert.match(localizedBlockProblems([empty])[0], /rows 배열이 필요/);
+
+  const blank = { type: "table", rows: [["플랜", " "]] };
+  assert.match(localizedBlockProblems([blank])[0], /비어 있지 않은/);
+});
+
+test("콜아웃 블록과 **굵게** 표기가 원문 강조를 잃지 않고 렌더된다", () => {
+  const blocks = [
+    { type: "callout", icon: "📌", text: "**Key summary**: seven steps in total." },
+    { type: "ul", items: ["**Input**: the scenario", "Deliverable: a locked scenario"] },
+  ];
+  assert.deepEqual(localizedBlockProblems(blocks), []);
+  const html = blocksToHtml(mergeLocalizedBlocks(blocks), { alt: "" });
+  assert.match(html, /<aside class="callout notion-default"><p>📌 <strong>Key summary<\/strong>/);
+  assert.match(html, /<li><strong>Input<\/strong>: the scenario<\/li>/);
+  assert.match(localizedBlockProblems([{ type: "callout", icon: "📌", text: " " }])[0] || "", /callout 에 text/);
+});
+
+test("번역 블록 구조가 원문과 다르면 빌드 경고를 남긴다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {
+      en: {
+        ...EN_FIXTURE.en,
+        entries: {
+          "qna/refund-policy": {
+            title: "How do refunds work?",
+            summary: "Ask within 7 days for unused credits.",
+            blocks: [{ type: "p", text: "Seven days from payment." }, { type: "p", text: "Unused credits only." }],
+          },
+        },
+      },
+    },
+  });
+  assert.ok(
+    out.warnings.some((w) => w.includes("블록 구조가 원문과 다릅니다")),
+    "구조 경고가 없습니다 — 이미지 위치가 조용히 어긋날 수 있습니다",
+  );
 });
 
 test("본문이 있으면 요약을 첫 문단으로 중복 출력하지 않는다", () => {

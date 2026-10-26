@@ -162,7 +162,23 @@ export function loadTranslations(root) {
  *   {"type":"p" | "h2" | "h3" | "quote", "text":"..."} · {"type":"ul" | "ol", "items":["...", "..."]}
  * 본문 이미지는 번역하지 않습니다 — 한국어 원문의 이미지를 **같은 위치**에 자동으로 넣습니다.
  * ------------------------------------------------------------------------ */
-export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote"];
+export const LOCALIZED_BLOCK_TYPES = ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout"];
+
+/**
+ * 번역문의 **굵게** 표기와 줄바꿈을 렌더러가 이해하는 rich text 로 바꿉니다.
+ * 번역가에게 마크다운 전체를 요구하지 않고, 원문 강조(「입력」「쓰는 도구」 등)만
+ * 잃지 않도록 `**…**` 한 가지만 지원합니다. 줄바꿈은 그대로 두면 `<br>` 이 됩니다.
+ */
+export function localizedRichText(value) {
+  return String(value)
+    .split(/(\*\*[^*\n]+\*\*)/g)
+    .filter((part) => part !== "")
+    .map((part) =>
+      part.startsWith("**") && part.endsWith("**") && part.length > 4
+        ? { text: part.slice(2, -2), bold: true }
+        : { text: part },
+    );
+}
 
 /** 번역 본문 블록의 형식 문제를 문자열 목록으로 돌려줍니다(비어 있으면 정상). */
 export function localizedBlockProblems(blocks) {
@@ -186,6 +202,32 @@ export function localizedBlockProblems(blocks) {
       }
       if (block.items.some((item) => typeof item !== "string" || !item.trim())) {
         problems.push(`${at}: items 원소는 비어 있지 않은 문자열이어야 합니다`);
+      }
+      return;
+    }
+    // 콜아웃(아이콘 + 한 덩어리 글) — 원문의 📌 · ⚠️ · 💡 안내 상자
+    if (block.type === "callout") {
+      if (typeof block.text !== "string" || !block.text.trim()) problems.push(`${at}: callout 에 text 가 필요합니다`);
+      if (block.icon != null && typeof block.icon !== "string") problems.push(`${at}: callout 의 icon 은 문자열이어야 합니다`);
+      return;
+    }
+    // 표 — 번역가는 `rows: [["칸","칸"], …]` 처럼 문자열 2차원 배열만 씁니다.
+    if (block.type === "table") {
+      if (!Array.isArray(block.rows) || block.rows.length === 0) {
+        problems.push(`${at}: table 에 rows 배열이 필요합니다`);
+        return;
+      }
+      if (!block.rows.every((row) => Array.isArray(row) && row.length > 0)) {
+        problems.push(`${at}: table 의 각 행은 문자열 배열이어야 합니다`);
+        return;
+      }
+      if (block.rows.some((row) => row.some((cell) => typeof cell !== "string" || !cell.trim()))) {
+        problems.push(`${at}: table 칸은 비어 있지 않은 문자열이어야 합니다`);
+        return;
+      }
+      const width = block.rows[0].length;
+      if (block.rows.some((row) => row.length !== width)) {
+        problems.push(`${at}: table 의 모든 행은 같은 칸 수여야 합니다(${width}칸)`);
       }
       return;
     }
@@ -221,8 +263,40 @@ const imageBlock = (img) => ({ type: "img", src: img.src, caption: img.caption |
 
 /** `{type,text}` / `{type,items}` 만 남깁니다(여분 키가 렌더러로 새지 않게). */
 function stripBlockOrder(block) {
-  if (block.type === "ul" || block.type === "ol") return { type: block.type, items: block.items.map((i) => String(i)) };
-  return { type: block.type, text: String(block.text) };
+  if (block.type === "ul" || block.type === "ol") {
+    return { type: block.type, items: block.items.map((i) => localizedRichText(i)) };
+  }
+  // 표는 렌더러(src/content/body.js)가 쓰는 모양으로 바꿔 넘깁니다 — 칸은 rich text 배열.
+  if (block.type === "table") {
+    return {
+      type: "table",
+      rows: block.rows.map((row) => ({ cells: row.map((cell) => localizedRichText(cell)) })),
+    };
+  }
+  if (block.type === "callout") {
+    return { type: "callout", icon: String(block.icon ?? ""), color: "default", text: localizedRichText(block.text) };
+  }
+  return { type: block.type, text: localizedRichText(block.text) };
+}
+
+/**
+ * 글이 든 블록인지. 원문(노션) 블록은 rich text 배열이고, 콜아웃은 본문이 children 에 들어 있습니다.
+ * 빈 문단·빈 인용은 구조 비교에서 빼기 위해 씁니다.
+ */
+export function blockHasText(block) {
+  if (!block) return false;
+  if (block.type === "table" || block.type === "ul" || block.type === "ol") return true;
+  const text = block.text;
+  if (Array.isArray(text)) return text.some((seg) => String(seg?.text ?? "").trim());
+  if (String(text ?? "").trim()) return true;
+  if (block.type === "callout") {
+    return (block.children ?? []).some((c) => {
+      const t = c?.text;
+      if (Array.isArray(t)) return t.some((seg) => String(seg?.text ?? "").trim());
+      return Boolean(String(t ?? "").trim());
+    });
+  }
+  return false;
 }
 
 /** 한국어 원문 블록 → 본문 이미지 위치 목록(`after` = 앞에 있는 글 블록 수) */
@@ -369,6 +443,22 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       for (const problem of bodyProblems) missing.push(`${I18N_DIR}/${code}.json › ${it.key} ${problem}`);
       const bodyBlocks = bodyProblems.length ? [] : mergeLocalizedBlocks(it.tr.blocks, it.record.bodyImages);
       const bodyHtml = bodyBlocks.length ? blocksToHtml(bodyBlocks, { alt: title }) : "";
+      // 구조 검사 — 번역 블록 수/종류가 원문과 다르면 이미지가 엉뚱한 자리에 들어갑니다.
+      if (!bodyProblems.length && it.tr.blocks?.length) {
+        // 빈 문단·빈 인용은 원문의 줄 간격일 뿐이라 구조 비교에서 뺍니다(번역 파일에는 넣지 않습니다).
+        const shape = (blocks) =>
+          blocks
+            .filter((b) => !["img", "video", "divider"].includes(b.type))
+            .filter((b) => blockHasText(b))
+            .map((b) => b.type);
+        const koShape = shape(it.record.blocks ?? []);
+        const trShape = shape(it.tr.blocks);
+        if (koShape.join(",") !== trShape.join(",")) {
+          missing.push(
+            `${I18N_DIR}/${code}.json › ${it.key} 블록 구조가 원문과 다릅니다(원문 ${koShape.length} · 번역 ${trShape.length}) — 이미지 위치가 어긋날 수 있습니다`,
+          );
+        }
+      }
       if (bodyHtml) bodyCount[code] = (bodyCount[code] ?? 0) + 1;
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
@@ -1029,6 +1119,8 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       pinned: isPinned(row),
       seq: pageRecords.length,
       bodyBlocks: blocks.length,
+      // 번역 정렬 검사·번역 도구용 — 본문 블록 원형(번역 파일과 구조를 맞춰야 합니다)
+      blocks,
       bodyImages: bodyImagesOf(blocks),
     });
   }

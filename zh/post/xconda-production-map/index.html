@@ -45,23 +45,22 @@
 <article>
 <h1>从一份剧本到成片：XCONDA 制作地图 7 个步骤</h1>
 <p class="seo-meta">中文 · XCONDA Hub</p>
-<p class="notion-default">Cubeberry 的 AI 视频从剧本出发，在 XCONDA 中制作画面，用 Suno 配上声音，最后在 Premiere Pro 中完成。本文用一张地图梳理整体顺序，并列出每一步的输入、成果与检查项；各步骤的详细做法将在连载中继续。</p>
 <p class="notion-default">AI 视频制作 EP.00 全局地图 —— 第一次阅读请从这里开始。</p>
 <p class="notion-default">大家好，这里是 XCONDA。Cubeberry 的 AI 视频从剧本出发，在 XCONDA 中制作画面，用 Suno 配上声音，最后在 Premiere Pro 中完成。本文用一张地图和逐步说明展示整个过程。每一步的详细方法将在下方连载中继续。</p>
-<p class="notion-default">📌</p>
-<p class="notion-default">要点：整体分为准备（01〜04）、视频（05）、后期（06〜07）共 7 个步骤。本文用一张地图展示这一顺序，并整理每一步投入什么、产出什么、进入下一步前要确认什么。</p>
+<aside class="callout notion-default"><p>📌 要点：整体分为准备（01〜04）、视频（05）、后期（06〜07）共 7 个步骤。本文用一张地图展示这一顺序，并整理每一步投入什么、产出什么、进入下一步前要确认什么。</p></aside>
 <p class="notion-default">适合人群：第一次制作 AI 视频的人、用过工具但镜头衔接不顺畅的人、需要在团队内共享制作顺序的人。</p>
 <p class="notion-default">阅读方式：初次接触请先读本文，遇到卡住的步骤再前往该步骤的详细文章。连载会持续更新，因此本文也起到目录的作用。</p>
 <h3>一眼看清整体流程</h3>
 <p class="notion-default">剧本 → 参考图像 → 文字分镜 → 故事板与走位 → 视频生成 → 声音 → 剪辑与完成</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>区段</td><td>步骤</td><td>做什么</td><td>使用的工具</td></tr><tr><td>准备</td><td>01 剧本</td><td>确定一切工作起点的剧本</td><td>剧本、脚本</td></tr><tr><td>准备</td><td>02 准备参考图像</td><td>制作人物与空间的基准图像（角色设定图、背景设定图）</td><td>Claude、FLEXBOARD 技能、GPT Image、XCONDA Turn</td></tr><tr><td>准备</td><td>03 文字分镜与 FLEXBOARD 提示词</td><td>先把每个镜头用文字整理出来</td><td>Claude、FLEXBOARD 技能</td></tr><tr><td>准备</td><td>04 故事板与走位视频</td><td>确认每个镜头的关键画面，用视频固定人物走位</td><td>XCONDA FLEXBOARD、XCONDA Blocking Board</td></tr><tr><td>视频</td><td>05 Seedance 提示词与视频生成</td><td>放入前面所有步骤的成果并生成视频</td><td>Claude、Seedance 提示词技能、提示词编辑器、XCONDA</td></tr><tr><td>后期</td><td>06 声音制作</td><td>制作视频要用的声音</td><td>Suno</td></tr><tr><td>后期</td><td>07 合成视频与声音完成</td><td>把画面与声音合成完成</td><td>Premiere Pro</td></tr></tbody></table></div>
 <p class="notion-default">地图上以黄色边框标出的位置是 04 故事板与走位，因为它是连接准备阶段与视频阶段的枢纽。前面各步的成果在这里汇合，在这里确定的关键画面又成为 05 提示词的基准。如果对 05 的结果不满意，就修正问题部分重新生成，由此形成一个循环。</p>
 <h3>为什么在生成视频前要做四个步骤的准备</h3>
 <p class="notion-default">只给视频 AI 输入文字，每次都会得到不同的脸、不同的服装和不同的构图。把镜头接起来，看起来就像每个镜头由不同的人演出。准备步骤就是为了在制作视频前把这部分不确定性固定下来。</p>
 <p class="notion-default">最容易理解的是我们代表在 KBS 执导电视剧时的比喻。在拍摄现场，开机前要先确定演员、搭好布景，并用分镜确认镜头的顺序和构图。因为在纸上修改几乎没有成本，而拍摄完成后再改就必须重拍。AI 视频每运行一次也会消耗点数。发现构图不对再从头运行，等同于把整场戏重拍一遍。</p>
 <p class="notion-default">关键在于文字与图像的分工。两者各自承担对方做不到的事。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>文字负责</td><td>图像负责</td></tr><tr><td>镜头顺序、构图、动线、动作、时机</td><td>脸、服装、质感、时代考据</td></tr></tbody></table></div>
 <p class="notion-default">无论用文字把脸或服装描述得多详细，都不如图像准确；反之，镜头的顺序与节奏很难用图像传达。因此人物与空间交给图像，流程与动作交给文字。</p>
-<p class="notion-default">🔎</p>
-<p class="notion-default">镜头跳跃的原因在《背景与镜头一致性》一文中，实战解决方法在《9 个镜头的诅咒》指南中有更详细的说明。</p>
+<aside class="callout notion-default"><p>🔎 镜头跳跃的原因在《背景与镜头一致性》一文中，实战解决方法在《9 个镜头的诅咒》指南中有更详细的说明。</p></aside>
 <h3>逐步详解</h3>
 <p class="notion-default">每一步都按 输入 → 成果 → 进入下一步前的确认 整理。进入下一步前的确认，是在进入下一步之前自行检查的项目。</p>
 <h3>01. 撰写剧本</h3>
@@ -70,28 +69,23 @@
 <h3>02. 准备参考图像</h3>
 <ul><li>使用的工具：Claude、XCONDA FLEXBOARD 技能、GPT Image、XCONDA Turn</li><li>输入：剧本</li><li>成果：每个人物的脸部图像（角色设定图）、场景图像（背景设定图）、必要时用 Turn 制作的镜头图像</li><li>进入下一步前的确认：每个人物是否都有脸部图像、是否有场景图像、难以实现的镜头是否用 Turn 制作</li></ul>
 <p class="notion-default">如果已有参考图像，可以与剧本一起直接放入。如果没有，FLEXBOARD 技能会阅读剧本，并写出生成角色设定图与背景设定图的提示词。把该提示词复制到 GPT Image 生成图像，再把生成的图像放回去，就是这个顺序。</p>
-<p class="notion-default">🎥</p>
-<p class="notion-default">活用 XCONDA Turn：用 360 度虚拟场景完成两件事。Turn 是一款通过一张照片或一段文字描述生成可 360 度环视虚拟场景的工具。先建立一个空间，再在其中转动相机选取角度，因此即使切换镜头，门、窗和小道具的位置也能保持一致。方法 A — 制作背景设定图：1）把背景设定图的一个面（正面图像）放入 Turn。2）以该面为基准生成左侧、右侧和背面。3）把四个面合并作为背景参考使用，这个结果会进入 05 视频生成的背景参考。方法 B — 制作故事板镜头图像：1）创建 360 度虚拟场景。2）在场景中放置人物与道具。3）转到需要的角度导出镜头图像，这个结果会直接作为镜头图像进入 04 故事板。</p>
+<aside class="callout notion-default"><p>🎥 活用 XCONDA Turn：用 360 度虚拟场景完成两件事。Turn 是一款通过一张照片或一段文字描述生成可 360 度环视虚拟场景的工具。先建立一个空间，再在其中转动相机选取角度，因此即使切换镜头，门、窗和小道具的位置也能保持一致。方法 A — 制作背景设定图：1）把背景设定图的一个面（正面图像）放入 Turn。2）以该面为基准生成左侧、右侧和背面。3）把四个面合并作为背景参考使用，这个结果会进入 05 视频生成的背景参考。方法 B — 制作故事板镜头图像：1）创建 360 度虚拟场景。2）在场景中放置人物与道具。3）转到需要的角度导出镜头图像，这个结果会直接作为镜头图像进入 04 故事板。</p></aside>
 <p class="notion-default">为什么要这样做？如果每个镜头的背景都单独生成，窗户、家具和道具的布置就会在不同镜头间变化。真实拍摄现场也是先搭好布景，再在其中只移动相机——先固定空间，只改变角度。方法 B 尤其适合自行布置并导出仅靠文字很难呈现的复杂构图。</p>
-<p class="notion-default">⚠️</p>
-<p class="notion-default">常见错误：一次性放入同一人物的多张脸部图像，会导致面部混合而变模糊。原则上每个人物只放 1 张脸部图像。</p>
+<aside class="callout notion-default"><p>⚠️ 常见错误：一次性放入同一人物的多张脸部图像，会导致面部混合而变模糊。原则上每个人物只放 1 张脸部图像。</p></aside>
 <h3>03. 文字分镜与 FLEXBOARD 提示词</h3>
 <ul><li>使用的工具：Claude、XCONDA FLEXBOARD 技能</li><li>输入：剧本、02 中制作的参考图像</li><li>成果：文字分镜（每个镜头的时长、机位、动作、台词、音效）以及 FLEXBOARD 用提示词</li><li>进入下一步前的确认：每个镜头是否写明了起始动作与结束动作</li></ul>
 <p class="notion-default">文字分镜是先把场景用文字写下来的分镜。在这一步还会一并检查镜头时长总和是否吻合、单个镜头是否塞入过多动作、镜头是否出现不自然的跳跃、出场人物数量是否正确。技能的下载与安装方法在下方。</p>
 <h3>04. 故事板与走位视频</h3>
 <ul><li>使用的工具：XCONDA FLEXBOARD、XCONDA Blocking Board</li><li>输入：03 的 FLEXBOARD 提示词、02 中用 Turn 制作的镜头图像（难以实现的镜头）</li><li>成果：每个镜头的关键画面（故事板图像）、走位用 Puppet 视频</li><li>进入下一步前的确认：每个镜头的关键帧是否符合预期构图、Puppet 视频的走位是否符合意图</li></ul>
 <p class="notion-default">FLEXBOARD 是一款把剧本拆分为镜头、为每个镜头生成图像并在一屏中展开的故事板工具。一屏最多可编排 36 个镜头，效果好的镜头可以保留，只挑选有问题的镜头修改。按界面顺序操作的方法已整理在 FLEXBOARD 指南中。</p>
-<p class="notion-default">🎬</p>
-<p class="notion-default">XCONDA Blocking Board：用视频展示人物走位。像「从左边的门进入，绕过桌子站到窗边」这类动作，如果只写成文字，模型有时会走错方向，尤其是多个人物同时移动的场面更容易出错。Blocking Board 会生成灰色人体模型（Puppet）在空间中移动的视频，把这个视频放入视频生成时一起使用，Seedance 就会以视频而非文字来读取走位。分工是：脸部与服装由参考图像负责，移动路径与节奏由 Puppet 视频负责。</p>
+<aside class="callout notion-default"><p>🎬 XCONDA Blocking Board：用视频展示人物走位。像「从左边的门进入，绕过桌子站到窗边」这类动作，如果只写成文字，模型有时会走错方向，尤其是多个人物同时移动的场面更容易出错。Blocking Board 会生成灰色人体模型（Puppet）在空间中移动的视频，把这个视频放入视频生成时一起使用，Seedance 就会以视频而非文字来读取走位。分工是：脸部与服装由参考图像负责，移动路径与节奏由 Puppet 视频负责。</p></aside>
 <p class="notion-default">Blocking Board 目前作为测试版免费开放（到视频生成前阶段为止）。粘贴场景提示词并按 Create，就会构建 3D 空间与人物，用 Add camera 添加相机后，可在 Output 标签页发送到 Seedance。详细说明请参阅 Blocking Board 测试版公告。</p>
 <p class="notion-default">Puppet 不需要看起来像人。只要位置、方向和速度正确即可。请记住在 05 视频生成时要把 Puppet 视频一起附上。</p>
-<p class="notion-default">💰</p>
-<p class="notion-default">在这里修改成本最低。在构图错误的情况下生成视频，就需要在视频阶段反复重新生成。请先在故事板中修正。</p>
+<aside class="callout notion-default"><p>💰 在这里修改成本最低。在构图错误的情况下生成视频，就需要在视频阶段反复重新生成。请先在故事板中修正。</p></aside>
 <h3>05. Seedance 提示词制作与视频生成</h3>
 <ul><li>使用的工具：Claude、Seedance 提示词技能、提示词编辑器、XCONDA</li><li>输入：FLEXBOARD 提示词与文字分镜、参考图像、故事板、04 的走位 Puppet 视频、必要时的音频参考</li><li>成果：韩英并排的双栏提示词编辑器、在 XCONDA 中生成的视频</li><li>修改方法：查看结果后用对话说明要修改的地方，编辑器会更新，然后再次生成。重复这一循环直到满意。</li></ul>
 <p class="notion-default">Seedance 提示词技能以关键画面为基础，为 Seedance 2.5 编写提示词。它以四位导演体系和十个区块结构进行整理，并支持韩语与英语并排修改。用韩语修改后英语会随之重写，因此无需单独修改英语。该技能正在准备中，可从 XCONDA Hub 下载。</p>
-<p class="notion-default">✅</p>
-<p class="notion-default">在 XCONDA 视频生成界面中要放入的内容：四项缺一不可。① 参考图像（角色设定图、背景设定图、Turn 设定图、道具）：固定脸部、服装和空间。② 故事板（04 中制作的逐镜头图像）：固定构图、走位和镜头顺序。③ Seedance 用提示词（在编辑器中完成）：指示动作、节奏和机位。④ 走位 Puppet 视频（在 04 的 Blocking Board 中制作）：固定人物走位与移动路径。</p>
+<aside class="callout notion-default"><p>✅ 在 XCONDA 视频生成界面中要放入的内容：四项缺一不可。① 参考图像（角色设定图、背景设定图、Turn 设定图、道具）：固定脸部、服装和空间。② 故事板（04 中制作的逐镜头图像）：固定构图、走位和镜头顺序。③ Seedance 用提示词（在编辑器中完成）：指示动作、节奏和机位。④ 走位 Puppet 视频（在 04 的 Blocking Board 中制作）：固定人物走位与移动路径。</p></aside>
 <p class="notion-default">四项中缺任何一项，AI 都会自行填补该部分。例如去掉参考图像，即使提示词写了「@image1 中的女性」也无法知道是谁，每个镜头的脸都会不同。去掉故事板，即使提示词相同构图也会每次变化；去掉 Puppet 视频，人物会朝与提示词不符的方向行走，或多人物的走位互相冲突。</p>
 <p class="notion-default">在视频生成界面中把模式选为 Reference（Ref-to-video），在提示词中输入 @ 指定哪个参考对应什么。画面比例、分辨率、时长和 High Quality 在 Options 标签页中选择，Seedance 2.5 一次最多可生成 30 秒。</p>
 <p class="notion-default">在反复修改与重新生成的阶段，最近新增的 Draft 功能会很有帮助。先用 480p 草稿确认结果，只把满意的草稿做成 1080p 最终版。不过最终版是用与草稿相同的素材重新生成的，细节表现可能略有不同，草稿仅在生成后 7 天内有效。详情请查看 Draft 公告。</p>
@@ -103,10 +97,12 @@
 <p class="notion-default">最后一步。接镜头之前，建议把 02 的参考图像和 03 的文字分镜放在手边，再通读一遍，确认服装、道具和背景没有在镜头之间发生变化。</p>
 <h3>各步骤一页汇总</h3>
 <p class="notion-default">为了能一边看地图一边检查，把输入、成果和进入下一步前的确认汇总成一张表。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>步骤</td><td>输入</td><td>成果</td><td>进入下一步前的确认</td></tr><tr><td>01 剧本</td><td>想法、策划案</td><td>确定的剧本</td><td>人物与地点是否已确定</td></tr><tr><td>02 参考</td><td>剧本</td><td>角色设定图、背景设定图、Turn 镜头图像</td><td>每个人物是否都有脸部图像、是否有场景图像、困难镜头是否用 Turn 制作</td></tr><tr><td>03 文字分镜</td><td>剧本、参考图像</td><td>文字分镜、FLEXBOARD 提示词</td><td>每个镜头是否写明起始与结束动作</td></tr><tr><td>04 故事板·走位</td><td>FLEXBOARD 提示词、Turn 镜头图像</td><td>每个镜头的关键画面、走位人体模型视频</td><td>关键帧构图与人体模型走位是否符合意图</td></tr><tr><td>05 视频生成</td><td>参考、故事板、提示词、人体模型视频</td><td>双栏提示词编辑器、生成的视频</td><td>四项是否都已放入</td></tr><tr><td>06 声音</td><td>成片的氛围与时长</td><td>声音文件</td><td>是否符合视频的时长与氛围</td></tr><tr><td>07 完成</td><td>视频片段、声音</td><td>成片</td><td>镜头衔接、音量、字幕</td></tr></tbody></table></div>
 <h3>五个常见错误</h3>
 <ul><li>直接先跑视频：先用图像确认的话，只需重做一个错误镜头；用视频则要整段重跑。</li><li>放入同一人物的多张脸部图像：面部会混合。每个人物 1 张是原则。</li><li>视频生成只放入四项中的一部分：参考图像、故事板、提示词、Puppet 视频中缺少的部分，AI 都会自行填补。</li><li>期待 Puppet 视频呈现脸部与表情：Puppet 只负责位置、方向和速度。脸部是参考图像的任务。</li><li>连效果好的镜头也重新生成：只挑选有问题的镜头修改。</li></ul>
 <h3>连载目录</h3>
 <p class="notion-default">AI 视频制作每次更新一个步骤。已发布的文章已加上链接，其余将按顺序公开。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>集</td><td>标题</td><td>内容</td><td>阅读</td></tr><tr><td>EP.00</td><td>全局地图</td><td>7 个步骤如何衔接</td><td>正在阅读本文</td></tr><tr><td>EP.01</td><td>从剧本开始</td><td>如何写出适合 AI 视频的剧本</td><td>准备中</td></tr><tr><td>EP.02</td><td>制作参考</td><td>角色设定图、XCONDA Turn 背景设定图与镜头图像</td><td>准备中</td></tr><tr><td>EP.03</td><td>文字分镜与 FLEXBOARD 提示词</td><td>技能用法与成果解读</td><td>准备中</td></tr><tr><td>EP.04</td><td>故事板与 Blocking Board</td><td>确定关键帧、用人体模型视频固定走线</td><td>‣, ‣</td></tr><tr><td>EP.05</td><td>Seedance 提示词与视频生成</td><td>编辑器解读、修改前后对比</td><td>准备中</td></tr><tr><td>EP.06</td><td>用 Suno 制作声音</td><td>制作契合视频的声音</td><td>准备中</td></tr><tr><td>EP.07</td><td>在 Premiere Pro 完成</td><td>合成画面与声音并进行最终导出</td><td>准备中</td></tr></tbody></table></div>
 <p class="notion-default">值得一起阅读的还有：说明为什么在生成视频前先做分镜的文章，以及用 Turn 与 FLEXBOARD 确保镜头一致性的制作案例。</p>
 <h3>给现在就要开始的你</h3>
 <p class="notion-default">XCONDA 正在举办 FLEXBOARD 上线纪念活动，推出 Seedance 2.5 优惠。</p>
