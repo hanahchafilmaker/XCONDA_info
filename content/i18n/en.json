@@ -2085,6 +2085,381 @@
         }
       ]
     },
+    "post/seedance-storyboard-before-render": {
+      "title": "Raise Your Seedance Hit Rate: Storyboard Before You Render",
+      "summary": "Every Seedance run spends credits. Check a 36-cut storyboard in FLEXBOARD before rendering, then build the prompt with two Claude skills - the XCONDA production flow.",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hello, this is XCONDA."
+        },
+        {
+          "type": "callout",
+          "icon": "📌",
+          "text": "**In short** Seedance 2.5 spends credits every time you run a video. So before you run video, build a cut-by-cut storyboard (key images) in FLEXBOARD and check it first. This article covers what FLEXBOARD is, what the screens look like, and how a scenario becomes a Seedance video in XCONDA, with real screens throughout."
+        },
+        {
+          "type": "p",
+          "text": "**Who it is for**: anyone who has burned credits while running Seedance, anyone starting with AI video, and anyone whose faces change from cut to cut."
+        },
+        {
+          "type": "quote",
+          "text": "The advert at the top of this article was made this way: pull key images in FLEXBOARD, build the prompt with the XCONDA skill, then generate once in Seedance 2.5."
+        },
+        {
+          "type": "h3",
+          "text": "Why running video first feels expensive"
+        },
+        {
+          "type": "p",
+          "text": "Seedance 2.5 gives good results, and it costs credits every run. If the first video misses the intent, you have to run it again from the start: a character changed, the background jumped, the cut order feels off."
+        },
+        {
+          "type": "p",
+          "text": "Checking as images costs far less than checking as video. Put the two side by side and the difference is clear."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Check as video first",
+              "Check as storyboard (images) first"
+            ],
+            [
+              "When a cut is wrong",
+              "Regenerate the whole video",
+              "Regenerate that one image"
+            ],
+            [
+              "Time to check",
+              "Watch the video to the end to find it",
+              "Lay the cuts out on one screen and see in seconds"
+            ],
+            [
+              "How to fix",
+              "Change the prompt and regenerate repeatedly",
+              "Edit one cut"
+            ],
+            [
+              "Credits",
+              "Grow a lot with every repeat",
+              "Minimal, one image at a time"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "So before running video you need a stage where you look at \"are these the right cuts?\" as images. It is the same reason a drama set lines up the storyboard before the camera rolls."
+        },
+        {
+          "type": "h3",
+          "text": "FLEXBOARD is a storyboard engine"
+        },
+        {
+          "type": "p",
+          "text": "FLEXBOARD is a storyboard engine that turns a scenario into cut-by-cut images. Because it shows text and image together for every cut, you can check framing and characters before making video and fix only the cuts you do not like. It is designed to work with Seedance 2.5."
+        },
+        {
+          "type": "p",
+          "text": "Open **Storyboard** in the left sidebar of XCONDA and the **Flex Board** card appears - the one labelled \"a storyboard tool tuned for Seedance 2.5\". Click it and choose **New Project**."
+        },
+        {
+          "type": "p",
+          "text": "It was built around the places where video production usually stalls, and it has three core features."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**The same actor stays.** Face Lock keeps the same person across cuts. Cast and backgrounds are registered as cards, and each card automatically gets a label such as @image1 or @image2.",
+            "**Regenerate only the cut you want to change.** No rebuilding everything: just that cut.",
+            "**Choose the image model.** Pick from GPT Image 2, Seedream 5.0 Pro, GPT Image 2.5 Flare or GPT Image 2.5 Sunburst. If you are new, start with the default, GPT Image 2."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "In numbers:"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Item",
+              "Detail"
+            ],
+            [
+              "Cuts on one screen",
+              "Up to 36"
+            ],
+            [
+              "Length of one cut (Shot Length)",
+              "4 to 30 seconds"
+            ],
+            [
+              "Example sum",
+              "9 cuts x 15 seconds = about 2 minutes 15 seconds in simple total"
+            ],
+            [
+              "Working method",
+              "Auto Refine (refines your idea and splits it into cuts), Instant Apply (applies a prepared scenario as is)"
+            ]
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "FLEXBOARD on screen"
+        },
+        {
+          "type": "p",
+          "text": "Here are the key screens in the order you meet them. Step-by-step instructions are in FLEXBOARD storyboards in 7 steps."
+        },
+        {
+          "type": "p",
+          "text": "**1) Enter the project and the scenario**"
+        },
+        {
+          "type": "p",
+          "text": "Set the working method, the model and the project name, then write the scenario. Do not name the emotion (\"sad\"); write a visible action such as \"hides the shard behind her back\", which is much easier to split into cuts."
+        },
+        {
+          "type": "p",
+          "text": "**2) Register cast and background cards**"
+        },
+        {
+          "type": "p",
+          "text": "This is the step that keeps the same person and the same place across cuts. On a set it corresponds to casting and locking the set. Register one card per person."
+        },
+        {
+          "type": "p",
+          "text": "**3) Set cut count and length, then read the written storyboard first**"
+        },
+        {
+          "type": "p",
+          "text": "Set the count in Number of Panels and the length in Shot Length. Then press **Text Preview Generate** and a written storyboard for each cut appears before any image is made. If the order or the cast feels wrong, fixing at this stage is fastest."
+        },
+        {
+          "type": "p",
+          "text": "**4) Read the whole flow in Sheet view**"
+        },
+        {
+          "type": "p",
+          "text": "Generating images gives you a grid of cuts. **Sheet** view gathers the cut images large, without the text. Looking at the pictures alone makes it easy to judge whether the cuts flow like real video and whether costume and props changed."
+        },
+        {
+          "type": "p",
+          "text": "**5) Fix only the cuts with problems**"
+        },
+        {
+          "type": "p",
+          "text": "This is the heart of FLEXBOARD. With Edit on a cut card you can make a quick fix of an expression or prop, or a detailed fix of the camera (Shot Size, Camera Angle, Camera Movement). Write both what changes and what stays: for example, \"change only the glasses, keep the pose and the background\"."
+        },
+        {
+          "type": "p",
+          "text": "Here is the same cut with a new composition: a tense POV frame rebuilt as a wide, tilted frame with the camera pulling back."
+        },
+        {
+          "type": "h3",
+          "text": "Two Claude skills work together"
+        },
+        {
+          "type": "p",
+          "text": "XCONDA has two skills for Claude."
+        },
+        {
+          "type": "p",
+          "text": "**1. FLEXBOARD skill**\nIt cuts a scenario into shots. As it cuts, it checks that the shot lengths add up, that no shot crams in too much action, that cuts do not jump awkwardly, and that the number of characters is right. It returns a prompt to paste into FLEXBOARD together with a written storyboard listing length, camera, action, dialogue and sound effects for every cut."
+        },
+        {
+          "type": "p",
+          "text": "**2. XCONDA prompt skill**\nIt builds a Seedance 2.5 prompt from the key images you pulled in FLEXBOARD. It organises the prompt with a four-director system and a ten-block structure, and lets you edit Korean and English side by side. Fix the Korean and the English is rewritten to match, so you never have to edit English separately."
+        },
+        {
+          "type": "h3",
+          "text": "The production flow runs like this"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "What you do",
+              "Tool",
+              "Output"
+            ],
+            [
+              "1",
+              "Prepare the scenario",
+              "Scenario, script",
+              "A final scenario"
+            ],
+            [
+              "2",
+              "Split the cuts",
+              "FLEXBOARD skill",
+              "Written storyboard, FLEXBOARD prompt"
+            ],
+            [
+              "3",
+              "Pull key images and check them; fix the cuts you dislike here",
+              "FLEXBOARD",
+              "Key image per cut"
+            ],
+            [
+              "4",
+              "Build the Seedance prompt",
+              "XCONDA prompt skill",
+              "Two-column Korean and English prompt"
+            ],
+            [
+              "5",
+              "Generate the video",
+              "Seedance 2.5",
+              "Finished video clips"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Step 3 is the important one. If you finish the fixing at the image stage rather than the video stage, you run video fewer times. For scenes where several characters cross paths, it is steadier to set the paths first in the Blocking Board. For the whole picture from scenario to sound and editing, see one scenario to a finished video: the XCONDA production map in 7 steps, which lays it out as a single map."
+        },
+        {
+          "type": "h3",
+          "text": "How we made these"
+        },
+        {
+          "type": "p",
+          "text": "**The FLEXBOARD launch advert**"
+        },
+        {
+          "type": "p",
+          "text": "The advert at the top of this article put 15 key images in as references, generated 15 cuts of 30 seconds in Seedance 2.5 in one run, then trimmed it to 26 seconds. In the Seedance generation screen you choose reference mode (Ref-to-video) and type @ in the prompt to say which image is who and what."
+        },
+        {
+          "type": "p",
+          "text": "**The Cold Site spin-off trailer**"
+        },
+        {
+          "type": "p",
+          "text": "The trailer with every cut made by AI was produced in the same order. You can watch the process of designing it cut by cut in FLEXBOARD."
+        },
+        {
+          "type": "h3",
+          "text": "The storyboard is what stops cuts from jumping"
+        },
+        {
+          "type": "p",
+          "text": "Video AI does not remember the previous cut. So when the cut changes, a bandage moves to the other arm, blood stains disappear and window frames change. Finding that after the video is finished is expensive; finding it at the storyboard stage costs one image."
+        },
+        {
+          "type": "p",
+          "text": "Space in Turn, faces and framing in FLEXBOARD, and everything that must stay consistent pinned with references and prompts - that is written up as five steps in Nine cuts without the curse: how to cut it down with XCONDA today."
+        },
+        {
+          "type": "h3",
+          "text": "The same principle as an on-set storyboard"
+        },
+        {
+          "type": "p",
+          "text": "On drama sets it is common to shoot without a full read-through or a site visit, and to be handed last-minute pages. What sorts out the day's cuts quickly on location is the on-set storyboard. A storyboard cuts wasted trips, because fixing on paper before the camera rolls costs almost nothing, while fixing after the shoot means shooting again."
+        },
+        {
+          "type": "p",
+          "text": "AI video is the same. Running video without a storyboard spends credits on wasted trips. FLEXBOARD is the on-set storyboard of AI video production."
+        },
+        {
+          "type": "h3",
+          "text": "Checklist before you hand over to Seedance"
+        },
+        {
+          "type": "todo",
+          "items": [
+            "Did you check in Sheet view that the cuts connect naturally?",
+            "Do the image and the scene description match on every cut?",
+            "Are the cast tokens (@imageN) correct on every cut?",
+            "Is any cut missing?",
+            "Do shot length, frame size, camera angle and camera movement match the intent of the cut?"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Common mistakes"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Skipping the written storyboard and generating images.** If the cut order is wrong, the images have to be made again.",
+            "**Registering the same person on several cards.** Tokens get confusing and faces get mixed.",
+            "**Regenerating cuts that already work.** Pick only the problem cuts and fix them with Edit.",
+            "**Reviewing only in Panel view.** Reading text makes it easy to miss whether the pictures connect. Read the pictures alone in Sheet view.",
+            "**Switching image models halfway.** The look shifts from cut to cut, so stay with the model you chose."
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Frequently asked questions"
+        },
+        {
+          "type": "p",
+          "text": "**Q. How many cuts, and how long, can FLEXBOARD make?**\nUp to 36 cuts on one screen, and each cut can be set between 4 and 30 seconds."
+        },
+        {
+          "type": "p",
+          "text": "**Q. How long a video can Seedance 2.5 make?**\nPer the developer ByteDance Seed, up to 30 seconds of video with sound in one run. Aspect ratio, resolution and duration are chosen in the settings bar of the XCONDA video generation screen, and prompts can be up to 30,000 characters."
+        },
+        {
+          "type": "p",
+          "text": "**Q. Where do I get the skills?**\nThe FLEXBOARD skill can be downloaded as a zip from the bottom of Nine cuts without the curse: how to cut it down with XCONDA today, and installed in Claude under Customize > Skills. The XCONDA prompt skill is being prepared for download from the XCONDA Hub, which is opening soon; we will announce it separately when it opens."
+        },
+        {
+          "type": "h3",
+          "text": "Further reading"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "The whole map: from one scenario to a finished video - the XCONDA production map in 7 steps",
+            "Screen-by-screen guide: the last check before you run video - FLEXBOARD storyboards in 7 steps",
+            "Fixing jumping cuts: nine cuts without the curse - how to cut it down with XCONDA today",
+            "Series EP.03: cut-by-cut storyboards in FLEXBOARD (AI video production workflow EP.03)"
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "If you want to start now"
+        },
+        {
+          "type": "p",
+          "text": "XCONDA is running a Seedance 2.5 discount together with the FLEXBOARD launch promotion."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Korea: 30% usage discount + 10% price discount, up to 40%",
+            "United States: up to 30% usage discount",
+            "Period: 11:00 on 7 October to 11:00 on 6 November (Korea time)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Go to XCONDA: https://www.xconda.ai/"
+        },
+        {
+          "type": "p",
+          "text": "For adoption or partnership enquiries, contact us below."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: cubeberry@cuberry.kr",
+            "Phone: +82-70-8095-2302 (weekdays 10:00-17:00)"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Thank you for reading another long one today!"
+        }
+      ]
+    },
     "post/skillry-ai-video-prompt-reference": {
       "title": "'The Pinterest of AI video': Skillry publishes the real prompt next to the result",
       "summary": "Skillry is a reference site that shows high-end 3D and motion-graphics results side by side with the actual prompts used and the remakes they produce.",

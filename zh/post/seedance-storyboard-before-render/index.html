@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hans" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#0b0b0b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>提高 Seedance 命中率：先做分镜，再跑视频 | XCONDA Hub — 问答、指南与公告</title>
+    <meta name="description" content="Seedance 每跑一次都要花积分。跑之前先用 FLEXBOARD 确认 36 个镜头的分镜，再用两个 Claude 技能做出提示词——XCONDA 的制作流程。" />
+    <link rel="canonical" href="https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="提高 Seedance 命中率：先做分镜，再跑视频" />
+    <meta property="og:description" content="Seedance 每跑一次都要花积分。跑之前先用 FLEXBOARD 确认 36 个镜头的分镜，再用两个 Claude 技能做出提示词——XCONDA 的制作流程。" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-seedance-storyboard-before-render.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/" />
+    <meta property="article:published_time" content="2026-10-09" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="提高 Seedance 命中率：先做分镜，再跑视频" />
+    <meta name="twitter:description" content="Seedance 每跑一次都要花积分。跑之前先用 FLEXBOARD 确认 36 个镜头的分镜，再用两个 Claude 技能做出提示词——XCONDA 的制作流程。" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-seedance-storyboard-before-render.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"},{"@type":"WebPage","@id":"https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/#webpage","url":"https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/","name":"提高 Seedance 命中率：先做分镜，再跑视频","inLanguage":"zh-Hans","isPartOf":{"@id":"https://hub.xconda.ai/#website"}}]}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style>.seo-article{box-sizing:border-box;min-height:100vh;max-width:760px;margin:0 auto;padding:40px 22px;background:#0b0b0b;color:#e4e4e7;font:16px/1.8 Pretendard,system-ui,sans-serif}.seo-article h1{font-size:28px;line-height:1.3;color:#fff;margin:12px 0}.seo-article h2{font-size:20px;color:#fff;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#fff;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#ffd60a}.seo-meta{color:#a1a1aa;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #3f3f46;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #3f3f46;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#a1a1aa}.seo-langs strong{color:#fff}.seo-note{color:#a1a1aa;font-size:14px;border-top:1px solid #27272a;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-lang="zh">
+<nav aria-label="breadcrumb"><a href="../../">首页</a> / <a href="../">post</a></nav>
+<nav class="seo-langs" aria-label="Language"><a href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" hreflang="ko">한국어</a><a href="https://hub.xconda.ai/en/post/seedance-storyboard-before-render/" hreflang="en">English</a><a href="https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/" hreflang="ja">日本語</a><strong aria-current="true">中文</strong></nav>
+<article>
+<h1>提高 Seedance 命中率：先做分镜，再跑视频</h1>
+<p class="seo-meta">中文 · XCONDA Hub</p>
+<p class="notion-default">你好，这里是 XCONDA。</p>
+<aside class="callout notion-default"><p>📌 <strong>要点</strong> Seedance 2.5 每跑一次视频都会消耗积分。所以建议在跑视频之前，先用 FLEXBOARD 做逐镜头分镜（关键图）确认。本文结合真实画面，讲清 FLEXBOARD 是什么、界面长什么样，以及从剧本到 Seedance 视频的 XCONDA 制作流程。</p></aside>
+<p class="notion-default"><strong>适合谁读</strong>：用 Seedance 跑视频时心疼过积分的人、刚准备开始做 AI 视频的人、为每个镜头脸不一样而发愁的人</p>
+<blockquote><p>本文开头的广告片也是用这个方法做的：在 FLEXBOARD 出关键图，用 XCONDA 技能生成提示词，再用 Seedance 2.5 一次生成。</p></blockquote>
+<p><a href="https://www.youtube.com/watch?v=NF00L9NHB_Q" rel="noopener noreferrer">FLEXBOARD 키 이미지를 레퍼런스로 넣어 만든 FLEXBOARD 출시 광고</a></p>
+<figure><img src="https://www.notion.so/image/attachment%3A3391b5e7-b53b-4809-a9b1-75f6721235b2%3Aimage.png?table=block&amp;id=3f42ebc0-17ad-80c1-b270-db79a9924d8d&amp;cache=v2" alt="提高 Seedance 命中率：先做分镜，再跑视频" loading="lazy" decoding="async"></figure>
+<h3>为什么先跑视频更浪费</h3>
+<p class="notion-default">Seedance 2.5 效果好的同时，每跑一次都要消耗积分。而第一条视频如果和意图不符，就得从头重跑：人物变了、背景跳了、镜头顺序别扭。</p>
+<p class="notion-default">用图片确认比用视频确认负担小得多。把两种做法并排放，差别很明显。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>项目</td><td>先用视频确认</td><td>先用分镜（图片）确认</td></tr><tr><td>出现错误镜头时</td><td>整条视频重新生成</td><td>只重新生成那一张图</td></tr><tr><td>确认耗时</td><td>要看到视频结尾才能找到</td><td>摊在一个画面里几秒就能看出</td></tr><tr><td>修改方式</td><td>改提示词反复重跑</td><td>用 Edit 改一个镜头</td></tr><tr><td>积分</td><td>重复越多消耗越大</td><td>按单张图片压到最低</td></tr></tbody></table></div>
+<p class="notion-default">所以跑视频之前，需要一个先看「这些镜头对不对」的图片环节。这和片场在开机前先对分镜是同一个道理。</p>
+<h3>FLEXBOARD 是故事板引擎</h3>
+<p class="notion-default">FLEXBOARD 是把剧本变成逐镜头图片的故事板引擎。因为每个镜头同时展示文字和图片，可以在做视频之前确认构图和人物，只挑不满意的镜头修改。它是为配合 Seedance 2.5 设计的。</p>
+<p class="notion-default">在 XCONDA 左侧边栏打开 <strong>Storyboard</strong>，就能看到 <strong>Flex Board</strong> 卡片，标着「为 Seedance 2.5 优化的故事板工具」。点开卡片选择 <strong>New Project</strong> 即可开始。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aa655b8aa-cccf-4da8-8744-cac40140d1d7%3Aflex_01.png?table=block&amp;id=97aa9b21-46e9-4ca7-ab4c-2454dd774c61&amp;cache=v2" alt="XCONDA Storyboard 메뉴의 Flex Board 카드" loading="lazy" decoding="async"></figure>
+<p class="notion-default">它针对视频制作中最常卡住的地方设计，核心功能有三个。</p>
+<ul><li><strong>保持同一个演员。</strong> 人脸锁定（Face Lock）让镜头变换时仍是同一个人。人物和背景以卡片登记，每张卡片自动获得 @image1、@image2 这样的标签。</li><li><strong>只重出想改的镜头。</strong> 不必整体重做，只重新生成那个镜头。</li><li><strong>可以选图像模型。</strong> 可选 GPT Image 2、Seedream 5.0 Pro、GPT Image 2.5 Flare、GPT Image 2.5 Sunburst；第一次用建议从默认的 GPT Image 2 开始。</li></ul>
+<p class="notion-default">用数字看是这样。</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>项目</td><td>内容</td></tr><tr><td>一个画面能排的镜头</td><td>最多 36 个</td></tr><tr><td>单个镜头时长（Shot Length）</td><td>4 秒～30 秒</td></tr><tr><td>计算示例</td><td>9 个镜头 × 15 秒 = 简单相加约 2 分 15 秒</td></tr><tr><td>工作方式</td><td>Auto Refine（把想法整理后切分镜头）、Instant Apply（直接套用整理好的剧本）</td></tr></tbody></table></div>
+<h3>界面里的 FLEXBOARD</h3>
+<p class="notion-default">按实际画面顺序只展示关键步骤。分步详解见《用 FLEXBOARD 制作逐镜头故事板的 7 个步骤》。</p>
+<p class="notion-default"><strong>1）输入项目和剧本</strong></p>
+<p class="notion-default">确定工作方式、模型、项目名称，然后写剧本。情绪不要只写名字（比如「悲伤」），要写成看得见的动作，比如「把碎片藏到身后」，这样更容易切分镜头。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ac6ec396a-0297-471f-88f5-156a5eb48d70%3Aflex_03.png?table=block&amp;id=65822b15-0a26-4c5f-8c11-02572081b242&amp;cache=v2" alt="Project Selection 화면: 작업 방식, 모델, 프로젝트 이름" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3A04218fad-14d3-45a6-88a8-ae4dc7b711b7%3Aflex_05.png?table=block&amp;id=24de04ce-da9f-4a22-b897-a0c8137a02cf&amp;cache=v2" alt="시나리오와 장르(Suspense), 분위기(Tense) 입력" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>2）登记人物和背景卡片</strong></p>
+<p class="notion-default">这一步让同一个角色、同一个地点在换镜头时保持一致。相当于选角和定景。一个人只登记一张卡片。</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aac8311d3-6d67-4e72-8eb2-a80876ba7f49%3Aflex_06.png?table=block&amp;id=39d43271-e85f-4f74-a158-42a0cb6022f1&amp;cache=v2" alt="Cast &amp; Face Lock과 Scene Background에 등록된 카드" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>3）确定镜头数量和时长，先看文字分镜</strong></p>
+<p class="notion-default">在 Number of Panels 设镜头数量，在 Shot Length 设镜头时长。然后按 <strong>Text Preview Generate</strong>，会在出图之前先给出逐镜头的文字分镜。顺序或人物不对，在这个阶段改最快。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A9bb4c641-7db9-426d-ba86-22303303ff70%3Aflex_07.png?table=block&amp;id=a640ea42-4085-4144-bdb4-54587cb55410&amp;cache=v2" alt="Number of Panels와 Shot Length 설정" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae3ac7370-221c-4b9f-a81c-e9bb338c7a37%3Aflex_09.png?table=block&amp;id=9cf41b04-ab9b-4076-85e5-a45d1a51e7a8&amp;cache=v2" alt="이미지 생성 전 글 콘티 그리드" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>4）用 Sheet 一眼看整体流程</strong></p>
+<p class="notion-default">生成图片后会出现镜头网格。<strong>Sheet</strong> 视图不带说明，只把镜头图放大拼在一起。不看文字只看画面，更容易判断镜头是否像真实视频那样衔接、服装和道具有没有变化。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A530ff496-b095-475b-82c6-3829a2d4ca6c%3Aflex_10.png?table=block&amp;id=94b38a0b-c5b7-4059-a24c-aed800276939&amp;cache=v2" alt="컷 이미지를 한 장에 모아 보는 Sheet 보기" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>5）只挑有问题的镜头修改</strong></p>
+<p class="notion-default">这是 FLEXBOARD 的核心。在镜头卡片上用 Edit 可以做改表情、改道具的快速修改，也可以做改机位（Shot Size、Camera Angle、Camera Movement）的详细修改。指令里要同时写清改什么和保留什么。例如「只换眼镜，姿势和背景保持不变」。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A6207e7f0-52a6-4c08-b60e-cfc9b92f5bca%3Aflex_12.png?table=block&amp;id=8d208846-c75e-443b-875d-7e75bce71783&amp;cache=v2" alt="Quick Edit 창: Reference images, Edit prompt, Apply edit" loading="lazy" decoding="async"></figure>
+<p class="notion-default">这是同一个镜头换了构图的例子：把紧张感的 POV 构图，改成宽幅倾斜画面里镜头向后撤的构图。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7d56a367-8a08-436f-8ad2-bc8ec0ccae78%3Aflex_13.png?table=block&amp;id=f9895097-f318-43c7-a2c9-a719a97862fc&amp;cache=v2" alt="수정 전: POV · Low Angle · Handheld" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae11c7f02-c85d-4ffd-93c3-5d3f7742586f%3Aflex_14.png?table=block&amp;id=c651a891-13fd-45f6-8ec2-4fce238b8221&amp;cache=v2" alt="수정 후: Extreme Wide Shot · Dutch Angle · Track Out" loading="lazy" decoding="async"></figure>
+<h3>两个 Claude 技能配合使用</h3>
+<p class="notion-default">XCONDA 有两个在 Claude 里使用的技能。</p>
+<p class="notion-default"><strong>1. FLEXBOARD 技能</strong><br>负责把剧本切成镜头。切分时同时检查镜头时长加起来对不对、单个镜头动作是否太多、镜头是否不自然地跳（跳切）、出场人物数量对不对。最后给出可粘贴到 FLEXBOARD 的提示词，以及逐个镜头写明时长、机位、动作、台词、音效的文字分镜。</p>
+<p class="notion-default"><strong>2. XCONDA 提示词技能</strong><br>根据 FLEXBOARD 出的关键图，生成 Seedance 2.5 的提示词。用四位导演系统和十个区块结构整理提示词，可以把韩语和英语并排编辑。改韩语时英语会同步重写，不必单独改英语。</p>
+<h3>制作流程这样衔接</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>顺序</td><td>做什么</td><td>用什么</td><td>产出</td></tr><tr><td>1</td><td>准备剧本</td><td>剧本、台本</td><td>定稿的剧本</td></tr><tr><td>2</td><td>切分镜头</td><td>FLEXBOARD 技能</td><td>文字分镜、FLEXBOARD 用提示词</td></tr><tr><td>3</td><td>出关键图并确认，不满意的镜头在这一步改</td><td>FLEXBOARD</td><td>逐镜头关键图</td></tr><tr><td>4</td><td>生成 Seedance 用提示词</td><td>XCONDA 提示词技能</td><td>韩语·英语两栏提示词</td></tr><tr><td>5</td><td>生成视频</td><td>Seedance 2.5</td><td>完成的视频片段</td></tr></tbody></table></div>
+<p class="notion-default">关键在第 3 步。把修改留在图片阶段而不是视频阶段，跑视频的次数就会减少。多个人物交错移动的场面，再在这里用 Blocking Board 先定好动线会更稳。从剧本到声音、剪辑的全貌，可以在《一篇剧本如何变成成片：XCONDA 制作地图 7 站》里用一张地图看清。</p>
+<h3>我们是这样做的</h3>
+<p class="notion-default"><strong>FLEXBOARD 上线广告</strong></p>
+<p class="notion-default">本文开头的广告，是把 15 张关键图当参考，用 Seedance 2.5 一次生成 15 个镜头的 30 秒，再剪成 26 秒的结果。在 Seedance 生成画面里把模式选成参考（Ref-to-video），在提示词里输入 @ 指定哪张图是谁、是什么。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A78716324-6862-48e2-a089-7543eb69fcc9%3A06_seedance_ref_draft.png?table=block&amp;id=a8d27c42-252a-4925-b890-27391f099de6&amp;cache=v2" alt="XCONDA 영상 생성 화면: 확정한 키 이미지를 시댄스 2.5의 레퍼런스로 넣습니다" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>《冷站》衍生篇预告片</strong></p>
+<p class="notion-default">全部镜头都用 AI 做的预告片也按同样顺序制作。可以在视频里看到在 FLEXBOARD 按镜头设计演出的过程。</p>
+<p><a href="https://youtu.be/yd4f9UBEfmI" rel="noopener noreferrer">FLEXBOARD로 〈콜드사이트〉 연출을 설계한 과정</a></p>
+<p><a href="https://www.youtube.com/watch?v=mBHKRZfiMgM" rel="noopener noreferrer">〈콜드사이트〉 스핀오프 트레일러 (전 컷 AI 제작)</a></p>
+<h3>镜头跳动的问题，先由分镜挡住</h3>
+<p class="notion-default">视频 AI 不记得上一个镜头。于是换镜头时绷带跑到另一只手臂、血迹消失、窗框变化。这类偏差在视频跑完后再找代价很高，在分镜阶段发现只要改一张图。</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1a47cdfe-88ba-44f9-aafa-0e7a7869b571%3Aimage.png?table=block&amp;id=f0de22f6-806d-44f7-aea4-66451fcbe733&amp;cache=v2" alt="컷 일관성 사례: 부상병 재연 장면" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Ae85d1bd5-c166-452f-b9a5-9f6627dd3daf%3Aimage.png?table=block&amp;id=d85092e3-3eef-4693-9292-8f6232349844&amp;cache=v2" alt="다음 컷부터 붕대 위치와 혈흔이 바뀐 장면" loading="lazy" decoding="async"></figure>
+<p class="notion-default">空间用 Turn、脸和构图用 FLEXBOARD、必须延续的状态用参考图和提示词固定——这套方法整理在《九镜头诅咒：现在就用 XCONDA 减少它》的五个步骤里。</p>
+<h3>和片场「现场分镜」是同一个原理</h3>
+<p class="notion-default">在电视剧拍摄现场，剧本常常到最后一刻才齐全，甚至不勘景就直接开拍。这时在现场快速整理当天镜头的东西就是现场分镜。有分镜就能少跑空：开机前在纸上改几乎不花成本，拍完再改就得重拍。</p>
+<p class="notion-default">AI 视频也一样。没有分镜直接跑，积分就跑了空。FLEXBOARD 相当于 AI 视频制作的现场分镜。</p>
+<h3>交给 Seedance 之前的检查清单</h3>
+<ul class="todo"><li><input type="checkbox" disabled> 是否用 Sheet 视图确认了镜头自然衔接</li><li><input type="checkbox" disabled> 每个镜头的图片和场面描述是否对应</li><li><input type="checkbox" disabled> 每个镜头的人物令牌（@imageN）是否准确</li><li><input type="checkbox" disabled> 有没有漏掉的镜头</li><li><input type="checkbox" disabled> 镜头时长、画面尺寸、机位角度、镜头运动是否符合该镜头的意图</li></ul>
+<h3>常见错误</h3>
+<ul><li><strong>跳过文字分镜直接出图。</strong> 镜头顺序错了还得重做。</li><li><strong>把同一个人登记成多张卡片。</strong> 令牌容易混乱，脸也会混。</li><li><strong>把已经不错的镜头也重新生成。</strong> 只挑有问题的镜头用 Edit 改。</li><li><strong>只用 Panel 视图检查。</strong> 边读文字边看容易漏掉画面是否连得上。请用 Sheet 视图只看画面。</li><li><strong>中途更换图像模型。</strong> 每个镜头画风会不一致，一开始选好就用到最后。</li></ul>
+<h3>常见问题</h3>
+<p class="notion-default"><strong>问：FLEXBOARD 最多能做多少个镜头、每个多长？</strong><br>一个画面最多排 36 个镜头，单个镜头时长在 4 秒到 30 秒之间设定。</p>
+<p class="notion-default"><strong>问：Seedance 2.5 能生成长度多少的视频？</strong><br>按开发方 ByteDance Seed 的说明，一次最多可生成 30 秒带声音的视频。画幅、分辨率、时长在 XCONDA 视频生成画面的设置栏里选择，提示词最多可输入 30,000 字。</p>
+<p class="notion-default"><strong>问：技能在哪里下载？</strong><br>FLEXBOARD 技能可以在《九镜头诅咒：现在就用 XCONDA 减少它》文末以 zip 文件下载，并在 Claude 的 Customize &gt; Skills 里安装。XCONDA 提示词技能正在准备上线 XCONDA 枢纽供下载，开放后会另行通知。</p>
+<h3>推荐一起阅读</h3>
+<ul><li>全貌：一篇剧本如何变成成片——XCONDA 制作地图 7 站</li><li>界面顺序指南：跑视频前的最后检查，用 FLEXBOARD 制作逐镜头故事板的 7 个步骤</li><li>解决镜头跳动：九镜头诅咒，现在就用 XCONDA 减少它</li><li>连载 EP.03：用 FLEXBOARD 制作逐镜头故事板的 7 个步骤（AI 视频制作流程 EP.03）</li></ul>
+<h3>想马上开始的人</h3>
+<p class="notion-default">XCONDA 正在同时进行 Seedance 2.5 折扣和 FLEXBOARD 上线开放推广。</p>
+<ul><li>韩国：使用折扣 30% + 价格折扣 10%，最高 40%</li><li>美国：使用折扣最高 30%</li><li>时间：10 月 7 日上午 11 点至 11 月 6 日上午 11 点（韩国时间）</li></ul>
+<p class="notion-default">前往 XCONDA：https://www.xconda.ai/</p>
+<p class="notion-default">如需引入或合作，请通过以下方式联系我们。</p>
+<ul><li>邮箱：cubeberry@cuberry.kr</li><li>电话：+82-70-8095-2302（工作日 10:00～17:00）</li></ul>
+<p class="notion-default">感谢你今天也读完了这么长的文章！</p>
+<p><a href="https://hub.xconda.ai/post/seedance-storyboard-before-render/" hreflang="ko">查看韩语原文</a></p>
+</article>
+<nav class="seo-related" aria-label="More"><h2>post</h2><ul><li><a href="../ai-video-9-cut-curse-fix/">减少九镜头诅咒的方法：让镜头不跳的五个步骤</a></li><li><a href="../ai-video-background-consistency/">AI 视频背景跳动的原因与镜头一致性的解决</a></li><li><a href="../ai-video-motion-ideas/">AI 视频没有动作灵感时可以看的网站</a></li><li><a href="../deepseek-official-harness/">DeepSeek 以 MIT 许可证发布官方 harness</a></li></ul></nav>
+<p class="seo-note">中文页面由 XCONDA 团队翻译。韩语 Hub 为原始版本，如内容有出入请联系 cubeberry@cuberry.kr。</p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>
