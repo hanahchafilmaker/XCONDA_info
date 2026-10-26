@@ -158,6 +158,46 @@ export function localOgImageUrl(manifest, key, siteUrl = DEFAULT_SITE_URL) {
 }
 
 /**
+ * **언어별 공유 카드** 폴더와 그 목록(manifest).
+ *
+ * 배경: 커버 이미지가 없는 글 · 언어 홈 · 목록 페이지는 모두 같은 기본 카드
+ * (`xconda-hub-1200x630.png`)를 씁니다. 그래서 일본어 링크를 공유해도 미리보기에
+ * 언어도 제목도 없었습니다. `scripts/og/build-og-cards.mjs` 가 **그 언어의 제목으로**
+ * 1200×630 카드를 그려 이 폴더에 두고 manifest 를 갱신하면, 빌드가 기본 카드보다
+ * 먼저 이 카드를 씁니다.
+ */
+export const OG_LANG_DIR = "assets/img/og/lang";
+export const OG_LANG_MANIFEST_PATH = `${OG_LANG_DIR}/manifest.json`;
+
+/**
+ * 언어별 카드 manifest 키 — `{언어}/{경로}`. 홈은 경로 없이 언어 코드만 씁니다.
+ * 목록은 `en/qna`, 글은 `ja/post/some-slug` 처럼 **앞뒤 슬래시를 뺀** 모양입니다.
+ * @param {string} code 언어 코드(ko·en·ja·zh)
+ * @param {string} [path] 사이트 안 경로
+ */
+export function ogLangManifestKey(code, path = "") {
+  const lang = String(code ?? "").trim();
+  if (!lang) return "";
+  const clean = String(path ?? "").replace(/^\/+|\/+$/g, "");
+  return clean ? `${lang}/${clean}` : lang;
+}
+
+/**
+ * 언어별 카드가 있으면 그 주소를, 없으면 빈 문자열을 돌려줍니다
+ * (빈 문자열이면 호출한 쪽이 커버 이미지 → 기본 카드 순서로 넘어갑니다).
+ * @param {Record<string, string>} manifest `{ "ja/qna": "ja-qna.png" }`
+ * @param {string} code 언어 코드
+ * @param {string} [path] 사이트 안 경로
+ * @param {string} siteUrl 사이트 주소 (끝 / 허용)
+ */
+export function localizedOgImageUrl(manifest, code, path = "", siteUrl = DEFAULT_SITE_URL) {
+  const key = ogLangManifestKey(code, path);
+  const file = key && isRecord(manifest) ? manifest[key] : "";
+  if (typeof file !== "string" || !file.trim()) return "";
+  return absoluteUrl(siteUrl, `${OG_LANG_DIR}/${file.trim()}`);
+}
+
+/**
  * 언어별 사이트 제목 · 설명. 한국어 값은 이 한 곳에서만 관리합니다
  * (index.html 의 빌드 결과 · 앱 런타임 `META` 가 모두 여기서 가져옵니다).
  */

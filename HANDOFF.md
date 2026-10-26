@@ -274,6 +274,7 @@ XCONDA_info/
 | 크롤러 언어 고정 | `src/i18n/index.tsx` › `isCrawlerUA` | 봇 UA 에는 **항상 한국어 원문** + 번역 위젯 미로드. 사람은 예전처럼 자동 감지, `?lang=en` 으로 고정 가능 |
 | 공용 번들 `assets/app.js` · `assets/app.css` | `build-seo.mjs` › `externalizeAssets` | 글마다 500KB 를 복사하던 인라인 번들을 **한 벌**로 분리(2026-10-25 A2). 홈 592→68KB·글 553→30KB. 산출물은 `build-site.yml` 이 `assets` 로 커밋합니다 |
 | 공유 이미지(OG) 로컬 사본 `assets/img/og/posts/` | `scripts/localize-og-images.mjs` + `manifest.json` | 노션 프록시(`www.notion.so/image/...`)는 만료 위험. 동기화(`notion-sync.yml`)가 이미지를 내려받아 우리 도메인 주소를 씁니다. 우선순위: **로컬 사본 → OG 이미지 속성 → Cover → 기본 이미지**(2026-10-25 A3). 손으로 받으려면 `npm run og:localize` |
+| 언어별 공유 카드 `assets/img/og/lang/` | `scripts/og/build-og-cards.mjs` + `manifest.json` (`npm run og:cards`) | 커버가 없는 글 · 언어 홈(`/en/` …) · 언어 목록(`/ja/qna/`)은 모두 같은 기본 카드를 써서 공유 미리보기에 **언어도 제목도 없었습니다**. 이 스크립트가 그 언어의 제목·요약으로 1200×630 카드를 그려(상단 `XCONDA HUB · Q&A`, 하단 `hub.xconda.ai/ja/…` + 언어 이름) PNG 로 저장하고 manifest 를 갱신합니다. 빌드 우선순위: **언어별 카드 → 글 커버 → 기본 카드**(2026-10-26 ①-5). 카드는 커밋되는 산출물이라 CI 에 Pillow·폰트가 필요 없습니다 |
 | 관련 글 (`aria-label="관련 글"`) | `seo.js` › `relatedArticles` | 노션 `Category`(+6) · `Tool`(+4) · `Tags`(+4) · 제목 2-gram(+1, 최대 4) 점수로 최대 4건. Q&A 는 같은 Q&A 를 뒤로 미룹니다. 후보가 없으면 같은 섹션 최신 글로 채워 **막다른 문서를 만들지 않습니다**(2026-10-25 A5) |
 | `llms.txt` | `seo.js` › `llmsTxt` | AI 도우미용 요약 + 섹션/대표 글 링크(절대 주소, 요약 160자). 사이트맵과 같은 목록에서 만들어 서로 어긋나지 않습니다(2026-10-25 A6). 번역 언어가 있으면 `<언어> hub` 항목(`/en/`·`/ja/`·`/zh/`)이 자동으로 붙습니다 |
 | www 기능 페이지 산출물 | `scripts/www/build-feature-pages.mjs` (`npm run www:build`) | `www/feature-pages.json` → `www/dist/` 정적 HTML(20×2언어 + 목록 2). canonical·hreflang·JSON-LD·내부 링크를 스스로 검사합니다. 산출물은 커밋하지 않습니다(`www/dist/` 는 .gitignore) |
@@ -293,6 +294,7 @@ XCONDA_info/
 - **Cloudflare `Workers Builds: xconda-info-news`** 는 main 이 아닌 브랜치에서 실패합니다(main 에서는 `skipped`). Cloudflare 대시보드 → Workers & Pages → `xconda-info-news` → Settings → Build → **Branch control 을 `main` 으로 제한**하거나 빌드에 필요한 환경변수를 넣어야 사라집니다. 저장소 코드로는 고칠 수 없습니다.
 - **`notion-sync.yml` 은 `main` 에서만 돕니다**(`arena/**` 제거, 2026-10-25 A1). 생성 산출물만 바뀐 커밋(`paths-ignore`)으로는 다시 돌지 않습니다 — 이 둘이 없으면 봇 커밋과 PR 이 계속 충돌합니다.
 - 노션 커버·OG 이미지는 동기화 때 `assets/img/og/posts/` 로 복사됩니다. 네트워크 실패는 경고만 남기고 빌드를 막지 않지만, 그때는 그 글만 노션 주소를 그대로 씁니다.
+- **언어별 공유 카드**는 `npm run og:cards` 로만 만듭니다(빌드 경로 아님). 다시 만들려면 `python3 -m pip install Pillow` 가 필요하고, CJK 폰트는 처음 한 번 npm(`@expo-google-fonts/noto-sans-*`)에서 `node_modules/.cache/og-fonts/` 로 받습니다(저장소에 넣지 않음). 폰트가 없으면 스크립트는 조용히 건너뛰고 **커밋된 카드를 그대로** 씁니다 — 그래서 새 글·번역을 넣은 뒤에는 카드도 한 번 돌려 주세요. Q&A 개별 글은 카드를 만들지 않습니다(219편 × 4언어 — 목록 카드로 대신).
 - **번역은 기계번역을 넣지 않습니다.** `content/i18n/<언어>.json` 의 `entries` 키는 `qna/contact-inquiry` 처럼 `주소/슬러그` 이고, 원문 글이 없으면 빌드가 경고하고 그 주소를 만들지 않습니다. 블로그·가이드는 본문 번역이 없어 아직 번역 주소가 없습니다(노션 `Title EN`/본문 번역이 생기면 같은 방식으로 확장).
 - **번역 검수 절차(2026-10-25 현재 3개 언어 모두 초안)**: `en`·`ja`·`zh` 각 73건은 AI 1차 번역이며 `review` 필드에 그 사실이 적혀 있습니다. 원어민이 검수한 항목부터 `review` 를 `YYYY-MM-DD 검수 완료(검수자)` 로 바꿔 주세요. 검수 중 발견한 수정은 `entries` 의 `title`/`summary` 를 직접 고치면 되고, `npm run test:unit` 이 **키 1:1·빈 번역·한글 잔존(20% 초과)·Q&A 누락·제목 끝 "답변"** 을 자동으로 잡습니다.
 - 언어를 더 늘리려면 `content/i18n/<코드>.json` 만 추가하면 됩니다(`seo.js` 의 `SITE_LANGS` 에 코드가 있어야 함). 페이지·사이트맵·hreflang·`llms.txt` 항목·`assets/i18n-paths.json` 이 같은 빌드에서 함께 만들어집니다.
@@ -756,6 +758,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
+| 완료 | **①-5 언어별 공유 카드** — 언어 홈 · 목록 · 커버 없는 글 44장(ko·en·ja·zh 각 11장) | 공유 미리보기에 그 언어의 제목이 나옵니다. `npm run og:cards` |
 | 완료 | **①-1 본문 번역** — 본문이 있는 글 **20편 전부** + Q&A 73건(en·ja·zh) | 표·콜아웃·체크리스트까지 번역, Q&A 는 「게시용 출처」 블록 포함 |
 
 ---

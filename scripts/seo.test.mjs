@@ -20,11 +20,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   DEFAULT_SITE_URL,
+  OG_LANG_DIR,
+  OG_LANG_MANIFEST_PATH,
   OG_LOCAL_DIR,
   hreflangAlternates,
   langFromPathname,
   localOgImageUrl,
+  localizedOgImageUrl,
   localizedUrl,
+  ogLangManifestKey,
   ogManifestKey,
   relatedArticles,
   tagSetOf,
@@ -56,6 +60,7 @@ import {
 } from "./build-seo.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = path.resolve(here, "..");
 const TEMPLATE = fs.readFileSync(path.join(here, "../index.html"), "utf8");
 const SITE = "https://example.test/XCONDA_info/";
 
@@ -652,6 +657,53 @@ test("OG 목록에 있으면 우리 도메인 주소를, 없으면 null 을 돌�
   );
 });
 
+/* ---------------------------------------------------------------------------
+ * 언어별 공유 카드 — 2026-10-26 ①-5
+ *   커버가 없는 글 · 언어 홈 · 언어 목록은 같은 기본 카드를 써서 공유 미리보기에
+ *   언어도 제목도 없었습니다. 카드 목록(manifest)에 있으면 그 카드를 먼저 씁니다.
+ * ------------------------------------------------------------------------ */
+test("언어별 카드 키는 언어 코드 + 슬래시 없는 경로다", () => {
+  assert.equal(ogLangManifestKey("en", ""), "en");
+  assert.equal(ogLangManifestKey("ja", "/"), "ja");
+  assert.equal(ogLangManifestKey("ja", "qna/"), "ja/qna");
+  assert.equal(ogLangManifestKey("zh", "/post/some-slug/"), "zh/post/some-slug");
+  assert.equal(ogLangManifestKey("", "qna/"), "");
+});
+
+test("언어별 카드가 있으면 그 주소를, 없으면 빈 문자열을 돌려준다", () => {
+  const manifest = { "ja/qna": "ja-qna.png", ko: "ko-home.png" };
+  assert.equal(
+    localizedOgImageUrl(manifest, "ja", "qna/", "https://hub.example.test"),
+    "https://hub.example.test/assets/img/og/lang/ja-qna.png",
+  );
+  assert.equal(
+    localizedOgImageUrl(manifest, "ko", "", "https://hub.example.test/"),
+    "https://hub.example.test/assets/img/og/lang/ko-home.png",
+  );
+  assert.equal(localizedOgImageUrl(manifest, "ja", "guide/", "https://hub.example.test"), "");
+  assert.equal(localizedOgImageUrl(null, "ja", "qna/", "https://hub.example.test"), "");
+});
+
+test("커밋된 언어별 카드 manifest 는 실제 PNG(1200×630)와 짝이 맞는다", () => {
+  const dir = path.join(REPO_ROOT, OG_LANG_DIR);
+  const manifestPath = path.join(REPO_ROOT, OG_LANG_MANIFEST_PATH);
+  if (!fs.existsSync(manifestPath)) return; // 카드가 아직 없으면 검사하지 않습니다.
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const keys = Object.keys(manifest);
+  assert.ok(keys.length > 0, "manifest 가 비어 있습니다");
+  // 언어 홈(ko·en·ja·zh)은 반드시 있어야 합니다 — 없으면 기본 카드로 되돌아갑니다.
+  for (const code of ["ko", "en", "ja", "zh"]) assert.ok(keys.includes(code), `${code} 홈 카드가 없습니다`);
+  for (const [key, file] of Object.entries(manifest)) {
+    assert.match(key, /^[a-z]{2}(\/[a-z0-9-]+)*$/, `키 형식이 이상합니다: ${key}`);
+    assert.match(file, /^[a-z]{2}-[a-z0-9-]+\.png$/, `파일 이름이 이상합니다: ${file}`);
+    const png = fs.readFileSync(path.join(dir, file));
+    // PNG 시그니처 + IHDR(가로·세로) — 미리보기 카드는 1200×630 이어야 합니다.
+    assert.equal(png.subarray(1, 4).toString(), "PNG", `${file} 이 PNG 가 아닙니다`);
+    assert.equal(png.readUInt32BE(16), 1200, `${file} 가로 길이`);
+    assert.equal(png.readUInt32BE(20), 630, `${file} 세로 길이`);
+  }
+});
+
 test("복사본이 있으면 og:image · twitter:image · JSON-LD image 가 모두 우리 주소를 쓴다", () => {
   const rows = [
     {
@@ -1009,10 +1061,10 @@ test("번역 블록 구조가 원문과 다르면 빌드 경고를 남긴다", (
       en: {
         ...EN_FIXTURE.en,
         entries: {
-          "qna/refund-policy": {
-            title: "How do refunds work?",
-            summary: "Ask within 7 days for unused credits.",
-            blocks: [{ type: "p", text: "Seven days from payment." }, { type: "p", text: "Unused credits only." }],
+          "post/deepseek-official-harness": {
+            title: "DeepSeek released an official harness",
+            summary: "The harness is MIT licensed.",
+            blocks: [{ type: "p", text: "It is MIT licensed." }, { type: "p", text: "Everything is a plugin." }],
           },
         },
       },
@@ -1021,6 +1073,34 @@ test("번역 블록 구조가 원문과 다르면 빌드 경고를 남긴다", (
   assert.ok(
     out.warnings.some((w) => w.includes("블록 구조가 원문과 다릅니다")),
     "구조 경고가 없습니다 — 이미지 위치가 조용히 어긋날 수 있습니다",
+  );
+});
+
+test("Q&A 번역 블록은 구조 검사에서 빠진다 — 답변은 요약이고 출처 블록만 번역한다", () => {
+  // 한국어 Q&A 본문이 비어 있는 항목(출처 블록만 번역)이 있어 원문과 비교할 수 없습니다.
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: {
+      en: {
+        ...EN_FIXTURE.en,
+        entries: {
+          "qna/refund-policy": {
+            title: "How do refunds work?",
+            summary: "Ask within 7 days for unused credits.",
+            blocks: [{ type: "h2", text: "Source" }, { type: "p", text: "Source: Refund Policy (https://example.test)" }],
+          },
+        },
+      },
+    },
+  });
+  assert.equal(
+    out.warnings.filter((w) => w.includes("블록 구조가 원문과 다릅니다")).length,
+    0,
+    "Q&A 는 구조 검사 대상이 아닙니다",
   );
 });
 

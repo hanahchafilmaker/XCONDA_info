@@ -46,6 +46,7 @@ npm run build        # dist/dev.html → index.html + 글별 페이지 · sitema
 | **pages build and deployment** | main 푸시 | GitHub Pages 배포 |
 
 `npm run i18n:qc` 는 번역 초안의 연락처·숫자·통화·제목 중복을 점검합니다(`-- --write` 로 `reports/` 갱신).
+공유 미리보기 카드는 언어별로 따로 있습니다 — `npm run og:cards` 가 언어 홈 · 목록 · 커버 없는 글의 1200×630 카드를 `assets/img/og/lang/` 에 그리고 목록(manifest)을 갱신합니다(카드는 커밋되는 산출물이라 CI 에 Pillow 가 필요 없습니다).
 
 ## 언어별 주소
 
