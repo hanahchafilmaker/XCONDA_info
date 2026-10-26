@@ -46,7 +46,7 @@ npm run build        # dist/dev.html → index.html + 글별 페이지 · sitema
 | **pages build and deployment** | main 푸시 | GitHub Pages 배포 |
 
 `npm run i18n:qc` 는 번역 초안의 연락처·숫자·통화·제목 중복을 점검합니다(`-- --write` 로 `reports/` 갱신).
-`npm run i18n:progress` 는 **검수 진행률**을 셉니다 — 95항목 × 3언어 중 `YYYY-MM-DD 검수 완료(검수자)` 로 표시된 항목 수와, 기계 점검이 문제를 찾은 항목을 묶어 `reports/i18n-progress-<날짜>.md` 로 남깁니다.
+`npm run i18n:progress` 는 **검수 진행률**을 셉니다 — 95항목 × 3언어 중 `YYYY-MM-DD 검수 완료(검수자)` 로 표시된 항목 수와, 기계 점검이 문제를 찾은 항목을 묶어 `reports/i18n-progress-<날짜>.md` 로 남깁니다. CI(`build-site.yml`)는 이 스크립트를 `-- --summary` 로 불러 **실행 요약에 진행률과 "번역이 없는 원문(새 글)"** 을 남깁니다.
 공유 미리보기 카드는 언어별로 따로 있습니다 — `npm run og:cards` 가 언어 홈 · 목록 · 커버 없는 글의 1200×630 카드를 `assets/img/og/lang/` 에 그리고 목록(manifest)을 갱신합니다(카드는 커밋되는 산출물이라 CI 에 Pillow 가 필요 없습니다).
 
 ## 언어별 주소

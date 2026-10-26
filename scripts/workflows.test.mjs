@@ -56,6 +56,15 @@ test("생성 페이지를 커밋하는 워크플로는 언어 디렉터리까지
   }
 });
 
+test("사이트 빌드는 번역 검수 진행률을 실행 요약에 남긴다", () => {
+  // 285항목 진행률과 "번역이 없는 원문(새 글)" 은 사람이 매번 찾아보지 않아도 보여야 합니다.
+  const text = read("build-site.yml");
+  assert.match(text, /npm run i18n:progress -- --summary >> "\$GITHUB_STEP_SUMMARY"/);
+  // 정보용이므로 배포를 막지 않습니다.
+  const step = text.slice(text.indexOf("번역 검수 진행률 요약"));
+  assert.match(step.slice(0, 400), /continue-on-error: true/);
+});
+
 test("사이트 빌드는 www 원고 검사·산출물 빌드를 함께 돌린다", () => {
   const text = read("build-site.yml");
   assert.match(text, /npm run www:check/);
