@@ -49,6 +49,8 @@ import {
   localizedBlockProblems,
   mergeLocalizedBlocks,
   bodyImagesOf,
+  bodyMediaOf,
+  flattenBlocks,
   LOCALIZED_BLOCK_TYPES,
 } from "./build-seo.mjs";
 
@@ -904,7 +906,7 @@ test("번역 본문 블록 — 지원 타입만 통과하고 형식 오류는 �
   assert.match(bad[1], /text 가 비어/);
   assert.match(bad[2], /items 배열/);
   assert.match(bad[3], /text 가 비어/);
-  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout", "code"]);
+  assert.deepEqual(LOCALIZED_BLOCK_TYPES, ["p", "h2", "h3", "ul", "ol", "quote", "table", "callout", "code", "todo"]);
 });
 
 test("본문 이미지 위치는 '앞에 있던 글 블록 수'로 계산한다", () => {
@@ -1019,6 +1021,41 @@ test("번역 블록 구조가 원문과 다르면 빌드 경고를 남긴다", (
     out.warnings.some((w) => w.includes("블록 구조가 원문과 다릅니다")),
     "구조 경고가 없습니다 — 이미지 위치가 조용히 어긋날 수 있습니다",
   );
+});
+
+test("2단 배치는 펼쳐서 글만 번역하고 이미지·영상은 원문 자리에 그대로 넣는다", () => {
+  const ko = [
+    { type: "p", text: [{ text: "앞 문단" }] },
+    {
+      type: "column_list",
+      children: [
+        { type: "column", ratio: 0.5, children: [{ type: "img", src: "a.png" }] },
+        { type: "column", ratio: 0.5, children: [{ type: "p", text: [{ text: "설명" }] }] },
+      ],
+    },
+    { type: "video", src: "https://cdn.example/v.mp4" },
+    { type: "p", text: [{ text: "뒤 문단" }] },
+  ];
+  const flat = flattenBlocks(ko);
+  assert.deepEqual(flat.map((b) => b.type), ["p", "img", "p", "video", "p"]);
+  const media = bodyMediaOf(ko);
+  assert.deepEqual(media.map((m) => [m.after, m.block.type]), [[1, "img"], [2, "video"]]);
+
+  const merged = mergeLocalizedBlocks(
+    [{ type: "p", text: "First" }, { type: "p", text: "Second" }, { type: "p", text: "Third" }],
+    media,
+  );
+  assert.deepEqual(merged.map((b) => b.type), ["p", "img", "p", "video", "p"]);
+  assert.match(blocksToHtml(merged, { alt: "" }), /<video[^>]*src="https:\/\/cdn\.example\/v\.mp4"/);
+});
+
+test("체크리스트(todo) 블록은 항목 배열로 번역한다", () => {
+  const blocks = [{ type: "todo", items: ["Did the cuts connect in Sheet view?", "Any missing cuts?"] }];
+  assert.deepEqual(localizedBlockProblems(blocks), []);
+  const html = blocksToHtml(mergeLocalizedBlocks(blocks), { alt: "" });
+  assert.match(html, /<ul class="todo">/);
+  assert.match(html, /Did the cuts connect/);
+  assert.match(localizedBlockProblems([{ type: "todo", items: [] }])[0], /items 배열/);
 });
 
 test("본문이 있으면 요약을 첫 문단으로 중복 출력하지 않는다", () => {
