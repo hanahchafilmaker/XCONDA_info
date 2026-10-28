@@ -1348,3 +1348,15 @@ test("여러 언어 번역이 있으면 hreflang 이 서로를 모두 가리킨�
   // 언어별 홈도 만들어집니다
   for (const lang of ["en", "ja", "zh"]) assert.ok(out.files.get(`${lang}/index.html`), `${lang} 홈이 없습니다`);
 });
+
+test("번역 페이지는 흰색 editorial 스타일을 독립적으로 사용한다", () => {
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE });
+  for (const file of ["en/index.html", "en/qna/index.html", "en/qna/refund-policy/index.html"]) {
+    const html = out.files.get(file);
+    assert.ok(html, file);
+    assert.match(html, /html\{background:#fff;color:#000/);
+    assert.doesNotMatch(html, /background:#0b0b0b|color:#ffd60a/);
+    assert.doesNotMatch(html, /assets\/app\.(?:css|js)/);
+    assert.match(html, /class="seo-langs"/);
+  }
+});
