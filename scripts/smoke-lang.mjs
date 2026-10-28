@@ -31,18 +31,20 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** 브라우저 한 개(쿠키 · localStorage 가 리로드를 넘어 유지됨)
  *  `languages` 를 따로 주면 UI 언어(`language`)와 웹 선호 목록을 다르게 재현할 수 있다. */
-function browser({ language, languages, url = PAGES_URL, storage = {}, cookies = [], storageBlocked = false, userAgent }) {
+function browser({ language, languages, url = PAGES_URL, storage = {}, cookies = [], storageBlocked = false, userAgent, localizedManifest = false }) {
   const jar = new CookieJar();
   for (const [cookie, cookieUrl] of cookies) jar.setCookieSync(cookie, cookieUrl ?? url);
   let saved = { ...storage };
 
   async function open() {
     let reloadRequested = false;
+    let staticNavigationRequested = false;
     const problems = [];
     const vc = new VirtualConsole();
     vc.on("jsdomError", (e) => {
       const msg = String(e?.message ?? e);
       if (/Not implemented: (window\.location\.reload|navigation to another Document)/.test(msg)) {
+        if (/navigation to another Document/.test(msg) && !/LocationImpl\.reload/.test(String(e.stack ?? ""))) staticNavigationRequested = true;
         reloadRequested = true;
         return;
       }
@@ -89,6 +91,10 @@ function browser({ language, languages, url = PAGES_URL, storage = {}, cookies =
           disconnect() {}
         };
         w.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
+        if (localizedManifest) w.fetch = async (input) => ({
+          ok: String(input).includes("i18n-paths.json"),
+          json: async () => ({ en: [""], ja: [""], zh: [""] }),
+        });
         w.scrollTo = () => {};
         Object.defineProperty(w.HTMLElement.prototype, "scrollIntoView", { value() {}, writable: true });
       },
@@ -127,6 +133,8 @@ function browser({ language, languages, url = PAGES_URL, storage = {}, cookies =
         const reloaded = reloadRequested;
         if (!storageBlocked) saved = Object.fromEntries(Object.keys(w.localStorage).map((k) => [k, w.localStorage.getItem(k)]));
         if (!reloaded) return { reloaded, page: this };
+        if (staticNavigationRequested) failures.push("Language toggle navigated to a static reading page");
+        url = w.location.href;
         w.close();
         return { reloaded, page: await open() };
       },
@@ -330,6 +338,21 @@ for (const [name, ua] of CRAWLERS) {
 {
   const page = await browser({ language: "ko-KR", url: `${PAGES_URL}?lang=en` }).open();
   expect("?lang=en → EN (사람이 주소로 고정)", page.state(), { active: "EN", widget: true });
+  page.close();
+}
+
+// A loaded translation manifest must not replace the hub with a static list.
+{
+  let page = await browser({ language: "ko-KR", url: `${PAGES_URL}?lang=ko`, localizedManifest: true }).open();
+  for (const code of ["EN", "JA", "ZH", "KO"]) {
+    const result = await page.click(code);
+    page = result.page;
+    expect(`manifest loaded: switch to ${code}`, page.state(), { active: code });
+    for (const selector of ["#top form", "#guides", "#faq", "header"]) {
+      if (!page.window.document.querySelector(selector)) failures.push(`${code}: missing hub UI ${selector}`);
+    }
+    noProblems(`manifest loaded: ${code}`, page);
+  }
   page.close();
 }
 
