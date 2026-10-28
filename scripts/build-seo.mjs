@@ -416,6 +416,20 @@ export function applyHtmlLang(html, htmlLang) {
 }
 
 /**
+ * Localized home/list URLs retain translated, crawlable HTML as a no-JS
+ * fallback. In a browser, open the interactive hub with an explicit language
+ * instead of leaving the visitor on the SEO-only text index. Use only the
+ * configured base pathname: previews and project deployments stay same-origin.
+ * Article URLs intentionally remain translated reading pages.
+ */
+export function localizedHubEntry(site, code, anchor = "") {
+  const basePath = new URL(site).pathname.replace(/\/?$/, "/");
+  const target = code === "zh" ? "zh-CN" : code;
+  const config = JSON.stringify({ basePath, target, anchor }).replace(/</g, "\\u003c");
+  return `<script data-hub-entry>(function(){var c=${config};var u=new URL(location.href);u.pathname=c.basePath;u.searchParams.set("lang",c.target);if(!u.hash&&c.anchor)u.hash=c.anchor;location.replace(u.href)})();</script>`;
+}
+
+/**
  * 언어별 정적 페이지(`/en/`, `/ja/`, `/zh/`)를 만듭니다. 번역이 있는 글만 대상입니다.
  * 반환값의 `urls` 는 사이트맵에, `missing` 은 경고에 씁니다.
  *
@@ -620,7 +634,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
         `<nav aria-label="breadcrumb"><a href="../">${escapeHtml(ui.home ?? homeTitle)}</a> / ${escapeHtml(title)}</nav>`,
-        langSwitcher(path, langCodes),
+        langSwitcher(path, ["ko", ...langCodes]),
         `<h1>${escapeHtml(title)}</h1>`,
         `<p>${escapeHtml(description)}</p>`,
         `<ul>`,
@@ -629,7 +643,9 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `<p><a href="${escapeHtml(localizedUrl(site, "ko", path))}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
         `</main></div>`,
       ].join("\n");
-      files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+      const anchor = { guide: "guides", notice: "notices", post: "blog", qna: "faq" }[prefix] ?? "";
+      const entryHead = `${head}\n${localizedHubEntry(site, code, anchor)}`;
+      files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, entryHead), body), lang.htmlLang));
       urls.push({ loc: url });
     }
 
@@ -649,7 +665,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
     const body = [
       `<div id="root"><main class="seo-article" data-lang="${code}">`,
       `<nav aria-label="breadcrumb"><a href="${escapeHtml(localizedUrl(site, "ko", ""))}" hreflang="ko">${escapeHtml(ui.brand ?? "XCONDA Hub")}</a> / ${escapeHtml(lang.name)}</nav>`,
-      langSwitcher("", langCodes),
+      langSwitcher("", ["ko", ...langCodes]),
       `<h1>${escapeHtml(homeTitle)}</h1>`,
       `<p>${escapeHtml(homeDescription)}</p>`,
       ...prefixes.map((prefix) => {
@@ -665,7 +681,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       ui.note ? `<p class="seo-note">${escapeHtml(ui.note)}</p>` : "",
       `</main></div>`,
     ].join("\n");
-    files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
+    const entryHead = `${head}\n${localizedHubEntry(site, code)}`;
+    files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, entryHead), body), lang.htmlLang));
     // 앱의 언어 전환기가 홈에서도 그 언어 주소로 보낼 수 있게 빈 경로를 넣어 둡니다.
     (paths[code] ??= []).unshift("");
     urls.push({ loc: homeUrl });

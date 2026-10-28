@@ -72,23 +72,23 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
 
   return (
     <>
-      <header
+      <header data-hub-header
         className={cn(
           "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
           scrolled || open ? "border-black/[0.06] bg-ink-950/85 backdrop-blur-xl" : "border-black/10 bg-white/90 backdrop-blur-md",
         )}
       >
-        <div className="shell flex h-16 items-center justify-between gap-6">
-          <div className="flex items-center gap-10">
+        <div className="shell flex h-16 items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-4">
             <Logo href="#top" />
-            <nav className="hidden items-center gap-1 lg:flex" aria-label={t("nav.primary")}>
+            <nav data-hub-desktop-nav className="hidden shrink-0 items-center gap-1 xl:flex" aria-label={t("nav.primary")}>
               {LINKS.map((l) => (
                 <button
                   key={l.id}
                   onClick={() => go(l.id)}
                   aria-current={active === l.id ? "true" : undefined}
                   className={cn(
-                    "rounded-full px-3 py-1.5 text-[14px] font-medium transition-colors",
+                    "whitespace-nowrap rounded-full px-3 py-1.5 text-[14px] font-medium transition-colors",
                     active === l.id ? "text-black" : "text-neutral-500 hover:text-black",
                   )}
                 >
@@ -98,13 +98,13 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
             </nav>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               onClick={onSearch}
               className="flex h-9 items-center gap-2 rounded-full px-2.5 text-neutral-500 transition-colors hover:bg-black/[0.06] hover:text-black"
             >
               <IconSearch className="h-[18px] w-[18px]" />
-              <span className="sr-only lg:not-sr-only lg:text-[13px] lg:font-medium">{t("v.nav.search")}</span>
+              <span className="sr-only xl:not-sr-only xl:text-[13px] xl:font-medium">{t("v.nav.search")}</span>
             </button>
 
             <LangToggle className="hidden sm:flex" />
@@ -113,16 +113,17 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
               href={STUDIO_URL}
               target="_blank"
               rel="noreferrer"
-              className="hidden h-9 items-center rounded-full bg-black px-4 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800 sm:inline-flex"
+              className="hidden h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-black px-4 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800 sm:inline-flex"
             >
               {t("v.nav.open")}
             </a>
 
             <button
               onClick={() => setOpen((v) => !v)}
+              data-hub-menu-toggle
               aria-label={t("v.nav.menu")}
               aria-expanded={open}
-              className="grid h-9 w-9 place-items-center rounded-full text-neutral-700 transition-colors hover:bg-black/[0.06] hover:text-black lg:hidden"
+              className="grid h-9 w-9 place-items-center rounded-full text-neutral-700 transition-colors hover:bg-black/[0.06] hover:text-black xl:hidden"
             >
               {open ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
             </button>
@@ -133,7 +134,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
       {/* mobile drawer */}
       <div
         className={cn(
-          "fixed inset-x-0 top-16 z-40 border-b border-black/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 lg:hidden",
+          "fixed inset-x-0 top-16 z-40 border-b border-black/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 xl:hidden",
           open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
         )}
       >
