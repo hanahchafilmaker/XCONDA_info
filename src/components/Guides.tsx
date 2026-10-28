@@ -48,7 +48,7 @@ export default function Guides() {
           />
         </Reveal>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[240px_1fr] lg:gap-10">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
           {/* tool list (desktop) */}
           <nav aria-label={t("nav.tools")} className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
             <ul className="space-y-0.5">

@@ -14,6 +14,7 @@
  *   7) 기존 #post=ID 와 새 주소 경로 해석 (src/content/seo.js 의 parseRoute · hubBaseFromPathname)
  */
 import test from "node:test";
+import vm from "node:vm";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -1358,5 +1359,31 @@ test("번역 페이지는 흰색 editorial 스타일을 독립적으로 사용�
     assert.doesNotMatch(html, /background:#0b0b0b|color:#ffd60a/);
     assert.doesNotMatch(html, /assets\/app\.(?:css|js)/);
     assert.match(html, /class="seo-langs"/);
+  }
+});
+
+
+test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허브로 연결된다", () => {
+  const translations = Object.fromEntries(["en", "ja", "zh"].map(code => [code, { ...EN_FIXTURE.en, lang: code }]));
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations });
+  for (const code of ["en", "ja", "zh"]) {
+    for (const [path, hash] of [["", ""], ["qna/", "#faq"]]) {
+      const html = out.files.get(`${code}/${path}index.html`);
+      assert.ok(html);
+      const script = html.match(/<script data-hub-entry>([\s\S]*?)<\/script>/)?.[1];
+      assert.ok(script, `${code}/${path}: browser must not stay on static text index`);
+      let destination;
+      const location = { href: `https://preview.test/XCONDA_info/${code}/${path}?campaign=test`, replace: value => { destination = new URL(value); } };
+      vm.runInNewContext(script, { location, URL });
+      assert.equal(destination.origin, "https://preview.test");
+      assert.equal(destination.pathname, "/XCONDA_info/");
+      assert.equal(destination.searchParams.get("lang"), code === "zh" ? "zh-CN" : code);
+      assert.equal(destination.searchParams.get("campaign"), "test");
+      assert.equal(destination.hash, hash);
+      assert.match(html, /hreflang="ko"/);
+      // No-JS visitors and crawlers still receive translated document links.
+      assert.match(html, /How do refunds work/);
+    }
+    assert.doesNotMatch(out.files.get(`${code}/qna/refund-policy/index.html`), /data-hub-entry/);
   }
 });

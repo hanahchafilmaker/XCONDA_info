@@ -19,7 +19,7 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
         aria-expanded={open}
         className="flex w-full items-center gap-4 py-5 text-left"
       >
-        <span className="flex-1 text-balance text-[16px] font-medium text-neutral-950">{f.title}</span>
+        <span className="min-w-0 flex-1 text-balance text-[16px] font-medium text-neutral-950">{f.title}</span>
         <IconPlus
           className={cn("h-5 w-5 shrink-0 text-neutral-500 transition-transform duration-300", open && "rotate-45 text-black")}
         />
@@ -57,7 +57,7 @@ export default function Qna() {
 
   return (
     <section id="faq" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
-      <div className="shell grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+      <div className="shell grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-16">
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
           <SectionHeader title={t("v.faq.lead")} sub={t("v.faq.sub")} />
           <a

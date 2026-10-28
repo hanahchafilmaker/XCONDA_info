@@ -24,9 +24,11 @@ export default function App() {
    */
   useEffect(() => {
     const section = sectionPageFromPathname(window.location.pathname);
-    if (!section) return;
+    const hash = window.location.hash.slice(1);
+    const anchor = section?.anchor ?? (["notices", "news", "guides", "blog", "faq"].includes(hash) ? hash : null);
+    if (!anchor) return;
     const id = window.setTimeout(() => {
-      document.getElementById(section.anchor)?.scrollIntoView?.({ block: "start" });
+      document.getElementById(anchor)?.scrollIntoView?.({ block: "start" });
     }, 250);
     return () => window.clearTimeout(id);
   }, []);

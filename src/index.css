@@ -189,3 +189,13 @@ body { letter-spacing: -.025em; }
 ::selection { background: #000; color: #fff; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:not(:disabled), a { cursor: pointer; }
+
+/* Translation expands labels and can introduce long unbroken words. Grid
+   children must shrink rather than letting intrinsic text widths push columns
+   beyond the viewport. Header controls stay on one line; the full menu is
+   available through the drawer below the roomy desktop breakpoint. */
+#main .grid > *, #main .reveal { min-width: 0; }
+#main { overflow-wrap: anywhere; }
+#top h1 { text-wrap: balance; }
+html:lang(ja), html:lang(zh-CN) { line-break: strict; }
+html:lang(ja) body, html:lang(zh-CN) body { word-break: normal; }

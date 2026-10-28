@@ -159,7 +159,7 @@ export function LogoMark({ className, title }: { className?: string; title?: str
 /** 헤더·푸터 로고 락업: 마크 + "Xconda" 워드마크 */
 export function Logo({ className, href = "#top" }: { className?: string; href?: string }) {
   return (
-    <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex items-center gap-2", className)}>
+    <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex shrink-0 items-center gap-2 whitespace-nowrap", className)}>
       <LogoMark className="h-[22px] w-[22px] shrink-0" />
       <span className="notranslate text-[15px] font-medium leading-none tracking-[-0.02em] text-black">XCONDA <span className="font-normal text-neutral-500">Hub</span></span>
     </a>

@@ -348,6 +348,14 @@ for (const [name, ua] of CRAWLERS) {
     const result = await page.click(code);
     page = result.page;
     expect(`manifest loaded: switch to ${code}`, page.state(), { active: code });
+    const desktopNav = page.window.document.querySelector('[data-hub-desktop-nav]');
+    const menuToggle = page.window.document.querySelector('[data-hub-menu-toggle]');
+    if (!desktopNav?.classList.contains('xl:flex') || !menuToggle?.classList.contains('xl:hidden')) {
+      failures.push(`${code}: desktop navigation and drawer must use the same roomy breakpoint`);
+    }
+    if (desktopNav && [...desktopNav.querySelectorAll('button')].some(button => !button.classList.contains('whitespace-nowrap'))) {
+      failures.push(`${code}: translated desktop labels must not wrap inside the fixed-height header`);
+    }
     for (const selector of ["#top form", "#guides", "#faq", "header"]) {
       if (!page.window.document.querySelector(selector)) failures.push(`${code}: missing hub UI ${selector}`);
     }
