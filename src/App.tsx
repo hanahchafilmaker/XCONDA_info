@@ -16,6 +16,7 @@ import { sectionPageFromPathname } from "./content/seo";
 export default function App() {
   const { t } = useLang();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   /**
    * 섹션 목록 주소(`/post/` · `/notice/` · `/qna/` · `/guide/`)로 들어온 경우.
@@ -60,7 +61,7 @@ export default function App() {
         <Nav onSearch={() => setSearchOpen(true)} />
 
         <main id="main">
-          <Hero onSearch={() => setSearchOpen(true)} />
+          <Hero onSearch={(query = "") => { setSearchQuery(query); setSearchOpen(true); }} />
           {/* 섹션 순서: 공지사항 → 뉴스(타 SNS 정보) → 툴 사용법 → 블로그 → Q&A */}
           <Notices />
           <News />
@@ -71,7 +72,7 @@ export default function App() {
 
         <Closing />
 
-        <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+        <SearchOverlay initialQuery={searchQuery} open={searchOpen} onClose={() => setSearchOpen(false)} />
         <ArticleModal />
       </div>
     </ContentProvider>

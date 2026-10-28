@@ -28,32 +28,32 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
 
   return (
     <article className="grid gap-2 py-7 sm:grid-cols-[160px_1fr] sm:gap-8">
-      <div className="flex items-center gap-2 text-[13px] text-zinc-500 sm:flex-col sm:items-start sm:gap-1.5 sm:pt-1">
+      <div className="flex items-center gap-2 text-[13px] text-neutral-500 sm:flex-col sm:items-start sm:gap-1.5 sm:pt-1">
         <time>{formatDate(item.date)}</time>
         {channel ? (
-          <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-zinc-400">
+          <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-neutral-500">
             {Icon && <Icon className="h-3.5 w-3.5" />}
             {channel.name}
           </span>
         ) : (
-          item.version && <span className="font-mono text-[12px] text-zinc-600">{item.version}</span>
+          item.version && <span className="font-mono text-[12px] text-neutral-500">{item.version}</span>
         )}
       </div>
 
       <button onClick={onOpen} className="group min-w-0 text-left">
         <span className="flex flex-wrap items-center gap-2">
-          <span className="text-[17px] font-semibold leading-snug text-zinc-100 transition-colors group-hover:text-white">
+          <span className="text-[17px] font-medium leading-snug text-neutral-950 transition-colors group-hover:text-black">
             {item.title}
           </span>
           {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
-          {item.url && <IconExternal className="h-3.5 w-3.5 text-zinc-600" />}
+          {item.url && <IconExternal className="h-3.5 w-3.5 text-neutral-500" />}
         </span>
-        <span className="mt-2 block text-[14.5px] leading-relaxed text-zinc-400">{item.summary}</span>
+        <span className="mt-2 block text-[14.5px] leading-relaxed text-neutral-500">{item.summary}</span>
 
-        <span className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-zinc-500">
+        <span className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-neutral-500">
           {item.category && <span>{categoryLabel(item.category, lang)}</span>}
           {item.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="rounded-full bg-white/[0.05] px-2 py-0.5">
+            <span key={tag} className="rounded-full bg-black/[0.05] px-2 py-0.5">
               #{tag}
             </span>
           ))}
@@ -62,15 +62,15 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
         {item.changes && item.changes.length > 0 && (
           <ul className="mt-4 space-y-1.5">
             {item.changes.slice(0, 3).map((c, i) => (
-              <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-zinc-300">
-                <span className="w-14 shrink-0 text-[13px] text-zinc-500">{changeLabel(c.kind, lang)}</span>
+              <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-neutral-700">
+                <span className="w-14 shrink-0 text-[13px] text-neutral-500">{changeLabel(c.kind, lang)}</span>
                 <span className="min-w-0">{c.text}</span>
               </li>
             ))}
           </ul>
         )}
 
-        <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-zinc-400 transition-colors group-hover:text-volt-400">
+        <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors group-hover:text-volt-400">
           {t("v.news.readMore")}
           <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </span>
@@ -85,27 +85,27 @@ function ChannelCard({ channel }: { channel: (typeof CHANNELS)[number] }) {
   const { Icon } = channel;
   const body = (
     <>
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/[0.06] text-zinc-200">
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-black/[0.06] text-neutral-800">
         <Icon className="h-4 w-4" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-center gap-2">
-          <span className="truncate text-[14px] font-semibold text-white">{channel.name}</span>
-          <span className="truncate font-mono text-[11.5px] text-zinc-500">{channel.handle}</span>
+          <span className="truncate text-[14px] font-medium text-black">{channel.name}</span>
+          <span className="truncate font-mono text-[11.5px] text-neutral-500">{channel.handle}</span>
         </span>
-        <span className="mt-1 block text-[13px] leading-relaxed text-zinc-500">{t(channel.descKey)}</span>
+        <span className="mt-1 block text-[13px] leading-relaxed text-neutral-500">{t(channel.descKey)}</span>
       </span>
       {channel.href ? (
-        <IconExternal className="h-4 w-4 shrink-0 text-zinc-600" />
+        <IconExternal className="h-4 w-4 shrink-0 text-neutral-500" />
       ) : (
-        <span className="shrink-0 rounded-full bg-white/[0.05] px-2 py-0.5 text-[11px] font-semibold text-zinc-500">
+        <span className="shrink-0 rounded-full bg-black/[0.05] px-2 py-0.5 text-[11px] font-medium text-neutral-500">
           {t("v.news.soon")}
         </span>
       )}
     </>
   );
   const cls =
-    "flex w-full items-center gap-3 rounded-2xl border border-white/[0.08] bg-ink-900 p-4 text-left transition-colors hover:border-white/20";
+    "flex w-full items-center gap-3 rounded-none border border-black/[0.08] bg-ink-900 p-4 text-left transition-colors hover:border-black/20";
 
   return channel.href ? (
     <a href={channel.href} target="_blank" rel="noopener noreferrer" className={cls}>
@@ -131,7 +131,7 @@ export default function News() {
   const visible = showAll ? list : list.slice(0, PAGE);
 
   return (
-    <section id="news" className="scroll-mt-20 border-t border-white/[0.06] py-20 sm:py-24">
+    <section id="news" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
       <div className="shell">
         <Reveal>
           <SectionHeader
@@ -149,7 +149,7 @@ export default function News() {
           {/* 소식 피드 */}
           <div className="min-w-0">
             {!news.length ? (
-              <p className="text-[14px] text-zinc-500">{t("v.news.empty")}</p>
+              <p className="text-[14px] text-neutral-500">{t("v.news.empty")}</p>
             ) : (
               <Reveal delay={60}>
                 {categories.length > 2 && (
@@ -167,7 +167,7 @@ export default function News() {
                   />
                 )}
 
-                <div className="mt-2 divide-y divide-white/[0.06] border-b border-white/[0.06]">
+                <div className="mt-2 divide-y divide-black/[0.06] border-b border-black/[0.06]">
                   {visible.map((n) => (
                     <NewsItem key={n.id} item={n} onOpen={() => openEntry(n)} />
                   ))}
@@ -177,7 +177,7 @@ export default function News() {
                   <div className="mt-6 flex justify-center">
                     <button
                       onClick={() => setShowAll((v) => !v)}
-                      className="rounded-full border border-white/12 px-5 py-2 text-[14px] font-medium text-zinc-300 transition-colors hover:border-white/25 hover:text-white"
+                      className="rounded-full border border-black/12 px-5 py-2 text-[14px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
                     >
                       {showAll ? t("v.news.less") : `${t("v.news.more")} (${list.length - PAGE})`}
                     </button>
@@ -190,8 +190,8 @@ export default function News() {
           {/* 타 SNS 채널 */}
           <Reveal delay={120}>
             <div className="lg:sticky lg:top-24">
-              <h3 className="text-[15px] font-semibold text-white">{t("v.news.channels")}</h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-zinc-500">{t("v.news.channelsSub")}</p>
+              <h3 className="text-[15px] font-medium text-black">{t("v.news.channels")}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-500">{t("v.news.channelsSub")}</p>
               <div className="mt-4 grid gap-3">
                 {CHANNELS.filter((c) => c.id !== "notion").map((c) => (
                   <ChannelCard key={c.id} channel={c} />
