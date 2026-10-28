@@ -55,13 +55,24 @@ const qa = (s) => [...doc.querySelectorAll(s)];
 /* ---------- interaction phase ---------- */
 const click = (el) => el?.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
 
+// The editorial hero uses live counts and forwards keyword searches to the existing overlay.
+if (!/아이디어가 있으면|Have an idea/.test(q('#top h1')?.textContent ?? '')) throw new Error('Editorial hero missing');
+if (q('#top input')?.placeholder.includes('v.search.')) throw new Error('Untranslated hero placeholder');
+if (qa('#top a[href^="#"]').length !== 5) throw new Error('Hero section navigation missing');
+click(qa('#top button').find((button) => button.textContent === 'FLEXBOARD'));
+await new Promise((resolve) => setTimeout(resolve, 150));
+const seededInput = q('.fixed input');
+if (seededInput?.value !== 'FLEXBOARD') throw new Error('Hero keyword was not passed to search');
+window.document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+await new Promise((resolve) => setTimeout(resolve, 150));
+
 // 1) open the unified search overlay via the header trigger
 const searchBtn = qa("header button").find((b) => /검색|Search/.test(b.textContent ?? ""));
 click(searchBtn);
 await new Promise((r) => setTimeout(r, 400));
 
 const overlay = q('div[role="dialog"], .fixed.inset-0.z-\\[95\\]');
-const searchInput = q('input[type="text"], input:not([type])');
+const searchInput = overlay?.querySelector('input[type="text"], input:not([type])');
 const hitsIdle = overlay ? overlay.querySelectorAll("li button").length : 0;
 
 // 2) type a term that actually exists in the data and confirm it narrows results

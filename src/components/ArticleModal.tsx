@@ -69,21 +69,21 @@ export default function ArticleModal() {
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="article-title" className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center sm:p-6">
       <button type="button" aria-label={t("common.close")} tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-ink-950/75 backdrop-blur-md" />
-      <div className="anim-modal relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[28px] border border-white/10 bg-ink-900 shadow-[0_-20px_90px_-20px_rgba(0,0,0,0.9)] sm:max-w-3xl sm:rounded-[28px]">
+      <div className="anim-modal relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[28px] border border-black/10 bg-ink-900 shadow-[0_-20px_90px_-20px_rgba(0,0,0,0.9)] sm:max-w-3xl sm:rounded-[28px]">
         {/* Top bar */}
-        <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-5 py-3.5 sm:px-7">
+        <div className="flex items-center justify-between gap-3 border-b border-black/[0.06] px-5 py-3.5 sm:px-7">
           <div className="flex min-w-0 items-center gap-2">
             <TypeLabel type={active.type} />
             {active.category && !["공지", "Notice"].includes(active.category) && (
               <CategoryBadge>{categoryLabel(active.category, lang)}</CategoryBadge>
             )}
-            {active.version && <span className="font-mono text-xs text-zinc-400">{active.version}</span>}
+            {active.version && <span className="font-mono text-xs text-neutral-500">{active.version}</span>}
           </div>
           <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={share}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-zinc-400 transition hover:border-white/25 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-neutral-500 transition hover:border-black/25 hover:text-black"
             >
               {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Link2 className="h-3.5 w-3.5" />}
               <span aria-live="polite">{copied ? t("common.linkCopied") : t("common.share")}</span>
@@ -93,7 +93,7 @@ export default function ArticleModal() {
               type="button"
               onClick={closeEntry}
               aria-label={t("common.close")}
-              className="grid h-9 w-9 place-items-center rounded-full text-zinc-400 transition hover:bg-white/10 hover:text-white"
+              className="grid h-9 w-9 place-items-center rounded-full text-neutral-500 transition hover:bg-black/10 hover:text-black"
             >
               <X className="h-4.5 w-4.5" />
             </button>
@@ -108,14 +108,14 @@ export default function ArticleModal() {
             </div>
           )}
           <article className="px-5 pb-10 pt-7 sm:px-10">
-            <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
               {active.pinned && (
                 <span className="inline-flex items-center gap-1 text-volt-300">
                   <Pin className="h-3.5 w-3.5" /> {t("modal.pinnedNotice")}
                 </span>
               )}
               {!active.id.startsWith("tool-") ? (
-                <span className="inline-flex items-center gap-1.5 text-zinc-400">
+                <span className="inline-flex items-center gap-1.5 text-neutral-500">
                   <CalendarDays className="h-3.5 w-3.5" />
                   <Byline author={active.author} date={active.date} className="text-xs" />
                 </span>
@@ -125,20 +125,20 @@ export default function ArticleModal() {
             <h2
               id="article-title"
               className={cn(
-                "mt-3 text-balance text-2xl font-bold leading-snug tracking-[-0.03em] text-white sm:text-[2rem]",
+                "mt-3 text-balance text-2xl font-medium leading-snug tracking-[-0.03em] text-black sm:text-[2rem]",
                 /* 툴 가이드는 제목이 제품명이므로 번역 대상에서 제외 */
                 active.id.startsWith("tool-") && "notranslate"
               )}
             >
               {active.title}
             </h2>
-            {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-zinc-400">{active.summary}</p>}
+            {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-neutral-500">{active.summary}</p>}
 
             {active.changes && active.changes.length > 0 && (
-              <ul className="mt-6 space-y-2 rounded-2xl bg-white/[0.03] p-4 border border-white/[0.07]">
+              <ul className="mt-6 space-y-2 rounded-none bg-black/[0.03] p-4 border border-black/[0.07]">
                 {active.changes.map((c, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-zinc-200">
-                    <span className={cn("mt-0.5 w-[68px] shrink-0 rounded-md border py-0.5 text-center text-[11px] font-semibold", KIND_TONE[c.kind])}>{changeLabel(c.kind, lang)}</span>
+                  <li key={i} className="flex items-start gap-3 text-sm text-neutral-800">
+                    <span className={cn("mt-0.5 w-[68px] shrink-0 rounded-md border py-0.5 text-center text-[11px] font-medium", KIND_TONE[c.kind])}>{changeLabel(c.kind, lang)}</span>
                     {c.text}
                   </li>
                 ))}
@@ -151,7 +151,7 @@ export default function ArticleModal() {
                   {[100, 92, 96, 70, 88].map((w, i) => (
                     <div key={i} className="skeleton h-4 rounded" style={{ width: `${w}%` }} />
                   ))}
-                  <div className="skeleton mt-4 h-40 w-full rounded-xl" />
+                  <div className="skeleton mt-4 h-40 w-full rounded-none" />
                 </div>
               ) : blocks && blocks.length ? (
                 <Blocks blocks={blocks} alt={active.title} />
@@ -161,7 +161,7 @@ export default function ArticleModal() {
             {active.tags.length > 0 && (
               <div className="mt-8 flex flex-wrap gap-2">
                 {active.tags.map((t) => (
-                  <span key={t} className="rounded-full bg-white/[0.05] px-2.5 py-1 text-xs text-zinc-400">#{t}</span>
+                  <span key={t} className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs text-neutral-500">#{t}</span>
                 ))}
               </div>
             )}
@@ -171,7 +171,7 @@ export default function ArticleModal() {
                 href={active.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-volt-400 px-5 py-3 text-sm font-extrabold text-ink-950 transition hover:shadow-[0_14px_44px_-10px_rgba(255,214,10,0.75)] active:scale-95"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-extrabold text-white transition hover:opacity-80 active:scale-95"
               >
                 {active.type === "guide" ? t("modal.tryInStudio") : t("common.readMore")}
                 <ArrowUpRight className="h-4 w-4" />
@@ -179,9 +179,9 @@ export default function ArticleModal() {
             )}
 
             {related.length > 0 && (
-              <div className="mt-12 border-t border-white/[0.06] pt-8">
-                <p className="text-sm font-semibold text-white">{t("modal.related")}</p>
-                <ul className="mt-3 divide-y divide-white/[0.05]">
+              <div className="mt-12 border-t border-black/[0.06] pt-8">
+                <p className="text-sm font-medium text-black">{t("modal.related")}</p>
+                <ul className="mt-3 divide-y divide-black/[0.05]">
                   {related.map((r) => (
                     <li key={r.id}>
                       <button
@@ -189,15 +189,15 @@ export default function ArticleModal() {
                         onClick={() => openEntry(r)}
                         className="group flex w-full items-center justify-between gap-4 py-3 text-left"
                       >
-                        <span className="truncate text-sm text-zinc-300 transition group-hover:text-white">{r.title}</span>
-                        <span className="shrink-0 text-xs text-zinc-500">{formatDate(r.date)}</span>
+                        <span className="truncate text-sm text-neutral-700 transition group-hover:text-black">{r.title}</span>
+                        <span className="shrink-0 text-xs text-neutral-500">{formatDate(r.date)}</span>
                       </button>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            <a href={STUDIO_URL} className="mt-10 inline-flex items-center gap-2 rounded-full border border-volt-400/40 px-5 py-3 text-sm font-semibold text-volt-400 transition hover:border-volt-400 hover:text-volt-300">
+            <a href={STUDIO_URL} className="mt-10 inline-flex items-center gap-2 rounded-full border border-volt-400/40 px-5 py-3 text-sm font-medium text-volt-400 transition hover:border-volt-400 hover:text-volt-300">
               {t("modal.visitXconda")}
               <ArrowUpRight className="h-4 w-4" />
             </a>

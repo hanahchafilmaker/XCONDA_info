@@ -14,7 +14,7 @@ function BlogCard({ item, onOpen }: { item: Entry; onOpen: () => void }) {
     <article className="h-full">
       <button
         onClick={onOpen}
-        className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900 text-left transition-colors hover:border-white/20"
+        className="group flex h-full w-full flex-col overflow-hidden rounded-none border border-black/[0.08] bg-ink-900 text-left transition-colors hover:border-black/20"
       >
         <span className="block aspect-[16/9] w-full overflow-hidden">
           <SmartImage
@@ -26,22 +26,22 @@ function BlogCard({ item, onOpen }: { item: Entry; onOpen: () => void }) {
         </span>
 
         <span className="flex flex-1 flex-col p-5">
-          <span className="flex items-center gap-2 text-[12.5px] text-zinc-500">
-            {item.category && <span className="font-semibold text-volt-400">{categoryLabel(item.category, lang)}</span>}
+          <span className="flex items-center gap-2 text-[12.5px] text-neutral-500">
+            {item.category && <span className="font-medium text-volt-400">{categoryLabel(item.category, lang)}</span>}
             <span aria-hidden>·</span>
             <time>{formatDate(item.date)}</time>
             {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
           </span>
 
-          <span className="mt-2.5 block text-[16.5px] font-semibold leading-snug text-zinc-100 transition-colors group-hover:text-white">
+          <span className="mt-2.5 block text-[16.5px] font-medium leading-snug text-neutral-950 transition-colors group-hover:text-black">
             {item.title}
           </span>
-          <span className="mt-2 line-clamp-2 block text-[14px] leading-relaxed text-zinc-400">{item.summary}</span>
+          <span className="mt-2 line-clamp-2 block text-[14px] leading-relaxed text-neutral-500">{item.summary}</span>
 
           {item.tags.length > 0 && (
             <span className="mt-3 flex flex-wrap gap-1.5">
               {item.tags.slice(0, 3).map((tag) => (
-                <span key={tag} className="rounded-full bg-white/[0.05] px-2 py-0.5 text-[11.5px] text-zinc-500">
+                <span key={tag} className="rounded-full bg-black/[0.05] px-2 py-0.5 text-[11.5px] text-neutral-500">
                   #{tag}
                 </span>
               ))}
@@ -51,7 +51,7 @@ function BlogCard({ item, onOpen }: { item: Entry; onOpen: () => void }) {
           <span className="mt-auto flex items-center gap-3 pt-5">
             {/* 작성자(노션 Author 속성) — 없으면 아예 자리지지 않고 "글 읽기"만 오른쪽에 남습니다 */}
             <Byline author={item.author} date={item.date} className="text-[12.5px]" />
-            <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 text-[13.5px] font-semibold text-zinc-400 transition-colors group-hover:text-volt-400">
+            <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 text-[13.5px] font-medium text-neutral-500 transition-colors group-hover:text-volt-400">
               {t("v.blog.read")}
               <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </span>
@@ -80,14 +80,14 @@ export default function Blog() {
   const visible = showAll ? list : list.slice(0, PAGE);
 
   return (
-    <section id="blog" className="scroll-mt-20 border-t border-white/[0.06] py-20 sm:py-24">
+    <section id="blog" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
       <div className="shell">
         <Reveal>
           <SectionHeader title={t("nav.blog")} sub={t("v.blog.sub")} />
         </Reveal>
 
         {!blogs.length ? (
-          <p className="mt-10 text-[14px] text-zinc-500">{t("v.blog.empty")}</p>
+          <p className="mt-10 text-[14px] text-neutral-500">{t("v.blog.empty")}</p>
         ) : (
           <Reveal delay={60} className="mt-8">
             {categories.length > 2 && (
@@ -117,7 +117,7 @@ export default function Blog() {
               <div className="mt-8 flex justify-center">
                 <button
                   onClick={() => setShowAll((v) => !v)}
-                  className="rounded-full border border-white/12 px-5 py-2 text-[14px] font-medium text-zinc-300 transition-colors hover:border-white/25 hover:text-white"
+                  className="rounded-full border border-black/12 px-5 py-2 text-[14px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
                 >
                   {showAll ? t("v.blog.less") : `${t("v.blog.more")} (${list.length - PAGE})`}
                 </button>

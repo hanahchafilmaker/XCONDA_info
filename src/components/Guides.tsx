@@ -33,7 +33,7 @@ export default function Guides() {
   };
 
   return (
-    <section id="guides" className="scroll-mt-20 border-t border-white/[0.06] py-20 sm:py-24">
+    <section id="guides" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
       <div className="shell">
         <Reveal>
           <SectionHeader title={t("nav.tools")} sub={t("v.guides.sub")} />
@@ -60,8 +60,8 @@ export default function Guides() {
                     className={cn(
                       "w-full rounded-lg px-3 py-2 text-left text-[14px] font-medium transition-colors",
                       active.slug === g.slug
-                        ? "bg-white/[0.07] text-white"
-                        : "text-zinc-400 hover:bg-white/[0.03] hover:text-white",
+                        ? "bg-black/[0.07] text-black"
+                        : "text-neutral-500 hover:bg-black/[0.03] hover:text-black",
                     )}
                   >
                     <span className="notranslate">{g.name}</span>
@@ -79,7 +79,7 @@ export default function Guides() {
                 onClick={() => setActiveSlug(g.slug)}
                 className={cn(
                   "shrink-0 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors",
-                  g.slug === active.slug ? "border-white bg-white text-ink-950" : "border-white/10 text-zinc-400",
+                  g.slug === active.slug ? "border-black bg-black text-white" : "border-black/10 text-neutral-500",
                 )}
               >
                 <span className="notranslate">{g.name}</span>
@@ -88,41 +88,41 @@ export default function Guides() {
           </div>
 
           {/* detail */}
-          <article key={active.slug} className="anim-fade min-w-0 rounded-2xl border border-white/[0.08] bg-ink-900">
+          <article key={active.slug} className="anim-fade min-w-0 rounded-none border border-black/[0.08] bg-ink-900">
             <div className="p-6 sm:p-8">
-              <p className="text-[13px] font-medium text-zinc-500">{groupLabel(active.group, lang)}</p>
-              <h3 className="mt-2 text-[1.6rem] font-bold leading-tight tracking-[-0.03em] text-white sm:text-[1.9rem]">
+              <p className="text-[13px] font-medium text-neutral-500">{groupLabel(active.group, lang)}</p>
+              <h3 className="mt-2 text-[1.6rem] font-medium leading-tight tracking-[-0.03em] text-black sm:text-[1.9rem]">
                 <span className="notranslate">{active.name}</span>
               </h3>
               <p className="mt-2 text-[15px] font-medium text-volt-400">{active.tagline}</p>
-              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-400">{active.desc}</p>
+              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-neutral-500">{active.desc}</p>
 
               {active.image && (
-                <div className="mt-6 overflow-hidden rounded-xl">
+                <div className="mt-6 overflow-hidden rounded-none">
                   <SmartImage src={active.image} alt={active.name} className="aspect-[21/9] w-full object-cover" />
                 </div>
               )}
             </div>
 
-            <div className="border-t border-white/[0.06] p-6 sm:p-8">
-              <h4 className="text-[15px] font-semibold text-white">{t("v.guides.howTo")}</h4>
+            <div className="border-t border-black/[0.06] p-6 sm:p-8">
+              <h4 className="text-[15px] font-medium text-black">{t("v.guides.howTo")}</h4>
               <ol className="mt-4 space-y-4">
                 {active.steps.map((s, i) => (
                   <li key={s} className="flex gap-4">
-                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/[0.07] text-[12px] font-semibold text-zinc-300">
+                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-black/[0.07] text-[12px] font-medium text-neutral-700">
                       {i + 1}
                     </span>
-                    <p className="text-[15px] leading-relaxed text-zinc-300">{s}</p>
+                    <p className="text-[15px] leading-relaxed text-neutral-700">{s}</p>
                   </li>
                 ))}
               </ol>
 
               {active.tips && active.tips.length > 0 && (
-                <div className="mt-7 rounded-xl bg-white/[0.03] p-5">
-                  <p className="text-[13px] font-semibold text-volt-400">{t("v.guides.tip")}</p>
+                <div className="mt-7 rounded-none bg-black/[0.03] p-5">
+                  <p className="text-[13px] font-medium text-volt-400">{t("v.guides.tip")}</p>
                   <ul className="mt-2 space-y-1.5">
                     {active.tips.map((tip) => (
-                      <li key={tip} className="text-[14px] leading-relaxed text-zinc-300">
+                      <li key={tip} className="text-[14px] leading-relaxed text-neutral-700">
                         {tip}
                       </li>
                     ))}
@@ -135,10 +135,10 @@ export default function Guides() {
                   href={video}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 flex items-center justify-between gap-3 rounded-xl bg-black px-4 py-3 text-sm text-zinc-200 ring-1 ring-inset ring-white/[0.08] transition hover:bg-white/[0.06]"
+                  className="mt-5 flex items-center justify-between gap-3 rounded-none bg-neutral-100 px-4 py-3 text-sm text-neutral-800 ring-1 ring-inset ring-black/[0.08] transition hover:bg-black/[0.06]"
                 >
                   <span>{pick("공식 영상 가이드 (Google Drive에서 열기)", "Official video guide (open in Google Drive)")}</span>
-                  <ExternalLink className="h-4 w-4 shrink-0 text-zinc-500" aria-hidden />
+                  <ExternalLink className="h-4 w-4 shrink-0 text-neutral-500" aria-hidden />
                 </a>
               )}
 
@@ -152,7 +152,7 @@ export default function Guides() {
                     const i = filtered.findIndex((g) => g.slug === active.slug);
                     setActiveSlug(filtered[(i + 1) % filtered.length].slug);
                   }}
-                  className="ml-auto inline-flex items-center gap-1.5 px-2 text-[14px] font-medium text-zinc-400 transition-colors hover:text-white"
+                  className="ml-auto inline-flex items-center gap-1.5 px-2 text-[14px] font-medium text-neutral-500 transition-colors hover:text-black"
                 >
                   {t("v.guides.next")} <IconArrow className="h-4 w-4" />
                 </button>

@@ -9,8 +9,8 @@ import { cn } from "../utils/cn";
 /* ----------------------------- Badges ----------------------------- */
 
 const CATEGORY_TONE: Record<string, string> = {
-  점검: "bg-rose-400/10 text-rose-300",
-  Maintenance: "bg-rose-400/10 text-rose-300",
+  점검: "bg-rose-400/10 text-rose-700",
+  Maintenance: "bg-rose-400/10 text-rose-700",
 };
 
 export function CategoryBadge({ children, className }: { children: ReactNode; className?: string }) {
@@ -18,8 +18,8 @@ export function CategoryBadge({ children, className }: { children: ReactNode; cl
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[12px] font-semibold",
-        tone ?? "bg-white/[0.06] text-zinc-400",
+        "inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[12px] font-medium",
+        tone ?? "bg-black/[0.06] text-neutral-500",
         className
       )}
     >
@@ -44,7 +44,7 @@ export function Byline({ author, date, className }: { author?: string; date?: st
   return (
     <span
       data-byline={author || undefined}
-      className={cn("inline-flex min-w-0 items-center gap-1.5 text-zinc-400", className)}
+      className={cn("inline-flex min-w-0 items-center gap-1.5 text-neutral-500", className)}
       title={[when, author ? `${t("common.author")}: ${author}` : ""].filter(Boolean).join(" · ")}
     >
       {when ? (
@@ -52,10 +52,10 @@ export function Byline({ author, date, className }: { author?: string; date?: st
           {when}
         </time>
       ) : null}
-      {when && author ? <span aria-hidden className="text-zinc-600">·</span> : null}
+      {when && author ? <span aria-hidden className="text-neutral-500">·</span> : null}
       {author ? (
         <>
-          <PenLine className="h-3.5 w-3.5 shrink-0 text-zinc-500" aria-hidden />
+          <PenLine className="h-3.5 w-3.5 shrink-0 text-neutral-500" aria-hidden />
           <span className="sr-only">{t("common.author")}: </span>
           <span className="truncate">{author}</span>
         </>
@@ -66,7 +66,7 @@ export function Byline({ author, date, className }: { author?: string; date?: st
 
 export function NewBadge() {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-volt-400 px-2 py-px text-[9px] font-extrabold tracking-wider text-ink-950">
+    <span className="inline-flex shrink-0 items-center rounded-full bg-black px-2 py-px text-[9px] font-extrabold tracking-wider text-white">
       NEW
     </span>
   );
@@ -110,7 +110,7 @@ export function SyncStatus({ className }: { className?: string }) {
             : t("sync.sample");
   return (
     <div
-      className={cn("inline-flex items-center gap-2 text-[13px] text-zinc-500", className)}
+      className={cn("inline-flex items-center gap-2 text-[13px] text-neutral-500", className)}
       title={
         delayed
           ? pick(
@@ -129,7 +129,7 @@ export function SyncStatus({ className }: { className?: string }) {
           live ? (delayed ? "bg-amber-400" : "bg-emerald-400") : status === "error" ? "bg-rose-400" : "bg-amber-400"
         )}
       />
-      <NotionMark className="h-3.5 w-3.5 text-zinc-400" />
+      <NotionMark className="h-3.5 w-3.5 text-neutral-500" />
       <span aria-live="polite">{label}</span>
     </div>
   );
@@ -167,7 +167,7 @@ export function SmartImage({
   if (!active) {
     return (
       <div className={cn("grid place-items-center bg-gradient-to-br from-volt-400/18 via-volt-500/10 to-ink-800", className)}>
-        <ImageOff className="h-6 w-6 text-white/30" aria-hidden />
+        <ImageOff className="h-6 w-6 text-black/30" aria-hidden />
       </div>
     );
   }
@@ -190,10 +190,10 @@ export function RichText({ value }: { value: Rich }) {
     <>
       {value.map((s, i) => {
         let node: ReactNode = s.text;
-        if (s.code) node = <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[0.85em] text-volt-300">{node}</code>;
-        if (s.bold) node = <strong className="font-semibold text-white">{node}</strong>;
+        if (s.code) node = <code className="rounded bg-black/10 px-1.5 py-0.5 font-mono text-[0.85em] text-volt-300">{node}</code>;
+        if (s.bold) node = <strong className="font-medium text-black">{node}</strong>;
         if (s.italic) node = <em>{node}</em>;
-        if (s.strike) node = <s className="text-zinc-500">{node}</s>;
+        if (s.strike) node = <s className="text-neutral-500">{node}</s>;
         if (s.href)
           node = (
             <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-volt-300 underline decoration-volt-400/40 underline-offset-4 hover:decoration-volt-400">
@@ -223,8 +223,8 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();
   const [copied, setCopied] = useState(false);
   return (
-    <div className="relative overflow-hidden rounded-xl bg-black/40 ring-1 ring-white/[0.08]">
-      <div className="flex items-center justify-between border-b border-white/5 px-4 py-2 text-[11px] text-zinc-500">
+    <div className="relative overflow-hidden rounded-none bg-black/40 ring-1 ring-black/[0.08]">
+      <div className="flex items-center justify-between border-b border-black/5 px-4 py-2 text-[11px] text-neutral-500">
         <span className="font-mono">{language ?? "code"}</span>
         <button
           type="button"
@@ -233,13 +233,13 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
             setCopied(true);
             setTimeout(() => setCopied(false), 1500);
           }}
-          className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-white/10 hover:text-white"
+          className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-black/10 hover:text-black"
         >
           {copied ? <Check className="h-3 w-3 text-emerald-300" /> : <Copy className="h-3 w-3" />}
           {copied ? t("common.copied") : t("common.copy")}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-zinc-300">
+      <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-neutral-700">
         <code>{text}</code>
       </pre>
     </div>
@@ -256,15 +256,15 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
 export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) {
   const { pick } = useLang();
   return (
-    <div className="space-y-4 text-[15px] leading-[1.8] text-zinc-300">
+    <div className="space-y-4 text-[15px] leading-[1.8] text-neutral-700">
       {blocks.map((b, i) => {
         switch (b.type) {
           case "p":
             return <p key={i}><RichText value={b.text} /></p>;
           case "h2":
-            return <h2 key={i} className="pt-4 text-xl font-semibold tracking-[-0.02em] text-white"><RichText value={b.text} /></h2>;
+            return <h2 key={i} className="pt-4 text-xl font-medium tracking-[-0.02em] text-black"><RichText value={b.text} /></h2>;
           case "h3":
-            return <h3 key={i} className="pt-2 text-base font-semibold text-white"><RichText value={b.text} /></h3>;
+            return <h3 key={i} className="pt-2 text-base font-medium text-black"><RichText value={b.text} /></h3>;
           case "ul":
             return (
               <ul key={i} className="space-y-2 pl-1">
@@ -281,7 +281,7 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
               <ol key={i} className="space-y-3">
                 {b.items.map((it, j) => (
                   <li key={j} className="flex gap-3">
-                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/[0.07] font-mono text-xs font-medium text-white ring-1 ring-inset ring-white/10">
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-black/[0.07] font-mono text-xs font-medium text-black ring-1 ring-inset ring-black/10">
                       {j + 1}
                     </span>
                     <span><RichText value={it} /></span>
@@ -294,36 +294,36 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
               <ul key={i} className="space-y-2">
                 {b.items.map((it, j) => (
                   <li key={j} className="flex gap-3">
-                    <span className={cn("mt-1 grid h-4.5 w-4.5 shrink-0 place-items-center rounded ring-1 ring-inset", it.checked ? "bg-volt-400 ring-transparent" : "ring-white/20")}>
-                      {it.checked && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
+                    <span className={cn("mt-1 grid h-4.5 w-4.5 shrink-0 place-items-center rounded ring-1 ring-inset", it.checked ? "bg-volt-400 ring-transparent" : "ring-black/20")}>
+                      {it.checked && <Check className="h-3 w-3 text-black" strokeWidth={3} />}
                     </span>
-                    <span className={cn(it.checked && "text-zinc-400")}><RichText value={it.text} /></span>
+                    <span className={cn(it.checked && "text-neutral-500")}><RichText value={it.text} /></span>
                   </li>
                 ))}
               </ul>
             );
           case "quote":
             return (
-              <blockquote key={i} className="border-l-2 border-volt-400/60 pl-4 text-zinc-200 italic">
+              <blockquote key={i} className="border-l-2 border-volt-400/60 pl-4 text-neutral-800 italic">
                 <RichText value={b.text} />
               </blockquote>
             );
           case "callout":
             return (
-              <div key={i} className="rounded-xl bg-white/[0.04] p-4 ring-1 ring-inset ring-white/[0.08]">
-                <div className="flex gap-3"><span className="text-lg leading-7" aria-hidden>{b.icon ?? "💡"}</span><p className="text-zinc-200"><RichText value={b.text} /></p></div>
+              <div key={i} className="rounded-none bg-black/[0.04] p-4 ring-1 ring-inset ring-black/[0.08]">
+                <div className="flex gap-3"><span className="text-lg leading-7" aria-hidden>{b.icon ?? "💡"}</span><p className="text-neutral-800"><RichText value={b.text} /></p></div>
                 {b.children?.length ? <div className="mt-3"><Blocks blocks={b.children} alt={alt} /></div> : null}
               </div>
             );
           case "code":
             return <CodeBlock key={i} text={b.text} language={b.language} />;
           case "divider":
-            return <hr key={i} className="border-white/10" />;
+            return <hr key={i} className="border-black/10" />;
           case "img":
             return (
-              <figure key={i} className="overflow-hidden rounded-xl ring-1 ring-white/10">
+              <figure key={i} className="overflow-hidden rounded-none ring-1 ring-black/10">
                 <SmartImage src={b.src} alt={b.caption || alt} className="w-full min-h-40 object-cover" />
-                {b.caption && <figcaption className="bg-white/[0.02] px-4 py-2 text-xs text-zinc-500">{b.caption}</figcaption>}
+                {b.caption && <figcaption className="bg-black/[0.02] px-4 py-2 text-xs text-neutral-500">{b.caption}</figcaption>}
               </figure>
             );
           case "video": {
@@ -336,24 +336,24 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
                   href={b.src}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 rounded-xl bg-white/[0.03] px-4 py-3 text-sm text-zinc-200 ring-1 ring-inset ring-white/[0.08] transition hover:bg-white/[0.06]"
+                  className="flex items-center justify-between gap-3 rounded-none bg-black/[0.03] px-4 py-3 text-sm text-neutral-800 ring-1 ring-inset ring-black/[0.08] transition hover:bg-black/[0.06]"
                 >
                   <span className="truncate">
                     {b.caption ? `${b.caption} — ` : ""}
                     {pick("Google Drive 링크 (새 창에서 열기)", "Google Drive link (opens in a new tab)")}
                   </span>
-                  <ExternalLink className="h-4 w-4 shrink-0 text-zinc-500" />
+                  <ExternalLink className="h-4 w-4 shrink-0 text-neutral-500" />
                 </a>
               );
             }
             return (
-              <figure key={i} className="overflow-hidden rounded-xl ring-1 ring-white/10">
+              <figure key={i} className="overflow-hidden rounded-none ring-1 ring-black/10">
                 {yt ? (
                   <iframe src={yt} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
                 ) : (
                   <video src={b.src} controls playsInline className="aspect-video w-full bg-black" />
                 )}
-                {b.caption && <figcaption className="px-4 py-2 text-xs text-zinc-500">{b.caption}</figcaption>}
+                {b.caption && <figcaption className="px-4 py-2 text-xs text-neutral-500">{b.caption}</figcaption>}
               </figure>
             );
           }
@@ -364,10 +364,10 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
                 href={b.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 rounded-xl bg-white/[0.03] px-4 py-3 text-sm text-zinc-200 ring-1 ring-inset ring-white/[0.08] transition hover:bg-white/[0.06]"
+                className="flex items-center justify-between gap-3 rounded-none bg-black/[0.03] px-4 py-3 text-sm text-neutral-800 ring-1 ring-inset ring-black/[0.08] transition hover:bg-black/[0.06]"
               >
                 <span className="truncate">{b.caption ?? b.href}</span>
-                <ExternalLink className="h-4 w-4 shrink-0 text-zinc-500" />
+                <ExternalLink className="h-4 w-4 shrink-0 text-neutral-500" />
               </a>
             );
           case "column_list": {
@@ -379,15 +379,15 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
             return <div key={i} className="min-w-0">{b.children.map((child, j) => <Blocks key={j} blocks={[child]} alt={alt} />)}</div>;
           case "file":
           case "pdf":
-            return <a key={i} href={b.type === "file" ? b.url : b.src} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-xl bg-white/[0.04] p-4 ring-1 ring-white/10">{b.type === "file" ? b.name : b.caption || "PDF 보기"}{b.type === "file" && b.size ? <small>{b.size}</small> : null}<ExternalLink className="h-4 w-4" /></a>;
+            return <a key={i} href={b.type === "file" ? b.url : b.src} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-none bg-black/[0.04] p-4 ring-1 ring-black/10">{b.type === "file" ? b.name : b.caption || "PDF 보기"}{b.type === "file" && b.size ? <small>{b.size}</small> : null}<ExternalLink className="h-4 w-4" /></a>;
           case "audio":
-            return <figure key={i} className="space-y-2"><audio controls preload="metadata" src={b.src} className="w-full" />{b.caption && <figcaption className="text-xs text-zinc-500">{b.caption}</figcaption>}</figure>;
+            return <figure key={i} className="space-y-2"><audio controls preload="metadata" src={b.src} className="w-full" />{b.caption && <figcaption className="text-xs text-neutral-500">{b.caption}</figcaption>}</figure>;
           case "table":
-            return <div key={i} className="overflow-x-auto rounded-lg ring-1 ring-white/10"><table className="w-full border-collapse text-left"><tbody>{b.rows.map((row, ri) => <tr key={ri}>{row.cells.map((cell, ci) => <td key={ci} className="border border-white/10 px-3 py-2"><RichText value={cell} /></td>)}</tr>)}</tbody></table></div>;
+            return <div key={i} className="overflow-x-auto rounded-lg ring-1 ring-black/10"><table className="w-full border-collapse text-left"><tbody>{b.rows.map((row, ri) => <tr key={ri}>{row.cells.map((cell, ci) => <td key={ci} className="border border-black/10 px-3 py-2"><RichText value={cell} /></td>)}</tr>)}</tbody></table></div>;
           case "toggle":
             return (
-              <details key={i} className="group rounded-xl bg-white/[0.03] px-4 py-3 ring-1 ring-inset ring-white/[0.06]">
-                <summary className="cursor-pointer list-none font-medium text-white marker:hidden">
+              <details key={i} className="group rounded-none bg-black/[0.03] px-4 py-3 ring-1 ring-inset ring-black/[0.06]">
+                <summary className="cursor-pointer list-none font-medium text-black marker:hidden">
                   <span className="mr-2 inline-block transition-transform group-open:rotate-90">▸</span>
                   <RichText value={b.text} />
                 </summary>

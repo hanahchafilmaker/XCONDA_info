@@ -13,15 +13,15 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
   const { t } = useLang();
 
   return (
-    <div className="border-b border-white/[0.06]">
+    <div className="border-b border-black/[0.06]">
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         className="flex w-full items-center gap-4 py-5 text-left"
       >
-        <span className="flex-1 text-balance text-[16px] font-semibold text-zinc-100">{f.title}</span>
+        <span className="flex-1 text-balance text-[16px] font-medium text-neutral-950">{f.title}</span>
         <IconPlus
-          className={cn("h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-300", open && "rotate-45 text-white")}
+          className={cn("h-5 w-5 shrink-0 text-neutral-500 transition-transform duration-300", open && "rotate-45 text-black")}
         />
       </button>
       <div
@@ -31,10 +31,10 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
         <div className="overflow-hidden">
           <div className="pb-6 pr-9">
             {/* 답변은 문단·목록이 여러 줄일 수 있어 줄바꿈을 그대로 살립니다. */}
-            <p className="whitespace-pre-line text-pretty text-[15px] leading-relaxed text-zinc-400">{f.summary}</p>
+            <p className="whitespace-pre-line text-pretty text-[15px] leading-relaxed text-neutral-500">{f.summary}</p>
             <button
               onClick={onOpen}
-              className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-zinc-400 transition-colors hover:text-volt-400"
+              className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors hover:text-volt-400"
             >
               {t("v.faq.full")} <IconArrow className="h-4 w-4" />
             </button>
@@ -56,7 +56,7 @@ export default function Qna() {
   const visible = showAll ? faqs : faqs.slice(0, PAGE);
 
   return (
-    <section id="faq" className="scroll-mt-20 border-t border-white/[0.06] py-20 sm:py-24">
+    <section id="faq" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
       <div className="shell grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
           <SectionHeader title={t("v.faq.lead")} sub={t("v.faq.sub")} />
@@ -68,13 +68,13 @@ export default function Qna() {
           </a>
         </Reveal>
 
-        <Reveal delay={60} className="border-t border-white/[0.06]">
+        <Reveal delay={60} className="border-t border-black/[0.06]">
           {faqs.length > 0 && (
-            <p className="pt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-600">
+            <p className="pt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
               {faqs.length} {t("v.faq.count")}
             </p>
           )}
-          {faqs.length === 0 && <p className="py-6 text-[14px] text-zinc-500">{t("v.faq.empty")}</p>}
+          {faqs.length === 0 && <p className="py-6 text-[14px] text-neutral-500">{t("v.faq.empty")}</p>}
           {visible.map((f, i) => (
             <QnaItem key={f.id} f={f} defaultOpen={i === 0} onOpen={() => openEntry(f)} />
           ))}
@@ -82,7 +82,7 @@ export default function Qna() {
             <div className="flex justify-center py-2">
               <button
                 onClick={() => setShowAll((v) => !v)}
-                className="rounded-full border border-white/12 px-5 py-2 text-[14px] font-medium text-zinc-300 transition-colors hover:border-white/25 hover:text-white"
+                className="rounded-full border border-black/12 px-5 py-2 text-[14px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
               >
                 {showAll ? t("v.faq.less") : `${t("v.faq.more")} (${faqs.length - PAGE})`}
               </button>

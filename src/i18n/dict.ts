@@ -246,8 +246,8 @@ export const DICT: Dict = {
   "v.lang.toggleAria": { ko: "언어 변경", en: "Change language" },
 
   "v.hero.badge": { ko: "XCONDA허브", en: "XCONDA Hub" },
-  "v.hero.lead": { ko: "빠른 공지, 쉬운 툴 가이드,", en: "Fast notices, easy tool guides," },
-  "v.hero.accent": { ko: "뉴스와 툴 사용법으로 한발 앞서가세요.", en: "stay ahead with news and tool guides." },
+  "v.hero.lead": { ko: "아이디어가 있으면,", en: "Have an idea?" },
+  "v.hero.accent": { ko: "나머지는 여기서.", en: "Find the rest here." },
   "v.hero.desc": {
     ko: "공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A까지 XCONDA의 모든 정보를 한 곳에 모았습니다. 검색으로 시간을 쓰지 말고, 이 페이지에서 답을 찾으세요.",
     en: "Notices, social news, tool guides, blog posts and Q&A — every XCONDA resource in one place. Stop searching elsewhere; the answer is on this page.",

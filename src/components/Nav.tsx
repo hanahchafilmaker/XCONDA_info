@@ -22,7 +22,7 @@ const LANG_ITEMS = [
 function LangToggle({ className, full }: { className?: string; full?: boolean }) {
   const { t, target, setTarget } = useLang();
   return (
-    <div className={cn("items-center rounded-full bg-white/[0.05] p-0.5", className)} role="group" aria-label={t("v.lang.toggleAria")}>
+    <div className={cn("items-center rounded-full bg-black/[0.05] p-0.5", className)} role="group" aria-label={t("v.lang.toggleAria")}>
       {LANG_ITEMS.map((item) => (
         <button
           key={item.target}
@@ -30,9 +30,9 @@ function LangToggle({ className, full }: { className?: string; full?: boolean })
           aria-pressed={target === item.target}
           title={t(item.ariaKey)}
           className={cn(
-            "rounded-full px-2.5 py-1 text-[12px] font-semibold uppercase transition-colors",
+            "rounded-full px-2.5 py-1 text-[12px] font-medium uppercase transition-colors",
             full && "flex-1 py-2",
-            target === item.target ? "bg-white/[0.12] text-white" : "text-zinc-500 hover:text-white",
+            target === item.target ? "bg-black/[0.12] text-black" : "text-neutral-500 hover:text-black",
           )}
         >
           {/* 언어 코드(KO/EN/JA/ZH)는 Google 번역기가 한글 단어(고→WHO, 인→IN, 안→AND)로
@@ -75,12 +75,12 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
-          scrolled || open ? "border-white/[0.06] bg-ink-950/85 backdrop-blur-xl" : "border-transparent",
+          scrolled || open ? "border-black/[0.06] bg-ink-950/85 backdrop-blur-xl" : "border-black/10 bg-white/90 backdrop-blur-md",
         )}
       >
         <div className="shell flex h-16 items-center justify-between gap-6">
           <div className="flex items-center gap-10">
-            <Logo href={STUDIO_URL} />
+            <Logo href="#top" />
             <nav className="hidden items-center gap-1 lg:flex" aria-label={t("nav.primary")}>
               {LINKS.map((l) => (
                 <button
@@ -89,7 +89,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
                   aria-current={active === l.id ? "true" : undefined}
                   className={cn(
                     "rounded-full px-3 py-1.5 text-[14px] font-medium transition-colors",
-                    active === l.id ? "text-white" : "text-zinc-400 hover:text-white",
+                    active === l.id ? "text-black" : "text-neutral-500 hover:text-black",
                   )}
                 >
                   {l.label[lang]}
@@ -101,7 +101,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
           <div className="flex items-center gap-2">
             <button
               onClick={onSearch}
-              className="flex h-9 items-center gap-2 rounded-full px-2.5 text-zinc-400 transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="flex h-9 items-center gap-2 rounded-full px-2.5 text-neutral-500 transition-colors hover:bg-black/[0.06] hover:text-black"
             >
               <IconSearch className="h-[18px] w-[18px]" />
               <span className="sr-only lg:not-sr-only lg:text-[13px] lg:font-medium">{t("v.nav.search")}</span>
@@ -113,7 +113,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
               href={STUDIO_URL}
               target="_blank"
               rel="noreferrer"
-              className="hidden h-9 items-center rounded-full bg-volt-400 px-4 text-[13px] font-bold text-ink-950 transition-colors hover:bg-volt-300 sm:inline-flex"
+              className="hidden h-9 items-center rounded-full bg-black px-4 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800 sm:inline-flex"
             >
               {t("v.nav.open")}
             </a>
@@ -122,7 +122,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
               onClick={() => setOpen((v) => !v)}
               aria-label={t("v.nav.menu")}
               aria-expanded={open}
-              className="grid h-9 w-9 place-items-center rounded-full text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white lg:hidden"
+              className="grid h-9 w-9 place-items-center rounded-full text-neutral-700 transition-colors hover:bg-black/[0.06] hover:text-black lg:hidden"
             >
               {open ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
             </button>
@@ -133,23 +133,23 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
       {/* mobile drawer */}
       <div
         className={cn(
-          "fixed inset-x-0 top-16 z-40 border-b border-white/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 lg:hidden",
+          "fixed inset-x-0 top-16 z-40 border-b border-black/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 lg:hidden",
           open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
         )}
       >
         <div className="shell flex flex-col py-2">
           {LINKS.map((l) => (
-            <button key={l.id} onClick={() => go(l.id)} className="py-3 text-left text-[16px] font-semibold text-white">
+            <button key={l.id} onClick={() => go(l.id)} className="py-3 text-left text-[16px] font-medium text-black">
               {l.label[lang]}
             </button>
           ))}
-          <div className="mt-2 flex items-center gap-2 border-t border-white/[0.06] pt-4 pb-2">
+          <div className="mt-2 flex items-center gap-2 border-t border-black/[0.06] pt-4 pb-2">
             <LangToggle className="flex flex-1" full />
             <a
               href={STUDIO_URL}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-volt-400 px-5 py-2.5 text-center text-[14px] font-bold text-ink-950"
+              className="rounded-full bg-black px-5 py-2.5 text-center text-[14px] font-medium text-white"
             >
               {t("v.nav.open")}
             </a>

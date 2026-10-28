@@ -149,9 +149,9 @@ export function LogoMark({ className, title }: { className?: string; title?: str
         </mask>
       </defs>
       {/* 화이트 획 (／) — 옐로 획 주변을 잘라냄 */}
-      <path d="M21 4h7L11 28H4z" fill="#FFFFFF" mask={`url(#${uid}-cut)`} />
+      <path d="M21 4h7L11 28H4z" fill="currentColor" mask={`url(#${uid}-cut)`} />
       {/* 옐로 획 (＼) */}
-      <path d="M4 4h7l17 24h-7z" fill="#FFD60A" />
+      <path d="M4 4h7l17 24h-7z" fill="currentColor" />
     </svg>
   );
 }
@@ -161,7 +161,7 @@ export function Logo({ className, href = "#top" }: { className?: string; href?: 
   return (
     <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex items-center gap-2", className)}>
       <LogoMark className="h-[22px] w-[22px] shrink-0" />
-      <span className="notranslate text-[19px] font-bold leading-none tracking-[-0.02em] text-white">Xconda</span>
+      <span className="notranslate text-[15px] font-medium leading-none tracking-[-0.02em] text-black">XCONDA <span className="font-normal text-neutral-500">Hub</span></span>
     </a>
   );
 }
@@ -229,11 +229,11 @@ export function SectionHeader({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
-        {eyebrow && <p className="text-[13px] font-semibold text-volt-400">{eyebrow}</p>}
-        <h2 className="mt-2 text-[1.75rem] font-bold leading-tight tracking-[-0.03em] text-white sm:text-[2.1rem]">
+        {eyebrow && <p className="text-[13px] font-medium text-volt-400">{eyebrow}</p>}
+        <h2 className="mt-2 text-[32px] font-medium leading-tight tracking-[-0.03em] text-black sm:text-[44px]">
           {title}
         </h2>
-        {sub && <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-zinc-400">{sub}</p>}
+        {sub && <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-neutral-500">{sub}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </div>
@@ -266,8 +266,8 @@ export function Tabs<T extends string>({
           aria-selected={value === it.id}
           onClick={() => onChange(it.id)}
           className={cn(
-            "shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition-colors",
-            value === it.id ? "bg-white text-ink-950" : "text-zinc-400 hover:bg-white/[0.06] hover:text-white",
+            "shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
+            value === it.id ? "bg-black text-white" : "text-neutral-500 hover:bg-black/[0.06] hover:text-black",
           )}
         >
           {it.label}
@@ -281,8 +281,8 @@ export function Tabs<T extends string>({
 
 const toneMap: Record<string, string> = {
   volt: "bg-volt-400/12 text-volt-300",
-  zinc: "bg-white/[0.06] text-zinc-400",
-  red: "bg-rose-400/10 text-rose-300",
+  zinc: "bg-black/[0.06] text-neutral-500",
+  red: "bg-rose-400/10 text-rose-700",
 };
 
 export function Pill({
@@ -297,7 +297,7 @@ export function Pill({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11.5px] font-semibold",
+        "inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11.5px] font-medium",
         toneMap[tone] ?? toneMap.zinc,
         className,
       )}
@@ -323,15 +323,15 @@ export function FilterChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "group inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-[12.5px] font-semibold transition-all duration-300",
+        "group inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-[12.5px] font-medium transition-all duration-300",
         active
-          ? "border-volt-400 bg-volt-400 text-ink-950"
-          : "border-white/10 bg-white/[0.02] text-zinc-400 hover:border-white/25 hover:text-white",
+          ? "border-volt-400 bg-black text-white"
+          : "border-black/10 bg-black/[0.02] text-neutral-500 hover:border-black/25 hover:text-black",
       )}
     >
       {children}
       {count !== undefined && (
-        <span className={cn("font-mono text-[10px]", active ? "text-ink-950/60" : "text-zinc-600")}>
+        <span className={cn("font-mono text-[10px]", active ? "text-white/60" : "text-neutral-500")}>
           {String(count).padStart(2, "0")}
         </span>
       )}
@@ -355,7 +355,7 @@ export function VoltButton({
   icon?: boolean;
 }) {
   const cls = cn(
-    "group inline-flex items-center justify-center gap-2 rounded-full bg-volt-400 px-5 py-2.5 text-[14px] font-bold text-ink-950 transition-colors hover:bg-volt-300 active:scale-[0.98]",
+    "group inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-[14px] font-medium text-white transition-colors hover:bg-neutral-800 active:scale-[0.98]",
     className,
   );
   const inner = (
@@ -387,7 +387,7 @@ export function GhostButton({
   className?: string;
 }) {
   const cls = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full border border-white/12 px-5 py-2.5 text-[14px] font-semibold text-zinc-200 transition-colors hover:border-white/25 hover:bg-white/[0.04] hover:text-white active:scale-[0.98]",
+    "inline-flex items-center justify-center gap-2 rounded-full border border-black/12 px-5 py-2.5 text-[14px] font-medium text-neutral-800 transition-colors hover:border-black/25 hover:bg-black/[0.04] hover:text-black active:scale-[0.98]",
     className,
   );
   return href ? (
@@ -436,7 +436,7 @@ export function Modal({
       aria-label={label}
     >
       <button aria-label="닫기" onClick={onClose} className="anim-fade absolute inset-0 bg-ink-950/85 backdrop-blur-md" />
-      <div className="anim-modal relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-[26px] border border-white/10 bg-ink-900 shadow-[0_-20px_80px_-20px_rgba(0,0,0,0.9)] sm:max-h-[86vh] sm:max-w-3xl sm:rounded-[26px]">
+      <div className="anim-modal relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-[26px] border border-black/10 bg-ink-900 shadow-[0_-20px_80px_-20px_rgba(0,0,0,0.9)] sm:max-h-[86vh] sm:max-w-3xl sm:rounded-[26px]">
         {children}
       </div>
     </div>
