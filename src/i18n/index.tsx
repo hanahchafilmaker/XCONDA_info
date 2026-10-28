@@ -320,15 +320,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         // 깨끗한 로드부터 적용되도록 한 번 리로드합니다(이미 번역된 화면 복구 포함).
         if (t !== "ko" || alreadyChosen) return;
       }
-      // 번역 페이지가 있는 글·목록·홈이면 그 주소로 이동합니다(같은 내용을 두 주소로 만들지 않음).
+      // The language buttons belong to the interactive hub. Static /en/, /ja/,
+      // /zh/ pages are SEO reading views, not interchangeable app entry points.
+      // Stay on this route so navigation, search and guides survive switching.
+      // An explicit ?lang= must also change; otherwise it wins over the saved
+      // choice on reload and makes the language button appear broken.
       try {
-        const localized = typeof window !== "undefined" ? localizedHrefFor(t, window.location.pathname) : null;
-        if (localized) {
-          window.location.href = localized;
-          return;
+        const url = new URL(window.location.href);
+        if (url.searchParams.has("lang")) {
+          url.searchParams.set("lang", t);
+          window.history.replaceState(window.history.state, "", url);
         }
       } catch {
-        /* noop — 실패하면 아래 번역 위젯 경로로 */
+        /* Storage/cookie selection still works when history is unavailable. */
       }
       applyGoogtransCookie(t);
       // 리로드 전 렌더(·jsdom 스모크)에서 즉시 새 언어로 반영되도록 동기 갱신
