@@ -5,48 +5,11 @@
 ## 섹션
 
 - [XCONDA허브 홈](https://hub.xconda.ai/): XCONDA허브에서 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한곳에 확인하세요.
-- [뉴스 · 블로그](https://hub.xconda.ai/post/): XCONDA(엑스콘다)의 새 AI 모델 소식, 영상 제작 워크플로우, 컷 연결·캐릭터 일관성 같은 제작 심화 글을 모았습니다.
-- [공지사항](https://hub.xconda.ai/notice/): XCONDA(엑스콘다)의 서비스 변경, 점검, 요금·정책 업데이트와 프로모션 소식을 모았습니다.
 - [Q&A](https://hub.xconda.ai/qna/): XCONDA(엑스콘다) 사용 중 자주 묻는 질문과 답변 — 요금·크레딧·환불, FLEXBOARD·Turn·블로킹 보드 사용법, 저작권·개인정보까지 정리했습니다.
-- [툴 사용법](https://hub.xconda.ai/guide/): XCONDA(엑스콘다)의 FLEXBOARD·Turn·블로킹 보드를 실제 화면 순서대로 따라 하는 사용 가이드입니다.
 - [스튜디오 19개 툴 완전 사용자 가이드](https://hub.xconda.ai/user-guide.html)
 - [English hub](https://hub.xconda.ai/en/): English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry.
 - [日本語 hub](https://hub.xconda.ai/ja/): XCONDA についての日本語での回答。料金と返金、プライバシーと決済、FLEXBOARD・Turn・Blocking Board の使い方まで。Cubeberry 提供。
 - [中文 hub](https://hub.xconda.ai/zh/): 关于 XCONDA 的中文解答：价格与退款、隐私与支付，以及 FLEXBOARD、Turn、Blocking Board 工具的使用方法。由 Cubeberry 发布。
-
-## 툴 사용법
-
-- [FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정](https://hub.xconda.ai/guide/flexboard-storyboard-guide/): 시나리오를 컷별 스토리보드로 만들고, 문제 있는 컷만 골라 고친 뒤 시댄스(Seedance) 2.5로 넘기는 FLEXBOARD 사용법을 7단계로 정리했습니다.
-
-## 공지사항
-
-- [XCONDA에서 블로킹 보드 베타를 오픈합니다. 🎬](https://hub.xconda.ai/notice/blocking-board-beta-free-open/): 블로킹 보드 베타를 무료로 오픈합니다(영상 생성 전 단계까지). 장면 프롬프트만 넣으면 3D 공간과 인물이 구성되고, 마네킹 영상을 Seedance로 바로 보내 영상을 생성합니다.
-- [Seedance 2.5 업데이트, 30초 영상·동시 생성](https://hub.xconda.ai/notice/seedance-2-5-update/): Seedance 2.5 API가 XCONDA에서 정식 제공됩니다. 최대 30초 영상 생성, 영상·오디오 동시 생성, 레퍼런스 최대 50개, 타임스탬프 기반 편집, 그린스크린 배경 교체를 지원합니다.
-- [Seedance 2.5 프로모션, 최대 30% 할인](https://hub.xconda.ai/notice/seedance-2-5-promotion-30-off/): XCONDA에서 Seedance 2.5 프로모션을 진행합니다. 10월 7일 오전 11시부터 11월 6일 오전 11시까지(KST), 최대 30% 할인. 36컷 스토리보드 엔진 FLEXBOARD 출시 기념 프로모션입니다.
-- [Seedance 30% 할인, 패키지별 제작 수량](https://hub.xconda.ai/notice/seedance-30-off-package-quantities/): 크레딧 사용량 30% 할인 적용 시, 패키지별로 만들 수 있는 Seedance 영상 수량을 정리했습니다. 패키지 가격은 그대로이고 사용량만 줄어들어 같은 패키지로 더 많은 영상을 생성할 수 있습니다.
-- [Seedance 2.5 Draft 기능: 480p 초안 후 1080p 완성](https://hub.xconda.ai/notice/seedance-25-draft-480p-preview/): Seedance 2.5에 Draft 기능이 추가되었습니다. 480p 초안으로 결과를 먼저 확인하고, 마음에 드는 초안만 1080p 최종본으로 만들어 크레딧을 아낄 수 있습니다.
-
-## 뉴스
-
-- [DeepSeek 공식 하네스 공개, 모든 것이 플러그인](https://hub.xconda.ai/post/deepseek-official-harness/): DeepSeek의 공식 하네스가 발표됐습니다! MIT 라이선스로 공개됐으니 마음껏 뜯어보세요. 아키텍처 변태 연구소 답게, 이번에는 “모든 것이 플러그인” 설계입니다. 모델, 도구, 스킬, 세션, 샌드박스, 저장소, 루프, 스케줄링, UI까지 플러그인으로 조합하고…
-- [FLUX 3 Image 공개, 부분만 바꾸는 정밀 편집](https://hub.xconda.ai/post/flux-3-image-release/): 🚨 블랙 포레스트 랩스가 FLUX 3 Image를 공개했습니다. 가장 눈에 띄는 건 원하는 부분만 바꾸고 나머지 이미지는 그대로 유지하는 정밀 편집입니다. 여러 번 수정하거나 한 번에 여러 요소를 바꾸는 작업도 지원합니다. 바운딩 박스로 사람·사물의 위치를 직접…
-- [Opus 5.5 공개 후 GitHub 영상·애니메이션 쏠림](https://hub.xconda.ai/post/opus-5-5-github-trending/): Claude Opus 5.5 공개 일주일 만에 GitHub 인기 레포의 대부분이 영상·애니메이션 쪽으로 쏠렸습니다. 43가지 영화 스타일을 코드만으로 구현한 Lemo-Opuscar와 98년 치 작품상 수상작을 6분 25초에 담은 'OPUSCAR 98'이 대표 사례로…
-- [Skillry, AI 영상 결과물과 프롬프트 함께 공개](https://hub.xconda.ai/post/skillry-ai-video-prompt-reference/): 고퀄 3D·모션그래픽 결과물과 실제 사용 프롬프트를 원본과 나란히 비교해 볼 수 있는 레퍼런스 사이트 Skillry가 X에서 화제가 되고 있습니다.
-- [AI 영상 모션 아이디어가 막힐 때 참고할 사이트](https://hub.xconda.ai/post/ai-video-motion-ideas/): 참고할 만한 사이트 두 곳을 정리했어요. ① Prompt Motion 모션 영상을 둘러보고, 제작자가 공개한 프롬프트를 복사해 내 영상에 맞게 바꿔볼 수 있어요. ② Skillry CreatorMotion 같은 스킬을 에이전트에 설치해 원고에 맞는 모션을 만들어볼 수…
-- [엑스콘다 오픈 기념 신규가입 크레딧 100 증정](https://hub.xconda.ai/post/xconda-open-100-credits/): 큐브베리가 AI 영상제작 올인원 플랫폼 엑스콘다 오픈을 기념해 신규가입자 전원에게 크레딧 100을 무료 지급합니다. 세계 최초 '기초인과율'을 반영한 9컷 오토스토리보드 '아트디렉터 프로'도 정식 탑재됩니다.
-- [큐브베리 엑스콘다 런칭, AI 영상 제작 플랫폼](https://hub.xconda.ai/post/xconda-global-beta-launch/): 큐브베리가 AI 영상 제작 SaaS 플랫폼 엑스콘다(Xconda)의 글로벌 베타 서비스를 시작했습니다. 9컷 오토 스토리보드 '디렉터스 컷'을 비롯해 자체 AI 툴 8종과 Veo3·Kling 2.6 Pro·Runway Gen 4.5를 통합 제공합니다.
-
-## 블로그
-
-- [시나리오에서 완성 영상까지, 엑스콘다 제작 7단계](https://hub.xconda.ai/post/xconda-production-map/): 큐브베리의 AI 영상은 시나리오에서 출발해 XCONDA에서 영상을 만들고, 수노로 사운드를 붙여, 프리미어 프로에서 마무리합니다. 전체 순서를 한 장의 지도와 단계별 입력·결과물·점검 항목으로 정리했고, 각 단계의 자세한 방법은 연재 편에서 이어집니다.
-- [시댄스 타율 올리기, 영상 전에 콘티부터](https://hub.xconda.ai/post/seedance-storyboard-before-render/): 시댄스는 영상을 돌릴 때마다 크레딧이 나갑니다. 영상을 돌리기 전에 FLEXBOARD로 36컷 콘티를 먼저 확인하고, 두 가지 클로드 스킬로 프롬프트까지 만드는 제작 흐름을 정리했습니다.
-- [AI 영상 배경이 튀는 이유와 컷 일관성 해결](https://hub.xconda.ai/post/ai-video-background-consistency/)
-- [KBS 다큐 <성물> '초대', XCONDA로 제작](https://hub.xconda.ai/post/kbs-documentary-seongmul-xconda/): 토리노 대성당의 성의와 시각장애인 수녀의 고백을 담은 KBS 다큐멘터리 <성물> '초대' 영상이 공개됐습니다. 해당 영상은 올인원 AI 영상 제작 플랫폼 XCONDA로 제작됐습니다.
-- [시나리오에서 완성 영상까지, 엑스콘다 제작 7단계](https://hub.xconda.ai/post/scenario-to-final-video/): 큐브베리의 AI 영상은 시나리오에서 출발해 XCONDA에서 영상을 만들고, 수노로 사운드를 붙여, 프리미어 프로에서 마무리합니다. 이 글은 그 전체 순서를 한 장의 지도와 7단계 설명으로 보여줍니다. 단계마다 무엇을 넣고, 무엇이 나오고, 넘기기 전에 무엇을 확인해야…
-- [FLEXBOARD 컷별 스토리보드 만드는 7단계](https://hub.xconda.ai/post/flexboard-storyboard-7-steps/): 구도가 틀린 채로 영상을 뽑으면 영상 단계에서 여러 번 다시 생성해야 합니다. FLEXBOARD는 시나리오를 컷으로 나누고, 컷마다 글과 이미지로 미리 보여주는 XCONDA의 스토리보드 도구입니다. 이 글은 프로젝트를 만드는 것부터 문제 있는 컷만 골라 고치고…
-- [9컷의 저주 줄이는 법, 컷이 튀지 않는 5단계](https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/): 영상 AI는 앞 컷을 기억하지 못합니다. 공간은 TURN으로, 얼굴과 구도는 FLEXBOARD로, 이어져야 하는 상태는 레퍼런스와 프롬프트로 고정하는 5단계를 정리했습니다.
-- [AI 영상 버리지 않고 고치는 물리 역산 특허](https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/): AI 영상은 열 개를 뽑아 한두 개만 쓰는 일이 흔합니다. 영상을 만들기 전에 설정 위반과 물리 오류를 두 번 확인하고, 잘못된 위치와 정도를 AI에게 다시 알려 주는 특허(제10-3002930호)를 정리했습니다.
-- [컷 연결 오류 잡는 온톨로지 특허, FLEXBOARD 적용 계획](https://hub.xconda.ai/post/ontology-patent-cut-continuity/): AI 영상은 앞 컷을 기억하지 못해 컷이 넘어갈 때 연결이 튑니다. 논두렁 광고에서 실제로 튄 컷을 보여 드리고, 이번에 등록된 온톨로지 기반 특허의 원리와 FLEXBOARD에 적용할 개발 계획을 정리했습니다.
 
 ## Q&A
 
