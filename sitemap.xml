@@ -2,11 +2,111 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/</loc>
+    <lastmod>2026-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/</loc>
     <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/guide/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/blocking-board-beta-free-open/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/deepseek-official-harness/</loc>
+    <lastmod>2026-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/flux-3-image-release/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/opus-5-5-github-trending/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/skillry-ai-video-prompt-reference/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/ai-video-motion-ideas/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/seedance-storyboard-before-render/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/ai-video-background-consistency/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/kbs-documentary-seongmul-xconda/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/xconda-open-100-credits/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/seedance-2-5-update/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/seedance-2-5-promotion-30-off/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/xconda-global-beta-launch/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/scenario-to-final-video/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/flexboard-storyboard-7-steps/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/seedance-30-off-package-quantities/</loc>
+    <lastmod>2026-10-28</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/seedance-25-draft-480p-preview/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/ontology-patent-cut-continuity/</loc>
+    <lastmod>2026-10-24</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/contact-inquiry/</loc>
@@ -304,6 +404,94 @@
     <loc>https://hub.xconda.ai/user-guide.html</loc>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/en/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/notice/blocking-board-beta-free-open/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/notice/seedance-2-5-promotion-30-off/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/notice/seedance-2-5-update/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/notice/seedance-25-draft-480p-preview/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/notice/seedance-30-off-package-quantities/</loc>
+    <lastmod>2026-10-28</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/ai-video-9-cut-curse-fix/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/ai-video-background-consistency/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/ai-video-motion-ideas/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/deepseek-official-harness/</loc>
+    <lastmod>2026-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/flexboard-storyboard-7-steps/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/flux-3-image-release/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/kbs-documentary-seongmul-xconda/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/ontology-patent-cut-continuity/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/opus-5-5-github-trending/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/physics-inversion-patent-verify-before-render/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/scenario-to-final-video/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/seedance-storyboard-before-render/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/skillry-ai-video-prompt-reference/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/xconda-global-beta-launch/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/xconda-open-100-credits/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/en/qna/access-edit-delete-data/</loc>
     <lastmod>2026-10-11</lastmod>
   </url>
@@ -596,10 +784,107 @@
     <lastmod>2026-10-11</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/en/guide/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/notice/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/en/post/</loc>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/en/qna/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/notice/blocking-board-beta-free-open/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/notice/seedance-2-5-promotion-30-off/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/notice/seedance-2-5-update/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/notice/seedance-25-draft-480p-preview/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/notice/seedance-30-off-package-quantities/</loc>
+    <lastmod>2026-10-28</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/ai-video-9-cut-curse-fix/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/ai-video-background-consistency/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/ai-video-motion-ideas/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/deepseek-official-harness/</loc>
+    <lastmod>2026-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/flux-3-image-release/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/kbs-documentary-seongmul-xconda/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/ontology-patent-cut-continuity/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/opus-5-5-github-trending/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/physics-inversion-patent-verify-before-render/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/scenario-to-final-video/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/seedance-storyboard-before-render/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/skillry-ai-video-prompt-reference/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/xconda-global-beta-launch/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/xconda-open-100-credits/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/access-edit-delete-data/</loc>
@@ -894,10 +1179,107 @@
     <lastmod>2026-10-11</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/ja/guide/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/notice/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/ja/post/</loc>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/ja/qna/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/guide/flexboard-storyboard-guide/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/notice/blocking-board-beta-free-open/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/notice/seedance-2-5-promotion-30-off/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/notice/seedance-2-5-update/</loc>
+    <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/notice/seedance-25-draft-480p-preview/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/notice/seedance-30-off-package-quantities/</loc>
+    <lastmod>2026-10-28</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/ai-video-9-cut-curse-fix/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/ai-video-background-consistency/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/ai-video-motion-ideas/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/deepseek-official-harness/</loc>
+    <lastmod>2026-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/flexboard-storyboard-7-steps/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/flux-3-image-release/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/kbs-documentary-seongmul-xconda/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/ontology-patent-cut-continuity/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/opus-5-5-github-trending/</loc>
+    <lastmod>2026-10-12</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/physics-inversion-patent-verify-before-render/</loc>
+    <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/scenario-to-final-video/</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/seedance-storyboard-before-render/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/skillry-ai-video-prompt-reference/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/xconda-global-beta-launch/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/xconda-open-100-credits/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/xconda-production-map/</loc>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/access-edit-delete-data/</loc>
@@ -1190,6 +1572,15 @@
   <url>
     <loc>https://hub.xconda.ai/zh/qna/xconda-vs-other-ai-video-tools/</loc>
     <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/guide/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/notice/</loc>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/zh/post/</loc>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/</loc>

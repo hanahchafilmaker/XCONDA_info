@@ -6,6 +6,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   HEARTBEAT_MS,
+  checkMassRemoval,
+  renderMassRemovalSummary,
   renderSyncSummary,
   shouldWriteSnapshot,
   snapshotContentKey,
@@ -226,4 +228,56 @@ test("요약 리포트: 게시된 글이 하나도 없으면 Published 확인을
   const markdown = renderSyncSummary({ report: reportWith({ included: [], excluded: [{ title: "초안", rawType: "공지" }] }) });
   assert.match(markdown, /게시된 글이 0개/);
   assert.match(markdown, /\| 공지사항 \| 0 \|/);
+});
+
+/* ------------------- 대량 삭제(사고) 방지 가드 ------------------- */
+
+const rowsOf = (types) => types.map((type, i) => ({ id: `row-${i}`, Title: `${type} ${i}`, __type: type }));
+
+test("대량 삭제 가드: 글이 30% 넘게 줄면 게시를 막는다 (2026-10-29 사고 재현)", () => {
+  const previous = snapshot({ rows: rowsOf([...Array(73).fill("faq"), ...Array(6).fill("notice"), ...Array(8).fill("news"), ...Array(11).fill("blog"), "guide"]) });
+  const next = snapshot({ rows: rowsOf(Array(73).fill("faq")) });
+  const guard = checkMassRemoval(previous, next);
+  assert.equal(guard.block, true);
+  assert.equal(guard.previousTotal, 99);
+  assert.equal(guard.nextTotal, 73);
+  assert.match(guard.reason, /공지사항 6개 → 0개/);
+  assert.match(guard.reason, /뉴스 8개 → 0개/);
+  assert.match(guard.reason, /툴 사용법 1개 → 0개/);
+});
+
+test("대량 삭제 가드: 조금 줄거나 늘어나는 정상 편집은 막지 않는다", () => {
+  const previous = snapshot({ rows: rowsOf(Array(10).fill("notice")) });
+  assert.equal(checkMassRemoval(previous, snapshot({ rows: rowsOf(Array(9).fill("notice")) })).block, false);
+  assert.equal(checkMassRemoval(previous, snapshot({ rows: rowsOf(Array(12).fill("notice")) })).block, false);
+  // 한 섹션이 줄어도 다른 섹션이 채워 전체가 유지되면 통과 — 단, 그 섹션이 0 이 되면 막는다.
+  assert.equal(
+    checkMassRemoval(previous, snapshot({ rows: rowsOf([...Array(7).fill("notice"), ...Array(3).fill("news")]) })).block,
+    false
+  );
+});
+
+test("대량 삭제 가드: 전체 글이 30% 넘게 줄면 막는다", () => {
+  const previous = snapshot({ rows: rowsOf(Array(20).fill("blog")) });
+  const next = snapshot({ rows: rowsOf(Array(10).fill("blog")) });
+  const guard = checkMassRemoval(previous, next);
+  assert.equal(guard.block, true);
+  assert.match(guard.reason, /20개 → 10개 \(50% 감소\)/);
+});
+
+test("대량 삭제 가드: 이전 스냅샷이 없거나 작으면 비교를 생략한다", () => {
+  assert.equal(checkMassRemoval(null, snapshot()).block, false);
+  assert.equal(checkMassRemoval(snapshot({ rows: [] }), snapshot({ rows: [] })).block, false);
+  // 5행 미만 사이트(첫 구축)는 0행이 돼도 막지 않는다 — 초기 설정을 방해하지 않는다.
+  assert.equal(checkMassRemoval(snapshot({ rows: rowsOf(["notice", "notice"]) }), snapshot({ rows: [] })).block, false);
+});
+
+test("대량 삭제 안내: 원인 확인 순서와 되돌리는 방법(--allow-shrink · git 복구)을 알려 준다", () => {
+  const markdown = renderMassRemovalSummary({ reason: "전체 글이 99개 → 73개 (26% 감소)", previousGeneratedAt: "2026-10-29T08:48:03.000Z" });
+  assert.match(markdown, /동기화 중단/);
+  assert.match(markdown, /덮어쓰지 않았습니다/);
+  assert.match(markdown, /--allow-shrink/);
+  assert.match(markdown, /git checkout/);
+  assert.match(markdown, /allow_shrink/);
+  assert.match(markdown, /공지 6개 → 0개|전체 글이/);
 });
