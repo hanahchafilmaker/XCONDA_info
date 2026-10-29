@@ -17,6 +17,13 @@ on:
     # (보조 수단일 뿐 실행을 보장하지 않습니다 — 위 안내 참고)
     - cron: "7,17,27,37,47,57 * * * *"
   workflow_dispatch:
+    inputs:
+      allow_shrink:
+        # 노션에서 글을 정말로 대량 삭제한 경우에만 체크합니다.
+        # (사고로 글이 사라진 상태를 그대로 게시하지 않도록 기본은 "게시 중단")
+        description: "글이 크게 줄어든 것을 의도된 변경으로 보고 게시 (사고 방지 가드 해제)"
+        type: boolean
+        default: false
   repository_dispatch:
     types: [notion-sync, sync]
   push:
@@ -73,6 +80,10 @@ jobs:
           # 허브 Q&A 표(XCONDA 허브 Q&A) — 비워 두면 스크립트의 기본값을 씁니다.
           NOTION_FAQ_PAGE_ID: ${{ vars.NOTION_FAQ_PAGE_ID }}
           NOTION_FAQ_DATABASE_ID: ${{ vars.NOTION_FAQ_DATABASE_ID }}
+          # 글이 직전 스냅샷보다 30% 넘게 줄거나 섹션이 통째로 비면 게시를 중단합니다.
+          # (2026-10-29 사고: 노션에서 공지·뉴스·가이드·블로그가 한 번에 사라진 상태가 그대로 게시됨)
+          # 의도된 대량 삭제라면 Actions → Run workflow 에서 allow_shrink 를 체크합니다.
+          ALLOW_SNAPSHOT_SHRINK: ${{ inputs.allow_shrink && '1' || '' }}
         # 내용이 이전 스냅샷과 같고 마지막 갱신이 60분 이내면 파일을 다시 쓰지 않습니다.
         # 실행 화면의 Summary 탭에 "글 → 섹션" 분류표와 노션에서 손볼 곳을 남깁니다.
         run: node scripts/notion-snapshot.mjs --out notion-content.json

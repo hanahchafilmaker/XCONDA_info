@@ -970,6 +970,117 @@ export function shouldWriteSnapshot(previous, next, { now = Date.now(), heartbea
   return { write: false, reason: "변경 없음" };
 }
 
+/* ------------------- 대량 삭제(사고) 방지 가드 -------------------
+ *
+ * 2026-10-29 실제 사고: 노션 쪽에서 기존 글(공지 6 · 뉴스 8 · 블로그 11 · 가이드 1)이
+ * 한 번에 사라진 상태로 동기화가 실행되어, 스냅샷이 99행 → 73행(Q&A만)으로 덮어써지고
+ * 글별 페이지(post/ · notice/ · guide/)까지 삭제됐습니다. 게다가 스냅샷과 번역 파일이
+ * 어긋나 단위 테스트가 실패하면서 이후 동기화가 전부 막혀(=자동 복구 불가) 15시간 동안
+ * 사이트에는 Q&A 만 남았습니다.
+ *
+ * 그래서 "직전 스냅샷보다 글이 크게 줄어드는" 변경은 사고로 보고 **파일을 덮어쓰지 않습니다.**
+ * 의도된 대량 삭제라면 --allow-shrink (또는 ALLOW_SNAPSHOT_SHRINK=1) 로 한 번만 통과시킵니다.
+ */
+
+/** 이보다 적은 글을 가진 사이트에서는 가드하지 않습니다(첫 구축·소규모 사이트 보호). */
+export const MASS_REMOVAL_MIN_ROWS = 5;
+
+/** 직전 스냅샷 대비 이 비율을 넘게 줄면 사고로 봅니다. */
+export const MASS_REMOVAL_MAX_DROP = 0.3;
+
+const countRowsByType = (rows) => {
+  const out = {};
+  for (const row of Array.isArray(rows) ? rows : []) {
+    const type = row?.__type ?? "unknown";
+    out[type] = (out[type] ?? 0) + 1;
+  }
+  return out;
+};
+
+/**
+ * 새 스냅샷이 "대량 삭제"인지 판단합니다. (네트워크 없음)
+ *
+ *  - 직전 글이 MASS_REMOVAL_MIN_ROWS 미만이면 비교를 생략합니다(첫 구축 · 소규모 사이트).
+ *  - 전체 글 수가 MASS_REMOVAL_MAX_DROP(30%) 넘게 줄면 막습니다.
+ *  - 이전에 글이 있던 섹션(공지 · 뉴스 · 가이드 · 블로그 · Q&A)이 통째로 0이 되면 막습니다.
+ *
+ * @returns {{ block: boolean, reason: string, previousTotal: number, nextTotal: number, dropRatio: number, lostTypes: Array<{type:string,count:number}> }}
+ */
+export function checkMassRemoval(previous, next, { maxDropRatio = MASS_REMOVAL_MAX_DROP, minRows = MASS_REMOVAL_MIN_ROWS } = {}) {
+  const previousRows = Array.isArray(previous?.rows) ? previous.rows : null;
+  const nextRows = Array.isArray(next?.rows) ? next.rows : null;
+  const result = { block: false, reason: "", previousTotal: 0, nextTotal: 0, dropRatio: 0, lostTypes: [] };
+  if (!previousRows || !nextRows) {
+    result.reason = "이전 스냅샷이 없어 비교를 생략합니다";
+    return result;
+  }
+
+  const before = countRowsByType(previousRows);
+  const after = countRowsByType(nextRows);
+  result.previousTotal = previousRows.length;
+  result.nextTotal = nextRows.length;
+  result.dropRatio = previousRows.length > 0 ? 1 - nextRows.length / previousRows.length : 0;
+  result.lostTypes = Object.keys(before)
+    .filter((type) => before[type] > 0 && !after[type])
+    .map((type) => ({ type, count: before[type] }));
+
+  if (previousRows.length < minRows) {
+    result.reason = `직전 글이 ${previousRows.length}개뿐이라 비교를 생략합니다`;
+    return result;
+  }
+
+  const reasons = [];
+  if (result.dropRatio > maxDropRatio) {
+    reasons.push(
+      `전체 글이 ${previousRows.length}개 → ${nextRows.length}개 (${Math.round(result.dropRatio * 100)}% 감소)`
+    );
+  }
+  if (result.lostTypes.length) {
+    const label = (type) => SECTION_LABELS?.[type] ?? type;
+    reasons.push(
+      `섹션이 통째로 비었습니다: ${result.lostTypes.map(({ type, count }) => `${label(type)} ${count}개 → 0개`).join(", ")}`
+    );
+  }
+  if (reasons.length) {
+    result.block = true;
+    result.reason = reasons.join(" · ");
+  }
+  return result;
+}
+
+/** 대량 삭제 가드에 걸렸을 때 Actions 요약 탭에 남길 안내 */
+export function renderMassRemovalSummary({ reason, out = "notion-content.json", previousGeneratedAt = null } = {}) {
+  return [
+    "## 🛑 동기화 중단 — 노션 글이 대량으로 사라졌습니다",
+    "",
+    `- 감지 내용: ${reason}`,
+    `- 이전 스냅샷 생성 시각: ${previousGeneratedAt ?? "알 수 없음"}`,
+    `- 조치: \`${out}\` 을(를) **덮어쓰지 않았습니다.** 사이트는 직전 정상 상태를 그대로 유지합니다.`,
+    "",
+    "### 확인 순서",
+    "1. 노션 **XCONDA_NEWs** 페이지에서 공지 · 뉴스 · 가이드 · 블로그 표의 행이 남아 있는지 봅니다.",
+    "2. 표 보기의 필터/정렬이 글을 숨기고 있지 않은지, 행이 **휴지통**에 들어가지 않았는지 확인합니다.",
+    "3. `Published`(또는 `공개`) 체크가 풀리지 않았는지 확인합니다.",
+    "4. 페이지 공유 → **웹에 게시(Publish)** 가 켜져 있는지 확인합니다.",
+    "",
+    "### 정말로 지운 것이 맞다면 (의도된 대량 삭제)",
+    "`Actions → “Notion 동기화” → Run workflow` 에서 **allow_shrink** 를 체크해 한 번 실행하세요.",
+    "로컬에서는 `node scripts/notion-snapshot.mjs --allow-shrink` 입니다.",
+    "",
+    "### 실수로 지웠다면 (복구)",
+    "정상이던 스냅샷은 git 기록에 남아 있습니다. 아래처럼 되돌린 뒤 다시 동기화하세요.",
+    "",
+    "```bash",
+    "# 1) 정상이던 스냅샷 찾기 (내용이 급감한 커밋의 직전)",
+    "git log --oneline -- notion-content.json | head",
+    "# 2) 그 커밋의 스냅샷 · 글 페이지를 되살리기",
+    "git checkout <정상이던_커밋> -- notion-content.json post notice guide",
+    "node scripts/build-seo.mjs --snapshot notion-content.json && git commit -am \"fix: 노션 글 복구\"",
+    "```",
+    "",
+  ].join("\n");
+}
+
 /* ------------------------------ CLI ------------------------------ */
 
 const isMain = process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
@@ -979,6 +1090,8 @@ if (isMain) {
   const out = outIndex >= 0 ? args[outIndex + 1] : "notion-content.json";
   const print = args.includes("--print");
   const force = args.includes("--force"); // 변경 여부와 관계없이 항상 다시 쓴다
+  // 의도된 대량 삭제를 한 번 통과시키는 스위치 (사고 방지 가드 해제)
+  const allowShrink = args.includes("--allow-shrink") || process.env.ALLOW_SNAPSHOT_SHRINK === "1";
   const heartbeatIndex = args.indexOf("--heartbeat-min");
   const heartbeatMin = heartbeatIndex >= 0 ? Number(args[heartbeatIndex + 1]) : NaN;
   const heartbeatMs = Number.isFinite(heartbeatMin) && heartbeatMin >= 0 ? heartbeatMin * 60_000 : HEARTBEAT_MS;
@@ -999,6 +1112,24 @@ if (isMain) {
         /* 첫 생성이거나 읽을 수 없음 → 새로 씁니다 */
       }
       const decision = force ? { write: true, reason: "--force" } : shouldWriteSnapshot(previous, payload, { heartbeatMs });
+
+      // 대량 삭제 가드 — 사고로 글이 통째로 사라진 스냅샷은 게시하지 않습니다.
+      const guard = allowShrink
+        ? { block: false, reason: "" }
+        : checkMassRemoval(previous, payload);
+      if (guard.block) {
+        const message = `✖ 대량 삭제 감지 — ${out} 을(를) 덮어쓰지 않았습니다. ${guard.reason}`;
+        console.error(message);
+        console.error("  의도된 삭제라면 --allow-shrink (또는 ALLOW_SNAPSHOT_SHRINK=1) 로 다시 실행하세요.");
+        await appendSyncSummary(
+          renderMassRemovalSummary({
+            reason: guard.reason,
+            out,
+            previousGeneratedAt: previous?.generatedAt ?? null,
+          })
+        );
+        process.exit(1);
+      }
 
       let writeReason;
       if (decision.write) {

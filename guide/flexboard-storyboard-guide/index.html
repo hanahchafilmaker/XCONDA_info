@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="https://hub.xconda.ai/assets/app.js"></script>
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정 | XCONDA허브</title>
+    <meta name="description" content="XCONDA FLEXBOARD로 시나리오를 컷별 스토리보드로 만들고, 문제 컷만 고쳐 시댄스 2.5로 넘기기 전 점검하는 7단계를 초보자도 따라 할 수 있게 정리했습니다." />
+    <link rel="canonical" href="https://hub.xconda.ai/guide/flexboard-storyboard-guide/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/guide/flexboard-storyboard-guide/" />
+    <link rel="alternate" hreflang="en" href="https://hub.xconda.ai/en/guide/flexboard-storyboard-guide/" />
+    <link rel="alternate" hreflang="ja" href="https://hub.xconda.ai/ja/guide/flexboard-storyboard-guide/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://hub.xconda.ai/zh/guide/flexboard-storyboard-guide/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/guide/flexboard-storyboard-guide/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정" />
+    <meta property="og:description" content="XCONDA FLEXBOARD로 시나리오를 컷별 스토리보드로 만들고, 문제 컷만 고쳐 시댄스 2.5로 넘기기 전 점검하는 7단계를 초보자도 따라 할 수 있게 정리했습니다." />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/guide-flexboard-storyboard-guide.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/guide/flexboard-storyboard-guide/" />
+    <meta property="article:published_time" content="2026-10-19" />
+    <meta property="article:modified_time" content="2026-10-24" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정" />
+    <meta name="twitter:description" content="XCONDA FLEXBOARD로 시나리오를 컷별 스토리보드로 만들고, 문제 컷만 고쳐 시댄스 2.5로 넘기기 전 점검하는 7단계를 초보자도 따라 할 수 있게 정리했습니다." />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/guide-flexboard-storyboard-guide.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.xconda.ai/#org","name":"Cubeberry Co., Ltd.","alternateName":["큐브베리","주식회사 큐브베리"],"url":"https://www.xconda.ai","logo":"https://hub.xconda.ai/assets/img/logo/xconda-logo-512.png","brand":{"@type":"Brand","name":"XCONDA","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://x.com/Xconda_official","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_korea","https://www.instagram.com/xconda_ai/","https://blog.naver.com/dramajustice"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR"}]}</script>
+    <script type="application/ld+json" data-article-jsonld>{"@context":"https://schema.org","@type":"Article","@id":"https://hub.xconda.ai/guide/flexboard-storyboard-guide/#article","publisher":{"@id":"https://www.xconda.ai/#org"},"inLanguage":"ko-KR","headline":"FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정","description":"XCONDA FLEXBOARD로 시나리오를 컷별 스토리보드로 만들고, 문제 컷만 고쳐 시댄스 2.5로 넘기기 전 점검하는 7단계를 초보자도 따라 할 수 있게 정리했습니다.","mainEntityOfPage":{"@type":"WebPage","@id":"https://hub.xconda.ai/guide/flexboard-storyboard-guide/"},"isPartOf":{"@id":"https://hub.xconda.ai/#website"},"image":["https://hub.xconda.ai/assets/img/og/posts/guide-flexboard-storyboard-guide.png"],"datePublished":"2026-10-19","dateModified":"2026-10-24","author":{"@type":"Person","name":"김재환 PD"}}</script>
+    <script type="application/ld+json" data-article-jsonld>{"@type":"HowTo","@id":"https://hub.xconda.ai/guide/flexboard-storyboard-guide/#howto","name":"FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정","inLanguage":"ko-KR","isPartOf":{"@id":"https://hub.xconda.ai/guide/flexboard-storyboard-guide/#article"},"publisher":{"@id":"https://www.xconda.ai/#org"},"step":[{"@type":"HowToStep","position":1,"name":"1단계: 프로젝트 설정","text":"화면 위쪽에 작업 단계가 세 개의 버튼으로 표시됩니다."},{"@type":"HowToStep","position":2,"name":"2단계: 시나리오, 장르, 분위기 적기","text":"Scenario 칸에 장면을 적습니다. \"누가, 어디서, 무엇을, 어떤 감정으로\"가 들어가면 컷을 검토하기 쉬워집니다. 일이 여러 개 일어나면 순서대로 적습니다."},{"@type":"HowToStep","position":3,"name":"3단계: 인물과 배경 등록하기 (Reference Assets)","text":"컷이 바뀌어도 같은 인물, 같은 장소가 나오게 하는 단계입니다. Reference Assets 영역에 Cast(인물) 카드와 Background(배경) 카드를 등록합니다."},{"@type":"HowToStep","position":4,"name":"4단계: 컷 수와 컷 길이 정하기","text":"Number of Panels: 컷 수를 정합니다. 화면 예시는 9컷입니다. Shot Length: 컷 하나의 길이를 정합니다. 4초에서 30초 사이로 조절할 수 있습니다."},{"@type":"HowToStep","position":5,"name":"5단계: 이미지보다 글로 먼저 확인하기 (Text Preview)","text":"화면 아래 노란 Text Preview Generate 버튼을 누르면, 이미지를 만들기 전에 컷별 글 콘티가 먼저 나옵니다. 각 CUT 카드에서 세 가지를 확인합니다."},{"@type":"HowToStep","position":6,"name":"6단계: Edit Panel에서 컷 확인하기 (Panel 보기와 Sheet 보기)","text":"이미지를 생성하면 Edit Panel 단계로 넘어갑니다. 모델 선택 옆의 Panel / Sheet 버튼으로 보는 방식을 바꿀 수 있습니다."},{"@type":"HowToStep","position":7,"name":"7단계: 문제 있는 컷만 골라 고치기","text":"잘 나온 컷은 그대로 두고, 문제 있는 컷만 고칩니다. Panel 보기에서 고칠 컷 카드의 Edit를 누르면 그 컷만 따로 수정할 수 있습니다. 컷 카드에는 다음 도구가 있습니다."}],"description":"XCONDA FLEXBOARD로 시나리오를 컷별 스토리보드로 만들고, 문제 컷만 고쳐 시댄스 2.5로 넘기기 전 점검하는 7단계를 초보자도 따라 할 수 있게 정리했습니다.","image":"https://hub.xconda.ai/assets/img/og/posts/guide-flexboard-storyboard-guide.png","datePublished":"2026-10-19","author":{"@type":"Person","name":"김재환 PD"}}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-prefix="guide">
+<nav aria-label="breadcrumb"><a href="../../">XCONDA허브</a> / 툴 사용법</nav>
+<article>
+<h1>FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)</h1>
+<p class="seo-meta"><time datetime="2026-10-19">2026-10-19</time> · 김재환 PD</p>
+<figure class="seo-cover"><img src="https://www.notion.so/image/attachment%3A08c59325-2a8f-4e4d-be96-266992c9dde1%3A%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.png?table=block&amp;id=3fd2ebc0-17ad-80f4-a886-d83cfd388423&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="eager"></figure>
+<p>시나리오를 컷별 스토리보드로 만들고, 문제 있는 컷만 골라 고친 뒤 시댄스(Seedance) 2.5로 넘기는 FLEXBOARD 사용법을 7단계로 정리했습니다.</p>
+<blockquote><p><strong>이 글에서 배우는 것</strong>: 시나리오를 컷별 스토리보드로 만들고, 문제 있는 컷만 골라 고친 뒤 시댄스(Seedance) 2.5로 넘기는 방법</p></blockquote>
+<blockquote><p><strong>이런 분께</strong>: AI 영상을 처음 만들어 보는 분, 영상을 돌리다 크레딧을 낭비한 경험이 있는 분</p></blockquote>
+<blockquote><p><strong>준비물</strong>: XCONDA 계정과 크레딧, 시나리오 한 장면, (있다면) Turn으로 만든 배경 이미지. 이미지 생성과 재생성 버튼에는 필요한 크레딧이 화면에 표시됩니다.</p></blockquote>
+<p class="notion-default">이 글은 &quot;AI 영상제작 과정&quot; 연재 중 스토리보드 편입니다. 지난 글 「XCONDA Turn으로 360도 세트 만들기」에서 만든 배경과 키 이미지를 여기서 사용합니다.</p>
+<p class="notion-default"><strong>FLEXBOARD는 어디에 있나요</strong><br><br>XCONDA 왼쪽 메뉴에서 Studio로 들어가 Storyboard를 열면 FLEXBOARD 카드가 보입니다. &quot;시댄스 2.5에 최적화된 스토리보드 도구&quot;라고 적힌 카드입니다. 카드를 누르고 New Project를 선택하면 시작합니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aa655b8aa-cccf-4da8-8744-cac40140d1d7%3Aflex_01.png?table=block&amp;id=3fd2ebc0-17ad-8007-b478-ea32bf1cf706&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<h3><strong>1단계: 프로젝트 설정</strong></h3>
+<p class="notion-default">화면 위쪽에 작업 단계가 세 개의 버튼으로 표시됩니다.</p>
+<ol><li><strong>Project settings</strong>: 프로젝트 기본 설정</li><li><strong>Scene Settings</strong>: 시나리오, 인물과 배경, 컷 수 설정</li><li><strong>Edit Panel</strong>: 만들어진 컷을 보고 고치기</li></ol>
+<p class="notion-default">이 글의 1~5단계가 앞의 두 버튼, 6~7단계가 Edit Panel에 해당합니다. 먼저 세 가지를 정합니다.</p>
+<ul><li><strong>작업 방식</strong></li><li><strong>이미지 모델</strong>: 화면 왼쪽 위 드롭다운에서 컷 이미지를 그릴 모델을 고릅니다. 현재 고를 수 있는 모델은 네 가지입니다.</li><li><strong>프로젝트 이름</strong>: 나중에 목록에서 찾기 쉬운 이름으로 적습니다. 예: &quot;웹드라마_1화_대청마루씬&quot;</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3Ac6ec396a-0297-471f-88f5-156a5eb48d70%3Aflex_03.png?table=block&amp;id=3fd2ebc0-17ad-802b-98d2-ea744149fdec&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<h3><strong>2단계: 시나리오, 장르, 분위기 적기</strong></h3>
+<p class="notion-default"><strong>Scenario</strong> 칸에 장면을 적습니다. &quot;누가, 어디서, 무엇을, 어떤 감정으로&quot;가 들어가면 컷을 검토하기 쉬워집니다. 일이 여러 개 일어나면 순서대로 적습니다.</p>
+<p class="notion-default">예를 들면 이렇습니다.</p>
+<blockquote><p>비 오는 밤, 한옥 대청마루. 수연이 깨진 도자기 조각을 들고 서 있다. 대문 쪽에서 발소리가 들리고, 수연은 조각을 등 뒤로 숨긴다. 문이 열리고 어머니가 들어온다. 두 사람은 말없이 서로를 바라본다.</p></blockquote>
+<p class="notion-default">그다음 <strong>Genre</strong>(예: Suspense)와 <strong>Tone / Mood</strong>(예: Tense)를 고르고 <strong>Save project</strong>로 저장합니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A04218fad-14d3-45a6-88a8-ae4dc7b711b7%3Aflex_05.png?table=block&amp;id=3fd2ebc0-17ad-8079-a8ac-f31ae27e518a&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<h3><strong>3단계: 인물과 배경 등록하기 (Reference Assets)</strong></h3>
+<p class="notion-default">컷이 바뀌어도 같은 인물, 같은 장소가 나오게 하는 단계입니다. <strong>Reference Assets</strong> 영역에 <strong>Cast</strong>(인물) 카드와 <strong>Background</strong>(배경) 카드를 등록합니다.</p>
+<ol><li><strong>Add Cast</strong>를 눌러 인물 카드를 만듭니다. 카드마다 <strong>@image1, @image2</strong> 같은 이름표(토큰)가 자동으로 붙습니다.</li><li>카드에 얼굴 이미지와 알아보기 쉬운 이름을 넣습니다. 예: 수연, 어머니</li><li>반복해서 나오는 소품도 카드로 등록할 수 있습니다. 예: 깨진 도자기</li><li>배경 카드(Background)를 추가합니다. 지난 글에서 Turn으로 만든 공간 이미지를 여기에 넣으면 좋습니다.</li></ol>
+<p class="notion-default"><strong>토큰이 하는 일</strong>: 컷 설명 안에 &quot;@image1&quot;처럼 표시되어, 이 컷에 누가 나오는지 한눈에 보입니다. 영상 프롬프트에서도 같은 방식으로 인물을 가리키게 됩니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aac8311d3-6d67-4e72-8eb2-a80876ba7f49%3Aflex_06.png?table=block&amp;id=3fd2ebc0-17ad-8035-8844-fe8d4ec0b144&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>주의</strong>: 인물은 한 사람당 카드 하나로 등록하세요. 카드를 교체하거나 지운 뒤에는 토큰 번호와 컷 설명이 여전히 맞는지 다시 확인해야 합니다.<br><br></p>
+<h3><strong>4단계: 컷 수와 컷 길이 정하기</strong></h3>
+<ul><li><strong>Number of Panels</strong>: 컷 수를 정합니다. 화면 예시는 9컷입니다.</li><li><strong>Shot Length</strong>: 컷 하나의 길이를 정합니다. 4초에서 30초 사이로 조절할 수 있습니다.</li></ul>
+<p class="notion-default">예를 들어 9컷 × 15초로 설정하면 단순 합계는 약 2분 15초입니다. 실제 완성 길이는 이후 영상 작업에 따라 달라질 수 있습니다.</p>
+<p class="notion-default">컷 수는 장면이 바뀌는 지점을 기준으로 정하세요. 위 예시라면 &quot;도자기를 든 수연 / 발소리 / 숨기는 손 / 문이 열림 / 어머니 등장 / 마주 보는 두 사람&quot;처럼 나눌 수 있습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A9bb4c641-7db9-426d-ba86-22303303ff70%3Aflex_07.png?table=block&amp;id=3fd2ebc0-17ad-8007-b7be-f6089a522247&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<h3><strong>5단계: 이미지보다 글로 먼저 확인하기 (Text Preview)</strong></h3>
+<p class="notion-default">화면 아래 노란 <strong>Text Preview Generate</strong> 버튼을 누르면, 이미지를 만들기 전에 컷별 글 콘티가 먼저 나옵니다. 각 CUT 카드에서 세 가지를 확인합니다.</p>
+<ul><li>장면 설명이 의도한 순서대로 나왔는가</li><li>@image 토큰이 맞는 인물을 가리키는가</li><li>아래쪽 SFX(효과음) 설명이 장면 분위기와 맞는가</li></ul>
+<p class="notion-default">컷 순서나 인물, 장면 전환이 어색하면 <strong>이미지를 만들기 전에</strong> 시나리오나 컷 수로 돌아가서 고칩니다. 글 단계에서 고치는 것이 가장 빠릅니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae3ac7370-221c-4b9f-a81c-e9bb338c7a37%3Aflex_09.png?table=block&amp;id=3fd2ebc0-17ad-8073-9f33-c4d6f4fb9880&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<h3><strong>6단계: Edit Panel에서 컷 확인하기 (Panel 보기와 Sheet 보기)</strong></h3>
+<p class="notion-default">이미지를 생성하면 <strong>Edit Panel</strong> 단계로 넘어갑니다. 모델 선택 옆의 <strong>Panel / Sheet</strong> 버튼으로 보는 방식을 바꿀 수 있습니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td><strong>보기</strong></td><td><strong>화면</strong></td><td><strong>언제 쓰나</strong></td></tr><tr><td><strong>Panel</strong></td><td>컷마다 카드 하나. 이미지 아래에 Edit 버튼, 장면 설명, 대사(Dialogue), 효과음(SFX)이 함께 나옴</td><td>컷 하나하나를 읽고 고칠 때</td></tr><tr><td><strong>Sheet</strong></td><td>설명 없이 컷 이미지만 크게 한 장에 모아서 보여줌</td><td>전체 흐름을 한눈에 볼 때</td></tr></tbody></table></div>
+<p class="notion-default"><strong>Sheet로 먼저 전체 흐름을 봅니다.</strong> 글 없이 그림만 이어서 보면, 실제 영상처럼 컷이 이어지는지 판단하기 쉽습니다.</p>
+<ul><li>컷 순서가 뒤바뀌거나 빠진 장면은 없는가</li><li>앞뒤 컷이 자연스럽게 이어지는가 (의상, 소품, 조명, 시선 방향)</li><li>같은 인물이 컷마다 같은 얼굴로 나오는가</li></ul>
+<figure><img src="https://www.notion.so/image/attachment%3A530ff496-b095-475b-82c6-3829a2d4ca6c%3Aflex_10.png?table=block&amp;id=3fd2ebc0-17ad-8045-ae12-d94fa4ed2060&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<p class="notion-default">화면 오른쪽 위에는 세 가지 버튼이 있습니다.</p>
+<ul><li><strong>Download CUT ZIP</strong>(Panel 보기) / <strong>Download Sheet</strong>(Sheet 보기): 컷 이미지를 한꺼번에 내려받거나, 시트 한 장으로 내려받습니다. 팀원이나 클라이언트에게 콘티를 공유할 때 씁니다.</li><li><strong>Regenerate images</strong>: 이미지를 다시 생성합니다. 버튼에 필요한 크레딧이 표시되니 누르기 전에 확인하세요.</li><li><strong>Clear Sheet</strong>: 시트를 비웁니다. 되돌리기 어려울 수 있으니 내려받은 뒤에 쓰는 것이 안전합니다.</li></ul>
+<h3><strong>7단계: 문제 있는 컷만 골라 고치기</strong></h3>
+<p class="notion-default">잘 나온 컷은 그대로 두고, 문제 있는 컷만 고칩니다. <strong>Panel 보기</strong>에서 고칠 컷 카드의 <strong>Edit</strong>를 누르면 그 컷만 따로 수정할 수 있습니다. 컷 카드에는 다음 도구가 있습니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td><strong>도구</strong></td><td><strong>하는 일</strong></td></tr><tr><td>Edit</td><td>빠른 수정 창 열기</td></tr><tr><td>+</td><td>컷에 쓰이는 요소 추가</td></tr><tr><td>휴지통</td><td>컷 삭제</td></tr><tr><td>↓ / ↑</td><td>컷 이미지 내려받기 / 외부 이미지로 교체</td></tr></tbody></table></div>
+<p class="notion-default">↑(올리기)를 쓰면 Turn에서 만든 키 이미지를 그 컷에 바로 넣을 수도 있습니다. 프롬프트로 잘 안 나오는 구도를 해결할 때 유용합니다.</p>
+<p class="notion-default"><strong>빠른 수정 (Quick Edit)</strong></p>
+<ol><li>고칠 컷의 <strong>Edit</strong>를 누르고, 창 위쪽의 컷 번호(예: CUT 04)가 맞는지 확인합니다.</li><li>필요하면 <strong>Reference images</strong>에 참고 이미지를 추가합니다.</li><li><strong>Edit prompt</strong>에 바꿀 내용을 한 문장으로 적습니다. @토큰으로 인물을 가리킬 수 있습니다.</li><li>대상 컷과 지시 내용, 크레딧 안내를 확인하고 <strong>Apply edit</strong>를 누릅니다.</li></ol>
+<blockquote><p><strong>지시문 쓰는 요령</strong>: 바꿀 것과 유지할 것을 함께 적으세요. 예: &quot;안경만 바꾸고, 자세와 배경은 그대로 유지&quot; 예: &quot;@image1의 표정만 놀란 표정으로, 손에 든 도자기와 배경은 그대로&quot;</p></blockquote>
+<figure><img src="https://www.notion.so/image/attachment%3A6207e7f0-52a6-4c08-b60e-cfc9b92f5bca%3Aflex_12.png?table=block&amp;id=3fd2ebc0-17ad-80c5-a773-c4df5a618f58&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<p class="notion-default"><strong>자세한 수정 (Detailed Edit)</strong> 카메라를 바꾸고 싶을 때 씁니다. 오른쪽에서 세 가지를 조절합니다.</p>
+<ul><li><strong>Shot Size</strong>: 화면에 얼마나 담을지 (예: Extreme Wide Shot, Close-up)</li><li><strong>Camera Angle</strong>: 카메라 높이와 기울기 (예: Low Angle, Dutch Angle)</li><li><strong>Camera Movement</strong>: 카메라 움직임 (예: Handheld, Track Out)</li></ul>
+<p class="notion-default">화면 예시에서는 &quot;POV · Low Angle · Handheld&quot;였던 긴장감 있는 근접 구도를 &quot;Extreme Wide Shot · Dutch Angle · Track Out&quot;으로 바꿔, 넓게 기울어진 화면에서 카메라가 뒤로 빠지는 구도로 다시 만들었습니다. 설정을 확인한 뒤 <strong>Regenerate</strong>를 누르면 되고, 이때도 화면에 표시되는 크레딧을 확인하세요.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7d56a367-8a08-436f-8ad2-bc8ec0ccae78%3Aflex_13.png?table=block&amp;id=3fd2ebc0-17ad-8080-b5c4-e4b8b0e24146&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<div class="notion-columns"><div class="notion-column" style="--column-ratio:0.5"><figure><img src="https://www.notion.so/image/attachment%3Ae11c7f02-c85d-4ffd-93c3-5d3f7742586f%3Aflex_14.png?table=block&amp;id=3fd2ebc0-17ad-805b-8b53-fb7c0b2a6921&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure></div>
+<div class="notion-column" style="--column-ratio:0.5"><p class="notion-default"><br><br><strong>참고 이미지 순서 바꾸기</strong> 컷 생성에 쓰이는 인물과 배경 카드는 목록으로 관리됩니다. 인물은 인물끼리, 배경은 배경끼리 끌어서 순서를 바꿀 수 있고, <strong>Reset to automatic selection</strong>을 누르면 기본 선택으로 돌아갑니다. 순서를 바꾼 뒤에는 컷 이미지를 다시 생성해야 반영됩니다.</p></div></div>
+<figure><img src="https://www.notion.so/image/attachment%3A4e5c257a-7f76-4c3c-a159-460194e8711a%3Aflex_15.png?table=block&amp;id=3fd2ebc0-17ad-80e9-811e-c39179b365c5&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<figure><img src="https://www.notion.so/image/attachment%3Af9a3bb4b-d4d7-4d0b-8917-9597e8c5e7f8%3Aflex_16.png?table=block&amp;id=3fd2ebc0-17ad-8092-b0a8-f89f40024578&amp;cache=v2" alt="FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)" loading="lazy" decoding="async"></figure>
+<h3><strong>시댄스로 넘기기 전 최종 점검</strong></h3>
+<p class="notion-default">스토리보드가 완성되면 영상 단계로 넘어갑니다. 넘기기 전에 아래를 확인하세요.</p>
+<ul class="todo"><li><input type="checkbox" disabled> Sheet 보기로 컷이 자연스럽게 이어지는지 확인했는가</li><li><input type="checkbox" disabled> 모든 컷의 이미지와 설명이 맞는가</li><li><input type="checkbox" disabled> 인물 토큰이 컷마다 정확한가</li><li><input type="checkbox" disabled> 빠진 컷은 없는가</li><li><input type="checkbox" disabled> 컷 길이, 화면 크기, 카메라 각도, 카메라 움직임이 컷의 의도와 맞는가</li></ul>
+<p class="notion-default">여기서 확인한 컷 이미지가 영상 프롬프트의 기준이 됩니다. 구도를 고치는 비용은 이 단계가 가장 작습니다. 영상으로 넘어간 뒤에 구도를 고치려면 영상을 여러 번 다시 돌려야 하기 때문입니다.</p>
+<h3><strong>자주 하는 실수</strong></h3>
+<ul><li><strong>글 콘티를 건너뛰고 바로 이미지를 만든다</strong>: 컷 순서가 틀린 채로 이미지를 만들면 다시 만들어야 합니다.</li><li><strong>같은 인물을 카드 여러 개로 등록한다</strong>: 토큰이 헷갈리고 얼굴이 섞일 수 있습니다.</li><li><strong>수정 지시문에 바꿀 것만 적는다</strong>: 유지할 것을 적지 않으면 다른 부분까지 바뀔 수 있습니다.</li><li><strong>잘 나온 컷까지 다시 생성한다</strong>: 문제 있는 컷만 골라 Panel 보기에서 Edit로 고치세요.</li><li><strong>Panel 보기로만 검토한다</strong>: 글을 읽다 보면 그림이 실제로 이어지는지 놓치기 쉽습니다. Sheet 보기로 그림만 이어서 보는 단계를 꼭 거치세요.</li><li><strong>중간에 이미지 모델을 바꾼다</strong>: 컷마다 그림 느낌이 달라질 수 있습니다.</li></ul>
+<h3><strong>다음 편 예고</strong></h3>
+<p class="notion-default">다음 글에서는 여러 인물이 움직이는 장면에서 동선이 엉키지 않도록, <strong>블로킹 보드로 퍼펫 영상을 만들어 동선을 잡는 법</strong>을 다룹니다.</p>
+<p class="notion-default"><strong>AI 영상제작 과정 연재</strong></p>
+<ul><li>EP.00 전체 지도: <a href="https://app.notion.com/p/3f42ebc017ad807ebf8bd8b8b61f8fe0" rel="noopener noreferrer">시나리오 한 편이 완성 영상이 되기까지</a></li><li>EP.02 레퍼런스: XCONDA Turn으로 360도 세트 만들기</li><li>EP.03 스토리보드: FLEXBOARD로 컷별 스토리보드 만들기 (지금 읽는 글)</li><li>EP.04 블로킹: 블로킹 보드로 동선 잡기 (예정)</li><li>EP.05 영상 생성: 시댄스에 넣는 네 가지 (예정)</li></ul>
+<h3><strong>지금 시작하시는 분들께</strong></h3>
+<p class="notion-default">FLEXBOARD 출시 오픈 프로모션으로 시댄스 2.5 할인 행사를 진행하고 있습니다.</p>
+<ul><li>한국: 사용 할인 30% + 가격 할인 10%, 최대 40%</li><li>미국: 사용 할인 최대 30% (달러 기준)</li><li>기간: 11월 6일 오전 11시까지 (한국 시간 기준)</li></ul>
+<p class="notion-default">👉 엑스콘다 바로가기: <a href="https://www.xconda.ai/" rel="noopener noreferrer">https://www.xconda.ai/</a></p>
+<p class="notion-default">도입이나 협업 문의는 아래로 연락 주세요.</p>
+<ul><li>이메일: cubeberry@cuberry.kr</li><li>전화: +82-70-8095-2302 (평일 10:00~17:00)</li></ul>
+<p class="notion-default">오늘도 긴 글 읽어주셔서 감사합니다!</p>
+</article>
+<nav class="seo-related" aria-label="관련 글"><h2>관련 글</h2><ul><li><a href="../../post/ai-video-9-cut-curse-fix/">9컷의 저주, 지금 XCONDA로 줄이는 법: 컷이 튀지 않게 만드는 5단계</a></li><li><a href="../../post/xconda-production-map/">시나리오 한 편이 완성 영상이 되기까지: 엑스콘다 프로덕션 맵 7단계</a></li><li><a href="../../post/scenario-to-final-video/">시나리오 한 편이 완성 영상이 되기까지</a></li><li><a href="../../post/seedance-storyboard-before-render/">시댄스 타율 올리는 법, 영상 돌리기 전에 콘티부터 뽑으세요</a></li></ul></nav>
+<p><a href="../../">XCONDA허브 메인으로</a></p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>
