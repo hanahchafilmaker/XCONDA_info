@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/deepseek-official-harness/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/flux-3-image-release/</loc>
@@ -441,7 +441,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/post/deepseek-official-harness/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/post/flexboard-storyboard-7-steps/</loc>
@@ -836,7 +836,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/post/deepseek-official-harness/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/post/flexboard-storyboard-7-steps/</loc>
@@ -1231,7 +1231,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/post/deepseek-official-harness/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/post/flexboard-storyboard-7-steps/</loc>
