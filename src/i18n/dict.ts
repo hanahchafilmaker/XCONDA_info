@@ -315,6 +315,8 @@ export const DICT: Dict = {
   "v.news.ch.notion": { ko: "이 페이지의 원본 데이터베이스", en: "The source database behind this page" },
   "v.news.ch.web": { ko: "스튜디오와 제품 정보", en: "The studio and product info" },
   "v.news.syncAria": { ko: "Notion 연동 상태", en: "Notion sync status" },
+  "v.news.sourceLink": { ko: "원문 보기", en: "View original" },
+  "v.news.play": { ko: "영상 재생", en: "Play video" },
 
   /* ------------------------------ 블로그 ------------------------------ */
   "v.blog.kicker": { ko: "제작 노트", en: "Production notes" },

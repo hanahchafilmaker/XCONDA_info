@@ -273,6 +273,7 @@ XCONDA_info/
 | 크롤러 언어 고정 | `src/i18n/index.tsx` › `isCrawlerUA` | 봇 UA 에는 **항상 한국어 원문** + 번역 위젯 미로드. 사람은 예전처럼 자동 감지, `?lang=en` 으로 고정 가능 |
 | 공용 번들 `assets/app.js` · `assets/app.css` | `build-seo.mjs` › `externalizeAssets` | 글마다 500KB 를 복사하던 인라인 번들을 **한 벌**로 분리(2026-10-25 A2). 홈 592→68KB·글 553→30KB. 산출물은 `build-site.yml` 이 `assets` 로 커밋합니다 |
 | 공유 이미지(OG) 로컬 사본 `assets/img/og/posts/` | `scripts/localize-og-images.mjs` + `manifest.json` | 노션 프록시(`www.notion.so/image/...`)는 만료 위험. 동기화(`notion-sync.yml`)가 이미지를 내려받아 우리 도메인 주소를 씁니다. 우선순위: **로컬 사본 → OG 이미지 속성 → Cover → 기본 이미지**(2026-10-25 A3). 손으로 받으려면 `npm run og:localize` |
+| 뉴스 원문 미리보기 `assets/img/og/link/` | `scripts/link-preview.mjs` + `manifest.json` (URL → 파일) | 뉴스 행의 `Link`(원문 기사)에서 og:image 를 내려받아 행의 `__linkImage`(루트 상대 경로)에 적습니다. 이미지가 없는 뉴스만 받고, 목록 썸네일 · SEO 공유 메타(`coverRaw` 가 절대 주소로 변환) · 상세 커버로 씁니다. 주소 키 manifest 로 재다운로드 없이 멱등. **실패해도 빌드는 계속**(실패 행은 채널 아이콘 타일). 동기화(`notion-sync.yml`)가 `localize-og-images` 다음에 실행하며, `snapshotContentKey` 는 이 필드를 내용 지문에서 제외해 빈 커밋을 만들지 않습니다. 이미지를 못 받은 행은 `__linkImage` 가 남지 않으므로 스냅샷이 되돌아가지 않습니다 |
 | 언어별 공유 카드 `assets/img/og/lang/` | `scripts/og/build-og-cards.mjs` + `manifest.json` (`npm run og:cards`) | 커버가 없는 글 · 언어 홈(`/en/` …) · 언어 목록(`/ja/qna/`)은 모두 같은 기본 카드를 써서 공유 미리보기에 **언어도 제목도 없었습니다**. 이 스크립트가 그 언어의 제목·요약으로 1200×630 카드를 그려(상단 `XCONDA HUB · Q&A`, 하단 `hub.xconda.ai/ja/…` + 언어 이름) PNG 로 저장하고 manifest 를 갱신합니다. 빌드 우선순위: **언어별 카드 → 글 커버 → 기본 카드**(2026-10-26 ①-5). 카드는 커밋되는 산출물이라 CI 에 Pillow·폰트가 필요 없습니다 |
 | 관련 글 (`aria-label="관련 글"`) | `seo.js` › `relatedArticles` | 노션 `Category`(+6) · `Tool`(+4) · `Tags`(+4) · 제목 2-gram(+1, 최대 4) 점수로 최대 4건. Q&A 는 같은 Q&A 를 뒤로 미룹니다. 후보가 없으면 같은 섹션 최신 글로 채워 **막다른 문서를 만들지 않습니다**(2026-10-25 A5) |
 | `llms.txt` | `seo.js` › `llmsTxt` | AI 도우미용 요약 + 섹션/대표 글 링크(절대 주소, 요약 160자). 사이트맵과 같은 목록에서 만들어 서로 어긋나지 않습니다(2026-10-25 A6). 번역 언어가 있으면 `<언어> hub` 항목(`/en/`·`/ja/`·`/zh/`)이 자동으로 붙습니다 |
@@ -368,6 +369,7 @@ type Entry = {
 ```
 
 - `rows[*].__type`은 **스냅샷이 미리 계산한 섹션**으로, 브라우저 추론보다 우선합니다(분류 규칙이 바뀌어도 노션-사이트가 어긋나지 않도록).
+- `rows[*].__linkImage`(선택)는 동기화가 뉴스 `Link` 원문에서 받아 둔 og:image 의 **루트 상대 경로**입니다(`scripts/link-preview.mjs`). 내용 지문(`snapshotContentKey`)에서 제외되므로 스냅샷 변경 감지·빈 커밋 방지에 영향을 없습니다.
 - **직접 수정 금지.** 수동으로 고치면 다음 동기화 때 덮어써집니다.
 
 ### 8.5 노션 속성 스키마 (요약 · 전체는 `NOTION_SETUP.md`)

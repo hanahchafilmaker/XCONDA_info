@@ -4,7 +4,7 @@ import { useContent } from "../content/ContentContext";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
 import { fetchBlocks, formatDate } from "../notion";
-import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel } from "./common";
+import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel, youTubeEmbed } from "./common";
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
 import { STUDIO_URL } from "../content/tools";
@@ -101,12 +101,29 @@ export default function ArticleModal() {
         </div>
 
         <div ref={scrollRef} className="overflow-y-auto overscroll-contain">
-          {active.cover && (
-            <div className="relative aspect-[21/9] w-full overflow-hidden">
-              <SmartImage src={active.cover} fallbackSrc={active.coverFallback} className="h-full w-full object-cover" />
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink-900/90 to-transparent" />
-            </div>
-          )}
+          {(() => {
+            // Link 가 YouTube 영상이면 상단 커버 자리에 바로 재생할 수 있게 끼워 넣습니다.
+            const ytEmbed = active.url ? youTubeEmbed(active.url) : null;
+            if (ytEmbed) {
+              return (
+                <div className="relative aspect-video w-full overflow-hidden bg-black">
+                  <iframe
+                    src={ytEmbed}
+                    title={active.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
+                </div>
+              );
+            }
+            return active.cover ? (
+              <div className="relative aspect-[21/9] w-full overflow-hidden">
+                <SmartImage src={active.cover} fallbackSrc={active.coverFallback} className="h-full w-full object-cover" />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink-900/90 to-transparent" />
+              </div>
+            ) : null;
+          })()}
           <article className="px-5 pb-10 pt-7 sm:px-10">
             <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
               {active.pinned && (

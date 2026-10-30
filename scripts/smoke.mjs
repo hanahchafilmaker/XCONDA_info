@@ -107,6 +107,15 @@ const modalProductLink = modal?.querySelector('a[href="https://www.xconda.ai"]')
 window.document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
 await new Promise((r) => setTimeout(r, 300));
 
+// 6) YouTube 링크가 있는 뉴스를 열면 상단에 바로 재생 플레이어(iframe) 가 뜬다
+const ytNewsCard = qa("#news article button").find((b) => /Turn/.test(b.textContent ?? ""));
+click(ytNewsCard);
+await new Promise((r) => setTimeout(r, 500));
+const ytFrame = q('div[role="dialog"][aria-modal="true"] iframe[src*="youtube.com/embed/"]');
+const ytFrameSrc = ytFrame?.getAttribute("src") ?? null;
+window.document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+await new Promise((r) => setTimeout(r, 300));
+
 const interactions = {
   searchOpened: !!overlay,
   term,
@@ -115,6 +124,7 @@ const interactions = {
   overlayClosedOnEsc: overlayClosed,
   h1AfterKo,
   koreanActive: qa('header button[aria-pressed="true"]').some((b) => b.textContent?.trim().toLowerCase() === "ko"),
+  ytFrameSrc,
 };
 
 const EXPECTED_ORDER = ["top", "notices", "news", "guides", "blog", "faq"];
@@ -139,6 +149,9 @@ const result = {
     guideToolButtons: qa("#guides ul li button").length,
     noticeRows: qa("#notices li button").length,
     newsItems: qa("#news article").length,
+    newsThumbnails: qa("#news article img").length,
+    newsSourceLinks: qa("#news article a[target='_blank']").length,
+    newsTiles: qa("#news article [data-news-tile]").length,
     channelCards: qa("#news a[target='_blank'], #news div.rounded-2xl").length,
     blogCards: qa("#blog article").length,
     blogThumbnails: qa("#blog article img").length,
@@ -168,11 +181,18 @@ if (!result.orderOk) fail.push(`section order wrong: ${result.renderedOrder.join
 for (const s of sections) if (!s.present) fail.push(`missing section #${s.id}`);
 if (result.counts.guideToolButtons < 10) fail.push(`guides tool list short: ${result.counts.guideToolButtons}`);
 if (result.counts.newsItems < 3) fail.push(`news items missing: ${result.counts.newsItems}`);
+// 뉴스 강화: 썸네일(이미지) · 원문 링크 칩 · 이미지 없는 행의 채널 타일이 모두 나와야 합니다
+if (!result.counts.newsThumbnails) fail.push("news cards render no thumbnail <img>");
+if (!result.counts.newsSourceLinks) fail.push("news cards render no source-link chip");
+if (!result.counts.newsTiles) fail.push("news cards render no channel tile for image-less items");
 if (result.counts.blogCards < 3) fail.push(`blog cards missing: ${result.counts.blogCards}`);
 if (!result.counts.blogThumbnails) fail.push("blog cards render no thumbnail <img>");
 if (result.counts.blogBylines < 3) fail.push(`blog cards missing author byline: ${result.counts.blogBylines}`);
 if (!modalByline) fail.push("article modal did not show the author byline");
 if (!modalProductLink) fail.push("article modal did not link back to XCONDA");
+if (ytFrameSrc !== "https://www.youtube.com/embed/xconda360cm") {
+  fail.push(`news modal did not embed the YouTube player: ${ytFrameSrc}`);
+}
 if (!result.headerLogoProductLink) fail.push("header logo did not link to XCONDA");
 if (!result.voltPaletteActive) fail.push("volt palette not applied");
 if (result.legacyPaletteLeft > 0) fail.push("legacy palette classes still present");

@@ -96,6 +96,8 @@ const BASE_SAMPLE_ENTRIES: Entry[] = [
     category: "YouTube",
     version: "v2.4.0",
     date: daysAgo(1),
+    // Notion 행의 Link(URL) 속성과 같은 역할 — 상단 플레이어 · 썸네일 · 원문 칩을 켭니다.
+    url: "https://www.youtube.com/watch?v=xconda360cm",
     tags: ["Turn", "YouTube"],
     changes: [
       { kind: "New", text: "사진 1장 → 6면 큐브맵 배경 고정 (컷 전환 시 공간 일관성 유지)" },

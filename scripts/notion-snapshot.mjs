@@ -946,11 +946,15 @@ export function stableStringify(value) {
   return JSON.stringify(value ?? null);
 }
 
-/** `generatedAt` 을 제외한 "내용" 지문 */
+/** `generatedAt` · 동기화가 나중에 덧붙인 `__linkImage` 를 제외한 "내용" 지문 */
 export const snapshotContentKey = (snapshot) =>
   stableStringify({
     source: snapshot?.source ?? null,
-    rows: snapshot?.rows ?? [],
+    rows: (snapshot?.rows ?? []).map((row) => {
+      if (!isRecord(row) || !("__linkImage" in row)) return row;
+      const { __linkImage: _skip, ...rest } = row;
+      return rest;
+    }),
     pages: snapshot?.pages ?? {},
   });
 

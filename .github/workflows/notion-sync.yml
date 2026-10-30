@@ -116,6 +116,9 @@ jobs:
             # 글별 공유 이미지(OG)를 우리 도메인으로 복사합니다. 노션 프록시 주소는 만료될 수 있습니다.
             #  - 이미 받아 둔 파일은 manifest 로 건너뜁니다(캐시). 실패해도 빌드는 계속됩니다.
             node scripts/localize-og-images.mjs --snapshot notion-content.json || echo "::warning::공유 이미지 일부를 받지 못했습니다(빌드는 계속)"
+            # 뉴스 링크의 원문 og:image 를 우리 도메인으로 받아 썸네일로 씁니다.
+            #  - 외부 사이트 접근이라 실패할 수 있지만, 실패해도 빌드는 계속됩니다.
+            node scripts/link-preview.mjs --snapshot notion-content.json || echo "::warning::뉴스 링크 미리보기 이미지를 받지 못했습니다(빌드는 계속)"
             node scripts/build-seo.mjs --snapshot notion-content.json
             git add -A -- notion-content.json index.html sitemap.xml robots.txt llms.txt assets
             # 언어별 정적 페이지(/en/ · /ja/ · /zh/)도 같은 빌드 산출물입니다.

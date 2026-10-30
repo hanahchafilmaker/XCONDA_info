@@ -207,9 +207,15 @@ export function RichText({ value }: { value: Rich }) {
   );
 }
 
-function youTubeEmbed(url: string): string | null {
+/** YouTube 주소에서 영상 ID 를 뽑습니다 (watch ·youtu.be · shorts · embed). */
+export function youtubeId(url: string): string | null {
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
-  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+  return m ? m[1] : null;
+}
+
+export function youTubeEmbed(url: string): string | null {
+  const id = youtubeId(url);
+  return id ? `https://www.youtube.com/embed/${id}` : null;
 }
 
 /**

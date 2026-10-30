@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
+import { Play } from "lucide-react";
 import type { Entry } from "../content/types";
-import { CHANNELS } from "../content/channels";
+import { CHANNELS, IconGlobe } from "../content/channels";
 import { channelFromUrl } from "../content/classify";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew } from "../notion";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import { IconArrow, IconExternal, Pill, Reveal, SectionHeader, Tabs } from "./volt";
-import { SyncStatus } from "./common";
+import { SmartImage, SyncStatus, youtubeId } from "./common";
 
 const PAGE = 5;
 
@@ -21,14 +22,32 @@ function channelOf(entry: Entry): string | undefined {
   return channelFromUrl(entry.url);
 }
 
+/** 원문 링크 호스트 이름 — Notion 본체 링크는 칩을 만들지 않습니다(원본 DB 주소 노출 금지). */
+function sourceHostOf(url?: string): string {
+  if (!url || !/^https?:/i.test(url)) return "";
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return /(^|\.)notion\.(so|site)$/i.test(host) ? "" : host;
+  } catch {
+    return "";
+  }
+}
+
 function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
   const { t, lang } = useLang();
   const channel = CHANNELS.find((c) => c.id === channelOf(item));
   const Icon = channel?.Icon;
+  // 이미지 없이도 비어 보이지 않도록: 커버 → OG 이미지 → YouTube 썸네일(실제 영상 주소일 때)
+  const ytId = item.url ? youtubeId(item.url) : null;
+  const thumbSrc =
+    item.cover ?? item.ogImage ?? (ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : undefined);
+  const sourceHost = sourceHostOf(item.url);
+  // 이미지가 하나도 없으면 채널 아이콘 타일(그라데이션)로 채웁니다.
+  const TileIcon = Icon ?? IconGlobe;
 
   return (
     <article className="grid gap-2 py-7 sm:grid-cols-[160px_1fr] sm:gap-8">
-      <div className="flex items-center gap-2 text-[13px] text-neutral-500 sm:flex-col sm:items-start sm:gap-1.5 sm:pt-1">
+      <div className="flex flex-wrap items-center gap-2 text-[13px] text-neutral-500 sm:flex-col sm:items-start sm:gap-1.5 sm:pt-1">
         <time>{formatDate(item.date)}</time>
         {channel ? (
           <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-neutral-500">
@@ -38,41 +57,82 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
         ) : (
           item.version && <span className="font-mono text-[12px] text-neutral-500">{item.version}</span>
         )}
+        {/* 원문 기사로 바로 여는 칩 — 버튼 안에 넣으면 링크가 버튼으로 가려서 바깥에 둡니다 */}
+        {sourceHost && (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t("v.news.sourceLink")}: ${sourceHost}`}
+            className="inline-flex max-w-full items-center gap-1 rounded-full border border-black/10 px-2 py-0.5 text-[11.5px] text-neutral-500 transition-colors hover:border-black/25 hover:text-black"
+          >
+            <span className="truncate">{sourceHost}</span>
+            <IconExternal className="h-3 w-3 shrink-0" />
+          </a>
+        )}
       </div>
 
-      <button onClick={onOpen} className="group min-w-0 text-left">
-        <span className="flex flex-wrap items-center gap-2">
-          <span className="text-[17px] font-medium leading-snug text-neutral-950 transition-colors group-hover:text-black">
-            {item.title}
-          </span>
-          {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
-          {item.url && <IconExternal className="h-3.5 w-3.5 text-neutral-500" />}
-        </span>
-        <span className="mt-2 block text-[14.5px] leading-relaxed text-neutral-500">{item.summary}</span>
-
-        <span className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-neutral-500">
-          {item.category && <span>{categoryLabel(item.category, lang)}</span>}
-          {item.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="rounded-full bg-black/[0.05] px-2 py-0.5">
-              #{tag}
+      <button onClick={onOpen} className="group flex w-full min-w-0 gap-4 text-left sm:gap-5">
+        <span className="min-w-0 flex-1">
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="text-[17px] font-medium leading-snug text-neutral-950 transition-colors group-hover:text-black">
+              {item.title}
             </span>
-          ))}
+            {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
+            {ytId && <span className="sr-only">{t("v.news.play")}</span>}
+          </span>
+          <span className="mt-2 block text-[14.5px] leading-relaxed text-neutral-500">{item.summary}</span>
+
+          <span className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-neutral-500">
+            {item.category && <span>{categoryLabel(item.category, lang)}</span>}
+            {item.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="rounded-full bg-black/[0.05] px-2 py-0.5">
+                #{tag}
+              </span>
+            ))}
+          </span>
+
+          {item.changes && item.changes.length > 0 && (
+            <ul className="mt-4 space-y-1.5">
+              {item.changes.slice(0, 3).map((c, i) => (
+                <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-neutral-700">
+                  <span className="w-14 shrink-0 text-[13px] text-neutral-500">{changeLabel(c.kind, lang)}</span>
+                  <span className="min-w-0">{c.text}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors group-hover:text-volt-400">
+            {t("v.news.readMore")}
+            <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
         </span>
 
-        {item.changes && item.changes.length > 0 && (
-          <ul className="mt-4 space-y-1.5">
-            {item.changes.slice(0, 3).map((c, i) => (
-              <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-neutral-700">
-                <span className="w-14 shrink-0 text-[13px] text-neutral-500">{changeLabel(c.kind, lang)}</span>
-                <span className="min-w-0">{c.text}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors group-hover:text-volt-400">
-          {t("v.news.readMore")}
-          <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        {/* 썸네일 — 이미지가 있으면 실물, 없으면 채널 아이콘 타일, 영상 링크면 재생 배지 */}
+        <span className="relative block aspect-[16/9] w-[104px] shrink-0 self-start overflow-hidden sm:w-36 lg:w-44">
+          {thumbSrc ? (
+            <SmartImage
+              src={thumbSrc}
+              fallbackSrc={item.coverFallback}
+              alt={item.title}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <span
+              data-news-tile
+              className="grid h-full w-full place-items-center bg-gradient-to-br from-volt-400/18 via-volt-500/10 to-ink-800"
+            >
+              <TileIcon className="h-7 w-7 text-black/30" aria-hidden />
+            </span>
+          )}
+          {ytId && (
+            <span aria-hidden className="absolute inset-0 grid place-items-center">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-black/55 text-white ring-1 ring-white/40 backdrop-blur-sm">
+                <Play className="h-3.5 w-3.5 fill-white text-white" />
+              </span>
+            </span>
+          )}
         </span>
       </button>
     </article>

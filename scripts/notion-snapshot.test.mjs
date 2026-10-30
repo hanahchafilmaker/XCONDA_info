@@ -40,6 +40,22 @@ test("snapshotContentKey: generatedAt 만 다르면 같은 지문", () => {
   assert.equal(snapshotContentKey(snapshot()), snapshotContentKey(snapshot({ generatedAt: minutesAgo(500) })));
 });
 
+test("snapshotContentKey: 동기화가 덧붙인 __linkImage 는 내용 지문에 넣지 않는다", () => {
+  // collect 후 스냅샷 파일에만 남는 필드 — 매 실행마다 "내용 변경"으로 오인해 빈 커밋이 생기지 않아야 한다
+  const withLink = snapshot({ rows: [{ ...snapshot().rows[0], __linkImage: "/assets/img/og/link/abc123.jpg" }] });
+  assert.equal(snapshotContentKey(snapshot()), snapshotContentKey(withLink));
+
+  // 그래도 원문에서 바뀐 내용(제목)은 반드시 잡는다
+  const edited = snapshot({ rows: [{ ...withLink.rows[0], Title: "수정됨" }] });
+  assert.notEqual(snapshotContentKey(snapshot()), snapshotContentKey(edited));
+
+  // shouldWriteSnapshot 전체 흐름에서도 덮어쓰지 않는다
+  assert.deepEqual(
+    shouldWriteSnapshot(withLink, snapshot({ generatedAt: minutesAgo(10) }), { now: NOW }),
+    { write: false, reason: "변경 없음" },
+  );
+});
+
 test("이전 스냅샷이 없거나 형식이 다르면 항상 쓴다", () => {
   for (const previous of [null, undefined, {}, [], "x", { rows: "no" }]) {
     assert.deepEqual(shouldWriteSnapshot(previous, snapshot(), { now: NOW }), { write: true, reason: "이전 스냅샷 없음" });

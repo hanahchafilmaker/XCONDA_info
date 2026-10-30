@@ -193,14 +193,15 @@ function asFileUrl(v: unknown): string {
 }
 
 /**
- * 썸네일 우선순위 — `Cover` 속성 → 동기화가 기록한 `__cover` → 본문 첫 이미지.
+ * 썸네일 우선순위 — `Cover` 속성 → 동기화가 기록한 `__cover` → 동기가 받아 둔 링크 og:image
+ * (`__linkImage`, 루트 상대) → 본문 첫 이미지.
  * 규칙 자체는 `src/content/fields.js` 한 곳에서 관리합니다(동기화 스크립트와 동일).
  */
 function coverOf(
   row: R,
   snapshot?: NotionSnapshot | null
 ): { cover?: string; coverFallback?: string } {
-  const explicit = asFileUrl(pick(row, COVER_KEYS)) || asText(row.__cover);
+  const explicit = asFileUrl(pick(row, COVER_KEYS)) || asText(row.__cover) || asText(row.__linkImage);
   if (explicit) return { cover: explicit, coverFallback: asText(row.__coverAlt) || undefined };
   if (!snapshot) return {};
   const derived = coverFromPageMap(snapshotPageMap(snapshot, String(row.id ?? "")), String(row.id ?? ""));
