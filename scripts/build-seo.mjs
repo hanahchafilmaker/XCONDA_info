@@ -1124,7 +1124,13 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
   for (const c of candidates) {
     const { row, type, slug, title } = c;
     const seo = seoFieldsOf(row);
-    const coverRaw = fileUrlOf(pickProp(row, COVER_KEYS)) || textOf(row.__cover) || derivedCover(pages, row.id);
+    // 우선순위: 노션 Cover → 페이지 커버 필드 → 동기화가 받아 둔 뉴스 링크 og:image(상대→절대) → 본문 첫 이미지
+    const linkImage = textOf(row.__linkImage);
+    const coverRaw =
+      fileUrlOf(pickProp(row, COVER_KEYS)) ||
+      textOf(row.__cover) ||
+      (linkImage ? absoluteUrl(site, linkImage) : "") ||
+      derivedCover(pages, row.id);
     const summary = textOf(row.Summary);
     const date = DATE_RE.test(textOf(row.Date)) ? textOf(row.Date) : "";
     // 우선순위: 노션 OG 이미지 속성 → **우리 도메인에 복사해 둔 사본** → 커버(노션 프록시) → 기본 이미지

@@ -181,6 +181,24 @@ check("이미지가 아예 없으면 썸네일은 비어 있다(자리 표시자
 check("`작성자` 속성 → Entry.author", byTitle("본문에 이미지만 있는 블로그 글")?.author, "김하나 PD");
 check("`Author` 속성 → Entry.author", byTitle("Cover 속성을 채운 블로그 글")?.author, "XCONDA 팀");
 
+// 동기화가 받아 둔 뉴스 링크 og:image(scripts/link-preview.mjs → 행.__linkImage) → 목록 썸네일
+const linkThumb = await sectionsOf([
+  row({ id: "n-link", Title: "링크 이미지가 있는 뉴스", Type: "뉴스", Link: "https://news.example.com/a", __linkImage: "/assets/img/og/link/abc.jpg" }),
+  row({ id: "n-none", Title: "이미지 없는 뉴스", Type: "뉴스", Link: "https://news.example.com/b" }),
+  row({
+    id: "n-cover-wins",
+    Title: "커버가 있는 뉴스",
+    Type: "뉴스",
+    Link: "https://news.example.com/c",
+    __linkImage: "/assets/img/og/link/stale.jpg",
+    Cover: [{ name: "c.png", url: "https://cdn.example.com/real.png", rawUrl: "https://cdn.example.com/real.png" }],
+  }),
+]);
+const linkBy = (t) => linkThumb.entries.find((e) => e.title === t);
+check("`__linkImage` 만 있으면 그대로 썸네일이 된다", linkBy("링크 이미지가 있는 뉴스")?.cover, "/assets/img/og/link/abc.jpg");
+check("이미지가 없는 뉴스는 썸네일이 비어 있다(사이트가 채널 타일로 표시)", linkBy("이미지 없는 뉴스")?.cover, undefined);
+check("Cover 속성이 있으면 링크 이미지보다 우선한다", linkBy("커버가 있는 뉴스")?.cover, "https://cdn.example.com/real.png");
+
 const authorEn = await sectionsOf([
   row({ id: "a1", Title: "작성자 영문 표기", Type: "블로그", Author: "김하나 PD", "Author EN": "Hana Kim" }),
 ]);

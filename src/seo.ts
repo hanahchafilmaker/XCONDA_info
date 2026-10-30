@@ -139,7 +139,8 @@ export function applyArticleMeta(entry: Entry): void {
     ogTitle: meta.ogTitle,
     ogDescription: meta.ogDescription,
     ogType: "article",
-    image: meta.image,
+    // 루트 상대 커버(동기가 받아 둔 뉴스 링크 og:image 등)는 공유 메타에 쓰기 전에 절대 주소로
+    image: meta.image.startsWith("/") ? hubAbsolute(meta.image.slice(1)) : meta.image,
     url: entryUrl(entry) ?? homeUrl(),
   });
 }

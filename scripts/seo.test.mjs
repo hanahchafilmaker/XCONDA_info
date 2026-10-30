@@ -791,6 +791,34 @@ test("OG 이미지 속성이 있으면 커버보다 우선하고, 복사본이 �
   );
 });
 
+test("동기가 받아 둔 뉴스 링크 이미지(__linkImage)는 절대 주소로 공유 메타에 쓰인다", () => {
+  // scripts/link-preview.mjs 가 원문 og:image 를 내려받아 남기는 필드 — 루트 상대 경로로 저장되므로
+  // SEO 페이지에서는 SITE 기준 절대 주소로 바꿔야 크롤러가 읽습니다.
+  const base = {
+    id: "99999999-0000-4000-8000-000000000003",
+    Title: "링크 이미지만 있는 뉴스",
+    __type: "news",
+    Published: true,
+    Date: "2026-10-07",
+    Slug: "link-preview-news",
+    Summary: "요약",
+    Link: "https://news.example.test/article/1",
+    __linkImage: "/assets/img/og/link/0123456789abcdef.jpg",
+  };
+  const out = renderSeoSite({ rows: [base], pages: {}, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  const page = out.files.get("post/link-preview-news/index.html");
+  const expected = `${SITE}assets/img/og/link/0123456789abcdef.jpg`;
+  assert.match(page, new RegExp(`<meta property="og:image" content="${expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}" />`));
+  assert.match(page, new RegExp(`<meta name="twitter:image" content="${expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}" />`));
+  assert.equal([].concat(ldJsonOf(page, true).image)[0], expected);
+  // 링크 이미지가 있으면 "공유 이미지 없음" 경고가 나면 안 된다
+  const rowWarnings = out.warnings.filter((w) => w.includes("링크 이미지만 있는 뉴스"));
+  assert.doesNotMatch(rowWarnings.join("\n"), /공유 이미지/);
+  // 없는 필드일 때는 기존 우선순위 그대로
+  const noField = renderSeoSite({ rows: [{ ...base, __linkImage: undefined }], pages: {}, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
+  assert.doesNotMatch(noField.files.get("post/link-preview-news/index.html"), /og\/link\//);
+});
+
 /* ---------------------------------------------------------------------------
  * 색인 정책 — 2026-10-25 A4
  *   관리자 매뉴얼은 noindex, 공개 사용자 가이드는 canonical + 사이트맵.
