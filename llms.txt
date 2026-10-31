@@ -33,8 +33,6 @@
 - [Opus 5.5 공개 후 GitHub 영상·애니메이션 쏠림](https://hub.xconda.ai/post/opus-5-5-github-trending/): Claude Opus 5.5 공개 일주일 만에 GitHub 인기 레포의 대부분이 영상·애니메이션 쪽으로 쏠렸습니다. 43가지 영화 스타일을 코드만으로 구현한 Lemo-Opuscar와 98년 치 작품상 수상작을 6분 25초에 담은 'OPUSCAR 98'이 대표 사례로…
 - [Skillry, AI 영상 결과물과 프롬프트 함께 공개](https://hub.xconda.ai/post/skillry-ai-video-prompt-reference/): 고퀄 3D·모션그래픽 결과물과 실제 사용 프롬프트를 원본과 나란히 비교해 볼 수 있는 레퍼런스 사이트 Skillry가 X에서 화제가 되고 있습니다.
 - [AI 영상 모션 아이디어가 막힐 때 참고할 사이트](https://hub.xconda.ai/post/ai-video-motion-ideas/): 참고할 만한 사이트 두 곳을 정리했어요. ① Prompt Motion 모션 영상을 둘러보고, 제작자가 공개한 프롬프트를 복사해 내 영상에 맞게 바꿔볼 수 있어요. ② Skillry CreatorMotion 같은 스킬을 에이전트에 설치해 원고에 맞는 모션을 만들어볼 수…
-- [엑스콘다 오픈 기념 신규가입 크레딧 100 증정](https://hub.xconda.ai/post/xconda-open-100-credits/): 큐브베리가 AI 영상제작 올인원 플랫폼 엑스콘다 오픈을 기념해 신규가입자 전원에게 크레딧 100을 무료 지급합니다. 세계 최초 '기초인과율'을 반영한 9컷 오토스토리보드 '아트디렉터 프로'도 정식 탑재됩니다.
-- [큐브베리 엑스콘다 런칭, AI 영상 제작 플랫폼](https://hub.xconda.ai/post/xconda-global-beta-launch/): 큐브베리가 AI 영상 제작 SaaS 플랫폼 엑스콘다(Xconda)의 글로벌 베타 서비스를 시작했습니다. 9컷 오토 스토리보드 '디렉터스 컷'을 비롯해 자체 AI 툴 8종과 Veo3·Kling 2.6 Pro·Runway Gen 4.5를 통합 제공합니다.
 
 ## 블로그
 
