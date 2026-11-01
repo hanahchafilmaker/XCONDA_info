@@ -3,6 +3,7 @@ import { ArrowUpRight, CalendarDays, Link2, Check, X, Pin } from "lucide-react";
 import { useContent } from "../content/ContentContext";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
+import { cleanFaqBlocks } from "../content/body";
 import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel, youTubeEmbed } from "./common";
 import { isNew } from "../notion";
@@ -135,6 +136,7 @@ export default function ArticleModal() {
                 <span className="inline-flex items-center gap-1.5 text-neutral-500">
                   <CalendarDays className="h-3.5 w-3.5" />
                   <Byline author={active.author} date={active.date} className="text-xs" />
+                  {active.modified && <span className="text-xs text-neutral-500">수정 {formatDate(active.modified)}</span>}
                 </span>
               ) : null}
               {isNew(active.date) && active.type !== "faq" && !active.id.startsWith("tool-") && <NewBadge />}
@@ -171,7 +173,7 @@ export default function ArticleModal() {
                   <div className="skeleton mt-4 h-40 w-full rounded-none" />
                 </div>
               ) : blocks && blocks.length ? (
-                <Blocks blocks={blocks} alt={active.title} />
+                <Blocks blocks={active.type === "faq" ? cleanFaqBlocks(blocks) : blocks} alt={active.title} />
               ) : null}
             </div>
 

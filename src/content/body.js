@@ -27,6 +27,23 @@ export function extractPageId(input) {
   return m ? m[0].toLowerCase() : undefined;
 }
 
+/** Q&A 편집용 표시를 숨기되 공개 출처는 유지합니다. 내부 섹션은 공개하지 않습니다. */
+export function cleanFaqBlocks(blocks = []) {
+  let internal = false;
+  let leading = true;
+  return blocks.filter((block) => {
+    const text = (Array.isArray(block.text) ? block.text.map((part) => typeof part === "string" ? part : part.text ?? "").join("") : String(block.text ?? "")).trim();
+    if (["h2", "h3"].includes(block.type)) {
+      if (/^(내부 근거|내부 메모|internal notes?)$/i.test(text)) { internal = true; return false; }
+      if (/^(게시용 출처|출처|답변)$/i.test(text)) { internal = false; leading = false; return false; }
+    }
+    if (internal) return false;
+    if (leading && (block.type === "divider" || (block.type === "p" && /^-{3,}$/.test(text)))) return false;
+    leading = false;
+    return true;
+  });
+}
+
 /* ------------------------------ 입력: record map → Block[] ------------------------------ */
 
 /** legacy rich text → Rich. 예: [["텍스트", [["b"], ["a", "url"]]]] */

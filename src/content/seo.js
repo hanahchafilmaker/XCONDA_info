@@ -629,7 +629,7 @@ export function escapeXml(value) {
  * ----------------------------------------------------------------------------------- */
 
 /** 운영사(큐브베리)의 전역 식별자 — www 에도 같은 @id 를 써서 두 사이트를 한 회사로 묶습니다. */
-export const ORG_ID = "https://www.xconda.ai/#org";
+export const ORG_ID = "https://www.cuberry.kr/#organization";
 /** 메인 사이트(제품) 주소 */
 export const WWW_URL = "https://www.xconda.ai";
 /**
@@ -640,7 +640,7 @@ export const WWW_URL = "https://www.xconda.ai";
  */
 export const ORG_LOGO_PATH = "assets/img/logo/xconda-logo-512.png";
 /** 제품(서비스) 이름 — 회사(큐브베리)와 구분해 Brand 로 선언합니다. */
-export const BRAND_NAME = "XCONDA";
+export const BRAND_NAME = "Xconda";
 /** 제품(SoftwareApplication)의 전역 식별자 — www 에서 같은 @id 를 쓰면 하나로 합쳐집니다. */
 export const APP_ID = "https://www.xconda.ai/#app";
 
@@ -650,7 +650,6 @@ export const APP_ID = "https://www.xconda.ai/#app";
  */
 export const OFFICIAL_SAME_AS = [
   "https://x.com/Xconda_official",
-  "https://www.threads.com/@xconda_official",
   "https://www.youtube.com/@xconda_korea",
   "https://www.instagram.com/xconda_ai/",
   "https://blog.naver.com/dramajustice",
@@ -663,14 +662,17 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
     {
       "@type": "Organization",
       "@id": ORG_ID,
-      name: "Cubeberry Co., Ltd.",
-      alternateName: ["큐브베리", "주식회사 큐브베리"],
-      url: WWW_URL,
-      logo: absoluteUrl(siteUrl, ORG_LOGO_PATH),
+      name: "CUBEBERRY",
+      alternateName: "큐브베리",
+      legalName: "주식회사 큐브베리",
+      url: "https://www.cuberry.kr/",
+      logo: "https://www.cuberry.kr/images/logo-512.png",
+      foundingDate: "2023-08",
+      email: "ceo@cubeberry.ai",
       // 회사(큐브베리)와 제품(XCONDA)을 분리해 선언합니다. 이게 없으면 AI 는
       // "XCONDA" 라는 이름을 회사 별칭으로만 보고, 제품 엔터티로 인식하지 못합니다.
       brand: { "@type": "Brand", name: BRAND_NAME, alternateName: ["엑스콘다"] },
-      sameAs: [WWW_URL, site.replace(/\/$/, ""), ...OFFICIAL_SAME_AS],
+      sameAs: [WWW_URL, site.replace(/\/$/, "")],
     },
     {
       "@type": "WebSite",
@@ -699,6 +701,7 @@ export function appJsonLd() {
     url: WWW_URL,
     inLanguage: "ko-KR",
     publisher: { "@id": ORG_ID },
+    sameAs: OFFICIAL_SAME_AS,
     description:
       "광고·드라마용 AI 스토리보드와 영상을 만드는 SaaS 플랫폼. 시나리오 한 편으로 컷별 스토리보드(FLEXBOARD)를 만들고, 360도 가상 세트(Turn)와 블로킹 보드로 인물·공간·구도를 고정한 뒤 영상으로 넘깁니다.",
   };

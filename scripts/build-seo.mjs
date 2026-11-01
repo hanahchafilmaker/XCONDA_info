@@ -28,7 +28,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { SECTION_LABELS } from "../src/content/classify.js";
 import { AUTHOR_KEYS, COVER_KEYS, coverFromPageMap } from "../src/content/fields.js";
-import { blocksToHtml, parseLegacyRecordMap } from "../src/content/body.js";
+import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
 import {
   DEFAULT_OG_IMAGE_PATH,
   DEFAULT_SITE_URL,
@@ -517,7 +517,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       const description = it.tr.summary ?? it.record.description;
       const sectionTitle = t.sections?.[it.prefix]?.title ?? it.prefix;
       const siblings = items.filter((x) => x.prefix === it.prefix && x.key !== it.key).slice(0, 4);
-      const head = headBlock({
+      let head = headBlock({
         title: `${title} | ${homeTitle}`,
         description,
         url,
@@ -578,6 +578,15 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
           );
         }
       }
+      const translatedAnswer = bodyHtml ? blocksToText(bodyBlocks) : description;
+      const translatedLd = articleJsonLd({
+        type: it.record.type, url, headline: title, description,
+        image: localizedOgImageUrl(ogLangManifest, code, path, site) || it.record.image || defaultImageUrl,
+        date: it.record.date, dateModified: it.record.modified, author: it.record.author,
+        answerText: translatedAnswer, siteUrl: site,
+      });
+      translatedLd.inLanguage = lang.hreflang;
+      head += `\n    ${jsonLdScript({ "@context": "https://schema.org", ...translatedLd }, true)}`;
       if (bodyHtml) bodyCount[code] = (bodyCount[code] ?? 0) + 1;
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
@@ -772,7 +781,7 @@ const paragraphsHtml = (text) =>
  * 글 한 건의 #root 내용. 앱이 로드되면 React 가 이 내용을 지우고 상세 화면으로 바꿉니다.
  * 자바스크립트를 실행하지 않는 크롤러와 공유 미리보기 확인용으로도 쓰입니다.
  */
-export function articleBodyHtml({ prefix, type, title, date, author, summary, cover, blocks, related = [] }) {
+export function articleBodyHtml({ prefix, type, title, date, modified, author, summary, cover, blocks, related = [] }) {
   // 허브 메인으로 가는 상대 경로 (post/{slug}/ 기준 두 단계 위)
   const hubHref = "../../";
   const section = SECTION_LABELS[type] ?? "";
@@ -781,7 +790,7 @@ export function articleBodyHtml({ prefix, type, title, date, author, summary, co
   // 앱 모달도 요약 → 본문 순서로 똑같이 보여 줍니다.
   const showSummary = summary;
   const coverHtml = cover ? `<figure class="seo-cover"><img src="${escapeHtml(cover)}" alt="${escapeHtml(title)}" loading="eager"></figure>` : "";
-  const byline = [date && `<time datetime="${escapeHtml(date)}">${escapeHtml(date)}</time>`, author && escapeHtml(author)]
+  const byline = [date && `<time datetime="${escapeHtml(date)}">${escapeHtml(date)}</time>`, modified && `<span>수정 <time datetime="${escapeHtml(modified)}">${escapeHtml(modified)}</time></span>`, author && escapeHtml(author)]
     .filter(Boolean)
     .join(" · ");
   return [
@@ -1162,7 +1171,8 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     if (!seo.seoDescription) warnings.push(`[${title}] SEO 설명이 비어 있어 요약(Summary)을 ${summarize(summary).length}자로 줄여 씁니다.`);
     if (!seo.ogImage && !coverRaw) warnings.push(`[${title}] 공유 이미지(OG 이미지·Cover)가 없어 기본 이미지를 씁니다.`);
 
-    const blocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id) : [];
+    const rawBlocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id) : [];
+    const blocks = type === "faq" ? cleanFaqBlocks(rawBlocks) : rawBlocks;
     const author = textOf(pickProp(row, AUTHOR_KEYS));
     // 수정일 — 노션 `수정일`(또는 동기화가 기록한 `__modified`)만 인정합니다.
     // 작성일과 같으면 dateModified 를 넣지 않습니다(내용 없는 신호를 만들지 않기 위해).
@@ -1170,7 +1180,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     const dateModified = modified && modified !== date ? modified : "";
     // Q&A 답변 텍스트: 요약(답변) + 본문. 본문만 길게 싣지 않고 적당한 길이로 자릅니다.
     const answerText =
-      type === "faq" ? [summary, blocksToText(blocks)].filter(Boolean).join(" ").replace(/\s+/g, " ").trim().slice(0, 2000) : "";
+      type === "faq" ? (summary || blocksToText(blocks)).replace(/\s+/g, " ").trim().slice(0, 2000) : "";
     const articleLd = {
       "@context": "https://schema.org",
       ...articleJsonLd({
@@ -1248,6 +1258,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       type,
       title,
       date,
+      modified,
       author,
       summary,
       cover: coverRaw,
@@ -1265,7 +1276,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       image: meta.image,
       pageTitle: meta.pageTitle,
       date,
-      modified: dateModified || date,
+      modified,
       summary: oneLine(summary),
       author,
       pinned: isPinned(row),

@@ -47,7 +47,7 @@ import {
   siteMetaFor,
   summarize,
 } from "../src/content/seo.js";
-import { blocksToHtml, parseLegacyRecordMap } from "../src/content/body.js";
+import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
 import {
   applyHead,
   renderSeoSite,
@@ -476,14 +476,13 @@ test("구조화 데이터: 전 페이지에 운영사·사이트 명찰이 들�
     const graph = ldJsonOf(pageOf(rel));
     const org = graph["@graph"].find((n) => n["@type"] === "Organization");
     assert.ok(org, rel);
-    assert.equal(org["@id"], "https://www.xconda.ai/#org");
-    assert.ok(org.sameAs.includes("https://www.youtube.com/@xconda_korea"), rel);
-    assert.ok(org.sameAs.includes("https://blog.naver.com/dramajustice"), rel);
+    assert.equal(org["@id"], "https://www.cuberry.kr/#organization");
+    assert.ok(org.sameAs.includes("https://www.xconda.ai"), rel);
     // 회사와 제품을 분리 — AI 가 "XCONDA" 를 제품 엔터티로 인식하게 합니다
     assert.equal(org.brand["@type"], "Brand");
-    assert.equal(org.brand.name, "XCONDA");
+    assert.equal(org.brand.name, "Xconda");
     // 구글 로고 규격은 래스터 112px 이상입니다 (SVG 는 표시되지 않음)
-    assert.match(org.logo, /xconda-logo-512\.png$/);
+    assert.equal(org.logo, "https://www.cuberry.kr/images/logo-512.png");
     assert.ok(graph["@graph"].some((n) => n["@type"] === "WebSite"), rel);
   }
   // 단위: 사이트 주소를 바꾸면 WebSite @id 와 sameAs 의 허브 주소도 따라간다
@@ -505,11 +504,11 @@ test("구조화 데이터: 글 종류별 명찰 — 뉴스 NewsArticle · 블로
   assert.equal(faq["@type"], "FAQPage");
   assert.equal(faq.mainEntity[0].name, "환불은 어떻게 하나요?");
   assert.match(faq.mainEntity[0].acceptedAnswer.text, /마이페이지에서 요청할 수 있습니다/);
-  assert.match(faq.mainEntity[0].acceptedAnswer.text, /답변 본문입니다/);
+  assert.doesNotMatch(faq.mainEntity[0].acceptedAnswer.text, /답변 본문입니다/);
 
   // 단위: 작성자가 없으면 운영사를 저자로 둔다
   const bare = articleJsonLd({ type: "notice", url: "https://example.test/notice/x/", headline: "공지" });
-  assert.deepEqual(bare.author, { "@id": "https://www.xconda.ai/#org" });
+  assert.deepEqual(bare.author, { "@id": "https://www.cuberry.kr/#organization" });
 });
 
 test("404.html 이 함께 만들어지고 noindex 와 메인·최근 글 링크를 담는다 (A7)", () => {
@@ -1414,4 +1413,14 @@ test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허�
     }
     assert.doesNotMatch(out.files.get(`${code}/qna/refund-policy/index.html`), /data-hub-entry/);
   }
+});
+
+
+test("Q&A 편집용 제목과 앞 구분선을 숨기고 공개 출처는 유지하며 내부 섹션은 제거한다", () => {
+  const blocks = [
+    { type: "p", text: "---" }, { type: "h2", text: "게시용 출처" },
+    { type: "p", text: "공개 출처" }, { type: "h2", text: "내부 근거" },
+    { type: "p", text: "비공개" }, { type: "h2", text: "출처" }, { type: "p", text: "두 번째 출처" },
+  ];
+  assert.deepEqual(cleanFaqBlocks(blocks).map((b) => b.text), ["공개 출처", "두 번째 출처"]);
 });
