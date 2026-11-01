@@ -60,6 +60,7 @@ export type Entry = {
   summary: string;
   category: string;
   date: string; // ISO
+  modified?: string; // 검증된 노션 수정일
   tags: string[];
   /**
    * 썸네일. `Cover` 속성 → 노션 페이지 커버 → 본문 첫 이미지 순서로 채워집니다.

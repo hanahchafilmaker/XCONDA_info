@@ -1,3 +1,4 @@
+import { modifiedDateOf } from "./content/seo";
 /* =============================================================================
  * 공개(웹에 게시된) Notion 페이지 어댑터 — 토큰 · 서버 배포 불필요
  * -----------------------------------------------------------------------------
@@ -263,6 +264,7 @@ function mapRow(row: R, requirePublished: boolean, snapshot?: NotionSnapshot | n
     // Category 가 비어 있으면 공지는 '공지', 뉴스는 링크로 알아낸 채널 이름(X · YouTube …)을 씁니다.
     category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
     date: asText(pick(row, ["Date", "날짜", "게시일"])) || new Date().toISOString(),
+    modified: modifiedDateOf(row) || undefined,
     tags: asList(pick(row, ["Tags", "태그"])),
     cover,
     coverFallback,

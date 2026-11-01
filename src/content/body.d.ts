@@ -15,3 +15,5 @@ export function richToHtml(rich: Rich | undefined): string;
 
 /** 블록 목록 → HTML. alt: 캡션이 없는 이미지의 기본 설명(보통 글 제목) */
 export function blocksToHtml(blocks: Block[] | undefined, options?: { alt?: string }): string;
+
+export function cleanFaqBlocks(blocks?: Block[]): Block[];

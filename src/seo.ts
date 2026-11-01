@@ -82,17 +82,30 @@ function applyHead(v: HeadValues) {
     document.head.appendChild(link);
   }
   link.href = v.url;
-  // hreflang — 정적 페이지(scripts/build-seo.mjs)와 같은 규칙으로 함께 갱신합니다.
-  // (한 주소에서 화면 언어만 바뀌는 구조라 "기준 언어 = 한국어"를 항상 자기 참조로 둡니다.)
-  for (const lang of ["ko", "x-default"]) {
-    let alt = document.head.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${lang}"]`);
-    if (!alt) {
-      alt = document.createElement("link");
-      alt.rel = "alternate";
-      alt.hreflang = lang;
-      document.head.appendChild(alt);
-    }
-    alt.href = v.url;
+  // 정적 HTML의 번역 링크를 다른 글에 남기지 않도록 경로별 매니페스트로 갱신합니다.
+  document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+  const addAlternate = (language: string, href: string) => {
+    document.head.querySelectorAll(`link[rel="alternate"][hreflang="${language}"]`).forEach((el) => el.remove());
+    const el = document.createElement("link");
+    el.rel = "alternate";
+    el.hreflang = language;
+    el.href = href;
+    document.head.appendChild(el);
+  };
+  addAlternate("ko", v.url);
+  addAlternate("x-default", v.url);
+  const base = hubAbsolute("");
+  const path = v.url.startsWith(base) ? v.url.slice(base.length) : null;
+  if (path !== null && typeof fetch === "function") {
+    fetch(`${base}assets/i18n-paths.json`)
+      .then((response) => response.ok ? response.json() : {})
+      .then((paths: Record<string, string[]>) => {
+        // 이전 요청이 늦게 도착해 현재 페이지를 덮어쓰지 않도록 합니다.
+        if (document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href !== v.url) return;
+        for (const [code, hreflang] of [["en", "en"], ["ja", "ja"], ["zh", "zh-Hans"]]) {
+          if (Array.isArray(paths[code]) && paths[code].includes(path)) addAlternate(hreflang, `${base}${code}/${path}`);
+        }
+      }).catch(() => {});
   }
 }
 
