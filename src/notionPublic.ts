@@ -16,8 +16,9 @@ import type { Block, Entry, EntryTranslation, EntryType } from "./content/types"
 import { channelName, classifyType, hasPublishedColumn, includeRow, isEntryType } from "./content/classify";
 import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS, coverFromPageMap, personNames, signNotionImage } from "./content/fields";
 import { HUB_QNA_SOURCE, includeHubQnaRow } from "./content/hubQna";
-import { extractPageId, parseLegacyRecordMap } from "./content/body";
-import { seoEligibility, seoFieldsOf } from "./content/seo";
+import { extractPageId, firstParagraphText, parseLegacyRecordMap } from "./content/body";
+import { mentionIndex } from "./content/mentions";
+import { seoEligibility, seoFieldsOf, summarize } from "./content/seo";
 
 export { extractPageId };
 import { parseChanges } from "./notion";
@@ -252,17 +253,20 @@ function mapRow(row: R, requirePublished: boolean, snapshot?: NotionSnapshot | n
   const { cover, coverFallback } = coverOf(row, snapshot);
   // 글 주소(Slug)와 검색·공유 메타 — 주소 규칙은 src/content/seo.js (빌드 스크립트와 동일)
   const seo = seoFieldsOf(row);
+  const summary = asText(pick(row, ["Summary", "요약", "설명", "답변", "Answer"]));
+  const sourcePage = snapshot ? snapshotPageMap(snapshot, String(row.id ?? "")) : undefined;
+  const firstParagraph = !seo.seoDescription && !summary && sourcePage ? firstParagraphText(parseLegacyRecordMap(sourcePage, String(row.id ?? ""))) : "";
   const eligibility = seoEligibility(row, type);
 
   return {
     id: row.id,
     type,
     title,
-    summary: asText(pick(row, ["Summary", "요약", "설명", "답변", "Answer"])),
+    summary,
     // 주소가 만들어지는 글만 slug 를 가집니다 (SEO 준비됨 · Slug 조건 — 아래 seoEligibility)
     slug: eligibility.eligible ? eligibility.slug : undefined,
     seoTitle: seo.seoTitle || undefined,
-    seoDescription: seo.seoDescription || undefined,
+    seoDescription: seo.seoDescription || (firstParagraph ? summarize(firstParagraph) : undefined),
     ogImage: seo.ogImage || undefined,
     // Category 가 비어 있으면 공지는 '공지', 뉴스는 링크로 알아낸 채널 이름(X · YouTube …)을 씁니다.
     category: category || (type === "notice" ? "공지" : decision.channel ? channelName(decision.channel) ?? "" : ""),
@@ -402,7 +406,8 @@ export async function fetchPublicEntries(
 export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
   const snapshot = await loadSnapshot();
   const embedded = snapshot ? snapshotPageMap(snapshot, pageId) : undefined;
-  if (embedded) return parseLegacyRecordMap(embedded, pageId);
+  const mentions = mentionIndex(snapshot?.rows ?? [], `${window.location.origin}${hubBaseFromPathname(window.location.pathname)}`);
+  if (embedded) return parseLegacyRecordMap(embedded, pageId, { mentions });
 
   // 스냅샷에 없는 글(예: ?notion= 으로 연 다른 페이지)만 실시간으로 시도합니다.
   try {
@@ -410,7 +415,7 @@ export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
       signal: withTimeout(),
       headers: { Accept: "application/json" },
     });
-    if (res.ok) return parseLegacyRecordMap((await res.json()) as R, pageId);
+    if (res.ok) return parseLegacyRecordMap((await res.json()) as R, pageId, { mentions });
   } catch {
     /* 공개 프록시 장애 — 모달이 빈 본문으로 처리 */
   }

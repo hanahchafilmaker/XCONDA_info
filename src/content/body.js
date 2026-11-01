@@ -11,6 +11,7 @@
  * ========================================================================== */
 
 import { signNotionImage } from "./fields.js";
+import { mentionIdKey } from "./mentions.js";
 
 
 const undash = (id) => String(id ?? "").replace(/-/g, "").toLowerCase();
@@ -47,7 +48,7 @@ export function cleanFaqBlocks(blocks = []) {
 /* ------------------------------ 입력: record map → Block[] ------------------------------ */
 
 /** legacy rich text → Rich. 예: [["텍스트", [["b"], ["a", "url"]]]] */
-function legacyRich(val) {
+function legacyRich(val, context = {}) {
   if (!Array.isArray(val)) return "";
   const segs = [];
   for (const item of val) {
@@ -58,7 +59,16 @@ function legacyRich(val) {
     if (Array.isArray(decos)) {
       for (const d of decos) {
         if (!Array.isArray(d)) continue;
-        if (d[0] === "b") seg.bold = true;
+        if (d[0] === "p") {
+          const id = mentionIdKey(d[1]);
+          const hit = context.mentions?.get(id);
+          const referenced = context.blocks?.get(id);
+          seg.text = hit?.title || legacyPlain(referenced?.properties?.title) || (text !== "‣" ? text : "참조 문서");
+          if (hit?.href) seg.href = hit.href;
+          else context.onUnresolved?.(String(d[1] ?? ""), seg.text);
+        } else if (d[0] === "d" && d[1]?.start_date) seg.text = String(d[1].start_date);
+        else if (d[0] === "u") seg.text = typeof d[2] === "string" && d[2] ? d[2] : (text !== "‣" ? text : "사용자");
+        else if (d[0] === "b") seg.bold = true;
         else if (d[0] === "i") seg.italic = true;
         else if (d[0] === "s") seg.strike = true;
         else if (d[0] === "c") seg.code = true;
@@ -74,14 +84,14 @@ function legacyRich(val) {
 const legacyPlain = (val) =>
   Array.isArray(val) ? val.map((i) => (Array.isArray(i) ? String(i[0] ?? "") : "")).join("") : "";
 
-function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
+function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글", context = {}) {
   const out = [];
   for (const id of ids) {
     const b = map.get(id);
     if (!b) continue;
     const p = b.properties ?? {};
     const f = b.format ?? {};
-    const title = legacyRich(p.title);
+    const title = legacyRich(p.title, context);
     const last = out[out.length - 1];
     switch (b.type) {
       case "text":
@@ -121,7 +131,7 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
           text: title,
           icon: typeof f.page_icon === "string" && f.page_icon.length <= 4 ? f.page_icon : undefined,
           color: f.block_color,
-          children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : undefined,
+          children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle, context) : undefined,
         });
         break;
       case "code":
@@ -131,13 +141,13 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
         out.push({ type: "divider" });
         break;
       case "image": {
-        const src = legacyPlain(p.source) || f.display_source || "";
+        const src = b.__localAsset || legacyPlain(p.source) || f.display_source || "";
         // 본문 이미지 · 썸네일이 같은 규칙(src/content/fields.js)으로 공개 주소를 만듭니다.
         if (src) out.push({ type: "img", src: signNotionImage(src, b.id), caption: legacyPlain(p.caption) || undefined });
         break;
       }
       case "video": {
-        const src = f.display_source || legacyPlain(p.source) || "";
+        const src = b.__localAsset || f.display_source || legacyPlain(p.source) || "";
         if (src) out.push({ type: "video", src, caption: legacyPlain(p.caption) || undefined });
         break;
       }
@@ -148,15 +158,15 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
         break;
       }
       case "column_list":
-        out.push({ type: "column_list", children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : [] });
+        out.push({ type: "column_list", children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle, context) : [] });
         break;
       case "column":
-        out.push({ type: "column", ratio: Number(f.column_ratio) || undefined, children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : [] });
+        out.push({ type: "column", ratio: Number(f.column_ratio) || undefined, children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle, context) : [] });
         break;
       case "file":
       case "pdf":
       case "audio": {
-        const rawSrc = f.display_source || legacyPlain(p.source) || legacyPlain(p.title);
+        const rawSrc = b.__localAsset || f.display_source || legacyPlain(p.source) || legacyPlain(p.title);
         const src = rawSrc ? signNotionImage(rawSrc, b.id) : "";
         const caption = legacyPlain(p.caption) || legacyPlain(p.title) || undefined;
         if (src) {
@@ -171,13 +181,13 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
           const row = map.get(rowId);
           const props = row?.properties ?? {};
           const keys = columnOrder?.length ? columnOrder : Object.keys(props);
-          return { cells: keys.map((key) => legacyRich(props[key])) };
+          return { cells: keys.map((key) => legacyRich(props[key], context)) };
         });
         out.push({ type: "table", rows });
         break;
       }
       case "toggle":
-        out.push({ type: "toggle", text: title, children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle) : undefined });
+        out.push({ type: "toggle", text: title, children: b.content?.length ? convertLegacy(b.content, map, depth + 1, entryTitle, context) : undefined });
         break;
       default:
         console.warn(`지원하지 않는 블록: ${b.type} (${entryTitle})`);
@@ -188,7 +198,7 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
 }
 
 /** 레거시 레코드맵(`{ id: { value } }`) → 블록 목록 (앱 상세 모달 · 정적 페이지 공용) */
-export function parseLegacyRecordMap(data, pageId) {
+export function parseLegacyRecordMap(data, pageId, options = {}) {
   const map = new Map();
   for (const [id, entry] of Object.entries(data ?? {})) {
     const v = entry?.value?.value ?? entry?.value; // 응답 형태 2종 모두 지원
@@ -197,7 +207,23 @@ export function parseLegacyRecordMap(data, pageId) {
   const plainId = extractPageId(pageId) ?? String(pageId ?? "").replace(/-/g, "");
   const root = map.get(dashed(plainId)) ?? map.get(pageId) ?? map.get(plainId);
   const entryTitle = legacyPlain(root?.properties?.title) || "알 수 없는 글";
-  return root?.content?.length ? convertLegacy(root.content, map, 0, entryTitle) : [];
+  const blocks = new Map([...map.values()].map((block) => [mentionIdKey(block.id), block]));
+  return root?.content?.length ? convertLegacy(root.content, map, 0, entryTitle, { ...options, blocks }) : [];
+}
+
+/** 첫 번째 본문 문단만 검색 설명의 대체 재료로 사용합니다. */
+export function firstParagraphText(blocks = []) {
+  for (const block of blocks) {
+    if (block.type === "p") {
+      const value = typeof block.text === "string" ? block.text : (block.text ?? []).map((seg) => seg.text ?? "").join("");
+      if (value.trim()) return value.trim();
+    }
+    if (Array.isArray(block.children)) {
+      const nested = firstParagraphText(block.children);
+      if (nested) return nested;
+    }
+  }
+  return "";
 }
 
 /* ------------------------------ 출력: Block[] → HTML ------------------------------ */

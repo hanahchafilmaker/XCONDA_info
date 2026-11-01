@@ -947,6 +947,11 @@ export function stableStringify(value) {
 }
 
 /** `generatedAt` · 동기화가 나중에 덧붙인 `__linkImage` 를 제외한 "내용" 지문 */
+const stripLocalAssets = (value) => {
+  if (Array.isArray(value)) return value.map(stripLocalAssets);
+  if (!isRecord(value)) return value;
+  return Object.fromEntries(Object.entries(value).filter(([key]) => key !== "__localAsset").map(([key, item]) => [key, stripLocalAssets(item)]));
+};
 export const snapshotContentKey = (snapshot) =>
   stableStringify({
     source: snapshot?.source ?? null,
@@ -955,7 +960,7 @@ export const snapshotContentKey = (snapshot) =>
       const { __linkImage: _skip, __coverLocal: _cover, ...rest } = row;
       return rest;
     }),
-    pages: snapshot?.pages ?? {},
+    pages: stripLocalAssets(snapshot?.pages ?? {}),
   });
 
 /**

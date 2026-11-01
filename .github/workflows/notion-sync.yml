@@ -104,6 +104,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL }}
           BRANCH: ${{ github.ref_name }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -113,6 +114,8 @@ jobs:
             git fetch origin "$BRANCH"
             git reset --hard "origin/$BRANCH"
             cp /tmp/notion-content.json notion-content.json
+            # 본문 업로드 파일을 새 API URL로 복사합니다 (토큰 없으면 경고).
+            node scripts/localize-body-assets.mjs notion-content.json
             # Cover 속성의 공개 이미지를 사이트에 복사하고 스냅샷에 로컬 경로를 기록합니다.
             node scripts/localize-covers.mjs notion-content.json
             # 글별 공유 이미지(OG)를 우리 도메인으로 복사합니다. 노션 프록시 주소는 만료될 수 있습니다.
