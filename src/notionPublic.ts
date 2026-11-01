@@ -1,4 +1,4 @@
-import { modifiedDateOf } from "./content/seo";
+import { hubBaseFromPathname, modifiedDateOf } from "./content/seo";
 /* =============================================================================
  * 공개(웹에 게시된) Notion 페이지 어댑터 — 토큰 · 서버 배포 불필요
  * -----------------------------------------------------------------------------
@@ -202,8 +202,11 @@ function coverOf(
   row: R,
   snapshot?: NotionSnapshot | null
 ): { cover?: string; coverFallback?: string } {
-  const explicit = asFileUrl(pick(row, COVER_KEYS)) || asText(row.__cover) || asText(row.__linkImage);
-  if (explicit) return { cover: explicit, coverFallback: asText(row.__coverAlt) || undefined };
+  const explicit = asFileUrl(pick(row, COVER_KEYS)) || asText(row.__cover);
+  const signed = explicit ? signNotionImage(explicit, String(row.id ?? "")) : asText(row.__linkImage);
+  const local = asText(row.__coverLocal);
+  if (local) return { cover: new URL(local, `${window.location.origin}${hubBaseFromPathname(window.location.pathname)}`).href, coverFallback: signed || undefined };
+  if (signed) return { cover: signed, coverFallback: asText(row.__coverAlt) || (signed !== explicit ? explicit : undefined) };
   if (!snapshot) return {};
   const derived = coverFromPageMap(snapshotPageMap(snapshot, String(row.id ?? "")), String(row.id ?? ""));
   return { cover: derived?.url || undefined, coverFallback: derived?.fallback || undefined };
