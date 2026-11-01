@@ -8,7 +8,7 @@ export function dashed(id: string): string;
 export function extractPageId(input: unknown): string | undefined;
 
 /** 레거시 레코드맵(`{ id: { value } }`) → 블록 목록 */
-export function parseLegacyRecordMap(data: unknown, pageId: string): Block[];
+export function parseLegacyRecordMap(data: unknown, pageId: string, options?: { mentions?: Map<string, { title: string; href: string }>; onUnresolved?: (id: string, title: string) => void }): Block[];
 
 /** Rich 텍스트 → HTML */
 export function richToHtml(rich: Rich | undefined): string;

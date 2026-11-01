@@ -28,6 +28,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { SECTION_LABELS } from "../src/content/classify.js";
 import { AUTHOR_KEYS, COVER_KEYS, coverFromPageMap } from "../src/content/fields.js";
+import { mentionIndex } from "../src/content/mentions.js";
 import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
 import {
   DEFAULT_OG_IMAGE_PATH,
@@ -1067,6 +1068,8 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     candidates.push({ row, type, slug: eligibility.slug, title, prefix: ROUTE_PREFIX[type] });
   }
 
+  const mentions = mentionIndex(candidates.map((c) => c.row), site);
+
   // 관련 글 후보 — 본문을 만들기 전에 제목·요약·날짜를 모아 둡니다(A5).
   const relatedPool = candidates.map((c) => ({
     type: c.type,
@@ -1172,7 +1175,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     if (!seo.seoDescription) warnings.push(`[${title}] SEO 설명이 비어 있어 요약(Summary)을 ${summarize(summary).length}자로 줄여 씁니다.`);
     if (!seo.ogImage && !coverRaw) warnings.push(`[${title}] 공유 이미지(OG 이미지·Cover)가 없어 기본 이미지를 씁니다.`);
 
-    const rawBlocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id) : [];
+    const rawBlocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id, { mentions, onUnresolved: (id, label) => warnings.push(`[${title}] 연결할 수 없는 페이지 멘션: ${label} (${id})`) }) : [];
     const blocks = type === "faq" ? cleanFaqBlocks(rawBlocks) : rawBlocks;
     if (blocksToHtml(blocks, { alt: title }).match(/(?:notion\.so|prod-files-secure)/i)) warnings.push(`[${title}] 본문에 노션 파일 주소가 남아 있습니다 (첨부 복사 실패 또는 미설정).`);
     const author = textOf(pickProp(row, AUTHOR_KEYS));

@@ -17,6 +17,7 @@ import { channelName, classifyType, hasPublishedColumn, includeRow, isEntryType 
 import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS, coverFromPageMap, personNames, signNotionImage } from "./content/fields";
 import { HUB_QNA_SOURCE, includeHubQnaRow } from "./content/hubQna";
 import { extractPageId, parseLegacyRecordMap } from "./content/body";
+import { mentionIndex } from "./content/mentions";
 import { seoEligibility, seoFieldsOf } from "./content/seo";
 
 export { extractPageId };
@@ -402,7 +403,8 @@ export async function fetchPublicEntries(
 export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
   const snapshot = await loadSnapshot();
   const embedded = snapshot ? snapshotPageMap(snapshot, pageId) : undefined;
-  if (embedded) return parseLegacyRecordMap(embedded, pageId);
+  const mentions = mentionIndex(snapshot?.rows ?? [], `${window.location.origin}${hubBaseFromPathname(window.location.pathname)}`);
+  if (embedded) return parseLegacyRecordMap(embedded, pageId, { mentions });
 
   // 스냅샷에 없는 글(예: ?notion= 으로 연 다른 페이지)만 실시간으로 시도합니다.
   try {
@@ -410,7 +412,7 @@ export async function fetchPublicBlocks(pageId: string): Promise<Block[]> {
       signal: withTimeout(),
       headers: { Accept: "application/json" },
     });
-    if (res.ok) return parseLegacyRecordMap((await res.json()) as R, pageId);
+    if (res.ok) return parseLegacyRecordMap((await res.json()) as R, pageId, { mentions });
   } catch {
     /* 공개 프록시 장애 — 모달이 빈 본문으로 처리 */
   }
