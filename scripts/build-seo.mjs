@@ -1174,6 +1174,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
 
     const rawBlocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id) : [];
     const blocks = type === "faq" ? cleanFaqBlocks(rawBlocks) : rawBlocks;
+    if (blocksToHtml(blocks, { alt: title }).match(/(?:notion\.so|prod-files-secure)/i)) warnings.push(`[${title}] 본문에 노션 파일 주소가 남아 있습니다 (첨부 복사 실패 또는 미설정).`);
     const author = textOf(pickProp(row, AUTHOR_KEYS));
     // 수정일 — 노션 `수정일`(또는 동기화가 기록한 `__modified`)만 인정합니다.
     // 작성일과 같으면 dateModified 를 넣지 않습니다(내용 없는 신호를 만들지 않기 위해).

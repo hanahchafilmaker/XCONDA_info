@@ -131,13 +131,13 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
         out.push({ type: "divider" });
         break;
       case "image": {
-        const src = legacyPlain(p.source) || f.display_source || "";
+        const src = b.__localAsset || legacyPlain(p.source) || f.display_source || "";
         // 본문 이미지 · 썸네일이 같은 규칙(src/content/fields.js)으로 공개 주소를 만듭니다.
         if (src) out.push({ type: "img", src: signNotionImage(src, b.id), caption: legacyPlain(p.caption) || undefined });
         break;
       }
       case "video": {
-        const src = f.display_source || legacyPlain(p.source) || "";
+        const src = b.__localAsset || f.display_source || legacyPlain(p.source) || "";
         if (src) out.push({ type: "video", src, caption: legacyPlain(p.caption) || undefined });
         break;
       }
@@ -156,7 +156,7 @@ function convertLegacy(ids, map, depth = 0, entryTitle = "알 수 없는 글") {
       case "file":
       case "pdf":
       case "audio": {
-        const rawSrc = f.display_source || legacyPlain(p.source) || legacyPlain(p.title);
+        const rawSrc = b.__localAsset || f.display_source || legacyPlain(p.source) || legacyPlain(p.title);
         const src = rawSrc ? signNotionImage(rawSrc, b.id) : "";
         const caption = legacyPlain(p.caption) || legacyPlain(p.title) || undefined;
         if (src) {
