@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-10-31</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/</loc>
-    <lastmod>2026-10-31</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/</loc>
-    <lastmod>2026-10-31</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/</loc>
@@ -19,6 +19,10 @@
   <url>
     <loc>https://hub.xconda.ai/guide/</loc>
     <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/xconda-multilanguage-support/</loc>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/blocking-board-beta-free-open/</loc>
@@ -81,6 +85,10 @@
     <lastmod>2026-10-31</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/post/opus-5-5-blender-game-3d-model/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/guide/flexboard-storyboard-guide/</loc>
     <lastmod>2026-10-24</lastmod>
   </url>
@@ -89,8 +97,32 @@
     <lastmod>2026-10-24</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/post/kling-4-0-release/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/notice/seedance-25-draft-480p-preview/</loc>
     <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/gpt-6-1-terra-astra-sol/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/deepmind-genie-4-world-model/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/corridorkey-2-0-greenscreen-ai/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/lemo-opuscar-code-only-film/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/xconda-video-generator-seedance-2-5/</loc>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/physics-inversion-patent-verify-before-render/</loc>
@@ -99,6 +131,18 @@
   <url>
     <loc>https://hub.xconda.ai/post/ontology-patent-cut-continuity/</loc>
     <lastmod>2026-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/how-to-write-ai-video-scenario/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/video-prompt-editor/</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/post/blender-addon-single-photo-3d-model/</loc>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/contact-inquiry/</loc>

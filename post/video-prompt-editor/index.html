@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="ko" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate%284%204%29%20scale%28.75%29%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M21%204h7L11%2028H4z%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M4%204h7l17%2024h-7z%22%20fill%3D%22%23FFD60A%22%20stroke%3D%22%230B0B0B%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="https://hub.xconda.ai/assets/app.js"></script>
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>탁월한 선택,영상 프롬프트 편집기 | XCONDA허브</title>
+    <meta name="description" content="시나리오가 &quot;무슨 일이 일어나는가&quot;라면, 편집기는 그것을 &quot;어떻게 찍히는가&quot;로 옮기는 단계입니다. 촬영 용어를 외우지 않아도, 영어를 잘 몰라도, 왼쪽 한국어만 고치면서 감독처럼 지시할 수 있습니다." />
+    <link rel="canonical" href="https://hub.xconda.ai/post/video-prompt-editor/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/video-prompt-editor/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/video-prompt-editor/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="탁월한 선택,영상 프롬프트 편집기" />
+    <meta property="og:description" content="시나리오가 &quot;무슨 일이 일어나는가&quot;라면, 편집기는 그것을 &quot;어떻게 찍히는가&quot;로 옮기는 단계입니다. 촬영 용어를 외우지 않아도, 영어를 잘 몰라도, 왼쪽 한국어만 고치면서 감독처럼 지시할 수 있습니다." />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-video-prompt-editor.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/post/video-prompt-editor/" />
+    <meta property="article:published_time" content="2026-10-30" />
+    <meta property="article:modified_time" content="2026-11-01" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="탁월한 선택,영상 프롬프트 편집기" />
+    <meta name="twitter:description" content="시나리오가 &quot;무슨 일이 일어나는가&quot;라면, 편집기는 그것을 &quot;어떻게 찍히는가&quot;로 옮기는 단계입니다. 촬영 용어를 외우지 않아도, 영어를 잘 몰라도, 왼쪽 한국어만 고치면서 감독처럼 지시할 수 있습니다." />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-video-prompt-editor.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.cuberry.kr/#organization","name":"CUBEBERRY","alternateName":"큐브베리","legalName":"주식회사 큐브베리","url":"https://www.cuberry.kr/","logo":"https://www.cuberry.kr/images/logo-512.png","foundingDate":"2023-08","email":"ceo@cubeberry.ai","brand":{"@type":"Brand","name":"Xconda","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai"]},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.cuberry.kr/#organization"},"inLanguage":"ko-KR"}]}</script>
+    <script type="application/ld+json" data-article-jsonld>{"@context":"https://schema.org","@type":"BlogPosting","@id":"https://hub.xconda.ai/post/video-prompt-editor/#article","publisher":{"@id":"https://www.cuberry.kr/#organization"},"inLanguage":"ko-KR","headline":"탁월한 선택,영상 프롬프트 편집기","description":"시나리오가 \"무슨 일이 일어나는가\"라면, 편집기는 그것을 \"어떻게 찍히는가\"로 옮기는 단계입니다. 촬영 용어를 외우지 않아도, 영어를 잘 몰라도, 왼쪽 한국어만 고치면서 감독처럼 지시할 수 있습니다.","mainEntityOfPage":{"@type":"WebPage","@id":"https://hub.xconda.ai/post/video-prompt-editor/"},"isPartOf":{"@id":"https://hub.xconda.ai/#website"},"image":["https://hub.xconda.ai/assets/img/og/posts/post-video-prompt-editor.png"],"datePublished":"2026-10-30","dateModified":"2026-11-01","author":{"@type":"Person","name":"김재환 PD"}}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}</style>
+    <div id="root"><main class="seo-article" data-prefix="post">
+<nav aria-label="breadcrumb"><a href="../../">XCONDA허브</a> / 블로그</nav>
+<article>
+<h1>탁월한 선택,영상 프롬프트 편집기</h1>
+<p class="seo-meta"><time datetime="2026-10-30">2026-10-30</time> · <span>수정 <time datetime="2026-11-01">2026-11-01</time></span> · 김재환 PD</p>
+<figure class="seo-cover"><img src="https://hub.xconda.ai/assets/img/covers/9148bc0610c4c57b7e72ead4a248b9193e0716653491f4198e1e312fbf4f4fc7.png" alt="탁월한 선택,영상 프롬프트 편집기" loading="eager"></figure>
+<p>시나리오가 &quot;무슨 일이 일어나는가&quot;라면, 편집기는 그것을 &quot;어떻게 찍히는가&quot;로 옮기는 단계입니다. 촬영 용어를 외우지 않아도, 영어를 잘 몰라도, 왼쪽 한국어만 고치면서 감독처럼 지시할 수 있습니다.</p>
+<p class="notion-default">‣ @김재환</p>
+<h2>1. 들어가며 — 시나리오 다음에 오는 것</h2>
+<p class="notion-default">1편에서 쓴 시나리오는 &quot;무슨 일이 일어나는가&quot;만 담고 있습니다. 영상 모델(Seedance)이 알아듣게 하려면 여기에 카메라, 조명, 화각, 소리, 컷 순서와 시간까지 채워야 합니다. 이 일을 대신 해 주는 도구가 <strong>영상 프롬프트 편집기(XCONDA prompt editor)</strong> 입니다.</p>
+<h3>이 글의 위치</h3>
+<ol><li>시나리오 쓰기 — 1편</li><li>Flexboard 스킬로 스토리보드 프롬프트와 글콘티 만들기</li><li>XCONDA Flexboard에서 컷별 스토리보드 확인</li><li><strong>영상 프롬프트 편집기로 Seedance 프롬프트 완성</strong> ← 이 글</li><li>XCONDA에서 영상 생성, Premiere Pro 편집, Suno 사운드</li></ol>
+<p class="notion-default">순서로는 4단계지만, 시리즈에서는 이 단계를 먼저 다룹니다. 2·3단계 없이 시나리오만 있어도 편집기는 작동하기 때문입니다.</p>
+<h3>편집기가 풀어 주는 문제</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>직접 쓸 때 생기는 일</td><td>편집기가 하는 일</td></tr><tr><td>영어로 촬영 용어를 써야 한다</td><td>한국어로 고치면 영문이 따라온다</td></tr><tr><td>같은 지시를 여러 곳에 써서 모델이 헷갈린다</td><td>정보마다 들어갈 칸(블록)을 하나로 정해 둔다</td></tr><tr><td>무엇이 틀렸는지 생성해 봐야 안다</td><td>고치는 순간 20여 개 항목을 자동으로 검사한다</td></tr><tr><td>공식 가이드 규칙을 일일이 외워야 한다</td><td>ByteDance 공식 가이드 2.0·2.5 기준이 들어 있다</td></tr></tbody></table></div>
+<p class="notion-default">영상 한 번 생성하는 데 시간과 크레딧이 듭니다. 편집기의 목적은 <strong>생성 버튼을 누르기 전에 틀린 곳을 찾는 것</strong>입니다.</p>
+<h2>2. 편집기란 무엇인가</h2>
+<p class="notion-default">편집기는 Claude에 설치하는 지침(또는 스킬) 하나와, 그 지침이 만들어 주는 <strong>한·영 2열 화면</strong>입니다. 장면을 한 줄로 말하면 Claude가 프롬프트를 쓰고, 그 결과를 편집기 화면으로 띄워 줍니다.</p>
+<h3>4인 감독 팀이 나눠서 씁니다</h3>
+<p class="notion-default">촬영 현장처럼 부서가 나뉘어 있습니다. 한 사람이 모든 것을 한 번에 쓰면 빠뜨리는 곳이 생기기 때문입니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>감독</td><td>맡는 것</td></tr><tr><td>총괄감독</td><td>전체 구조, 컷 리듬, 최종 검수</td></tr><tr><td>촬영감독</td><td>샷 크기, 화각, 카메라 움직임</td></tr><tr><td>조명감독</td><td>광원 위치, 색온도, 명암 대비</td></tr><tr><td>미술감독</td><td>의상, 소품, 질감, 배경 인물</td></tr></tbody></table></div>
+<p class="notion-default">결과물에는 감독마다 무엇을 왜 했는지 브리핑이 붙고, 항목마다 &quot;▸ 이 문구가 하는 일&quot;이 쉬운 말로 적혀 있습니다.</p>
+<h3>왼쪽은 한국어, 오른쪽은 영문</h3>
+<ul><li><strong>왼쪽 한국어</strong> — 작업하고 검토하는 열입니다. 고치는 것도 여기서 합니다.</li><li><strong>오른쪽 영문</strong> — Seedance에 실제로 붙여넣는 열입니다.</li></ul>
+<p class="notion-default">한국어만 읽어도 무엇을 지시했는지 알 수 있고, 영문은 편집기가 맞춰 줍니다. 영어를 잘 몰라도 프롬프트를 고칠 수 있다는 뜻입니다.</p>
+<h3>결과물은 파일 하나</h3>
+<p class="notion-default">편집기는 <code>.html</code> 파일 하나입니다. 설치할 프로그램이 따로 없고, Claude가 만들면 오른쪽 창에 자동으로 열려 바로 쓸 수 있습니다. 이 글에서 쓰는 편집기는 <strong>HTML 배포판</strong>입니다. 파일로 주고받는 판이라, 교육생이나 다른 사람에게 그대로 전달할 수 있습니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>기능</td><td>HTML 배포판에서</td></tr><tr><td>복사, 검수, 모델·모드 전환, 찾아 바꾸기, 용어 사전</td><td>그대로 작동합니다</td></tr><tr><td>[고치기] 버튼</td><td>고친 칸만 복사됩니다 → Claude 대화창에 붙여넣으면 영문을 맞춰 돌려줍니다</td></tr><tr><td>용어 사전에 추가한 말</td><td>그 화면에서만 유지됩니다</td></tr></tbody></table></div>
+<p class="notion-default">Claude 프로젝트 지침에는 <strong>HTML 배포판 지침 하나만</strong> 넣습니다. 다른 판의 지침을 함께 넣으면 결과물을 내는 방식이 서로 부딪힙니다.</p>
+<h2>3. 시작하기 — 한 줄이면 됩니다</h2>
+<p class="notion-default">편집기는 <strong>엑스콘다</strong>라는 말로 부릅니다. 이 말을 트리거라고 합니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>이렇게 보내면</td><td>일어나는 일</td></tr><tr><td><code>엑스콘다</code></td><td>메뉴가 뜹니다. 무엇을 넣을 수 있는지 안내합니다</td></tr><tr><td><code>엑스콘다</code>  • 장면 설명</td><td>메뉴 없이 바로 편집기를 만듭니다</td></tr><tr><td><code>XCONDA</code>  • 장면 설명</td><td>같은 일을 하되, 설명이 전부 영어로 나옵니다</td></tr></tbody></table></div>
+<h3>예시 입력</h3>
+<p class="notion-default">예시는 두 번에 나눠 보냅니다. <strong>먼저 트리거만 보내서 지침이 작동하는지 확인하고</strong>, 그다음에 시나리오를 보냅니다.</p>
+<p class="notion-default"><strong>① 먼저 </strong><strong><code>엑스콘다</code></strong><strong>만 보냅니다.</strong></p>
+<pre><code>엑스콘다</code></pre>
+<p class="notion-default"><code>🎬 Xconda prompt editor v5.4</code> 메뉴가 뜨면 지침이 제대로 작동하는 것입니다. 메뉴의 모드가 [1]부터 [8]까지 있으면 v5.4입니다. 평범한 인사만 나오거나 모드 개수가 다르면 지침이 안 읽혔거나 옛 버전이 남아 있는 것이니, 프로젝트 지침을 확인한 뒤 새 대화에서 다시 보냅니다.</p>
+<p class="notion-default"><strong>② 메뉴가 뜬 것을 확인한 뒤 시나리오를 보냅니다.</strong> 1편의 좋은 예를 그대로 넣어 봅니다.</p>
+<pre><code>눈 덮인 폐공장 앞. 주황색 방한복의 여자가 두 손으로 낡은 체인소를 들고
+달려드는 좀비 무리 앞에 선다. 처음엔 물러서다가 마지막에 체인소 시동을 걸고
+정면으로 돌진한다. 숨 막히고 통쾌하게. 15초, 멀티컷.</code></pre>
+<p class="notion-default">길이, 컷 방식, 화면비를 말하지 않으면 기본값이 들어갑니다. 기본값은 Seedance 2.5, 멀티컷, 16:9, 음악 없음입니다.</p>
+<h3>함께 넣으면 좋아지는 것</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>넣는 것</td><td>고정되는 것</td><td>안 넣으면</td></tr><tr><td>캐릭터 얼굴 이미지</td><td>얼굴과 인상</td><td>컷마다 얼굴이 바뀔 수 있습니다</td></tr><tr><td>의상·전신 이미지</td><td>옷의 형태, 색, 재질</td><td>옷이 컷마다 달라집니다</td></tr><tr><td>로케이션 이미지</td><td>공간, 벽, 바닥</td><td>배경이 매번 다릅니다</td></tr><tr><td>스토리보드(2·3단계 결과)</td><td>줄거리와 샷 리듬</td><td>Claude가 컷을 직접 나눕니다</td></tr><tr><td>기존 프롬프트 .txt</td><td>고칠 원본</td><td>새로 만듭니다</td></tr></tbody></table></div>
+<p class="notion-default">스토리보드는 <strong>참고용</strong>입니다. 공식 가이드는 다중 패널 스토리보드를 세부 구도까지 엄격히 따르지 않는다고 밝힙니다. 구도를 정확히 맞춰야 하면 컷마다 따로 만든 키프레임 이미지를 넣습니다.</p>
+<h3>모드는 고르지 않아도 됩니다</h3>
+<p class="notion-default">넣은 자료를 보고 Claude가 판단합니다. 글만 주면 새로 만들기, .txt를 주면 고치기, 스토리보드 이미지를 주면 스토리보드로 만들기입니다. &quot;다시 만들어줘&quot;라고 하면 새 시안(2안)을 만들고, 2.5에서는 &quot;연장&quot;, &quot;12~15초만 고쳐줘&quot; 같은 요청도 받습니다.</p>
+<h2>4. 블록 6개 읽는 법</h2>
+<p class="notion-default">프롬프트는 여섯 칸(블록)으로 나뉘고, <strong>한 정보는 한 블록에만</strong> 씁니다. 공식 가이드의 구조를 그대로 따른 것입니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>번호</td><td>블록</td><td>담는 것</td><td>담당</td></tr><tr><td>01</td><td>에셋 매핑</td><td>올린 이미지·영상이 각각 무엇을 책임지는지</td><td>총괄</td></tr><tr><td>02</td><td>주체 설정</td><td>인물, 의상, 핵심 소품(재질·색·무게)</td><td>미술</td></tr><tr><td>03</td><td>환경 · 조명</td><td>공간, 빛, 배경 인물</td><td>조명·미술</td></tr><tr><td>04</td><td>카메라 · 스타일</td><td>화각, 렌즈 성격, 매체감, 화면비</td><td>촬영</td></tr><tr><td>05</td><td>엄격히 제외</td><td>나오면 안 되는 것 (자막, 워터마크, 만화풍 등)</td><td>총괄</td></tr><tr><td>06</td><td>컷 리스트</td><td>컷마다 샷 크기, 카메라 움직임 하나, 일어나는 일</td><td>촬영·총괄</td></tr></tbody></table></div>
+<h3>왜 칸을 나누나</h3>
+<p class="notion-default">모델은 프롬프트 전체를 한꺼번에 읽습니다. 조명을 03번에도 쓰고 컷 안에도 쓰면, 모델은 두 지시를 섞거나 하나를 버립니다. 그 결과 컷마다 색이 튑니다.</p>
+<ul><li>❌ 03번에 &quot;푸른 새벽빛&quot;, 컷 3에 &quot;따뜻한 노란 조명&quot;</li><li>⭕ 조명은 03번에만. 컷에는 무슨 일이 일어나는지만</li></ul>
+<h3>컷 한 줄은 이렇게 생겼습니다</h3>
+<pre><code>컷 2 (3~6초): 미디엄 샷, 아이레벨. 당황한 표정. 입이 먼저 열리는데 소리가
+안 나오고, 목젖이 한 번 오르내린다.
+대사(대감): 한국어로 {저... 저 놈 잡아라!}</code></pre>
+<p class="notion-default">앞의 <code>컷 2 (3~6초):</code>는 편집기가 자동으로 붙입니다. 본문만 고치면 됩니다.</p>
+<h3>01번은 프롬프트의 첫 줄입니다</h3>
+<pre><code>이미지 1: 6컷 스토리보드. 전체 샷 구조, 샷 크기, 카메라 리듬만 참조한다.
+이미지 2: 주체 1(생선 상인) 외형 참조.</code></pre>
+<p class="notion-default">여기서 정의한 이미지는 <strong>02번이나 컷 본문에서 다시 불러야</strong> 인식됩니다. 정의만 하고 부르지 않으면 그 레퍼런스는 무시됩니다. 편집기가 이것도 검사합니다.</p>
+<h2>5. 편집기 화면과 버튼</h2>
+<p class="notion-default">화면은 위에서 아래로 <strong>슬레이트 헤더 → 감독 브리핑 → 실시간 검수 → 블록 6개 → 하단 버튼 줄</strong> 순서입니다. 왼쪽에는 블록 목록이 있어서 누르면 그 자리로 이동합니다.</p>
+<h3>헤더의 드롭다운 두 개</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>드롭다운</td><td>바꾸면 일어나는 일</td></tr><tr><td>모델 (2.5 / 2.0)</td><td>컷 머리말이 바뀝니다. 2.5는 <code>컷 1 (0~3초):</code>, 2.0은 <code>컷 1:</code>. 본문은 그대로입니다</td></tr><tr><td>모드 (멀티컷 / 원테이크)</td><td>컷 본문, 04번, 끝 요구사항, 브리핑까지 그 모드용으로 갈아탑니다</td></tr></tbody></table></div>
+<p class="notion-default">2.0에 시간을 빼는 이유는 공식 가이드에 있습니다. 2.0은 초 단위 지정이 불안정하고 컷 번호 순서에 반응합니다.</p>
+<p class="notion-default">모드를 바꿔도 고친 내용은 <strong>모드별로 따로 남습니다.</strong> 원테이크에서 고치고 멀티컷에 갔다 와도 그대로 있으니, 두 버전을 나란히 다듬어 비교할 수 있습니다.</p>
+<h3>하단 버튼</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>버튼</td><td>하는 일</td><td>파일로 열어도 되나</td></tr><tr><td>영문 프롬프트 복사</td><td>씨댄스에 붙여넣을 영문 전체를 복사합니다. 가장 많이 쓰는 버튼입니다</td><td>됨</td></tr><tr><td>한국어본 복사</td><td>기록용 한국어 전체를 복사합니다</td><td>됨</td></tr><tr><td>고치기 — 영문 맞추기</td><td>한국어를 고친 칸의 영문을 다시 씁니다</td><td>복사 경로로 됨</td></tr><tr><td>찾아 바꾸기 · 사전</td><td>한 단어를 모든 컷에서 한 번에 바꿉니다. 용어 사전도 여기 있습니다</td><td>됨</td></tr><tr><td>처음 상태로</td><td>두 모드를 모두 처음으로 되돌립니다. 다시 되돌릴 수 없습니다</td><td>됨</td></tr><tr><td>↑ 맨 위로</td><td>헤더로 올라갑니다</td><td>됨</td></tr></tbody></table></div>
+<p class="notion-default">버튼 옆의 <strong>주황색 동그란 물음표</strong>를 누르면 예시가 담긴 도움말이 열립니다.</p>
+<h3>고치기 — 한국어만 고치면 됩니다</h3>
+<ol><li>왼쪽 한국어 칸을 고칩니다. 예: <code>경계하는 표정.</code> → <code>겁먹은 표정. 어깨가 한 번 움츠러든다.</code></li><li>그 칸에 <strong>● 고칠 것</strong> 표시가 뜨고, 하단 버튼에 고친 칸의 개수가 붙습니다.</li><li>[고치기 — 영문 맞추기]를 누르면 <strong>고친 칸만 복사</strong>됩니다.</li><li>Claude 대화창에 붙여넣고 보내면, Claude가 그 칸의 영문만 맞춰서 돌려줍니다. 손대지 않은 칸은 그대로입니다.</li></ol>
+<p class="notion-default">한 칸만 하려면 그 칸 위의 <strong>⟳ 이 칸만 고치기</strong>를 누릅니다.</p>
+<p class="notion-default">돌려받은 영문은 편집기 오른쪽 칸에 붙여넣거나, 대화창에 &quot;새 편집기로 줘&quot;라고 하면 고친 내용이 반영된 편집기 파일을 다시 받을 수 있습니다. 편집기를 열고 몇 초 뒤 맨 위 안내문이 노란 줄로 바뀌는데, 이것은 고장이 아니라 &quot;이 화면에서는 [고치기]가 복사 방식으로 작동한다&quot;는 안내입니다.</p>
+<h3>찾아 바꾸기 — 이름을 바꿀 때</h3>
+<ul><li>인물 이름을 <code>대감</code> → <code>판관</code>으로 바꾸면, 멀티컷과 원테이크 <strong>두 모드 모두</strong>에서 한 번에 바뀝니다.</li><li>한·영 양쪽, 한국어만, 영문만 중에서 고릅니다.</li><li>주의: 부분 일치라 짧은 글자는 위험합니다. <code>관</code> → <code>청</code>으로 바꾸면 <code>관복</code>이 <code>청복</code>이 됩니다. 두 글자 이상, 되도록 고유명사에만 씁니다.</li></ul>
+<h3>용어 사전 — 쓸수록 두꺼워집니다</h3>
+<p class="notion-default">샷 크기, 카메라 위치, 무브, 조명, 감정, 질감, 전환, 렌즈, 배경 인물 문장이 한·영 짝으로 들어 있습니다.</p>
+<ul><li>왼쪽(한국어)을 누르면 한국어가, 오른쪽(영문)을 누르면 영문이 복사됩니다.</li><li>직접 추가할 수 있습니다. 한쪽만 쓰면 반대쪽이 채워집니다. 사전에 있는 말은 바로, 없는 말은 번역해서 채웁니다.</li><li>한/영 키를 안 눌러도 됩니다. 영문 칸에 한글을 쳐도 제자리로 옮겨 줍니다.</li><li>추가한 말은 그 화면에서만 유지됩니다. 창을 닫기 전에 필요한 말은 따로 적어 두세요.</li></ul>
+<h3>꼭 기억할 것</h3>
+<p class="notion-default">프롬프트 본문은 <strong>저장되지 않습니다.</strong> 창을 닫으면 처음 상태로 돌아갑니다. 작업이 끝나면 [영문 프롬프트 복사]부터 하세요.</p>
+<h2>6. 실시간 검수와 고치는 법</h2>
+<p class="notion-default">글자를 하나 고칠 때마다 편집기가 20여 개 항목을 다시 검사합니다. 모두 통과하면 배지가 초록색, 하나라도 걸리면 주황색 &quot;N건 확인 필요&quot;로 바뀌고 검수 칸이 저절로 펼쳐집니다.</p>
+<h3>자주 보는 경고와 대처</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>경고</td><td>고칠 곳</td></tr><tr><td>컷 시간 공백</td><td>3~5초 다음 컷이 6초부터 시작 → 5초부터 이어지게</td></tr><tr><td>소수점 초</td><td><code>3~5.5초</code> → <code>3~6초</code>. 1초 단위로만 씁니다</td></tr><tr><td>컷에 조명 지시</td><td>그 문장을 03번으로 옮깁니다</td></tr><tr><td>컷당 카메라 무브 2개</td><td>컷을 둘로 나누거나 하나를 지웁니다</td></tr><tr><td>화각 선언 없음</td><td>04번에 <code>29° 인물 압축 화각 (85mm 상당)</code> 같은 한 줄</td></tr><tr><td>수치 표기</td><td><code>60cm</code> → <code>사람 팔뚝만 한</code></td></tr><tr><td>대사 언어 표시 없음</td><td><code>대사(인물): 한국어로 {…}</code></td></tr><tr><td>강도 형용사·눈 효과</td><td><code>광적으로</code>, <code>눈빛이 번득인다</code> → 몸짓으로 바꿉니다</td></tr><tr><td>배경 인물 정지 금지 없음</td><td>03번에 &quot;클립 내내 정지하지 않는다&quot;</td></tr><tr><td>이미지가 본문에서 호출 안 됨</td><td>첫 등장 컷에 <code>@Image1의 ~</code></td></tr><tr><td>같은 문장이 두 블록에</td><td>한 곳만 남깁니다</td></tr><tr><td>쓸데없는 말</td><td><code>masterpiece</code>, <code>고화질</code>, <code>분위기 있는 조명</code> 같은 말을 지우거나 구체적으로</td></tr></tbody></table></div>
+<p class="notion-default">분량은 판정하지 않습니다. 필요한 내용이면 길어도 됩니다. 검수가 보는 것은 길이가 아니라 <strong>같은 말의 반복과 아무것도 더하지 않는 말</strong>입니다.</p>
+<h3>검수가 못 잡는 것</h3>
+<p class="notion-default">뜻의 어긋남입니다. 한국어를 &quot;고려&quot;로 고쳤는데 영문에 &quot;Joseon&quot;이 남아 있으면 기계는 통과시킵니다. 그래서 두 열을 나란히 둡니다. 생성 전에 눈으로 한 번 훑어 주세요.</p>
+<h3>대화로 고치기 — 조정 다이얼</h3>
+<p class="notion-default">결과물 아래에 컷마다 &quot;지금 느낌&quot;과 &quot;바꿀 수 있는 느낌&quot;이 나옵니다.</p>
+<pre><code>[컷 3] 6~8초 · 로우 앵글 슬로 푸시인
+   ↳ 지금: 각오 · 압도감
+   ↳ 바꿀 수 있는 느낌: 불안(더치+핸드헬드) / 관찰(18° 고정)</code></pre>
+<p class="notion-default">대화창에 <code>컷 3을 불안하게</code>라고만 보내면 그 컷의 카메라만 바뀝니다. 액션, 조명, 의상, 제외 블록은 그대로입니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>이렇게 말하면</td><td>일어나는 일</td></tr><tr><td>컷 3을 불안하게</td><td>그 컷만 교체. 같은 안(1안) 유지</td></tr><tr><td>다시 만들어줘</td><td>처음부터 새로. 2안이 되고 1안은 남습니다</td></tr><tr><td>1안으로</td><td>이전 안을 다시 띄웁니다</td></tr></tbody></table></div>
+<p class="notion-default">재생성해도 인물의 정체성, 의상, 소품, 결말, 길이 다섯 가지는 유지됩니다.</p>
+<h3>Claude는 시키지 않은 곳을 고치지 않습니다</h3>
+<p class="notion-default">&quot;컷 2 대사를 바꿔줘&quot;라고 하면 컷 2 대사만 바뀝니다. 다른 곳에 고칠 게 보이면 고치지 않고 <strong>무엇이, 왜, 어떤 선택지가 있는지</strong> 먼저 알려 줍니다. 감독이 정한 것을 스태프가 말없이 바꾸지 않는 것과 같은 원칙입니다.</p>
+<h2>7. 편집기 안에 들어 있는 공식 규칙</h2>
+<p class="notion-default">편집기는 아래 규칙을 지키며 프롬프트를 쓰고, 어기면 검수에서 알려 줍니다. 직접 고칠 때도 이 다섯 가지만 기억하면 됩니다.</p>
+<h3>① 감정은 이름 + 몸짓 1~3개</h3>
+<pre><code>[보통 세기의 감정 이름]. [몸짓·호흡 단서 1~3개]
+
+⭕ 당황한 표정. 목젖이 한 번 오르내린다.
+⭕ 표정에 피로가 배어 있다. 숨을 길게 내쉰다.</code></pre>
+<ul><li>클라이맥스 컷에서만 단서를 셋까지 쓰고, &quot;동공이 수축하고 눈물이 떨어진다&quot;처럼 눈에 보이는 상태를 붙입니다.</li><li>강도는 형용사가 아니라 몸으로 올립니다. ❌ <code>광적으로 포효한다</code> → ⭕ <code>목이 갈라지도록 외친다. 관자놀이에 핏줄이 선다</code></li><li>눈 효과(눈빛, 캐치라이트, 눈이 빛남)는 쓰지 않습니다. 공식 FAQ에 따르면 강한 감정 신호가 눈동자 발광을 일으킵니다.</li><li>동작은 반대로 <strong>일반적으로</strong> 씁니다. 감정은 디테일, 동작은 간결하게.</li></ul>
+<h3>② 크기는 숫자 대신 비교</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>❌ 숫자</td><td>⭕ 비교</td></tr><tr><td>60cm 바</td><td>사람 팔뚝만 한 바</td></tr><tr><td>키 180cm</td><td>키는 얼음 상자 높이와 비슷하다</td></tr><tr><td>2~3cm 흔들림</td><td>숨결에 흔들리는 정도</td></tr></tbody></table></div>
+<p class="notion-default">렌즈의 mm(<code>85mm 상당</code>)만 예외입니다.</p>
+<h3>③ 기호마다 뜻이 정해져 있습니다</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>정보</td><td>기호</td><td>예</td></tr><tr><td>대사</td><td><code>{ }</code></td><td><code>대사(상인): 한국어로 {오늘은 일찍 닫겠네.}</code></td></tr><tr><td>효과음</td><td><code>&lt; &gt;</code></td><td><code>&lt;멀리서 개 짖는 소리 들린다&gt;</code></td></tr><tr><td>음악</td><td><code>（ ）</code> 전각</td><td><code>（배경에 느린 피아노가 흐른다）</code></td></tr><tr><td>자막</td><td><code>【 】</code></td><td>쓰지 않습니다. 화면에 자막으로 찍힙니다</td></tr></tbody></table></div>
+<p class="notion-default">한국어 대사에는 반드시 &quot;한국어로&quot;를 붙입니다. 공식 가이드가 중국어·영어 외 언어에 요구하는 표시입니다.</p>
+<h3>④ 배경 인물에는 네 가지를 씁니다</h3>
+<p class="notion-default">행동 지시가 없는 인물은 마네킹처럼 굳습니다. AI 영상이 가짜로 보이는 가장 흔한 원인입니다.</p>
+<ol><li><strong>얼굴 다양성</strong> — 나이대, 골격, 수염, 피부 결이 다르다</li><li><strong>복장 다양성</strong> — 3~5종을 나열</li><li><strong>계속하는 행동</strong> — 그 장면에서 반복하는 동작</li><li><strong>정지 금지</strong> — &quot;클립 내내 정지하지 않는다&quot;</li></ol>
+<pre><code>❌ 다양한 얼굴의 병졸들
+⭕ 사십대의 각진 턱에 짧은 수염, 이십대의 마르고 매끈한 얼굴,
+   광대가 넓고 눈꼬리가 처진 중년. 같은 얼굴이 두 번 나타나지 않는다.</code></pre>
+<h3>⑤ 나오면 안 되는 것은 05번에</h3>
+<pre><code>[엄격히 제외]
+흑백, 스케치, 만화, 장난감 같은 CG.
+자막 없음, 글자나 자막을 생성하지 않는다. 워터마크·로고 없음.
+BGM 없음 — 환경음과 동작음만. 평범한 사람 눈, 눈이 빛나지 않음.</code></pre>
+<p class="notion-default">공식 가이드는 이런 제약어를 생성 범위를 안정시키는 데 매우 중요하다고 설명합니다. 같은 지시는 한 번만 쓰되, <strong>오디오 제약만 프롬프트 처음과 끝에 반복</strong>합니다. 공식 FAQ가 정한 예외입니다.</p>
+<h2>8. 화면으로 따라가기 — 실제 편집기를 보며 이해하기</h2>
+<p class="notion-default">위에서 글로 설명한 내용을 실제 화면으로 확인합니다. 시나리오를 Claude에 넣고, 그 결과로 열린 편집기를 위에서 아래로 한 칸씩 따라갑니다. 아래 화면은 모두 실제 편집기를 열어 찍은 것입니다.</p>
+<h2>1단계 — Claude에 시나리오와 이미지를 넣는다</h2>
+<p class="notion-default">이번 예시는 사극 추격 장면입니다. 인물 다섯 명의 시트 이미지와 공간 사진 한 장, 모두 여섯 장을 준비했습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A06e14134-b243-4557-bcfe-315809456b2a%3A01_refs.png?table=block&amp;id=4092ebc0-17ad-80b0-8aeb-e67b05e9d48e&amp;cache=v2" alt="레퍼런스 이미지 6장" loading="lazy" decoding="async"></figure>
+<p class="notion-default">입력은 두 번에 나눠 보냅니다. <strong>먼저 트리거로 지침이 켜졌는지 확인하고</strong>, 그다음에 이미지와 시나리오를 넣습니다.</p>
+<h3>① 엑스콘다만 보내 지침이 켜졌는지 확인한다</h3>
+<p class="notion-default">지침을 넣은 프로젝트에서 새 대화를 열고 <code>엑스콘다</code>만 보냅니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A5b0f1032-2b7a-4db2-91fa-a0666963ef56%3A02_step1.png?table=block&amp;id=4092ebc0-17ad-8040-95eb-e0b265252efe&amp;cache=v2" alt="엑스콘다만 보내면 메뉴가 뜬다" loading="lazy" decoding="async"></figure>
+<p class="notion-default">&quot;✅ 작동 중입니다&quot;와 모드 [1]~[8]이 보이면 v5.4 지침이 켜진 것입니다. 메뉴가 안 뜨거나 모드 개수가 다르면 프로젝트 지침을 확인한 뒤 새 대화에서 다시 보냅니다.</p>
+<h3>② 같은 대화에 이미지 6장과 시나리오를 보낸다</h3>
+<p class="notion-default">메뉴를 확인했으면 같은 대화에 이미지 여섯 장을 <strong>번호 순서대로</strong> 첨부하고 시나리오를 보냅니다. 보내면 Claude가 편집기를 만들어 오른쪽 창에 바로 띄웁니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A29bab41f-0b25-482b-8c60-f34d4d23e9bd%3A03_step2.png?table=block&amp;id=4092ebc0-17ad-80f1-be62-e5fb9cc0132f&amp;cache=v2" alt="이미지와 시나리오를 보내면 편집기가 열린다" loading="lazy" decoding="async"></figure>
+<blockquote><p><strong>한 번 확인한 뒤에는 한 번에 보내도 됩니다.</strong> 같은 프로젝트에서 지침이 켜진 것을 한 번 확인했다면, 다음 장면부터는 확인 단계를 건너뛰고 <code>엑스콘다</code> + 이미지 + 시나리오를 한 메시지에 함께 보내면 됩니다. 예: <code>엑스콘다 이미지1 병욱 … 23초, 16:9, 멀티샷</code></p></blockquote>
+<p class="notion-default">위 두 그림은 이해를 돕기 위해 대화창 모습을 다시 그린 것입니다. 실제 화면과 배치는 조금 다를 수 있습니다.</p>
+<p class="notion-default">시나리오에는 이미지 번호마다 누구인지 적고(이미지1 병욱 …), 장면을 시간 순서대로 적고, 마지막에 길이·화면비·컷 방식을 적었습니다. 이것만으로 편집기가 만들어집니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>시나리오에 적은 것</td><td>편집기가 채운 것</td></tr><tr><td>이미지 번호마다 인물 이름</td><td>01번 에셋 매핑: 이미지마다 무엇을 참조할지</td></tr><tr><td>장면 순서 (잠 → 깸 → 발견 → 도주 → 추격)</td><td>06번 컷 리스트: 8컷으로 나누고 시간 배분</td></tr><tr><td>23초, 16:9, 멀티샷</td><td>헤더의 길이·모드, 04번 화면비</td></tr><tr><td>다양한 앵글과 카메라 무빙</td><td>컷마다 다른 앵글과 움직임 하나씩</td></tr><tr><td>(적지 않은 것) 화각, 빛, 소리</td><td>04번 화각, 03번 새벽빛, 컷마다 효과음</td></tr></tbody></table></div>
+<p class="notion-default">보내고 나면 따로 누르지 않아도 편집기가 오른쪽 창에 자동으로 열립니다. 창을 닫았으면 대화창의 파일 카드를 눌러 다시 열면 됩니다.</p>
+<h2>2단계 — 편집기 첫 화면 한눈에 보기</h2>
+<p class="notion-default">Claude 오른쪽 창에 자동으로 열린 HTML 배포판 편집기의 첫 화면입니다. 위에서 아래로 다섯 구역이 쌓여 있고, 맨 아래 버튼 줄은 스크롤해도 항상 화면 바닥에 붙어 있습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A558fe078-dc7b-4bc2-a38b-20740dd417b7%3A04_overview.png?table=block&amp;id=4092ebc0-17ad-8041-9e02-c88d890c7ccc&amp;cache=v2" alt="v5.4 편집기 첫 화면 — Claude 오른쪽 창" loading="lazy" decoding="async"></figure>
+<div class="notion-table-wrap"><table><tbody><tr><td>순서</td><td>구역</td><td>한 줄 설명</td><td>자세히</td></tr><tr><td>1</td><td>슬레이트 헤더</td><td>장면 이름, 모델, 모드, 길이, 컷 수</td><td>①</td></tr><tr><td>2</td><td>감독 브리핑</td><td>감독 네 명이 무엇을 왜 했는지</td><td>①</td></tr><tr><td>3</td><td>안내문 · 보기 버튼</td><td>쓰는 법 요약, 한·영 보기 전환</td><td>②</td></tr><tr><td>4</td><td>블록 버튼 줄 + 실시간 검수</td><td>블록으로 바로 가기, 자동 검사 결과</td><td>③ ④</td></tr><tr><td>5</td><td>블록 6개</td><td>실제 프롬프트. 왼쪽 한국어, 오른쪽 영문</td><td>④ ⑤</td></tr><tr><td>바닥</td><td>버튼 줄</td><td>복사, 고치기, 찾아 바꾸기, 처음 상태로</td><td>⑦ ⑨</td></tr></tbody></table></div>
+<p class="notion-default">이 화면에서 <strong>실제로 Seedance에 들어가는 것은 5번 블록의 오른쪽 영문뿐</strong>입니다. 나머지는 그 영문을 이해하고, 검사하고, 고치기 위한 장치입니다.</p>
+<h2>① 슬레이트 헤더와 감독 브리핑</h2>
+<figure><img src="https://www.notion.so/image/attachment%3Aa3da3bae-4d44-4f3b-bd23-4bb2e6b96062%3A05_header.png?table=block&amp;id=4092ebc0-17ad-80aa-80fc-e912a940ab65&amp;cache=v2" alt="슬레이트 헤더와 감독 브리핑" loading="lazy" decoding="async"></figure>
+<h3>슬레이트 헤더 — 이 장면의 신분증</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>항목</td><td>이 예시의 값</td><td>뜻</td></tr><tr><td>장면</td><td>새벽 야영지 — 병욱의 도주</td><td>Claude가 붙인 장면 이름</td></tr><tr><td>안</td><td>1안</td><td>시안 번호. &quot;다시 만들어줘&quot;라고 하면 2안이 됩니다</td></tr><tr><td>모델</td><td>Seedance 2.5</td><td>드롭다운. 2.0으로 바꿀 수 있습니다 (⑥)</td></tr><tr><td>모드</td><td>멀티컷</td><td>시나리오의 &quot;멀티샷&quot;이 여기로 들어왔습니다 (⑥)</td></tr><tr><td>길이 · 컷</td><td>23초 · 8</td><td>컷 시간을 더해 자동으로 계산합니다</td></tr><tr><td>위임</td><td>LEVEL 2 (하이브리드)</td><td>씨댄스에 얼마나 맡길지. 대화로 &quot;레벨 3&quot;처럼 바꿉니다</td></tr></tbody></table></div>
+<h3>감독 브리핑 — 왜 이렇게 썼는지</h3>
+<p class="notion-default">카드마다 위 줄은 <strong>무엇을 했는지</strong>, 아래 ▸ 회색 줄은 <strong>관객이 느끼는 효과</strong>입니다. 이 예시에서 눈여겨볼 두 장입니다.</p>
+<ul><li><strong>촬영감독</strong> — 시나리오의 &quot;다양한 앵글과 카메라 무빙&quot;을 8컷 모두 다른 앵글·움직임으로 풀었습니다. 내려오는 크레인, 푸시인, 핸드헬드, 어깨 너머, 랙 포커스, 트래킹, 스냅 줌, 옆으로 따라가기.</li><li><strong>조명감독</strong> — 이미지6은 밤 장작불 사진이지만 시나리오는 새벽입니다. 그래서 공간 배치만 이미지6을 따르고, 빛은 차가운 새벽빛에 꺼져 가는 불씨로 바꿨다고 적었습니다.</li></ul>
+<p class="notion-default">촬영 용어를 몰라도 아래 ▸ 줄만 읽으면 의도를 알 수 있습니다. 다 읽었으면 <strong>▲ 브리핑 접기</strong>로 접습니다.</p>
+<h2>② 안내문 두 줄과 보기 버튼</h2>
+<figure><img src="https://www.notion.so/image/attachment%3Ab87b9b99-b363-4570-bb86-22d2a167c8fe%3A06_notes.png?table=block&amp;id=4092ebc0-17ad-8032-b511-eaa47ca13e69&amp;cache=v2" alt="안내문과 보기 버튼" loading="lazy" decoding="async"></figure>
+<ul><li><strong>첫 번째(갈색 줄)</strong> — 왼쪽 한국어는 작업·검수용, 오른쪽 영문이 실사용본이라는 것. 그리고 <strong>편집 내용은 저장되지 않으니 끝나면 복사해 두라</strong>는 것.</li><li><strong>두 번째(파란 줄)</strong> — 고치는 법 요약. 편집기를 연 환경에 따라 색과 문장이 바뀝니다 (⑦).</li></ul>
+<div class="notion-table-wrap"><table><tbody><tr><td>보기 버튼</td><td>화면</td><td>언제</td></tr><tr><td>한·영 대조</td><td>왼쪽 한국어, 오른쪽 영문 (기본)</td><td>고칠 때</td></tr><tr><td>한국어만</td><td>한국어 열만 넓게</td><td>내용을 검토할 때</td></tr><tr><td>영문만</td><td>영문 열만 넓게</td><td>최종 영문을 훑어볼 때</td></tr></tbody></table></div>
+<h2>③ 실시간 검수 — 생성 전에 틀린 곳을 찾는 칸</h2>
+<p class="notion-default">첫 화면(2단계 캡처)에서 검수 배지는 초록색 <strong>24건 전부 통과</strong>였습니다. 레퍼런스 6장이 모두 본문에서 불렸는지, 컷마다 움직임이 하나인지 같은 항목을 글자를 고칠 때마다 다시 검사합니다.</p>
+<h3>일부러 틀려 보면</h3>
+<p class="notion-default">02번 블록의 칼 설명 &quot;날은 사람 팔 길이와 비슷하고&quot;를 **&quot;날 길이 70cm이고&quot;**로 고쳐 봤습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A9c8f941e-0c61-48c8-9241-388831bc41ea%3A07_warning.png?table=block&amp;id=4092ebc0-17ad-80e7-bc80-f191b26df66c&amp;cache=v2" alt="70cm로 고치자 뜬 경고" loading="lazy" decoding="async"></figure>
+<ul><li>배지가 주황색 <strong>1건 확인 필요</strong>로 바뀝니다.</li><li>걸린 줄이 주황색 **!**로 표시되고, 고칠 방향까지 알려 줍니다. &quot;공식은 비교로 씁니다&quot;</li><li>접어 두었어도 경고가 생기면 검수 칸이 저절로 펼쳐집니다.</li></ul>
+<p class="notion-default">다시 &quot;사람 팔 길이와 비슷하고&quot;로 돌리면 초록으로 돌아옵니다.</p>
+<h3>자주 보는 경고</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>경고</td><td>고칠 곳</td></tr><tr><td>수치 표기</td><td><code>70cm</code> → <code>사람 팔 길이와 비슷한</code></td></tr><tr><td>레퍼런스가 본문에서 안 불림</td><td>그 인물이 처음 나오는 컷에 <code>@Image3의 ~</code></td></tr><tr><td>컷당 카메라 무브 2개 이상</td><td>컷을 나누거나 하나를 지웁니다</td></tr><tr><td>컷 안에 조명 지시</td><td>그 문장을 03번으로 옮깁니다</td></tr><tr><td>대사에 &quot;한국어로&quot; 없음</td><td><code>대사(인물): 한국어로 {…}</code></td></tr><tr><td>강도 형용사·눈 효과</td><td><code>광적으로</code>, <code>눈빛이 번득인다</code> → 몸짓으로</td></tr></tbody></table></div>
+<h3>빨간 게이지는 괜찮습니다</h3>
+<p class="notion-default">검수 칸 위의 가는 막대는 영문 글자 수입니다. 이 예시는 약 4,000자라 빨갛게 꽉 차지만 &quot;참고용, 판정 안 함&quot;으로 통과입니다. 편집기는 길이가 아니라 <strong>같은 말의 반복과 쓸데없는 말</strong>을 문제로 봅니다.</p>
+<h3>검수가 못 잡는 것</h3>
+<p class="notion-default">뜻의 어긋남입니다. 한국어를 고쳤는데 영문에 옛 내용이 남아 있어도, 태그와 숫자가 같으면 기계는 통과시킵니다. 생성 전에 두 열을 눈으로 한 번 훑어 주세요.</p>
+<h2>④ 블록 01~05 — 이미지 6장이 어디에 묶였는지</h2>
+<h3>블록 카드 읽는 법, 그리고 01 · 02</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A0038c3fe-90b7-4bce-a52d-75e5d8c574ae%3A08_b01_b02.png?table=block&amp;id=4092ebc0-17ad-8057-90ad-c5b4f0dc3632&amp;cache=v2" alt="블록 버튼 줄과 블록 01·02" loading="lazy" decoding="async"></figure>
+<ul><li><strong>블록 버튼 줄</strong> — 01~06을 누르면 그 블록으로 바로 이동합니다.</li><li><strong>카드 머리줄</strong> — 번호, 이름, 담당 감독, <strong>이 블록 영문 복사</strong> 버튼.</li><li><strong>▸ 회색 줄</strong> — 이 블록에 무엇을 왜 썼는지 쉬운 말로.</li><li><strong>아래 두 칸</strong> — 왼쪽 한국어, 오른쪽 영문. 칸을 눌러 바로 고칠 수 있습니다.</li></ul>
+<p class="notion-default"><strong>01 에셋 매핑</strong>은 시나리오의 &quot;이미지1 병욱 이미지2 자객대장 …&quot;이 변한 모습입니다. 이미지마다 <strong>무엇을 참조할지</strong>가 적혀 있습니다. 인물 다섯은 얼굴과 복장, 이미지6은 &quot;공간 구도, 장작불 자리, 말의 위치만. 빛은 따르지 않는다&quot;.</p>
+<blockquote><p>이미지 번호와 업로드 순서가 같아야 합니다. 이미지3을 두 번째로 올리면 반란군 장수와 자객대장이 뒤바뀝니다.</p></blockquote>
+<p class="notion-default"><strong>02 주체 설정</strong>에서는 <code>@Image1</code>, <code>@Image2</code> 처럼 <strong>@태그로 이미지를 다시 부릅니다.</strong> 01번에서 정의만 하고 본문에서 부르지 않으면 그 이미지는 무시됩니다. 글로는 이미지가 알려 주지 않는 것만 더했습니다. 모피 망토의 무게, 칼의 크기(&quot;사람 팔 길이와 비슷&quot;)와 낡은 정도.</p>
+<h3>03 환경 · 조명</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A79ffa2fb-5b7b-42ab-96a5-e0bb7d189eb4%3A09_b03.png?table=block&amp;id=4092ebc0-17ad-80d9-b0e6-f0904e9ae579&amp;cache=v2" alt="03 환경·조명 블록" loading="lazy" decoding="async"></figure>
+<ol><li><strong>공간</strong> — 눈 덮인 침엽수 숲 야영지. 배치는 <code>@Image6</code>을 따른다. 불씨만 남은 장작불에서 가는 연기, 나무 사이의 말들.</li><li><strong>빛</strong> — 동트기 직전의 차가운 새벽빛 6500K. 불씨의 약한 주황빛이 병욱의 얼굴 아래쪽에만 닿는다. 조명은 이 블록에만 씁니다.</li></ol>
+<p class="notion-default">시나리오의 &quot;새벽녘, 불씨만 남아 연기만 피어오르는&quot;이 이렇게 빛과 공간으로 나뉘어 들어갔습니다.</p>
+<h3>04 카메라 · 스타일 / 05 엄격히 제외</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A8622d5e0-b7af-474e-93c6-a29f974acf88%3A10_b04_b05.png?table=block&amp;id=4092ebc0-17ad-80c7-bc24-c6b665d35bcf&amp;cache=v2" alt="04 카메라·스타일과 05 엄격히 제외" loading="lazy" decoding="async"></figure>
+<ul><li><strong>04</strong> — 화각 <strong>47° 표준 화각 (50mm 상당)</strong> 을 한 번만 정합니다. 사람 눈과 비슷해 과장 없이 현장에 있는 느낌. 16:9도 여기에.</li><li><strong>05</strong> — 나오면 안 되는 것. 이 예시는 인물이 다섯이라 **&quot;복제 인물·쌍둥이 효과 없음. 이미지마다 대응하는 인물은 화면에 한 명만&quot;**이 추가됐습니다. 인물이 많을수록 같은 얼굴이 복제되기 쉽기 때문입니다.</li></ul>
+<h2>⑤ 06 컷 리스트 — 시나리오가 8컷이 된 모습</h2>
+<div class="notion-table-wrap"><table><tbody><tr><td>컷</td><td>시간</td><td>샷 · 카메라</td><td>일어나는 일 (시나리오의 어느 문장인지)</td></tr><tr><td>1</td><td>0~4초</td><td>풀 샷 하이 앵글 · 크레인 다운</td><td>불씨와 연기, 병욱이 누워 잠듦 (&quot;풀샷&quot;)</td></tr><tr><td>2</td><td>4~7초</td><td>클로즈업 · 푸시인</td><td>말소리에 놀라 눈을 크게 뜸 (&quot;클로즈업&quot;)</td></tr><tr><td>3</td><td>7~10초</td><td>미디엄 로우 앵글 · 핸드헬드</td><td>재빨리 일어나 앉아 말 쪽을 돌아봄</td></tr><tr><td>4</td><td>10~13초</td><td>어깨 너머 · 고정</td><td>말 옆에서 자객대장이 지시, 부하들이 사방을 둘러봄</td></tr><tr><td>5</td><td>13~15초</td><td>클로즈업 · 랙 포커스</td><td>검병과 병욱의 눈이 마주침</td></tr><tr><td>6</td><td>15~18초</td><td>미디엄 · 뒤에서 따라 트래킹</td><td>칼을 쥐고 일어나 도주</td></tr><tr><td>7</td><td>18~20초</td><td>미디엄 로우 앵글 · 스냅 줌</td><td>장수가 소리치고 부하들이 뛰기 시작</td></tr><tr><td>8</td><td>20~23초</td><td>풀 샷 측면 · 옆으로 따라가기</td><td>뛰고 있는 부하들 풀샷 (&quot;부하들 풀샷&quot;)</td></tr></tbody></table></div>
+<p class="notion-default">잠든 앞부분은 3~4초로 느리게, 눈이 마주친 뒤로는 2~3초로 짧게 끊었습니다. 그래서 장면이 뒤로 갈수록 빨라집니다.</p>
+<h3>컷 카드 읽는 법</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A5d4e4852-8e92-4c5d-9556-63b259ddfacb%3A11_cuts.png?table=block&amp;id=4092ebc0-17ad-8018-b334-e35054b447a9&amp;cache=v2" alt="컷 리스트 블록과 컷 1·2" loading="lazy" decoding="async"></figure>
+<ul><li><strong>주황 글씨 </strong><strong><code>컷 1 (0~4초):</code></strong> — 컷 머리말. 편집기가 자동으로 붙입니다. 한국어 칸에는 본문만 있습니다.</li><li><strong><code>FS · 하이 앵글</code></strong> — 샷 크기와 카메라 높이 요약.</li><li><strong>오른쪽 끝 </strong><strong><code>무브 1</code></strong> — 이 컷의 카메라 움직임 개수. 공식 기준은 컷당 하나. 컷 4처럼 고정이면 <code>무브 0</code>.</li><li><strong><code>&lt;불씨가 작게 타닥거리는 소리 …&gt;</code></strong> — <code>&lt; &gt;</code> 안은 효과음입니다. 시나리오에 없던 소리를 감독들이 채웠습니다.</li></ul>
+<h3>마지막 두 컷과 전체 요구사항</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A9b14cb69-bf55-442b-a984-56c14c68dc9b%3A12_cut78.png?table=block&amp;id=4092ebc0-17ad-80bf-ab76-db7028436af3&amp;cache=v2" alt="컷 7·8과 전체 요구사항" loading="lazy" decoding="async"></figure>
+<ul><li>컷 7의 대사는 <code>대사(반란군 장수): 한국어로 {저기다! 놓치지 마라!}</code> 형식입니다. 시나리오의 &quot;소리를 지르며&quot;가 대사가 됐습니다. <strong>&quot;한국어로&quot;를 꼭 붙입니다.</strong> 영문 칸에도 이 줄은 한국어 그대로 들어갑니다.</li><li>맨 아래 <strong>전체 요구사항</strong>은 모든 컷에 걸리는 약속입니다. &quot;컷이 넘어가도 다섯 인물의 얼굴과 복장은 각자의 이미지 그대로 유지된다.&quot;</li></ul>
+<h2>⑥ 모델 · 모드 드롭다운</h2>
+<p class="notion-default">헤더의 모델을 <strong>Seedance 2.0</strong>으로 바꿔 봤습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ac90d77c0-8e96-427c-9b70-c796d7ca49ce%3A13_model20.png?table=block&amp;id=4092ebc0-17ad-801a-bef3-f32dc91749e6&amp;cache=v2" alt="모델을 2.0으로 바꾼 화면" loading="lazy" decoding="async"></figure>
+<ul><li>컷 머리말이 <code>컷 1 (0~4초):</code> → <strong><code>컷 1:</code></strong> 로 바뀝니다. 시간 괄호만 떨어지고 본문은 그대로입니다.</li><li>헤더의 길이가 <code>23초</code> → <code>—</code>로 바뀝니다.</li><li>검수도 2.0 기준으로 다시 돕니다. 이 예시는 이미지가 6장이라 2.5에서는 통과지만, 2.0의 권장은 총 4~5개입니다.</li></ul>
+<p class="notion-default">2.0은 초 단위 지정이 불안정하고 컷 번호 순서에 반응한다는 것이 공식 가이드의 설명입니다. XCONDA에서 생성할 모델에 맞춰 두고 복사하세요.</p>
+<p class="notion-default"><strong>모드(멀티컷 ↔ 원테이크)</strong> 는 이 예시에서 시나리오에 &quot;멀티샷&quot;이라고 적어 멀티컷 본문만 만들어졌습니다. 원테이크로도 보고 싶으면 대화창에 &quot;원테이크 버전도 만들어줘&quot;라고 하면, 드롭다운 하나로 두 버전을 오갈 수 있게 됩니다.</p>
+<h2>⑦ 한국어만 고치고 [고치기] 누르기</h2>
+<p class="notion-default">영어를 몰라도 <strong>왼쪽 한국어만 고치면 오른쪽 영문이 따라옵니다.</strong> 컷 3의 감정을 &quot;경계&quot;에서 &quot;겁&quot;으로 바꿔 보겠습니다.</p>
+<h3>1. 한국어 칸을 고친다</h3>
+<p class="notion-default">컷 3 한국어 칸에서 <code>경계하는 표정.</code>을 <code>겁먹은 표정. 어깨가 한 번 움츠러든다.</code>로 고쳤습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A25d30051-57e1-4aae-8e9a-5be735b4e2ab%3A14_dirty.png?table=block&amp;id=4092ebc0-17ad-8045-b0e4-f3255743254c&amp;cache=v2" alt="컷 3을 고치자 뜬 고칠 것 표시" loading="lazy" decoding="async"></figure>
+<p class="notion-default">한국어 칸 위에 파란 <strong>● 고칠 것</strong>이 뜹니다. 오른쪽 영문은 아직 &quot;Alert.&quot; 그대로입니다.</p>
+<h3>2. 바닥의 [고치기] 버튼에 개수가 붙는다</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A3cb1c795-4d11-43a7-8ff7-c3d0b825af7c%3A15_bar_dirty.png?table=block&amp;id=4092ebc0-17ad-80f4-9fb7-e9a134b7ba23&amp;cache=v2" alt="고칠 칸이 1곳일 때의 버튼 줄" loading="lazy" decoding="async"></figure>
+<h3>3. 누른다 — 고친 칸이 복사된다</h3>
+<p class="notion-default">이 글의 편집기는 <strong>HTML 배포판</strong>이라, [고치기]를 누르면 고친 칸만 복사되고 그것을 Claude 대화창에 붙여넣는 방식으로 작동합니다. 파일을 열면 몇 초 뒤 안내문이 노란 줄로 바뀌어 미리 알려 줍니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7d69b96d-4bda-4cdb-aa9e-916e00b07bfb%3A16_note_fileenv.png?table=block&amp;id=4092ebc0-17ad-80ac-bdd6-e7e2709d07fa&amp;cache=v2" alt="파일로 열었을 때의 안내문" loading="lazy" decoding="async"></figure>
+<p class="notion-default">[고치기]를 누르면 안내문이 초록으로 바뀝니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae5360708-da87-4cf4-9002-c62318a999c0%3A17_handoff.png?table=block&amp;id=4092ebc0-17ad-806f-a2b1-e790a0bff4e6&amp;cache=v2" alt="고친 칸을 복사한 뒤의 안내문" loading="lazy" decoding="async"></figure>
+<p class="notion-default">복사된 내용입니다. 고친 칸 하나만 들어 있습니다.</p>
+<pre><code>엑스콘다 — 편집기에서 아래 칸의 한국어를 고쳤습니다.
+영문만 그 뜻에 맞게 고쳐서 주세요. 다른 칸은 건드리지 마세요.
+모델 Seedance 2.5 / 모드 멀티컷 / 장면 새벽 야영지 — 병욱의 도주
+
+[컷 3]
+한국어: 미디엄 샷, 로우 앵글, 핸드헬드. 병욱이 고개를 들고 재빨리 몸을 일으켜 앉는다. 겁먹은 표정. 어깨가 한 번 움츠러든다. …
+지금 영문: Medium shot, low angle, handheld. … Alert. …</code></pre>
+<p class="notion-default">이것을 대화창에 붙여넣고 보내면 Claude가 컷 3의 영문만 고쳐 돌려줍니다. 받은 영문을 오른쪽 칸에 붙여넣거나 &quot;새 편집기로 줘&quot;라고 하면 됩니다. 한 칸만 하려면 그 칸의 <strong>⟳ 이 칸만 고치기</strong>를 누릅니다.</p>
+<h2>⑧ 찾아 바꾸기와 용어 사전</h2>
+<p class="notion-default">노란 <strong>찾아 바꾸기 · 사전</strong> 버튼을 누르면 패널이 열립니다. 이 두 기능은 <strong>어디서 열어도 작동합니다.</strong></p>
+<h3>찾아 바꾸기 — 이름을 한 번에</h3>
+<p class="notion-default">&quot;반란군 장수&quot;를 &quot;부장&quot;으로, 범위는 <strong>한국어만</strong>으로 바꿔 봤습니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A0a214d3e-cec8-4783-8af1-dc45eacf6dae%3A18_replace.png?table=block&amp;id=4092ebc0-17ad-8096-b18b-cb46fb658ca7&amp;cache=v2" alt="찾아 바꾸기 결과" loading="lazy" decoding="async"></figure>
+<p class="notion-default">&quot;6곳을 바꿨습니다&quot; — 01번, 02번, 컷 4·7·8, 대사 이름까지 한 번에 바뀌고 검수가 다시 돕니다.</p>
+<ul><li>범위: 한·영 양쪽 / 한국어만 / 영문만</li><li>멀티컷·원테이크 <strong>두 모드 모두</strong>에 적용됩니다.</li><li><strong>주의:</strong> 글자 일부만 맞아도 바뀝니다. <code>병</code> → <code>군</code>으로 바꾸면 <code>병욱</code>과 <code>검병</code>이 함께 바뀝니다. 두 글자 이상, 되도록 고유명사에만 쓰세요.</li><li>뜻이 바뀌는 수정은 한국어를 고친 뒤 [고치기]를 쓰세요.</li></ul>
+<h3>용어 사전 — 한·영 짝 모음</h3>
+<figure><img src="https://www.notion.so/image/attachment%3A4e6fb686-f7ef-432f-a8ce-3d557b5789a8%3A19_dict.png?table=block&amp;id=4092ebc0-17ad-8038-867c-c99b59c0e7cf&amp;cache=v2" alt="용어 사전" loading="lazy" decoding="async"></figure>
+<ul><li><strong>왼쪽(한국어)을 누르면 한국어가, 오른쪽(영문)을 누르면 영문이 복사</strong>됩니다.</li><li>이 예시의 카메라 움직임(크레인 다운, 랙 포커스, 스냅 줌, 트럭 우 …)이 모두 &quot;무브&quot; 묶음에 들어 있습니다. 어떤 움직임이 있는지 고를 때 참고하세요.</li><li>직접 추가할 수 있습니다. 한쪽만 쓰면 반대쪽이 채워집니다. 파일로 열었을 때는 추가한 말이 그 화면에서만 유지됩니다.</li></ul>
+<h2>⑨ 바닥 버튼 줄과 물음표 도움말</h2>
+<figure><img src="https://www.notion.so/image/attachment%3Ac35e32df-79f7-4e16-8933-398c9f00124f%3A20_bar.png?table=block&amp;id=4092ebc0-17ad-800d-b4e4-f1e0e21f1466&amp;cache=v2" alt="바닥 버튼 줄" loading="lazy" decoding="async"></figure>
+<div class="notion-table-wrap"><table><tbody><tr><td>버튼</td><td>하는 일</td></tr><tr><td><strong>영문 프롬프트 복사 (실사용)</strong></td><td>6개 블록의 영문을 순서대로 이어 한 번에 복사. 가장 많이 누르는 버튼</td></tr><tr><td>한국어본 복사</td><td>한국어 전체 복사. 기록·공유용</td></tr><tr><td>고치기 — 영문 맞추기</td><td>고친 한국어에 맞게 영문을 다시 씀 (⑦)</td></tr><tr><td>찾아 바꾸기 · 사전</td><td>패널 열기 (⑧)</td></tr><tr><td>처음 상태로</td><td>편집기가 처음 만들어졌을 때로. <strong>되돌릴 수 없습니다</strong></td></tr><tr><td>영문 ○자 · 한글 ○자</td><td>지금 글자 수</td></tr><tr><td>↑ 맨 위로</td><td>헤더로 올라감</td></tr></tbody></table></div>
+<h3>주황색 물음표 — 헤맬 때 누르세요</h3>
+<p class="notion-default">버튼 옆 동그란 **?**를 누르면 예시가 담긴 도움말이 열립니다. 위의 탭 네 개로 주제를 고릅니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A5f26bf89-8f6e-47be-99cf-54f9116cbc85%3A21_help.png?table=block&amp;id=4092ebc0-17ad-805e-a7e1-f8aec30d4ca6&amp;cache=v2" alt="도움말 창 — 고치기 탭" loading="lazy" decoding="async"></figure>
+<p class="notion-default">복사한 영문을 XCONDA에 넣기 전에는 아래 9장의 체크리스트를 확인하세요.</p>
+<h2>9. XCONDA에 넣기 전 체크리스트</h2>
+<ul class="todo"><li><input type="checkbox" disabled> 검수 배지가 초록색인가, 주황색이면 걸린 항목을 확인했는가</li><li><input type="checkbox" disabled> 모델 드롭다운이 생성할 모델(2.5 / 2.0)과 같은가</li><li><input type="checkbox" disabled> 모드 드롭다운이 원하는 방식(멀티컷 / 원테이크)인가</li><li><input type="checkbox" disabled> 한국어와 영문의 뜻이 어긋난 곳이 없는지 한 번 훑었는가</li><li><input type="checkbox" disabled> 01번에 적은 이미지 번호와 실제 업로드 순서가 같은가</li><li><input type="checkbox" disabled> [영문 프롬프트 복사]로 복사했는가</li></ul>
+<p class="notion-default">복사한 영문을 XCONDA Video Generator의 프롬프트 칸에 붙여넣고, 01번에 적은 순서대로 레퍼런스를 올린 뒤 생성합니다. 결과가 의도와 다르면 그 영상을 보고 대화창에 &quot;컷 2에서 얼굴이 바뀌었다&quot;처럼 말씀하시면 됩니다. 원인이 어느 블록에 있는지 찾아 그 부분만 고칩니다.</p>
+<h3>마무리</h3>
+<p class="notion-default">시나리오가 &quot;무슨 일이 일어나는가&quot;라면, 편집기는 그것을 &quot;어떻게 찍히는가&quot;로 옮기는 단계입니다. 촬영 용어를 외우지 않아도, 영어를 잘 몰라도, 왼쪽 한국어만 고치면서 감독처럼 지시할 수 있습니다.</p>
+<p class="notion-default">다음 편에서는 워크플로우의 앞쪽으로 돌아가, 시나리오를 컷으로 나누고 스토리보드를 만드는 <strong>Flexboard 스킬</strong>을 다룹니다. 편집기에 넣을 재료가 어떻게 만들어지는지 확인하시게 될 겁니다. 기대해 주세요. ^^</p>
+<hr>
+<h2>📥 v5.4 지침 내려받기</h2>
+<p class="notion-default">아래 파일이 이 글에서 쓴 <strong>XCONDA prompt editor v5.4 지침 (HTML 배포판)</strong>입니다. 둘 중 편한 것 하나만 받으시면 됩니다. 내용은 같습니다.</p>
+<a class="notion-file" href="https://www.notion.so/image/attachment%3Adc363da2-1f2c-49ff-8811-0c8268f14a58%3AXconda_prompt_guide_html_v5.4.txt?table=block&amp;id=4ef7117d-6ed9-4bef-9cb5-4cc318b4e198&amp;cache=v2" download>① 메모장용 지침 파일 (.txt) — 누르면 열립니다. 열린 화면에서 Ctrl+S 로 PC에 저장</a>
+<a class="notion-file" href="https://www.notion.so/image/attachment%3A734d6319-3d74-4cc9-80d3-5e8c4e68d0e6%3AXconda_prompt_guide_html_v5.4.zip?table=block&amp;id=04b6b870-764a-4d89-af9b-8174a9e4f938&amp;cache=v2" download>② 같은 파일의 압축본 (.zip) — 누르면 바로 PC에 저장</a>
+<h3>쓰는 법</h3>
+<ol><li>①을 눌러 열린 화면에서 <strong>Ctrl+S</strong>를 누르면 PC에 저장됩니다. 또는 ②를 누르면 <strong>다운로드</strong> 폴더에 바로 저장되고, 더블클릭하거나 오른쪽 마우스 → <strong>압축 풀기</strong>를 하면 같은 파일 <code>Xconda_prompt_guide_html_v5.4.txt</code>가 나옵니다.</li><li>Claude에서 새 프로젝트를 만들고, 저장한 <code>.txt</code> 파일을 더블클릭해 메모장으로 열고 내용을 전부 복사해(Ctrl+A → Ctrl+C) <strong>프로젝트 지침</strong>에 붙여넣습니다.</li><li>그 프로젝트에서 새 대화를 열고 <code>엑스콘다</code>만 보내 메뉴가 뜨는지 확인합니다.</li></ol>
+<p class="notion-default">프로젝트 지침에는 이 파일 <strong>하나만</strong> 넣습니다. 다른 버전이나 다른 판의 지침이 함께 있으면 서로 부딪힙니다.</p>
+</article>
+<nav class="seo-related" aria-label="관련 글"><h2>관련 글</h2><ul><li><a href="../../post/skillry-ai-video-prompt-reference/">&#39;AI 영상계의 핀터레스트&#39; Skillry, 결과물 옆에 실제 프롬프트까지 공개</a></li></ul></nav>
+<p><a href="../../">XCONDA허브 메인으로</a></p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>
