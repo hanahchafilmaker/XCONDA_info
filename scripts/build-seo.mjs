@@ -29,7 +29,7 @@ import { fileURLToPath } from "node:url";
 import { SECTION_LABELS } from "../src/content/classify.js";
 import { AUTHOR_KEYS, COVER_KEYS, coverFromPageMap } from "../src/content/fields.js";
 import { mentionIndex } from "../src/content/mentions.js";
-import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
+import { blocksToHtml, cleanFaqBlocks, firstParagraphText, parseLegacyRecordMap } from "../src/content/body.js";
 import {
   DEFAULT_OG_IMAGE_PATH,
   DEFAULT_SITE_URL,
@@ -1145,6 +1145,9 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       (linkImage ? absoluteUrl(site, linkImage) : "") ||
       derivedCover(pages, row.id);
     const summary = textOf(row.Summary);
+    const rawBlocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id, { mentions, onUnresolved: (id, label) => warnings.push(`[${title}] 연결할 수 없는 페이지 멘션: ${label} (${id})`) }) : [];
+    const blocks = type === "faq" ? cleanFaqBlocks(rawBlocks) : rawBlocks;
+    const descriptionFallback = summary || firstParagraphText(blocks);
     const date = DATE_RE.test(textOf(row.Date)) ? textOf(row.Date) : "";
     // 우선순위: 노션 OG 이미지 속성 → **우리 도메인에 복사해 둔 사본** → 커버(노션 프록시) → 기본 이미지
     const localOg = localOgImageUrl(ogManifest, ogManifestKey(type, slug), site);
@@ -1153,7 +1156,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     const meta = resolveArticleMeta(
       {
         title,
-        summary,
+        summary: descriptionFallback,
         seoTitle: seo.seoTitle,
         seoDescription: seo.seoDescription,
         cover: coverRaw,
@@ -1172,11 +1175,9 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       warnings.push(`[${title}] 설명이 ${meta.description.length}자입니다 (권장 ${SEO_DESCRIPTION_MAX}자 이하). SEO 설명 칸을 줄여 주세요.`);
     }
     if (!seo.seoTitle) warnings.push(`[${title}] SEO 제목이 비어 있어 제목(Title)을 씁니다.`);
-    if (!seo.seoDescription) warnings.push(`[${title}] SEO 설명이 비어 있어 요약(Summary)을 ${summarize(summary).length}자로 줄여 씁니다.`);
-    if (!seo.ogImage && !coverRaw) warnings.push(`[${title}] 공유 이미지(OG 이미지·Cover)가 없어 기본 이미지를 씁니다.`);
+    if (!seo.seoDescription) warnings.push(`[${title}] SEO 설명 대체: ${summary ? "Summary" : descriptionFallback ? "본문 첫 문단" : "사이트 기본 설명"}.`);
+    if (!seo.ogImage) warnings.push(`[${title}] 공유 이미지 대체: ${coverRaw ? "커버·링크·본문 이미지" : "기본 이미지"}.`);
 
-    const rawBlocks = pages[row.id] ? parseLegacyRecordMap(pages[row.id], row.id, { mentions, onUnresolved: (id, label) => warnings.push(`[${title}] 연결할 수 없는 페이지 멘션: ${label} (${id})`) }) : [];
-    const blocks = type === "faq" ? cleanFaqBlocks(rawBlocks) : rawBlocks;
     if (blocksToHtml(blocks, { alt: title }).match(/(?:notion\.so|prod-files-secure)/i)) warnings.push(`[${title}] 본문에 노션 파일 주소가 남아 있습니다 (첨부 복사 실패 또는 미설정).`);
     const author = textOf(pickProp(row, AUTHOR_KEYS));
     // 수정일 — 노션 `수정일`(또는 동기화가 기록한 `__modified`)만 인정합니다.

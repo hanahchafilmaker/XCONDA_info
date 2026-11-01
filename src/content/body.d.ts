@@ -17,3 +17,5 @@ export function richToHtml(rich: Rich | undefined): string;
 export function blocksToHtml(blocks: Block[] | undefined, options?: { alt?: string }): string;
 
 export function cleanFaqBlocks(blocks?: Block[]): Block[];
+
+export function firstParagraphText(blocks?: Block[]): string;

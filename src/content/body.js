@@ -211,6 +211,21 @@ export function parseLegacyRecordMap(data, pageId, options = {}) {
   return root?.content?.length ? convertLegacy(root.content, map, 0, entryTitle, { ...options, blocks }) : [];
 }
 
+/** 첫 번째 본문 문단만 검색 설명의 대체 재료로 사용합니다. */
+export function firstParagraphText(blocks = []) {
+  for (const block of blocks) {
+    if (block.type === "p") {
+      const value = typeof block.text === "string" ? block.text : (block.text ?? []).map((seg) => seg.text ?? "").join("");
+      if (value.trim()) return value.trim();
+    }
+    if (Array.isArray(block.children)) {
+      const nested = firstParagraphText(block.children);
+      if (nested) return nested;
+    }
+  }
+  return "";
+}
+
 /* ------------------------------ 출력: Block[] → HTML ------------------------------ */
 
 const esc = (value) =>

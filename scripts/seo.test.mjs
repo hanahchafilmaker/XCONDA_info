@@ -812,7 +812,7 @@ test("동기가 받아 둔 뉴스 링크 이미지(__linkImage)는 절대 주소
   assert.equal([].concat(ldJsonOf(page, true).image)[0], expected);
   // 링크 이미지가 있으면 "공유 이미지 없음" 경고가 나면 안 된다
   const rowWarnings = out.warnings.filter((w) => w.includes("링크 이미지만 있는 뉴스"));
-  assert.doesNotMatch(rowWarnings.join("\n"), /공유 이미지/);
+  assert.match(rowWarnings.join("\n"), /공유 이미지 대체: 커버·링크·본문 이미지/);
   // 없는 필드일 때는 기존 우선순위 그대로
   const noField = renderSeoSite({ rows: [{ ...base, __linkImage: undefined }], pages: {}, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
   assert.doesNotMatch(noField.files.get("post/link-preview-news/index.html"), /og\/link\//);
@@ -1425,4 +1425,14 @@ test("Q&A 편집용 제목과 앞 구분선을 숨기고 공개 출처는 유지
     { type: "p", text: "비공개" }, { type: "h2", text: "출처" }, { type: "p", text: "두 번째 출처" },
   ];
   assert.deepEqual(cleanFaqBlocks(blocks).map((b) => b.text), ["공개 출처", "두 번째 출처"]);
+});
+
+
+test("SEO 설명과 요약이 없으면 첫 본문 문단을 메타 설명으로 쓴다", () => {
+  const id = "11111111-2222-3333-4444-555555555555";
+  const rows = [{ id, Title: "본문 테스트", __type: "blog", Published: true, Slug: "paragraph-test" }];
+  const pages = { [id]: { [id]: { value: { id, type: "page", content: ["p"] } }, p: { value: { id: "p", type: "text", properties: { title: [["첫 본문 문단입니다."]] } } } } };
+  const out = renderSeoSite({ rows, pages, template: TEMPLATE, siteUrl: SITE, translations: {} });
+  assert.match(out.files.get("post/paragraph-test/index.html"), /<meta name="description" content="첫 본문 문단입니다\."/);
+  assert.ok(out.warnings.some(w => w.includes("SEO 설명 대체: 본문 첫 문단")));
 });

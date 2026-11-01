@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseLegacyRecordMap, blocksToHtml } from '../src/content/body.js';
+import { parseLegacyRecordMap, blocksToHtml, firstParagraphText } from '../src/content/body.js';
 import { mentionIndex } from '../src/content/mentions.js';
 const page = '11111111-2222-3333-4444-555555555555';
 const pub = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
@@ -17,4 +17,10 @@ test('공개된 페이지 멘션은 허브 링크, 미게시 페이지는 제목
   assert.match(html, /href="https:\/\/hub\.xconda\.ai\/post\/public-post\/"[^>]*>공개 글/);
   assert.match(html, /비공개 대상/); assert.doesNotMatch(html, /private-post|‣/);
   assert.match(html, /2026-11-01/); assert.match(html, /김하나/); assert.deepEqual(unresolved, [privateId]);
+});
+
+
+test('검색 설명 대체 재료로 첫 본문 문단을 선택한다', () => {
+  assert.equal(firstParagraphText([{ type: 'h2', text: '제목' }, { type: 'p', text: [{ text: '첫 ' }, { text: '문단' }] }, { type: 'p', text: '둘째' }]), '첫 문단');
+  assert.equal(firstParagraphText([{ type: 'h2', text: '제목' }]), '');
 });
