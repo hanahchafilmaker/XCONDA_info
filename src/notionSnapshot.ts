@@ -1,3 +1,4 @@
+import { hubBaseFromPathname } from "./content/seo";
 /* =============================================================================
  * 정적 스냅샷 리더 — `notion-content.json`
  * -----------------------------------------------------------------------------
@@ -49,7 +50,7 @@ const undash = (id: unknown): string => String(id ?? "").replace(/-/g, "").toLow
 function snapshotUrl(force = false): string {
   try {
     // dev.html / index.html 어느 경로든 문서 기준으로 파일 위치를 계산합니다.
-    const url = new URL(FILE, document.baseURI);
+    const url = new URL(`${hubBaseFromPathname(window.location.pathname)}${FILE}`, window.location.origin);
     if (force) url.searchParams.set("t", String(Date.now()));
     return url.toString();
   } catch {

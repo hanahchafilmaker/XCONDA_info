@@ -297,3 +297,10 @@ test("대량 삭제 안내: 원인 확인 순서와 되돌리는 방법(--allow-
   assert.match(markdown, /allow_shrink/);
   assert.match(markdown, /공지 6개 → 0개|전체 글이/);
 });
+
+
+test("커버 로컬 사본 경로는 원본 스냅샷 변경으로 취급하지 않는다", () => {
+  const original = snapshot();
+  const copied = snapshot({ rows: [{ ...original.rows[0], __coverLocal: "assets/img/covers/test.png" }] });
+  assert.equal(snapshotContentKey(original), snapshotContentKey(copied));
+});

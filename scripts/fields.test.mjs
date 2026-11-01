@@ -92,3 +92,9 @@ test("속성 이름 표는 사이트와 동기화 스크립트가 같은 것을 
   assert.deepEqual(COVER_KEYS, ["Cover", "커버", "썸네일", "Thumbnail", "Image", "이미지"]);
   assert.deepEqual(AUTHOR_KEYS, ["Author", "작성자", "글쓴이", "Written by", "By", "작성자명"]);
 });
+
+
+test("app.notion.com 이미지 프록시를 공개 프록시로 바꾸고 쿼리를 보존한다", () => {
+  const original = "https://app.notion.com/image/attachment%3Afoo?table=block&id=123&cache=v2";
+  assert.equal(signNotionImage(original, IMG), "https://www.notion.so/image/attachment%3Afoo?table=block&id=123&cache=v2");
+});

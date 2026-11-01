@@ -162,7 +162,9 @@ export function SmartImage({
   className?: string;
 }) {
   // 0 = 첫 주소 · 1 = 폴백 주소 · 2 = 자리 표시자
-  const [stage, setStage] = useState(0);
+  const [failure, setFailure] = useState<{ key: string; stage: number }>({ key: "", stage: 0 });
+  const key = `${src ?? ""}\n${fallbackSrc ?? ""}`;
+  const stage = failure.key === key ? failure.stage : 0;
   const active = stage === 0 ? src : stage === 1 ? fallbackSrc : undefined;
   if (!active) {
     return (
@@ -176,7 +178,7 @@ export function SmartImage({
       src={active}
       alt={alt}
       loading="lazy"
-      onError={() => setStage((s) => Math.min(2, s + 1))}
+      onError={() => setFailure({ key, stage: Math.min(2, stage + 1) })}
       className={className}
     />
   );

@@ -43,6 +43,10 @@ const undash = (id) => String(id ?? "").replace(/-/g, "").toLowerCase();
 export function signNotionImage(src, blockId) {
   const value = typeof src === "string" ? src : "";
   if (!value || value.startsWith("data:")) return value;
+  // app.notion.com 은 로그인 화면으로 가는 경우가 있어 공개 이미지 프록시를 우선 사용합니다.
+  // 경로와 쿼리(table/id/cache)는 원래 값 그대로 보존합니다.
+  if (/^https?:\/\/app\.notion\.com\/image\//i.test(value))
+    return value.replace(/^https?:\/\/app\.notion\.com/i, "https://www.notion.so");
   if (/^https?:\/\/www\.notion\.so\/image\//i.test(value)) return value; // 이미 프록시 주소
   const internal =
     value.startsWith("/") ||

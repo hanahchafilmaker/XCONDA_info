@@ -951,8 +951,8 @@ export const snapshotContentKey = (snapshot) =>
   stableStringify({
     source: snapshot?.source ?? null,
     rows: (snapshot?.rows ?? []).map((row) => {
-      if (!isRecord(row) || !("__linkImage" in row)) return row;
-      const { __linkImage: _skip, ...rest } = row;
+      if (!isRecord(row)) return row;
+      const { __linkImage: _skip, __coverLocal: _cover, ...rest } = row;
       return rest;
     }),
     pages: snapshot?.pages ?? {},

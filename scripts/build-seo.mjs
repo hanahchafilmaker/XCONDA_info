@@ -1136,6 +1136,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
     // 우선순위: 노션 Cover → 페이지 커버 필드 → 동기화가 받아 둔 뉴스 링크 og:image(상대→절대) → 본문 첫 이미지
     const linkImage = textOf(row.__linkImage);
     const coverRaw =
+      (textOf(row.__coverLocal) ? absoluteUrl(site, textOf(row.__coverLocal)) : "") ||
       fileUrlOf(pickProp(row, COVER_KEYS)) ||
       textOf(row.__cover) ||
       (linkImage ? absoluteUrl(site, linkImage) : "") ||
