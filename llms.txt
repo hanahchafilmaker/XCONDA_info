@@ -44,12 +44,10 @@
 
 ## 블로그
 
-- [시나리오에서 완성 영상까지, 엑스콘다 제작 7단계](https://hub.xconda.ai/post/xconda-production-map/): 큐브베리의 AI 영상은 시나리오에서 출발해 XCONDA에서 영상을 만들고, 수노로 사운드를 붙여, 프리미어 프로에서 마무리합니다. 전체 순서를 한 장의 지도와 단계별 입력·결과물·점검 항목으로 정리했고, 각 단계의 자세한 방법은 연재 편에서 이어집니다.
 - [시댄스 타율 올리기, 영상 전에 콘티부터](https://hub.xconda.ai/post/seedance-storyboard-before-render/): 시댄스는 영상을 돌릴 때마다 크레딧이 나갑니다. 영상을 돌리기 전에 FLEXBOARD로 36컷 콘티를 먼저 확인하고, 두 가지 클로드 스킬로 프롬프트까지 만드는 제작 흐름을 정리했습니다.
 - [AI 영상 배경이 튀는 이유와 컷 일관성 해결](https://hub.xconda.ai/post/ai-video-background-consistency/)
 - [KBS 다큐 <성물> '초대', XCONDA로 제작](https://hub.xconda.ai/post/kbs-documentary-seongmul-xconda/): 토리노 대성당의 성의와 시각장애인 수녀의 고백을 담은 KBS 다큐멘터리 <성물> '초대' 영상이 공개됐습니다. 해당 영상은 올인원 AI 영상 제작 플랫폼 XCONDA로 제작됐습니다.
 - [시나리오에서 완성 영상까지, 엑스콘다 제작 7단계](https://hub.xconda.ai/post/scenario-to-final-video/): 큐브베리의 AI 영상은 시나리오에서 출발해 XCONDA에서 영상을 만들고, 수노로 사운드를 붙여, 프리미어 프로에서 마무리합니다. 이 글은 그 전체 순서를 한 장의 지도와 7단계 설명으로 보여줍니다. 단계마다 무엇을 넣고, 무엇이 나오고, 넘기기 전에 무엇을 확인해야…
-- [FLEXBOARD 컷별 스토리보드 만드는 7단계](https://hub.xconda.ai/post/flexboard-storyboard-7-steps/): 구도가 틀린 채로 영상을 뽑으면 영상 단계에서 여러 번 다시 생성해야 합니다. FLEXBOARD는 시나리오를 컷으로 나누고, 컷마다 글과 이미지로 미리 보여주는 XCONDA의 스토리보드 도구입니다. 이 글은 프로젝트를 만드는 것부터 문제 있는 컷만 골라 고치고…
 - [클라우드 오퍼스 5.5와 블렌더로 게임 3D 모델 만드는 8단계 방법](https://hub.xconda.ai/post/opus-5-5-blender-game-3d-model/)
 - [9컷의 저주 줄이는 법, 컷이 튀지 않는 5단계](https://hub.xconda.ai/post/ai-video-9-cut-curse-fix/): 영상 AI는 앞 컷을 기억하지 못합니다. 공간은 TURN으로, 얼굴과 구도는 FLEXBOARD로, 이어져야 하는 상태는 레퍼런스와 프롬프트로 고정하는 5단계를 정리했습니다.
 - [엑스콘다 Video Generator로 Seedance 2.5 영상을 안정적으로 뽑는 법](https://hub.xconda.ai/post/xconda-video-generator-seedance-2-5/)
