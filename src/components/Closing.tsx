@@ -5,11 +5,11 @@ import { Logo, Reveal, VoltButton } from "./volt";
 import { SUPPORT_EMAIL } from "./Qna";
 
 const socialColors: Record<string, string> = {
-  x: "border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-700",
-  threads: "border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-700",
-  youtube: "border-red-100 bg-red-50 text-red-600 hover:bg-red-100",
-  instagram: "border-pink-100 bg-pink-50 text-pink-700 hover:bg-pink-100",
-  naver: "border-green-100 bg-green-50 text-green-700 hover:bg-green-100",
+  x: "text-black",
+  threads: "text-black",
+  youtube: "text-[#ff0000]",
+  instagram: "text-[#c13584]",
+  naver: "text-[#03c75a]",
 };
 
 export default function Closing() {
@@ -36,13 +36,22 @@ export default function Closing() {
       </section>
 
       {/* footer */}
-      <footer className="border-t border-violet-200/60 bg-gradient-to-br from-[#f6f3ff] via-[#fbfaff] to-[#f5f9ed] py-12">
+      <footer className="border-t border-black/[0.06] py-12">
         <div className="shell">
           <div className="grid gap-10 sm:grid-cols-[2fr_1fr_1fr]">
             <div>
               <Logo />
               <p className="mt-4 max-w-sm text-[13.5px] leading-relaxed text-neutral-500">{t("v.footer.desc")}</p>
               <div className="mt-5 flex items-center gap-2.5">
+                <svg aria-hidden="true" width="0" height="0" className="absolute">
+                  <defs>
+                    <linearGradient id="footer-instagram-gradient" x1="0" y1="1" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#f9ce34" />
+                      <stop offset="48%" stopColor="#ee2a7b" />
+                      <stop offset="100%" stopColor="#6228d7" />
+                    </linearGradient>
+                  </defs>
+                </svg>
                 {CHANNELS.filter((c) => c.href && c.id !== "web" && c.id !== "notion").map((c) => {
                   const Icon = c.Icon;
                   return (
@@ -53,9 +62,9 @@ export default function Closing() {
                       rel="noopener noreferrer"
                       aria-label={c.name}
                       title={`${c.name} (${c.handle})`}
-                      className={`grid h-8 w-8 place-items-center rounded-full border transition-colors ${socialColors[c.id] ?? "border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100"}`}
+                      className={`grid h-8 w-8 place-items-center rounded-full border border-black/10 bg-white transition-colors hover:border-black/25 hover:bg-black/[0.04] ${socialColors[c.id] ?? "text-neutral-700"}`}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-4 w-4" style={c.id === "instagram" ? { fill: "url(#footer-instagram-gradient)" } : undefined} />
                     </a>
                   );
                 })}
@@ -63,7 +72,7 @@ export default function Closing() {
             </div>
 
             <div>
-              <p className="text-[13px] font-semibold text-violet-900">{t("v.footer.guide")}</p>
+              <p className="text-[13px] font-medium text-neutral-700">{t("v.footer.guide")}</p>
               <ul className="mt-3 space-y-2">
                 {[
                   { l: t("nav.notices"), h: "#notices" },
@@ -73,7 +82,7 @@ export default function Closing() {
                   { l: t("nav.qna"), h: "#faq" },
                 ].map((x) => (
                   <li key={x.h}>
-                    <a href={x.h} className="text-[13.5px] text-neutral-600 transition-colors hover:text-violet-800">
+                    <a href={x.h} className="text-[13.5px] text-neutral-500 transition-colors hover:text-black">
                       {x.l}
                     </a>
                   </li>
@@ -82,7 +91,7 @@ export default function Closing() {
             </div>
 
             <div>
-              <p className="text-[13px] font-semibold text-violet-900">{t("v.footer.tools")}</p>
+              <p className="text-[13px] font-medium text-neutral-700">{t("v.footer.tools")}</p>
               <ul className="mt-3 space-y-2">
                 {footerTools.map((tool) => (
                   <li key={tool.slug}>
@@ -90,7 +99,7 @@ export default function Closing() {
                       href={tool.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[13.5px] text-neutral-600 transition-colors hover:text-violet-800"
+                      className="text-[13.5px] text-neutral-500 transition-colors hover:text-black"
                     >
                       {tool.name}
                     </a>
