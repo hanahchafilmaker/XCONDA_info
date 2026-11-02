@@ -74,7 +74,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
     <>
       <header data-hub-header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
+          "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 lg:inset-x-auto lg:left-1/2 lg:top-4 lg:w-[calc(100%-3rem)] lg:max-w-6xl lg:-translate-x-1/2 lg:rounded-lg lg:border lg:shadow-md",
           scrolled || open ? "border-black/[0.06] bg-ink-950/85 backdrop-blur-xl" : "border-black/10 bg-white/90 backdrop-blur-md",
         )}
       >
