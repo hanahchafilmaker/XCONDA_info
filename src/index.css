@@ -13,18 +13,19 @@
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
-  --color-ink-950: #ffffff;
+  --color-ink-950: #fbfaf7;
   --color-ink-900: #ffffff;
-  --color-ink-880: #fafafa;
-  --color-ink-850: #f5f5f5;
-  --color-ink-800: #eeeeee;
-  --color-ink-700: #dddddd;
+  --color-ink-880: #f5f2e9;
+  --color-ink-850: #f0ede4;
+  --color-ink-800: #e8e4d9;
+  --color-ink-700: #d8d2c4;
 
-  --color-volt-200: #e5e5e5;
-  --color-volt-300: #262626;
-  --color-volt-400: #000000;
-  --color-volt-500: #171717;
-  --color-volt-600: #404040;
+  /* XCONDA's signature yellow, paired with a darker ochre for readable text. */
+  --color-volt-200: #fff0b8;
+  --color-volt-300: #806000;
+  --color-volt-400: #946d00;
+  --color-volt-500: #f3c928;
+  --color-volt-600: #715300;
 
   --animate-marquee: marquee 42s linear infinite;
   --animate-marquee-slow: marquee 70s linear infinite;
@@ -92,7 +93,7 @@
   }
   body {
     background-color: var(--color-ink-950);
-    color: #000000;
+    color: #24231f;
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01";
     word-break: keep-all;
@@ -184,7 +185,10 @@
 body { top: 0 !important; }
 
 /* Editorial sections share a consistent rhythm and hairline separators. */
-#main > section:not(#top) { border-top: 1px solid rgb(0 0 0 / .1); }
+#main > section:not(#top) { border-top: 1px solid rgb(0 0 0 / .08); }
+/* Subtle warm surfaces separate content groups without reducing text contrast. */
+#news, #blog { background: var(--color-ink-880); }
+#faq { background: linear-gradient(180deg, #fff9e5 0%, var(--color-ink-950) 100%); }
 body { letter-spacing: -.025em; }
 ::selection { background: #000; color: #fff; }
 button, a { -webkit-tap-highlight-color: transparent; }
