@@ -78,6 +78,36 @@ const REPO_ROOT = path.resolve(here, "..");
 /** 생성물로 소유하는 폴더 (빌드 때마다 통째로 다시 만듭니다) */
 export const GENERATED_DIRS = ["post", "notice", "qna", "guide"];
 
+/**
+ * 옮겨진 글의 옛 주소 → 새 주소 (사이트 기준 경로, 앞 슬래시 없음, 끝 슬래시 있음).
+ * 노션에서 글을 내리거나 합칠 때 여기에 한 줄 추가하면, 옛 주소로 들어온 방문자와
+ * 검색엔진이 새 글로 바로 이동합니다. GitHub Pages 는 서버 301 을 쓸 수 없어서
+ * 0초 meta refresh + canonical + location.replace 로 대신합니다(구글은 영구 이동으로 처리).
+ * 번역 주소(/en/ 등)도 같은 규칙으로 함께 만들어집니다.
+ */
+export const REDIRECTS = {
+  "post/xconda-production-map/": "post/scenario-to-final-video/", // 2026-11-02 중복 글 통합
+  "post/flexboard-storyboard-7-steps/": "guide/flexboard-storyboard-guide/", // 2026-11-02 가이드로 통합 (SNS 배포 글)
+};
+
+export function redirectHtml(targetUrl) {
+  const u = escapeHtml(targetUrl);
+  const js = JSON.stringify(targetUrl).replace(/</g, "\\u003c");
+  return [
+    "<!doctype html>",
+    '<html lang="ko"><head><meta charset="utf-8">',
+    "<title>페이지가 이동했습니다</title>",
+    `<meta http-equiv="refresh" content="0; url=${u}">`,
+    `<link rel="canonical" href="${u}">`,
+    '<meta name="robots" content="noindex">',
+    `<script>location.replace(${js} + location.search + location.hash);</script>`,
+    "</head><body>",
+    `<p>페이지가 이동했습니다. <a href="${u}">새 주소로 이동</a></p>`,
+    "</body></html>",
+    "",
+  ].join("\n");
+}
+
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 /* ------------------------------ <head> 처리 ------------------------------ */
@@ -1441,6 +1471,22 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
   // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
   if (Object.keys(localized.paths).length) {
     files.set("assets/i18n-paths.json", `${JSON.stringify(localized.paths, null, 2)}\n`);
+  }
+  // 옮겨진 글의 옛 주소 → 새 주소 이동 페이지 (사이트맵에는 넣지 않습니다).
+  // 새 주소의 글이 실제로 만들어졌을 때만 이동 페이지를 만듭니다(없는 글로 보내지 않도록).
+  const builtLangs = new Set(Object.keys(localized.paths ?? {}));
+  for (const [from, to] of Object.entries(REDIRECTS)) {
+    if (!files.has(`${to}index.html`)) {
+      warnings.push(`이동 주소 건너뜀: /${from} → /${to} (새 주소의 글이 없음)`);
+      continue;
+    }
+    for (const lang of SITE_LANGS) {
+      const prefix = lang.prefix;
+      if (prefix && !builtLangs.has(lang.code)) continue; // 번역 사이트가 없는 언어는 건너뜀
+      if (files.has(`${prefix}${from}index.html`)) continue; // 같은 주소에 실제 글이 있으면 글이 우선
+      const target = prefix && files.has(`${prefix}${to}index.html`) ? `${prefix}${to}` : to;
+      files.set(`${prefix}${from}index.html`, redirectHtml(absoluteUrl(site, target)));
+    }
   }
   files.set("sitemap.xml", sitemapXml(sitemapUrls));
 
