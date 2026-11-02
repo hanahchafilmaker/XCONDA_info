@@ -159,8 +159,8 @@ export function LogoMark({ className, title }: { className?: string; title?: str
 /** 헤더·푸터 로고 락업: 마크 + "Xconda" 워드마크 */
 export function Logo({ className, href = "#top" }: { className?: string; href?: string }) {
   return (
-    <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex shrink-0 items-center rounded-md bg-neutral-950 px-2 py-1 whitespace-nowrap", className)}>
-      <img src="/assets/img/logo/xconda-wordmark.png" alt="XCONDA" className="h-[20px] w-auto object-contain" />
+    <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex shrink-0 items-center whitespace-nowrap", className)}>
+      <img src="/assets/img/logo/xconda-wordmark.png" alt="XCONDA" className="h-[22px] w-auto object-contain" />
     </a>
   );
 }
