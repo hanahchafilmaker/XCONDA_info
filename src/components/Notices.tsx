@@ -3,6 +3,7 @@ import type { Entry } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew } from "../notion";
 import { categoryLabel, useLang } from "../i18n";
+import { SmartImage } from "./common";
 import { IconArrow, IconChevron, IconPin, Pill, Reveal, SectionHeader, Tabs } from "./volt";
 
 const isMaintenance = (category: string) => /점검|maintenance/i.test(category);
@@ -15,6 +16,14 @@ function NoticeRow({ n, onOpen }: { n: Entry; onOpen: () => void }) {
         onClick={onOpen}
         className="group flex w-full items-center gap-4 px-1 py-4 text-left transition-colors sm:px-2"
       >
+        {n.cover && (
+          <SmartImage
+            src={n.cover}
+            fallbackSrc={n.coverFallback}
+            alt=""
+            className="h-14 w-20 shrink-0 rounded-lg object-cover sm:h-16 sm:w-24"
+          />
+        )}
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-2">
             {n.pinned && <IconPin className="h-3.5 w-3.5 shrink-0 text-volt-400" aria-label="pinned" />}
@@ -41,8 +50,16 @@ function Featured({ n, onOpen }: { n: Entry; onOpen: () => void }) {
   return (
     <button
       onClick={onOpen}
-      className="group flex h-full w-full flex-col rounded-none border border-black/[0.08] bg-ink-900 p-6 text-left transition-colors hover:border-black/15 sm:p-7"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-black/[0.08] bg-ink-900 p-6 text-left transition-all hover:border-black/15 hover:shadow-[0_12px_32px_rgba(0,0,0,.07)] sm:p-7"
     >
+      {n.cover && (
+        <SmartImage
+          src={n.cover}
+          fallbackSrc={n.coverFallback}
+          alt=""
+          className="-mx-6 -mt-6 mb-5 h-44 w-[calc(100%+3rem)] rounded-t-none object-cover sm:-mx-7 sm:-mt-7 sm:h-52 sm:w-[calc(100%+3.5rem)]"
+        />
+      )}
       <span className="flex items-center gap-2 text-[13px] text-neutral-500">
         <Pill tone="volt">{t("v.notices.important")}</Pill>
         {formatDate(n.date)}
