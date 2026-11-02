@@ -68,7 +68,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
             </div>
           </div>
         </div>
-        <nav aria-label={t("nav.primary")} className="mx-auto mt-16 flex max-w-4xl flex-wrap justify-center gap-x-8 gap-y-4 border-b border-neutral-200 pb-8">
+        <nav data-hub-hero-nav aria-label={t("nav.primary")} className="mx-auto mt-16 flex max-w-4xl flex-wrap justify-center gap-x-8 gap-y-4 border-b border-neutral-200 pb-8">
           {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="text-sm font-medium text-neutral-500 transition hover:text-black">{section.label} <span className="ml-1 text-xs text-neutral-400">{section.entries.length}</span></a>)}
         </nav>
       </div>

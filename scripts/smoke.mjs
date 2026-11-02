@@ -58,7 +58,14 @@ const click = (el) => el?.dispatchEvent(new window.MouseEvent("click", { bubbles
 // The editorial hero uses live counts and forwards keyword searches to the existing overlay.
 if (!/아이디어가 있으면|Have an idea/.test(q('#top h1')?.textContent ?? '')) throw new Error('Editorial hero missing');
 if (q('#top input')?.placeholder.includes('v.search.')) throw new Error('Untranslated hero placeholder');
-if (qa('#top a[href^="#"]').length !== 5) throw new Error('Hero section navigation missing');
+// Check the always-visible section navigation, not every hero link: the hero also
+// contains a CTA and a desktop-only preview sidebar with their own anchors.
+const heroNav = q('#top nav[data-hub-hero-nav]');
+const expectedHeroLinks = ['#notices', '#news', '#guides', '#blog', '#faq'];
+const heroLinks = heroNav ? [...heroNav.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href')) : [];
+if (JSON.stringify(heroLinks) !== JSON.stringify(expectedHeroLinks) || heroLinks.some((href) => !doc.getElementById(href.slice(1)))) {
+  throw new Error(`Hero section navigation missing or invalid: ${heroLinks.join(', ')}`);
+}
 click(qa('#top button').find((button) => button.textContent === 'FLEXBOARD'));
 await new Promise((resolve) => setTimeout(resolve, 150));
 const seededInput = q('.fixed input');
