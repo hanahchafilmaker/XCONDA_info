@@ -20,6 +20,7 @@
 
 ## 공지사항
 
+- [Seedance 2.5 Draft Mode 초안 보관 기간 14일 연장 | XCONDA](https://hub.xconda.ai/notice/seedance-25-draft-14-days/): Seedance 2.5 Draft Mode의 초안 영상 보관 기간이 7일에서 최대 14일로 늘어납니다.
 - [XCONDA 화면을 영어·한국어·일본어·중국어 4개 언어로 이용할 수 있습니다. 메뉴와 버튼 등 화면 문구를 원하는 언어로 바꿔 사용할 수 있습니다.](https://hub.xconda.ai/notice/xconda-multilanguage-support/): XCONDA 화면을 영어·한국어·일본어·중국어 4개 언어로 이용할 수 있습니다. 메뉴와 버튼 등 화면 문구를 원하는 언어로 바꿔 사용할 수 있습니다.
 - [XCONDA에서 블로킹 보드 베타를 오픈합니다. 🎬](https://hub.xconda.ai/notice/blocking-board-beta-free-open/): 블로킹 보드 베타를 무료로 오픈합니다(영상 생성 전 단계까지). 장면 프롬프트만 넣으면 3D 공간과 인물이 구성되고, 마네킹 영상을 Seedance로 바로 보내 영상을 생성합니다.
 - [Seedance 2.5 업데이트, 30초 영상·동시 생성](https://hub.xconda.ai/notice/seedance-2-5-update/): Seedance 2.5 API가 XCONDA에서 정식 제공됩니다. 최대 30초 영상 생성, 영상·오디오 동시 생성, 레퍼런스 최대 50개, 타임스탬프 기반 편집, 그린스크린 배경 교체를 지원합니다.
