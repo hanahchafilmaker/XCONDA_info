@@ -1,142 +1,75 @@
-import { ArrowDown, ArrowUpRight, FileText, Search, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight, FileText, Search, Sparkles } from "lucide-react";
 import { useLang } from "../i18n";
 import { useContent } from "../content/ContentContext";
 import { SmartImage } from "./common";
 
 export default function Hero({ onSearch }: { onSearch: (query?: string) => void }) {
   const { t } = useLang();
-  const { notices, news, guides, blogs, faqs } = useContent();
+  const { notices, news, guides, blogs, faqs, openEntry } = useContent();
   const sections = [
-    { id: "notices", label: t("nav.notices"), count: notices.length, entries: notices },
-    { id: "news", label: t("nav.news"), count: news.length, entries: news },
-    { id: "guides", label: t("nav.tools"), count: guides.length, entries: guides },
-    { id: "blog", label: t("nav.blog"), count: blogs.length, entries: blogs },
-    { id: "faq", label: t("nav.qna"), count: faqs.length, entries: faqs },
+    { id: "notices", label: t("nav.notices"), entries: notices },
+    { id: "news", label: t("nav.news"), entries: news },
+    { id: "guides", label: t("nav.tools"), entries: guides },
+    { id: "blog", label: t("nav.blog"), entries: blogs },
+    { id: "faq", label: t("nav.qna"), entries: faqs },
   ];
-  const total = sections.reduce((sum, section) => sum + section.count, 0);
-  const recent = sections.flatMap((section) => section.entries.slice(0, 1).map((entry) => ({ ...entry, section }))).slice(0, 4);
+  const recent = sections.flatMap((section) => section.entries.slice(0, 1).map((entry) => ({ entry, section }))).slice(0, 4);
 
   return (
-    <section id="top" className="relative isolate overflow-hidden pb-16 pt-32 sm:pt-36 lg:pb-20 lg:pt-40">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_0%,rgba(195,180,255,.28),transparent_42%),radial-gradient(ellipse_at_6%_24%,rgba(255,222,139,.24),transparent_30%),linear-gradient(180deg,#faf8ff_0%,#fbfaf7_70%)]" />
+    <section id="top" className="pixa-hero relative isolate overflow-hidden pb-20 pt-36 sm:pt-44 lg:pt-52">
+      <div aria-hidden="true" className="pixa-dots pointer-events-none absolute inset-x-0 bottom-0 top-[350px] -z-10" />
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-32 -z-10 h-48 w-48 -translate-x-1/2 rounded-full bg-[conic-gradient(from_90deg,#d8ccff,#c6f3f1,#f6d9ee,#d8ccff)] opacity-65 blur-[65px]" />
       <div className="shell">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.12em] text-violet-800 shadow-sm sm:text-xs">
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-            <span className="notranslate">XCONDA HUB</span>
-            <span className="text-violet-300" aria-hidden="true">·</span>
-            {total} {t("v.search.all") === "전체" ? "개의 자료" : "resources"}
-          </p>
-          <h1 className="mx-auto mt-7 max-w-4xl text-[42px] font-semibold leading-[1.08] tracking-[-0.06em] text-neutral-950 sm:text-[60px] lg:text-[76px]">
-            {t("v.hero.lead")}<br /><span className="bg-gradient-to-r from-violet-700 via-indigo-600 to-amber-600 bg-clip-text text-transparent">{t("v.hero.accent")}</span>
+        <div className="mx-auto flex min-h-[420px] max-w-5xl flex-col items-center justify-center text-center sm:min-h-[470px]">
+          <h1 className="text-balance text-[39px] font-bold uppercase leading-[1.18] tracking-[-0.045em] text-black sm:text-[60px] lg:text-[76px]">
+            {t("v.hero.lead")}<br />
+            <span className="font-serif font-normal tracking-[-0.035em]">{t("v.hero.accent")}</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-[1.75] text-neutral-600 sm:text-[18px]">{t("v.hero.desc")}</p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <button onClick={() => onSearch()} className="inline-flex h-11 items-center gap-2 rounded-xl bg-neutral-950 px-5 text-[14px] font-semibold text-white shadow-lg shadow-violet-900/10 transition hover:-translate-y-0.5 hover:bg-violet-800">
-              {t("v.nav.search")}<ArrowUpRight className="h-4 w-4" />
+          <p className="mx-auto mt-8 max-w-[490px] text-[16px] leading-[1.65] text-neutral-700 sm:text-lg">{t("v.hero.desc")}</p>
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <a href="#notices" className="inline-flex h-14 min-w-[165px] items-center justify-center gap-3 rounded-xl border border-black bg-white/70 px-6 text-sm font-medium text-black transition hover:bg-neutral-100">
+              {t("nav.notices")} <ArrowDown className="h-4 w-4" />
+            </a>
+            <button type="button" onClick={() => onSearch()} className="inline-flex h-14 min-w-[165px] items-center justify-center gap-3 rounded-xl bg-black px-6 text-sm font-medium text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-neutral-800">
+              {t("v.nav.search")} <ArrowRight className="h-4 w-4" />
             </button>
-            <a href="#notices" className="inline-flex h-11 items-center gap-2 rounded-xl border border-black/10 bg-white/80 px-5 text-[14px] font-semibold text-neutral-800 transition hover:border-violet-300 hover:bg-white">
-              {t("nav.notices")}<ArrowDown className="h-4 w-4 text-violet-700" />
-            </a>
           </div>
         </div>
 
-        {/* A product-style preview, using live hub entries rather than a static screenshot. */}
-        <div className="relative mx-auto mt-12 max-w-6xl sm:mt-16">
-          <div aria-hidden="true" className="absolute -inset-x-8 -inset-y-8 -z-10 rounded-[3rem] bg-gradient-to-r from-violet-200/55 via-amber-100/55 to-sky-200/50 blur-2xl" />
-          <div className="overflow-hidden rounded-[1.5rem] border border-white/90 bg-white/90 shadow-[0_30px_100px_rgba(47,34,79,.17)] backdrop-blur sm:rounded-[1.8rem]">
-            <div className="flex h-12 items-center justify-between border-b border-neutral-100 bg-white/90 px-4 sm:px-6">
-              <div className="flex items-center gap-1.5" aria-hidden="true">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff6b67]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#f4c451]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#54c98b]" />
-              </div>
-              <span className="hidden text-[11px] font-medium tracking-wide text-neutral-400 sm:block">HUB.XCONDA.AI</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-700"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />LIVE</span>
-            </div>
-
-            <div className="grid min-h-[330px] lg:grid-cols-[220px_1fr]">
-              <aside className="hidden border-r border-neutral-100 bg-[#fcfbff] p-5 lg:block">
-                <div className="mb-6 flex items-center gap-2.5">
-                  <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-violet-700 to-indigo-500 text-white"><Sparkles className="h-4 w-4" /></span>
-                  <span className="text-[13px] font-bold tracking-tight text-neutral-900">XCONDA <span className="font-normal text-neutral-400">HUB</span></span>
-                </div>
-                <p className="mb-2 px-2 text-[9px] font-bold uppercase tracking-[.16em] text-neutral-400">EXPLORE</p>
+        <div className="relative mx-auto mt-16 max-w-5xl sm:mt-20">
+          <div aria-hidden="true" className="absolute -inset-8 -z-10 rounded-full bg-[conic-gradient(from_90deg,#dbd0ff,#c9f1ee,#f2dbf3,#dbd0ff)] opacity-70 blur-3xl" />
+          <div className="overflow-hidden rounded-xl border border-violet-200/80 bg-white shadow-[0_18px_55px_rgba(30,20,50,.12)]">
+            <div className="grid min-h-[410px] md:grid-cols-[210px_1fr] lg:min-h-[500px]">
+              <aside className="hidden border-r border-neutral-200 bg-[#f4f4f6] p-5 md:block">
+                <div className="mb-9 flex items-center gap-2 text-sm font-bold"><Sparkles className="h-6 w-6" /> XCONDA HUB</div>
                 <nav aria-label={t("nav.primary")} className="space-y-1">
-                  {sections.map((section, index) => (
-                    <a key={section.id} href={`#${section.id}`} className={`flex items-center justify-between rounded-lg px-2.5 py-2 text-[12px] transition-colors ${index === 0 ? "bg-violet-100/80 font-semibold text-violet-900" : "text-neutral-600 hover:bg-neutral-100"}`}>
-                      <span>{section.label}</span><span className="text-[10px] text-neutral-400">{section.count}</span>
-                    </a>
-                  ))}
+                  {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="flex items-center justify-between rounded-lg px-3 py-3 text-sm text-neutral-700 transition hover:bg-white"><span>{section.label}</span><span className="text-xs text-neutral-400">{section.entries.length}</span></a>)}
                 </nav>
-                <div className="mt-7 rounded-xl bg-gradient-to-br from-violet-700 to-indigo-600 p-3.5 text-white">
-                  <p className="text-[11px] font-semibold">{t("v.hero.lead")}</p>
-                  <p className="mt-1 text-[10px] leading-relaxed text-white/75">{t("v.hero.desc")}</p>
-                </div>
               </aside>
-
-              <div className="min-w-0 p-4 sm:p-6 lg:p-7">
-                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[.15em] text-violet-600">YOUR CREATIVE DESK</p>
-                    <h2 className="mt-1 text-[20px] font-semibold tracking-tight text-neutral-900 sm:text-[23px]">{t("v.hero.lead")} {t("v.hero.accent")}</h2>
-                  </div>
-                  <form className="flex h-10 w-full max-w-[300px] items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 transition focus-within:border-violet-300 focus-within:ring-4 focus-within:ring-violet-100" role="search" onSubmit={(event) => {
-                    event.preventDefault();
-                    const data = new FormData(event.currentTarget);
-                    onSearch(String(data.get("query") ?? ""));
-                  }}>
-                    <Search className="h-4 w-4 shrink-0 text-neutral-400" aria-hidden="true" />
-                    <input name="query" aria-label={t("v.search.placeholder")} placeholder={t("v.search.placeholder")} className="min-w-0 flex-1 bg-transparent text-[12px] text-neutral-800 outline-none placeholder:text-neutral-400" />
-                    <kbd className="hidden rounded border border-neutral-200 px-1.5 py-0.5 text-[9px] text-neutral-400 sm:inline">⌘ K</kbd>
-                  </form>
+              <div className="flex min-w-0 flex-col items-center px-5 py-9 sm:px-10 sm:py-12">
+                <Sparkles className="h-8 w-8 text-neutral-800" aria-hidden="true" />
+                <h2 className="mt-3 text-center text-2xl font-medium tracking-tight sm:text-3xl">{t("v.hero.lead")}</h2>
+                <p className="mt-2 text-center text-sm text-neutral-500">{t("v.hero.desc")}</p>
+                <form className="mt-8 flex w-full max-w-xl items-center gap-3 rounded-xl border border-neutral-300 bg-white p-2 pl-4 shadow-sm focus-within:border-neutral-600" role="search" onSubmit={(event) => { event.preventDefault(); onSearch(String(new FormData(event.currentTarget).get("query") ?? "")); }}>
+                  <Search className="h-5 w-5 shrink-0 text-neutral-400" aria-hidden="true" />
+                  <input name="query" aria-label={t("v.search.placeholder")} placeholder={t("v.search.placeholder")} className="min-w-0 flex-1 bg-transparent py-2 text-sm text-neutral-900 outline-none placeholder:text-neutral-400" />
+                  <button type="submit" aria-label={t("v.nav.search")} className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-black text-white transition hover:bg-neutral-700"><ArrowRight className="h-4 w-4" /></button>
+                </form>
+                <div className="mt-4 flex flex-wrap justify-center gap-2">
+                  {["FLEXBOARD", "Seedance 2.5", "Turn"].map((keyword) => <button type="button" key={keyword} onClick={() => onSearch(keyword)} className="rounded-full border border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 transition hover:border-neutral-500 hover:text-black">{keyword}</button>)}
                 </div>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {["FLEXBOARD", "Seedance 2.5", "Turn"].map((keyword) => (
-                    <button type="button" key={keyword} onClick={() => onSearch(keyword)} className="rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-[10px] font-medium text-neutral-600 transition hover:border-violet-300 hover:bg-violet-50 hover:text-violet-800">{keyword}</button>
-                  ))}
-                  <span className="ml-auto hidden items-center gap-1 text-[10px] text-neutral-400 sm:inline-flex"><FileText className="h-3 w-3" />{total} {t("v.search.all") === "전체" ? "개의 콘텐츠" : "items"}</span>
-                </div>
-
-                <div className="mt-6 flex items-center justify-between">
-                  <h3 className="text-[13px] font-semibold text-neutral-900">{t("v.search.all") === "전체" ? "최근 업데이트" : "Recently updated"}</h3>
-                  <a href="#news" className="text-[11px] font-medium text-violet-700 hover:text-violet-900">{t("v.search.all")} <ArrowUpRight className="inline h-3 w-3" /></a>
-                </div>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {recent.map((entry) => (
-                    <a key={`${entry.section.id}-${entry.id}`} href={`#${entry.section.id}`} className="group flex min-w-0 items-center gap-3 rounded-xl border border-neutral-100 bg-white p-2.5 transition-all hover:-translate-y-0.5 hover:border-violet-200 hover:shadow-md">
-                      {entry.cover ? (
-                        <SmartImage src={entry.cover} fallbackSrc={entry.coverFallback} alt="" className="h-12 w-14 shrink-0 rounded-lg object-cover" />
-                      ) : (
-                        <span className="grid h-12 w-14 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-violet-100 via-amber-50 to-sky-100 text-violet-700"><FileText className="h-4 w-4" /></span>
-                      )}
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-[10px] font-medium text-violet-700">{entry.section.label}</span>
-                        <span className="mt-0.5 block line-clamp-2 text-[11px] font-semibold leading-snug text-neutral-800 group-hover:text-violet-800">{entry.title}</span>
-                      </span>
-                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-neutral-300 group-hover:text-violet-600" />
-                    </a>
-                  ))}
+                <div className="mt-9 grid w-full gap-3 sm:grid-cols-2">
+                  {recent.map(({ entry, section }) => <button type="button" key={`${section.id}-${entry.id}`} onClick={() => openEntry(entry)} className="group flex min-w-0 items-center gap-3 rounded-xl border border-neutral-200 bg-white p-3 text-left transition hover:border-neutral-400 hover:shadow-sm">
+                    {entry.cover ? <SmartImage src={entry.cover} fallbackSrc={entry.coverFallback} alt="" className="h-11 w-12 shrink-0 rounded-lg object-cover" /> : <span className="grid h-11 w-12 shrink-0 place-items-center rounded-lg bg-neutral-100"><FileText className="h-4 w-4" /></span>}
+                    <span className="min-w-0"><span className="block text-[11px] text-neutral-500">{section.label}</span><span className="mt-1 block line-clamp-1 text-xs font-semibold text-neutral-900">{entry.title}</span></span>
+                  </button>)}
                 </div>
               </div>
             </div>
           </div>
-          <div aria-hidden="true" className="absolute -bottom-5 left-[8%] hidden rounded-2xl border border-white bg-white/95 px-4 py-2.5 shadow-xl sm:block">
-            <span className="flex items-center gap-2 text-[11px] font-medium text-neutral-700"><span className="grid h-6 w-6 place-items-center rounded-lg bg-amber-100 text-amber-800"><Sparkles className="h-3.5 w-3.5" /></span>One hub. All your creative tools.</span>
-          </div>
         </div>
-
-        <nav aria-label={t("nav.primary")} className="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-2 sm:grid-cols-3 lg:mt-16 lg:grid-cols-5">
-          {sections.map((section) => (
-            <a key={section.id} href={`#${section.id}`} className="group flex min-h-[68px] items-center justify-between rounded-xl border border-black/[0.07] bg-white/70 px-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:bg-white hover:shadow-md">
-              <span>
-                <span className="block text-[13px] font-medium text-neutral-800">{section.label}</span>
-                <span className="mt-1 block text-[11px] text-neutral-500">{section.count} {t("v.search.all") === "전체" ? "항목" : "items"}</span>
-              </span>
-              <ArrowDown className="h-4 w-4 text-neutral-400 transition-transform group-hover:translate-y-0.5 group-hover:text-violet-700" />
-            </a>
-          ))}
+        <nav aria-label={t("nav.primary")} className="mx-auto mt-16 flex max-w-4xl flex-wrap justify-center gap-x-8 gap-y-4 border-b border-neutral-200 pb-8">
+          {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="text-sm font-medium text-neutral-500 transition hover:text-black">{section.label} <span className="ml-1 text-xs text-neutral-400">{section.entries.length}</span></a>)}
         </nav>
       </div>
     </section>

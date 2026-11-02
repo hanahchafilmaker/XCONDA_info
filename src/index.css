@@ -203,3 +203,11 @@ button:not(:disabled), a { cursor: pointer; }
 #top h1 { text-wrap: balance; }
 html:lang(ja), html:lang(zh-CN) { line-break: strict; }
 html:lang(ja) body, html:lang(zh-CN) body { word-break: normal; }
+
+/* Pixa-inspired hero: a quiet dot field and soft pastel glow. */
+.pixa-hero { background: #fcfcfc; }
+.pixa-dots {
+  background-image: radial-gradient(circle, rgba(112, 112, 120, .20) 2px, transparent 2.5px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+}
