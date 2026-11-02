@@ -4,6 +4,14 @@ import { useLang } from "../i18n";
 import { Logo, Reveal, VoltButton } from "./volt";
 import { SUPPORT_EMAIL } from "./Qna";
 
+const socialColors: Record<string, string> = {
+  x: "border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-700",
+  threads: "border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-700",
+  youtube: "border-red-100 bg-red-50 text-red-600 hover:bg-red-100",
+  instagram: "border-pink-100 bg-pink-50 text-pink-700 hover:bg-pink-100",
+  naver: "border-green-100 bg-green-50 text-green-700 hover:bg-green-100",
+};
+
 export default function Closing() {
   const { t } = useLang();
   const footerTools = TOOLS.slice(0, 5);
@@ -28,7 +36,7 @@ export default function Closing() {
       </section>
 
       {/* footer */}
-      <footer className="border-t border-black/[0.06] py-12">
+      <footer className="border-t border-violet-200/60 bg-gradient-to-br from-[#f6f3ff] via-[#fbfaff] to-[#f5f9ed] py-12">
         <div className="shell">
           <div className="grid gap-10 sm:grid-cols-[2fr_1fr_1fr]">
             <div>
@@ -45,7 +53,7 @@ export default function Closing() {
                       rel="noopener noreferrer"
                       aria-label={c.name}
                       title={`${c.name} (${c.handle})`}
-                      className="grid h-8 w-8 place-items-center rounded-full border border-black/10 bg-black/[0.04] text-neutral-500 transition hover:border-black/25 hover:bg-black/10 hover:text-black"
+                      className={`grid h-8 w-8 place-items-center rounded-full border transition-colors ${socialColors[c.id] ?? "border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100"}`}
                     >
                       <Icon className="h-4 w-4" />
                     </a>
@@ -55,7 +63,7 @@ export default function Closing() {
             </div>
 
             <div>
-              <p className="text-[13px] font-medium text-neutral-700">{t("v.footer.guide")}</p>
+              <p className="text-[13px] font-semibold text-violet-900">{t("v.footer.guide")}</p>
               <ul className="mt-3 space-y-2">
                 {[
                   { l: t("nav.notices"), h: "#notices" },
@@ -65,7 +73,7 @@ export default function Closing() {
                   { l: t("nav.qna"), h: "#faq" },
                 ].map((x) => (
                   <li key={x.h}>
-                    <a href={x.h} className="text-[13.5px] text-neutral-500 transition-colors hover:text-black">
+                    <a href={x.h} className="text-[13.5px] text-neutral-600 transition-colors hover:text-violet-800">
                       {x.l}
                     </a>
                   </li>
@@ -74,7 +82,7 @@ export default function Closing() {
             </div>
 
             <div>
-              <p className="text-[13px] font-medium text-neutral-700">{t("v.footer.tools")}</p>
+              <p className="text-[13px] font-semibold text-violet-900">{t("v.footer.tools")}</p>
               <ul className="mt-3 space-y-2">
                 {footerTools.map((tool) => (
                   <li key={tool.slug}>
@@ -82,7 +90,7 @@ export default function Closing() {
                       href={tool.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[13.5px] text-neutral-500 transition-colors hover:text-black"
+                      className="text-[13.5px] text-neutral-600 transition-colors hover:text-violet-800"
                     >
                       {tool.name}
                     </a>
