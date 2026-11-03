@@ -67,6 +67,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: npm
+
+      - name: 의존성 설치
+        # test:unit의 할인 카드 검사는 jsdom을 사용합니다. 클린 러너에는 node_modules가 없습니다.
+        run: npm ci
 
       - name: 글 분류 · 요약 리포트 규칙 테스트
         # 노션 값을 사이트 섹션으로 옮기는 규칙(scripts · src/content/classify.js)을 먼저 검증합니다.

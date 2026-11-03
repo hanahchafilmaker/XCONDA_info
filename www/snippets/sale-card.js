@@ -41,12 +41,12 @@ const COPY = {
 
 /**
  * @param {HTMLElement} slot 헤더 바로 뒤의 빈 슬롯. CSS도 함께 포함해야 합니다.
- * @param {{locale?: string, pricingHref?: string, storageKey?: string, now?: () => number}} [options]
+ * @param {{locale?: string, pricingHref?: string, storageKey?: string, legacyHideUntilKey?: string, now?: () => number}} [options]
  * @returns {() => void} 페이지 언마운트 시 이벤트와 타이머를 정리하는 함수.
  *
  * now는 테스트용입니다. 운영에서는 생략해 실제 시각을 사용합니다.
- * 기존 팝업이 이미 닫힘을 저장했다면 적용 시 기존 키/값도 이 키의 "1"로
- * 이관해야 이전 사용자의 닫힘 상태가 유지됩니다.
+ * 기존 팝업의 기간제 숨김 값이 밀리초 타임스탬프라면, 확인한 프로모션에
+ * 해당하는 키를 legacyHideUntilKey로 넘겨 그 기한까지 존중할 수 있습니다.
  */
 export function mountSaleCard(slot, options = {}) {
   const doc = slot?.ownerDocument;
@@ -63,12 +63,21 @@ export function mountSaleCard(slot, options = {}) {
   const copy = COPY[lang];
   const pricingHref = options.pricingHref ?? (lang === "en" ? "/pricing" : `/${lang}/pricing`);
   const storageKey = options.storageKey ?? SALE_DISMISSED_KEY;
+  const legacyHideUntilKey = options.legacyHideUntilKey;
   const now = options.now ?? (() => Date.now());
 
   const storage = (name) => {
     try { return win[name]; } catch { return null; }
   };
-  const wasDismissed = () => ["localStorage", "sessionStorage"].some((name) => {
+  const wasLegacySuppressed = () => {
+    if (!legacyHideUntilKey) return false;
+    try {
+      const value = storage("localStorage")?.getItem(legacyHideUntilKey);
+      const until = Number(value);
+      return value != null && Number.isFinite(until) && now() < until;
+    } catch { return false; }
+  };
+  const wasDismissed = () => wasLegacySuppressed() || ["localStorage", "sessionStorage"].some((name) => {
     try { return storage(name)?.getItem(storageKey) === "1"; } catch { return false; }
   });
   const rememberDismissal = () => {
@@ -138,7 +147,7 @@ export function mountSaleCard(slot, options = {}) {
     timer = win.setTimeout(refresh, Math.min(remaining, MAX_TIMEOUT_MS));
   };
   const onStorage = (event) => {
-    if (event.key === storageKey || event.key === null) refresh();
+    if (event.key === storageKey || event.key === legacyHideUntilKey || event.key === null) refresh();
   };
   const dismiss = (event) => {
     event.stopPropagation();

@@ -70,3 +70,12 @@ test("사이트 빌드는 www 원고 검사·산출물 빌드를 함께 돌린�
   assert.match(text, /npm run www:check/);
   assert.match(text, /npm run www:build/);
 });
+
+test("단위 테스트를 실행하는 워크플로는 먼저 의존성을 설치한다", () => {
+  for (const file of ["build-site.yml", "notion-sync.yml"]) {
+    const text = read(file).split("\n").filter((line) => !line.trim().startsWith("#")).join("\n");
+    const install = text.search(/^\s*run:\s*npm ci(?:\s|$)/m);
+    const tests = text.search(/^\s*run:\s*npm run test:unit(?:\s|$)/m);
+    assert.ok(install >= 0 && tests > install, `${file}: npm run test:unit 전에 npm ci가 필요합니다`);
+  }
+});
