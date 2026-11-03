@@ -1,0 +1,1482 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turn — ユーザーガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --kor: 'Inter', 'Pretendard', 'Noto Sans KR', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--kor);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--kor);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.025em;
+  }
+  .section-lede {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.65;
+    max-width: 640px;
+    letter-spacing: -0.01em;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-title-kor {
+    font-family: var(--kor);
+    font-weight: 600;
+    font-size: 28px;
+    color: rgba(240, 239, 234, 0.95);
+    letter-spacing: -0.025em;
+    margin-top: 24px;
+    line-height: 1.25;
+  }
+  .cover-subtitle {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 24px;
+    max-width: 460px;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--kor);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.75;
+    letter-spacing: -0.015em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .step-body {
+    font-family: var(--kor);
+    font-size: 15.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  /* Image - 원본 그대로 표시 */
+  .image-plate {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .image-plate img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Spec list grid */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+  }
+  .spec-item .name {
+    font-family: var(--kor);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .spec-item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+  .spec-item .feature {
+    font-family: var(--kor);
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    margin-top: auto;
+  }
+
+  /* Summary list */
+  .summary-list {
+    display: grid;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .summary-item {
+    padding: 28px 32px;
+    background: var(--offwhite-warm);
+    border-left: 3px solid var(--midnight);
+  }
+  .summary-item h4 {
+    font-family: var(--kor);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .summary-item p {
+    font-family: var(--kor);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .spec-list-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .cover-title-kor { font-size: 22px; }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="ガイドのナビゲーション" data-zoom-label="画像を拡大"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">ハブに戻る</a><a href="index.html">ガイド一覧</a></div><div class="xconda-manual-languages"><a href="../ko/turn.html" hreflang="ko" lang="ko">KO</a><a href="../en/turn.html" hreflang="en" lang="en">EN</a><a href="../ja/turn.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/turn.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>ユーザーガイド</span>
+    </div>
+    <div>
+      <div class="cover-title-en">TURN</div>
+      <div class="cover-title-kor">Turn — ユーザーガイド</div>
+      <div class="cover-subtitle">360° 背景生成、3D 視点の選択、部分編集、被写体の演出、最終スチルの作成をひとつながりにするワークフロー。</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>ユーザーガイド</div>
+        <div>チュートリアル</div>
+      </div>
+      <div style="text-align:right">
+        <div>30 チャプター</div>
+        <div>2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>目次</span>
+      <span>30 チャプター</span>
+    </div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— ガイド内容 —</span>       概要 · ワークフロー · 開始 · リファレンス（4 方向 / プロンプト） · HDRI · 3D Preview · Cube Map · Replace with · Brush · Inpaint · Regen · Freeze Frame · Production · Cinema Style · Cast Reference · Final Still · ダウンロード · 入力モード     </div>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>概要</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 概要 —</div>
+      <h2 class="section-title">Turn の機能</h2>
+      <p class="section-lede">Turn は 360° の環境を生成し、選んだ視点から最終画像を制作します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Turn はまず空間を構築し、3D Preview でカメラアングルを選ばせ、最後に Production で被写体と演出を加えます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Freeze Frame はリファレンスとなるカット、Final Still は被写体・アクション・ライティング・スタイルを適用した完成結果です。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/d161cc2826e284c7e6b7e83a047fd06c7703222d115b56916177904d0cedcdfd.webp" alt="Turn の機能" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — 概要</span>
+    <span>概要</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>活用シーン</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 活用シーン —</div>
+      <h2 class="section-title">Turn を使う理由</h2>
+      <p class="section-lede">同じ空間の中で複数のクリエイティブ案を素早く比較できます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">本番撮影の前に、ライティング・被写体の配置・スタイルの雰囲気を異なるバージョンで試せます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">クライアントに素早くビジュアル提案を見せたいとき（広告カット、商品のエディトリアル、EC の詳細、ストーリーボードなど）に有効です。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7965704ff7f9c73f85f690791d34b2d36aa7a5bfd83af172dad9840515150e7b.webp" alt="Turn を使う理由" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — 活用シーン</span>
+    <span>活用シーン</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>使うタイミング</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 使うタイミング —</div>
+      <h2 class="section-title">Turn を使うタイミング</h2>
+      <p class="section-lede">背景生成・部分編集・被写体の合成を1つの流れで行いたいとき。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">リファレンスがない場合はプロンプトだけから始め、空間のレイアウトをより正確に固定したい場合は画像 1 枚（または 4 方向の画像）を添付します。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">生成した環境を Cube Map で方向ごとに編集し、最後に Cast Reference で顔と衣装のリファレンスを適用します。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/476ff5fbfbe57b77b242a0438d2cb12e35f8c0b56d64c3444e04d308aa706168.webp" alt="Turn を使うタイミング" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — 使うタイミング</span>
+    <span>使うタイミング</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>ワークフロー</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ワークフロー —</div>
+      <h2 class="section-title">Turn のワークフロー全体</h2>
+      <p class="section-lede">Reference → HDRI → Production → Final Still。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">ステップ 1 ではプロンプトまたは方向別の画像を受け取ります。ステップ 2 で 360° の HDRI と Cube Map を確認します。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Freeze Frame で視点を決めたあと、ステップ 3 の Production でキャラクターのアクション・ライティング・シネマスタイル・キャストを適用します。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/8c275c49cd693f8b0204bdd3fea8a1edbff05a01de8ac129b0fd8edc6e4c379e.jpg" alt="Turn のワークフロー全体" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — ワークフロー</span>
+    <span>ワークフロー</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>開始</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 開始 —</div>
+      <h2 class="section-title">Turn の開始方法</h2>
+      <p class="section-lede">左サイドバーの Turn アイコンをクリックします。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Xconda にサインインしたら左の縦メニューを下にスクロールすると、Turn の項目が現れます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">クリックすると Reference、HDRI、Production の3ステップのワークスペースが開きます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/4bc05c5541e54b68375e2240c4abfbd068ff567cd281b67b2ac7bc833d708777.jpg" alt="Turn の開始方法" width="650" height="860">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — 開始</span>
+    <span>開始</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>リファレンス画像</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ステップ 1 · Reference —</div>
+      <h2 class="section-title">ステップ 1：リファレンス画像</h2>
+      <p class="section-lede">Front / Left / Right / Back のスロットが利用できます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">前面・左・右・背面のスロットに画像をドロップすると、その方向を基準にした 360° 環境が生成されます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">4 つすべてを埋めても、1 つだけ使っても、すべて空にしてプロンプトだけに頼ることもできます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/deef711189065a95075e0b33b91785691160c73e1484010b48e11734060c11a9.jpg" alt="ステップ 1：リファレンス画像" width="545" height="670">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — リファレンス画像</span>
+    <span>ステップ 1 · Reference</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>プロンプトのみ</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— プロンプトのみ —</div>
+      <h2 class="section-title">画像なしでプロンプトを使う</h2>
+      <p class="section-lede">説明だけで 360° 環境を生成できます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">リファレンス画像がなくても、描写が具体的であれば Turn が背景を構成します。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">説明の中に被写体・商品・小物・ライティングの雰囲気を書くと、空間内の物体や人物の配置を方向づけられます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/0e0ba2664ad7866447d052a95c8c83d83f32571755b8bd8f18a00624b90c4dbe.jpg" alt="画像なしでプロンプトを使う" width="545" height="328">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — プロンプトのみ</span>
+    <span>プロンプトのみ</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 生成 —</div>
+      <h2 class="section-title">Generate ボタン</h2>
+      <p class="section-lede">入力がそろったら Generate を押します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">このステップで HDRI 環境の生成が始まります。クレジットを消費し、完了するとステップ 2 の HDRI 画面へ進みます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/0e0ba2664ad7866447d052a95c8c83d83f32571755b8bd8f18a00624b90c4dbe.jpg" alt="Generate ボタン" width="545" height="328">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — 生成</span>
+    <span>Generate</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>3D Preview</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ステップ 2 · 3D Preview —</div>
+      <h2 class="section-title">ステップ 2：3D Preview</h2>
+      <p class="section-lede">生成された 360° 空間を 3D Preview で確認します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">キャンバスをマウスでクリック＆ドラッグすると、環境の周りを自由にカメラで回り込めます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">狙いのアングルが見つかったら、Freeze Frame エリアの Generate ボタンを押してその視点を切り取ります。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7bbda2a4863c2669a7479b54751db16ece18e0ee700366142f8182528ae921fd.jpg" alt="ステップ 2：3D Preview" width="795" height="843">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — 3D Preview</span>
+    <span>ステップ 2 · 3D Preview</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>カメラ</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— カメラ —</div>
+      <h2 class="section-title">3D Preview のアングルを選ぶ</h2>
+      <p class="section-lede">クリック＆ドラッグでカメラの向きを調整します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Turn はまず 360° 環境全体を構築し、その中から好きな構図を選ばせます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">シーンの中心、被写体を置く予定の位置、カメラの向きを確認し、Freeze Frame に適したアングルを探します。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7437737f3c93f04c545ab7c17dace366311d004d24f378b6df5991ec23d04bd9.jpg" alt="3D Preview のアングルを選ぶ" width="795" height="525">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — カメラ</span>
+    <span>カメラ</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>詳細表示</span><span class="dot"></span><span>Cube Map</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cube Map —</div>
+      <h2 class="section-title">Cube Map：6 面ビュー</h2>
+      <p class="section-lede">Left、Front、Right、Up、Back、Down を個別に確認します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Cube Map は 360° 環境を 6 つの方向面に分解します。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">各面にはそれぞれ Brush、Replace with 入力、Inpaint、Regen、Clear の操作があります。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/6b631a5a21dfcddcbc8ef6295c9c0cefa87352ce13eea2349627540899366ea0.jpg" alt="Cube Map：6 面ビュー" width="785" height="710">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Cube Map</span>
+    <span>Cube Map</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>Replace with</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 差し替え —</div>
+      <h2 class="section-title">Replace with フィールド</h2>
+      <p class="section-lede">選んだ面のディテールをプロンプトで書き換えます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Cube Map で面を選び、Replace with フィールドに変更内容を入力します。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">例：床に赤いバッグを追加、壁に窓を追加、椅子を別の小道具に差し替え。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993606694296584261a3b7a3b8c1d34156fe78d9ea25398f9e1581accd5062.jpg" alt="Replace with フィールド" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — Replace with</span>
+    <span>Replace</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Brush</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ブラシ —</div>
+      <h2 class="section-title">Brush：領域を指定</h2>
+      <p class="section-lede">編集を塗った範囲に限定します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">キャンバスに塗ると、塗った領域に赤いマスクが作られます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Replace with を空のまま Inpaint を実行すると、ブラシが削除ツールとして働き、マスクした物体を消します。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/c0fb5b7d98674cbbe481299772460d78421369d01cec66fc6a216662aab1028c.jpg" alt="Brush：領域を指定" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Brush</span>
+    <span>Brush</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>Inpaint</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Inpaint —</div>
+      <h2 class="section-title">プロンプトで追加・変更する</h2>
+      <p class="section-lede">フィールドに入力して、マスク内のオブジェクトを追加・変更します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">マスクを定義したら Replace with に新しいプロンプトを入力すると、Turn がその位置にオブジェクトを追加したり、既存のディテールを変更します。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">ブラシは広げすぎるより、対象より少し大きめにするほうが安定した結果になります。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/1cbe5c3e81986620f8cbe51db3765eaf3f3478a2ac0b90991b48484a7f5cbac0.jpg" alt="プロンプトで追加・変更する" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — Inpaint</span>
+    <span>Inpaint</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>Brush Size</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Brush Size —</div>
+      <h2 class="section-title">ブラシサイズの調整</h2>
+      <p class="section-lede">BRUSH スライダーでブラシのサイズを調整します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">小さな小物や顔の近くは小さめのブラシ、壁・床・大きな家具は大きめのブラシを使います。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">ブラシサイズを調整すると、マスクをより正確に描けます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/8b44315cb15794837a727778a728c4d17441cdd1467767c4c4b26dc3f86c3b98.jpg" alt="ブラシサイズの調整" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — Brush Size</span>
+    <span>Brush Size</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>Clear</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Clear —</div>
+      <h2 class="section-title">Clear ボタン</h2>
+      <p class="section-lede">Clear は塗ったブラシマスクを消します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">間違った場所を塗った、または選び直したい場合は、Clear を押すと現在の面のブラシ跡が消えます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Clear は再生成ボタンではありません — 選択をリセットするだけで、それ以外のことはしません。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/1b00392060706aee57eacdb14c8cee87e73e0b2b7e53817ca245dd91228c94b4.jpg" alt="Clear ボタン" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — Clear</span>
+    <span>Clear</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>Regen</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Regen —</div>
+      <h2 class="section-title">REGEN ボタン</h2>
+      <p class="section-lede">REGEN は面全体を一から再生成します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">面の見た目が不自然、または全体の構図がうまくいかないときに REGEN を使います。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Inpaint と違い、方向面の画像を丸ごと作り直すため、変化がはるかに大きくなります。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993606694296584261a3b7a3b8c1d34156fe78d9ea25398f9e1581accd5062.jpg" alt="REGEN ボタン" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — Regen</span>
+    <span>Regen</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 19</span><span class="dot"></span><span>Freeze Frame</span></div>
+    <div class="right"><span>P. 019</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">19</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Freeze Frame —</div>
+      <h2 class="section-title">Freeze Frame を作成する</h2>
+      <p class="section-lede">3D Preview で選んだ視点を Freeze Frame として保存します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Freeze Frame は最終結果の手前にあるリファレンスシーンです。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">右上の Download Freeze Frame ボタンで、この中間画像を別途ダウンロードできます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993bd39a42b0d482ca822ac8c733d79547bdf2dc1f90efbdaaaeff71c0b27a.jpg" alt="Freeze Frame を作成する" width="795" height="519">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>019 — Freeze Frame</span>
+    <span>Freeze Frame</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 20</span><span class="dot"></span><span>Production</span></div>
+    <div class="right"><span>P. 020</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">20</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ステップ 3 · Production —</div>
+      <h2 class="section-title">ステップ 3：Production</h2>
+      <p class="section-lede">Subject &amp; Casting に演出を記述します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">このフィールドでキャラクターの感情・ポーズ・アクション・ライティングの雰囲気・シネマティックなディテールを決めます。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">例：窓辺に立つ、リムライト、自然な笑顔、張りつめた影、エディトリアル広告の雰囲気。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e556e59dff6a01dec29292b2218496be81921dcd00208e9ce08aeab4b0bf4c1d.jpg" alt="ステップ 3：Production" width="540" height="360">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>020 — Production</span>
+    <span>ステップ 3 · Production</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 21</span><span class="dot"></span><span>Cinema Style</span></div>
+    <div class="right"><span>P. 021</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">21</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cinema Style —</div>
+      <h2 class="section-title">Cinema Style を選ぶ</h2>
+      <p class="section-lede">結果のシネマティックな色調を選びます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">現在のオプションは Normal、Hollywood、Korean、Japanese、Chinese、Film Noir、Cyberpunk、Anime です。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">スタイルを切り替えると、同じ Freeze Frame でも色・ライティング・コントラスト・全体の雰囲気が変わります。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e556e59dff6a01dec29292b2218496be81921dcd00208e9ce08aeab4b0bf4c1d.jpg" alt="Cinema Style を選ぶ" width="540" height="360">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>021 — Cinema Style</span>
+    <span>Cinema Style</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 22</span><span class="dot"></span><span>Cast Reference</span></div>
+    <div class="right"><span>P. 022</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">22</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cast —</div>
+      <h2 class="section-title">Face ID Source / Wardrobe Ref</h2>
+      <p class="section-lede">顔と衣装のリファレンスを別々に用意します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">保持したい顔を Face ID Source に、衣装とスタイリングのリファレンスを Wardrobe Ref にドロップします。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">両方を使うと、被写体の顔と服装について Turn に明確な方向性を与えられます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/15808d6d24e776622679f3d8497340b6b4f0bc1168f7591ad29d3cc2fef79751.jpg" alt="Face ID Source / Wardrobe Ref" width="540" height="530">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>022 — Cast Reference</span>
+    <span>Cast</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 23</span><span class="dot"></span><span>Final Still</span></div>
+    <div class="right"><span>P. 023</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">23</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Final Still —</div>
+      <h2 class="section-title">Final Still を生成する</h2>
+      <p class="section-lede">Generate を押して Final Still を制作します。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Production の入力と Cast Reference がそろうと、最終の Generate ボタンが有効になります。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">生成後、結果画像は右の Final Still パネルに表示されます。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e376a8534492d1f8b46ea422702e33c306771114508f70ba971d9ca6835906ae.jpg" alt="Final Still を生成する" width="540" height="530">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>023 — Final Still</span>
+    <span>Final Still</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 24</span><span class="dot"></span><span>テスト 1</span></div>
+    <div class="right"><span>P. 024</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">24</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— テスト 1 · Hollywood —</div>
+      <h2 class="section-title">Production テスト 1</h2>
+      <p class="section-lede">Hollywood スタイル / 強いリムライト。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">同じ Freeze Frame に対し、高級広告のライティングでモデルが歩いてくるプロンプトを指定しました。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">結果は暖かな光と強いレンズフレアで、コマーシャルなエディトリアルのルックになりました。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/a101a48d6db736283d32cb65082b026f8bb46e53187844abb8efcb3153bdb945.jpg" alt="Production テスト 1" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>024 — テスト 1</span>
+    <span>テスト 1 · Hollywood</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 25</span><span class="dot"></span><span>テスト 2</span></div>
+    <div class="right"><span>P. 025</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">25</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— テスト 2 · Korean —</div>
+      <h2 class="section-title">Production テスト 2</h2>
+      <p class="section-lede">Korean スタイル / クリーンな広告トーン。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">自然なポーズと、明るくクリーンなビューティー広告のライティングをプロンプトに使いました。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">同じ空間ですが、被写体の配置・表情・全体のトーンがより穏やかで軽やかになりました。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/17fceb35ba9f14312a5f63fd9f343e6cdd02234f767974e96c1ad696f2c26b9d.jpg" alt="Production テスト 2" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>025 — テスト 2</span>
+    <span>テスト 2 · Korean</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 26</span><span class="dot"></span><span>テスト 3</span></div>
+    <div class="right"><span>P. 026</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">26</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— テスト 3 · Film Noir —</div>
+      <h2 class="section-title">Production テスト 3</h2>
+      <p class="section-lede">Film Noir スタイル / ドラマチックな影。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">ドアにもたれる被写体、強いサイドライト、高コントラスト、緊迫した雰囲気をプロンプトに入れました。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">暗いライティング、ブラインドの影、高まったドラマ性のある結果になりました。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/9af6f32f15a3e1089fe4d52f22f6509f1a9566f128dc3c90f3dcd19e8d6ba0e6.jpg" alt="Production テスト 3" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>026 — テスト 3</span>
+    <span>テスト 3 · Film Noir</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 27</span><span class="dot"></span><span>比較</span></div>
+    <div class="right"><span>P. 027</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">27</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 比較 —</div>
+      <h2 class="section-title">Freeze Frame と Final Still</h2>
+      <p class="section-lede">Freeze Frame はアングルを切り取り、Final Still は演出した結果です。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Freeze Frame は HDRI ステップで選んだ基本のカメラ視点です。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Final Still は、Production の被写体・スタイル・ライティング・アクションの演出を適用した最終画像です。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/a101a48d6db736283d32cb65082b026f8bb46e53187844abb8efcb3153bdb945.jpg" alt="Freeze Frame と Final Still" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>027 — 比較</span>
+    <span>比較</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 28</span><span class="dot"></span><span>Freeze Frame のダウンロード</span></div>
+    <div class="right"><span>P. 028</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">28</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ダウンロード · Freeze Frame —</div>
+      <h2 class="section-title">Freeze Frame をダウンロード</h2>
+      <p class="section-lede">Freeze Frame は個別にダウンロードできます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">Production 前のリファレンスシーンが必要なとき、またはアングルを共有してレビューしたいときに使います。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">右の Freeze Frame パネルにある Download Freeze Frame ボタンを押します。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993bd39a42b0d482ca822ac8c733d79547bdf2dc1f90efbdaaaeff71c0b27a.jpg" alt="Freeze Frame をダウンロード" width="795" height="519">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>028 — Freeze Frame のダウンロード</span>
+    <span>ダウンロード · Freeze Frame</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 29</span><span class="dot"></span><span>Final Still のダウンロード</span></div>
+    <div class="right"><span>P. 029</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">29</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ダウンロード · Final Still —</div>
+      <h2 class="section-title">Final Still をダウンロード</h2>
+      <p class="section-lede">Final Still も単独でダウンロードできます。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— メモ 01 —</div>
+        <p class="step-body">納品用ファイルやクライアント共有用ファイルには Download Final Still ボタンを使います。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ 02 —</div>
+        <p class="step-body">Freeze Frame と Final Still は別のステージの成果物です — ダウンロードボタンは区別して使いましょう。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/17fceb35ba9f14312a5f63fd9f343e6cdd02234f767974e96c1ad696f2c26b9d.jpg" alt="Final Still をダウンロード" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>029 — Final Still のダウンロード</span>
+    <span>ダウンロード · Final Still</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 30</span><span class="dot"></span><span>入力モード</span></div>
+    <div class="right"><span>P. 030</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">30</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 入力モード —</div>
+      <h2 class="section-title">入力モードの使い分け</h2>
+      <p class="section-lede">4 つのリファレンスパターンはそれぞれ特定の状況に向いています — 目の前の作業に合うものを選びましょう。</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+        <div class="spec-item">
+          <div class="num">— モード 01 —</div>
+          <div class="name">プロンプトのみ</div>
+          <p class="feature">空間を素早く下書きしたいとき、またはまだリファレンス画像がないときに使います。</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— モード 02 —</div>
+          <div class="name">画像 1 枚</div>
+          <p class="feature">既存の背景画像を 360° 空間に拡張したいときに使い、その雰囲気を基準にします。</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— モード 03 —</div>
+          <div class="name">4 方向の画像</div>
+          <p class="feature">空間の前・左・右・背面を明確に固定したいときに使います。</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— モード 04 —</div>
+          <div class="name">Cube Map 編集</div>
+          <p class="feature">生成後に、特定の面の要素（窓・家具・小物・被写体・壁のディテール）だけを変えたいときに使います。</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>030 — 入力モード</span>
+    <span>入力モード</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 31</span><span class="dot"></span><span>まとめ</span></div>
+    <div class="right"><span>P. 031</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">31</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— まとめ —</div>
+      <h2 class="section-title">最終まとめ</h2>
+      <p class="section-lede">Turn ワークフローの要点 — 各ステージの役割と、各出力の目的。</p>
+    </div>
+  </div>
+
+  <div class="summary-list">
+      <div class="summary-item">
+        <h4>全体の流れ</h4>
+        <p>Turn は背景生成、3D 視点の選択、部分編集、被写体の演出、最終スチルの作成を、1 つの連続したワークフローにつなぎます。</p>
+      </div>
+      <div class="summary-item">
+        <h4>各ステージの役割</h4>
+        <p>Reference が入力素材を用意し、HDRI が空間と視点を確定し、Production が被写体とシネマティックなディテールを適用します。</p>
+      </div>
+      <div class="summary-item">
+        <h4>出力の違い</h4>
+        <p>Freeze Frame は中間リファレンス、Final Still は演出済みの最終画像です。目的が異なるため、それぞれ別にダウンロード・管理します。</p>
+      </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>031 — まとめ</span>
+    <span>最終まとめ</span>
+  </div>
+</section>
+
+
+
+</body></html>

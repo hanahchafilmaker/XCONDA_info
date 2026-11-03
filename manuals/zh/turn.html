@@ -1,0 +1,1482 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turn — 用户指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --kor: 'Inter', 'Pretendard', 'Noto Sans KR', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--kor);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--kor);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.025em;
+  }
+  .section-lede {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.65;
+    max-width: 640px;
+    letter-spacing: -0.01em;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-title-kor {
+    font-family: var(--kor);
+    font-weight: 600;
+    font-size: 28px;
+    color: rgba(240, 239, 234, 0.95);
+    letter-spacing: -0.025em;
+    margin-top: 24px;
+    line-height: 1.25;
+  }
+  .cover-subtitle {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 24px;
+    max-width: 460px;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--kor);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.75;
+    letter-spacing: -0.015em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .step-body {
+    font-family: var(--kor);
+    font-size: 15.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  /* Image - 원본 그대로 표시 */
+  .image-plate {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .image-plate img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Spec list grid */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+  }
+  .spec-item .name {
+    font-family: var(--kor);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .spec-item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+  .spec-item .feature {
+    font-family: var(--kor);
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    margin-top: auto;
+  }
+
+  /* Summary list */
+  .summary-list {
+    display: grid;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .summary-item {
+    padding: 28px 32px;
+    background: var(--offwhite-warm);
+    border-left: 3px solid var(--midnight);
+  }
+  .summary-item h4 {
+    font-family: var(--kor);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .summary-item p {
+    font-family: var(--kor);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .spec-list-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .cover-title-kor { font-size: 22px; }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="指南导航" data-zoom-label="放大图片"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">返回中心</a><a href="index.html">全部指南</a></div><div class="xconda-manual-languages"><a href="../ko/turn.html" hreflang="ko" lang="ko">KO</a><a href="../en/turn.html" hreflang="en" lang="en">EN</a><a href="../ja/turn.html" hreflang="ja" lang="ja">JA</a><a href="../zh/turn.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>用户指南</span>
+    </div>
+    <div>
+      <div class="cover-title-en">TURN</div>
+      <div class="cover-title-kor">Turn — 用户指南</div>
+      <div class="cover-subtitle">把 360° 背景生成、3D 视角选择、局部编辑、主体调度与最终静帧创作串成一条连续的工作流程。</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>用户指南</div>
+        <div>教程</div>
+      </div>
+      <div style="text-align:right">
+        <div>30 个章节</div>
+        <div>2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>目录</span>
+      <span>30 个章节</span>
+    </div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— 指南内容 —</span>       概览 · 工作流程 · 进入 · 参考（4 方向 / 提示词） · HDRI · 3D Preview · Cube Map · Replace with · Brush · Inpaint · Regen · Freeze Frame · Production · Cinema Style · Cast Reference · Final Still · 下载 · 输入模式     </div>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>概览</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 概览 —</div>
+      <h2 class="section-title">Turn 的功能</h2>
+      <p class="section-lede">Turn 会创建 360° 环境，并从你选择的视角产出最终图像。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">Turn 先搭建空间，再让你在 3D Preview 中选择机位，最后在 Production 中加入主体与调度。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">Freeze Frame 是参考镜头，Final Still 是套用了主体、动作、光线与风格的完成结果。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/d161cc2826e284c7e6b7e83a047fd06c7703222d115b56916177904d0cedcdfd.webp" alt="Turn 的功能" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — 概览</span>
+    <span>概览</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>使用场景</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 使用场景 —</div>
+      <h2 class="section-title">为什么使用 Turn</h2>
+      <p class="section-lede">在同一空间内快速比较多个创意方向。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">在实际拍摄之前，以不同版本测试光线、主体位置和风格氛围。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">当你需要向客户快速展示视觉提案时很有用 —— 广告镜头、商品大片、电商细节或分镜。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7965704ff7f9c73f85f690791d34b2d36aa7a5bfd83af172dad9840515150e7b.webp" alt="为什么使用 Turn" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — 使用场景</span>
+    <span>使用场景</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>何时使用</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 何时使用 —</div>
+      <h2 class="section-title">何时使用 Turn</h2>
+      <p class="section-lede">当需要在一个流程中完成背景生成、局部编辑和主体合成时。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">没有参考时可以从提示词开始；若想更精确地固定空间布局，可附加 1 张图像（或 4 方向图像）。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">在 Cube Map 中按方向编辑生成的环境，最后用 Cast Reference 套用面部与服装参考。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/476ff5fbfbe57b77b242a0438d2cb12e35f8c0b56d64c3444e04d308aa706168.webp" alt="何时使用 Turn" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — 何时使用</span>
+    <span>何时使用</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>工作流程</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 工作流程 —</div>
+      <h2 class="section-title">Turn 完整工作流程</h2>
+      <p class="section-lede">Reference → HDRI → Production → Final Still。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">第 1 步接收提示词或方向图像。第 2 步确认 360° HDRI 与 Cube Map。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">用 Freeze Frame 确定视角后，第 3 步的 Production 套用角色动作、光线、电影风格与角色参考。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/8c275c49cd693f8b0204bdd3fea8a1edbff05a01de8ac129b0fd8edc6e4c379e.jpg" alt="Turn 完整工作流程" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — 工作流程</span>
+    <span>工作流程</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>进入</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 进入 —</div>
+      <h2 class="section-title">如何进入 Turn</h2>
+      <p class="section-lede">点击左侧边栏的 Turn 图标。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">登录 Xconda 后，把左侧竖排菜单向下滚动，就会出现 Turn 入口。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">点击后会打开 Reference、HDRI 与 Production 三步工作区。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/4bc05c5541e54b68375e2240c4abfbd068ff567cd281b67b2ac7bc833d708777.jpg" alt="如何进入 Turn" width="650" height="860">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — 进入</span>
+    <span>进入</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>参考图像</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 步骤 1 · Reference —</div>
+      <h2 class="section-title">步骤 1：参考图像</h2>
+      <p class="section-lede">可使用 Front / Left / Right / Back 四个位置。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">把图像拖入前、左、右、后四个位置，即可生成以这些方向为基准的 360° 环境。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">可以四个都填、只用一个，也可以全部留空、完全依靠提示词。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/deef711189065a95075e0b33b91785691160c73e1484010b48e11734060c11a9.jpg" alt="步骤 1：参考图像" width="545" height="670">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — 参考图像</span>
+    <span>步骤 1 · Reference</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>仅提示词</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 仅提示词 —</div>
+      <h2 class="section-title">不用图像，仅用提示词</h2>
+      <p class="section-lede">仅凭文字描述即可生成 360° 环境。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">即使没有参考图像，只要描述足够具体，Turn 也会构建出背景。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">在描述中提到主体、商品、道具和光线氛围，可以引导空间内物体与人物的布置。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/0e0ba2664ad7866447d052a95c8c83d83f32571755b8bd8f18a00624b90c4dbe.jpg" alt="不用图像，仅用提示词" width="545" height="328">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — 仅提示词</span>
+    <span>仅提示词</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 生成 —</div>
+      <h2 class="section-title">Generate 按钮</h2>
+      <p class="section-lede">输入就绪后按下 Generate。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">此步骤会启动 HDRI 环境生成，消耗积分，完成后进入第 2 步 —— HDRI 界面。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/0e0ba2664ad7866447d052a95c8c83d83f32571755b8bd8f18a00624b90c4dbe.jpg" alt="Generate 按钮" width="545" height="328">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — 生成</span>
+    <span>Generate</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>3D Preview</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 步骤 2 · 3D Preview —</div>
+      <h2 class="section-title">步骤 2：3D Preview</h2>
+      <p class="section-lede">在 3D Preview 中查看生成的 360° 空间。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">用鼠标在画布上点击并拖动，即可让相机围绕环境自由环绕。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">找到想要的机位后，按下 Freeze Frame 区域的 Generate 按钮，即可截取该视角。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7bbda2a4863c2669a7479b54751db16ece18e0ee700366142f8182528ae921fd.jpg" alt="步骤 2：3D Preview" width="795" height="843">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — 3D Preview</span>
+    <span>步骤 2 · 3D Preview</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>相机</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 相机 —</div>
+      <h2 class="section-title">选择 3D Preview 的机位</h2>
+      <p class="section-lede">通过点击拖动调整相机方向。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">Turn 先构建完整的 360° 环境，然后让你在其中挑选想要的构图。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">确认场景中心、计划放置主体的位置以及相机朝向，找到适合 Freeze Frame 的机位。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7437737f3c93f04c545ab7c17dace366311d004d24f378b6df5991ec23d04bd9.jpg" alt="选择 3D Preview 的机位" width="795" height="525">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — 相机</span>
+    <span>相机</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>详情视图</span><span class="dot"></span><span>Cube Map</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cube Map —</div>
+      <h2 class="section-title">Cube Map：六面视图</h2>
+      <p class="section-lede">分别查看 Left、Front、Right、Up、Back、Down。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">Cube Map 把 360° 环境拆分成六个方向面。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">每个面都有各自的 Brush、Replace with 输入框、Inpaint、Regen 与 Clear 操作。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/6b631a5a21dfcddcbc8ef6295c9c0cefa87352ce13eea2349627540899366ea0.jpg" alt="Cube Map：六面视图" width="785" height="710">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Cube Map</span>
+    <span>Cube Map</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>Replace with</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 替换 —</div>
+      <h2 class="section-title">Replace with 字段</h2>
+      <p class="section-lede">用提示词改写所选面的细节。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">在 Cube Map 中选择一个面，然后在 Replace with 字段中输入想要的改动。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">示例：在地上加一个红色包、在墙上加一扇窗、把椅子换成别的道具。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993606694296584261a3b7a3b8c1d34156fe78d9ea25398f9e1581accd5062.jpg" alt="Replace with 字段" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — Replace with</span>
+    <span>Replace</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Brush</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 画笔 —</div>
+      <h2 class="section-title">Brush：标记区域</h2>
+      <p class="section-lede">把编辑限制在涂抹的范围内。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">在画布上涂抹会在该区域生成红色蒙版。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">当 Replace with 为空时运行 Inpaint，画笔会作为移除工具使用，抹去被蒙版的物体。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/c0fb5b7d98674cbbe481299772460d78421369d01cec66fc6a216662aab1028c.jpg" alt="Brush：标记区域" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Brush</span>
+    <span>Brush</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>Inpaint</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Inpaint —</div>
+      <h2 class="section-title">用提示词新增或修改</h2>
+      <p class="section-lede">在字段中输入，可在蒙版内新增或改变物体。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">定义蒙版后，在 Replace with 中输入新的提示词 —— Turn 会在该位置加入物体，或修改现有细节。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">画笔略大于目标、而不是过宽，结果会更可靠。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/1cbe5c3e81986620f8cbe51db3765eaf3f3478a2ac0b90991b48484a7f5cbac0.jpg" alt="用提示词新增或修改" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — Inpaint</span>
+    <span>Inpaint</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>Brush Size</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Brush Size —</div>
+      <h2 class="section-title">调整画笔大小</h2>
+      <p class="section-lede">用 BRUSH 滑块控制画笔大小。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">小道具或靠近面部的区域用小笔；墙壁、地面和大件家具用大笔。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">调整画笔大小可以更精确地绘制蒙版。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/8b44315cb15794837a727778a728c4d17441cdd1467767c4c4b26dc3f86c3b98.jpg" alt="调整画笔大小" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — Brush Size</span>
+    <span>Brush Size</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>Clear</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Clear —</div>
+      <h2 class="section-title">Clear 按钮</h2>
+      <p class="section-lede">Clear 会清除你涂抹的画笔蒙版。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">如果涂错了位置或想重新选择，按下 Clear 会清除当前面上的画笔痕迹。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">Clear 不是重新生成按钮 —— 它只重置你的选择，不做其他事。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/1b00392060706aee57eacdb14c8cee87e73e0b2b7e53817ca245dd91228c94b4.jpg" alt="Clear 按钮" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — Clear</span>
+    <span>Clear</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>Regen</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Regen —</div>
+      <h2 class="section-title">REGEN 按钮</h2>
+      <p class="section-lede">REGEN 会从零重新生成整个面。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">当某个面看起来别扭，或整体构图不成立时，使用 REGEN。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">与 Inpaint 不同，它会完整重建该方向图像，因此变化幅度大得多。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993606694296584261a3b7a3b8c1d34156fe78d9ea25398f9e1581accd5062.jpg" alt="REGEN 按钮" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — Regen</span>
+    <span>Regen</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 19</span><span class="dot"></span><span>Freeze Frame</span></div>
+    <div class="right"><span>P. 019</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">19</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Freeze Frame —</div>
+      <h2 class="section-title">创建 Freeze Frame</h2>
+      <p class="section-lede">把在 3D Preview 中选好的视角保存为 Freeze Frame。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">Freeze Frame 是最终结果之前的参考场景。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">用右上角的 Download Freeze Frame 按钮可单独下载这张中间图像。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993bd39a42b0d482ca822ac8c733d79547bdf2dc1f90efbdaaaeff71c0b27a.jpg" alt="创建 Freeze Frame" width="795" height="519">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>019 — Freeze Frame</span>
+    <span>Freeze Frame</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 20</span><span class="dot"></span><span>Production</span></div>
+    <div class="right"><span>P. 020</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">20</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 步骤 3 · Production —</div>
+      <h2 class="section-title">步骤 3：Production</h2>
+      <p class="section-lede">在 Subject &amp; Casting 中撰写你的调度。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">在这个字段中决定角色的情绪、姿态、动作、光线氛围和电影感细节。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">示例：站在窗边、轮廓光、自然的微笑、紧绷的阴影、杂志广告氛围。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e556e59dff6a01dec29292b2218496be81921dcd00208e9ce08aeab4b0bf4c1d.jpg" alt="步骤 3：Production" width="540" height="360">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>020 — Production</span>
+    <span>步骤 3 · Production</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 21</span><span class="dot"></span><span>Cinema Style</span></div>
+    <div class="right"><span>P. 021</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">21</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cinema Style —</div>
+      <h2 class="section-title">选择 Cinema Style</h2>
+      <p class="section-lede">为结果挑选电影色调。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">当前选项有 Normal、Hollywood、Korean、Japanese、Chinese、Film Noir、Cyberpunk 和 Anime。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">切换风格会改变色彩、光线、对比度和整体氛围 —— 即使 Freeze Frame 相同。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e556e59dff6a01dec29292b2218496be81921dcd00208e9ce08aeab4b0bf4c1d.jpg" alt="选择 Cinema Style" width="540" height="360">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>021 — Cinema Style</span>
+    <span>Cinema Style</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 22</span><span class="dot"></span><span>Cast Reference</span></div>
+    <div class="right"><span>P. 022</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">22</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cast —</div>
+      <h2 class="section-title">Face ID Source / Wardrobe Ref</h2>
+      <p class="section-lede">分别提供面部与服装参考。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">把想保留的面部拖入 Face ID Source，把服装与造型参考拖入 Wardrobe Ref。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">两者一起使用，能给 Turn 更明确的主体面部与服装方向。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/15808d6d24e776622679f3d8497340b6b4f0bc1168f7591ad29d3cc2fef79751.jpg" alt="Face ID Source / Wardrobe Ref" width="540" height="530">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>022 — Cast Reference</span>
+    <span>Cast</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 23</span><span class="dot"></span><span>Final Still</span></div>
+    <div class="right"><span>P. 023</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">23</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Final Still —</div>
+      <h2 class="section-title">生成 Final Still</h2>
+      <p class="section-lede">按下 Generate 产出 Final Still。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">Production 输入与 Cast Reference 就绪后，最终的 Generate 按钮就会激活。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">生成后，结果图像会显示在右侧的 Final Still 面板中。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e376a8534492d1f8b46ea422702e33c306771114508f70ba971d9ca6835906ae.jpg" alt="生成 Final Still" width="540" height="530">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>023 — Final Still</span>
+    <span>Final Still</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 24</span><span class="dot"></span><span>测试 1</span></div>
+    <div class="right"><span>P. 024</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">24</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 测试 1 · Hollywood —</div>
+      <h2 class="section-title">Production 测试 1</h2>
+      <p class="section-lede">Hollywood 风格 / 强烈轮廓光。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">在同一 Freeze Frame 上，提示词要求模特以高级广告的光线走入画面。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">结果带回了暖光与强烈的镜头光晕 —— 商业杂志大片的观感。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/a101a48d6db736283d32cb65082b026f8bb46e53187844abb8efcb3153bdb945.jpg" alt="Production 测试 1" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>024 — 测试 1</span>
+    <span>测试 1 · Hollywood</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 25</span><span class="dot"></span><span>测试 2</span></div>
+    <div class="right"><span>P. 025</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">25</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 测试 2 · Korean —</div>
+      <h2 class="section-title">Production 测试 2</h2>
+      <p class="section-lede">Korean 风格 / 干净的广告调性。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">提示词使用了自然的姿态配合明亮、干净的美妆广告光线。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">同一空间，但主体位置、表情和整体调性变得更平静、更轻盈。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/17fceb35ba9f14312a5f63fd9f343e6cdd02234f767974e96c1ad696f2c26b9d.jpg" alt="Production 测试 2" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>025 — 测试 2</span>
+    <span>测试 2 · Korean</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 26</span><span class="dot"></span><span>测试 3</span></div>
+    <div class="right"><span>P. 026</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">26</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 测试 3 · Film Noir —</div>
+      <h2 class="section-title">Production 测试 3</h2>
+      <p class="section-lede">Film Noir 风格 / 戏剧化阴影。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">提示词写入了倚在门边的主体、强烈侧光、高对比和悬疑氛围。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">结果呈现暗调光线、百叶窗阴影以及更强的戏剧氛围。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/9af6f32f15a3e1089fe4d52f22f6509f1a9566f128dc3c90f3dcd19e8d6ba0e6.jpg" alt="Production 测试 3" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>026 — 测试 3</span>
+    <span>测试 3 · Film Noir</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 27</span><span class="dot"></span><span>对比</span></div>
+    <div class="right"><span>P. 027</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">27</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 对比 —</div>
+      <h2 class="section-title">Freeze Frame 与 Final Still</h2>
+      <p class="section-lede">Freeze Frame 截取机位，Final Still 是经过调度的结果。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">Freeze Frame 是在 HDRI 步骤选定的基础相机视角。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">Final Still 是套用了 Production 中主体、风格、光线和动作调度的最终图像。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/a101a48d6db736283d32cb65082b026f8bb46e53187844abb8efcb3153bdb945.jpg" alt="Freeze Frame 与 Final Still" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>027 — 对比</span>
+    <span>对比</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 28</span><span class="dot"></span><span>下载 Freeze Frame</span></div>
+    <div class="right"><span>P. 028</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">28</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 下载 · Freeze Frame —</div>
+      <h2 class="section-title">下载 Freeze Frame</h2>
+      <p class="section-lede">Freeze Frame 可以单独下载。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">当你需要 Production 之前的参考场景，或想分享机位用于评审时使用。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">按下右侧 Freeze Frame 面板中的 Download Freeze Frame 按钮。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993bd39a42b0d482ca822ac8c733d79547bdf2dc1f90efbdaaaeff71c0b27a.jpg" alt="下载 Freeze Frame" width="795" height="519">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>028 — 下载 Freeze Frame</span>
+    <span>下载 · Freeze Frame</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 29</span><span class="dot"></span><span>下载 Final Still</span></div>
+    <div class="right"><span>P. 029</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">29</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 下载 · Final Still —</div>
+      <h2 class="section-title">下载 Final Still</h2>
+      <p class="section-lede">Final Still 也可以单独下载。</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 说明 01 —</div>
+        <p class="step-body">交付文件或面向客户的分享文件请使用 Download Final Still 按钮。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 说明 02 —</div>
+        <p class="step-body">Freeze Frame 与 Final Still 来自不同阶段 —— 请区分使用各自的下载按钮。</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/17fceb35ba9f14312a5f63fd9f343e6cdd02234f767974e96c1ad696f2c26b9d.jpg" alt="下载 Final Still" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>029 — 下载 Final Still</span>
+    <span>下载 · Final Still</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 30</span><span class="dot"></span><span>输入模式</span></div>
+    <div class="right"><span>P. 030</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">30</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 输入模式 —</div>
+      <h2 class="section-title">各输入模式的适用时机</h2>
+      <p class="section-lede">四种参考模式各自适合特定情境 —— 挑选最贴合当前任务的一种。</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+        <div class="spec-item">
+          <div class="num">— 模式 01 —</div>
+          <div class="name">仅提示词</div>
+          <p class="feature">当你需要快速起草空间，或还没有参考图像时使用。</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— 模式 02 —</div>
+          <div class="name">单张图像</div>
+          <p class="feature">当你想把已有背景图像扩展为 360° 空间，并以它的氛围为基准时使用。</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— 模式 03 —</div>
+          <div class="name">4 方向图像</div>
+          <p class="feature">当空间的前、左、右、后需要保持明确定义时使用。</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— 模式 04 —</div>
+          <div class="name">Cube Map 编辑</div>
+          <p class="feature">在生成之后，只想改变单个面上的特定元素 —— 窗户、家具、道具、主体或墙面细节 —— 时使用。</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>030 — 输入模式</span>
+    <span>输入模式</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 31</span><span class="dot"></span><span>总结</span></div>
+    <div class="right"><span>P. 031</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">31</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 总结 —</div>
+      <h2 class="section-title">最终总结</h2>
+      <p class="section-lede">Turn 工作流程的精简视图 —— 每个阶段的作用与每种输出的用途。</p>
+    </div>
+  </div>
+
+  <div class="summary-list">
+      <div class="summary-item">
+        <h4>完整流程</h4>
+        <p>Turn 把背景生成、3D 视角选择、局部编辑、主体调度与最终静帧创作连成一条连续的工作流程。</p>
+      </div>
+      <div class="summary-item">
+        <h4>各阶段的作用</h4>
+        <p>Reference 准备输入素材，HDRI 确定空间与视角，Production 套用主体与电影感细节。</p>
+      </div>
+      <div class="summary-item">
+        <h4>输出的区别</h4>
+        <p>Freeze Frame 是中间参考，Final Still 是调度后的最终图像。两者用途不同，请分别下载与管理。</p>
+      </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>031 — 总结</span>
+    <span>最终总结</span>
+  </div>
+</section>
+
+
+
+</body></html>

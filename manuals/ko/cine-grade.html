@@ -1,0 +1,394 @@
+<!DOCTYPE html><html lang="ko"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineGrade AI — 사용자 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+  :root { --body-font: 'Pretendard', sans-serif; }
+  body { word-break: keep-all; letter-spacing: -0.015em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  .usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+  .flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 32px; }
+  .flow-card { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 28px 24px; text-align: center; }
+  .flow-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 10px; }
+  .flow-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+  .flow-arrow { font-family: var(--body-font); font-size: 24px; color: var(--midnight); }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+  /* Figure caption & labels (added for p2~p4 diagrams) */
+  .fig-caption { margin-bottom: 14px; }
+  .fig-caption .fig-title { font-family: var(--body-font); font-weight: 700; font-size: 15px; color: var(--midnight); letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 4px; }
+  .fig-caption .fig-sub { font-family: var(--body-font); font-weight: 400; font-size: 13px; color: var(--slate); line-height: 1.65; max-width: 720px; }
+  .fig-labels { display: grid; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+  .fig-labels.cols-2 { grid-template-columns: 1fr 1fr; }
+  .fig-labels.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .fig-labels .fig-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); text-align: center; }
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="가이드 탐색" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">허브로 돌아가기</a><a href="index.html">가이드 목록</a></div><div class="xconda-manual-languages"><a href="../ko/cine-grade.html" hreflang="ko" lang="ko" aria-current="page">KO</a><a href="../en/cine-grade.html" hreflang="en" lang="en">EN</a><a href="../ja/cine-grade.html" hreflang="ja" lang="ja">JA</a><a href="../zh/cine-grade.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div><div class="cover-title-en">CINE<br>GRADE<br>AI</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">사용자의 사진에 레퍼런스 영화 스틸의 컬러 그레이딩, 대비, 무드를 적용하는 워크플로우 가이드. 구도와 피사체는 그대로 두고 색감과 분위기만 빠르게 바꿔봅니다.</div></div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>16 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>16 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— 가이드 구성 —</span>
+    사용 목적 · 사용 이유 · 사용 사례 · 진입 · 화면 구성 · Your Photo · Reference Movie Still · 두 이미지 준비 · 이미지 제거 · Generate · 생성 확인 · 결과 카드 · 결과 확인 · 결과 관리 · 삭제 확인</div>
+  </div>
+</section>
+
+<!-- 02: 사용 목적 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>사용 목적</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose · 사용 목적 —</div><h2 class="section-title">CineGrade AI는 무엇을 하는 기능인가</h2><p class="section-lede">CineGrade AI는 사용자의 사진에 레퍼런스 영화 스틸의 컬러 그레이딩, 대비, 무드감을 적용하는 기능입니다. 편집할 사진과 스타일 기준 이미지를 각각 업로드하면, AI가 레퍼런스의 색감 방향을 해석해 원본 사진을 새로운 톤으로 변환합니다.</p></div></div>
+  <div style="margin-bottom: 32px; max-width: 800px;">
+        <div class="fig-caption">
+          <div class="fig-title">CineGrade AI 작업 구조</div>
+          <div class="fig-sub">편집할 사진과 색감 기준 스틸을 넣으면, 레퍼런스의 컬러 무드와 대비를 원본 사진에 적용합니다.</div>
+        </div>
+        <img src="../assets/screens/4145ab369d7e8983cf1c54c8406fca2e5f2c1065ce9aeca1b80833b89a5e8d3f.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;">
+        <div class="fig-labels cols-3">
+          <div class="fig-label">Your Photo</div>
+          <div class="fig-label">Reference Still</div>
+          <div class="fig-label">Generated Grade</div>
+        </div>
+      </div>
+  <div class="flow-row">
+    <div class="flow-card"><div class="label">— Step 01 —</div><h4>Your Photo</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card"><div class="label">— Step 02 —</div><h4>Reference Still</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card" style="background: var(--midnight); border-color: var(--midnight);"><div class="label" style="color: rgba(240,239,234,0.6);">— Result —</div><h4 style="color: #F0EFEA;">Generated Grade</h4></div>
+  </div>
+  <div class="note-box"><div class="label">— 작업 구조 —</div><div class="text">편집할 사진과 색감 기준 스틸을 넣으면, 레퍼런스의 컬러 무드와 대비를 원본 사진에 적용합니다.</div></div>
+  <div class="footer-meta"><span>002 — 사용 목적</span><span>Purpose</span></div>
+</section>
+
+<!-- 03: 사용 이유 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>사용 이유</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Why · 사용 이유 —</div><h2 class="section-title">왜 이 기능을 사용하는가</h2><p class="section-lede">사진의 구도나 피사체는 유지하면서 색감과 분위기만 빠르게 바꿀 수 있기 때문입니다. 후반 색보정 전 단계에서 원하는 룩을 테스트하거나, 클라이언트에게 여러 톤 후보를 보여줄 때 작업 시간을 줄일 수 있습니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 구도 유지 —</div><h3 class="step-title">피사체는 그대로, 색감만 변경</h3><p class="step-body">사진의 <strong>구도·피사체·자세</strong>는 그대로 두고 색감·대비·무드만 바꿉니다. 컬러 그레이딩 방향만 빠르게 테스트할 수 있습니다.</p></div>
+      <div class="step-block"><div class="step-number">— 후반 색보정 단축 —</div><h3 class="step-title">색보정 룩 사전 테스트</h3><p class="step-body">실제 후반 색보정에 들어가기 전, 원하는 룩 방향을 미리 시뮬레이션해 의사결정과 작업 시간을 줄여줍니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;">
+        <div class="fig-caption">
+          <div class="fig-title">색감, 대비, 무드를 한 번에 전달</div>
+        </div>
+        <img src="../assets/screens/551b5fcf67c32839c7285eddf8f60e004a3ba9c778a133bb359053aee4d4ae99.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;">
+        <div class="fig-labels cols-2">
+          <div class="fig-label">Before</div>
+          <div class="fig-label">After</div>
+        </div>
+      </div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 활용 포인트 —</div><div class="text">레퍼런스 한 장으로 <strong>색감·대비·무드</strong>를 한 번에 전달해, 후보 톤을 빠르게 비교하는 단계에서 가장 효과적입니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>003 — 사용 이유</span><span>Why</span></div>
+</section>
+
+<!-- 04: 사용 사례 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>사용 사례</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Use Cases · 사용 사례 —</div><h2 class="section-title">어떠한 경우에 사용하는가</h2><p class="section-lede">영화 같은 색감, 광고 캠페인 톤, 룩북 무드, SNS 비주얼 톤을 한 장의 레퍼런스 이미지로 맞추고 싶을 때 사용합니다. 여러 사진의 색감 방향을 통일하거나, 촬영본을 다른 장르의 무드로 빠르게 테스트하는 경우에 적합합니다.</p></div></div>
+  <div style="margin-bottom: 32px; max-width: 800px;">
+        <div class="fig-caption">
+          <div class="fig-title">레퍼런스 색감을 빠르게 맞추기</div>
+          <div class="fig-sub">영화 스틸, 광고 톤, 룩북 색감처럼 원하는 무드를 기준 이미지로 정해 여러 사진에 같은 방향을 적용할 수 있습니다.</div>
+        </div>
+        <img src="../assets/screens/62e0aef02781ab7a27c76c16172c31cc9ebc01a3d92cdf68ce077d97fcb7d92e.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;">
+        <div class="fig-labels cols-3">
+          <div class="fig-label">원본</div>
+          <div class="fig-label">레퍼런스</div>
+          <div class="fig-label">결과</div>
+        </div>
+      </div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>시네마틱 룩</h4><p>영화 스틸 한 장으로 사진에 영화 같은 컬러 그레이딩과 대비를 부여합니다.</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>광고 캠페인 톤</h4><p>캠페인 키비주얼의 색감을 다른 컷에도 통일감 있게 확장합니다.</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>룩북 무드 통일</h4><p>여러 컷의 색감 방향을 하나의 레퍼런스로 맞춰 룩북 전체 무드를 통일합니다.</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>SNS 비주얼 톤</h4><p>피드 전체의 컬러 톤을 일관되게 유지하기 위한 빠른 톤 매칭 도구로 사용합니다.</p></div>
+    <div class="usecase-card"><div class="num">05</div><h4>장르 톤 테스트</h4><p>같은 촬영본을 누아르·웜·콜드·바이오 등 다른 장르의 무드로 즉시 테스트합니다.</p></div>
+    <div class="usecase-card"><div class="num">06</div><h4>색보정 시안</h4><p>본 색보정 전, 의사결정용으로 톤 후보 여러 개를 빠르게 만들어 비교합니다.</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — 사용 사례</span><span>Use Cases</span></div>
+</section>
+
+<!-- 05: 진입 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>진입</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Entry · 진입 —</div><h2 class="section-title">CineGrade AI 메뉴 진입</h2><p class="section-lede">왼쪽 세로 메뉴에서 마법봉 모양 아이콘을 클릭합니다. 해당 메뉴가 CineGrade AI 기능입니다.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 위치 —</div><h3 class="step-title">왼쪽 사이드 메뉴</h3><p class="step-body">화면 좌측 세로 메뉴 영역에 기능별 아이콘이 정렬되어 있습니다. 이 중 <span class="ui">마법봉</span> 모양 아이콘이 CineGrade AI 진입점입니다.</p></div>
+      <div class="step-block"><div class="step-number">— 진입 —</div><h3 class="step-title">아이콘 클릭</h3><p class="step-body">마법봉 아이콘을 클릭하면 CineGrade AI 작업 화면이 열립니다. 상단에 <strong>CineGrade AI</strong> 제목과 “Upload a reference movie still and transfer its color grading, contrast, and mood to your own photo instantly using AI.” 안내 문구가 표시됩니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/c68ca57af88a100221ba0dd420fc181a57f3f0f764b24d30452a687ac9e5938b.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 화면 식별 —</div><div class="text">상단 문구는 “레퍼런스 영화 스틸을 업로드하면 AI가 그 컬러 그레이딩·대비·무드를 사용자 사진에 즉시 적용한다”는 의미입니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>005 — 진입</span><span>Entry</span></div>
+</section>
+
+<!-- 06: 화면 구성 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>화면 구성</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Layout · 화면 구성 —</div><h2 class="section-title">기본 화면 구성</h2><p class="section-lede"><span class="ui">Your Photo / Reference Movie Still</span> 영역에 두 개의 업로드 박스가 나란히 표시됩니다. 왼쪽은 편집할 사진, 오른쪽은 색감과 무드의 기준이 되는 스타일 레퍼런스입니다. 두 이미지가 모두 준비되기 전에는 <span class="ui">Generate</span> 버튼이 비활성화됩니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 왼쪽 박스 —</div><h3 class="step-title">Upload the photo to edit</h3><p class="step-body">색감을 적용할 <strong>원본 사진</strong>을 올리는 박스입니다. 결과의 구도·피사체가 되는 입력입니다.</p></div>
+      <div class="step-block"><div class="step-number">— 오른쪽 박스 —</div><h3 class="step-title">Upload the style reference</h3><p class="step-body">색감·대비·무드의 기준이 되는 <strong>스타일 레퍼런스</strong>(영화 스틸 등)를 올리는 박스입니다. 결과의 톤을 결정하는 입력입니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/dd8c68015bccd01624348ac35a8c9ace0d6288f35c853af4a8feb1f6382b6fe5.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 활성 조건 —</div><div class="text">두 박스가 모두 채워져야 <span class="ui">Generate</span> 버튼이 활성화됩니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>006 — 화면 구성</span><span>Layout</span></div>
+</section>
+
+<!-- 07: Your Photo -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Your Photo</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Your Photo · 원본 사진 —</div><h2 class="section-title">Upload the photo to edit</h2><p class="section-lede">왼쪽 박스에는 색보정을 적용할 원본 사진을 업로드합니다. 피사체와 배경이 또렷하고 노출이 안정적인 사진일수록 레퍼런스 색감을 적용했을 때 결과를 판단하기 쉽습니다.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 업로드 —</div><h3 class="step-title">원본 사진 등록</h3><p class="step-body">왼쪽 박스를 클릭하거나 파일을 드래그&amp;드롭해 색보정을 적용할 사진을 업로드합니다. 업로드가 완료되면 박스에 미리보기가 표시됩니다.</p></div>
+      <div class="step-block"><div class="step-number">— 가이드라인 —</div><h3 class="step-title">좋은 원본 사진의 조건</h3><p class="step-body">피사체와 배경이 또렷하고 <strong>노출이 안정적인</strong> 사진일수록 결과 판단이 쉽습니다. 노출이 너무 어둡거나 밝아 톤이 뭉개진 사진은 색감을 적용해도 변화를 평가하기 어렵습니다.</p></div>
+      <div class="step-block"><div class="step-number">— 제거 —</div><h3 class="step-title">업로드 취소</h3><p class="step-body">업로드한 사진은 박스 오른쪽 위 <span class="ui">X</span> 버튼으로 제거하고 다시 선택할 수 있습니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/8231d317710f18c984953e51f170ba21ea61b0a223c9fe8be9f8c600079c6e92.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 권장 —</div><div class="text">잘 노출된 인물 또는 풍경 컷, 디테일이 살아 있는 사진이 가장 안정적인 결과를 만듭니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>007 — Your Photo</span><span>Photo</span></div>
+</section>
+
+<!-- 08: Reference Still -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Reference Still</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Reference · 스타일 레퍼런스 —</div><h2 class="section-title">Upload the style reference</h2><p class="section-lede">오른쪽 박스에는 참고할 영화 스틸이나 원하는 색감의 이미지를 업로드합니다. 레퍼런스는 구도보다 색, 대비, 조명 분위기를 전달하는 역할을 합니다.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 역할 —</div><h3 class="step-title">색·대비·조명 무드 신호</h3><p class="step-body">레퍼런스는 결과에 적용될 <strong>색감·대비·조명 분위기</strong>를 전달합니다. 구도나 피사체가 아닌 <em>“이런 톤으로 만들어달라”</em>는 시각적 지시문 역할입니다.</p></div>
+      <div class="step-block"><div class="step-number">— 권장 형식 —</div><h3 class="step-title">색감이 분명한 한 컷</h3><p class="step-body">웜·콜드·시네마틱·하이콘트라스트 등 <strong>색감 방향이 분명한</strong> 한 장의 이미지가 가장 잘 작동합니다. 영화 스틸·광고 키비주얼·사진 작품 모두 사용 가능합니다.</p></div>
+      <div class="step-block"><div class="step-number">— 제거 —</div><h3 class="step-title">업로드 취소</h3><p class="step-body">업로드한 레퍼런스는 박스 오른쪽 위 <span class="ui">X</span> 버튼으로 제거하고 다른 이미지로 다시 선택할 수 있습니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/4f378957adf95c9a3f707ef348439f4b197650c2e8e30632ff5deb6698539b72.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 권장 —</div><div class="text">레퍼런스를 고를 때는 “이 사진에 가져가고 싶은 게 <strong>색·조명·대비</strong>인지”를 기준으로 판단하세요.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>008 — Reference Still</span><span>Reference</span></div>
+</section>
+
+<!-- 09: 두 이미지 준비 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>두 이미지 준비</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Both Ready · 두 이미지 준비 상태 —</div><h2 class="section-title">두 이미지가 모두 준비된 상태</h2><p class="section-lede">원본 사진과 스타일 레퍼런스가 모두 업로드되면 <span class="ui">Generate</span> 버튼이 활성화됩니다. 이 상태에서 AI는 왼쪽 사진의 피사체를 유지하고, 오른쪽 이미지의 컬러 무드와 콘트라스트를 반영합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 활성화 —</div><h3 class="step-title">Generate 버튼 활성</h3><p class="step-body">두 박스가 모두 채워지면 <span class="ui">Generate</span> 버튼이 노란색으로 활성화됩니다. 이때부터 색감 변환을 실행할 수 있습니다.</p></div>
+      <div class="step-block"><div class="step-number">— 처리 원리 —</div><h3 class="step-title">왼쪽 피사체 + 오른쪽 톤</h3><p class="step-body">AI는 <strong>왼쪽 사진의 피사체·구도·디테일</strong>은 유지하면서, <strong>오른쪽 이미지의 컬러 무드와 콘트라스트</strong>를 입력 신호로 사용합니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/199b6ebf2ebe71709d42eb6d4e77e1de349a649a2489d78fca3c0b97284976eb.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 핵심 —</div><div class="text">왼쪽은 <strong>“무엇을”</strong>, 오른쪽은 <strong>“어떤 톤으로”</strong>에 해당합니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>009 — 두 이미지 준비</span><span>Ready</span></div>
+</section>
+
+<!-- 10: 이미지 제거 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>이미지 제거</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Remove · 업로드 이미지 제거 —</div><h2 class="section-title">업로드 이미지 제거</h2><p class="section-lede">각 업로드 이미지 오른쪽 위의 <span class="ui">X</span> 버튼을 누르면 해당 이미지를 제거할 수 있습니다. 잘못 올린 사진이나 레퍼런스를 교체할 때 사용합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— X 버튼 —</div><h3 class="step-title">각 박스 우측 상단</h3><p class="step-body">두 업로드 박스 각각의 <strong>오른쪽 위 모서리</strong>에 빨간 <span class="ui">X</span> 버튼이 표시됩니다. 이 버튼을 누르면 해당 이미지가 제거됩니다.</p></div>
+      <div class="step-block"><div class="step-number">— 활용 —</div><h3 class="step-title">교체 / 재선택</h3><p class="step-body">잘못 올린 사진을 바꾸거나, 레퍼런스를 다른 색감의 이미지로 교체할 때 사용합니다. 한쪽만 제거하면 Generate는 다시 비활성화됩니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/798e4a44d7b384af9c9fa4d7cce02ccfc0379750cbeb57959000a74f862f2766.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 주의 —</div><div class="text">한쪽 이미지를 제거하면 <span class="ui">Generate</span> 버튼이 다시 비활성화되므로, 교체 후에는 새 이미지를 다시 올려야 합니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>010 — 이미지 제거</span><span>Remove</span></div>
+</section>
+
+<!-- 11: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Generate · 생성 실행 —</div><h2 class="section-title">Generate 실행</h2><p class="section-lede">두 이미지가 모두 들어간 상태에서 <span class="ui">Generate</span>를 누르면 색감 변환 생성을 시작합니다. 현재 테스트 화면 기준으로 1회 생성에 6 credits가 사용됩니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 조건 —</div><h3 class="step-title">두 이미지 모두 필요</h3><p class="step-body"><strong>Your Photo</strong>와 <strong>Reference Movie Still</strong> 두 박스가 모두 채워져야 Generate가 활성화됩니다.</p></div>
+      <div class="step-block"><div class="step-number">— 비용 —</div><h3 class="step-title">크레딧 차감</h3><p class="step-body">현재 테스트 화면 기준 1회 생성에 <span class="ui">6 credits</span>가 차감됩니다. 잔여 크레딧이 부족하면 생성이 진행되지 않습니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/826b9c3de8a908488f7d267557f7b108d95670dc37c69a7d3b6405fe8185dd58.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 권장 흐름 —</div><div class="text">두 이미지를 한 번 더 검토한 뒤 <span class="ui">Generate</span>를 누르면 재생성 횟수를 줄일 수 있습니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>011 — Generate</span><span>Generate</span></div>
+</section>
+
+<!-- 12: 생성 확인 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>생성 확인</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Confirm · 생성 확인 팝업 —</div><h2 class="section-title">생성 확인 팝업</h2><p class="section-lede"><span class="ui">Generate</span>를 누르면 “Would you like to generate an image?” 확인 팝업이 표시됩니다. <span class="ui">OK</span>를 누르면 실제 생성이 시작되고, <span class="ui">Cancel</span>을 누르면 이전 화면으로 돌아갑니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— OK —</div><h3 class="step-title">실제 생성 시작</h3><p class="step-body"><span class="ui">OK</span>를 누르면 실제 생성이 시작되고 크레딧이 차감됩니다. 생성 중에는 결과 영역에 진행 상태가 표시됩니다.</p></div>
+      <div class="step-block"><div class="step-number">— Cancel —</div><h3 class="step-title">이전 화면 복귀</h3><p class="step-body"><span class="ui">Cancel</span>을 누르면 생성하지 않고 이전 화면으로 돌아갑니다. 업로드한 두 이미지는 유지되어 바로 수정·재시도가 가능합니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/bec5ec17cd845e5e3101771b502835a25391bffe52f59fde581e9e1b8a3c0e68.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 안전 장치 —</div><div class="text">확인 팝업은 실수로 인한 크레딧 소모를 막기 위한 단계입니다. 최종 검토 후 OK를 누르세요.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>012 — 생성 확인</span><span>Confirm</span></div>
+</section>
+
+<!-- 13: 결과 카드 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>결과 카드</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Result Card · 결과 카드 —</div><h2 class="section-title">결과 카드</h2><p class="section-lede">생성이 끝나면 오른쪽 결과 영역에 변환된 이미지가 카드 형태로 표시됩니다. 결과 카드는 원본 사진의 피사체를 유지하면서 레퍼런스 이미지의 색감과 분위기를 반영합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 표시 —</div><h3 class="step-title">우측 결과 영역에 카드 추가</h3><p class="step-body">생성이 완료되면 오른쪽 결과 영역에 결과 카드가 하나 추가됩니다. 카드에는 변환된 색감의 결과 이미지가 들어갑니다.</p></div>
+      <div class="step-block"><div class="step-number">— 누적 비교 —</div><h3 class="step-title">톤 후보 누적</h3><p class="step-body">레퍼런스를 바꿔가며 여러 번 생성하면 결과 카드가 누적되어, 같은 사진의 <strong>여러 톤 후보</strong>를 한 화면에서 비교할 수 있습니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/b1d8d35268c8fba6c5f6bffd1df95aa51721f8c8921bc8ee78e19f9f382419fa.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 활용 —</div><div class="text">톤 후보를 비교한 뒤, 최종 채택할 카드만 다운로드하고 나머지는 삭제하는 워크플로우가 효율적입니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>013 — 결과 카드</span><span>Result</span></div>
+</section>
+
+<!-- 14: 결과 확인 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>결과 확인</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— Review · 결과 점검 —</div><h2 class="section-title">최종 생성 이미지 확인</h2><p class="section-lede">최종 이미지는 레퍼런스 스틸의 따뜻한 조명과 영화적인 대비가 원본 사진에 적용된 결과입니다. 최종 사용 전에는 얼굴 톤, 의상 색, 배경 밝기, 전체 대비가 의도와 맞는지 확인합니다.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 유지 —</div><h3 class="step-title">피사체·구도 유지</h3><p class="step-body">결과 이미지는 원본 사진의 <strong>피사체·구도·디테일</strong>을 유지합니다. 색감만 바뀌고 사진의 내용은 일관성을 유지합니다.</p></div>
+      <div class="step-block"><div class="step-number">— 반영 —</div><h3 class="step-title">레퍼런스 톤·대비 반영</h3><p class="step-body">레퍼런스의 <strong>조명 무드·컬러 톤·대비</strong>가 결과에 입혀집니다. 결과는 100% 동일하지 않을 수 있으므로 여러 번 생성해 가장 적합한 톤을 선택합니다.</p></div>
+      <div class="step-block"><div class="step-number">— 점검 —</div><h3 class="step-title">얼굴·의상·배경 점검</h3><p class="step-body">최종 사용 전에는 <strong>얼굴 톤·의상 색·배경 밝기·전체 대비</strong>가 의도와 맞는지 확인합니다. 너무 어두워졌거나 색이 과해졌다면 다른 레퍼런스로 재생성합니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/dd510f2d7d41a31ab9609d2076a87ee1e629f1580e260f81bd2e537cbbef71bc.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 체크 포인트 —</div><div class="text">얼굴 톤 · 의상 색 · 배경 밝기 · 전체 대비 — 이 네 가지를 우선 확인하세요.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>014 — 결과 확인</span><span>Review</span></div>
+</section>
+
+<!-- 15: 결과 관리 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>결과 관리</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— Manage · 결과 관리 —</div><h2 class="section-title">Download / Delete</h2><p class="section-lede">결과 이미지 위에 마우스를 올리면 다운로드 아이콘과 삭제 아이콘이 표시됩니다. 다운로드 아이콘은 결과 저장, 삭제 아이콘은 선택한 결과 제거에 사용합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 다운로드 —</div><h3 class="step-title">다운로드 아이콘</h3><p class="step-body"><strong>다운로드 아이콘</strong>을 누르면 해당 결과 이미지가 로컬 파일로 저장됩니다. 최종 채택한 톤을 외부에서 사용할 때 이 버튼을 사용합니다.</p></div>
+      <div class="step-block"><div class="step-number">— 삭제 —</div><h3 class="step-title">삭제 아이콘</h3><p class="step-body"><strong>삭제 아이콘</strong>은 선택한 결과 카드를 제거합니다. 불필요한 톤 후보를 정리해 결과 영역을 깔끔하게 유지할 수 있습니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/959cf930d07607cb51cf4b46d3c9e85b90cad442364f53414b302a88132c4844.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 표시 조건 —</div><div class="text">아이콘은 결과 이미지 위에 <strong>마우스를 올렸을 때</strong> 나타나며, 평소에는 결과만 깨끗하게 표시됩니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>015 — 결과 관리</span><span>Manage</span></div>
+</section>
+
+<!-- 16: 삭제 확인 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 16</span><span class="dot"></span><span>삭제 확인</span></div><div class="right"><span>P. 016</span></div></div>
+  <div class="section-header"><div class="section-num">16</div><div class="section-title-block"><div class="eyebrow">— Confirm Delete · 삭제 확인 —</div><h2 class="section-title">삭제 확인 팝업</h2><p class="section-lede">삭제 아이콘을 누르면 “Delete this media?” 확인 팝업이 표시됩니다. <span class="ui">Delete</span>를 누르면 결과가 삭제되고, <span class="ui">Cancel</span>을 누르면 결과가 유지됩니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— Delete —</div><h3 class="step-title">결과 삭제</h3><p class="step-body"><span class="ui">Delete</span>를 누르면 선택한 결과 카드가 실제로 삭제됩니다. 삭제된 결과는 복구되지 않으므로 신중히 결정합니다.</p></div>
+      <div class="step-block"><div class="step-number">— Cancel —</div><h3 class="step-title">삭제 취소</h3><p class="step-body"><span class="ui">Cancel</span>을 누르면 결과가 그대로 유지됩니다. 다른 톤 후보와 비교가 끝나기 전까지는 일단 보관해 두는 편이 안전합니다.</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/0ab635b98b5b67038c9ee03dab3f268c221120bb0fc4d4da27e9c19a37d5189c.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 마무리 —</div><div class="text">최종 채택 톤 다운로드 → 불필요한 카드 정리 → 작업 종료의 순서로 마무리합니다.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>016 — 삭제 확인</span><span>Final Step</span></div>
+</section>
+
+
+</body></html>

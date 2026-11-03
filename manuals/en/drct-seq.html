@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directors Sequence — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+
+  /* Cover */
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 9vw, 130px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  /* Download dark */
+  .download-section { background: var(--midnight); color: #F0EFEA; }
+  .download-section .slide-meta { color: rgba(240,239,234,0.5); }
+  .download-section .slide-meta .dot { background: #F0EFEA; }
+  .download-section .footer-meta { color: rgba(240,239,234,0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240,239,234,0.15); }
+  .download-section .section-num, .download-section .eyebrow, .download-section .section-title { color: #F0EFEA; }
+  .download-section .section-lede { color: rgba(240,239,234,0.7); }
+  .download-options { display: grid; gap: 1px; background: rgba(240,239,234,0.15); border: 1px solid rgba(240,239,234,0.15); }
+  .download-option { background: var(--midnight); padding: 24px 28px; display: grid; grid-template-columns: 50px 1fr auto; gap: 20px; align-items: center; transition: background 0.3s; }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #F0EFEA; line-height: 1; }
+  .download-option h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: #F0EFEA; margin-bottom: 4px; }
+  .download-option p { font-family: var(--body-font); font-size: 13.5px; color: rgba(240,239,234,0.7); line-height: 1.65; }
+  .download-option p .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .download-option .icon { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: rgba(240,239,234,0.5); }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 56px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/drct-seq.html" hreflang="ko" lang="ko">KO</a><a href="../en/drct-seq.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/drct-seq.html" hreflang="ja" lang="ja">JA</a><a href="../zh/drct-seq.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div>
+      <div class="cover-title-en">DIRECTORS<br>SEQUENCE</div>
+      <div class="cover-subtitle" style="margin-top: 32px;">A workflow guide for auto-generating 8 sequential scenes from a single keyframe.</div>
+    </div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>7 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>7 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— Guide Contents —</span>
+      Entry · Key Frame Upload · Synopsis · Directors Note · Generate · Result · Download
+    </div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Entry</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Entry —</div><h2 class="section-title">Open Directors Sequence</h2><p class="section-lede">Click the 16th icon on the left vertical sidebar.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click the 16th sidebar icon</h3><p class="step-body">Click the 16th icon on the left vertical sidebar. This opens the Directors Sequence workspace.</p></div></div><div><img src="../assets/screens/54820284db2addf6b448c37a8434f9936bdb62c5746056c24dda636154d56f11.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>002 — Entry</span><span>Open</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Key Frame</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Key Frame —</div><h2 class="section-title">Upload a Key Frame</h2><p class="section-lede">Click the empty upload box in the KEY FRAME area, or click the <span class="ui">New Key Frame</span> button to upload a base image.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click upload box or New Key Frame</h3><p class="step-body">Click the empty upload box in the <span class="ui">KEY FRAME</span> area, or click the <span class="ui">New Key Frame</span> button to upload a base image.</p></div><div class="step-block"><div class="step-number">— Role —</div><h3 class="step-title">Used as the base frame</h3><p class="step-body">The uploaded image is used as the base frame when Directors Sequence generates sequential scenes.</p></div><div class="note-box"><div class="label">— Required —</div><div class="text">The Generate button will not activate if the Key Frame is missing.</div></div></div><div><img src="../assets/screens/54820284db2addf6b448c37a8434f9936bdb62c5746056c24dda636154d56f11.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>003 — Key Frame</span><span>Upload</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Synopsis</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Synopsis · Optional —</div><h2 class="section-title">Enter a Synopsis</h2><p class="section-lede">Click the empty field and enter the story, mood, and setting. This is an optional field.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click and type</h3><p class="step-body">Click the <span class="ui">SYNOPSIS</span> field and enter the story, mood, and setting you want to produce.</p></div><div class="step-block"><div class="step-number">— Optional —</div><h3 class="step-title">Not a required field</h3><p class="step-body">This is an optional input field. It can be left empty.</p></div></div><div><img src="../assets/screens/61e14ea800aa9abc9369cd173b20cbaa316c2ef821b5296e2716a9d5cae9e83e.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>004 — Synopsis</span><span>Optional</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Directors Note</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Directors Note —</div><h2 class="section-title">Enter a Directors Note</h2><p class="section-lede">Click the empty field to enter or edit the direction memo to be reflected in the next scene.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click and type or edit</h3><p class="step-body">Click the <span class="ui">DIRECTORS NOTE</span> field to enter or edit the direction memo to be reflected in the next scene.</p></div><div class="step-block"><div class="step-number">— Default —</div><h3 class="step-title">Default value provided</h3><p class="step-body">The default value is <span class="ui">make the next scene with high cinematic tension</span>. Edit as needed.</p></div></div><div><img src="../assets/screens/afa927459c94e3732b4142865fe9143017c96ac717d9a310c7418de3e82b4401.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>005 — Directors Note</span><span>Direction</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Click the Generate button</h2><p class="section-lede">After completing the KEY FRAME upload and input settings, click the yellow <span class="ui">Generate</span> button at the bottom.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click Generate</h3><p class="step-body">After completing the KEY FRAME upload and input settings, click the yellow <span class="ui">Generate</span> button at the bottom. Generation of 8 sequential scenes begins.</p></div><div class="note-box"><div class="label">— Required —</div><div class="text">The Generate button will not activate if the KEY FRAME is missing.</div></div></div><div><img src="../assets/screens/a2e023a12237c636fa67a982093cbc600c6c6e51edf53ad0a17a68593e3458dd.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>006 — Generate</span><span>Run</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Result</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Result · 8-Scene Grid —</div><h2 class="section-title">Review the 8-scene result</h2><p class="section-lede">When generation completes, SCENE 01 through SCENE 08 are displayed as a grid in the right result area.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Result —</div><h3 class="step-title">8-scene grid generated</h3><p class="step-body">When generation completes, <span class="ui">SCENE 01</span> through <span class="ui">SCENE 08</span> — 8 scenes — are displayed in a grid in the right result area.</p></div></div><div><img src="../assets/screens/1a1ae39643a15629e4315fea0568ca3030ca42387a4a7ca7d4cfa6ca93ab10b5.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>007 — Result</span><span>8-Scene Grid</span></div>
+</section>
+
+<section class="slide download-section">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Download</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Download —</div><h2 class="section-title">Download</h2><p class="section-lede">Download all scenes at once or individual scenes separately.</p></div></div>
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div><img src="../assets/screens/daf419e0a054752e0a6212025bbb8d7efae5862b0615e7dbc4f26abd6dddf171.webp" alt="" style="display: block; width: 100%; height: auto;"></div>
+    <div class="download-options">
+      <div class="download-option"><div class="num">01</div><div><h4>Download All</h4><p>Click the <span class="ui">Download All</span> button in the upper right of the result area to download all generated scenes.</p></div><div class="icon">↓↓</div></div>
+      <div class="download-option"><div class="num">02</div><div><h4>Individual download</h4><p>Click the download icon in the lower right of each scene to download that scene only.</p></div><div class="icon">↓</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>008 — Download</span><span>Final Step</span></div>
+</section>
+
+</body></html>

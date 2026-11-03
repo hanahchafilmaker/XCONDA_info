@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upscale — ユーザーガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 720px; }
+  .section-lede .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .section-lede strong { font-weight: 600; color: var(--midnight); }
+  .figure-block { margin-bottom: 32px; max-width: 800px; }
+  .fig-caption { margin-bottom: 14px; }
+  .fig-caption .fig-title { font-family: var(--body-font); font-weight: 700; font-size: 15px; color: var(--midnight); letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 4px; }
+  .fig-labels { display: grid; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+  .fig-labels.cols-2 { grid-template-columns: 1fr 1fr; }
+  .fig-labels.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .fig-labels .fig-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); text-align: center; }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 720px; border: 1px solid var(--hairline); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="ガイドのナビゲーション" data-zoom-label="画像を拡大"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">ハブに戻る</a><a href="index.html">ガイド一覧</a></div><div class="xconda-manual-languages"><a href="../ko/upscale.html" hreflang="ko" lang="ko">KO</a><a href="../en/upscale.html" hreflang="en" lang="en">EN</a><a href="../ja/upscale.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/upscale.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>ユーザーガイド</span></div>
+    <div><div class="cover-title-en">UP<br>SCALE</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">低解像度やぼやけた画像を、より高解像度で精細な画像に引き上げるワークフローガイドです。Topaz / Xconda モデル、2X〜4X 拡大、Face Enhancement をまとめて扱います。</div></div>
+    <div class="cover-bottom-meta"><div><div>ユーザーガイド</div><div>チュートリアル</div></div><div style="text-align:right"><div>16 章</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目次</span><span>16 章</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— ガイド構成 —</span>Upscale でできること · Upscale を使う理由 · Upscaler を開く · モデル：Topaz / Xconda · Xconda 自社モデル · 画像のアップロード · 2X / 4X の選択 · Enhance Model · Subject Detection · Output Format · Face Enhancement · Creativity · Generate · 確認ダイアログ · 最新の結果 / ダウンロード</div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">Upscale でできること</h2><p class="section-lede">低解像度やぼやけた画像を、より高解像度で精細な画像に整えます。写真、AI 生成画像、商品カット、ポートレートを納品品質まで引き上げたいときに使います。 <strong>Face Enhancement</strong>と組み合わせることで、顔を含む画像では目・肌・顔の輪郭のディテールをより確実に復元できます。</p></div></div>
+  <div class="figure-block">
+    <div class="fig-caption"><div class="fig-title">低解像度の元画像 / Face Enhancement 適用後</div></div>
+    <img src="../assets/screens/d6a2d90fbff077b4b4c373dc92eccb16c97bd6c3cb92fb31ac7c2a77d4a6dc9c.webp" alt="" class="figure-img">
+    <div class="fig-labels cols-2">
+      <div class="fig-label">元画像</div>
+      <div class="fig-label">適用後</div>
+    </div>
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">1 ステップで解像度とディテールを同時に引き上げる仕上げ工程です。</div></div>
+  <div class="footer-meta"><span>002 — 目的</span><span>PURPOSE</span></div>
+</section>
+
+<!-- 03: Why -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>理由</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 理由 —</div><h2 class="section-title">Upscale を使う理由</h2><p class="section-lede">小さな元画像を最大 <strong>2X</strong> または <strong>4X</strong> まで拡大しつつ、エイリアシングとぼけを抑えます。そのまま納品できる品質になります。元の撮影が小さい場合、生成画像がやや甘い場合、顔のディテールが不足している場合に特に有効です。</p></div></div>
+  <div class="figure-block">
+    <div class="fig-caption"><div class="fig-title">低解像度の元画像 → オプション → 最終結果</div></div>
+    <img src="../assets/screens/f620d097d07756c438cc2781802c338a7c1e4c40048f718f91c5c8ca7fd96e11.webp" alt="" class="figure-img">
+    <div class="fig-labels cols-3">
+      <div class="fig-label">元画像</div>
+      <div class="fig-label">オプション</div>
+      <div class="fig-label">結果</div>
+    </div>
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">撮影・生成・ディテールという 3 つの不足を 1 ステップで補うツールです。</div></div>
+  <div class="footer-meta"><span>003 — 理由</span><span>WHY</span></div>
+</section>
+
+<!-- 04: Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>開始</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 開始 —</div><h2 class="section-title">Upscaler を開く</h2><p class="section-lede">左サイドバーの <span class="ui">Upscale</span> アイコンをクリックして Upscaler に入ります。上部の <span class="ui">Models</span> ドロップダウンでアップスケールモデルを選び、下のエリアで画像をアップロードします。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/f983e7840d9c17049629851d3ddcdcd87bbe1eb35c4a6209596d0a6d4f327ff6.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">Upscaler は 4 つの段階で進みます： <strong>モデル選択 → 画像アップロード → オプション設定 → Generate</strong>.</div></div>
+  <div class="footer-meta"><span>004 — 開始</span><span>ENTRY</span></div>
+</section>
+
+<!-- 05: Models -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— モデル —</div><h2 class="section-title">モデル：Topaz / Xconda</h2><p class="section-lede">上部の <span class="ui">Models</span> ドロップダウンでは <strong>Topaz</strong> と <strong>Xconda</strong>を選べます。Topaz では拡大倍率、Enhance Model、Subject Detection、Output Format、Face Enhancement、Creativity を設定できます。Xconda は自社の Xconda アップスケールモデルで実行します。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/86cdd13e44b3af42c3dfcbd646159b7bb2fe5bd22393f9582a0d639b23d03272.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">既定は Topaz です — 細かい制御が重要な場合に最適。素早くワンクリックで仕上げたい場合は Xconda を選びます。</div></div>
+  <div class="footer-meta"><span>005 — モデル</span><span>MODELS</span></div>
+</section>
+
+<!-- 06: Xconda Model -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Xconda モデル</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Xconda モデル —</div><h2 class="section-title">Xconda の自社モデル</h2><p class="section-lede">選択すると <span class="ui">Xconda</span> Xconda の自社モデルでアップスケールを実行します。Topaz よりオプションは少なく、速度を優先したい場合に適しています。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/a16b0f0416010b1bd54a199f469f81069f113f6264d4e464f0f1de2464a1bfe1.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">オプションが少ないぶん結果が速くなります。細かな制御をしたい場合は Topaz を使います。</div></div>
+  <div class="footer-meta"><span>006 — Xconda モデル</span><span>XCONDA-MODEL</span></div>
+</section>
+
+<!-- 07: Upload -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>アップロード</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— アップロード —</div><h2 class="section-title">画像のアップロード</h2><p class="section-lede">元画像を <span class="ui">Drop Image Here</span> / <span class="ui">Click to Upload</span> エリアにドロップします。アップロード後、左パネルにプレビューが表示され、右上の <span class="ui">X</span> で削除できます。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/c0f7fdfd642139197a89328184fc76d88c3122d8156b4f4ae08a78d1c5af1784.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">Face Enhancement を試すときは、正面に近くはっきり見える顔のほうが結果が安定します。</div></div>
+  <div class="footer-meta"><span>007 — アップロード</span><span>UPLOAD</span></div>
+</section>
+
+<!-- 08: Scale -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>拡大倍率</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 倍率 —</div><h2 class="section-title">2X / 4X を選択</h2><p class="section-lede"><span class="ui">2X</span> は元画像を 2 倍に、 <span class="ui">4X</span> は 4 倍にします。Web プレビューなら 2X、大画面や高解像度納品なら 4X を選びます。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/b931586cc530e3c980c46c383e94f17d6ecbbb16e530355cc4e6a5ad3df92d26.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">2X は速くて安価です。4X はクレジットと時間がかかりますが、大判出力に向いています。</div></div>
+  <div class="footer-meta"><span>008 — 倍率</span><span>SCALE</span></div>
+</section>
+
+<!-- 09: Enhance Model -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Enhance Model</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Enhance Model（補正モデル）—</div><h2 class="section-title">Enhance Model</h2><p class="section-lede">元画像に合った補正モデルを選びます。 <span class="ui">Standard V2</span>, <span class="ui">Low Resolution V2</span>, <span class="ui">CGI</span>, <span class="ui">High Fidelity V2</span>、 <span class="ui">Text Refine</span> といった選択肢で、画像の種類に応じて補正の方向性を調整できます。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/3dfac1270e97941110c3c3421d658c167364b9b89bce7c84ce54de1efd8261af.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">写真 → Standard / High Fidelity。小さい画像 → Low Resolution。イラスト・レンダリング → CGI。文字が多い画像 → Text Refine。</div></div>
+  <div class="footer-meta"><span>009 — Enhance Model</span><span>ENHANCE-MODEL</span></div>
+</section>
+
+<!-- 10: Subject Detection -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Subject Detection</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Subject Detection（被写体検出）—</div><h2 class="section-title">Subject Detection</h2><p class="section-lede">補正の基準となる領域を指定します。 <span class="ui">Foreground</span> は前景の被写体を中心に検出します — 背景からきれいに分離した人物や商品に最適です。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/6f6048cb09637a310c9963dba0feb70a71eb3f81450ef61a040e4ea7c4014d8f.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">ポートレートや背景が整理された商品カットでは、Foreground が最も安定します。</div></div>
+  <div class="footer-meta"><span>010 — Subject Detection</span><span>SUBJECT-DETECTION</span></div>
+</section>
+
+<!-- 11: Output Format -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Output Format</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Output Format（保存形式）—</div><h2 class="section-title">Output Format</h2><p class="section-lede">結果の保存形式を選びます。 <span class="ui">JPG</span> は軽量で一般的な共有に向きます。 <span class="ui">PNG</span> は透過が必要な場合や、後工程でさらに編集する場合に適しています。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/acb516d68af307636df284e7303517b45bbc7d312ba5d8a71add5045f4663e27.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">共有やプレビューには JPG。合成や追加編集には PNG。</div></div>
+  <div class="footer-meta"><span>011 — Output Format</span><span>OUTPUT-FORMAT</span></div>
+</section>
+
+<!-- 12: Face Enhancement -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Face Enhancement</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Face Enhancement（顔の補正）—</div><h2 class="section-title">Face Enhancement</h2><p class="section-lede">顔を含む画像で、 <strong>目・鼻・口・肌・顔の輪郭</strong> のシャープさを復元します。値を上げるほど強く復元し、下げるほど元の雰囲気を残します。ポートレート作業の中心となるオプションです。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/ab63a09e57b02fa90347b6a42c2ce3a4f2703c8047cf08e0f8f98bead9907816.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">ポートレート作業の要となるオプションです。中間値から始め、上げすぎると不自然に見えることがあります。</div></div>
+  <div class="footer-meta"><span>012 — Face Enhancement</span><span>FACE-ENHANCEMENT</span></div>
+</section>
+
+<!-- 13: Creativity -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>Creativity</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Creativity（創造性）—</div><h2 class="section-title">Creativity</h2><p class="section-lede">アップスケール時にモデルがどこまで新たに解釈するかを調整します。低い値は元画像を保ち、高い値はテクスチャとディテールをより積極的に再構築します。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/ddeaccdc28f76a77970461d55dd868e1155e2fe0f034b47a24509340603a38ae.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">元画像を保つなら低めに。質感を豊かにしたいなら高めに。顔の場合、低〜中間が安全な範囲です。</div></div>
+  <div class="footer-meta"><span>013 — Creativity</span><span>CREATIVITY</span></div>
+</section>
+
+<!-- 14: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate</h2><p class="section-lede">設定が完了したら、 <span class="ui">Generate</span> を押してアップスケールを開始します。ボタンの右側にクレジット消費量が表示されます — この例では <span class="ui">8 credits</span> です。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/6e00d0fed25ad197b3ee22bf4056c8b49f65e0d6e9374fb0b085fb44aa86d872.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">クレジット消費量はオプションの組み合わせで変わります。Generate を押す直前に必ず確認してください。</div></div>
+  <div class="footer-meta"><span>014 — 生成</span><span>GENERATE</span></div>
+</section>
+
+<!-- 15: Confirm -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>確認</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— 確認 —</div><h2 class="section-title">確認ダイアログ</h2><p class="section-lede"> <span class="ui">Generate</span> を押すと「Would you like to generate an image?」という確認が開きます。 <span class="ui">OK</span> で実際の生成を開始し、 <span class="ui">Cancel</span> で設定画面に戻ります。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/cb2f671207b3e47fc976b1de8b9ffe0448e2b40fe5fac71a6a1b2332a00fcfab.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">意図しないクレジット消費を防ぐための安全確認です。</div></div>
+  <div class="footer-meta"><span>015 — 確認</span><span>CONFIRM</span></div>
+</section>
+
+<!-- 16: Result -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 16</span><span class="dot"></span><span>結果</span></div><div class="right"><span>P. 016</span></div></div>
+  <div class="section-header"><div class="section-num">16</div><div class="section-title-block"><div class="eyebrow">— 結果 —</div><h2 class="section-title">最新の結果 / ダウンロード</h2><p class="section-lede">生成が完了すると、アップスケールされた画像が右側の <span class="ui">Latest Result</span> エリアに表示されます。右上の <span class="ui">ダウンロード</span> アイコンで保存でき、 <span class="ui">Delete</span> で不要な結果を削除します。下の <span class="ui">History</span> には過去の生成結果が残り、再確認できます。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/513348da5e041bad4b210729b9572debf58c1e2524b419f1e0b71affbcb47f4b.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">Latest Result には直近の出力が入ります。History には過去の結果が蓄積され、並べて比較できます。</div></div>
+  <div class="footer-meta"><span>016 — 結果</span><span>RESULT</span></div>
+</section>
+
+
+</body></html>

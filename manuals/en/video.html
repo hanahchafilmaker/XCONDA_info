@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generator — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 760px; }
+  .section-lede .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .section-lede strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+  .figure-block { margin-bottom: 32px; max-width: 900px; }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/video.html" hreflang="ko" lang="ko">KO</a><a href="../en/video.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/video.html" hreflang="ja" lang="ja">JA</a><a href="../zh/video.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div><div class="cover-title-en">VIDEO<br>GEN<br>ERATOR</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">A workflow guide for generating video from text and images. Run multiple video engines — Veo, Runway, Kling, Grok, Vidu, Seedance — from a single workspace.</div></div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>10 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>10 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— Guide Structure —</span>Open the Tools menu · Pick the sidebar icon · Models — Pick a video engine · Text to video · Image to video · Model Specifications · Prompt Examples · Generate · Reviewing and saving the results</div>
+  </div>
+</section>
+
+<!-- 02: Tools Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Tools Entry</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Entry —</div><h2 class="section-title">Open the Tools menu</h2><p class="section-lede">Click <span class="ui">Tools</span> at the top of the main screen. Every generation tool in Xconda is grouped under this Tools menu.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/175a102f94833e4686c2aae34c7c8076d6a37a3acd1b50c42865157d4de4376d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Video Generator lives inside the Tools menu as the video creation tool.</div></div>
+  <div class="footer-meta"><span>002 — Tools Entry</span><span>TOOLS-ENTRY</span></div>
+</section>
+
+<!-- 03: Sidebar -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Sidebar</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Sidebar —</div><h2 class="section-title">Pick the sidebar icon</h2><p class="section-lede">Click the icon in the <strong>second yellow-highlighted slot</strong> of the left vertical sidebar. This opens the Video Generator workspace.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/fa69496bd0abb3aacc5a89fc1001ca378b0c0af2fa432853783895dc94c9b00b.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">The yellow box indicates which tool is currently active.</div></div>
+  <div class="footer-meta"><span>003 — Sidebar</span><span>SIDEBAR</span></div>
+</section>
+
+<!-- 04: Models -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Models —</div><h2 class="section-title">Models — Pick a video engine</h2><p class="section-lede">Click the <span class="ui">Models</span> dropdown to choose a video engine. Options include <strong>Veo 3.1 / Veo 3.1 Fast</strong>, <strong>Runway Gen-4.5</strong>, <strong>Kling 3.0 Pro / Kling OMNI</strong>, <strong>Grok Imagine Video</strong>, <strong>Vidu Q3</strong>, and <strong>Seedance 2.0 / Seedance 2.0 Fast</strong>. (Model lineup may change — last updated 2026-04-28.)</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/14c2ed171048cbf7622ac45d1a0842eacf84446555eeac0e9fe8aacf6cf313d4.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Each model differs in supported resolution, duration, and features. Pick by what the project requires.</div></div>
+  <div class="footer-meta"><span>004 — Models</span><span>MODELS</span></div>
+</section>
+
+<!-- 05: Text To Video -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Text To Video</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Text to Video —</div><h2 class="section-title">Text to video</h2><p class="section-lede">Select the <span class="ui">Text to video</span> tab. Click the <span class="ui">Prompt</span> field and describe the scene you want to generate. You can set resolution (<strong>480p / 720p / 1080p</strong>), duration, and aspect ratio (varies by model). Use <span class="ui">Negative Prompt</span> to list elements you want excluded from the output.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/2708e5a7448fc9ec2b90146cb333450a37e918bd081c36cf87145824384e5506.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Write prompts in scene → action → camera/lighting order for stable results. Use Negative Prompt to force exclusion of unwanted elements.</div></div>
+  <div class="footer-meta"><span>005 — Text To Video</span><span>TEXT-TO-VIDEO</span></div>
+</section>
+
+<!-- 06: Image To Video -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Image To Video</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Image to Video —</div><h2 class="section-title">Image to video</h2><p class="section-lede">Select the <span class="ui">Image to video</span> tab. Upload the opening shot in <span class="ui">Start frame</span> and the closing shot in <span class="ui">End frame</span> — the AI generates the scene in between. <strong>Reference Mode</strong> (Seedance 2.0 only): <span class="ui">Frame</span> uses the images as exact start/end frames, while <span class="ui">Reference</span> uses them as style, mood, and composition references.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/d0eef3ddb068116edabfd76ee5e88f43519a1bfe9cbdc2cfec8d6926f67bb0f1.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Use Start/End images with consistent camera tone, composition, and expressions so the in-between flows naturally.</div></div>
+  <div class="footer-meta"><span>006 — Image To Video</span><span>IMAGE-TO-VIDEO</span></div>
+</section>
+
+<!-- 07: Model Specs -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Model Specs</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Specs —</div><h2 class="section-title">Model Specifications</h2><p class="section-lede">Each model differs in supported resolution, duration, aspect ratio, and feature options. Check the specs before starting. <strong>Multi-Shot</strong> is exclusive to <strong>Kling 3.0 Pro</strong> and <strong>Kling OMNI</strong>. (Last updated 2026-04-28.)</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/ccd2b7b1010a583d7f659e6b381039cf87ee84cabcbbfa6c3552efb8cadbec0c.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Refer to the on-screen table for exact specs. Each model has its own strengths — Veo 3.1's Audio Sync, Seedance's Reference Mode, and so on.</div></div>
+  <div class="footer-meta"><span>007 — Model Specs</span><span>MODEL-SPECS</span></div>
+</section>
+
+<!-- 08: Prompt Examples -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Prompt Examples</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Prompt Examples —</div><h2 class="section-title">Prompt Examples</h2><p class="section-lede">Sample prompts for reference. For <strong>Text to Video</strong>: <em>"A woman walks alone down a rain-soaked alley at night, neon signs reflecting on the wet pavement. She stops in front of a glass door, hesitates, then pushes it open — warm golden light spills out into the..."</em> — describe scene, action, atmosphere, and lighting in concrete detail.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/01b3b7f2f94edae6a5f6333b994db526c09c204a91feab0b9453f123dafc2356.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Key to a good prompt: pack <strong>setting → character action → camera move → lighting/tone</strong> into a single flowing sentence.</div></div>
+  <div class="footer-meta"><span>008 — Prompt Examples</span><span>PROMPT-EXAMPLES</span></div>
+</section>
+
+<!-- 09: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Generate</h2><p class="section-lede">When all settings are ready, click the yellow <span class="ui">Generate</span> button at the bottom. For multi-shot, set each shot's duration in seconds in the <span class="ui">Shots</span> area and use <span class="ui">+ Add Shot</span> to add more. Total length must stay <strong>within 15 seconds</strong>. Each generation costs <strong>50 credits</strong> (180 credits for multi-shot). Progress is shown after pressing Generate; speed varies by model.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/31e0f599e9f567797ca32bc3ffe057c9b4d3c5da1e1ed52b9a46d1adf949b0b5.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Multi-Shot splits one video into multiple cuts. Available only on Kling 3.0 Pro and Kling OMNI.</div></div>
+  <div class="footer-meta"><span>009 — Generate</span><span>GENERATE</span></div>
+</section>
+
+<!-- 10: Results -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Results</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Results —</div><h2 class="section-title">Reviewing and saving the results</h2><p class="section-lede">When generation completes, results appear as a list. The right panel shows <strong>Date / Resolution / Aspect Ratio / Duration / Model</strong>. Hit play for a preview, click the video itself for fullscreen. Hover over a video to reveal <span class="ui">Save / Delete</span> icons — Save downloads the file; the <span class="ui">Share</span> icon on the right sends it outside the app.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/85baed045500c5aaf11ff426cb577247dd9d819ab98093b20db54055e852031d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Results accumulate in the list. Download the picks and clear the rest to keep the workspace tidy.</div></div>
+  <div class="footer-meta"><span>010 — Results</span><span>RESULTS</span></div>
+</section>
+
+
+</body></html>

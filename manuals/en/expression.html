@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expression Transformer — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+  :root { --body-font: 'Pretendard', sans-serif; }
+  body { word-break: keep-all; letter-spacing: -0.015em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+  .img-frame { border: 1px solid var(--hairline); background: var(--offwhite-warm); padding: 0; overflow: hidden; }
+  .img-cap { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); margin-top: 12px; }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 92px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  .usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+  .flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 32px; }
+  .flow-card { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 28px 24px; text-align: center; }
+  .flow-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 10px; }
+  .flow-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+  .flow-arrow { font-family: var(--body-font); font-size: 24px; color: var(--midnight); }
+  .kf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 8px; }
+  .kf-cell .kf-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--midnight); margin-top: 12px; font-weight: 500; }
+  .kf-cell .kf-desc { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.6; margin-top: 6px; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+    .kf-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/expression.html" hreflang="ko" lang="ko">KO</a><a href="../en/expression.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/expression.html" hreflang="ja" lang="ja">JA</a><a href="../zh/expression.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div><div class="cover-title-en">EXPRESSION<br>TRANSFORMER</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">A feature for freely changing a person's facial expression in an image. Combine prompts with camera options to generate various expression images of the same person.</div></div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>11 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>11 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— Guide Contents —</span>
+    Purpose · Use Cases · Entry · Original Image · Prompt · Camera Options · Generate · Confirm/Progress · Result Card · Download/Delete · Test Examples · Tips</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Purpose</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose —</div><h2 class="section-title">What Expression Transformer does</h2><p class="section-lede">A feature for freely changing the facial expression of a person in an image. Combine prompts with camera options to generate various expression images of the same person.</p></div></div>
+  <div class="flow-row">
+    <div class="flow-card"><div class="label">— Step 01 —</div><h4>Original Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card"><div class="label">— Step 02 —</div><h4>Prompt + Camera</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card" style="background: var(--midnight); border-color: var(--midnight);"><div class="label" style="color: rgba(240,239,234,0.6);">— Result —</div><h4 style="color: #F0EFEA;">Expression Image</h4></div>
+  </div>
+  <div class="note-box"><div class="label">— Workflow —</div><div class="text">Keep the original identity while changing only the emotion — smile, surprise, seriousness — to quickly generate and compare expression candidates of the same person.</div></div>
+  <div class="footer-meta"><span>002 — Purpose</span><span>Overview</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Use Cases</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Use Cases —</div><h2 class="section-title">Why and when to use it</h2><p class="section-lede">Used when you need to change only the emotion — smile, surprise, seriousness — while keeping the model's identity. Useful for proposing expression direction before a shoot or comparing drafts with a client.</p></div></div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>Compare expressions</h4><p>Quickly compare expression candidates — smile, surprise, seriousness — of the same person without a reshoot.</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>Emotion-driven work</h4><p>Well suited to ads, thumbnails, detail pages, and storyboards where emotional expression matters.</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>Proposing &amp; comparing</h4><p>When proposing expression direction before a shoot, or comparing drafts with a client.</p></div>
+  </div>
+  <div class="footer-meta"><span>003 — Use Cases</span><span>When</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Entry &amp; Upload</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Entry &amp; Upload —</div><h2 class="section-title">Getting in and uploading the original</h2><p class="section-lede">Enter via the smiley-face icon in the left sidebar, then upload an original image by drop or click.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— Entry —</div><h3 class="step-title">Click the smiley-face icon</h3><p class="step-body">In the left vertical bar, click the smiley-face icon. This menu is <span class="ui">Expression Transformer</span>.</p></div>
+      <div class="step-block"><div class="step-number">— Upload —</div><h3 class="step-title">Upload original image</h3><p class="step-body">Use <span class="ui">Drop Image Here</span> or <span class="ui">Click to Upload</span> to upload the original image. The more the face is visible and centered on one person, the more stable the expression transformation.</p></div>
+    </div>
+    <div><div class="img-frame"><img src="../assets/screens/b16b737422ba44a2e83217c8e091cde48369ea98a99cf0599b15b6e240b7b619.webp" alt="" style="display:block; width:100%; height:auto;"></div><div class="img-cap">— Sidebar Icon · Upload Screen —</div></div>
+  </div>
+  <div class="footer-meta"><span>004 — Entry &amp; Upload</span><span>Entry</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Original Image</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Original Image —</div><h2 class="section-title">Choosing the source for transformation</h2><p class="section-lede">The more the face is visible and centered on a single person, the more stable the expression transformation.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— Original image —</div><h3 class="step-title">A good original to transform</h3><p class="step-body">The clearer the face and the more it is centered on one person, the more stable the transformation. The uploaded image is shown as a preview.</p></div>
+      <div class="step-block"><div class="step-number">— Stability —</div><h3 class="step-title">Preserving identity</h3><p class="step-body">The clearer the original person's facial impression and clothing, the more consistent the expression-only result becomes.</p></div>
+    </div>
+    <div><div class="img-frame" style="background:#fff;"><img src="../assets/screens/3fb9c827d51da3d32ed3d675a076811fec6689926258a15c11e6dfb33b390274.webp" alt="" style="display:block; width:100%; height:auto;"></div><div class="img-cap">— Original Image Preview —</div></div>
+  </div>
+  <div class="footer-meta"><span>005 — Original Image</span><span>Original</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Prompt</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Prompt —</div><h2 class="section-title">Describing the expression in text</h2><p class="section-lede">Enter the desired expression as a prompt, and add preserve identity / preserve clothing to keep the same person and outfit.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— Prompt —</div><h3 class="step-title">Enter the expression you want</h3><p class="step-body">Type the expression you want as text. e.g. <span class="ui">gentle smile</span>, <span class="ui">surprised expression</span>, <span class="ui">serious cinematic expression</span>.</p></div>
+      <div class="step-block"><div class="step-number">— Keep Identity —</div><h3 class="step-title">preserve identity / clothing</h3><p class="step-body">To keep the same person and outfit, also include <span class="ui">preserve identity</span> and <span class="ui">preserve clothing</span>.</p></div>
+    </div>
+    <div><div class="img-frame"><img src="../assets/screens/71e99c2e713fefb596b15ad8014899f4fdcc2a47a8d3f4d87e5fea035ab37973.webp" alt="" style="display:block; width:100%; height:auto;"></div><div class="img-cap">— Prompt Input Example —</div></div>
+  </div>
+  <div class="note-box"><div class="label">— Example Prompt —</div><div class="text">A gentle confident smile, natural eyes, subtle happy facial expression, <span class="ui">preserve the same person and outfit</span>, clean studio lighting.</div></div>
+  <div class="footer-meta"><span>006 — Prompt</span><span>Prompt</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Camera Options</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Camera Options —</div><h2 class="section-title">Setting view, shot size, and angle</h2><p class="section-lede">Combine three camera conditions — Camera View, Shot Size, and Camera Angle — to render the same expression in different framings. All are optional.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 1. Camera View / Position —</div><h3 class="step-title">Facing direction</h3><p class="step-body">Choose which way the subject faces the camera — Front View, 3/4 View, Profile View, etc. Use <span class="ui">Front View</span> for a frontal cut and <span class="ui">3/4 View</span> for a slightly turned cut.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/a2f87c0cec946a9bf77856e7f9dc95f5a720ae80fab0b2ff9658b08e5d037b78.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+      <div class="step-block"><div class="step-number">— 2. Shot Size / Distance —</div><h3 class="step-title">Size in frame</h3><p class="step-body">Choose how large the subject appears — Wide Shot, Medium Shot, Close-Up, etc. Use the <span class="ui">Close-Up</span> range to emphasize expression, and the <span class="ui">Medium</span> range to show outfit and pose.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/01f12a021927cd50807c12b78bd874e0068276b48a20193ff91c23b0ce21f3d0.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+    </div>
+    <div>
+      <div class="step-block"><div class="step-number">— 3. Camera Angle / Height —</div><h3 class="step-title">Camera height &amp; gaze</h3><p class="step-body">Choose the camera height and feel of the gaze — Eye Level, Low Angle, High Angle, etc. <span class="ui">Eye Level</span> feels natural, while <span class="ui">Low Angle</span> makes the subject look stronger.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/2ed903f05f62201fc205812fe0d7e785cce22eef68ddc4503096d4eaae7f0165.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— Optional —</div><div class="text">All camera options are optional. If you only need an expression change, you can leave them empty and proceed.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>007 — Camera Options</span><span>Camera</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Running generation and checking progress</h2><p class="section-lede">Once the original and prompt are ready, press Generate (6 credits), then check the state via the confirmation popup and progress rate.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— Generate —</div><h3 class="step-title">Generate button activates</h3><p class="step-body">Once the original image and prompt are ready, the <span class="ui">Generate</span> button activates. Each generation uses <strong>6 credits</strong>.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/1ff4d507cfb43f6575ce2d93a3a8ee48291f8d0522853dd6d4754c95179e9984.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+      <div class="step-block"><div class="step-number">— Confirm —</div><h3 class="step-title">Confirmation popup</h3><p class="step-body">The popup <span class="ui">Would you like to generate an image?</span> appears. Press <span class="ui">OK</span> to start, or <span class="ui">Cancel</span> to return to the previous screen.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/cb140f2d0883c2a8069318c6df6e1a4eb244dda8c7066ef4f3f4868b0e383911.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+    </div>
+    <div>
+      <div class="step-block"><div class="step-number">— Progress —</div><h3 class="step-title">Generation progress</h3><p class="step-body"><span class="ui">Creating your image…</span> shows the progress as a percentage. On completion, an image card is added to the right result area.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/a24be0cd0eaaf1fce90a97ffb2a6f587b4f4fed95fc9427a493da45d79700f00.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+      <div class="note-box"><div class="label">— Credits —</div><div class="text"><span class="ui">6 credits</span> per generation. Consider credit usage when generating several expression candidates.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>008 — Generate</span><span>Generate</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Result Card</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Result Card —</div><h2 class="section-title">Comparing generated expression candidates</h2><p class="section-lede">Expression images stack as cards in the right result area, letting you compare multiple expression candidates from the same original on one screen.</p></div></div>
+  <div class="img-frame"><img src="../assets/screens/761280c1ee022fa42824261ca65c401c72150e86dd9b23e639da80bd227653c9.webp" alt="" style="display:block; width:100%; height:auto;"></div>
+  <div class="note-box"><div class="label">— Result Card —</div><div class="text">Generated expression images stack as cards in the right area. Generating multiple times lets you compare expression candidates made from the same original on one screen.</div></div>
+  <div class="footer-meta"><span>009 — Result Card</span><span>Results</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Download &amp; Tips</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Download &amp; Tips —</div><h2 class="section-title">Saving results and stable usage</h2><p class="section-lede">Download or tidy results with the bottom icons, and protect identity by testing the expression first, then adding camera options when needed.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— Download / Delete —</div><h3 class="step-title">Download and tidy up</h3><p class="step-body">Use the <span class="ui">download icon</span> at the bottom of the result area to download images, and the <span class="ui">trash icon</span> to tidy up results.</p>
+      <div class="img-frame" style="margin-top:16px;"><img src="../assets/screens/c3721e4f5c573b1d3a7443a6ab77b1f9addf8a0d794344b3b8fd7b9e5f1e0944.webp" alt="" style="display:block; width:100%; height:auto;"></div></div>
+    </div>
+    <div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— Tip —</div><div class="text">Changing expression, gaze, framing, and lighting all at once can weaken the original identity. It is more stable to test the <span class="ui">expression only</span> first, then add camera options when needed.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>010 — Download &amp; Tips</span><span>Download</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Test Examples</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Test Examples —</div><h2 class="section-title">Comparing smile, surprise, and seriousness</h2><p class="section-lede">From the same original, expression candidates with different emotions are generated — gentle smile, surprised reaction, and serious expression.</p></div></div>
+  <div class="kf-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="kf-cell"><div class="img-frame" style="background:#fff;"><img src="../assets/screens/58db7022c79958c8928ca57239bbf2b7a28b26b0c5aec6568d89dde8922b8b56.webp" alt="" style="display:block; width:100%; height:auto;"></div><div class="kf-label">Test 1 · Gentle Smile</div><div class="kf-desc">An example with natural eyes and slightly raised mouth corners.</div></div>
+    <div class="kf-cell"><div class="img-frame" style="background:#fff;"><img src="../assets/screens/37044a610ee3ba500e96485f54c9b59c715b558f1de2362d55b0091b3802b2f7.webp" alt="" style="display:block; width:100%; height:auto;"></div><div class="kf-label">Test 2 · Surprised</div><div class="kf-desc">A bright reaction cut with widened eyes and a slightly open mouth.</div></div>
+    <div class="kf-cell"><div class="img-frame" style="background:#fff;"><img src="../assets/screens/e23a3d0de6f52eab2c518cb0d327b678a4bb6eccf24de8af02350207164174ab.webp" alt="" style="display:block; width:100%; height:auto;"></div><div class="kf-label">Test 3 · Serious</div><div class="kf-desc">An example creating a cinematic impression with a calm, focused gaze.</div></div>
+  </div>
+  <div class="note-box"><div class="label">— Expression Candidates —</div><div class="text">From the same original, apply different emotions — <span class="ui">smile · surprise · seriousness</span> — to compare expression candidates that keep the same identity.</div></div>
+  <div class="footer-meta"><span>011 — Test Examples</span><span>Examples</span></div>
+</section>
+
+
+</body></html>

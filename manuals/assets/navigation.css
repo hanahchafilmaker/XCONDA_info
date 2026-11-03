@@ -1,0 +1,71 @@
+/* Shared navigation for the read-only copies of the supplied HTML guides. */
+.xconda-manual-nav,
+.xconda-manual-nav * { box-sizing: border-box; }
+.xconda-manual-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 22px;
+  padding: 12px max(18px, calc((100% - 1200px) / 2));
+  background: #101318;
+  color: #f7f7f6;
+  font: 500 14px/1.4 system-ui, -apple-system, sans-serif;
+  text-align: left;
+  letter-spacing: normal;
+}
+.xconda-manual-nav .xconda-manual-links,
+.xconda-manual-nav .xconda-manual-languages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.xconda-manual-nav a {
+  display: inline-block;
+  padding: 4px 0;
+  color: #fff;
+  text-decoration: none;
+  font: inherit;
+}
+.xconda-manual-nav a:hover { text-decoration: underline; }
+.xconda-manual-nav a:focus-visible {
+  outline: 2px solid #fde047;
+  outline-offset: 3px;
+}
+.xconda-manual-nav .xconda-manual-brand {
+  margin-right: 4px;
+  font-weight: 750;
+  letter-spacing: .05em;
+}
+.xconda-manual-nav .xconda-manual-languages a {
+  padding: 5px 7px;
+  border-radius: 3px;
+  color: #bfc4ca;
+  font-size: 12px;
+  font-weight: 700;
+}
+.xconda-manual-nav .xconda-manual-languages a[aria-current="page"] {
+  background: #facc15;
+  color: #101318;
+}
+.image-plate img[role="button"] { cursor: zoom-in; }
+.image-plate img[role="button"]:focus-visible { outline: 3px solid #eab308; outline-offset: 3px; }
+/* Several supplied slide layouts use keep-all and automatic grid minimums.
+   Let translated text and screenshot grids shrink on small screens instead of
+   pushing the whole document beyond the viewport. */
+@media (max-width: 700px) {
+  .slide, .slide * {
+    min-width: 0 !important;
+    max-width: 100%;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  .slide .spec-list-grid, .slide .two-col { grid-template-columns: minmax(0, 1fr) !important; }
+  .slide .k { white-space: normal; box-decoration-break: clone; }
+  .slide pre { white-space: pre-wrap; }
+  .slide table { display: block; max-width: 100%; overflow-x: auto; }
+}
+@media print { .xconda-manual-nav { display: none !important; } }

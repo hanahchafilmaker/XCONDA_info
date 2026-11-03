@@ -3,15 +3,17 @@ import { ExternalLink } from "lucide-react";
 import { cn } from "../utils/cn";
 import { TOOLS, TOOL_GROUPS } from "../content/tools";
 import { getToolVideo } from "../content/toolVideos";
+import { htmlGuideIndexPath, htmlGuideLabels, htmlGuidePath } from "../content/htmlGuides";
 import { useContent } from "../content/ContentContext";
 import { groupLabel, localizeTool, useLang } from "../i18n";
+import { hubBase } from "../seo";
 import { SmartImage } from "./common";
 import { GhostButton, IconArrow, Reveal, SectionHeader, Tabs, VoltButton } from "./volt";
 
 type Group = (typeof TOOL_GROUPS)[number];
 
 export default function Guides() {
-  const { t, pick, lang } = useLang();
+  const { t, pick, lang, target } = useLang();
   const { openTool } = useContent();
   const [group, setGroup] = useState<Group>("전체");
   const [activeSlug, setActiveSlug] = useState(TOOLS[0].slug);
@@ -25,6 +27,7 @@ export default function Guides() {
 
   const active = filtered.find((tool) => tool.slug === activeSlug) ?? filtered[0] ?? tools[0];
   const video = getToolVideo(active.slug, lang);
+  const guidePath = htmlGuidePath(active.slug, target);
 
   const pickGroup = (g: Group) => {
     setGroup(g);
@@ -37,6 +40,16 @@ export default function Guides() {
       <div className="shell">
         <Reveal>
           <SectionHeader title={t("nav.tools")} sub={t("v.guides.sub")} />
+          <a
+            data-html-guide-index
+            href={`${hubBase()}${htmlGuideIndexPath(target)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="notranslate mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-700 underline underline-offset-4 transition-colors hover:text-black"
+          >
+            {htmlGuideLabels[target].all}
+            <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+          </a>
         </Reveal>
 
         <Reveal delay={60} className="mt-8">
@@ -128,6 +141,19 @@ export default function Guides() {
                     ))}
                   </ul>
                 </div>
+              )}
+
+              {guidePath && (
+                <a
+                  data-html-guide={active.slug}
+                  href={`${hubBase()}${guidePath}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="notranslate mt-5 flex items-center justify-between gap-3 rounded-none bg-amber-50 px-4 py-3 text-sm font-medium text-neutral-900 ring-1 ring-inset ring-amber-200 transition hover:bg-amber-100"
+                >
+                  <span>{htmlGuideLabels[target].read}</span>
+                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                </a>
               )}
 
               {video && (

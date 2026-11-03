@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Angle Generator — 用户指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+
+  /* Cover */
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  /* Use case grid (4 cards) */
+  .usecase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 220px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Feature grid (4 cards) */
+  .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .feature-card { background: var(--offwhite); padding: 28px 32px; min-height: 180px; }
+  .feature-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 12px; }
+  .feature-card h4 { font-family: var(--body-font); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .feature-card p { font-family: var(--body-font); font-size: 13.5px; color: var(--slate); line-height: 1.7; }
+
+  /* Tip grid (5 columns for tips) */
+  .tip-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .tip-card { background: var(--offwhite); padding: 24px 18px; min-height: 200px; display: flex; flex-direction: column; }
+  .tip-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 0.9; color: var(--midnight); margin-bottom: 10px; }
+  .tip-card h4 { font-family: var(--body-font); font-size: 14px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .tip-card p { font-family: var(--body-font); font-size: 12px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Angle list grid */
+  .angle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .angle-item { background: var(--offwhite); padding: 16px 20px; }
+  .angle-item .name { font-family: var(--body-font); font-size: 13.5px; font-weight: 600; color: var(--midnight); margin-bottom: 4px; letter-spacing: -0.02em; }
+  .angle-item .desc { font-family: var(--body-font); font-size: 11.5px; color: var(--slate); line-height: 1.6; }
+
+  /* Hero stat for cover area */
+  .hero-stat { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); margin-top: 40px; }
+  .hero-stat .item .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 8px; }
+  .hero-stat .item .big { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 0.9; color: var(--midnight); letter-spacing: -0.02em; }
+  .hero-stat .item .sub { font-family: var(--body-font); font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.6; }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid, .feature-grid, .tip-grid, .angle-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stat { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="指南导航" data-zoom-label="放大图片"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">返回中心</a><a href="index.html">全部指南</a></div><div class="xconda-manual-languages"><a href="../ko/auto-angle.html" hreflang="ko" lang="ko">KO</a><a href="../en/auto-angle.html" hreflang="en" lang="en">EN</a><a href="../ja/auto-angle.html" hreflang="ja" lang="ja">JA</a><a href="../zh/auto-angle.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>用户指南</span></div>
+    <div>
+      <div class="cover-title-en">AUTO ANGLE<br>GENERATOR</div>
+      <div class="cover-subtitle" style="margin-top: 32px;">从单张图像自动生成最多 34 个相机角度的工作流程指南。</div>
+    </div>
+    <div class="cover-bottom-meta"><div><div>用户指南</div><div>教程</div></div><div style="text-align:right"><div>10 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>10 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— 指南内容 —</span>       目的 · 使用场景 · 功能 · 原图技巧 · 进入 · 图像上传 · 相机角度 · 34 个选项 · Generate · 结果 · 详情视图 · 下载     </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">从单张图像自动生成角度</h2><p class="section-lede">实际拍摄需要几十次重拍 —— 不断调整灯光、机位和三脚架高度。Auto Angle Generator 用一张原图取代这一过程。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 传统方式 —</div><h3 class="step-title">灯光 · 相机 · 剧组</h3><p class="step-body">实际拍摄需要几十次重拍 —— 每个变体都要调整灯光、机位和三脚架高度。</p></div>
+      <div class="step-block"><div class="step-number">— Auto Angle Generator —</div><h3 class="step-title">1 张原图自动转换</h3><p class="step-body">无需场地、设备或剧组，即可获得商品或角色的多角度图像。</p></div>
+    </div>
+    <div>
+      <div class="hero-stat" style="grid-template-columns: 1fr; margin-top: 0; padding: 0; border: none;">
+        <div class="item" style="border-bottom: 1px solid var(--hairline); padding-bottom: 24px;"><div class="label">— 原图 —</div><div class="big">1 张图像</div><div class="sub">仅需一张原图</div></div>
+        <div class="item" style="padding-top: 8px;"><div class="label">— 输出 —</div><div class="big">34 个角度</div><div class="sub">最多 34 个相机角度</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>002 — 目的</span><span>概览</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>使用场景</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 使用场景 —</div><h2 class="section-title">何时使用</h2><p class="section-lede">商品摄影补充、电商详情页、lookbook / 作品集，以及企划 / 草图阶段。</p></div></div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>商品摄影补充</h4><p>把单张正面商品图扩展为俯视、仰视、侧视等构图。</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>电商详情页</h4><p>用多角度商品图快速填充详情页。</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>Lookbook / 作品集</h4><p>把单张角色 / 服装图像转换为多个视角。</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>企划 / 草图</h4><p>在实际拍摄前预先检查角度草图。</p></div>
+  </div>
+  <div class="footer-meta"><span>003 — 使用场景</span><span>When</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>功能</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 功能 —</div><h2 class="section-title">功能概览</h2><p class="section-lede">34 个角度选项、批量 / 单独选择、批量 / 单独生成、详情视图与下载。</p></div></div>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="tag">— 01 —</div><h4>34 个相机角度选项</h4><p>可从 Eye Level、High Angle、Aerial View、Low Angle、Close Up、Side Profile 等 34 个角度中选择。</p></div>
+    <div class="feature-card"><div class="tag">— 02 —</div><h4>Select All / Deselect All</h4><p>一次选中所有可用角度，或清除选择。</p></div>
+    <div class="feature-card"><div class="tag">— 03 —</div><h4>单独 + 批量生成</h4><p>只生成所选角度，或一次生成全部。</p></div>
+    <div class="feature-card"><div class="tag">— 04 —</div><h4>详情视图 + 下载</h4><p>点击结果可缩放 / 适应 / 旋转。每张图像都可单独下载。</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — 功能</span><span>能力</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>原图技巧</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 原图技巧 —</div><h2 class="section-title">原图准备</h2><p class="section-lede">为获得更高质量，原图最好满足以下条件。</p></div></div>
+  <div class="tip-grid">
+    <div class="tip-card"><div class="num">01</div><h4>简洁背景</h4><p>白色 / 纯色背景或干净的影棚背景，角度转换准确度最高。</p></div>
+    <div class="tip-card"><div class="num">02</div><h4>主体居中</h4><p>主体应位于画面中央。裁切过度或偏离中心的图像在转换时可能变形。</p></div>
+    <div class="tip-card"><div class="num">03</div><h4>高分辨率</h4><p>分辨率越高，质量越好。低分辨率原图会在结果中丢失细节。</p></div>
+    <div class="tip-card"><div class="num">04</div><h4>正面拍摄</h4><p>建议使用正面或稍有角度的图像。极端角度可能转换得不自然。</p></div>
+    <div class="tip-card"><div class="num">05</div><h4>单一主体</h4><p>多个主体重叠，或手部、手臂复杂交叉，都会降低转换质量。</p></div>
+  </div>
+  <div class="footer-meta"><span>005 — 原图技巧</span><span>准备</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>进入</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 进入 —</div><h2 class="section-title">打开 Auto Angle Generator</h2><p class="section-lede">点击左侧竖排边栏的第 5 个图标。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">找到边栏第 5 个图标</h3><p class="step-body">位于左侧竖排边栏的第 5 个图标，图标是带角度刻度的三角形。</p></div><div class="step-block"><div class="step-number">— 步骤 02 —</div><h3 class="step-title">点击打开</h3><p class="step-body">点击图标即可打开 Auto Angle Generator 工作区。</p></div></div><div><img src="../assets/screens/a01bc05f74cc6e513b45e83ed9c9fc30cd5654f8b4f50f2c1b59b55450e532fc.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>006 — 进入</span><span>打开</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>图像上传</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Drop Image Here —</div><h2 class="section-title">上传图像</h2><p class="section-lede">点击上传区域选择原图。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击上传区域</h3><p class="step-body"> <span class="ui">Drop Image Here</span>, <span class="ui">或</span>, <span class="ui">Click to Upload</span>.</p></div><div class="step-block"><div class="step-number">— 确认 —</div><h3 class="step-title">显示预览</h3><p class="step-body">上传后会显示预览图像。</p></div><div class="note-box"><div class="label">— 必填 —</div><div class="text">如果缺少图像，Generate 按钮将不可用。</div></div></div><div><img src="../assets/screens/9bcb2810b03d0ca4670cc1ba5b8f98431a94e05da7f1ff1e3d14efc6c02013da.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>007 — 上传</span><span>图像</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>相机角度</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 相机角度 —</div><h2 class="section-title">选择相机角度</h2><p class="section-lede">点击相机角度按钮进行选择。选中的按钮会变成黄色。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">单独选择角度</h3><p class="step-body">逐个点击相机角度按钮进行选择。选中的按钮会变成黄色。</p></div><div class="step-block"><div class="step-number">— 步骤 02 —</div><h3 class="step-title">Select All / Deselect All</h3><p class="step-body"> <span class="ui">Select All</span> 可一次选中所有可用角度。点击 <span class="ui">Deselect All</span> 可清除选择。</p></div><div class="note-box"><div class="label">— 必填 —</div><div class="text">至少选择一个角度，Generate 按钮才会变为可用。</div></div></div><div><img src="../assets/screens/13b3df8f1b30775b6e01eaa4ea36c8324faa806d275a2731304333a7725a2c00.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>008 — 相机角度</span><span>选择</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>角度选项</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 角度选项 —</div><h2 class="section-title">相机角度参考</h2><p class="section-lede">可用的相机角度类型及其特征。</p></div></div>
+  <div class="angle-grid"><div class="angle-item"><div class="name">Eye Level Shot</div><div class="desc">以视线高度为基准的机位</div></div><div class="angle-item"><div class="name">High Angle Shot</div><div class="desc">自上方俯视</div></div><div class="angle-item"><div class="name">Extreme High Angle</div><div class="desc">从极高处俯视</div></div><div class="angle-item"><div class="name">Aerial View</div><div class="desc">俯瞰式视角</div></div><div class="angle-item"><div class="name">Aerial-Drone Shot</div><div class="desc">类似无人机的航拍角度</div></div><div class="angle-item"><div class="name">Photo from Above</div><div class="desc">从正上方拍摄</div></div><div class="angle-item"><div class="name">Top View</div><div class="desc">自上而下的正面视角</div></div><div class="angle-item"><div class="name">Birds Eye View</div><div class="desc">鸟瞰视角</div></div><div class="angle-item"><div class="name">Low Angle Shot</div><div class="desc">自下方向上仰视</div></div><div class="angle-item"><div class="name">Extreme Low Angle</div><div class="desc">从极低处仰视</div></div><div class="angle-item"><div class="name">Wide Angle Shot</div><div class="desc">宽广的视野</div></div><div class="angle-item"><div class="name">Full Body Shot</div><div class="desc">主体全身入画</div></div><div class="angle-item"><div class="name">Medium Shot</div><div class="desc">中距离取景</div></div><div class="angle-item"><div class="name">Close Up Shot</div><div class="desc">近距取景</div></div><div class="angle-item"><div class="name">Extreme Close Up</div><div class="desc">极近取景</div></div><div class="angle-item"><div class="name">Detail Shot</div><div class="desc">强调细节元素</div></div><div class="angle-item"><div class="name">Side Angle Shot</div><div class="desc">侧面视角</div></div><div class="angle-item"><div class="name">Side Profile Shot</div><div class="desc">侧重侧脸</div></div><div class="angle-item"><div class="name">Two Shot</div><div class="desc">双主体构图</div></div><div class="angle-item"><div class="name">Shot from Behind</div><div class="desc">自后方观看</div></div><div class="angle-item"><div class="name">Over-the-Shoulder</div><div class="desc">过肩视角</div></div><div class="angle-item"><div class="name">Point of View (POV)</div><div class="desc">基于主观视角（POV）的角度</div></div><div class="angle-item"><div class="name">Tracking</div><div class="desc">跟随式构图</div></div><div class="angle-item"><div class="name">Tilted Shot</div><div class="desc">倾斜角度</div></div><div class="angle-item"><div class="name">Dutch Angle Shot</div><div class="desc">对角倾斜角度</div></div><div class="angle-item"><div class="name">Diagonal Shot</div><div class="desc">斜向构图</div></div><div class="angle-item"><div class="name">Off-center Close Up</div><div class="desc">偏离中心的特写</div></div><div class="angle-item"><div class="name">Off-center Shot</div><div class="desc">偏离中心的构图</div></div><div class="angle-item"><div class="name">Rule of Thirds</div><div class="desc">三分法构图</div></div><div class="angle-item"><div class="name">Silhouette Shot</div><div class="desc">侧重剪影</div></div><div class="angle-item"><div class="name">Candid Shot</div><div class="desc">自然瞬间的角度</div></div><div class="angle-item"><div class="name">Foot on the Pavement</div><div class="desc">贴近地面的低机位视角</div></div></div>
+  <div class="footer-meta"><span>009 — 角度选项</span><span>参考</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate Angles 按钮</h2><p class="section-lede">完成图像上传和角度选择后，点击底部黄色的 <span class="ui">Generate Angles</span> 按钮。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击 Generate</h3><p class="step-body">完成图像上传和角度选择后，点击底部黄色的 <span class="ui">Generate Angles</span> 按钮。</p></div><div class="step-block"><div class="step-number">— 运行 —</div><h3 class="step-title">开始生成</h3><p class="step-body">开始生成所选角度。</p></div></div><div><img src="../assets/screens/3791c767126d67b857e74aa56f0fe11aa99d5bc26ce94dba068651710fae4cd8.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>010 — 生成</span><span>运行</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>结果</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 结果 —</div><h2 class="section-title">查看结果</h2><p class="section-lede">生成完成后，所选角度的结果图像会显示在右侧结果区域。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 结果 —</div><h3 class="step-title">按角度显示结果</h3><p class="step-body">生成完成后，所选角度的结果图像会显示在右侧结果区域。</p></div><div class="step-block"><div class="step-number">— 标签 —</div><h3 class="step-title">显示角度名称</h3><p class="step-body">每个结果下方都会显示其角度名称。</p></div></div><div><img src="../assets/screens/e4fc79368a471e4a698bc6a7c02f9de8cce319864560a8c5ecf69e4ae376b749.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>011 — 结果</span><span>查看</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>详情视图</span><span class="dot"></span><span>详情视图</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 详情视图 —</div><h2 class="section-title">详情视图</h2><p class="section-lede">点击结果图像即可打开详情视图。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击图像</h3><p class="step-body">点击结果图像即可打开详情视图，图像会放大显示。</p></div><div class="step-block"><div class="step-number">— 操作 —</div><h3 class="step-title">缩放 · 适应 · 旋转</h3><p class="step-body">使用底部图标可以放大、缩小、适应屏幕或旋转。</p></div></div><div><img src="../assets/screens/9968c191dc05d547bf2dd12ab391381e4851b716b03def54f5aa7a82e0c47f75.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>012 — 详情视图</span><span>视图</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>下载</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— 下载 · 删除 —</div><h2 class="section-title">下载与删除</h2><p class="section-lede">将鼠标悬停在结果图像上，即可使用单独下载和删除。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">悬停在图像上</h3><p class="step-body">将光标移到结果图像上，会出现下载和删除图标。</p></div><div class="step-block"><div class="step-number">— 操作 —</div><h3 class="step-title">下载 / 删除</h3><p class="step-body">点击下载图标可保存该图像，点击删除图标则将其从结果中移除。</p></div></div><div><img src="../assets/screens/6ebc9cd6984f3644ee674fb8e962afadd1a60c3f6ab692ac6156fe2cf56d66c7.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>013 — 下载</span><span>管理</span></div>
+</section>
+
+</body></html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="ko"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Ref — 사용자 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+  :root { --body-font: 'Pretendard', sans-serif; }
+  body { word-break: keep-all; letter-spacing: -0.015em; }
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font, sans-serif);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+  .slide-meta {
+    position: absolute;
+    top: 32px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--slate); font-weight: 500; z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+  .footer-meta {
+    margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light);
+  }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+
+  .section-header {
+    display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+    border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+  }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+
+  /* Good/Bad examples */
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 32px; }
+  .example-block { background: var(--offwhite); padding: 28px 32px; }
+  .example-block.bad { background: var(--midnight); color: #F0EFEA; }
+  .example-block .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 14px; color: var(--slate); }
+  .example-block.bad .label { color: rgba(240,239,234,0.6); }
+  .example-block .item { font-family: var(--body-font); font-size: 14px; line-height: 1.85; margin-bottom: 6px; }
+  .example-block.bad .item { color: rgba(240,239,234,0.85); }
+  .example-block .reason { font-family: var(--body-font); font-size: 12px; color: var(--slate-light); margin-left: 8px; }
+  .example-block.bad .reason { color: rgba(240,239,234,0.5); }
+
+  /* Feature cards */
+  .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .feature-card { background: var(--offwhite); padding: 28px 28px; min-height: 180px; }
+  .feature-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 12px; }
+  .feature-card h4 { font-family: var(--body-font); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .feature-card p { font-family: var(--body-font); font-size: 13.5px; color: var(--slate); line-height: 1.7; }
+
+  /* Use case list */
+  .usecase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 220px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Cover */
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 9vw, 140px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  /* Download dark */
+  .download-section { background: var(--midnight); color: #F0EFEA; }
+  .download-section .slide-meta { color: rgba(240,239,234,0.5); }
+  .download-section .slide-meta .dot { background: #F0EFEA; }
+  .download-section .footer-meta { color: rgba(240,239,234,0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240,239,234,0.15); }
+  .download-section .section-num, .download-section .eyebrow, .download-section .section-title { color: #F0EFEA; }
+  .download-section .section-lede { color: rgba(240,239,234,0.7); }
+  .download-options { display: grid; gap: 1px; background: rgba(240,239,234,0.15); border: 1px solid rgba(240,239,234,0.15); }
+  .download-option { background: var(--midnight); padding: 24px 28px; display: grid; grid-template-columns: 50px 1fr auto; gap: 20px; align-items: center; transition: background 0.3s; }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #F0EFEA; line-height: 1; }
+  .download-option h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: #F0EFEA; margin-bottom: 4px; }
+  .download-option p { font-family: var(--body-font); font-size: 13.5px; color: rgba(240,239,234,0.7); line-height: 1.65; }
+  .download-option p .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .download-option .icon { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: rgba(240,239,234,0.5); }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .feature-grid, .usecase-grid, .example-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="가이드 탐색" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">허브로 돌아가기</a><a href="index.html">가이드 목록</a></div><div class="xconda-manual-languages"><a href="../ko/youtube-ref.html" hreflang="ko" lang="ko" aria-current="page">KO</a><a href="../en/youtube-ref.html" hreflang="en" lang="en">EN</a><a href="../ja/youtube-ref.html" hreflang="ja" lang="ja">JA</a><a href="../zh/youtube-ref.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div>
+      <div class="cover-title-en">YOUTUBE<br>REF</div>
+      <div class="cover-subtitle" style="margin-top: 32px;">YouTube 레퍼런스 영상에서 9씬 스토리보드를 자동 생성하는 워크플로우 가이드.</div>
+    </div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>12 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>12 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— 가이드 구성 —</span>
+      사용 목적 · 사용 사례 · 주요 기능 · 프롬프트 주의사항 · 진입 · URL 입력 · Character References · Generate · 결과 확인 · 상세 보기 · Regenerate · 다운로드
+    </div>
+  </div>
+</section>
+
+<!-- 02: 사용 목적 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>사용 목적</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose —</div><h2 class="section-title">YouTube Ref 사용 목적</h2><p class="section-lede">클라이언트가 "이 영상처럼 만들어주세요"라며 레퍼런스 영상을 보내올 때, 해당 영상의 톤과 무드를 빠르게 시각화하여 스토리보드 초안을 뽑는 데 사용합니다.</p></div></div>
+
+  <div class="example-grid">
+    <div class="example-block">
+      <div class="label">— 기존 방식 —</div>
+      <div class="item">영상을 반복 시청하며 수동으로 키프레임을 캡처하고 정리</div>
+      <div class="reason">→ 시간 소모가 크고, 주관적 해석에 의존</div>
+    </div>
+    <div class="example-block" style="background: var(--midnight); color: #F0EFEA;">
+      <div class="label" style="color: rgba(240,239,234,0.6);">— YouTube Ref 방식 —</div>
+      <div class="item" style="color: #F0EFEA;">링크 입력만으로 AI가 9씬 스토리보드를 자동 생성</div>
+      <div class="reason" style="color: rgba(240,239,234,0.5);">→ 빠른 초안 확보, 팀 내 방향성 공유에 활용</div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>002 — 사용 목적</span><span>Purpose</span></div>
+</section>
+
+<!-- 03: 사용 사례 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>사용 사례</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Use Cases —</div><h2 class="section-title">어떤 경우에 사용하나요?</h2><p class="section-lede">레퍼런스 분석, 기획 회의 초안, 스토리보드 제작, 벤치마크 분석 등에 활용됩니다.</p></div></div>
+
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>클라이언트 레퍼런스 분석</h4><p>클라이언트가 보낸 레퍼런스 영상의 시각적 톤, 구도, 색감을 빠르게 파악할 때</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>내부 기획 회의용 초안</h4><p>영상 기획 단계에서 레퍼런스 영상을 기반으로 방향성을 잡고 팀원과 공유할 때</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>스토리보드 초안 제작</h4><p>촬영/제작 전 전체 흐름을 시각적으로 확인하고 싶을 때</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>경쟁사/벤치마크 분석</h4><p>경쟁 브랜드의 광고 영상을 분석하여 구성과 연출 패턴을 파악할 때</p></div>
+  </div>
+
+  <div class="note-box"><div class="label">— 주의 —</div><div class="text">원본 영상의 실제 콘텐츠 맥락까지 정확하게 반영하지는 않습니다. 시각적 톤과 무드 중심의 참고용으로 활용합니다.</div></div>
+  <div class="footer-meta"><span>003 — 사용 사례</span><span>Use Cases</span></div>
+</section>
+
+<!-- 04: 주요 기능 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>주요 기능</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Key Features —</div><h2 class="section-title">YouTube Ref 주요 기능</h2><p class="section-lede">링크 입력 → 9씬 자동 생성, 톤앤무드 추출, 씬 자동 분할, 캐릭터 레퍼런스, 개별 씬 수정.</p></div></div>
+
+  <div class="feature-grid">
+    <div class="feature-card"><div class="tag">— 01 —</div><h4>링크 입력 → 9씬 자동 생성</h4><p>YouTube 영상 링크를 입력하면 AI가 영상을 분석하여 9개의 키프레임 스토리보드를 생성합니다.</p></div>
+    <div class="feature-card"><div class="tag">— 02 —</div><h4>톤앤무드 추출</h4><p>영상의 색감, 조명, 구도 등 시각적 분위기를 기반으로 이미지를 생성합니다.</p></div>
+    <div class="feature-card"><div class="tag">— 03 —</div><h4>씬 구성 자동 분할</h4><p>영상 흐름을 AI가 자동으로 9개 장면으로 분할하여 시퀀스를 구성합니다.</p></div>
+    <div class="feature-card"><div class="tag">— 04 —</div><h4>캐릭터 레퍼런스 (선택)</h4><p>Body/Outfit, Face Detail 이미지 업로드 시 스토리보드에 해당 캐릭터가 반영됩니다.</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — 주요 기능</span><span>Features</span></div>
+</section>
+
+<!-- 05: 프롬프트 주의사항 -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>프롬프트 주의사항</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Prompt Tips —</div><h2 class="section-title">프롬프트 입력 시 주의사항</h2><p class="section-lede">씬 설명을 수정(Regenerate)할 때, 구체적인 공간/환경 정보를 포함하면 결과물의 정확도가 높아집니다.</p></div></div>
+
+  <div class="example-grid">
+    <div class="example-block">
+      <div class="label">— 좋은 예시 —</div>
+      <div class="item">"교실 안에서 학생들이 수업을 듣는 장면"</div>
+      <div class="item">"도심 거리에서 비 오는 밤, 네온 사인 조명"</div>
+      <div class="item">"해변에서 석양을 배경으로 달리는 인물"</div>
+    </div>
+    <div class="example-block bad">
+      <div class="label">— 피해야 할 예시 —</div>
+      <div class="item">"실내" <span class="reason">→ 어떤 실내인지 특정되지 않음</span></div>
+      <div class="item">"밖에서" <span class="reason">→ 환경이 모호함</span></div>
+      <div class="item">"좋은 분위기" <span class="reason">→ AI가 해석할 수 없는 추상적 표현</span></div>
+    </div>
+  </div>
+
+  <div class="note-box"><div class="label">— 핵심 원칙 —</div><div class="text">장소 + 상황 + 분위기를 구체적으로 서술합니다. 추상적 표현보다 시각적으로 떠오르는 단어를 사용합니다.</div></div>
+  <div class="footer-meta"><span>005 — 프롬프트 주의사항</span><span>Prompt Tips</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>진입</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Entry · 진입 —</div><h2 class="section-title">YouTube Ref 진입</h2><p class="section-lede">왼쪽 세로형 사이드바에서 12번째 클랩보드 모양 아이콘을 클릭합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">사이드바 12번째 아이콘 클릭</h3><p class="step-body">왼쪽 세로형 사이드바에서 12번째 클랩보드 모양 아이콘을 클릭합니다. 클릭하면 YouTube Ref 작업 화면이 열립니다.</p></div></div><div><img src="../assets/screens/9d44e711385e8354dd3f94bf058f09e45cdead5e080197c64597abbf5fd145cf.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>006 — 진입</span><span>Entry</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>YouTube URL</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— YouTube URL · 링크 입력 —</div><h2 class="section-title">YouTube URL 입력</h2><p class="section-lede">YouTube URL 빈칸을 클릭하여 참고할 YouTube 영상 링크를 입력합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">URL 빈칸 클릭 후 입력</h3><p class="step-body"><span class="ui">YouTube URL</span> 빈칸을 클릭하여 참고할 YouTube 영상 링크를 입력합니다.</p></div><div class="step-block"><div class="step-number">— 확인 —</div><h3 class="step-title">썸네일 및 제목 표시</h3><p class="step-body">링크가 인식되면 영상 썸네일과 영상 제목이 표시됩니다.</p></div><div class="note-box"><div class="label">— 필수 —</div><div class="text">URL 누락 시 생성 버튼이 활성화되지 않습니다.</div></div></div><div><img src="../assets/screens/860e2826919d36f22694c0cbb5ce7857d90f234d8620aa787fd2f56147268d6f.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>007 — URL 입력</span><span>YouTube URL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Character References</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Character References · 선택 —</div><h2 class="section-title">캐릭터 레퍼런스 업로드</h2><p class="section-lede">필요한 경우 캐릭터 참고 이미지를 업로드합니다. 선택 항목이므로 업로드하지 않아도 진행할 수 있습니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Body / Outfit —</div><h3 class="step-title">의상 · 실루엣 참고</h3><p class="step-body">의상과 전체 실루엣 참고 이미지를 업로드합니다.</p></div><div class="step-block"><div class="step-number">— Face Detail —</div><h3 class="step-title">얼굴 디테일 참고</h3><p class="step-body">얼굴 디테일 참고 이미지를 업로드합니다.</p></div><div class="step-block"><div class="step-number">— 선택 —</div><h3 class="step-title">필수 항목 아님</h3><p class="step-body">선택 항목이므로 업로드하지 않아도 진행할 수 있습니다.</p></div></div><div><img src="../assets/screens/73ce46d382f7222698aac954ff7f3b80a9b9a4e6b02b5fc9b1c57614924e6975.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>008 — 캐릭터 레퍼런스</span><span>Optional</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Generate · 생성 —</div><h2 class="section-title">생성 버튼 클릭</h2><p class="section-lede">영상 링크 확인 후 노란색 <span class="ui">Generate</span> 버튼을 클릭합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Generate 클릭</h3><p class="step-body">영상 링크 확인 후 노란색 <span class="ui">Generate</span> 버튼을 클릭합니다.</p></div><div class="step-block"><div class="step-number">— Step 02 —</div><h3 class="step-title">확인 창에서 OK</h3><p class="step-body">확인 창에서 <span class="ui">OK</span>를 클릭하면 9-scene storyboard 생성이 시작됩니다.</p></div></div><div><img src="../assets/screens/1f74bdf26a1174f0f420841e3d10e4ef581d4da5236738322111f33ad90914a3.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>009 — 생성</span><span>Generate</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>결과 확인</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Result · 9씬 그리드 —</div><h2 class="section-title">9씬 스토리보드 결과 확인</h2><p class="section-lede">생성이 완료되면 오른쪽 결과 영역에 SCENE 01부터 SCENE 09까지 9개 장면이 그리드로 표시됩니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 결과 —</div><h3 class="step-title">9씬 그리드 생성</h3><p class="step-body">생성이 완료되면 오른쪽 결과 영역에 SCENE 01부터 SCENE 09까지 9개 장면이 그리드로 표시됩니다. 각 장면에는 이미지와 장면 설명이 함께 표시됩니다.</p></div></div><div><img src="../assets/screens/d781def36da7b889f2315a5ff9b4553e617155c100de61f9c319bd281db8ea23.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>010 — 결과 확인</span><span>Result</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>상세 보기</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Detail View · 상세 보기 —</div><h2 class="section-title">장면 상세 보기</h2><p class="section-lede">확인할 장면 이미지를 클릭하면 상세 보기 화면으로 확대됩니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">장면 이미지 클릭</h3><p class="step-body">확인할 장면 이미지를 클릭합니다. 클릭한 장면이 상세 보기 화면으로 확대됩니다.</p></div><div class="step-block"><div class="step-number">— 닫기 —</div><h3 class="step-title">Esc 또는 닫기 아이콘</h3><p class="step-body">화면의 닫기 아이콘을 클릭하거나 <span class="ui">Esc</span> 키로 상세 보기를 닫을 수 있습니다.</p></div></div><div><img src="../assets/screens/6a1543eb237c30dcf96d11668a4e7c1aedae4c3059ba49c86e8a8a1e0bfa7f7f.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>011 — 상세 보기</span><span>Detail View</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Regenerate</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Regenerate · 개별 씬 수정 —</div><h2 class="section-title">개별 씬 수정 및 재생성</h2><p class="section-lede">장면 오른쪽의 연필 아이콘을 클릭하여 장면 설명을 수정한 후, Regenerate로 해당 장면을 다시 생성합니다.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">연필 아이콘 클릭</h3><p class="step-body">장면 오른쪽의 연필 아이콘을 클릭합니다.</p></div><div class="step-block"><div class="step-number">— Step 02 —</div><h3 class="step-title">장면 설명 수정</h3><p class="step-body">텍스트 입력 영역에서 장면 설명을 수정합니다.</p></div><div class="step-block"><div class="step-number">— Step 03 —</div><h3 class="step-title">Regenerate 클릭</h3><p class="step-body">수정한 설명으로 해당 장면을 다시 생성합니다. <span class="ui">Cancel</span>을 클릭하면 수정을 취소합니다.</p></div></div><div><img src="../assets/screens/7bd3c4e5a58350316ac021e615a5578dd1129e3f2e1bc847a47f8b5068f8c712.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>012 — 개별 씬 수정</span><span>Regenerate</span></div>
+</section>
+
+<!-- 13: 다운로드 -->
+<section class="slide download-section">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>다운로드</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Download —</div><h2 class="section-title">다운로드</h2><p class="section-lede">전체 다운로드 또는 개별 장면 다운로드가 가능합니다.</p></div></div>
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div><img src="../assets/screens/727146a22466d25ee661e6413e3f6de5d42208e642d7a257cb30825ec165f68a.webp" alt="" style="display: block; width: 100%; height: auto;"></div>
+    <div class="download-options">
+      <div class="download-option"><div class="num">01</div><div><h4>전체 다운로드</h4><p>오른쪽 상단의 <span class="ui">Download All</span> 버튼을 클릭하면 생성된 9개 장면을 모두 다운로드합니다.</p></div><div class="icon">↓↓</div></div>
+      <div class="download-option"><div class="num">02</div><div><h4>개별 다운로드</h4><p>개별 장면의 다운로드 아이콘을 클릭하면 해당 장면만 다운로드할 수 있습니다.</p></div><div class="icon">↓</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>013 — 다운로드</span><span>Final Step</span></div>
+</section>
+
+
+
+</body></html>

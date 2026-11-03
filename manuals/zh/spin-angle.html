@@ -1,0 +1,411 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin Angle — 用户指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.2; color: var(--midnight); letter-spacing: -0.025em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 680px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.015em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.8; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 480px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  .usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.015em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+  .flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 32px; }
+  .flow-card { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 28px 24px; text-align: center; }
+  .flow-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 10px; }
+  .flow-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); letter-spacing: -0.015em; }
+  .flow-arrow { font-family: var(--body-font); font-size: 24px; color: var(--midnight); }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+  /* Figure caption & labels (added for p2~p4 diagrams) */
+  .fig-caption { margin-bottom: 14px; }
+  .fig-caption .fig-title { font-family: var(--body-font); font-weight: 700; font-size: 15px; color: var(--midnight); letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 4px; }
+  .fig-caption .fig-sub { font-family: var(--body-font); font-weight: 400; font-size: 13px; color: var(--slate); line-height: 1.65; max-width: 720px; }
+  .fig-labels { display: grid; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+  .fig-labels.cols-2 { grid-template-columns: 1fr 1fr; }
+  .fig-labels.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .fig-labels .fig-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); text-align: center; }
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="指南导航" data-zoom-label="放大图片"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">返回中心</a><a href="index.html">全部指南</a></div><div class="xconda-manual-languages"><a href="../ko/spin-angle.html" hreflang="ko" lang="ko">KO</a><a href="../en/spin-angle.html" hreflang="en" lang="en">EN</a><a href="../ja/spin-angle.html" hreflang="ja" lang="ja">JA</a><a href="../zh/spin-angle.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>用户指南</span></div>
+    <div><div class="cover-title-en">SPIN<br>ANGLE</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">在单张图像上标记机位与视线方向，从而从不同视角生成同一场景的工作流程指南。无需重拍即可比较同一人物与场景的相机角度。</div></div>
+    <div class="cover-bottom-meta"><div><div>用户指南</div><div>教程</div></div><div style="text-align:right"><div>17 个章节</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>17 个章节</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— 指南结构 —</span>     目的 · 理由 · 使用场景 · 进入 · 界面构成 · 源图像 · 状态 · Circle 工具 · Arrow 工具 · 工具按钮 · Generate · 确认 · 结果卡片 · 查看 · 管理 · 删除确认</div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">SpinAngle 的功能</h2><p class="section-lede">SpinAngle 以一张图像为基础，从不同视角生成同一场景。用圆圈标记机位、用箭头标记视线方向 —— AI 读取这些标记，并从那个新机位产出写实图像。</p></div></div>
+  <div style="margin-bottom: 32px; max-width: 800px;">
+        <div class="fig-caption">
+          <div class="fig-title">SpinAngle 工作流程</div>
+          <div class="fig-sub">在源图像上标记机位与视线方向，系统就会从那个新视角生成同一场景。</div>
+        </div>
+        <img src="../assets/screens/562f0acb4c07e2d2a68d3a771f539be1d0d7c5bec11a31ab3a75ab288f004c7e.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;">
+        <div class="fig-labels cols-3">
+          <div class="fig-label">源图像</div>
+          <div class="fig-label">相机 / 方向</div>
+          <div class="fig-label">生成的视角</div>
+        </div>
+      </div>
+  <div class="flow-row">
+    <div class="flow-card"><div class="label">— 步骤 01 —</div><h4>源图像</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card"><div class="label">— 步骤 02 —</div><h4>相机 / 方向</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card" style="background: var(--midnight); border-color: var(--midnight);"><div class="label" style="color: rgba(240,239,234,0.6);">— 结果 —</div><h4 style="color: #F0EFEA;">生成的视角</h4></div>
+  </div>
+  <div class="note-box"><div class="label">— 工作流程 —</div><div class="text">在源图像上画出 <span class="ui">circle</span> 圆圈 <span class="ui">arrow</span> 来标记机位，再画出箭头表示视线方向 —— 系统会依据这些标记生成新的视角。</div></div>
+  <div class="footer-meta"><span>002 — 目的</span><span>目的</span></div>
+</section>
+
+<!-- 03: Why -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>理由</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 理由 —</div><h2 class="section-title">为什么使用此功能？</h2><p class="section-lede">无需重拍，也无需搭建新的 3D 场景，就能从不同视角测试同一人物与场景。当需要比较多个角度候选 —— 分镜、广告镜头、lookbook、视频预演 —— 制作时间会大幅缩短。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 无需重拍 —</div><h3 class="step-title">一张图像多个角度</h3><p class="step-body">从单张源图像出发，把同一人物与场景转换为 <strong>多个相机角度</strong> 进行比较。无需召回模特或场地即可扩展方案。</p></div>
+      <div class="step-block"><div class="step-number">— 无需 3D 场景 —</div><h3 class="step-title">无需布景即可换视角</h3><p class="step-body">视角变化不需要实体布景或 3D 建模 —— 前期概念验证的成本大幅下降。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;">
+        <div class="fig-caption">
+          <div class="fig-title">不重拍也能改变视角</div>
+        </div>
+        <img src="../assets/screens/c8b5dab6046489ea978e00a4d5a6b9ee6e076b61d92b8912b2fac35092618365.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;">
+        <div class="fig-labels cols-2">
+          <div class="fig-label">之前</div>
+          <div class="fig-label">之后</div>
+        </div>
+      </div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 最佳阶段 —</div><div class="text"> <strong>比较角度候选</strong> 重要的阶段 —— 分镜、广告镜头、lookbook、预演 —— 最有效。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>003 — 理由</span><span>理由</span></div>
+</section>
+
+<!-- 04: Use Cases -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>使用场景</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 使用场景 —</div><h2 class="section-title">何时使用</h2><p class="section-lede">当你想把正面镜头改为低角度或侧面，或围绕人物 / 商品镜头移动机位时，使用 SpinAngle。非常适合在保持场景氛围的同时寻找更有动感的镜头，或一次向客户展示多个角度候选。</p></div></div>
+  <div style="margin-bottom: 32px; max-width: 800px;">
+        <div class="fig-caption">
+          <div class="fig-title">快速验证相机角度候选</div>
+          <div class="fig-sub">快速比较同一场景的不同视角 —— 分镜、商品 / 人像镜头、电影感预演。</div>
+        </div>
+        <img src="../assets/screens/287093bf7df6e9fd1c19bc6736cd39ff121c859657a54d7055426c269fb4a028.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;">
+        <div class="fig-labels cols-3">
+          <div class="fig-label">原图</div>
+          <div class="fig-label">标记</div>
+          <div class="fig-label">生成结果</div>
+        </div>
+      </div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>分镜</h4><p>把场景转换为低角度、高角度和侧面，缩短分镜评审批次。</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>广告镜头 / 人像</h4><p>围绕模特或商品镜头移动机位，一次生成正面、斜向和侧面候选。</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>Lookbook / 时尚</h4><p>把服装镜头扩展到多个角度，用同一模特填满 lookbook 页面。</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>视频预演</h4><p>在实际拍摄前可视化机位候选，更快与导演和摄影团队对齐。</p></div>
+    <div class="usecase-card"><div class="num">05</div><h4>商品视角</h4><p>把正面商品镜头转换为侧面或背面角度，获取 PDP 候选图。</p></div>
+    <div class="usecase-card"><div class="num">06</div><h4>客户评审</h4><p>在一份材料中呈现多个角度候选，缩短客户审批轮次。</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — 使用场景</span><span>使用场景</span></div>
+</section>
+
+<!-- 05: Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>进入</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 进入 —</div><h2 class="section-title">打开 SpinAngle</h2><p class="section-lede">点击左侧竖排菜单中的环形箭头图标，该入口通向 SpinAngle 功能。</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 位置 —</div><h3 class="step-title">左侧菜单</h3><p class="step-body">画面左侧的竖排菜单列出各功能图标。 <span class="ui">circular arrow</span> 图标就是 SpinAngle 的入口。</p></div>
+      <div class="step-block"><div class="step-number">— 打开 —</div><h3 class="step-title">点击图标</h3><p class="step-body">点击图标会打开 SpinAngle 工作区。标题显示 <strong>SpinAngle</strong> ，并附说明「画一个圆标记机位，画一个箭头指示方向」。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/9d635f611be0db49b65f05ba4db1b0e1017ba9e86fa0d090f0b61d320a3a0c6c.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 标题栏 —</div><div class="text">标题栏说明：两个标记都画好后，系统会从那个精确视角产出写实图像。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>005 — 进入</span><span>进入</span></div>
+</section>
+
+<!-- 06: Layout -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>界面构成</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 布局 —</div><h2 class="section-title">界面基本构成</h2><p class="section-lede">首次进入时会显示 <span class="ui">Upload an image to get started</span> 区域。点击该区域或拖入图像即可上传源图。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 上传区域 —</div><h3 class="step-title">上传图像开始使用</h3><p class="step-body">点击画面中央的上传区域，或拖放文件来登记源图像。没有图像就无法标记机位与方向。</p></div>
+      <div class="step-block"><div class="step-number">— Generate 不可用 —</div><h3 class="step-title">Generate 的初始状态</h3><p class="step-body">没有图像就无法指定机位与方向，因此 <span class="ui">Generate</span> 按钮保持不可用。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/548dc3ced7db8a60769b9ce67a0d6477caa4310bfd0eb5ea2bdc9747606cf3f8.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 流程 —</div><div class="text">上传图像 → 用 Circle 标记机位 → 用 Arrow 标记方向 → 按下 <span class="ui">Generate</span>.</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>006 — 界面构成</span><span>界面构成</span></div>
+</section>
+
+<!-- 07: Source Image -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>源图像</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 原图 —</div><h2 class="section-title">上传源图像</h2><p class="section-lede">源图像上传后会显示在左侧画布上，其下方会出现 <span class="ui">Circle</span>, <span class="ui"></span>, <span class="ui"></span>、 <span class="ui">New Image</span> 按钮。</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 上传 —</div><h3 class="step-title">登记图像</h3><p class="step-body">把文件拖入上传区域，或点击选择文件。上传后图像会显示在画布上，可以开始标注机位与方向。</p></div>
+      <div class="step-block"><div class="step-number">— 工具显示 —</div><h3 class="step-title">底部工具按钮</h3><p class="step-body">图像显示后，画布下方会出现 <span class="ui">Circle</span>, <span class="ui"></span>, <span class="ui"></span>、 <span class="ui">New Image</span> 按钮，可以开始标记位置与方向。</p></div>
+      <div class="step-block"><div class="step-number">— 指南 —</div><h3 class="step-title">什么样的源图算好</h3><p class="step-body">当主体 <strong>清晰可见</strong>时结果最稳定。强烈运动模糊、严重噪点或杂乱背景可能降低输出质量。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/0984296af5e257f73d1881ebfda1e9f8ff17abfecb0d2eccd990873487fc1984.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 建议 —</div><div class="text">主体轮廓清晰、空间感强烈的图像能得到最可靠的结果。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>007 — 源图像</span><span>源图</span></div>
+</section>
+
+<!-- 08: Status -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>状态</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 状态 —</div><h2 class="section-title">Circle = 机位 / Arrow = 方向</h2><p class="section-lede">顶部的两个状态指示器显示机位与方向是否都已设定。它们初始为空，画好圆和箭头后会变成绿色对勾。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— Circle 状态 —</div><h3 class="step-title">Circle = 机位</h3><p class="step-body">在画布上画好圆后， <span class="ui">Circle = Camera</span> 指示器会切换为 <strong>绿色对勾</strong>，表示机位已登记。</p></div>
+      <div class="step-block"><div class="step-number">— Arrow 状态 —</div><h3 class="step-title">Arrow = 方向</h3><p class="step-body">画好箭头后， <span class="ui">Arrow = Direction</span> 指示器会切换为绿色对勾，表示视线方向已登记。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/5abd090811ee217d83105076e535f24ee16f707213e5c1973e7a2f3893e8a490.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 激活 —</div><div class="text">两个指示器都必须变成 <strong>绿色对勾</strong> ， <span class="ui">Generate</span> 才会激活。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>008 — 状态</span><span>状态</span></div>
+</section>
+
+<!-- 09: Circle Tool -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Circle 工具</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Circle 工具 —</div><h2 class="section-title">Circle 工具</h2><p class="section-lede"> <span class="ui">Circle</span>，然后在图像上画一个圆，标记相机的所在位置。这个圆是新视角的锚点。</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 选择 —</div><h3 class="step-title">启用 Circle 模式</h3><p class="step-body">点击底部工具栏的 <span class="ui">Circle</span> 按钮进入 Circle 模式。激活后即可在画布上画圆。</p></div>
+      <div class="step-block"><div class="step-number">— 标记 —</div><h3 class="step-title">画出机位</h3><p class="step-body">在图像上拖动即可画圆。这个圆定义了 <strong>新视角的锚点</strong> —— 放置时思考你希望镜头从主体的哪一侧来。</p></div>
+      <div class="step-block"><div class="step-number">— 放置技巧 —</div><h3 class="step-title">以主体为参照思考</h3><p class="step-body">圆放在哪里 —— 主体的左、右、上、下 —— 会改变最终的机位。放置时想象「相机就坐在这里」，结果最符合意图。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/9cf60e9b8dcf063e8433adabddca9d0a553f19da1a39b129c7d003dee6113c04.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 含义 —</div><div class="text">圆的位置 = <strong>虚拟相机的位置</strong>。它决定相对主体的方向与距离。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>009 — Circle 工具</span><span>Circle</span></div>
+</section>
+
+<!-- 10: Arrow Tool -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Arrow 工具</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Arrow 工具 —</div><h2 class="section-title">Arrow 工具</h2><p class="section-lede"> <span class="ui">Arrow</span>，然后在图像上画一个箭头，指示相机看向的方向。只有圆和箭头都存在时才能计算新视角，因此按下前请把两者都画好 <span class="ui">Generate</span>.</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 选择 —</div><h3 class="step-title">启用 Arrow 模式</h3><p class="step-body">点击底部工具栏的 <span class="ui">Arrow</span> 按钮进入 Arrow 模式。激活后即可在画布上画箭头。</p></div>
+      <div class="step-block"><div class="step-number">— 标记 —</div><h3 class="step-title">画出视线方向</h3><p class="step-body">从圆向主体画一个箭头。箭头代表 <strong>相机的视线</strong> ，并塑造结果的构图。</p></div>
+      <div class="step-block"><div class="step-number">— 成对输入 —</div><h3 class="step-title">Circle + Arrow = 新视角</h3><p class="step-body">AI 计算新视角需要圆和箭头同时存在。两者都画好后再按下 <span class="ui">Generate</span>。只有一个标记时，Generate 保持不可用。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/8bd4ef17ec06512aa669c0f69cc6aabe618eb309f3f3a8ce36b46957b48a67a4.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 含义 —</div><div class="text">箭头 = <strong>相机在看向哪里</strong>。如果圆是「从哪里」，箭头就是「朝向什么」。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>010 — Arrow 工具</span><span>Arrow</span></div>
+</section>
+
+<!-- 11: Tools -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>工具</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 工具 —</div><h2 class="section-title">工具按钮</h2><p class="section-lede"><span class="ui"></span> 标记机位， <span class="ui">Arrow</span> 标记视线方向， <span class="ui">Clear</span> 重置标记， <span class="ui">New Image</span> 替换当前源图像。</p></div></div>
+  <div style="margin-bottom: 32px;"><img src="../assets/screens/bcf2ac1409a1ebcfe9a7303e89e2f8cc63e7e656c52a765a901b376336fcd2ff.webp" alt="" style="display: block; width: 100%; height: auto; max-width: 800px; border-radius: 2px;"></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— Circle —</div><h3 class="step-title">标记机位</h3><p class="step-body">通过画圆来放置虚拟相机的工具。</p></div>
+      <div class="step-block"><div class="step-number">— Arrow —</div><h3 class="step-title">标记视线方向</h3><p class="step-body">通过画箭头来定义相机看向何处的工具。</p></div>
+    </div>
+    <div>
+      <div class="step-block"><div class="step-number">— Clear —</div><h3 class="step-title">重置标记</h3><p class="step-body">从画布上删除圆和箭头。用于重做位置与方向。源图像保持不变。</p></div>
+      <div class="step-block"><div class="step-number">— New Image —</div><h3 class="step-title">替换源图</h3><p class="step-body">按下 <span class="ui">New Image</span> 会把当前源图像换成另一张，从而用不同图像重新开始。之前画的圆和箭头会被重置。</p></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>011 — 工具</span><span>工具</span></div>
+</section>
+
+<!-- 12: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>详情视图</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate</h2><p class="section-lede"><span class="ui">Generate</span> 在机位与方向都设定后才会激活。在当前测试界面，每次生成使用 6 积分。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 条件 —</div><h3 class="step-title">圆和箭头都必需</h3><p class="step-body"><span class="ui">Circle = 机位</span> 和 <span class="ui">Arrow = 方向</span> 都必须显示 <strong>绿色对勾</strong> ，Generate 才会激活。</p></div>
+      <div class="step-block"><div class="step-number">— 消耗 —</div><h3 class="step-title">积分扣除</h3><p class="step-body">每次生成扣除 <span class="ui">6 积分</span> （当前测试界面）。若积分余额不足则不会执行生成。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/6a27af9232f1d1793ba3816cac09cf753e8b164c6ce7bf405c774434ba2596fd.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 最佳实践 —</div><div class="text">为减少重复运行，按下前再确认一次圆和箭头的位置，然后 <span class="ui">Generate</span> 。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>012 — Generate</span><span>Generate</span></div>
+</section>
+
+<!-- 13: Confirm -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>确认</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— 确认 —</div><h2 class="section-title">确认对话框</h2><p class="section-lede"> <span class="ui">Generate</span> 会打开「Would you like to generate an image?」确认框。 <span class="ui">OK</span> 开始生成； <span class="ui">Cancel</span> 返回上一界面。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— OK —</div><h3 class="step-title">开始生成</h3><p class="step-body"><span class="ui">OK</span> 会真正启动生成并扣除积分。运行过程中结果区域会显示进度。</p></div>
+      <div class="step-block"><div class="step-number">— Cancel —</div><h3 class="step-title">不生成直接返回</h3><p class="step-body"><span class="ui">Cancel</span> 不生成直接返回上一界面。你画的圆和箭头都会保留，因此可以立即修改重试。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/c2a1a53120407ac70c0a4263ff7f71ce3b9c55a6b15b13ea5cdb5b672e5223b4.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 安全 —</div><div class="text">确认步骤用于避免意外消耗积分。确认内容后再按 OK。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>013 — 确认</span><span>确认</span></div>
+</section>
+
+<!-- 14: Result Card -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>结果卡片</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— 结果卡片 —</div><h2 class="section-title">结果卡片</h2><p class="section-lede">生成完成后，新视角的图像会以卡片形式出现在右侧结果区域。重复生成会在右侧区域堆叠，便于比较角度候选。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 显示 —</div><h3 class="step-title">右侧出现新卡片</h3><p class="step-body">每次生成完成后，右侧结果区域都会新增一张卡片。卡片右下角会显示下载和删除图标。</p></div>
+      <div class="step-block"><div class="step-number">— 堆叠 —</div><h3 class="step-title">角度候选不断累积</h3><p class="step-body">多次生成会堆叠，可在同一视图比较同一场景的 <strong>不同角度候选</strong> 。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/989ae12a49d98cdec1070e3ef2d193490544584271651a8f17f1bcaa8373b3b5.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 工作流程 —</div><div class="text">比较候选 → 只下载最终选择 → 删除其余。这就是高效的收尾流程。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>014 — 结果卡片</span><span>结果</span></div>
+</section>
+
+<!-- 15: Review -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>查看</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— 查看结果 —</div><h2 class="section-title">查看输出</h2><p class="section-lede">结果保留原有的氛围，同时反映你标记的机位与方向，从新角度生成场景。最终使用前，请确认面部、服装、背景变形以及主体朝向符合你的意图。</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="step-block"><div class="step-number">— 保持 —</div><h3 class="step-title">保持原有氛围</h3><p class="step-body">结果保留源图的 <strong>整体氛围、调性与色彩</strong>。只有视角改变 —— 场景的空气感保持一致。</p></div>
+      <div class="step-block"><div class="step-number">— 应用 —</div><h3 class="step-title">反映新的相机角度</h3><p class="step-body"> <strong>圆的位置与箭头的方向</strong> 会作为新的相机角度反映出来。结果不一定 100% 一致 —— 多生成几版并挑选最好的一版。</p></div>
+      <div class="step-block"><div class="step-number">— 检查 —</div><h3 class="step-title">变形与朝向</h3><p class="step-body">最终使用前，确认 <strong>面部、服装和背景的变形</strong>以及主体的视线与姿态符合意图。若有异常，调整圆与箭头的位置后重新生成。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/1e7be28eaee641ac145c52b4154f0926e1b4a2627c744bc2a881d6111950fc62.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 检查点 —</div><div class="text">面部比例 · 服装细节 · 背景透视 · 主体朝向 —— 先检查这四项。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>015 — 查看</span><span>查看</span></div>
+</section>
+
+<!-- 16: Manage -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 16</span><span class="dot"></span><span>管理</span></div><div class="right"><span>P. 016</span></div></div>
+  <div class="section-header"><div class="section-num">16</div><div class="section-title-block"><div class="eyebrow">— 管理 —</div><h2 class="section-title">下载 / 删除</h2><p class="section-lede">每张结果卡片的右下角都会显示下载和删除图标。下载会保存生成结果；删除会把所选结果从列表中移除。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 下载 —</div><h3 class="step-title">下载图标</h3><p class="step-body"> <strong>download icon</strong> 会把结果图像保存为本地文件。适合准备带到应用之外的候选图。</p></div>
+      <div class="step-block"><div class="step-number">— 删除 —</div><h3 class="step-title">删除图标</h3><p class="step-body"> <strong>delete icon</strong> 会把所选结果从列表中移除。清除不采用的结果能让结果面板保持整洁。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/9e527bd16a77b9f401dbca95c2fba15f0a3ddef079c2e4d700962087fc77b3b5.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 位置 —</div><div class="text">两个图标都位于每张结果卡片的 <strong>bottom-right</strong> 右下角</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>016 — 管理</span><span>管理</span></div>
+</section>
+
+<!-- 17: Confirm Delete -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 17</span><span class="dot"></span><span>删除确认</span></div><div class="right"><span>P. 017</span></div></div>
+  <div class="section-header"><div class="section-num">17</div><div class="section-title-block"><div class="eyebrow">— 删除确认 —</div><h2 class="section-title">删除确认</h2><p class="section-lede">按下删除图标会打开「Are you sure you want to delete all selected media?」确认框。 <span class="ui">OK</span> 会删除它； <span class="ui">Cancel</span> 会保留结果。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— OK —</div><h3 class="step-title">确认删除</h3><p class="step-body"><span class="ui">OK</span> 会永久删除所选卡片。已删除的结果无法恢复，请谨慎确认。</p></div>
+      <div class="step-block"><div class="step-number">— Cancel —</div><h3 class="step-title">保留结果</h3><p class="step-body"><span class="ui">Cancel</span> 会让卡片保持不变。在与其他角度比较完成之前，保留候选更安全。</p></div>
+    </div>
+    <div>
+      <div style="margin-top: 24px;"><img src="../assets/screens/f85d74a90e873edae62371fdb735358d3b6515aea354effb06f2e865dfcca3a4.webp" alt="" style="display: block; width: 100%; height: auto; border-radius: 2px;"></div>
+      <div class="note-box" style="margin-top:0;"><div class="label">— 收尾 —</div><div class="text">下载最终选择 → 清理不需要的卡片 → 会话结束。这是标准的收尾流程。</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>017 — 删除确认</span><span>最后一步</span></div>
+</section>
+
+
+</body></html>

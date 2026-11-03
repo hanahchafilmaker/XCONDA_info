@@ -2,7 +2,7 @@ import type { Lang } from "../i18n/dict";
 
 /**
  * 툴별 공식 영상 가이드 (Google Drive · xconda_video_guide / 공식 공유 폴더).
- * 가이드 모달 최상단에 공식 영상이 임베드됩니다.
+ * Google Drive 영상은 가이드 모달에서 새 탭 링크로 엽니다.
  */
 const drive = (id: string) => `https://drive.google.com/file/d/${id}/preview`;
 
