@@ -27,12 +27,16 @@ type Ctx = {
   openTool: (slug: string) => void;
   closeEntry: () => void;
   active: Entry | null;
+  /** The tool card's full-guide dialog, distinct from an ordinary article. */
+  activeToolSlug: string | null;
 };
 
 const ContentCtx = createContext<Ctx | null>(null);
 
 const byDateDesc = (a: Entry, b: Entry) => +new Date(b.date) - +new Date(a.date);
 const byOrder = (a: Entry, b: Entry) => (a.order ?? 999) - (b.order ?? 999) || byDateDesc(a, b);
+const remoteGuideFor = (entries: Entry[], toolName: string) =>
+  entries.find((e) => e.type === "guide" && e.tool?.toLowerCase() === toolName.toLowerCase() && e.remote);
 
 export function ContentProvider({ children }: { children: ReactNode }) {
   const { lang, target, hasSaved } = useLang();
@@ -44,6 +48,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const [syncedAt, setSyncedAt] = useState<number | null>(cached?.syncedAt ?? (endpoint ? null : Date.now()));
   const [status, setStatus] = useState<Status>(endpoint && !cached ? "loading" : "ready");
   const [active, setActive] = useState<Entry | null>(null);
+  const [activeToolSlug, setActiveToolSlug] = useState<string | null>(null);
   const inflight = useRef<AbortController | null>(null);
   const syncedAtRef = useRef(syncedAt);
   syncedAtRef.current = syncedAt;
@@ -97,6 +102,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     // Components receive localized entries; keep the source entry in state so
     // switching back to Korean can always recover the original fields.
     const source = entries.find((item) => item.id === entry.id) ?? entry;
+    setActiveToolSlug(null);
     setActive(source);
     try {
       // 주소가 있는 글은 글 주소로 바꿉니다(새로고침·공유해도 그 글이 열림). 없으면 예전 방식 #post=ID.
@@ -110,6 +116,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
 
   const closeEntry = useCallback(() => {
     setActive(null);
+    setActiveToolSlug(null);
     try {
       const onRoute = parseRoute(location.pathname) !== null;
       if (onRoute || location.hash.startsWith("#post=")) history.replaceState(null, "", `${hubBase()}${location.search}`);
@@ -122,9 +129,17 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     (slug: string) => {
       const tool = TOOLS.find((t) => t.slug === slug);
       if (!tool) return;
-      // Notion에 해당 툴 가이드가 있으면 우선 사용
-      const notionGuide = entries.find((e) => e.type === "guide" && e.tool?.toLowerCase() === tool.name.toLowerCase() && e.remote);
+      // Preserve the existing Notion/local guide as the secondary view.
+      const notionGuide = remoteGuideFor(entries, tool.name);
       openEntry(notionGuide ?? toolToEntry(tool));
+      setActiveToolSlug(tool.slug);
+      try {
+        // Reloading or sharing the tool dialog should reopen the illustrated guide,
+        // without changing what a direct Notion article URL displays.
+        history.replaceState(null, "", `${hubBase()}${location.search}#post=${encodeURIComponent(`tool-${tool.slug}`)}`);
+      } catch {
+        /* noop */
+      }
     },
     [entries, openEntry]
   );
@@ -146,18 +161,32 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     const m = location.hash.match(/^#post=(.+)$/);
     if (!m) return;
     const id = decodeURIComponent(m[1]);
+    if (id.startsWith("tool-")) {
+      const tool = TOOLS.find((t) => `tool-${t.slug}` === id);
+      if (tool) {
+        const notionGuide = remoteGuideFor(entries, tool.name);
+        setActive(notionGuide ?? toolToEntry(tool));
+        setActiveToolSlug(tool.slug);
+        return;
+      }
+    }
     const hit = entries.find((e) => e.id === id);
     if (hit?.slug && routePathFor(hit.type, hit.slug)) {
       window.location.replace(`${hubBase()}${routePathFor(hit.type, hit.slug)}${location.search}`);
       return;
     }
     if (hit) setActive(hit);
-    else if (id.startsWith("tool-")) {
-      const tool = TOOLS.find((t) => `tool-${t.slug}` === id);
-      if (tool) setActive(toolToEntry(tool));
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entries]);
+
+  // A shared tool link opens immediately even when Notion is still loading.
+  // If a matching remote guide arrives later, retain it as the original view.
+  useEffect(() => {
+    if (!activeToolSlug || active?.id !== `tool-${activeToolSlug}`) return;
+    const tool = TOOLS.find((t) => t.slug === activeToolSlug);
+    const notionGuide = tool && remoteGuideFor(entries, tool.name);
+    if (notionGuide) setActive(notionGuide);
+  }, [entries, active, activeToolSlug]);
 
   /* 페이지 메타 — 글을 열면 글별 값, 홈이면 언어별 사이트 값 (빌드된 HTML 의 기본값과 같은 규칙) */
   useEffect(() => {
@@ -189,8 +218,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       openTool,
       closeEntry,
       active: active ? localizeEntry(active, lang) : null,
+      activeToolSlug,
     };
-  }, [entries, lang, source, status, syncedAt, endpoint, refresh, openEntry, openTool, closeEntry, active]);
+  }, [entries, lang, source, status, syncedAt, endpoint, refresh, openEntry, openTool, closeEntry, active, activeToolSlug]);
 
   return <ContentCtx.Provider value={value}>{children}</ContentCtx.Provider>;
 }

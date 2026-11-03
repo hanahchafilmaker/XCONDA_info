@@ -51,6 +51,13 @@
   background: #facc15;
   color: #101318;
 }
+/* The hub dialog supplies its own navigation. Standalone guides retain theirs. */
+html.xconda-guide-embedded .xconda-manual-nav { display: none; }
+html.xconda-guide-embedded .cover { padding: 0; }
+@media (min-width: 768px) and (max-width: 1100px) {
+  html.xconda-guide-embedded .cover { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  html.xconda-guide-embedded .cover-title-en { font-size: clamp(60px, 8.5vw, 105px); }
+}
 .image-plate img[role="button"] { cursor: zoom-in; }
 .image-plate img[role="button"]:focus-visible { outline: 3px solid #eab308; outline-offset: 3px; }
 /* Several supplied slide layouts use keep-all and automatic grid minimums.
