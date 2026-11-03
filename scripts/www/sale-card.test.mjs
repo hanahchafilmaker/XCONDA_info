@@ -48,6 +48,44 @@ test("카드는 언어별 가격 페이지로 연결되고 닫기는 이동 없�
   assert.equal(card(slot), null, "다시 초기화해도 닫은 카드는 뜨지 않습니다");
 });
 
+test("기존 팝업의 다시 보지 않기 기록은 선택적으로 종료 시각까지 존중한다", (t) => {
+  const { window, slot } = page(t);
+  const legacyKey = "popupHide:verified-promotion-id";
+  let now = SALE_END_MS - 10_000;
+  window.localStorage.setItem(legacyKey, String(SALE_END_MS - 5_000));
+
+  mountSaleCard(slot, { now: () => now, legacyHideUntilKey: legacyKey });
+  assert.equal(card(slot), null);
+  assert.equal(window.localStorage.getItem(SALE_DISMISSED_KEY), null, "기간제 기록을 영구 닫힘으로 바꾸지 않습니다");
+
+  now = SALE_END_MS - 5_000;
+  const dispose = mountSaleCard(slot, { now: () => now, legacyHideUntilKey: legacyKey });
+  assert.ok(card(slot), "기존 기록이 만료되면 행사 종료 전까지 다시 보입니다");
+  dispose();
+});
+
+test("기존 팝업 기록을 지정하지 않거나 값이 유효하지 않으면 차단하지 않는다", (t) => {
+  const { window, slot } = page(t);
+  const legacyKey = "popupHide:verified-promotion-id";
+  window.localStorage.setItem(legacyKey, "not-a-timestamp");
+  let dispose = mountSaleCard(slot, { now: () => SALE_END_MS - 60_000, legacyHideUntilKey: legacyKey });
+  assert.ok(card(slot));
+  dispose();
+  window.localStorage.setItem(legacyKey, String(SALE_END_MS));
+  dispose = mountSaleCard(slot, { now: () => SALE_END_MS - 60_000 });
+  assert.ok(card(slot), "검증되지 않은 다른 팝업 기록은 읽지 않습니다");
+  dispose();
+});
+
+test("다른 탭에서 기존 팝업의 다시 보지 않기를 선택해도 카드가 닫힌다", (t) => {
+  const { window, slot } = page(t);
+  const legacyKey = "popupHide:verified-promotion-id";
+  mountSaleCard(slot, { now: () => SALE_END_MS - 60_000, legacyHideUntilKey: legacyKey });
+  window.localStorage.setItem(legacyKey, String(SALE_END_MS));
+  window.dispatchEvent(new window.StorageEvent("storage", { key: legacyKey, newValue: String(SALE_END_MS) }));
+  assert.equal(card(slot), null);
+});
+
 test("탭을 계속 열어 둔 경우 타이머가 정각에 카드를 숨긴다", (t) => {
   const { window, slot } = page(t);
   let now = SALE_END_MS - 2_000;

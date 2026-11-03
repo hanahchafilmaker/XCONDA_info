@@ -2,9 +2,11 @@
 
 작성 2026-10-25 · XCONDA_info 저장소 `www/` 폴더 · 검사 `npm run www:check`
 
-이 폴더는 **www.xconda.ai 소스 저장소에 그대로 옮겨 적용할 수 있게** 만든 패키지입니다.
-허브(hub.xconda.ai)는 이미 정비했고, www 쪽은 소스 저장소가 이 작업 환경에 연결되어 있지 않아
-**원고·코드·검증 스크립트까지 만들어 두고 적용 지점을 명시**했습니다.
+이 폴더는 **www.xconda.ai에 이관하기 위한 참고 패키지**입니다.
+허브(hub.xconda.ai)는 이미 정비했고, www 쪽은 현재 운영 소스 저장소가 이 작업 환경에 연결되어 있지 않아
+**원고·예시 코드·검증 스크립트와 적용 지점**을 준비했습니다.
+
+> 2026-11-03 확인: 드라이브의 9월 메인 소스 사본은 Nuxt 4/Vue이고 현재 운영 화면과도 차이가 있습니다. 아래 `.tsx` 예시와 `next.config.ts` 절차는 **Next.js용 참고 코드**여서 Nuxt에 그대로 복사할 수 없습니다. 최신 운영 소스와 프레임워크를 확인한 뒤 포팅하세요. 할인 카드용 Nuxt 참고 예시와 팝업 운영 주의사항은 [`landing-1102.md`](./landing-1102.md)에 있습니다.
 
 2026-11-02 메인·허브 개선 요청의 현재 확인 사항, 메인 소스에 적용할 할인 카드와 미확정 항목은
 **[`landing-1102.md`](./landing-1102.md)** 에 따로 정리했습니다. 이 패키지만으로 메인 운영 사이트가 바뀌지는 않습니다.
@@ -90,10 +92,12 @@ npm run www:build     # → www/dist/
 - 단, `/studio/*`·`/pricing`·`/legal/*` 링크는 www 본사이트에만 있으므로, **같은 도메인에 올려야** 합니다
   (별도 도메인에 올릴 경우 그 링크들을 www 절대 주소로 바꿔야 합니다).
 
-## 2. 옮기는 방법
+## 2. 옮기는 방법 (Next.js용 예시)
+
+다음 명령은 **실제 www가 Next.js일 때만** 참고합니다. 확인된 9월 Nuxt 사본에는 그대로 실행하지 말고, 최신 운영 구조에 맞게 콘텐츠·라우트·메타데이터를 다시 구현하세요.
 
 ```bash
-# www 저장소에서
+# Next.js 기반 www 저장소에서만
 mkdir -p content lib
 cp <XCONDA_info>/www/feature-pages.json  content/feature-pages.json
 cp <XCONDA_info>/www/snippets/seo.tsx    lib/seo.tsx
