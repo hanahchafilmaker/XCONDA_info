@@ -157,6 +157,9 @@ a{color:inherit;text-decoration:none}
 .tool-meta h3{margin:0;font-size:16px;letter-spacing:-0.01em}
 .tool-meta p{margin:4px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
 .tool-body{padding:16px 20px 20px}
+.screen-guide-link{display:inline-flex;align-items:center;gap:6px;margin:0 0 16px;color:#facc15;text-decoration:underline;text-underline-offset:4px;font-size:14px;font-weight:600}
+.screen-guide-link:hover{color:#fef08a}
+.screen-guide-link:focus-visible{outline:2px solid #facc15;outline-offset:4px}
 .badge{display:inline-flex;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.02em}
 .badge-core{background:rgba(250,204,21,0.15);color:var(--brand);border:1px solid rgba(250,204,21,0.25)}
 .badge-pop{background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.25)}
@@ -244,6 +247,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
     <div class="hero-badge">✨ 2026 최신 매뉴얼 · 19개 툴 완전 정복</div>
     <h1>사진 한 장으로 시작하는<br><em>시네마틱 AI 스튜디오</em> 완벽 가이드</h1>
     <p>XCONDA는 공간 고정부터 9컷 스토리보드, 캐릭터 일관성, 카메라 앵글, 영상 생성까지 광고·영화 프로덕션을 위한 올인원 AI 툴킷입니다. 이 가이드 하나로 모든 툴을 마스터하세요.</p>
+    <a class="screen-guide-link" href="manuals/ko/index.html" target="_blank" rel="noopener noreferrer">화면으로 보는 전체 가이드 (새 탭) ↗</a>
     <div class="hero-stats">
       <div class="stat"><b>19</b><span>전문 툴</span></div>
       <div class="stat"><b>4 Step</b><span>첫 스토리보드까지</span></div>
@@ -401,6 +405,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
             </div>
           </div>
           <div class="tool-body">
+            <a class="screen-guide-link" data-html-guide="turn" href="manuals/ko/turn.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
             <ol class="steps">
               <li>Reference 단계에서 사진을 방향별로 최대 4장까지 넣거나 Description만 작성</li>
               <li>Generate로 360° HDRI 큐브맵 생성, 3D Preview에서 카메라 시점 지정</li>
@@ -432,6 +437,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
             </div>
           </div>
           <div class="tool-body">
+            <a class="screen-guide-link" data-html-guide="blocking-board" href="manuals/ko/blocking-board.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
             <ol class="steps">
               <li>Turn에서 고정된 360° 공간 또는 배경 이미지 불러오기</li>
               <li>공간 뷰포트 위에 캐릭터 위치와 이동 동선 배치</li>
@@ -452,6 +458,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
             </div>
           </div>
           <div class="tool-body">
+            <a class="screen-guide-link" data-html-guide="flexboard" href="manuals/ko/flexboard.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
             <ol class="steps">
               <li>Standard(빠른 초안) 또는 Cinema Pro(고품질 최종) 엔진 선택</li>
               <li>Year, Location과 구체적인 시나리오 작성</li>
@@ -473,6 +480,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
             </div>
           </div>
           <div class="tool-body">
+            <a class="screen-guide-link" data-html-guide="directors-cut" href="manuals/ko/directors-cut.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
             <ol class="steps">
               <li>Standard(Gemini 2.5 Flash, 4cr/컷) 또는 Cinema Pro(Gemini 3.1 Pro, 7cr/컷) 선택</li>
               <li>Year, Location, Scenario(최소 글자 수 충족) 입력</li>
@@ -508,6 +516,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
             </div>
           </div>
           <div class="tool-body">
+            <a class="screen-guide-link" data-html-guide="art-director-pro" href="manuals/ko/art-director-pro.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
             <ol class="steps">
               <li>Dialogue(감정·표정) / Action(동작·동선) / Atmosphere(조명·색감) 중 포커스 모드 선택</li>
               <li>시나리오에 Role Name 반드시 포함, Plate Product에 공간 구조 명확한 배경 업로드</li>
@@ -544,6 +553,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-scenesnap" class="tool">
             <div class="tool-top"><div class="tool-icon">🖼️</div><div class="tool-meta"><h3>Scene Snap</h3><p>이미지 1장 → 6키프레임 스토리보드. 63cr/회</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="scene-snap" href="manuals/ko/scene-snap.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>필름 프레임 아이콘 클릭</li>
                 <li>분석할 장면 이미지 업로드</li>
@@ -555,6 +565,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-youtube" class="tool">
             <div class="tool-top"><div class="tool-icon">▶️</div><div class="tool-meta"><h3>YouTube Ref</h3><p>유튜브 링크 → 9씬 스토리보드. 시각적 톤·무드 기반</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="youtube-ref" href="manuals/ko/youtube-ref.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>클랩보드 아이콘 클릭</li>
                 <li>YouTube URL 입력 (썸네일·제목 자동 인식)</li>
@@ -567,6 +578,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-drctseq" class="tool">
             <div class="tool-top"><div class="tool-icon">🎞️</div><div class="tool-meta"><h3>Director's Sequence</h3><p>키프레임 1장 → 연속 8씬 자동 생성</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="drct-seq" href="manuals/ko/drct-seq.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>16번째 사이드바 아이콘 클릭</li>
                 <li>KEY FRAME 업로드 (필수)</li>
@@ -589,6 +601,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-spin" class="tool">
             <div class="tool-top"><div class="tool-icon">⭕</div><div class="tool-meta"><h3>SpinAngle</h3><p>원=카메라 위치, 화살표=방향으로 포토리얼 뷰 생성. 6cr/회</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="spin-angle" href="manuals/ko/spin-angle.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>원형 화살표 아이콘 클릭</li>
                 <li>이미지 업로드</li>
@@ -601,6 +614,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-arrow" class="tool">
             <div class="tool-top"><div class="tool-icon">➡️</div><div class="tool-meta"><h3>Arrow View</h3><p>화살표 하나로 새로운 시점. 탑뷰·에어리얼 강점</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="arw-view" href="manuals/ko/arw-view.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>오른쪽 화살표 아이콘 클릭</li>
                 <li>이미지 업로드 후 드래그로 화살표 그리기</li>
@@ -612,6 +626,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-autoangle" class="tool">
             <div class="tool-top"><div class="tool-icon">📐</div><div class="tool-meta"><h3>Auto Angle Generator</h3><p>1장으로 최대 34가지 카메라 앵글 자동 생성</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="auto-angle" href="manuals/ko/auto-angle.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>각도 삼각형 아이콘 클릭</li>
                 <li>원본 업로드 (흰 배경·중앙 배치·고해상도·정면·단일 피사체 권장)</li>
@@ -634,6 +649,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-cloth" class="tool">
             <div class="tool-top"><div class="tool-icon">👕</div><div class="tool-meta"><h3>ClothSwap</h3><p>칠하고 올리면 의상 교체. 6cr/회</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="cloth-swap" href="manuals/ko/cloth-swap.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>티셔츠 아이콘 클릭</li>
                 <li>Source Image 업로드 (전신·정면·단색 배경 권장)</li>
@@ -646,6 +662,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-expression" class="tool">
             <div class="tool-top"><div class="tool-icon">😊</div><div class="tool-meta"><h3>Expression Transformer</h3><p>텍스트로 표정 변경, 정체성은 그대로. 6cr/회</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="expression" href="manuals/ko/expression.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>웃는 얼굴 아이콘 클릭</li>
                 <li>원본 이미지 업로드</li>
@@ -658,6 +675,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-faceswap" class="tool">
             <div class="tool-top"><div class="tool-icon">🔄</div><div class="tool-meta"><h3>Face Swap</h3><p>포즈·의상·배경 유지, 얼굴만 교체. 6cr/회</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="face-swap" href="manuals/ko/face-swap.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>Face Swap 열고 Nano Banana 2 / Nano Banana 모델 선택</li>
                 <li>Original image 업로드</li>
@@ -670,6 +688,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-blend" class="tool">
             <div class="tool-top"><div class="tool-icon">🌄</div><div class="tool-meta"><h3>Cinematic Image Blender</h3><p>인물 + 배경 → 시네마틱 합성. 조명·색감 자동 매칭</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="background-blend" href="manuals/ko/background-blend.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>풍경+반짝임 아이콘 클릭</li>
                 <li>Upload person Image (배경 없거나 단색일수록 정확도 ↑)</li>
@@ -693,6 +712,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-cinegrade" class="tool">
             <div class="tool-top"><div class="tool-icon">🎨</div><div class="tool-meta"><h3>CineGrade AI</h3><p>영화 스틸의 색감을 내 사진에. 구도 유지, 톤만 변경. 6cr/회</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="cine-grade" href="manuals/ko/cine-grade.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>마법봉 아이콘 클릭</li>
                 <li>Your Photo(원본) 업로드 — 노출 안정적인 사진 권장</li>
@@ -705,6 +725,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-image" class="tool">
             <div class="tool-top"><div class="tool-icon">🖼️</div><div class="tool-meta"><h3>Image Generator</h3><p>7가지 AI 모델 한곳에서. Nano Banana, Kling, Seedream 등</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="image" href="manuals/ko/image.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>첫 번째 사이드바 아이콘에서 Image Generator 열기</li>
                 <li>모델 선택 (레퍼런스 제한 확인): Banana 2/Pro 14장, Kling O1 10장, Z Image 미지원, Grok 1장/Pro 3장</li>
@@ -727,6 +748,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-video" class="tool">
             <div class="tool-top"><div class="tool-icon">🎬</div><div class="tool-meta"><h3>Video Generator</h3><p>Veo 3.1, Runway, Kling 3.0, Seedance 2.0 등 멀티 엔진. 50cr/회, 멀티샷 180cr</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="video" href="manuals/ko/video.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>Tools 메뉴 → 2번째 아이콘 Video Generator</li>
                 <li>Models 드롭다운에서 엔진 선택</li>
@@ -740,6 +762,7 @@ details .inner{padding:14px 16px;font-size:13.5px;color:var(--muted)}
           <div id="tool-upscale" class="tool">
             <div class="tool-top"><div class="tool-icon">🔎</div><div class="tool-meta"><h3>Upscaler</h3><p>Topaz·Xconda 모델로 2X/4X 디테일 업스케일. 8cr 예시</p></div></div>
             <div class="tool-body">
+              <a class="screen-guide-link" data-html-guide="upscale" href="manuals/ko/upscale.html" target="_blank" rel="noopener noreferrer">화면별 상세 가이드 (새 탭) ↗</a>
               <ol class="steps">
                 <li>Upscaler 열고 Topaz(세밀) / Xconda(빠름) 선택</li>
                 <li>이미지 업로드, 2X(웹용) / 4X(고해상도 납품) 선택</li>

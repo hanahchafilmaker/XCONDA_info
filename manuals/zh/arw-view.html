@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrow View — 用户指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 760px; }
+  .section-lede .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .section-lede strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+  .figure-block { margin-bottom: 32px; max-width: 900px; }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="指南导航" data-zoom-label="放大图片"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">返回中心</a><a href="index.html">全部指南</a></div><div class="xconda-manual-languages"><a href="../ko/arw-view.html" hreflang="ko" lang="ko">KO</a><a href="../en/arw-view.html" hreflang="en" lang="en">EN</a><a href="../ja/arw-view.html" hreflang="ja" lang="ja">JA</a><a href="../zh/arw-view.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>用户指南</span></div>
+    <div><div class="cover-title-en">ARROW<br>VIEW</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">本指南介绍如何用一个箭头改变单张图像的相机角度。无需 3D 建模或渲染，即可直观切换视角。</div></div>
+    <div class="cover-bottom-meta"><div><div>用户指南</div><div>教程</div></div><div style="text-align:right"><div>共 13 章</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>共 13 章</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— 指南结构 —</span>功能说明 · 使用场景 · 核心功能 · 使用技巧 · 打开 Arrow View · 上传图像 · 绘制箭头方向 · Clear Arrow / New Image · Generate · 查看结果 · 编辑/重做 · 下载</div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">Arrow View 能做什么</h2><p class="section-lede">从单张图像中生成 <strong>多种相机角度视图</strong> 。在图像上绘制箭头，AI 便会生成从该方向看到的场景。 <strong>传统方式</strong>：在 3D 软件中调整相机角度，或依赖需要空间推理的其他 AI 角度工具。 <strong>Arrow View 的方式</strong>：在图像上画一个箭头即可。无需 3D 知识，完全直观。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/0b6d027e4dae52e80a806f15a31fb06454cc5b849258bfd6a6f93b2be31add3d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">跳过 3D 建模、渲染和空间推理 —— 一个箭头就能改变视角。</div></div>
+  <div class="footer-meta"><span>002 — 目的</span><span>PURPOSE</span></div>
+</section>
+
+<!-- 03: Use Cases -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>使用场景</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 使用场景 —</div><h2 class="section-title">使用场景</h2><p class="section-lede"><strong>1. 商品图角度扩展</strong> — 把单张正面商品图扩展为俯视、侧视、45° 等角度。 <strong>2. 俯视航拍生成</strong> — 获得生成式 AI 一向薄弱的高精度俯视图。 <strong>3. 分镜角度变化</strong> — 在分镜制作中从多个相机角度呈现同一场景。 <strong>4. 建筑 / 室内视角转换</strong> — 从不同视角重构空间图像。 <strong>5. 广告创意变体</strong> — 用一张原图制作横幅、海报和社媒素材。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/c2b748e754843206cf2b0819dc142ccec33be9031e2d6f9030494ed204fa881f.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">最适用的场景是 <strong>一个镜头 → 多种角度</strong>  —— 商品、俯视图、分镜、空间表现和广告创意等。</div></div>
+  <div class="footer-meta"><span>003 — 使用场景</span><span>USE-CASES</span></div>
+</section>
+
+<!-- 04: Features -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>功能</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 功能 —</div><h2 class="section-title">Arrow View 核心功能</h2><p class="section-lede"><strong>用箭头指定视角</strong> — 在图像上绘制箭头即可直观设定相机方向，无需 3D 知识。 <strong>自由角度生成</strong> — 俯视、仰视、侧视、斜向等任意视角变化都可以实现。 <strong>保留原有色调</strong> — 原图的色彩、光线和质感保持不变，只改变视角。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/f22c59c06efed6ff7b778ab2a6d831463598acb9db6a7b07c47227d595b6c075.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">三大支柱： <strong>方向指定 → 视角转换 → 色调保留</strong>.</div></div>
+  <div class="footer-meta"><span>004 — 功能</span><span>FEATURES</span></div>
+</section>
+
+<!-- 05: Tips -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>技巧</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 技巧 —</div><h2 class="section-title">使用技巧</h2><p class="section-lede"><strong>箭头的绘制</strong>：起点 → 终点即相机的移动方向。箭头短则角度变化小，箭头长则变化更大。箭头方向越明确，结果越准确。 <strong>优质原图</strong>：主体清晰、背景简洁、分辨率高。 <strong>结果可能不稳定的情况</strong>：要求暴露原图中不可见区域的极端角度变化、背景杂乱，或主体的关键面在原图中不可见时。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/7b71beec620bdf856edeb2f0b56c4bf03b2552367bdf9cd744716685f4659656.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text"><strong>短而清晰的箭头 + 干净的原图 + 合理的角度变化</strong> 能得到最可靠的结果。</div></div>
+  <div class="footer-meta"><span>005 — 技巧</span><span>TIPS</span></div>
+</section>
+
+<!-- 06: Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>进入</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 进入 —</div><h2 class="section-title">打开 Arrow View</h2><p class="section-lede">点击左侧竖排边栏的 <strong>第 15 个图标</strong> 。该图标是一个 <strong>向右的箭头</strong>。点击后会打开 <span class="ui">Arrow View</span> 工作区。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/33d1c419b1888e32bfda98ead78c047ac801f13ddaa9212a814d9d4c0c6e964b.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">Xconda 的边栏按固定顺序排列带有专属图标的工具，Arrow View 就是向右箭头的图标。</div></div>
+  <div class="footer-meta"><span>006 — 进入</span><span>ENTRY</span></div>
+</section>
+
+<!-- 07: Upload -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>上传</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 上传 —</div><h2 class="section-title">上传图像</h2><p class="section-lede">点击上传区域选择图像。界面会显示 <span class="ui">“Upload an image to get started”</span>。上传后原图会显示在编辑区域。如果没有图像， <span class="ui">Generate</span> 按钮将保持不可用。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/9321394f94c9df0bbd66fc587639dd0df145df65476a28733fe396c41e25258d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">没有图像就无法继续 —— 请先上传。</div></div>
+  <div class="footer-meta"><span>007 — 上传</span><span>UPLOAD</span></div>
+</section>
+
+<!-- 08: Draw Arrow -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>绘制箭头</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 绘制 —</div><h2 class="section-title">绘制箭头方向</h2><p class="section-lede">在图像上拖动即可绘制箭头。视角会沿箭头 <strong>从起点到终点</strong>变化。绘制后，状态会显示 <span class="ui">“Draw arrow direction”</span> ，并且 <span class="ui">Generate</span> 按钮被激活。没有箭头时，Generate 保持不可用。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/f22c59c06efed6ff7b778ab2a6d831463598acb9db6a7b07c47227d595b6c075.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">图像和箭头两者齐备，Generate 才会启用。</div></div>
+  <div class="footer-meta"><span>008 — 绘制箭头</span><span>DRAW-ARROW</span></div>
+</section>
+
+<!-- 09: Clear New -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>清除 / 新建</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 重置 —</div><h2 class="section-title">Clear Arrow / New Image</h2><p class="section-lede"><span class="ui">Clear Arrow</span> — 删除当前在图像上绘制的箭头。 <span class="ui">New Image</span> — 将已上传的图像替换为另一张。若想重新绘制方向，请点击 <span class="ui">Clear Arrow</span> 并在图像上绘制新的箭头。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/539accef2a631d4fb0348a23ac2c049fcb2d19fcf7afb77b23314fb65ab997ea.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">在同一张图上换方向请用 Clear Arrow；换一张原图重来请用 New Image。</div></div>
+  <div class="footer-meta"><span>009 — 清除 / 新建</span><span>CLEAR-NEW</span></div>
+</section>
+
+<!-- 10: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate</h2><p class="section-lede">上传图像并绘制箭头后，点击底部的黄色 <span class="ui">Generate</span> 按钮开始生成。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/76e2327f11925eec96b0d8bfbf72a5adaaeca2c8034ddd70115c641a2804480d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">只有图像和箭头都准备好时，Generate 才会启用。</div></div>
+  <div class="footer-meta"><span>010 — 生成</span><span>GENERATE</span></div>
+</section>
+
+<!-- 11: Review -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>查看结果</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 查看结果 —</div><h2 class="section-title">查看结果</h2><p class="section-lede">生成完成后，结果显示在 <strong>右侧结果区域</strong>。 <strong>带箭头的原图</strong> 会保留在左侧，便于对照方向与输出。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/2249ac77598961f5e5c2ac48e642e5897299aad0ae5c6b2b726eef71ccf83b8e.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">对照左侧（原图 + 箭头）与右侧（结果），确认视角是否符合预期。</div></div>
+  <div class="footer-meta"><span>011 — 查看结果</span><span>REVIEW</span></div>
+</section>
+
+<!-- 12: Redo -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>重做</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 重做 —</div><h2 class="section-title">编辑 / 重做</h2><p class="section-lede">如果结果与预期方向不符，请点击 <span class="ui">Clear Arrow</span>。删除旧箭头并在正确方向上绘制新箭头。若要从另一张原图开始，请点击 <span class="ui">New Image</span>.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/2249ac77598961f5e5c2ac48e642e5897299aad0ae5c6b2b726eef71ccf83b8e.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">标准做法是多次生成，变化箭头的长度和角度，然后挑选最佳结果。</div></div>
+  <div class="footer-meta"><span>012 — 重做</span><span>REDO</span></div>
+</section>
+
+<!-- 13: Download -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>下载</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— 下载 —</div><h2 class="section-title">下载</h2><p class="section-lede">点击结果图右侧的 <strong>下载图标</strong> 即可保存生成结果。结果卡片上还显示 <strong>删除图标</strong>  —— 点击即可将该结果从工作区删除。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/04d0ed46e25c92622055c70c4c4539a55fcba31ba84ca52cb1163402d69034f0.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">下载需要保留的，删除其余的 —— 这是保持工作区整洁的最后一步。</div></div>
+  <div class="footer-meta"><span>013 — 下载</span><span>DOWNLOAD</span></div>
+</section>
+
+
+</body></html>

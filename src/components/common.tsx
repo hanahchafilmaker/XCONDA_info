@@ -225,7 +225,15 @@ export function youTubeEmbed(url: string): string | null {
  * valid `/preview` URL depending on the file's sharing/access state, and that policy
  * cannot be overridden by this site. Keep Drive URLs as links rather than iframes.
  */
-const isDriveUrl = (url: string) => /(^|\.)drive\.google\.com\//i.test(url);
+const isDriveUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    return (parsed.protocol === "https:" || parsed.protocol === "http:") && (host === "drive.google.com" || host.endsWith(".drive.google.com"));
+  } catch {
+    return false;
+  }
+};
 
 function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();

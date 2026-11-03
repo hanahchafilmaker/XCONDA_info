@@ -1,0 +1,1411 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Generator — ユーザーガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --body-font: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.03em;
+  }
+  .section-lede {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.7;
+    max-width: 640px;
+    letter-spacing: -0.005em;
+  }
+
+  .plate {
+    background: var(--midnight-deep);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .plate::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: var(--midnight);
+    color: var(--offwhite);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    z-index: 2;
+  }
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(240, 239, 234, 0.08);
+  }
+  .plate-caption {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(240, 239, 234, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-subtitle {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 32px;
+    max-width: 460px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.85;
+    letter-spacing: -0.005em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  .step-title {
+    font-family: var(--body-font);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .step-body {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.8;
+    letter-spacing: -0.005em;
+  }
+  .step-body .ui {
+    font-family: var(--body-font);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: var(--midnight);
+    color: var(--offwhite);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .note-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(240, 239, 234, 0.2);
+    padding-right: 28px;
+    white-space: nowrap;
+  }
+  .note-box .text {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .note-box .text .ui {
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12.5px;
+    color: var(--offwhite);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+
+  /* Model cards */
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .model-card {
+    background: var(--offwhite);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .model-card.featured { background: var(--midnight); color: var(--offwhite); }
+  .model-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    margin-bottom: 12px;
+  }
+  .model-card.featured .num { color: rgba(240, 239, 234, 0.5); }
+  .model-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .model-card.featured h3 { color: var(--offwhite); }
+  .model-card .ref {
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--slate);
+    margin-bottom: 14px;
+    letter-spacing: -0.005em;
+  }
+  .model-card.featured .ref { color: rgba(240, 239, 234, 0.7); }
+  .model-card .desc {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .model-card.featured .desc { color: rgba(240, 239, 234, 0.8); }
+
+  /* Spec list */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 22px 28px;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .spec-item .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .spec-item .feature {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+  .spec-item .feature strong { color: var(--midnight); font-weight: 600; }
+
+  /* Resolution / count cards */
+  .three-col-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .res-card {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .res-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate-light);
+    text-transform: uppercase;
+  }
+  .res-card .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 0.9;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+  }
+  .res-card .desc {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    margin-top: 14px;
+  }
+
+  /* Code-style example */
+  .code-example {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--midnight-deep);
+    color: rgba(240, 239, 234, 0.85);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1.7;
+    border-left: 3px solid var(--midnight);
+  }
+  .code-example .label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.4);
+    margin-bottom: 6px;
+  }
+
+  /* Action grid for icons */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+  .action-item {
+    background: var(--offwhite);
+    padding: 28px 24px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  .action-item .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    color: var(--midnight);
+    margin-bottom: 16px;
+  }
+  .action-item h4 {
+    font-family: var(--body-font);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .action-item p {
+    font-family: var(--body-font);
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    margin-top: auto;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .model-grid, .spec-list-grid, .three-col-cards, .action-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="ガイドのナビゲーション" data-zoom-label="画像を拡大"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">ハブに戻る</a><a href="index.html">ガイド一覧</a></div><div class="xconda-manual-languages"><a href="../ko/image.html" hreflang="ko" lang="ko">KO</a><a href="../en/image.html" hreflang="en" lang="en">EN</a><a href="../ja/image.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/image.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>ユーザーガイド</span>
+    </div>
+    <div>
+      <div class="cover-title-en">IMAGE<br>GENERATOR</div>
+      <div class="cover-subtitle">ユーザーガイド — 7 つの AI モデル、テキストプロンプト、リファレンス画像を使った画像生成ワークフロー。</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>ユーザーガイド</div>
+        <div>チュートリアル</div>
+      </div>
+      <div style="text-align:right">
+        <div>17 チャプター</div>
+        <div>2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>目次</span>
+      <span>17 チャプター</span>
+    </div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— ガイド内容 —</span>       開始 · Models (7) · プロンプト · リファレンス画像 · 画像サイズ · 解像度 · 生成枚数 · ネガティブプロンプト · Generate · 結果 · プロンプトをコピー · 詳細表示 · ダウンロード     </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>開始</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 開始 —</div>
+      <h2 class="section-title">Image Generator を開く</h2>
+      <p class="section-lede">左の縦サイドバーの1番目のアイコン（黄色い枠で囲われたアイコン）をクリックします。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">サイドバーの1番目のアイコンを探す</h3>
+          <p class="step-body">左の縦ナビゲーションバーで、最上部のアイコンを探します。黄色い枠で強調されています。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— ステップ 02 —</div>
+          <h3 class="step-title">クリックして開く</h3>
+          <p class="step-body">アイコンを1回クリックすると Image Generator のワークスペースが開きます。</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/60f50d5ab4308e114437b4a0ffe21cb83e44e2daf3fefba60bc31a86a969b9f8.webp" alt="Image Generator を開く" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — 開始</span>
+    <span>開始</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>モデル</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Models · 1 / 3 —</div>
+      <h2 class="section-title">画像生成モデルを選ぶ</h2>
+      <p class="section-lede">画像生成に使う AI モデルを選びます。7 つのモデルから選択できます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">7 つのモデルは、添付できるリファレンス画像の最大数・テキスト精度・結果の質感が異なります。ここでは最初の 3 つを紹介し、残りは次のページで説明します。</p>
+    </div>
+    <img src="../assets/screens/f8a62cb8902eb9b4526a4948b8f5f735ac5824d6f56b7c4be751ec9692886f96.webp" alt="画像生成モデルを選ぶ" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="model-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+        <div class="model-card">
+          <div class="num">— モデル 01 —</div>
+          <h3>NANO BANANA 2</h3>
+          <div class="ref">最大 14 枚のリファレンス</div>
+          <div class="desc">汎用の画像生成モデル。テキスト精度が高く、最も基本的で安定したモデルです。</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— モデル 02 —</div>
+          <h3>NANO BANANA PRO</h3>
+          <div class="ref">最大 14 枚のリファレンス</div>
+          <div class="desc">Nano Banana 2 の上位版で、より高いディテールと品質を持ちます。</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— モデル 03 —</div>
+          <h3>KLING IMAGE O1</h3>
+          <div class="ref">最大 10 枚のリファレンス</div>
+          <div class="desc">独自の画像解釈スタイルを持つモデルです。</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — Models (1/3)</span>
+    <span>モデル</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>プロンプト</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— プロンプト —</div>
+      <h2 class="section-title">プロンプトを入力</h2>
+      <p class="section-lede">空のフィールドをクリックし、生成したい画像をテキストで描写します。プロンプトは必須です。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">空のフィールドをクリック</h3>
+          <p class="step-body"> <span class="ui">プロンプト</span> フィールドを1回クリックし、生成したい画像をテキストで描写します。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 推奨 —</div>
+          <h3 class="step-title">英語で書く</h3>
+          <p class="step-body">英語で書くと、より正確な結果が得られます。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 動作 —</div>
+          <h3 class="step-title">最後のプロンプトが自動適用</h3>
+          <p class="step-body">以前に使用した場合、最後のプロンプトが自動的に適用されます。</p>
+        </div>
+
+
+        <div class="note-box">
+          <div class="label">— 必須 —</div>
+          <div class="text">プロンプトは必須です。空の場合、Generate ボタンは有効になりません。</div>
+        </div>
+    </div>
+    <img src="../assets/screens/8dfb39eb847fa2a6a59938ce2633450088bd02922946966f57fcc667771df079.webp" alt="プロンプトを入力" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — プロンプト</span>
+    <span>プロンプト</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>モデル</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Models · 2 / 3 —</div>
+      <h2 class="section-title">画像生成モデル — 追加</h2>
+      <p class="section-lede">残り 4 つのモデルを確認します。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">ネガティブプロンプトに対応しているのは Z Image のみで、不要な要素を明示的に除外できます。Seedream と Grok Imagine シリーズは、それぞれの特性に合ったコンテンツに適しています。</p>
+    </div>
+    <img src="../assets/screens/f8a62cb8902eb9b4526a4948b8f5f735ac5824d6f56b7c4be751ec9692886f96.webp" alt="画像生成モデル — 追加" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="model-grid">
+
+        <div class="model-card featured">
+          <div class="num">— モデル 04 —</div>
+          <h3>Z IMAGE</h3>
+          <div class="ref">リファレンス非対応</div>
+          <div class="desc">ネガティブプロンプトに対応し、不要な要素を明示的に除外できます。1K 解像度に対応しています。</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— モデル 05 —</div>
+          <h3>SEEDREAM 5.0 LITE</h3>
+          <div class="ref">最大 14 枚のリファレンス</div>
+          <div class="desc">情緒的で柔らかなトーンのコンテンツに適しています。</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— モデル 06 —</div>
+          <h3>GROK IMAGINE IMAGE</h3>
+          <div class="ref">リファレンス 1 枚</div>
+          <div class="desc">リファレンス画像を1枚だけ添付できるモデルです。</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— モデル 07 —</div>
+          <h3>GROK IMAGINE PRO</h3>
+          <div class="ref">最大 3 枚のリファレンス</div>
+          <div class="desc">Grok Imagine Image の上位版です。</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — Models (2/3)</span>
+    <span>モデル</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>リファレンス画像</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— リファレンス画像 —</div>
+      <h2 class="section-title">リファレンス画像を添付する</h2>
+      <p class="section-lede">プロンプト入力フィールドの左にある点線のボックスアイコンをクリックすると、リファレンス画像を添付できます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">点線のボックスアイコンをクリック</h3>
+          <p class="step-body">プロンプト入力フィールドの左にある点線のボックスアイコンをクリックすると、リファレンス画像を添付できます。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 表示 —</div>
+          <h3 class="step-title">@image1、@image2 形式</h3>
+          <p class="step-body">添付した画像はプロンプト内に <span class="ui">@image1</span>, <span class="ui">@image2</span> …として表示され、プロンプト内から参照できます。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 任意 —</div>
+          <h3 class="step-title">必須ではない項目</h3>
+          <p class="step-body">リファレンス画像は任意です。テキストだけでも生成できます。</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/d15e33ca68a5e38af0425c4a863838558439b1899d7ea16d2ce7f6ddc3e4173f.webp" alt="リファレンス画像を添付する" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — リファレンス画像</span>
+    <span>リファレンス画像</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>リファレンス上限 (1)</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Limit · 1 / 3 —</div>
+      <h2 class="section-title">モデル別のリファレンス添付上限 (1)</h2>
+      <p class="section-lede">添付できるリファレンス画像の最大数はモデルによって異なります。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="spec-list-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+
+        <div class="spec-item">
+          <div class="name">NANO BANANA 2</div>
+          <div class="feature"><strong>最大 14</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">NANO BANANA PRO</div>
+          <div class="feature"><strong>最大 14</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">KLING IMAGE O1</div>
+          <div class="feature"><strong>最大 10</strong></div>
+        </div>
+      </div>
+    </div>
+    <img src="../assets/screens/63df574a4d8c8cb27c2ee3028f0ce0af4e73f6b3b30b9b7b75c4736b17b1254e.webp" alt="モデル別のリファレンス添付上限 (1)" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — Reference Limit (1/3)</span>
+    <span>リファレンス上限</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>リファレンス上限 (2)</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Limit · 2 / 3 —</div>
+      <h2 class="section-title">モデル別のリファレンス添付上限 (2)</h2>
+      <p class="section-lede">Z Image と Seedream 5.0 Lite のリファレンス添付上限です。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="spec-list-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+
+        <div class="spec-item">
+          <div class="name">Z IMAGE</div>
+          <div class="feature"><strong>リファレンス非対応</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">SEEDREAM 5.0 LITE</div>
+          <div class="feature"><strong>最大 14</strong></div>
+        </div>
+      </div>
+    </div>
+    <img src="../assets/screens/5f725580bdbb9cbcdfe3d1eb5944b732e2fa29aeec8b3fc605bd0373079e415f.webp" alt="モデル別のリファレンス添付上限 (2)" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — Reference Limit (2/3)</span>
+    <span>リファレンス上限</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>リファレンス上限 (3)</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Limit · 3 / 3 —</div>
+      <h2 class="section-title">モデル別のリファレンス添付上限 (3)</h2>
+      <p class="section-lede">Grok Imagine シリーズのリファレンス添付上限です。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="spec-list-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+
+        <div class="spec-item">
+          <div class="name">GROK IMAGINE IMAGE</div>
+          <div class="feature"><strong>1</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">GROK IMAGINE PRO</div>
+          <div class="feature"><strong>最大 3</strong></div>
+        </div>
+      </div>
+    </div>
+    <img src="../assets/screens/280b5ae075535ca528f627530bdd3a4240a490552087efc0960ea30152693401.webp" alt="モデル別のリファレンス添付上限 (3)" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — Reference Limit (3/3)</span>
+    <span>リファレンス上限</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>画像サイズ</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 画像サイズ —</div>
+      <h2 class="section-title">画像のアスペクト比を選ぶ</h2>
+      <p class="section-lede">プロンプト入力欄の下の比率ボタンをクリックすると、12 種類のアスペクト比から選べます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1fr; margin-bottom: 40px;">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 一般 —</div>
+        <p class="step-body">12 種類の比率は、動画・SNS・印刷などの出力先を基準に選ばれています。最もよく使われるのは 16:9（横長ワイド）、9:16（縦）、1:1（正方形）です。</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— メモ —</div>
+        <p class="step-body">対応するアスペクト比は選択中のモデルによって異なる場合があります。モデルを変更した際、以前の比率が非対応なら既定値に自動で戻ることがあるため、モデル選択後に比率を確認してください。</p>
+      </div>
+    </div>
+    <img src="../assets/screens/6a2642d88b9ff01ca6ab1eba790d927c26346564dcc88c77e89f891dfcd1d690.webp" alt="画像のアスペクト比を選ぶ" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="spec-list-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+        <div class="spec-item">
+          <div class="name">16:9</div>
+          <div class="feature">横長ワイド — 動画・バナー</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">9:16</div>
+          <div class="feature">縦 — モバイル・リール・ショート</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">1:1</div>
+          <div class="feature">正方形 — SNS フィード・プロフィール</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">3:2</div>
+          <div class="feature">横長 — 写真の標準</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">2:3</div>
+          <div class="feature">縦 — ポスター</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">4:3</div>
+          <div class="feature">横長 — プレゼン</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">3:4</div>
+          <div class="feature">縦</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">5:4</div>
+          <div class="feature">横長</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">4:5</div>
+          <div class="feature">縦 — Instagram</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">21:9</div>
+          <div class="feature">ウルトラワイド — シネマティック</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">4:1</div>
+          <div class="feature">パノラマ（横）</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">1:4</div>
+          <div class="feature">パノラマ（縦）</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — 画像サイズ</span>
+    <span>画像サイズ</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>解像度</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 解像度 —</div>
+      <h2 class="section-title">解像度を選ぶ</h2>
+      <p class="section-lede">比率ボタンの隣にある解像度のドロップダウンをクリックすると、3 つの解像度から選べます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr; margin-bottom: 40px;">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— モデル別の対応 —</div>
+        <p class="step-body">対応する解像度は選択中のモデルによって異なります。 <strong></strong> は <span class="ui">1K</span>のみに対応し、他のモデルは 1K・2K・4K から選べます。既定の解像度もモデルによって異なるため、モデル選択後に解像度を確認してください。</p>
+      </div>
+      <div class="note-box">
+        <div class="label">— メモ —</div>
+        <div class="text">モデルを変更した際、以前選択した解像度が非対応の場合は、利用可能な値に自動調整されることがあります。</div>
+      </div>
+    </div>
+    <img src="../assets/screens/8c4fb72d25cd2759ef856b181827315cf16f6fc7ee5e6498ddc70925a2514d8d.webp" alt="解像度を選ぶ" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="three-col-cards">
+
+        <div class="res-card">
+          <div class="num">— 01 —</div>
+          <div>
+            <div class="big">1K</div>
+            <div class="desc">高速生成、下書き確認向け</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 02 —</div>
+          <div>
+            <div class="big">2K</div>
+            <div class="desc">既定の推奨解像度</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 03 —</div>
+          <div>
+            <div class="big">4K</div>
+            <div class="desc">最高品質、印刷・商用向け</div>
+          </div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — 解像度</span>
+    <span>オプション</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>詳細表示</span><span class="dot"></span><span>生成枚数</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 生成枚数 —</div>
+      <h2 class="section-title">生成する画像の枚数を選ぶ</h2>
+      <p class="section-lede">解像度の隣の数字ボタンで、一度に生成する枚数を選びます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr; margin-bottom: 40px;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">作業の目的に合わせて 3 つの選択肢から選びます。</p>
+    </div>
+    <img src="../assets/screens/69520e38874c8387dd7a0c44593a9b380e728e60715cd7601b7e3df9594c6b46.webp" alt="生成する画像の枚数を選ぶ" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="three-col-cards">
+
+        <div class="res-card">
+          <div class="num">— 01 —</div>
+          <div>
+            <div class="big">1</div>
+            <div class="desc">1 枚生成</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 02 —</div>
+          <div>
+            <div class="big">2</div>
+            <div class="desc">2 枚生成</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 03 —</div>
+          <div>
+            <div class="big">4</div>
+            <div class="desc">4 枚生成</div>
+          </div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — 生成枚数</span>
+    <span>オプション</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>ネガティブプロンプト</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Negative Prompt · Z Image のみ —</div>
+      <h2 class="section-title">ネガティブプロンプトを入力</h2>
+      <p class="section-lede">Z Image モデルを選択すると、プロンプトの下に <span class="ui">Negative prompt</span> 入力フィールドが表示されます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 条件 —</div>
+          <h3 class="step-title">Z Image のみ有効</h3>
+          <p class="step-body"> <span class="ui">Negative prompt</span> 入力フィールドは、Z Image モデルを選択したときだけ表示されます。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">除外したい要素を入力</h3>
+          <p class="step-body">生成結果から除外したい要素をテキストで入力します。</p>
+        </div>
+
+        <div class="code-example">
+          <span class="label">— 例 —</span>           ぼやけ、指の増加、透かし、文字、低品質         </div>
+
+    </div>
+    <img src="../assets/screens/2bccf1b69433c0204d569b1a7a9dbf2a415458556f719c4334612db036385a5b.webp" alt="ネガティブプロンプトを入力" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — ネガティブプロンプト</span>
+    <span>ネガティブプロンプト</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 生成 —</div>
+      <h2 class="section-title">Generate ボタンをクリック</h2>
+      <p class="section-lede">すべての設定が終わったら、下部の黄色い <span class="ui">Generate</span> ボタンを押します。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">Generate をクリック</h3>
+          <p class="step-body">すべての設定が終わったら、下部の黄色い <span class="ui">Generate</span> ボタンを押します。ボタンに表示されたクレジットが消費され、画像生成が始まります。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 条件 —</div>
+          <h3 class="step-title">プロンプト入力が必須</h3>
+          <p class="step-body">入力したプロンプトがあるときだけボタンが有効になります。以前に使用した場合は最後のプロンプトが自動適用されます。</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/fb8f12a31d042ce47db3b28b6479df07294510d324d260ebe507df62b1865855.webp" alt="Generate ボタンをクリック" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — 生成</span>
+    <span>Generate</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>結果</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 結果 —</div>
+      <h2 class="section-title">結果を確認する</h2>
+      <p class="section-lede">生成が完了すると、結果画像が画面の右側に表示されます。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">結果画像を確認</h3>
+          <p class="step-body">生成が完了すると、結果画像が画面の右側に表示されます。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— レイアウト —</div>
+          <h3 class="step-title">4 枚生成時は横並びのサムネイル</h3>
+          <p class="step-body">4 枚生成すると、番号付きのサムネイル（1、2、3、4）が横に並びます。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— レイアウト —</div>
+          <h3 class="step-title">各結果にプロンプトを表示</h3>
+          <p class="step-body">使用したプロンプトが各結果の下に表示されます。</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/b8b202e6e64d74494cf07d366f95f695a355fb9f3cde6a237faeb17499a9c49b.webp" alt="結果を確認する" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — 結果</span>
+    <span>結果</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>プロンプトをコピー</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— プロンプトをコピー —</div>
+      <h2 class="section-title">プロンプトをコピーする</h2>
+      <p class="section-lede">結果の下に表示されたプロンプトテキストの右上にコピーアイコンがあります。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— ステップ 01 —</div>
+          <h3 class="step-title">コピーアイコンをクリック</h3>
+          <p class="step-body">結果の下に表示されたプロンプトテキストの右上にあるコピーアイコンをクリックします。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 動作 —</div>
+          <h3 class="step-title">クリップボードにコピー</h3>
+          <p class="step-body">クリックするとプロンプトがクリップボードにコピーされ、同じプロンプトで再生成したり、別のモデルで使ったりできます。</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/b206d90f588b7cebe5dbe338620ffad713f1415eae2b94d00a92d528d5cf9a2e.webp" alt="プロンプトをコピーする" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — プロンプトをコピー</span>
+    <span>プロンプトをコピー</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>詳細表示</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 詳細表示 —</div>
+      <h2 class="section-title">結果の詳細表示</h2>
+      <p class="section-lede">サムネイルをクリックすると、画像がフルスクリーンで拡大表示されます。</p>
+    </div>
+  </div>
+
+  <img src="../assets/screens/bd5258ee79c6322bf29e8a633891d56c3a33234ce941564891d1d8eaa7b0b5a1.webp" alt="結果の詳細表示" style="display: block; width: 100%; height: auto;">
+
+  <div class="action-grid">
+
+        <div class="action-item">
+          <div class="icon">&lt; &gt;</div>
+          <h4>移動</h4>
+          <p>左右の矢印（&lt; &gt;）をクリックすると、他の生成結果に移動します。</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">+/-</div>
+          <h4>ズームイン / アウト</h4>
+          <p>下部のツールバーでズームイン・ズームアウトします。</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">↻</div>
+          <h4>90° 回転</h4>
+          <p>下部のツールバーで画像を左右に 90° 回転します。</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — 詳細表示</span>
+    <span>詳細表示</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>ダウンロードと管理</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— ダウンロードと管理 —</div>
+      <h2 class="section-title">ダウンロードと管理</h2>
+      <p class="section-lede">各結果の右下に 3 つのアイコンがあります。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr; margin-bottom: 32px;">
+    <img src="../assets/screens/b5bd730f65bf5beecad0f2bb1bddf26486eed3f6aae6412f6f3ca29b0b58e92a.webp" alt="ダウンロードと管理" style="display: block; width: 100%; height: auto;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">各結果の右下にある 3 つのアイコンで、新しいウィンドウで開く・ダウンロード・削除ができます。</p>
+    </div>
+  </div>
+
+  <div class="action-grid">
+
+        <div class="action-item">
+          <div class="icon">↗</div>
+          <h4>新しいウィンドウで開く</h4>
+          <p>1 番目のアイコンをクリックすると、画像が新しいウィンドウで開きます。</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">↓</div>
+          <h4>画像をダウンロード</h4>
+          <p>2 番目のアイコン（<span class="ui">↓</span>）をクリックすると画像をダウンロードします。</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">🗑</div>
+          <h4>画像を削除</h4>
+          <p>3 番目のアイコン（ゴミ箱）をクリックすると画像を削除します。</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — ダウンロードと管理</span>
+    <span>最終ステップ</span>
+  </div>
+</section>
+
+
+
+</body></html>

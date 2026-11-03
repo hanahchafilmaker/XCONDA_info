@@ -1,0 +1,23 @@
+[
+  { "slug": "image", "name": "Image Generator", "category": "image", "source": "01_Image_Generator" },
+  { "slug": "video", "name": "Video Generator", "category": "video", "source": "02_Video_Generator" },
+  { "slug": "upscale", "name": "Upscaler", "category": "image", "source": "03_Upscale" },
+  { "slug": "face-swap", "name": "Face Swap", "category": "image", "source": "04_FaceSwap" },
+  { "slug": "auto-angle", "name": "Auto Angle Generator", "category": "image", "source": "05_Auto_Angle_Generator" },
+  { "slug": "background-blend", "name": "Cinematic Image Blender", "category": "image", "source": "06_Cinematic_Image_Blender" },
+  { "slug": "expression", "name": "Expression Transformer", "category": "image", "source": "07_Expression_Transformer" },
+  { "slug": "directors-cut", "name": "Director's Cut", "category": "storyboard", "source": "08_Directors_Cut" },
+  { "slug": "art-director-pro", "name": "Art Director Pro", "category": "storyboard", "source": "09_Art_Director_Pro" },
+  { "slug": "scene-snap", "name": "Scene Snap", "category": "storyboard", "source": "10_Scene_Snap" },
+  { "slug": "cloth-swap", "name": "ClothSwap", "category": "image", "source": "11_Cloth_Swap" },
+  { "slug": "youtube-ref", "name": "YouTube Ref", "category": "storyboard", "source": "12_YouTube_Ref" },
+  { "slug": "spin-angle", "name": "SpinAngle", "category": "image", "source": "13_Spin_Angle" },
+  { "slug": "cine-grade", "name": "CineGrade AI", "category": "image", "source": "14_CineGrade_AI" },
+  { "slug": "arw-view", "name": "Arrow View", "category": "image", "source": "15_Arrow_View" },
+  { "slug": "drct-seq", "name": "Director's Sequence", "category": "storyboard", "source": "16_Directors_Sequence" },
+  { "slug": "turn", "name": "Turn", "category": "video", "source": "17_Turn" },
+  { "slug": "blocking-board", "name": "Blocking Board", "category": "storyboard", "source": "18_Blocking_Board" },
+  { "slug": "flexboard", "name": "FlexBoard", "category": "storyboard", "source": "19_FlexBoard" },
+  { "slug": "turn-video", "name": "Turn Video", "category": "video", "source": "20_Turn_Video" },
+  { "slug": "asset-library", "name": "Asset Library", "category": "assets", "source": "21_Asset_Library" }
+]

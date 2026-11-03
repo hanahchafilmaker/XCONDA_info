@@ -1,0 +1,1944 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art Director Pro — User Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #F0EFEA;
+    --offwhite-warm: #E8E6DE;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --body-font: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.03em;
+  }
+  .section-lede {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.7;
+    max-width: 640px;
+    letter-spacing: -0.005em;
+  }
+
+  .plate {
+    background: var(--midnight-deep);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .plate::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: var(--midnight);
+    color: var(--offwhite);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    z-index: 2;
+  }
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(240, 239, 234, 0.08);
+  }
+  .plate-caption {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(240, 239, 234, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-subtitle {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 32px;
+    max-width: 460px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-volume {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 220px;
+    line-height: 0.8;
+    color: var(--midnight);
+    letter-spacing: -0.04em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-volume-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.85;
+    letter-spacing: -0.005em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  .step-title {
+    font-family: var(--body-font);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .step-body {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.8;
+    letter-spacing: -0.005em;
+  }
+  .step-body .ui {
+    font-family: var(--body-font);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: var(--midnight);
+    color: var(--offwhite);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .note-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(240, 239, 234, 0.2);
+    padding-right: 28px;
+    white-space: nowrap;
+  }
+  .note-box .text {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .note-box .text .ui {
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12.5px;
+    color: var(--offwhite);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+
+  /* Focus mode cards */
+  .focus-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .focus-card {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+  }
+  .focus-card .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    color: var(--slate);
+  }
+  .focus-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .focus-card .sub {
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--midnight);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .focus-card .desc {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+    margin-top: auto;
+  }
+
+  /* Spec list grid */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .spec-item .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .spec-item .feature {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .spec-item .feature strong {
+    color: var(--midnight);
+    font-weight: 600;
+  }
+
+  /* Before/After */
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+  .ba-block {
+    background: var(--offwhite);
+    padding: 28px 32px;
+  }
+  .ba-block.after { background: var(--midnight); color: var(--offwhite); }
+  .ba-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--slate);
+  }
+  .ba-block.after .label { color: rgba(240, 239, 234, 0.6); }
+  .ba-block .content {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--midnight);
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .ba-block.after .content { color: var(--offwhite); }
+
+  /* Download dark */
+  .download-section {
+    background: var(--midnight);
+    color: var(--offwhite);
+  }
+  .download-section .slide-meta { color: rgba(240, 239, 234, 0.5); }
+  .download-section .slide-meta .dot { background: var(--offwhite); }
+  .download-section .footer-meta { color: rgba(240, 239, 234, 0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240, 239, 234, 0.15); }
+  .download-section .section-num { color: var(--offwhite); }
+  .download-section .eyebrow { color: var(--offwhite); }
+  .download-section .section-title { color: var(--offwhite); }
+  .download-section .section-lede { color: rgba(240, 239, 234, 0.7); }
+
+  .download-options {
+    display: grid;
+    gap: 1px;
+    background: rgba(240, 239, 234, 0.15);
+    border: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .download-option {
+    background: var(--midnight);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--offwhite);
+    line-height: 1;
+  }
+  .download-option h4 {
+    font-family: var(--body-font);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--offwhite);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .download-option p {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: rgba(240, 239, 234, 0.7);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .download-option p .ui {
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12px;
+    color: var(--offwhite);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+  .download-option .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: rgba(240, 239, 234, 0.5);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .focus-cards { grid-template-columns: 1fr; }
+    .spec-list-grid { grid-template-columns: 1fr; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 72px; }
+    .cover-volume { font-size: 120px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/art-director-pro.html" hreflang="ko" lang="ko">KO</a><a href="../en/art-director-pro.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/art-director-pro.html" hreflang="ja" lang="ja">JA</a><a href="../zh/art-director-pro.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>No. 02</span>
+    </div>
+    <div>
+      <div class="cover-title-en">ART DIRECTOR<br>PRO</div>
+      <div class="cover-subtitle">User Manual — cinematic cut generation workflow, from entry to upscale and download.</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>User Manual</div>
+        <div>Edition I</div>
+      </div>
+      <div style="text-align:right">
+        <div>29 Chapters</div>
+        <div>Tutorial</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>Volume</span>
+      <span>The Archive</span>
+    </div>
+    <div>
+      <div class="cover-volume-label">— Volume —</div>
+      <div class="cover-volume">02</div>
+    </div>
+    <div class="cover-tag">
+      <span class="label">— Manual Contents —</span>
+      Start · Open Art Director Pro · Focus Mode · Scenario · Plate Product · Role Name · Cast · Face ID · Wardrobe · Detect Face · Camera / Optics · Generate · Preview · Regenerate · Upscaling · Download
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>Start Screen</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Getting Started —</div>
+      <h2 class="section-title">Open the start screen</h2>
+      <p class="section-lede">Click the yellow <span class="ui">START</span> button on the main screen to begin.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click the START button</h3>
+          <p class="step-body">Click the yellow <span class="ui">START</span> button at the center of the main screen to enter the workspace.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 02.01">
+      <img src="../assets/screens/a1d6bbf04d75895206f2ff9fcaff7eb0b582a628366d1dbc2edb71bdb60bf3a3.webp" alt="Open the start screen">
+      <div class="plate-caption">
+        <span>— START button —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — Start</span>
+    <span>Getting Started</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>Open Art Director Pro</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Sidebar Entry —</div>
+      <h2 class="section-title">Open Art Director Pro</h2>
+      <p class="section-lede">Click the 9th icon on the left vertical sidebar — the one inside the yellow frame.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Locate the 9th sidebar icon</h3>
+          <p class="step-body">On the left vertical navigation bar, find the 9th icon from the top. It is highlighted with a yellow frame.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Click to open</h3>
+          <p class="step-body">Click the icon once to open the Art Director Pro workspace.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 03.01">
+      <img src="../assets/screens/de77f40206434e1ede79b835b71cc5728c51613be919dfa472d83cc58882e7fd.webp" alt="Open Art Director Pro">
+      <div class="plate-caption">
+        <span>— 9th icon · yellow frame —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — Open</span>
+    <span>Sidebar Entry</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>Image Engine</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Image Engine · Focus Mode —</div>
+      <h2 class="section-title">Select a focus mode</h2>
+      <p class="section-lede">Select an image engine. Choose one of the 3 focus modes below the red frame.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">The 3 focus modes — Dialogue (character-driven), Action (movement-driven), and Atmosphere (space / mood-driven) — determine the directional approach of the result. Detailed descriptions of each mode follow on the next pages.</p>
+    </div>
+    <div class="plate" data-fig="Fig. 04.01">
+      <img src="../assets/screens/e13186bbb5266134fd3015591f0b884e340c3719b9f497642ba574c7ff2621f6.webp" alt="Select a focus mode">
+      <div class="plate-caption">
+        <span>— 3 focus modes · red frame —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="focus-cards">
+    <div class="focus-card">
+      <div class="tag">— Mode 01 —</div>
+      <h3>DIALOGUE<br>FOCUS</h3>
+      <div class="sub">Character-driven</div>
+      <div class="desc">Focused on emotion, expression, and relationships. Suited for drama and narrative content.</div>
+    </div>
+    <div class="focus-card">
+      <div class="tag">— Mode 02 —</div>
+      <h3>ACTION<br>FOCUS</h3>
+      <div class="sub">Movement-driven</div>
+      <div class="desc">Emphasizes dynamic camera work and motion. Suited for action, performance, and advertising.</div>
+    </div>
+    <div class="focus-card">
+      <div class="tag">— Mode 03 —</div>
+      <h3>ATMOSPHERE<br>FOCUS</h3>
+      <div class="sub">Space / mood-driven</div>
+      <div class="desc">Emphasizes lighting, color, and environmental detail. Suited for mood, emotional, and branding content.</div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — Focus Mode</span>
+    <span>Image Engine</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>Dialogue Focus</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Focus Mode · 01 —</div>
+      <h2 class="section-title">Dialogue Focus</h2>
+      <p class="section-lede">Character-driven direction. Focused on emotion, expression, and relationships. Suited for drama and narrative content.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Direction —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Characters — emotion, expression, relationships</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Emphasis —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Facial close-ups, character interaction</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Best for —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Drama, narrative, interview, storytelling</p>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 05.01">
+      <img src="../assets/screens/c339f1ad232cfc02dd750fc84416a6245faf0583d9ef1ae1c0c3fcc62324a625.webp" alt="Dialogue Focus">
+      <div class="plate-caption">
+        <span>— Dialogue Focus —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — Dialogue Focus</span>
+    <span>Focus Mode</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>Action Focus</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Focus Mode · 02 —</div>
+      <h2 class="section-title">Action Focus</h2>
+      <p class="section-lede">Movement-driven direction. Emphasizes dynamic camera work and motion. Suited for action, performance, and advertising.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Direction —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Movement — motion, camera work</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Emphasis —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Dynamic camera, blocking, sense of speed</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Best for —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Action, performance, advertising, sports</p>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 06.01">
+      <img src="../assets/screens/1bdf59365392f29e00a81b5f32ff39479abacdbfc6667a9942b58d9ee5355b6f.webp" alt="Action Focus">
+      <div class="plate-caption">
+        <span>— Action Focus —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — Action Focus</span>
+    <span>Focus Mode</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>Atmosphere Focus</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Focus Mode · 03 —</div>
+      <h2 class="section-title">Atmosphere Focus</h2>
+      <p class="section-lede">Space and mood-driven direction. Emphasizes lighting, color, and environmental detail. Suited for mood, emotional, and branding content.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Direction —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Space / mood — lighting, color, environment</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Emphasis —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Environmental detail, mood, tone-and-mood</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Best for —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">Mood films, emotional pieces, branding, lookbooks</p>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 07.01">
+      <img src="../assets/screens/6381c1662edfd6edb3339c4bc59579f7cbdf937c61772a59087592f0f784ada0.webp" alt="Atmosphere Focus">
+      <div class="plate-caption">
+        <span>— Atmosphere Focus —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — Atmosphere Focus</span>
+    <span>Focus Mode</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>Scenario</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Scenario —</div>
+      <h2 class="section-title">Write the scenario</h2>
+      <p class="section-lede">Enter the situation and flow of the content as text. The role name of each character must be included.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click and type</h3>
+          <p class="step-body">Click the <span class="ui">Scenario</span> field once and enter the situation and flow of the content as text.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Include role names</h3>
+          <p class="step-body">When writing the scenario, the character's role name (<span class="ui">Role name</span>) must be included. The role name ensures faces and wardrobes are applied correctly.</p>
+        </div>
+
+        <div class="note-box">
+          <div class="label">— Required —</div>
+          <div class="text">The Scenario is mandatory. The input must exceed a minimum character count, and the Generate button will not activate if it is empty.</div>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 08.01">
+      <img src="../assets/screens/068bba1f59cb16c287dc8e08e13947b0549afbf3dc53517035bc041b4a3e6d06.webp" alt="Write the scenario">
+      <div class="plate-caption">
+        <span>— Scenario field —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — Scenario</span>
+    <span>Scenario</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Plate Product</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Plate Product · Background —</div>
+      <h2 class="section-title">Upload background image</h2>
+      <p class="section-lede">Upload an image that will serve as the background — spatial structure such as buildings, room layouts, or street forms.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click the gray field</h3>
+          <p class="step-body">Click the gray field inside the yellow frame to upload the background image.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Recommended —</div>
+          <h3 class="step-title">Use clear spatial structure</h3>
+          <p class="step-body">Images with clear spatial structure (buildings, room layouts, street forms) improve consistency across the result.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 09.01">
+      <img src="../assets/screens/66ea39e2a7e8f230ff7a0b8e3abf867a75d41566e967b82f545035b6e45c4d73.webp" alt="Upload background image">
+      <div class="plate-caption">
+        <span>— Plate Product · background —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — Plate Product</span>
+    <span>Plate Product</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>Role Name</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Role Name —</div>
+      <h2 class="section-title">Enter character role name</h2>
+      <p class="section-lede">Click the field with the red underline once and enter the character's role name.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click the input field</h3>
+          <p class="step-body">Click the field with the red underline once and enter the character's role name.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Match —</div>
+          <h3 class="step-title">Must match scenario</h3>
+          <p class="step-body">The role name must match the one used in the scenario. This is why role names are required when writing the scenario.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 10.01">
+      <img src="../assets/screens/4fa09f680753830c81b8ec237a4987c0ff7903a03b00e2a47705013db12d8198.webp" alt="Enter character role name">
+      <div class="plate-caption">
+        <span>— Role name field —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — Role Name</span>
+    <span>Role Name</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>Add Cast</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Add Cast —</div>
+      <h2 class="section-title">Add additional characters</h2>
+      <p class="section-lede">If there are 2 or more characters, click the <span class="ui">Add Cast</span> button inside the red frame to add more.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click Add Cast</h3>
+          <p class="step-body">For 2 or more characters, click the <span class="ui">Add Cast</span> button inside the red frame to generate additional character input fields.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 11.01">
+      <img src="../assets/screens/88893a9eefc5cefe12bcea16abc9f9f35e1d72626c1a3990a60a15752aee0d86.webp" alt="Add additional characters">
+      <div class="plate-caption">
+        <span>— Add Cast button —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — Add Cast</span>
+    <span>Add Cast</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 12</span><span class="dot"></span><span>Face ID Source</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Face ID Source —</div>
+      <h2 class="section-title">Upload character photo</h2>
+      <p class="section-lede">This step generates 9 cinematic cuts with visual continuity through facial recognition (face lock).</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Upload photo</h3>
+          <p class="step-body">Click or drag the gray field inside the yellow frame to upload the character's photo.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Recommended —</div>
+          <h3 class="step-title">Use front-facing photos</h3>
+          <p class="step-body">Use a front-facing photo where possible to ensure accurate face lock.</p>
+        </div>
+
+        <div class="note-box">
+          <div class="label">— Note —</div>
+          <div class="text">Animation characters can also be used, but since the Nano Banana-based engine is optimized for live-action data, style transformation (live-action conversion) or detail loss may occur.</div>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 12.01">
+      <img src="../assets/screens/ba52f24fac8f7baed246358d2a2da699208f1f6a4ff91c255f0514abdb597baf.webp" alt="Upload character photo">
+      <div class="plate-caption">
+        <span>— Face ID Source —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Face ID Source</span>
+    <span>Face ID Source</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>Wardrobe Ref</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Wardrobe Ref —</div>
+      <h2 class="section-title">Upload wardrobe image</h2>
+      <p class="section-lede">This step generates 9 cinematic cuts with visual continuity through wardrobe lock. It is not required.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Upload wardrobe image</h3>
+          <p class="step-body">Add the character's outfit to the <span class="ui">Wardrobe Ref</span> field (yellow frame) next to the character photo.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Optional —</div>
+          <h3 class="step-title">Not a required field</h3>
+          <p class="step-body">Wardrobe lock helps maintain visual continuity but is not required. The field can be left empty.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 13.01">
+      <img src="../assets/screens/27b2cb90e578ec55a366436822b929c2420868f488c9dadb1598b0543ce16612.webp" alt="Upload wardrobe image">
+      <div class="plate-caption">
+        <span>— Wardrobe Ref —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — Wardrobe Ref</span>
+    <span>Wardrobe Ref</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Detect Face</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Detect Face · Character Sheet —</div>
+      <h2 class="section-title">Detect Face — generate character sheet</h2>
+      <p class="section-lede">Click the activated yellow <span class="ui">Detect Face</span> button to auto-generate a 3-view character sheet (left, front, right).</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click Detect Face</h3>
+          <p class="step-body">Click the activated yellow <span class="ui">Detect Face</span> button (red frame).</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Auto-generate 3-view sheet</h3>
+          <p class="step-body">A 3-view character sheet (left, front, right) is automatically generated.</p>
+        </div>
+
+        <div class="note-box">
+          <div class="label">— Required —</div>
+          <div class="text">The Generate button will not activate without a character sheet. Like the scenario, the character sheet is mandatory.</div>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 14.01">
+      <img src="../assets/screens/2f9c1bbc65150af98412ce59a7f97aa358abe748f917a94e21bf2ce5090b07b6.webp" alt="Detect Face — generate character sheet">
+      <div class="plate-caption">
+        <span>— Detect Face · 3-view sheet —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Detect Face</span>
+    <span>Detect Face</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>Camera Selection</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Camera / Optics —</div>
+      <h2 class="section-title">Select a camera</h2>
+      <p class="section-lede">Select a camera option from the red underlined field. Choose from 6 cameras based on the work goal.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Open the camera dropdown</h3>
+          <p class="step-body">Click the <span class="ui">∨</span> on the right end of the camera option field (red underline).</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Select a camera</h3>
+          <p class="step-body">Choose one option from the dropdown. Detailed descriptions appear on the next page.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 15.01">
+      <img src="../assets/screens/2b104fc57341d18ebc6165f67ffa48ca00f9fa063f2a50e83982353fad4002d1.webp" alt="Select a camera">
+      <div class="plate-caption">
+        <span>— Camera selection —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — Camera Selection</span>
+    <span>Camera / Optics</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>Camera Options</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Camera Options · 6 Models —</div>
+      <h2 class="section-title">6 camera options in detail</h2>
+      <p class="section-lede">Each camera carries a distinct dynamic range, tone, and texture. Match it to your work goal.</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+
+        <div class="spec-item">
+          <div class="name">ARRI ALEXA 35</div>
+          <div class="feature"><strong>17-stop dynamic range</strong> · most balanced cinematic result · ad / film standard tone</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">SONY VENICE 2</div>
+          <div class="feature"><strong>Soft shadows / painterly texture</strong> · emotional and premium imagery</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">RED V-RAPTOR</div>
+          <div class="feature"><strong>Ultra high resolution / strong contrast</strong> · sharp, crisp ad visuals</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">PANAVISION MILLENNIUM DXL2</div>
+          <div class="feature"><strong>Large format</strong> · cinematic depth</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ARRIFLEX 16SR</div>
+          <div class="feature"><strong>16mm film grain</strong> · vintage, documentary feel</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">IMAX MKIV</div>
+          <div class="feature"><strong>70mm film-based</strong> · overwhelming sense of scale</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — Camera Options</span>
+    <span>Reference</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>Optics Selection</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Optics · Lens —</div>
+      <h2 class="section-title">Select a lens</h2>
+      <p class="section-lede">Select an <span class="ui">Optics</span> (lens) option from the red underlined field. Choose from 10 lenses.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Open the lens dropdown</h3>
+          <p class="step-body">Click the <span class="ui">∨</span> on the right end of the <span class="ui">Optics</span> option field (red underline).</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Select a lens</h3>
+          <p class="step-body">Choose one option from the dropdown. Detailed descriptions appear on the next page.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 17.01">
+      <img src="../assets/screens/6cd393678edd906bc9538f21d93e47721a303a867f94537cf2215adcc4863abc.webp" alt="Select a lens">
+      <div class="plate-caption">
+        <span>— Optics selection —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — Optics Selection</span>
+    <span>Optics</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>Optics Options</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Optics Options · 10 Lenses —</div>
+      <h2 class="section-title">10 lens options in detail</h2>
+      <p class="section-lede">Each lens carries a distinct color, bokeh, and contrast character. Match it to your work goal.</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+
+        <div class="spec-item">
+          <div class="name">COOKE S4</div>
+          <div class="feature"><strong>Warm color / creamy bokeh</strong> · suited for character-led advertising</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ARRI SIGNATURE PRIME</div>
+          <div class="feature"><strong>Modern / clean image</strong> · highly versatile standard lens</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ZEISS ULTRA PRIME</div>
+          <div class="feature"><strong>Strong contrast / clinical feel</strong> · detail-emphasized</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">CANON K-35</div>
+          <div class="feature"><strong>Vintage / highlight glow</strong> · emotional direction</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">PANAVISION C-SERIES</div>
+          <div class="feature"><strong>Anamorphic / blue flare</strong> · cinematic aspect ratio</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">HAWK V-LITE</div>
+          <div class="feature"><strong>Retro anamorphic</strong> · classic film style</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">JDC XTAL XPRESS</div>
+          <div class="feature"><strong>Distinctive anamorphic</strong> · unique distortion and mood</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">HELIOS 44-2</div>
+          <div class="feature"><strong>Swirly bokeh</strong> · unusual background expression</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ANGÉNIEUX OPTIMO</div>
+          <div class="feature"><strong>Cinema zoom lens</strong> · flexible framing</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">LEICA SUMMILUX-C</div>
+          <div class="feature"><strong>Natural and realistic rendering</strong> · premium ad and drama</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — Optics Options</span>
+    <span>Reference</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 19</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 019</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">19</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate —</div>
+      <h2 class="section-title">Click the Generate button</h2>
+      <p class="section-lede">Click the Generate button activated at the very bottom of the screen.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Confirm the button is active</h3>
+          <p class="step-body">When all required fields (Scenario, character sheet, camera/lens, etc.) are filled, the Generate button at the very bottom of the screen becomes active.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Click the button</h3>
+          <p class="step-body">Click the activated Generate button to begin image generation.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 19.01">
+      <img src="../assets/screens/c9648d516b77b01d4afc2beb7940c50e6a2356d23adfbdfa1df054d228dd1443.webp" alt="Click the Generate button">
+      <div class="plate-caption">
+        <span>— Generate button —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>019 — Generate</span>
+    <span>Generate</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 20</span><span class="dot"></span><span>Preview 1</span></div>
+    <div class="right"><span>P. 020</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">20</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Preview 1 · First Result —</div>
+      <h2 class="section-title">9-cut grid generated</h2>
+      <p class="section-lede">When generation completes, <span class="ui">Preview 1</span> is created on the right side of the screen. A 9-image grid is generated.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Result —</div>
+          <h3 class="step-title">Review Preview 1</h3>
+          <p class="step-body">After generation, the <span class="ui">Preview 1</span> tab appears on the right side of the screen, displaying 9 cinematic cuts in a grid.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 20.01">
+      <img src="../assets/screens/79a15f143484646f5c6e15a1445df26da63e8370ecb9563fe3167adc6055fa11.webp" alt="9-cut grid generated">
+      <div class="plate-caption">
+        <span>— Preview 1 · 9 frames —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>020 — Preview 1</span>
+    <span>Preview 1</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 21</span><span class="dot"></span><span>Preview 2</span></div>
+    <div class="right"><span>P. 021</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">21</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Preview 2 · Next Tab —</div>
+      <h2 class="section-title">Move to next Preview tab</h2>
+      <p class="section-lede">Click <span class="ui">Preview 2</span> in the red frame to move to the next tab.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click Preview 2</h3>
+          <p class="step-body">Click the <span class="ui">Preview 2</span> tab in the red frame to move to the next Preview area.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 21.01">
+      <img src="../assets/screens/ff6b8a4e52330046ca1380b0c3db261b41e7476ce5d2e429f5eb06cf25ae6caf.webp" alt="Move to next Preview tab">
+      <div class="plate-caption">
+        <span>— Preview 2 tab —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>021 — Preview 2</span>
+    <span>Preview 2</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 22</span><span class="dot"></span><span>Multiple Previews</span></div>
+    <div class="right"><span>P. 022</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">22</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Multiple Previews · 36 Frames Total —</div>
+      <h2 class="section-title">Generate additional Previews (up to 36 frames)</h2>
+      <p class="section-lede">After moving to the next tab, click the Generate button on the left to generate images for that tab. Up to 4 Previews — 36 images in total — can be generated.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Generate in next tab</h3>
+          <p class="step-body">Once moved to the next tab, click the Generate button on the left to generate images for that tab.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Repeat</h3>
+          <p class="step-body">Repeat the same process for Preview 3 and Preview 4.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Result —</div>
+          <h3 class="step-title">Up to 36 frames</h3>
+          <p class="step-body">A total of 4 Previews can be generated — 9 × 4 = 36 images.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 22.01">
+      <img src="../assets/screens/245e371a7fb378a5d358231f676d6d98fba5cabec52b05d10906fb6d7235bf15.webp" alt="Generate additional Previews (up to 36 frames)">
+      <div class="plate-caption">
+        <span>— Up to 4 Previews · 36 frames —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>022 — Multiple Previews</span>
+    <span>Multiple Previews</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 23</span><span class="dot"></span><span>Regenerate Grid</span></div>
+    <div class="right"><span>P. 023</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">23</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Regenerate Grid —</div>
+      <h2 class="section-title">Regenerate with the same scenario</h2>
+      <p class="section-lede">To regenerate images without modifying the scenario, click <span class="ui">Regenerate Grid</span> in the red frame just below the yellow button.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Use case —</div>
+          <h3 class="step-title">NG cuts or unwanted results</h3>
+          <p class="step-body">Use this when there are unwanted images or NG cuts in the result.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click Regenerate Grid</h3>
+          <p class="step-body">To regenerate images without modifying the scenario (prompt), click <span class="ui">Regenerate Grid</span> in the red frame just below the yellow button.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 23.01">
+      <img src="../assets/screens/550742ee1175f2db20577f5b901558ab32071b9c5384d417c9fc83eaef701ffb.webp" alt="Regenerate with the same scenario">
+      <div class="plate-caption">
+        <span>— Regenerate Grid —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>023 — Regenerate Grid</span>
+    <span>Regenerate Grid</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 24</span><span class="dot"></span><span>Modify Scenario</span></div>
+    <div class="right"><span>P. 024</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">24</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Modify Scenario —</div>
+      <h2 class="section-title">Regenerate after editing scenario</h2>
+      <p class="section-lede">How to regenerate after modifying the scenario (prompt).</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Clear the existing scenario</h3>
+          <p class="step-body">Delete the existing scenario from the Scenario field.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Enter the new content</h3>
+          <p class="step-body">Type the new desired content in its place.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 03 —</div>
+          <h3 class="step-title">Click Generate</h3>
+          <p class="step-body">Once the scenario is modified, click the Generate button at the bottom.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 24.01">
+      <img src="../assets/screens/245e371a7fb378a5d358231f676d6d98fba5cabec52b05d10906fb6d7235bf15.webp" alt="Regenerate after editing scenario">
+      <div class="plate-caption">
+        <span>— Modify scenario —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>024 — Modify Scenario</span>
+    <span>Modify Scenario</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 25</span><span class="dot"></span><span>Before / After</span></div>
+    <div class="right"><span>P. 025</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">25</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Before / After · Result Comparison —</div>
+      <h2 class="section-title">Tone-and-mood preserved + causal flow applied</h2>
+      <p class="section-lede">Tone-and-mood is preserved while the modified content is reflected according to causal flow.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 25.01">
+      <img src="../assets/screens/287bf96caaa0be24c99d214e98ed6fa209a6ce02c9544388e76b30ebcf84e222.webp" alt="Tone-and-mood preserved + causal flow applied">
+      <div class="plate-caption">
+        <span>— Before / After example —</span>
+      </div>
+    </div>
+    <div>
+      <div class="ba-grid">
+        <div class="ba-block">
+          <div class="label">— Before —</div>
+          <div class="content">A wizard fights against a monster.</div>
+        </div>
+        <div class="ba-block after">
+          <div class="label">— After —</div>
+          <div class="content">After defeating the monster, the wizard goes to the palace and receives a reward.</div>
+        </div>
+      </div>
+      <p class="step-body" style="margin-top: 24px; font-size: 14px;">The modified flow is reflected naturally in the result, following causal logic while preserving the original tone-and-mood.</p>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>025 — Before / After</span>
+    <span>Result</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 26</span><span class="dot"></span><span>Tab Delete</span></div>
+    <div class="right"><span>P. 026</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">26</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Tab Delete · Tab Management —</div>
+      <h2 class="section-title">Delete tabs and auto-fill empty slots</h2>
+      <p class="section-lede">Click <span class="ui">X</span> in the red frame to delete a tab. When generating, empty slots are automatically filled even without selecting a tab.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Delete tab with X button</h3>
+          <p class="step-body">Click <span class="ui">X</span> in the red frame to delete the tab.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Behavior —</div>
+          <h3 class="step-title">Auto-fill empty slots</h3>
+          <p class="step-body">When generating without selecting a tab, empty slots are automatically filled. Example: delete tabs 1 and 3 → generate → images are auto-generated in the empty tabs.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Targeted —</div>
+          <h3 class="step-title">Generate to specific tab only</h3>
+          <p class="step-body">To delete a specific tab and generate only in its place — for example, after deleting tabs 1 and 3, to generate only in tab 3 — click tab 3 first, then click Generate.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 26.01">
+      <img src="../assets/screens/fbb13f7b92398f9cca2daf83a9f628c2c4e90e44be29718e981716a449df5614.webp" alt="Delete tabs and auto-fill empty slots">
+      <div class="plate-caption">
+        <span>— Tab delete · X button —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>026 — Tab Delete</span>
+    <span>Tab Delete</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 27</span><span class="dot"></span><span>Upscaling</span></div>
+    <div class="right"><span>P. 027</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">27</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Upscaling · Step 1 —</div>
+      <h2 class="section-title">Upscaling — select images and apply</h2>
+      <p class="section-lede">Click the empty box in the upper right corner of each image to select, then click <span class="ui">Apply to Selection</span>.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Select images</h3>
+          <p class="step-body">Click the empty box in the upper right corner of each image. Selected images are marked in yellow.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Select all (optional)</h3>
+          <p class="step-body">Click <span class="ui">Select All</span> at the very bottom to select all images.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 03 —</div>
+          <h3 class="step-title">Apply upscaling</h3>
+          <p class="step-body">For upscaling, click the yellow <span class="ui">Apply to Selection</span> button in the upper right. The selected images are upscaled.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 27.01">
+      <img src="../assets/screens/0dd4632252805435e266fa12113528cdc22d3c998123a6459698f919dcae4354.webp" alt="Upscaling — select images and apply">
+      <div class="plate-caption">
+        <span>— Select &amp; Apply —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>027 — Upscaling</span>
+    <span>Upscaling</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 28</span><span class="dot"></span><span>2K Result</span></div>
+    <div class="right"><span>P. 028</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">28</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Upscaling · 2K Result —</div>
+      <h2 class="section-title">Review the 2K upscaled result</h2>
+      <p class="section-lede">Scroll down the screen to see the result upscaled to <span class="ui">2K</span>, as shown.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Verify —</div>
+          <h3 class="step-title">Scroll down</h3>
+          <p class="step-body">Scroll down the screen to view the 2K upscaled images.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 28.01">
+      <img src="../assets/screens/8c4b870b84ea2035752904e52a7625fe95b0cae10cc1d79523345ed2c6fde054.webp" alt="Review the 2K upscaled result">
+      <div class="plate-caption">
+        <span>— 2K upscaled result —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>028 — 2K Result</span>
+    <span>Upscaling</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 29</span><span class="dot"></span><span>Upscale Pages</span></div>
+    <div class="right"><span>P. 029</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">29</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Upscale Pages · Page Structure —</div>
+      <h2 class="section-title">Pages divided by selected count</h2>
+      <p class="section-lede">The number of selected images is applied as is. Images are grouped into 9-image grids and divided into pages.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Structure —</div>
+          <h3 class="step-title">36 frames = 4 pages</h3>
+          <p class="step-body">If all 36 images were selected, 9-image grids are displayed across 4 pages.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Page navigation</h3>
+          <p class="step-body">Click the numbers and side arrows in the red frame to move between pages.</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 29.01">
+      <img src="../assets/screens/729bbe52fa5a4039f1b8f69ed3374f6999bc180114b3b964bdb155fd00000652.webp" alt="Pages divided by selected count">
+      <div class="plate-caption">
+        <span>— Page navigation —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>029 — Upscale Pages</span>
+    <span>Upscale Pages</span>
+  </div>
+</section>
+
+<section class="slide download-section">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 30</span><span class="dot"></span><span>Download</span></div>
+    <div class="right"><span>P. 030</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">30</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Download —</div>
+      <h2 class="section-title">Download</h2>
+      <p class="section-lede">Two methods are available — selective download or batch download.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 30.01" style="background: rgba(240, 239, 234, 0.05);">
+      <img src="../assets/screens/7e48e25a9a48638327b148b7ae8de072fb2481b64e92e38de423babada93d37e.webp" alt="Download">
+      <div class="plate-caption">
+        <span>— Download options —</span>
+      </div>
+    </div>
+    <div class="download-options" style="align-self: start;">
+
+        <div class="download-option">
+          <div class="num">01</div>
+          <div>
+            <h4>Download Selected</h4>
+            <p>Click the empty box in the upper right corner of each image to select, then click <span class="ui">Download Selected</span> in the red frame.</p>
+          </div>
+          <div class="icon">↓</div>
+        </div>
+        <div class="download-option">
+          <div class="num">02</div>
+          <div>
+            <h4>Download All</h4>
+            <p>For one-click batch download of all images, click <span class="ui">Download All</span> in the yellow frame at the upper right.</p>
+          </div>
+          <div class="icon">↓</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>030 — Download</span>
+    <span>Final Step</span>
+  </div>
+</section>
+
+
+
+</body></html>

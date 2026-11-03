@@ -1,0 +1,1942 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art Director Pro — 用户手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #F0EFEA;
+    --offwhite-warm: #E8E6DE;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --body-font: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.03em;
+  }
+  .section-lede {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.7;
+    max-width: 640px;
+    letter-spacing: -0.005em;
+  }
+
+  .plate {
+    background: var(--midnight-deep);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .plate::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: var(--midnight);
+    color: var(--offwhite);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    z-index: 2;
+  }
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(240, 239, 234, 0.08);
+  }
+  .plate-caption {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(240, 239, 234, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-subtitle {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 32px;
+    max-width: 460px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-volume {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 220px;
+    line-height: 0.8;
+    color: var(--midnight);
+    letter-spacing: -0.04em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-volume-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.85;
+    letter-spacing: -0.005em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  .step-title {
+    font-family: var(--body-font);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .step-body {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.8;
+    letter-spacing: -0.005em;
+  }
+  .step-body .ui {
+    font-family: var(--body-font);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: var(--midnight);
+    color: var(--offwhite);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .note-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(240, 239, 234, 0.2);
+    padding-right: 28px;
+    white-space: nowrap;
+  }
+  .note-box .text {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .note-box .text .ui {
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12.5px;
+    color: var(--offwhite);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+
+  /* Focus mode cards */
+  .focus-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .focus-card {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+  }
+  .focus-card .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    color: var(--slate);
+  }
+  .focus-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .focus-card .sub {
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--midnight);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .focus-card .desc {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+    margin-top: auto;
+  }
+
+  /* Spec list grid */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .spec-item .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .spec-item .feature {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .spec-item .feature strong {
+    color: var(--midnight);
+    font-weight: 600;
+  }
+
+  /* Before/After */
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+  .ba-block {
+    background: var(--offwhite);
+    padding: 28px 32px;
+  }
+  .ba-block.after { background: var(--midnight); color: var(--offwhite); }
+  .ba-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--slate);
+  }
+  .ba-block.after .label { color: rgba(240, 239, 234, 0.6); }
+  .ba-block .content {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--midnight);
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .ba-block.after .content { color: var(--offwhite); }
+
+  /* Download dark */
+  .download-section {
+    background: var(--midnight);
+    color: var(--offwhite);
+  }
+  .download-section .slide-meta { color: rgba(240, 239, 234, 0.5); }
+  .download-section .slide-meta .dot { background: var(--offwhite); }
+  .download-section .footer-meta { color: rgba(240, 239, 234, 0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240, 239, 234, 0.15); }
+  .download-section .section-num { color: var(--offwhite); }
+  .download-section .eyebrow { color: var(--offwhite); }
+  .download-section .section-title { color: var(--offwhite); }
+  .download-section .section-lede { color: rgba(240, 239, 234, 0.7); }
+
+  .download-options {
+    display: grid;
+    gap: 1px;
+    background: rgba(240, 239, 234, 0.15);
+    border: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .download-option {
+    background: var(--midnight);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--offwhite);
+    line-height: 1;
+  }
+  .download-option h4 {
+    font-family: var(--body-font);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--offwhite);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .download-option p {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: rgba(240, 239, 234, 0.7);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .download-option p .ui {
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12px;
+    color: var(--offwhite);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+  .download-option .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: rgba(240, 239, 234, 0.5);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .focus-cards { grid-template-columns: 1fr; }
+    .spec-list-grid { grid-template-columns: 1fr; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 72px; }
+    .cover-volume { font-size: 120px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="指南导航" data-zoom-label="放大图片"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">返回中心</a><a href="index.html">全部指南</a></div><div class="xconda-manual-languages"><a href="../ko/art-director-pro.html" hreflang="ko" lang="ko">KO</a><a href="../en/art-director-pro.html" hreflang="en" lang="en">EN</a><a href="../ja/art-director-pro.html" hreflang="ja" lang="ja">JA</a><a href="../zh/art-director-pro.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>No. 02</span>
+    </div>
+    <div>
+      <div class="cover-title-en">ART DIRECTOR<br>PRO</div>
+      <div class="cover-subtitle">用户手册 —— 从进入、生成电影感镜头到放大与下载的完整工作流程。</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>用户手册</div>
+        <div>Edition I</div>
+      </div>
+      <div style="text-align:right">
+        <div>29 个章节</div>
+        <div>教程</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>Volume</span>
+      <span>The Archive</span>
+    </div>
+    <div>
+      <div class="cover-volume-label">— Volume —</div>
+      <div class="cover-volume">02</div>
+    </div>
+    <div class="cover-tag">
+      <span class="label">— 手册目录 —</span>       开始 · 打开 Art Director Pro · Focus Mode · 剧本 · Plate Product · Role Name · Cast · Face ID · Wardrobe · Detect Face · 相机 / 光学 · Generate · 预览 · 重新生成 · 放大 · 下载     </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>开始界面</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 开始使用 —</div>
+      <h2 class="section-title">打开开始界面</h2>
+      <p class="section-lede">点击主界面上的黄色 <span class="ui">START</span> 按钮开始。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击 START 按钮</h3>
+          <p class="step-body">点击主界面中央的黄色 <span class="ui">START</span> 按钮即可进入工作区。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 02.01">
+      <img src="../assets/screens/a1d6bbf04d75895206f2ff9fcaff7eb0b582a628366d1dbc2edb71bdb60bf3a3.webp" alt="打开开始界面">
+      <div class="plate-caption">
+        <span>— START 按钮 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — 开始</span>
+    <span>开始使用</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>打开 Art Director Pro</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 边栏入口 —</div>
+      <h2 class="section-title">打开 Art Director Pro</h2>
+      <p class="section-lede">点击左侧竖排边栏的第 9 个图标 —— 即黄色边框内的图标。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">找到边栏第 9 个图标</h3>
+          <p class="step-body">在左侧竖排导航栏中，找到从上往下第 9 个图标，它以黄色边框高亮显示。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">点击打开</h3>
+          <p class="step-body">单击该图标即可打开 Art Director Pro 工作区。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 03.01">
+      <img src="../assets/screens/de77f40206434e1ede79b835b71cc5728c51613be919dfa472d83cc58882e7fd.webp" alt="打开 Art Director Pro">
+      <div class="plate-caption">
+        <span>— 第 9 个图标 · 黄色边框 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — 打开</span>
+    <span>边栏入口</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>图像引擎</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 图像引擎 · Focus Mode —</div>
+      <h2 class="section-title">选择聚焦模式</h2>
+      <p class="section-lede">选择图像引擎。在红框下方的 3 个聚焦模式中选择一个。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">3 个聚焦模式 —— Dialogue（以角色为主）、Action（以动作为主）、Atmosphere（以空间 / 氛围为主）—— 决定结果的导演取向。各模式的详细说明在后续页面。</p>
+    </div>
+    <div class="plate" data-fig="Fig. 04.01">
+      <img src="../assets/screens/e13186bbb5266134fd3015591f0b884e340c3719b9f497642ba574c7ff2621f6.webp" alt="选择聚焦模式">
+      <div class="plate-caption">
+        <span>— 3 个聚焦模式 · 红框 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="focus-cards">
+    <div class="focus-card">
+      <div class="tag">— 模式 01 —</div>
+      <h3>DIALOGUE<br>FOCUS</h3>
+      <div class="sub">以角色为主</div>
+      <div class="desc">聚焦情绪、表情与人物关系。适合剧情与叙事类内容。</div>
+    </div>
+    <div class="focus-card">
+      <div class="tag">— 模式 02 —</div>
+      <h3>ACTION<br>FOCUS</h3>
+      <div class="sub">以动作为主</div>
+      <div class="desc">强调动态运镜与动作。适合动作、表演与广告。</div>
+    </div>
+    <div class="focus-card">
+      <div class="tag">— 模式 03 —</div>
+      <h3>ATMOSPHERE<br>FOCUS</h3>
+      <div class="sub">以空间 / 氛围为主</div>
+      <div class="desc">强调光线、色彩与环境细节。适合氛围、情绪与品牌类内容。</div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — 聚焦模式</span>
+    <span>图像引擎</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>Dialogue 聚焦</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Focus Mode · 01 —</div>
+      <h2 class="section-title">Dialogue 聚焦</h2>
+      <p class="section-lede">以角色为主的导演方式。聚焦情绪、表情与人物关系，适合剧情与叙事类内容。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 方向 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">角色 —— 情绪、表情、关系</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 侧重 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">面部特写、角色互动</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 最适合 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">剧情、叙事、访谈、故事讲述</p>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 05.01">
+      <img src="../assets/screens/c339f1ad232cfc02dd750fc84416a6245faf0583d9ef1ae1c0c3fcc62324a625.webp" alt="Dialogue 聚焦">
+      <div class="plate-caption">
+        <span>— Dialogue 聚焦 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — Dialogue 聚焦</span>
+    <span>聚焦模式</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>Action 聚焦</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Focus Mode · 02 —</div>
+      <h2 class="section-title">Action 聚焦</h2>
+      <p class="section-lede">以动作为主的导演方式。强调动态运镜与动作，适合动作、表演与广告。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 方向 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">动作 —— 运动、运镜</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 侧重 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">动态机位、调度、速度感</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 最适合 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">动作、表演、广告、运动</p>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 06.01">
+      <img src="../assets/screens/1bdf59365392f29e00a81b5f32ff39479abacdbfc6667a9942b58d9ee5355b6f.webp" alt="Action 聚焦">
+      <div class="plate-caption">
+        <span>— Action 聚焦 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — Action 聚焦</span>
+    <span>聚焦模式</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>Atmosphere 聚焦</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Focus Mode · 03 —</div>
+      <h2 class="section-title">Atmosphere 聚焦</h2>
+      <p class="section-lede">以空间与氛围为主的导演方式。强调光线、色彩与环境细节，适合氛围、情绪与品牌类内容。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 方向 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">空间 / 氛围 —— 光线、色彩、环境</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 侧重 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">环境细节、氛围、影调</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 最适合 —</div>
+          <p class="step-body" style="font-size: 16px; color: var(--midnight); font-weight: 500;">氛围片、情绪作品、品牌、lookbook</p>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 07.01">
+      <img src="../assets/screens/6381c1662edfd6edb3339c4bc59579f7cbdf937c61772a59087592f0f784ada0.webp" alt="Atmosphere 聚焦">
+      <div class="plate-caption">
+        <span>— Atmosphere 聚焦 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — Atmosphere 聚焦</span>
+    <span>聚焦模式</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>剧本</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 剧本 —</div>
+      <h2 class="section-title">编写剧本</h2>
+      <p class="section-lede">用文字输入内容的情境与脉络。必须包含每个角色的角色名。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击并输入</h3>
+          <p class="step-body"> <span class="ui">Scenario</span> 字段单击一次，用文字输入内容的情境与脉络。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">包含角色名</h3>
+          <p class="step-body">编写剧本时，必须包含角色的角色名（<span class="ui">Role name</span>）。角色名能确保面部与服装被正确套用。</p>
+        </div>
+
+        <div class="note-box">
+          <div class="label">— 必填 —</div>
+          <div class="text">Scenario 为必填项。输入内容需超过最低字符数，且内容为空时 Generate 按钮不会变为可用。</div>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 08.01">
+      <img src="../assets/screens/068bba1f59cb16c287dc8e08e13947b0549afbf3dc53517035bc041b4a3e6d06.webp" alt="编写剧本">
+      <div class="plate-caption">
+        <span>— Scenario 字段 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — 剧本</span>
+    <span>剧本</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Plate Product</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Plate Product · 背景 —</div>
+      <h2 class="section-title">上传背景图像</h2>
+      <p class="section-lede">上传一张作为背景的图像 —— 建筑、房间布局或街道形态等空间结构。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击灰色区域</h3>
+          <p class="step-body">点击黄色边框内的灰色区域上传背景图像。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 建议 —</div>
+          <h3 class="step-title">使用清晰的空间结构</h3>
+          <p class="step-body">空间结构清晰的图像（建筑、房间布局、街道形态）能提升结果整体的连贯性。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 09.01">
+      <img src="../assets/screens/66ea39e2a7e8f230ff7a0b8e3abf867a75d41566e967b82f545035b6e45c4d73.webp" alt="上传背景图像">
+      <div class="plate-caption">
+        <span>— Plate Product · 背景 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — Plate Product</span>
+    <span>Plate Product</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>Role Name</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Role Name —</div>
+      <h2 class="section-title">输入角色名</h2>
+      <p class="section-lede">单击带红色下划线的字段，输入角色的角色名。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击输入框</h3>
+          <p class="step-body">单击带红色下划线的字段，输入角色的角色名。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 一致 —</div>
+          <h3 class="step-title">必须与剧本一致</h3>
+          <p class="step-body">角色名必须与剧本中使用的一致。这也是编写剧本时必须写角色名的原因。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 10.01">
+      <img src="../assets/screens/4fa09f680753830c81b8ec237a4987c0ff7903a03b00e2a47705013db12d8198.webp" alt="输入角色名">
+      <div class="plate-caption">
+        <span>— Role name 字段 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — Role Name</span>
+    <span>Role Name</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>添加 Cast</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 添加 Cast —</div>
+      <h2 class="section-title">添加更多角色</h2>
+      <p class="section-lede">若有 2 个以上角色，点击红框内的 <span class="ui">Add Cast</span> 按钮继续添加。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击 Add Cast</h3>
+          <p class="step-body">若为 2 个以上角色，点击红框内的 <span class="ui">Add Cast</span> 按钮即可生成额外的角色输入栏。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 11.01">
+      <img src="../assets/screens/88893a9eefc5cefe12bcea16abc9f9f35e1d72626c1a3990a60a15752aee0d86.webp" alt="添加更多角色">
+      <div class="plate-caption">
+        <span>— Add Cast 按钮 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — 添加 Cast</span>
+    <span>添加 Cast</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>详情视图</span><span class="dot"></span><span>Face ID Source</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Face ID Source —</div>
+      <h2 class="section-title">上传角色照片</h2>
+      <p class="section-lede">该步骤通过人脸识别（face lock）生成具有视觉连续性的 9 个电影感镜头。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">上传照片</h3>
+          <p class="step-body">点击或拖放黄色边框内的灰色区域，上传角色的照片。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 建议 —</div>
+          <h3 class="step-title">使用正面照片</h3>
+          <p class="step-body">尽量使用正面照片，以确保人脸锁定准确。</p>
+        </div>
+
+        <div class="note-box">
+          <div class="label">— 说明 —</div>
+          <div class="text">也可以使用动画角色，但基于 Nano Banana 的引擎针对实拍数据做过优化，可能出现风格转换（实拍化）或细节丢失。</div>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 12.01">
+      <img src="../assets/screens/ba52f24fac8f7baed246358d2a2da699208f1f6a4ff91c255f0514abdb597baf.webp" alt="上传角色照片">
+      <div class="plate-caption">
+        <span>— Face ID Source —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Face ID Source</span>
+    <span>Face ID Source</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>Wardrobe Ref</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Wardrobe Ref —</div>
+      <h2 class="section-title">上传服装图像</h2>
+      <p class="section-lede">该步骤通过服装锁定生成具有视觉连续性的 9 个电影感镜头。该步骤并非必需。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">上传服装图像</h3>
+          <p class="step-body">把角色的服装添加到角色照片旁边的 <span class="ui">Wardrobe Ref</span> 字段（黄色边框）。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 可选 —</div>
+          <h3 class="step-title">非必填项</h3>
+          <p class="step-body">服装锁定有助于保持视觉连续性，但并非必需。该字段可以留空。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 13.01">
+      <img src="../assets/screens/27b2cb90e578ec55a366436822b929c2420868f488c9dadb1598b0543ce16612.webp" alt="上传服装图像">
+      <div class="plate-caption">
+        <span>— Wardrobe Ref —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — Wardrobe Ref</span>
+    <span>Wardrobe Ref</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Detect Face</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Detect Face · 角色表 —</div>
+      <h2 class="section-title">Detect Face —— 生成角色表</h2>
+      <p class="section-lede">点击已激活的黄色 <span class="ui">Detect Face</span> 按钮，即可自动生成三视图角色表（左、正、右）。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击 Detect Face</h3>
+          <p class="step-body">点击已激活的黄色 <span class="ui">Detect Face</span> 按钮（红框）。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">自动生成三视图</h3>
+          <p class="step-body">会自动生成三视图角色表（左、正、右）。</p>
+        </div>
+
+        <div class="note-box">
+          <div class="label">— 必填 —</div>
+          <div class="text">没有角色表，Generate 按钮不会变为可用。与剧本一样，角色表是必填项。</div>
+        </div>
+    </div>
+    <div class="plate" data-fig="Fig. 14.01">
+      <img src="../assets/screens/2f9c1bbc65150af98412ce59a7f97aa358abe748f917a94e21bf2ce5090b07b6.webp" alt="Detect Face —— 生成角色表">
+      <div class="plate-caption">
+        <span>— Detect Face · 三视图 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Detect Face</span>
+    <span>Detect Face</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>相机选择</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 相机 / 光学 —</div>
+      <h2 class="section-title">选择相机</h2>
+      <p class="section-lede">在带红色下划线的字段中选择相机选项。根据工作目标从 6 款相机中选择。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">打开相机下拉菜单</h3>
+          <p class="step-body"> <span class="ui">∨</span> （红色下划线）右端的下拉图标。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">选择相机</h3>
+          <p class="step-body">从下拉菜单中选择一个选项。详细说明在下一页。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 15.01">
+      <img src="../assets/screens/2b104fc57341d18ebc6165f67ffa48ca00f9fa063f2a50e83982353fad4002d1.webp" alt="选择相机">
+      <div class="plate-caption">
+        <span>— 相机选择 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — 相机选择</span>
+    <span>相机 / 光学</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>相机选项</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 相机选项 · 6 款 —</div>
+      <h2 class="section-title">6 款相机详解</h2>
+      <p class="section-lede">每款相机都有不同的动态范围、调性与质感。请与工作目标相匹配。</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+
+        <div class="spec-item">
+          <div class="name">ARRI ALEXA 35</div>
+          <div class="feature"><strong>17 档动态范围</strong> · 最均衡的电影感结果 · 广告 / 电影的标准调性</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">SONY VENICE 2</div>
+          <div class="feature"><strong>柔和阴影 / 绘画般质感</strong> · 情绪化且高级的画面</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">RED V-RAPTOR</div>
+          <div class="feature"><strong>超高分辨率 / 强对比</strong> · 锐利清晰的广告画面</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">PANAVISION MILLENNIUM DXL2</div>
+          <div class="feature"><strong>大画幅</strong> · 电影感的纵深</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ARRIFLEX 16SR</div>
+          <div class="feature"><strong>16mm 胶片颗粒</strong> · 复古、纪实质感</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">IMAX MKIV</div>
+          <div class="feature"><strong>基于 70mm 胶片</strong> · 压倒性的规模感</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — 相机选项</span>
+    <span>参考</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>光学（镜头）选择</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 光学 · 镜头 —</div>
+      <h2 class="section-title">选择镜头</h2>
+      <p class="section-lede">在带红色下划线的字段中选择 <span class="ui">Optics</span> （镜头）选项。可从 10 支镜头中选择。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">打开镜头下拉菜单</h3>
+          <p class="step-body"> <span class="ui">∨</span> （红色下划线）右端的下拉菜单，打开 <span class="ui">Optics</span> 选项。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">选择镜头</h3>
+          <p class="step-body">从下拉菜单中选择一个选项。详细说明在下一页。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 17.01">
+      <img src="../assets/screens/6cd393678edd906bc9538f21d93e47721a303a867f94537cf2215adcc4863abc.webp" alt="选择镜头">
+      <div class="plate-caption">
+        <span>— 光学选择 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — 光学选择</span>
+    <span>光学</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>光学选项</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 光学选项 · 10 支镜头 —</div>
+      <h2 class="section-title">10 支镜头详解</h2>
+      <p class="section-lede">每支镜头都有不同的色彩、焦外与对比特性。请与工作目标相匹配。</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+
+        <div class="spec-item">
+          <div class="name">COOKE S4</div>
+          <div class="feature"><strong>暖色调 / 奶油般焦外</strong> · 适合以角色为主的广告</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ARRI SIGNATURE PRIME</div>
+          <div class="feature"><strong>现代、干净的画面</strong> · 适应性强的标准镜头</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ZEISS ULTRA PRIME</div>
+          <div class="feature"><strong>强对比 / 临床感</strong> · 强调细节</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">CANON K-35</div>
+          <div class="feature"><strong>复古 / 高光泛光</strong> · 情绪化的调度</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">PANAVISION C-SERIES</div>
+          <div class="feature"><strong>变形宽银幕 / 蓝色光晕</strong> · 电影感画幅</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">HAWK V-LITE</div>
+          <div class="feature"><strong>复古变形镜头</strong> · 经典胶片风格</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">JDC XTAL XPRESS</div>
+          <div class="feature"><strong>独特变形镜头</strong> · 独特的畸变与氛围</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">HELIOS 44-2</div>
+          <div class="feature"><strong>漩涡状焦外</strong> · 别具一格的背景表现</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">ANGÉNIEUX OPTIMO</div>
+          <div class="feature"><strong>电影变焦镜头</strong> · 灵活的取景</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">LEICA SUMMILUX-C</div>
+          <div class="feature"><strong>自然写实的再现</strong> · 高端广告与剧情</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — 光学选项</span>
+    <span>参考</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 19</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 019</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">19</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 生成 —</div>
+      <h2 class="section-title">点击 Generate 按钮</h2>
+      <p class="section-lede">点击画面最底部已激活的 Generate 按钮。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">确认按钮已激活</h3>
+          <p class="step-body">当所有必填项（Scenario、角色表、相机 / 镜头等）都填写完成后，画面最底部的 Generate 按钮即会激活。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">点击按钮</h3>
+          <p class="step-body">点击已激活的 Generate 按钮，开始生成图像。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 19.01">
+      <img src="../assets/screens/c9648d516b77b01d4afc2beb7940c50e6a2356d23adfbdfa1df054d228dd1443.webp" alt="点击 Generate 按钮">
+      <div class="plate-caption">
+        <span>— Generate 按钮 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>019 — Generate</span>
+    <span>Generate</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 20</span><span class="dot"></span><span>预览 1</span></div>
+    <div class="right"><span>P. 020</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">20</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Preview 1 · 首个结果 —</div>
+      <h2 class="section-title">生成 9 格镜头网格</h2>
+      <p class="section-lede">生成完成后，画面右侧会创建 <span class="ui">Preview 1</span> ，并生成一个 9 图网格。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 结果 —</div>
+          <h3 class="step-title">查看 Preview 1</h3>
+          <p class="step-body">生成后，画面右侧会出现 <span class="ui">Preview 1</span> 标签，以网格形式显示 9 个电影感镜头。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 20.01">
+      <img src="../assets/screens/79a15f143484646f5c6e15a1445df26da63e8370ecb9563fe3167adc6055fa11.webp" alt="生成 9 格镜头网格">
+      <div class="plate-caption">
+        <span>— Preview 1 · 9 帧 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>020 — Preview 1</span>
+    <span>Preview 1</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 21</span><span class="dot"></span><span>预览 2</span></div>
+    <div class="right"><span>P. 021</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">21</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Preview 2 · 下一个标签 —</div>
+      <h2 class="section-title">切换到下一个预览标签</h2>
+      <p class="section-lede">点击红框内的 <span class="ui">Preview 2</span> 即可切换到下一个标签。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击 Preview 2</h3>
+          <p class="step-body">点击红框内的 <span class="ui">Preview 2</span> 标签，即可切换到下一个预览区域。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 21.01">
+      <img src="../assets/screens/ff6b8a4e52330046ca1380b0c3db261b41e7476ce5d2e429f5eb06cf25ae6caf.webp" alt="切换到下一个预览标签">
+      <div class="plate-caption">
+        <span>— Preview 2 标签 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>021 — Preview 2</span>
+    <span>Preview 2</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 22</span><span class="dot"></span><span>多组预览</span></div>
+    <div class="right"><span>P. 022</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">22</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 多组预览 · 共 36 帧 —</div>
+      <h2 class="section-title">生成更多预览（最多 36 帧）</h2>
+      <p class="section-lede">切换到下一个标签后，点击左侧的 Generate 按钮生成该标签的图像。最多可生成 4 组预览 —— 共 36 张。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">在下一个标签生成</h3>
+          <p class="step-body">切换到下一个标签后，点击左侧的 Generate 按钮生成该标签的图像。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">重复</h3>
+          <p class="step-body">对 Preview 3 与 Preview 4 重复相同步骤。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 结果 —</div>
+          <h3 class="step-title">最多 36 帧</h3>
+          <p class="step-body">总共可生成 4 组预览 —— 9 × 4 = 36 张。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 22.01">
+      <img src="../assets/screens/245e371a7fb378a5d358231f676d6d98fba5cabec52b05d10906fb6d7235bf15.webp" alt="生成更多预览（最多 36 帧）">
+      <div class="plate-caption">
+        <span>— 最多 4 组预览 · 36 帧 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>022 — 多组预览</span>
+    <span>多组预览</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>重新生成网格</span><span class="dot"></span><span>Regenerate Grid</span></div>
+    <div class="right"><span>P. 023</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">23</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 重新生成网格 —</div>
+      <h2 class="section-title">用同一剧本重新生成</h2>
+      <p class="section-lede">若想在不修改剧本的情况下重新生成图像，点击黄色按钮正下方红框内的 <span class="ui">Regenerate Grid</span> 。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 使用场景 —</div>
+          <h3 class="step-title">NG 镜头或不满意的结果</h3>
+          <p class="step-body">当结果中有不需要的图像或 NG 镜头时使用。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">点击 Regenerate Grid</h3>
+          <p class="step-body">若想在不修改剧本（提示词）的情况下重新生成图像，点击黄色按钮正下方红框内的 <span class="ui">Regenerate Grid</span> 。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 23.01">
+      <img src="../assets/screens/550742ee1175f2db20577f5b901558ab32071b9c5384d417c9fc83eaef701ffb.webp" alt="用同一剧本重新生成">
+      <div class="plate-caption">
+        <span>— 重新生成网格 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>023 — 重新生成网格</span>
+    <span>重新生成网格</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>修改剧本</span><span class="dot"></span><span>Modify Scenario</span></div>
+    <div class="right"><span>P. 024</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">24</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 修改剧本 —</div>
+      <h2 class="section-title">编辑剧本后重新生成</h2>
+      <p class="section-lede">修改剧本（提示词）后如何重新生成。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">清除原有剧本</h3>
+          <p class="step-body">从 Scenario 字段中删除原有剧本。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">输入新内容</h3>
+          <p class="step-body">在原位置输入新的内容。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 03 —</div>
+          <h3 class="step-title">点击 Generate</h3>
+          <p class="step-body">剧本修改后，点击底部的 Generate 按钮。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 24.01">
+      <img src="../assets/screens/245e371a7fb378a5d358231f676d6d98fba5cabec52b05d10906fb6d7235bf15.webp" alt="编辑剧本后重新生成">
+      <div class="plate-caption">
+        <span>— 修改剧本 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>024 — 修改剧本</span>
+    <span>修改剧本</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 25</span><span class="dot"></span><span>之前 / 之后</span></div>
+    <div class="right"><span>P. 025</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">25</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Before / After · 结果对比 —</div>
+      <h2 class="section-title">保留影调 + 应用因果脉络</h2>
+      <p class="section-lede">在保留影调的同时，修改后的内容会按因果脉络反映出来。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 25.01">
+      <img src="../assets/screens/287bf96caaa0be24c99d214e98ed6fa209a6ce02c9544388e76b30ebcf84e222.webp" alt="保留影调 + 应用因果脉络">
+      <div class="plate-caption">
+        <span>— Before / After 示例 —</span>
+      </div>
+    </div>
+    <div>
+      <div class="ba-grid">
+        <div class="ba-block">
+          <div class="label">— Before —</div>
+          <div class="content">一位巫师与怪物战斗。</div>
+        </div>
+        <div class="ba-block after">
+          <div class="label">— After —</div>
+          <div class="content">击败怪物后，巫师前往宫殿并接受奖赏。</div>
+        </div>
+      </div>
+      <p class="step-body" style="margin-top: 24px; font-size: 14px;">修改后的脉络会自然地反映在结果中，既遵循因果逻辑，也保留了原有的影调。</p>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>025 — Before / After</span>
+    <span>结果</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>删除标签</span><span class="dot"></span><span>Tab Delete</span></div>
+    <div class="right"><span>P. 026</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">26</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Tab Delete · 标签管理 —</div>
+      <h2 class="section-title">删除标签并自动填充空位</h2>
+      <p class="section-lede">点击红框内的 <span class="ui">X</span> 删除标签。生成时，即使没有选择标签，空位也会自动填充。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">用 × 按钮删除标签</h3>
+          <p class="step-body">点击红框内的 <span class="ui">X</span> 删除该标签。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 行为 —</div>
+          <h3 class="step-title">自动填充空位</h3>
+          <p class="step-body">不选择标签直接生成时，空位会自动填充。示例：删除标签 1 和 3 → 生成 → 空出的标签会自动生成图像。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 定点生成 —</div>
+          <h3 class="step-title">只在指定标签生成</h3>
+          <p class="step-body">若要删除特定标签并只在该位置生成 —— 例如删除标签 1 和 3 后只想在标签 3 生成 —— 请先点击标签 3，再点击 Generate。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 26.01">
+      <img src="../assets/screens/fbb13f7b92398f9cca2daf83a9f628c2c4e90e44be29718e981716a449df5614.webp" alt="删除标签并自动填充空位">
+      <div class="plate-caption">
+        <span>— 删除标签 · × 按钮 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>026 — 删除标签</span>
+    <span>删除标签</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>放大</span><span class="dot"></span><span>Upscaling</span></div>
+    <div class="right"><span>P. 027</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">27</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 放大 · 步骤 1 —</div>
+      <h2 class="section-title">放大 —— 选择图像并应用</h2>
+      <p class="section-lede">点击每张图像右上角的空白方框进行选择，然后点击 <span class="ui">Apply to Selection</span>.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">选择图像</h3>
+          <p class="step-body">点击每张图像右上角的空白方框。被选中的图像会以黄色标记。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 02 —</div>
+          <h3 class="step-title">全选（可选）</h3>
+          <p class="step-body">点击最底部的 <span class="ui">Select All</span> 即可选中所有图像。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 03 —</div>
+          <h3 class="step-title">应用放大</h3>
+          <p class="step-body">要放大，点击右上角黄色的 <span class="ui">Apply to Selection</span> 按钮。被选中的图像会被放大。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 27.01">
+      <img src="../assets/screens/0dd4632252805435e266fa12113528cdc22d3c998123a6459698f919dcae4354.webp" alt="放大 —— 选择图像并应用">
+      <div class="plate-caption">
+        <span>— 选择并应用 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>027 — 放大</span>
+    <span>放大</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 28</span><span class="dot"></span><span>2K 结果</span></div>
+    <div class="right"><span>P. 028</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">28</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 放大 · 2K 结果 —</div>
+      <h2 class="section-title">查看 2K 放大结果</h2>
+      <p class="section-lede">向下滚动画面，即可看到如下放大至 <span class="ui">2K</span>的结果。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 确认 —</div>
+          <h3 class="step-title">向下滚动</h3>
+          <p class="step-body">向下滚动画面即可查看 2K 放大后的图像。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 28.01">
+      <img src="../assets/screens/8c4b870b84ea2035752904e52a7625fe95b0cae10cc1d79523345ed2c6fde054.webp" alt="查看 2K 放大结果">
+      <div class="plate-caption">
+        <span>— 2K 放大结果 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>028 — 2K 结果</span>
+    <span>放大</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 29</span><span class="dot"></span><span>放大分页</span></div>
+    <div class="right"><span>P. 029</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">29</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 放大分页 · 页面结构 —</div>
+      <h2 class="section-title">按所选数量分页</h2>
+      <p class="section-lede">所选图像的数量会原样应用。图像以 9 张为一组网格，并划分为多页。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— 结构 —</div>
+          <h3 class="step-title">36 帧 = 4 页</h3>
+          <p class="step-body">若选中全部 36 张，9 张一组的网格会分布在 4 页中显示。</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— 步骤 01 —</div>
+          <h3 class="step-title">页面切换</h3>
+          <p class="step-body">点击红框内的数字和两侧箭头切换页面。</p>
+        </div>
+
+    </div>
+    <div class="plate" data-fig="Fig. 29.01">
+      <img src="../assets/screens/729bbe52fa5a4039f1b8f69ed3374f6999bc180114b3b964bdb155fd00000652.webp" alt="按所选数量分页">
+      <div class="plate-caption">
+        <span>— 页面切换 —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>029 — 放大分页</span>
+    <span>放大分页</span>
+  </div>
+</section>
+
+<section class="slide download-section">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 30</span><span class="dot"></span><span>下载</span></div>
+    <div class="right"><span>P. 030</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">30</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 下载 —</div>
+      <h2 class="section-title">下载</h2>
+      <p class="section-lede">提供两种方式 —— 选择性下载或批量下载。</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 30.01" style="background: rgba(240, 239, 234, 0.05);">
+      <img src="../assets/screens/7e48e25a9a48638327b148b7ae8de072fb2481b64e92e38de423babada93d37e.webp" alt="下载">
+      <div class="plate-caption">
+        <span>— 下载选项 —</span>
+      </div>
+    </div>
+    <div class="download-options" style="align-self: start;">
+
+        <div class="download-option">
+          <div class="num">01</div>
+          <div>
+            <h4>下载所选</h4>
+            <p>点击每张图像右上角的空白方框进行选择，然后点击红框内的 <span class="ui">Download Selected</span> 。</p>
+          </div>
+          <div class="icon">↓</div>
+        </div>
+        <div class="download-option">
+          <div class="num">02</div>
+          <div>
+            <h4>全部下载</h4>
+            <p>若要一键批量下载所有图像，点击右上角黄色框内的 <span class="ui">Download All</span> 。</p>
+          </div>
+          <div class="icon">↓</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>030 — 下载</span>
+    <span>最后一步</span>
+  </div>
+</section>
+
+
+
+</body></html>

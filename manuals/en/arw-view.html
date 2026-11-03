@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrow View — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 760px; }
+  .section-lede .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .section-lede strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+  .figure-block { margin-bottom: 32px; max-width: 900px; }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/arw-view.html" hreflang="ko" lang="ko">KO</a><a href="../en/arw-view.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/arw-view.html" hreflang="ja" lang="ja">JA</a><a href="../zh/arw-view.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div><div class="cover-title-en">ARROW<br>VIEW</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">A workflow guide that changes the camera angle of a single image with one arrow. Switch viewpoints intuitively — no 3D modeling or rendering required.</div></div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>13 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>13 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— Guide Structure —</span>What it does · When to use it · Key features · Usage tips · Opening Arrow View · Uploading the image · Draw arrow direction · Clear Arrow / New Image · Generate · Reviewing the result · Edit / redo · Download</div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Purpose</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose —</div><h2 class="section-title">Arrow View — What it does</h2><p class="section-lede">Generates <strong>different camera-angle views</strong> from a single image. Draw an arrow on the image and the AI generates the scene as seen from that direction. <strong>Traditional approach</strong>: adjust camera angles in 3D software, or rely on other AI angle tools that require spatial reasoning. <strong>Arrow View approach</strong>: draw one arrow on the image — done. No 3D knowledge needed, fully intuitive.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/0b6d027e4dae52e80a806f15a31fb06454cc5b849258bfd6a6f93b2be31add3d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Skip 3D modeling, rendering, and spatial reasoning — one arrow changes the viewpoint.</div></div>
+  <div class="footer-meta"><span>002 — Purpose</span><span>PURPOSE</span></div>
+</section>
+
+<!-- 03: Use Cases -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Use Cases</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Use Cases —</div><h2 class="section-title">When to use it</h2><p class="section-lede"><strong>1. Product shot angle expansion</strong> — turn a single front-on product shot into top-view, side-view, 45° angles, and more. <strong>2. Aerial top-view generation</strong> — get accurate top-down views, a known weak point of generative AI. <strong>3. Storyboard angle variation</strong> — show the same scene from multiple camera angles during storyboard work. <strong>4. Architecture / interior viewpoint shifts</strong> — re-frame a spatial image from a different viewpoint. <strong>5. Ad creative variations</strong> — make banner, poster, and social cuts from one source image.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/c2b748e754843206cf2b0819dc142ccec33be9031e2d6f9030494ed204fa881f.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Most effective wherever <strong>one shot → many angles</strong> is the goal — products, aerial views, storyboards, spatial work, and ad creatives.</div></div>
+  <div class="footer-meta"><span>003 — Use Cases</span><span>USE-CASES</span></div>
+</section>
+
+<!-- 04: Features -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Features</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Features —</div><h2 class="section-title">Arrow View — Key features</h2><p class="section-lede"><strong>Arrow-based viewpoint targeting</strong> — draw an arrow on the image to set the camera direction intuitively. No 3D knowledge required. <strong>Free-form angle generation</strong> — top-view, low-angle, side-view, diagonal — any viewpoint change is possible. <strong>Original tone preserved</strong> — the source image's color, lighting, and texture stay intact; only the viewpoint shifts.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/f22c59c06efed6ff7b778ab2a6d831463598acb9db6a7b07c47227d595b6c075.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Three pillars: <strong>direction targeting → viewpoint shift → tone preservation</strong>.</div></div>
+  <div class="footer-meta"><span>004 — Features</span><span>FEATURES</span></div>
+</section>
+
+<!-- 05: Tips -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Tips</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Tips —</div><h2 class="section-title">Usage tips</h2><p class="section-lede"><strong>Drawing the arrow</strong>: start → end is the direction the camera moves. Short arrow = small angle change; long arrow = bigger shift. A clearer arrow direction yields a more accurate result. <strong>Good source image</strong>: clear subject, simple background, high resolution. <strong>Results may be unreliable when</strong>: requesting extreme angle changes that expose areas not visible in the source, when the background is busy, or when key sides of a subject aren't visible in the original.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/7b71beec620bdf856edeb2f0b56c4bf03b2552367bdf9cd744716685f4659656.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text"><strong>Short clear arrow + clean source + reasonable angle change</strong> produces the most reliable result.</div></div>
+  <div class="footer-meta"><span>005 — Tips</span><span>TIPS</span></div>
+</section>
+
+<!-- 06: Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Entry</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Entry —</div><h2 class="section-title">Opening Arrow View</h2><p class="section-lede">Click the <strong>15th icon</strong> in the left vertical sidebar. The icon is a <strong>right-pointing arrow</strong>. Clicking it opens the <span class="ui">Arrow View</span> workspace.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/33d1c419b1888e32bfda98ead78c047ac801f13ddaa9212a814d9d4c0c6e964b.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Xconda's sidebar lays out tools with unique icons in a fixed order. Arrow View is the right-arrow icon.</div></div>
+  <div class="footer-meta"><span>006 — Entry</span><span>ENTRY</span></div>
+</section>
+
+<!-- 07: Upload -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Upload</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Upload —</div><h2 class="section-title">Uploading the image</h2><p class="section-lede">Click the upload area to pick an image. The screen displays <span class="ui">Upload an image to get started</span>. Once uploaded, the source image appears in the editing area. If no image is present, the <span class="ui">Generate</span> button stays disabled.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/9321394f94c9df0bbd66fc587639dd0df145df65476a28733fe396c41e25258d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Nothing else proceeds without an image — upload first.</div></div>
+  <div class="footer-meta"><span>007 — Upload</span><span>UPLOAD</span></div>
+</section>
+
+<!-- 08: Draw Arrow -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Draw Arrow</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Draw —</div><h2 class="section-title">Draw arrow direction</h2><p class="section-lede">Drag on the image to draw an arrow. The viewpoint follows the arrow from <strong>start point to end point</strong>. Once drawn, the status shows <span class="ui">Draw arrow direction</span> and the <span class="ui">Generate</span> button activates. Without an arrow, Generate stays disabled.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/f22c59c06efed6ff7b778ab2a6d831463598acb9db6a7b07c47227d595b6c075.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Image + arrow — both must be present to enable Generate.</div></div>
+  <div class="footer-meta"><span>008 — Draw Arrow</span><span>DRAW-ARROW</span></div>
+</section>
+
+<!-- 09: Clear New -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Clear New</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Reset —</div><h2 class="section-title">Clear Arrow / New Image</h2><p class="section-lede"><span class="ui">Clear Arrow</span> — removes the arrow currently drawn on the image. <span class="ui">New Image</span> — swaps the uploaded image for a different one. To redraw the direction, click <span class="ui">Clear Arrow</span> and draw a fresh arrow on the image.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/539accef2a631d4fb0348a23ac2c049fcb2d19fcf7afb77b23314fb65ab997ea.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Use Clear Arrow to redirect on the same image; use New Image to start over with a different source.</div></div>
+  <div class="footer-meta"><span>009 — Clear New</span><span>CLEAR-NEW</span></div>
+</section>
+
+<!-- 10: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Generate</h2><p class="section-lede">After uploading the image and drawing the arrow, click the yellow <span class="ui">Generate</span> button to start generation.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/76e2327f11925eec96b0d8bfbf72a5adaaeca2c8034ddd70115c641a2804480d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Generate activates only when image and arrow are both ready.</div></div>
+  <div class="footer-meta"><span>010 — Generate</span><span>GENERATE</span></div>
+</section>
+
+<!-- 11: Review -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Review</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Review —</div><h2 class="section-title">Reviewing the result</h2><p class="section-lede">When generation finishes, the result appears in the <strong>right-hand result area</strong>. The <strong>original image with the drawn arrow</strong> remains on the left, so you can review the direction and the output side by side.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/2249ac77598961f5e5c2ac48e642e5897299aad0ae5c6b2b726eef71ccf83b8e.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Compare left (source + arrow) and right (result) side-by-side to confirm the viewpoint matches your intent.</div></div>
+  <div class="footer-meta"><span>011 — Review</span><span>REVIEW</span></div>
+</section>
+
+<!-- 12: Redo -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Redo</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Redo —</div><h2 class="section-title">Edit / redo</h2><p class="section-lede">If the result doesn't match the intended direction, click <span class="ui">Clear Arrow</span>. Remove the old arrow and draw a new one in the correct direction. To work from a different source image, click <span class="ui">New Image</span>.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/2249ac77598961f5e5c2ac48e642e5897299aad0ae5c6b2b726eef71ccf83b8e.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">The standard workflow is to vary arrow length and angle across multiple generations, then pick the best result.</div></div>
+  <div class="footer-meta"><span>012 — Redo</span><span>REDO</span></div>
+</section>
+
+<!-- 13: Download -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>Download</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Download —</div><h2 class="section-title">Download</h2><p class="section-lede">Click the <strong>download icon</strong> on the right of the result image to save the generated result. The result card also shows a <strong>delete icon</strong> — click it to remove that result from the workspace.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/04d0ed46e25c92622055c70c4c4539a55fcba31ba84ca52cb1163402d69034f0.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Download the keepers and delete the rest — the closing step that keeps the workspace tidy.</div></div>
+  <div class="footer-meta"><span>013 — Download</span><span>DOWNLOAD</span></div>
+</section>
+
+
+</body></html>

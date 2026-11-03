@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Angle Generator — ユーザーガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+
+  /* Cover */
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  /* Use case grid (4 cards) */
+  .usecase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 220px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Feature grid (4 cards) */
+  .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .feature-card { background: var(--offwhite); padding: 28px 32px; min-height: 180px; }
+  .feature-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 12px; }
+  .feature-card h4 { font-family: var(--body-font); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .feature-card p { font-family: var(--body-font); font-size: 13.5px; color: var(--slate); line-height: 1.7; }
+
+  /* Tip grid (5 columns for tips) */
+  .tip-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .tip-card { background: var(--offwhite); padding: 24px 18px; min-height: 200px; display: flex; flex-direction: column; }
+  .tip-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 0.9; color: var(--midnight); margin-bottom: 10px; }
+  .tip-card h4 { font-family: var(--body-font); font-size: 14px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .tip-card p { font-family: var(--body-font); font-size: 12px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Angle list grid */
+  .angle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .angle-item { background: var(--offwhite); padding: 16px 20px; }
+  .angle-item .name { font-family: var(--body-font); font-size: 13.5px; font-weight: 600; color: var(--midnight); margin-bottom: 4px; letter-spacing: -0.02em; }
+  .angle-item .desc { font-family: var(--body-font); font-size: 11.5px; color: var(--slate); line-height: 1.6; }
+
+  /* Hero stat for cover area */
+  .hero-stat { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); margin-top: 40px; }
+  .hero-stat .item .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 8px; }
+  .hero-stat .item .big { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 0.9; color: var(--midnight); letter-spacing: -0.02em; }
+  .hero-stat .item .sub { font-family: var(--body-font); font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.6; }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid, .feature-grid, .tip-grid, .angle-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stat { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="ガイドのナビゲーション" data-zoom-label="画像を拡大"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">ハブに戻る</a><a href="index.html">ガイド一覧</a></div><div class="xconda-manual-languages"><a href="../ko/auto-angle.html" hreflang="ko" lang="ko">KO</a><a href="../en/auto-angle.html" hreflang="en" lang="en">EN</a><a href="../ja/auto-angle.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/auto-angle.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>ユーザーガイド</span></div>
+    <div>
+      <div class="cover-title-en">AUTO ANGLE<br>GENERATOR</div>
+      <div class="cover-subtitle" style="margin-top: 32px;">1枚の画像から最大 34 のカメラアングルを自動生成するワークフローガイド。</div>
+    </div>
+    <div class="cover-bottom-meta"><div><div>ユーザーガイド</div><div>チュートリアル</div></div><div style="text-align:right"><div>10 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目次</span><span>10 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— ガイド内容 —</span>       目的 · 活用シーン · 機能 · 元画像のコツ · 開始 · 画像アップロード · カメラアングル · 34 オプション · Generate · 結果 · 詳細表示 · ダウンロード     </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">1枚の画像からアングルを自動生成</h2><p class="section-lede">実際の撮影では、ライティング・カメラ位置・三脚の高さを変えながら何十テイクも必要です。Auto Angle Generator はその工程を1枚の元画像に置き換えます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 従来の方法 —</div><h3 class="step-title">ライティング · カメラ · スタッフ</h3><p class="step-body">実際の撮影では、バリエーションごとにライティング・カメラ位置・三脚の高さを調整しながら何十テイクも必要になります。</p></div>
+      <div class="step-block"><div class="step-number">— Auto Angle Generator —</div><h3 class="step-title">1枚から自動変換</h3><p class="step-body">ロケ・機材・スタッフなしで、商品やキャラクターの画像をさまざまなアングルから得られます。</p></div>
+    </div>
+    <div>
+      <div class="hero-stat" style="grid-template-columns: 1fr; margin-top: 0; padding: 0; border: none;">
+        <div class="item" style="border-bottom: 1px solid var(--hairline); padding-bottom: 24px;"><div class="label">— 元画像 —</div><div class="big">画像 1 枚</div><div class="sub">元画像は1枚だけ</div></div>
+        <div class="item" style="padding-top: 8px;"><div class="label">— 出力 —</div><div class="big">34 アングル</div><div class="sub">最大 34 のカメラアングル</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>002 — 目的</span><span>概要</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>活用シーン</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 利用シーン —</div><h2 class="section-title">使うタイミング</h2><p class="section-lede">商品撮影の補完、EC の詳細ページ、ルックブック / ポートフォリオ、企画・下書きの段階。</p></div></div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>商品撮影の補完</h4><p>正面からの商品カット1枚を、真上・あおり・側面などの構図に展開します。</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>EC の詳細ページ</h4><p>多角的な商品画像で詳細ページを素早く埋められます。</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>ルックブック / ポートフォリオ</h4><p>キャラクター・衣装の画像1枚を複数の視点に変換します。</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>企画・下書き</h4><p>本番撮影の前にアングルの下書きを確認します。</p></div>
+  </div>
+  <div class="footer-meta"><span>003 — 利用シーン</span><span>When</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>機能</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 機能 —</div><h2 class="section-title">機能概要</h2><p class="section-lede">34 のアングルオプション、一括 / 個別選択、一括 / 個別生成、詳細表示とダウンロード。</p></div></div>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="tag">— 01 —</div><h4>34 のカメラアングル</h4><p>Eye Level、High Angle、Aerial View、Low Angle、Close Up、Side Profile など 34 のアングルから選べます。</p></div>
+    <div class="feature-card"><div class="tag">— 02 —</div><h4>Select All / Deselect All</h4><p>利用可能なアングルをまとめて選択、または選択を解除します。</p></div>
+    <div class="feature-card"><div class="tag">— 03 —</div><h4>個別 + 一括生成</h4><p>選んだアングルだけを生成することも、すべて一度に生成することもできます。</p></div>
+    <div class="feature-card"><div class="tag">— 04 —</div><h4>詳細表示 + ダウンロード</h4><p>結果をクリックすると拡大 / フィット / 回転できます。画像は1枚ずつダウンロードできます。</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — 機能</span><span>特長</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>元画像のコツ</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 元画像のコツ —</div><h2 class="section-title">元画像の準備</h2><p class="section-lede">結果の品質を高めるには、元画像が次の条件を満たしていると効果的です。</p></div></div>
+  <div class="tip-grid">
+    <div class="tip-card"><div class="num">01</div><h4>シンプルな背景</h4><p>白・単色の背景や、整理されたスタジオ背景ほどアングル変換の精度が高くなります。</p></div>
+    <div class="tip-card"><div class="num">02</div><h4>被写体を中央に</h4><p>被写体は中央に配置します。トリミングや中心のずれた画像は変換時に歪むことがあります。</p></div>
+    <div class="tip-card"><div class="num">03</div><h4>高解像度</h4><p>解像度が高いほど品質が向上します。低解像度の元画像は結果でディテールが失われます。</p></div>
+    <div class="tip-card"><div class="num">04</div><h4>正面からの撮影</h4><p>正面、またはわずかに角度をつけた画像を推奨します。極端なアングルは不自然に変換されることがあります。</p></div>
+    <div class="tip-card"><div class="num">05</div><h4>単一の被写体</h4><p>被写体が重なっている、または手や腕が複雑に交差している画像は変換品質が下がります。</p></div>
+  </div>
+  <div class="footer-meta"><span>005 — 元画像のコツ</span><span>準備</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>開始</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 開始 —</div><h2 class="section-title">Auto Angle Generator を開く</h2><p class="section-lede">左の縦サイドバーの5番目のアイコンをクリックします。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">サイドバーの5番目のアイコンを探す</h3><p class="step-body">左の縦サイドバーの5番目のアイコンです。角度の目盛りがついた三角形のアイコンです。</p></div><div class="step-block"><div class="step-number">— ステップ 02 —</div><h3 class="step-title">クリックして開く</h3><p class="step-body">アイコンをクリックすると Auto Angle Generator のワークスペースが開きます。</p></div></div><div><img src="../assets/screens/a01bc05f74cc6e513b45e83ed9c9fc30cd5654f8b4f50f2c1b59b55450e532fc.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>006 — 開始</span><span>開く</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>画像アップロード</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Drop Image Here —</div><h2 class="section-title">画像をアップロード</h2><p class="section-lede">アップロードエリアをクリックして元画像を選択します。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">アップロードエリアをクリック</h3><p class="step-body"> <span class="ui">Drop Image Here</span>, <span class="ui">または</span>, <span class="ui">Click to Upload</span>.</p></div><div class="step-block"><div class="step-number">— 確認 —</div><h3 class="step-title">プレビューが表示される</h3><p class="step-body">アップロードするとプレビュー画像が表示されます。</p></div><div class="note-box"><div class="label">— 必須 —</div><div class="text">画像がないと Generate ボタンは有効になりません。</div></div></div><div><img src="../assets/screens/9bcb2810b03d0ca4670cc1ba5b8f98431a94e05da7f1ff1e3d14efc6c02013da.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>007 — アップロード</span><span>画像</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>カメラアングル</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— カメラアングル —</div><h2 class="section-title">カメラアングルを選択</h2><p class="section-lede">カメラアングルのボタンをクリックして選択します。選択したボタンは黄色になります。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">アングルを個別に選択</h3><p class="step-body">カメラアングルのボタンを個別にクリックして選択します。選択したボタンは黄色になります。</p></div><div class="step-block"><div class="step-number">— ステップ 02 —</div><h3 class="step-title">Select All / Deselect All</h3><p class="step-body"> <span class="ui">Select All</span> で利用可能なアングルをまとめて選択します。 <span class="ui">Deselect All</span> で選択を解除します。</p></div><div class="note-box"><div class="label">— 必須 —</div><div class="text">アングルを1つ以上選択しないと Generate ボタンは有効になりません。</div></div></div><div><img src="../assets/screens/13b3df8f1b30775b6e01eaa4ea36c8324faa806d275a2731304333a7725a2c00.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>008 — カメラアングル</span><span>選択</span></div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>アングルオプション</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— アングルオプション —</div><h2 class="section-title">カメラアングル一覧</h2><p class="section-lede">利用できるカメラアングルの種類と特徴。</p></div></div>
+  <div class="angle-grid"><div class="angle-item"><div class="name">Eye Level Shot</div><div class="desc">アイレベルを基準にしたカメラ</div></div><div class="angle-item"><div class="name">High Angle Shot</div><div class="desc">上から見下ろす</div></div><div class="angle-item"><div class="name">Extreme High Angle</div><div class="desc">非常に高い位置から見下ろす</div></div><div class="angle-item"><div class="name">Aerial View</div><div class="desc">空撮のような視点</div></div><div class="angle-item"><div class="name">Aerial-Drone Shot</div><div class="desc">ドローンのような空撮アングル</div></div><div class="angle-item"><div class="name">Photo from Above</div><div class="desc">真上からの撮影</div></div><div class="angle-item"><div class="name">Top View</div><div class="desc">真上からの正面視点</div></div><div class="angle-item"><div class="name">Birds Eye View</div><div class="desc">鳥瞰の視点</div></div><div class="angle-item"><div class="name">Low Angle Shot</div><div class="desc">下から見上げる</div></div><div class="angle-item"><div class="name">Extreme Low Angle</div><div class="desc">非常に低い位置から見上げる</div></div><div class="angle-item"><div class="name">Wide Angle Shot</div><div class="desc">広い画角</div></div><div class="angle-item"><div class="name">Full Body Shot</div><div class="desc">被写体の全身をフレームに</div></div><div class="angle-item"><div class="name">Medium Shot</div><div class="desc">中距離のフレーミング</div></div><div class="angle-item"><div class="name">Close Up Shot</div><div class="desc">寄りのフレーミング</div></div><div class="angle-item"><div class="name">Extreme Close Up</div><div class="desc">非常に寄ったフレーミング</div></div><div class="angle-item"><div class="name">Detail Shot</div><div class="desc">ディテール要素を強調</div></div><div class="angle-item"><div class="name">Side Angle Shot</div><div class="desc">側面からの視点</div></div><div class="angle-item"><div class="name">Side Profile Shot</div><div class="desc">横顔を重視</div></div><div class="angle-item"><div class="name">Two Shot</div><div class="desc">2人の被写体の構図</div></div><div class="angle-item"><div class="name">Shot from Behind</div><div class="desc">背後からの視点</div></div><div class="angle-item"><div class="name">Over-the-Shoulder</div><div class="desc">肩越しの視点</div></div><div class="angle-item"><div class="name">Point of View (POV)</div><div class="desc">POV ベースのアングル</div></div><div class="angle-item"><div class="name">Tracking</div><div class="desc">追従する構図</div></div><div class="angle-item"><div class="name">Tilted Shot</div><div class="desc">傾けたアングル</div></div><div class="angle-item"><div class="name">Dutch Angle Shot</div><div class="desc">斜めに傾けたアングル</div></div><div class="angle-item"><div class="name">Diagonal Shot</div><div class="desc">斜めの構図</div></div><div class="angle-item"><div class="name">Off-center Close Up</div><div class="desc">中心を外したクローズアップ</div></div><div class="angle-item"><div class="name">Off-center Shot</div><div class="desc">中心を外した構図</div></div><div class="angle-item"><div class="name">Rule of Thirds</div><div class="desc">三分割法の構図</div></div><div class="angle-item"><div class="name">Silhouette Shot</div><div class="desc">シルエットを重視</div></div><div class="angle-item"><div class="name">Candid Shot</div><div class="desc">自然な瞬間のアングル</div></div><div class="angle-item"><div class="name">Foot on the Pavement</div><div class="desc">地面すれすれのローアングル</div></div></div>
+  <div class="footer-meta"><span>009 — アングルオプション</span><span>リファレンス</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate Angles ボタン</h2><p class="section-lede">画像のアップロードとアングル選択を終えたら、下部の黄色い <span class="ui">Generate Angles</span> ボタンを押します。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">Generate をクリック</h3><p class="step-body">画像のアップロードとアングル選択を終えたら、下部の黄色い <span class="ui">Generate Angles</span> ボタンを押します。</p></div><div class="step-block"><div class="step-number">— 実行 —</div><h3 class="step-title">生成開始</h3><p class="step-body">選択したアングルの生成が始まります。</p></div></div><div><img src="../assets/screens/3791c767126d67b857e74aa56f0fe11aa99d5bc26ce94dba068651710fae4cd8.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>010 — 生成</span><span>実行</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>結果</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 結果 —</div><h2 class="section-title">結果を確認する</h2><p class="section-lede">生成が完了すると、選択したアングルの結果画像が右の結果エリアに表示されます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 結果 —</div><h3 class="step-title">アングルごとの結果を表示</h3><p class="step-body">生成が完了すると、選択したアングルの結果画像が右の結果エリアに表示されます。</p></div><div class="step-block"><div class="step-number">— ラベル —</div><h3 class="step-title">アングル名を表示</h3><p class="step-body">各結果の下にはアングル名が表示されます。</p></div></div><div><img src="../assets/screens/e4fc79368a471e4a698bc6a7c02f9de8cce319864560a8c5ecf69e4ae376b749.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>011 — 結果</span><span>確認</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>詳細表示</span><span class="dot"></span><span>詳細ビュー</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 詳細表示 —</div><h2 class="section-title">詳細表示</h2><p class="section-lede">結果画像をクリックすると、詳細表示が開きます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">画像をクリック</h3><p class="step-body">結果画像をクリックすると詳細表示が開き、画像が拡大表示されます。</p></div><div class="step-block"><div class="step-number">— 操作 —</div><h3 class="step-title">ズーム · フィット · 回転</h3><p class="step-body">下部のアイコンで、拡大・縮小・画面に合わせる・回転を行えます。</p></div></div><div><img src="../assets/screens/9968c191dc05d547bf2dd12ab391381e4851b716b03def54f5aa7a82e0c47f75.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>012 — 詳細表示</span><span>表示</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>ダウンロード</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— ダウンロード · 削除 —</div><h2 class="section-title">ダウンロードと削除</h2><p class="section-lede">結果画像にホバーすると、個別のダウンロードと削除にアクセスできます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">画像にホバー</h3><p class="step-body">結果画像にカーソルを合わせます。ダウンロードと削除のアイコンが現れます。</p></div><div class="step-block"><div class="step-number">— 操作 —</div><h3 class="step-title">ダウンロード / 削除</h3><p class="step-body">ダウンロードアイコンをクリックするとその画像を保存し、削除アイコンをクリックすると結果から取り除きます。</p></div></div><div><img src="../assets/screens/6ebc9cd6984f3644ee674fb8e962afadd1a60c3f6ab692ac6156fe2cf56d66c7.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>013 — ダウンロード</span><span>管理</span></div>
+</section>
+
+</body></html>

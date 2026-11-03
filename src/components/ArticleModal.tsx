@@ -8,8 +8,9 @@ import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel, youTubeEmbed } from "./common";
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
-import { STUDIO_URL } from "../content/tools";
-import { shareUrlFor } from "../seo";
+import { STUDIO_URL, TOOLS } from "../content/tools";
+import { htmlGuideLabels, htmlGuidePath } from "../content/htmlGuides";
+import { hubBase, shareUrlFor } from "../seo";
 
 const KIND_TONE = {
   New: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
@@ -18,7 +19,7 @@ const KIND_TONE = {
 };
 
 export default function ArticleModal() {
-  const { t, lang } = useLang();
+  const { t, lang, target } = useLang();
   const { active, closeEntry, endpoint, entries, openEntry } = useContent();
   const [blocks, setBlocks] = useState<Block[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -54,6 +55,11 @@ export default function ArticleModal() {
   }, [active, closeEntry]);
 
   if (!active) return null;
+
+  const guideTool = active.type === "guide"
+    ? TOOLS.find((tool) => active.id === `tool-${tool.slug}` || (active.tool && active.tool.toLowerCase() === tool.name.toLowerCase()))
+    : undefined;
+  const guidePath = guideTool ? htmlGuidePath(guideTool.slug, target) : undefined;
 
   const related = entries
     .filter((e) => e.id !== active.id && e.type === active.type && e.type !== "faq")
@@ -152,6 +158,19 @@ export default function ArticleModal() {
               {active.title}
             </h2>
             {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-neutral-500">{active.summary}</p>}
+
+            {guidePath && (
+              <a
+                data-html-guide={guideTool?.slug}
+                href={`${hubBase()}${guidePath}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="notranslate mt-6 inline-flex items-center gap-2 rounded-none bg-amber-50 px-4 py-3 text-sm font-medium text-neutral-900 ring-1 ring-inset ring-amber-200 transition hover:bg-amber-100"
+              >
+                {htmlGuideLabels[target].read}
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+            )}
 
             {active.changes && active.changes.length > 0 && (
               <ul className="mt-6 space-y-2 rounded-none bg-black/[0.03] p-4 border border-black/[0.07]">

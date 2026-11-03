@@ -1,0 +1,18 @@
+* { box-sizing: border-box; }
+html { background: #f7f7f5; }
+body { margin: 0; color: #171717; background: #f7f7f5; font-family: system-ui, -apple-system, sans-serif; }
+.manual-index { width: min(1120px, 100%); margin: 0 auto; padding: 64px 24px 88px; }
+.manual-index header { max-width: 700px; margin-bottom: 40px; }
+.manual-index .eyebrow { margin: 0 0 12px; color: #777; font-size: 12px; font-weight: 700; letter-spacing: .13em; }
+.manual-index h1 { margin: 0; font-size: clamp(32px, 5vw, 50px); line-height: 1.15; letter-spacing: -.035em; }
+.manual-index .intro { margin: 16px 0 0; color: #555; line-height: 1.7; }
+.manual-index section { margin-top: 38px; }
+.manual-index h2 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; font-size: 20px; }
+.manual-index h2 span { color: #777; font-size: 13px; font-weight: 500; }
+.manual-index ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.manual-index li { min-width: 0; }
+.manual-index li a { display: flex; align-items: center; justify-content: space-between; min-height: 68px; gap: 18px; padding: 16px 18px; border: 1px solid #dededb; color: #171717; background: #fff; font-weight: 600; line-height: 1.4; text-decoration: none; }
+.manual-index li a:hover { border-color: #111; background: #fafafa; }
+.manual-index a:focus-visible { outline: 3px solid #ca8a04; outline-offset: 3px; }
+.manual-index .arrow { color: #777; font-size: 18px; }
+@media (max-width: 600px) { .manual-index { padding: 42px 18px 64px; } }

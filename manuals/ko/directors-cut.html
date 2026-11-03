@@ -1,0 +1,1501 @@
+<!DOCTYPE html><html lang="ko"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디렉터스 컷 — 사용자 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #F0EFEA;
+    --offwhite-warm: #E8E6DE;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --kor: 'Pretendard', 'Noto Sans KR', sans-serif;
+    --highlight: #C8B560;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--kor);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.75;
+    font-weight: 400;
+    word-break: keep-all;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  /* ========== SHARED ========== */
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--kor);
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.25;
+    color: var(--midnight);
+    letter-spacing: -0.035em;
+  }
+  .section-lede {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.75;
+    max-width: 640px;
+    letter-spacing: -0.015em;
+  }
+
+  /* Image plate */
+  .plate {
+    background: var(--midnight-deep);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .plate::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: var(--midnight);
+    color: var(--offwhite);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    z-index: 2;
+  }
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(240, 239, 234, 0.08);
+  }
+  .plate-caption {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(240, 239, 234, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .plate-caption .kor {
+    font-family: var(--kor);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    font-size: 13px;
+    color: rgba(240, 239, 234, 0.85);
+  }
+
+  /* ========== 01 — COVER ========== */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 11vw, 160px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-title-kor {
+    font-family: var(--kor);
+    font-weight: 600;
+    font-size: 32px;
+    color: rgba(240, 239, 234, 0.95);
+    letter-spacing: -0.04em;
+    margin-top: 24px;
+    line-height: 1.3;
+  }
+  .cover-subtitle {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 24px;
+    max-width: 440px;
+    line-height: 1.75;
+    letter-spacing: -0.015em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-volume {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 220px;
+    line-height: 0.8;
+    color: var(--midnight);
+    letter-spacing: -0.04em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-volume-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--kor);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--midnight);
+    line-height: 1.75;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  /* ========== Common content layouts ========== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .step-title {
+    font-family: var(--kor);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.025em;
+    line-height: 1.4;
+  }
+  .step-body {
+    font-family: var(--kor);
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.85;
+    letter-spacing: -0.015em;
+  }
+  .step-body .ui {
+    font-family: var(--kor);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    border-radius: 2px;
+  }
+  .step-body strong {
+    font-weight: 600;
+    color: var(--midnight);
+  }
+
+  /* Highlighted box note */
+  .note-box {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: var(--midnight);
+    color: var(--offwhite);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .note-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(240, 239, 234, 0.2);
+    padding-right: 28px;
+    white-space: nowrap;
+  }
+  .note-box .text {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+  }
+
+  /* ========== Engine cards ========== */
+  .engine-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .engine-card {
+    background: var(--offwhite);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    min-height: 360px;
+  }
+  .engine-card.featured {
+    background: var(--midnight);
+    color: var(--offwhite);
+  }
+  .engine-card .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: var(--slate);
+  }
+  .engine-card.featured .tag { color: rgba(240, 239, 234, 0.6); }
+  .engine-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .engine-card .sub {
+    font-family: var(--kor);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--slate);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .engine-card.featured .sub { color: rgba(240, 239, 234, 0.7); }
+  .spec-list { margin-top: auto; list-style: none; }
+  .spec-list li {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    padding: 11px 0;
+    border-top: 1px solid var(--hairline-light);
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  .engine-card.featured .spec-list li {
+    border-top: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .spec-list li:last-child { border-bottom: 1px solid var(--hairline-light); }
+  .engine-card.featured .spec-list li:last-child { border-bottom: 1px solid rgba(240, 239, 234, 0.15); }
+  .spec-list .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    padding-top: 4px;
+  }
+  .engine-card.featured .spec-list .label { color: rgba(240, 239, 234, 0.5); }
+  .spec-list .value { color: var(--midnight); font-weight: 500; }
+  .engine-card.featured .spec-list .value { color: var(--offwhite); }
+
+  /* ========== Director list ========== */
+  .director-list {
+    border-top: 1px solid var(--midnight);
+    margin-top: 40px;
+  }
+  .director-row {
+    display: grid;
+    grid-template-columns: 60px 220px 1fr 40px;
+    gap: 32px;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--hairline);
+    transition: padding 0.4s ease, background 0.4s ease;
+  }
+  .director-row:hover {
+    padding-left: 20px;
+    background: linear-gradient(90deg, rgba(29,42,77,0.04) 0%, transparent 100%);
+  }
+  .director-row .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--slate-light);
+    letter-spacing: 0.1em;
+  }
+  .director-row .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .director-row .desc {
+    font-family: var(--kor);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.75;
+    letter-spacing: -0.015em;
+  }
+  .director-row .arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--slate-light);
+    text-align: right;
+  }
+
+  /* ========== Art style cards ========== */
+  .artstyle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .art-card {
+    background: var(--offwhite);
+    padding: 32px 24px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+  }
+  .art-card:hover { background: var(--midnight); color: var(--offwhite); }
+  .art-card:hover .art-num,
+  .art-card:hover .art-card-name,
+  .art-card:hover .art-card-name-kor,
+  .art-card:hover .art-card-desc { color: var(--offwhite); }
+  .art-card:hover .art-card-name-kor { color: rgba(240, 239, 234, 0.7); }
+  .art-card:hover .art-card-desc { color: rgba(240, 239, 234, 0.85); }
+  .art-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate-light);
+    transition: color 0.3s ease;
+  }
+  .art-card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    line-height: 1.05;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+  }
+  .art-card-name-kor {
+    font-family: var(--kor);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--slate);
+    margin-top: 6px;
+    letter-spacing: -0.02em;
+    transition: color 0.3s ease;
+  }
+  .art-card-desc {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--slate);
+    margin-top: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+    transition: color 0.3s ease;
+  }
+
+  /* ========== Hero product split ========== */
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .product-block {
+    background: var(--offwhite);
+    padding: 36px 32px;
+  }
+  .product-block .tag-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .product-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .product-block .kor {
+    font-family: var(--kor);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--slate);
+    letter-spacing: -0.02em;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .product-block .body {
+    font-family: var(--kor);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.85;
+    letter-spacing: -0.015em;
+  }
+  .product-block .body .ui {
+    font-family: var(--kor);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    border-radius: 2px;
+  }
+
+  /* ========== Edit flow ========== */
+  .edit-flow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+  .edit-step {
+    background: var(--offwhite);
+    padding: 32px 24px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+  }
+  .edit-step .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 0.9;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .edit-step h4 {
+    font-family: var(--kor);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.025em;
+  }
+  .edit-step p {
+    font-family: var(--kor);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.85;
+    letter-spacing: -0.015em;
+  }
+
+  /* ========== Download dark section ========== */
+  .download-section {
+    background: var(--midnight);
+    color: var(--offwhite);
+  }
+  .download-section .slide-meta { color: rgba(240, 239, 234, 0.5); }
+  .download-section .slide-meta .dot { background: var(--offwhite); }
+  .download-section .footer-meta { color: rgba(240, 239, 234, 0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240, 239, 234, 0.15); }
+  .download-section .section-num { color: var(--offwhite); }
+  .download-section .eyebrow { color: var(--offwhite); }
+  .download-section .section-title { color: var(--offwhite); }
+  .download-section .section-lede { color: rgba(240, 239, 234, 0.7); }
+
+  .download-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: rgba(240, 239, 234, 0.15);
+    border: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .download-option {
+    background: var(--midnight);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--offwhite);
+    line-height: 1;
+  }
+  .download-option h4 {
+    font-family: var(--kor);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--offwhite);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .download-option p {
+    font-family: var(--kor);
+    font-size: 13.5px;
+    color: rgba(240, 239, 234, 0.7);
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+  }
+  .download-option p .ui {
+    font-family: var(--kor);
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12px;
+    color: var(--offwhite);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    border-radius: 2px;
+  }
+  .download-option .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: rgba(240, 239, 234, 0.5);
+    font-weight: 500;
+  }
+
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 32px; }
+    .engine-cards { grid-template-columns: 1fr; }
+    .director-row { grid-template-columns: 40px 1fr; gap: 16px; padding: 18px 0; }
+    .director-row .desc, .director-row .arrow { grid-column: 1 / -1; }
+    .director-row .name { font-size: 22px; }
+    .artstyle-grid { grid-template-columns: 1fr 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
+    .edit-flow { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 80px; }
+    .cover-title-kor { font-size: 26px; }
+    .cover-volume { font-size: 120px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="가이드 탐색" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">허브로 돌아가기</a><a href="index.html">가이드 목록</a></div><div class="xconda-manual-languages"><a href="../ko/directors-cut.html" hreflang="ko" lang="ko" aria-current="page">KO</a><a href="../en/directors-cut.html" hreflang="en" lang="en">EN</a><a href="../ja/directors-cut.html" hreflang="ja" lang="ja">JA</a><a href="../zh/directors-cut.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- ========== 01 — COVER ========== -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>No. 01</span>
+    </div>
+    <div>
+      <div class="cover-title-en">DIRECTORS<br>CUT</div>
+      <div class="cover-title-kor">디렉터스 컷</div>
+      <div class="cover-subtitle">사용자 매뉴얼 — 이미지 엔진 선택부터 9컷 그리드 다운로드까지.</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>User Manual</div>
+        <div>Edition I</div>
+      </div>
+      <div style="text-align:right">
+        <div>14 Chapters</div>
+        <div>Tutorial</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>Volume</span>
+      <span>The Archive</span>
+    </div>
+    <div>
+      <div class="cover-volume-label">— Volume —</div>
+      <div class="cover-volume">01</div>
+    </div>
+    <div class="cover-tag">
+      <span class="label">— 매뉴얼 구성 —</span>
+      시작하기 · 이미지 엔진 · 시간/공간 · 시나리오 · 디렉터 스타일 · 아트 스타일 · 제품/모델 · 생성 · 수정 · 다운로드
+    </div>
+  </div>
+</section>
+
+<!-- ========== 02 — ENTRY ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>시작하기</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 시작하기 · Entry —</div>
+      <h2 class="section-title">디렉터스 컷 진입</h2>
+      <p class="section-lede">왼쪽 세로형 바에서 8번째, 노란색 박스에 위치한 아이콘을 클릭하면 디렉터스 컷이 열립니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">사이드바 확인</h3>
+        <p class="step-body">화면 왼쪽 세로형 내비게이션 바에서 위에서 8번째 아이콘을 찾습니다. 노란색 박스로 강조되어 있습니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">아이콘 클릭</h3>
+        <p class="step-body">아이콘을 한 번 클릭하면 디렉터스 컷 작업 화면이 열립니다.</p>
+      </div>
+    </div>
+    <div class="plate" data-fig="Fig. 02.01">
+      <img src="../assets/screens/205e076852e0559fd56c087a2bad0797bf6e7044f79822c0ab280ef78e0085f6.webp" alt="사이드바 8번째 아이콘 위치">
+      <div class="plate-caption">
+        <span>— 8th icon · yellow frame —</span>
+        <span class="kor">8번째 아이콘</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>Directors Cut · 사용자 매뉴얼</span>
+    <span>002 — 시작하기</span>
+  </div>
+</section>
+
+<!-- ========== 03 — IMAGE ENGINE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>이미지 엔진</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Image Engine Selection —</div>
+      <h2 class="section-title">이미지 엔진 선택</h2>
+      <p class="section-lede">이미지 엔진을 선택합니다. 두 가지 엔진 중 작업 목적에 맞는 것을 고릅니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 03.01">
+      <img src="../assets/screens/a5271c12372972b0fc3819ba9ab94f40990e2bc9010f17c1b2c6c3dc3417f5cf.webp" alt="이미지 엔진 선택 화면 — Standard와 Cinema Pro">
+      <div class="plate-caption">
+        <span>— Standard / Cinema Pro —</span>
+        <span class="kor">두 가지 엔진</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Standard —</div>
+        <h3 class="step-title">초안 · 아이디어 탐색용</h3>
+        <p class="step-body">생성 속도가 빠르고 기본적인 구도를 잘 잡지만 디테일은 부족합니다. 초안 뽑기, 아이디어 탐색, 레퍼런스 만들기에 적합합니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Cinema Pro —</div>
+        <h3 class="step-title">광고 · 영상용 최종 결과물</h3>
+        <p class="step-body">디테일이 매우 높고(피부, 질감, 광원) 카메라 연출(클로즈업, 로우앵글, 심도 표현) 이해도가 높습니다. 라이팅이 자연스럽고 일관성 유지가 잘 되며, 광고/영상용으로 바로 사용 가능합니다. 단, 생성 속도는 느립니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="engine-cards">
+    <div class="engine-card">
+      <div class="tag">— Engine A —</div>
+      <h3>STANDARD</h3>
+      <div class="sub">Gemini 2.5 Flash · 4 credits per cut</div>
+      <ul class="spec-list">
+        <li><span class="label">속도</span><span class="value">빠름</span></li>
+        <li><span class="label">구도</span><span class="value">기본 구도 잘 잡음</span></li>
+        <li><span class="label">디테일</span><span class="value">부족</span></li>
+        <li><span class="label">추천</span><span class="value">초안, 아이디어 탐색, 레퍼런스</span></li>
+      </ul>
+    </div>
+    <div class="engine-card featured">
+      <div class="tag">— Engine B —</div>
+      <h3>CINEMA PRO</h3>
+      <div class="sub">Gemini 3.1 Pro · 7 credits per cut</div>
+      <ul class="spec-list">
+        <li><span class="label">속도</span><span class="value">느림</span></li>
+        <li><span class="label">디테일</span><span class="value">매우 높음 (피부·질감·광원)</span></li>
+        <li><span class="label">카메라</span><span class="value">클로즈업·로우앵글·심도</span></li>
+        <li><span class="label">라이팅</span><span class="value">자연스러움</span></li>
+        <li><span class="label">일관성</span><span class="value">유지 잘됨</span></li>
+        <li><span class="label">추천</span><span class="value">광고·영상용 바로 사용</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — 이미지 엔진</span>
+    <span>Image Engine</span>
+  </div>
+</section>
+
+<!-- ========== 04 — YEAR & LOCATION ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>시간 · 공간</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Year &amp; Location —</div>
+      <h2 class="section-title">시간 · 공간 입력</h2>
+      <p class="section-lede">결과물의 분위기 및 미장센을 결정하는 핵심 단계입니다. Year와 Location 두 항목을 입력합니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 04.A · 빨간색 박스 —</div>
+        <h3 class="step-title">Year — 시간적 배경</h3>
+        <p class="step-body">빨간색 박스인 <span class="ui">Year</span> 밑의 빈칸을 클릭한 후, 시간적 배경인 시대를 넣어줍니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 04.B · 노란색 박스 —</div>
+        <h3 class="step-title">Location — 공간적 배경</h3>
+        <p class="step-body">노란색 박스인 <span class="ui">Location</span> 밑의 빈칸을 클릭한 후, 공간적 배경인 도시를 넣어줍니다.</p>
+      </div>
+    </div>
+    <div class="plate" data-fig="Fig. 04.01">
+      <img src="../assets/screens/252d1cd9df79d898a3dc0a610612846f53578221e80ac244d55e237c45ff280d.webp" alt="Year와 Location 입력 화면">
+      <div class="plate-caption">
+        <span>— Year · Location —</span>
+        <span class="kor">시간 · 공간 입력</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — 시간 · 공간</span>
+    <span>Year &amp; Location</span>
+  </div>
+</section>
+
+<!-- ========== 05 — SCENARIO ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>시나리오</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Scenario —</div>
+      <h2 class="section-title">시나리오 입력</h2>
+      <p class="section-lede">제작하고자 하는 스토리 또는 상황을 텍스트로 입력합니다. 시나리오는 필수 항목입니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 05.01">
+      <img src="../assets/screens/65e71cc45bed4ab04f853805ec71ff8e939b68ecf99fb3bbc5af981d48788769.webp" alt="시나리오 입력 필드">
+      <div class="plate-caption">
+        <span>— Scenario field —</span>
+        <span class="kor">시나리오 입력</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">빈칸 클릭 후 입력</h3>
+        <p class="step-body"><span class="ui">Scenario</span> 빈칸을 한 번 클릭하여 제작하고자 하는 스토리 또는 상황을 텍스트로 입력합니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">최소 글자 수 확인</h3>
+        <p class="step-body">주의할 점으로, 일정 글자 수 이상을 넣어야 합니다.</p>
+      </div>
+      <div class="note-box">
+        <div class="label">— 필수 —</div>
+        <div class="text">시나리오는 필수적으로 작성해야 합니다. 누락 시 생성 버튼이 활성화되지 않습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — 시나리오</span>
+    <span>Scenario</span>
+  </div>
+</section>
+
+<!-- ========== 06 — DIRECTOR STYLE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>디렉터 스타일</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Director Style —</div>
+      <h2 class="section-title">연출 스타일 선택</h2>
+      <p class="section-lede">연출과 톤앤무드를 결정하는 핵심 단계입니다. 빨간색 박스 안에 있는 5가지 스타일 중 선택합니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">5가지 스타일은 각각 고유한 연출 문법을 가지며, 각 스타일에 대한 상세 설명은 다음 페이지에서 확인할 수 있습니다.</p>
+    </div>
+    <div class="plate" data-fig="Fig. 06.01">
+      <img src="../assets/screens/208f3cf519ba9f925b8fd4e2782ba719767ea221618abe67f96d25b51755d7ab.webp" alt="디렉터 스타일 선택 화면">
+      <div class="plate-caption">
+        <span>— 5 styles · red frame —</span>
+        <span class="kor">5가지 스타일</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="director-list">
+    <div class="director-row">
+      <div class="num">— 01 —</div>
+      <div class="name">WES<br>ANDERSON</div>
+      <div class="desc">대칭적 구도, 파스텔톤 색감, 정적인 카메라. 동화적이고 인위적으로 정돈된 미장센.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 02 —</div>
+      <div class="name">SPIKE<br>JONZE</div>
+      <div class="desc">현실과 환상의 경계가 흐려지는 연출. 감성적이고 인간적인 스토리 중심, 몽환 + 서정적인 분위기.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 03 —</div>
+      <div class="name">WIEDEN<br>+ KENNEDY</div>
+      <div class="desc">강한 메시지 중심의 광고 스타일. 브랜드 아이덴티티 강조, 임팩트 있는 카피와 연출.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 04 —</div>
+      <div class="name">THE BAKER<br>BROTHERS</div>
+      <div class="desc">빠른 템포, 트렌디한 컷편집. 스타일리시한 광고 연출, 리듬감 + 시각적 자극 강조.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 05 —</div>
+      <div class="name">SHOW<br>YANAGISAWA</div>
+      <div class="desc">일본 감성의 미니멀 연출. 자연광과 여백을 활용한 정서 표현, 감정선 중심의 잔잔한 전개.</div>
+      <div class="arrow">→</div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — 디렉터 스타일</span>
+    <span>Director Style</span>
+  </div>
+</section>
+
+<!-- ========== 07 — STYLE NOTES ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>스타일 상세</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Director Style · Details —</div>
+      <h2 class="section-title">5가지 스타일 상세</h2>
+      <p class="section-lede">각 디렉터 스타일의 특징을 화면에서 확인할 수 있습니다. 이전 페이지의 5가지 스타일에 대한 설명입니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="plate" data-fig="Fig. 07.01">
+      <img src="../assets/screens/208f3cf519ba9f925b8fd4e2782ba719767ea221618abe67f96d25b51755d7ab.webp" alt="디렉터 스타일 상세 설명">
+      <div class="plate-caption">
+        <span>— On-screen reference —</span>
+        <span class="kor">화면 내 설명</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 선택 가이드 —</div>
+        <h3 class="step-title">작업 목적에 맞춰 선택</h3>
+        <p class="step-body">정돈된 구도가 필요하면 <strong>Wes Anderson</strong>, 감성적 분위기는 <strong>Spike Jonze</strong>, 강한 메시지는 <strong>Wieden+Kennedy</strong>, 트렌디한 광고는 <strong>The Baker Brothers</strong>, 잔잔한 정서 표현은 <strong>Show Yanagisawa</strong>를 선택합니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 재시도 —</div>
+        <h3 class="step-title">다른 스타일로 재생성</h3>
+        <p class="step-body">결과물이 의도와 다를 경우 디렉터 스타일을 변경하여 다시 생성할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — 스타일 상세</span>
+    <span>Style Details</span>
+  </div>
+</section>
+
+<!-- ========== 08 — ART STYLE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>아트 스타일</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Art Style —</div>
+      <h2 class="section-title">아트 스타일 선택</h2>
+      <p class="section-lede">빨간색 박스 안에 4가지 중 선택합니다. 결과물의 매체(실사, 애니메이션, 클레이메이션, 3D)를 결정하는 단계입니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">선택한 매체에 따라 결과물의 시각적 언어가 완전히 달라집니다. 광고 목적과 타깃 오디언스에 맞춰 선택합니다.</p>
+    </div>
+    <div class="plate" data-fig="Fig. 08.01">
+      <img src="../assets/screens/7d5c8cc4f9228b828491d7499c6adbf6a1b4e37e742c19524660dce1fd859aae.webp" alt="아트 스타일 4가지 선택 화면">
+      <div class="plate-caption">
+        <span>— 4 art styles —</span>
+        <span class="kor">4가지 매체</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="artstyle-grid">
+    <div class="art-card">
+      <div class="art-num">— 01 —</div>
+      <div>
+        <div class="art-card-name">LIVE<br>ACTION</div>
+        <div class="art-card-name-kor">실사 (Arri Alexa)</div>
+        <div class="art-card-desc">현실, 영화, 광고</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <div class="art-num">— 02 —</div>
+      <div>
+        <div class="art-card-name">STUDIO<br>GHIBLI</div>
+        <div class="art-card-name-kor">스튜디오 지브리 애니메이션</div>
+        <div class="art-card-desc">감성, 따뜻함, 판타지</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <div class="art-num">— 03 —</div>
+      <div>
+        <div class="art-card-name">STOP-MOTION<br>CLAYMATION</div>
+        <div class="art-card-name-kor">스톱모션 클레이메이션</div>
+        <div class="art-card-desc">수공예, 질감, 개성</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <div class="art-num">— 04 —</div>
+      <div>
+        <div class="art-card-name">3D<br>ANIMATION</div>
+        <div class="art-card-name-kor">3D 애니메이션 (Pixar Style)</div>
+        <div class="art-card-desc">귀여움, 대중성, 캐릭터</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — 아트 스타일</span>
+    <span>Art Style</span>
+  </div>
+</section>
+
+<!-- ========== 09 — HERO PRODUCT / MUSE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>제품 · 모델 이미지</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Product / Model Images · Optional —</div>
+      <h2 class="section-title">제품 · 모델 이미지 첨부</h2>
+      <p class="section-lede">생체인식(얼굴 잠금)을 통해 시각적 연속성을 유지하는 9컷을 생성하기 위한 단계입니다. 필수는 아니며 제품 중심 광고도 가능합니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-bottom: 0;">
+    <div class="plate" data-fig="Fig. 09.01">
+      <img src="../assets/screens/15570d7b23f794bcb6708f6a892f8b823d90349b917c6e102e3329b53945ca53.webp" alt="Hero Product와 Hero Muse 업로드 화면">
+      <div class="plate-caption">
+        <span>— Hero Product · Hero Muse —</span>
+        <span class="kor">제품 · 모델 이미지</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 첨부 방법 —</div>
+        <h3 class="step-title">클릭 또는 드래그</h3>
+        <p class="step-body">바로 아래의 회색 빈칸을 클릭하여 파일을 선택하거나, 첨부할 이미지 파일을 드래그하여 사진을 첨부합니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 권장 —</div>
+        <h3 class="step-title">배경 없는 이미지 사용</h3>
+        <p class="step-body">공통 사항으로, 배경이 없는 이미지를 사용하면 인식 정확도가 높아지고 결과물의 일관성 유지에 도움이 됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-block">
+      <div class="tag-line">
+        <span>— 좌측 / 빨간색 박스 —</span>
+        <span>Optional</span>
+      </div>
+      <h3>HERO PRODUCT</h3>
+      <span class="kor">히어로 프로덕트 — 제품 이미지</span>
+      <p class="body">광고에 노출될 제품 이미지를 첨부합니다. 결과물 내에서 핵심 오브젝트로 작동합니다. 바로 아래의 회색 빈칸을 클릭하여 삽입하거나, 첨부할 이미지 파일을 드래그하여 사진을 첨부합니다.</p>
+    </div>
+    <div class="product-block">
+      <div class="tag-line">
+        <span>— 우측 / 노란색 박스 —</span>
+        <span>Optional</span>
+      </div>
+      <h3>HERO MUSE</h3>
+      <span class="kor">히어로 뮤즈 — 모델 이미지</span>
+      <p class="body">제품을 광고할 모델 이미지를 첨부합니다. 이때 가능한 정면 사진을 넣어줍니다. 생체인식 얼굴 잠금을 통해 9컷 전체에 동일한 모델이 등장합니다.</p>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">반드시 필수는 아니며, 제품 중심 광고도 가능합니다. 배경이 없는 이미지를 사용하면 인식 정확도가 높아지고 결과물의 일관성 유지에 도움이 됩니다.</div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — 제품 · 모델 이미지</span>
+    <span>Hero Product · Muse</span>
+  </div>
+</section>
+
+<!-- ========== 10 — GENERATE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>생성</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate —</div>
+      <h2 class="section-title">생성 버튼 클릭</h2>
+      <p class="section-lede">빨간색 박스의 위치인 하단에 활성화된 생성 버튼을 클릭합니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">생성 버튼 활성화 확인</h3>
+        <p class="step-body">필수 항목(이미지 엔진, Year, Location, Scenario, Director Style, Art Style)이 모두 입력되면 화면 하단의 생성 버튼이 활성화됩니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">버튼 클릭</h3>
+        <p class="step-body">빨간색 박스 위치의 활성화된 생성 버튼을 클릭하면 이미지 생성이 시작됩니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 03 —</div>
+        <h3 class="step-title">9컷 그리드 생성</h3>
+        <p class="step-body">생성 버튼을 클릭한 후 오른쪽을 보면 9장으로 이뤄진 1장의 그리드가 생성됩니다.</p>
+      </div>
+    </div>
+    <div class="plate" data-fig="Fig. 10.01">
+      <img src="../assets/screens/c5d3ea707213d3ba3da1cb3b02690b9189efcb72dcf55a329d28f3ee72a64dac.webp" alt="생성 버튼 위치 — 화면 하단 빨간색 박스">
+      <div class="plate-caption">
+        <span>— Generate button —</span>
+        <span class="kor">생성 버튼</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — 생성</span>
+    <span>Generate</span>
+  </div>
+</section>
+
+<!-- ========== 11 — THE GRID ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>9컷 그리드</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 9-Cut Grid —</div>
+      <h2 class="section-title">9컷 그리드 결과 확인</h2>
+      <p class="section-lede">생성 버튼을 클릭한 후, 화면 오른쪽에 9장으로 이뤄진 1장의 그리드가 생성됩니다.</p>
+    </div>
+  </div>
+
+  <div class="plate" data-fig="Fig. 11.01" style="max-width: 1100px; margin: 0 auto;">
+    <img src="../assets/screens/e9d8bf83c9caf98ce2b3303a0a7390b3cbabc36d324ec3ceee311e3aef37f493.webp" alt="9컷 그리드 생성 결과">
+    <div class="plate-caption">
+      <span>— 3 × 3 grid · 9 frames —</span>
+      <span class="kor">9컷 그리드</span>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — 9컷 그리드</span>
+    <span>9-Cut Grid</span>
+  </div>
+</section>
+
+<!-- ========== 12 — EDIT ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 12</span><span class="dot"></span><span>개별 수정</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Per-frame Editing —</div>
+      <h2 class="section-title">개별 이미지 수정</h2>
+      <p class="section-lede">각 이미지의 개별 수정이 가능합니다. 펜 모양 아이콘을 클릭하여 프롬프트를 수정한 후, 재생성 버튼으로 해당 이미지만 다시 생성합니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 12.01">
+      <img src="../assets/screens/60811260343bf1e46afec8c2ce78479011318401dbe3aab0bf3746f333697d01.webp" alt="개별 이미지 수정 화면">
+      <div class="plate-caption">
+        <span>— Pen icon · Regenerate —</span>
+        <span class="kor">개별 수정</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">펜 아이콘 클릭</h3>
+        <p class="step-body">사진의 우측 바로 밑 노란색 박스 안의 펜 모양 아이콘을 클릭하면 이미지의 프롬프트가 나옵니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">프롬프트 수정</h3>
+        <p class="step-body">수정할 프롬프트를 새로 입력합니다.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 03 —</div>
+        <h3 class="step-title">재생성 버튼 클릭</h3>
+        <p class="step-body">빨간색 박스 안에 있는 활성화된 노란색 <span class="ui">재생성</span> 버튼을 클릭하면 해당 이미지만 다시 생성됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="edit-flow">
+    <div class="edit-step">
+      <div class="num">01</div>
+      <h4>펜 아이콘 클릭</h4>
+      <p>사진 우측 하단 노란색 박스 안의 펜 아이콘 → 프롬프트 표시</p>
+    </div>
+    <div class="edit-step">
+      <div class="num">02</div>
+      <h4>프롬프트 입력</h4>
+      <p>수정할 프롬프트를 새로 입력</p>
+    </div>
+    <div class="edit-step">
+      <div class="num">03</div>
+      <h4>재생성</h4>
+      <p>빨간색 박스 안 노란색 재생성 버튼 클릭 → 해당 이미지만 재생성</p>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — 개별 수정</span>
+    <span>Per-frame Editing</span>
+  </div>
+</section>
+
+<!-- ========== 13 — AFTER EDIT ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>수정 결과</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— After the Edit —</div>
+      <h2 class="section-title">수정 결과 확인</h2>
+      <p class="section-lede">예시는 9번째 이미지에서 인물을 지워달라고 수정한 결과입니다. 원하는 사진만 수정 가능하며, 순서와 횟수에 상관없이 각각의 이미지를 모두 수정할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="plate" data-fig="Fig. 13.01" style="max-width: 1100px; margin: 0 auto 32px;">
+    <img src="../assets/screens/6f718a2c02fbcb16edfcf92adb449f064173666fca5dfa7e6175235d04e2211a.webp" alt="개별 수정 후 그리드 결과">
+    <div class="plate-caption">
+      <span>— Frame 09 · revised —</span>
+      <span class="kor">9번째 이미지 수정</span>
+    </div>
+  </div>
+
+  <div class="note-box" style="max-width: 1100px; margin: 0 auto;">
+    <div class="label">— Note —</div>
+    <div class="text">원하는 사진만 수정 가능하며, 순서와 횟수에 상관없이 각각의 이미지를 모두 수정할 수 있습니다. 다른 이미지는 영향을 받지 않습니다.</div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — 수정 결과</span>
+    <span>After the Edit</span>
+  </div>
+</section>
+
+<!-- ========== 14 — DOWNLOAD ========== -->
+<section class="slide download-section">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>다운로드</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Download —</div>
+      <h2 class="section-title">다운로드</h2>
+      <p class="section-lede">개별 이미지 또는 9장 전부를 다운로드할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 14.01" style="background: rgba(240, 239, 234, 0.05);">
+      <img src="../assets/screens/2f2e0f74a74f5dd024f97c76a93fcc4db21a84cfe3fbe79f798bdfa836d8c9ae.webp" alt="다운로드 옵션 화면">
+      <div class="plate-caption">
+        <span>— Download options —</span>
+        <span class="kor">다운로드 옵션</span>
+      </div>
+    </div>
+    <div class="download-options" style="align-self: start;">
+      <div class="download-option">
+        <div class="num">01</div>
+        <div>
+          <h4>개별 다운로드</h4>
+          <p>노란색 박스 안의 다운로드 아이콘을 클릭하면 개별 이미지가 다운로드됩니다.</p>
+        </div>
+        <div class="icon">↓</div>
+      </div>
+      <div class="download-option">
+        <div class="num">02</div>
+        <div>
+          <h4>전체 다운로드</h4>
+          <p>빨간색 박스 안의 <span class="ui">Download All</span> 버튼을 클릭하면 9장 전부가 일괄 다운로드됩니다.</p>
+        </div>
+        <div class="icon">↓↓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — 다운로드</span>
+    <span>Download</span>
+  </div>
+</section>
+
+
+
+
+</body></html>

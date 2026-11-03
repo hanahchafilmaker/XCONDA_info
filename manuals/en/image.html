@@ -1,0 +1,1415 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Generator — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --body-font: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.03em;
+  }
+  .section-lede {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.7;
+    max-width: 640px;
+    letter-spacing: -0.005em;
+  }
+
+  .plate {
+    background: var(--midnight-deep);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .plate::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: var(--midnight);
+    color: var(--offwhite);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    z-index: 2;
+  }
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(240, 239, 234, 0.08);
+  }
+  .plate-caption {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(240, 239, 234, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-subtitle {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 32px;
+    max-width: 460px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.85;
+    letter-spacing: -0.005em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  .step-title {
+    font-family: var(--body-font);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .step-body {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.8;
+    letter-spacing: -0.005em;
+  }
+  .step-body .ui {
+    font-family: var(--body-font);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: var(--midnight);
+    color: var(--offwhite);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .note-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(240, 239, 234, 0.2);
+    padding-right: 28px;
+    white-space: nowrap;
+  }
+  .note-box .text {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .note-box .text .ui {
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12.5px;
+    color: var(--offwhite);
+    font-weight: 500;
+    border-radius: 2px;
+  }
+
+  /* Model cards */
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .model-card {
+    background: var(--offwhite);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .model-card.featured { background: var(--midnight); color: var(--offwhite); }
+  .model-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    margin-bottom: 12px;
+  }
+  .model-card.featured .num { color: rgba(240, 239, 234, 0.5); }
+  .model-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .model-card.featured h3 { color: var(--offwhite); }
+  .model-card .ref {
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--slate);
+    margin-bottom: 14px;
+    letter-spacing: -0.005em;
+  }
+  .model-card.featured .ref { color: rgba(240, 239, 234, 0.7); }
+  .model-card .desc {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .model-card.featured .desc { color: rgba(240, 239, 234, 0.8); }
+
+  /* Spec list */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 22px 28px;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .spec-item .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .spec-item .feature {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+  .spec-item .feature strong { color: var(--midnight); font-weight: 600; }
+
+  /* Resolution / count cards */
+  .three-col-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .res-card {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .res-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate-light);
+    text-transform: uppercase;
+  }
+  .res-card .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 0.9;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+  }
+  .res-card .desc {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    margin-top: 14px;
+  }
+
+  /* Code-style example */
+  .code-example {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--midnight-deep);
+    color: rgba(240, 239, 234, 0.85);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1.7;
+    border-left: 3px solid var(--midnight);
+  }
+  .code-example .label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.4);
+    margin-bottom: 6px;
+  }
+
+  /* Action grid for icons */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+  .action-item {
+    background: var(--offwhite);
+    padding: 28px 24px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  .action-item .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    color: var(--midnight);
+    margin-bottom: 16px;
+  }
+  .action-item h4 {
+    font-family: var(--body-font);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .action-item p {
+    font-family: var(--body-font);
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    margin-top: auto;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .model-grid, .spec-list-grid, .three-col-cards, .action-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/image.html" hreflang="ko" lang="ko">KO</a><a href="../en/image.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/image.html" hreflang="ja" lang="ja">JA</a><a href="../zh/image.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>User Guide</span>
+    </div>
+    <div>
+      <div class="cover-title-en">IMAGE<br>GENERATOR</div>
+      <div class="cover-subtitle">User Guide — image generation workflow with 7 AI models, text prompts, and reference images.</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>User Guide</div>
+        <div>Tutorial</div>
+      </div>
+      <div style="text-align:right">
+        <div>17 Chapters</div>
+        <div>2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>Contents</span>
+      <span>17 Chapters</span>
+    </div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— Guide Contents —</span>
+      Entry · Models (7) · Prompt · Reference Image · Image Size · Resolution · Generate Count · Negative Prompt · Generate · Result · Copy Prompt · Detail View · Download
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>Entry</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Entry —</div>
+      <h2 class="section-title">Open Image Generator</h2>
+      <p class="section-lede">Click the 1st icon on the left vertical sidebar — the one inside the yellow frame.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Locate the 1st sidebar icon</h3>
+          <p class="step-body">On the left vertical navigation bar, find the topmost icon. It is highlighted with a yellow frame.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 02 —</div>
+          <h3 class="step-title">Click to open</h3>
+          <p class="step-body">Click the icon once to open the Image Generator workspace.</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/60f50d5ab4308e114437b4a0ffe21cb83e44e2daf3fefba60bc31a86a969b9f8.webp" alt="Open Image Generator" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — Entry</span>
+    <span>Entry</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>Models</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Models · 1 of 3 —</div>
+      <h2 class="section-title">Select an image generation model</h2>
+      <p class="section-lede">Select the AI model to use for image generation. You can choose from 7 models.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">The 7 models differ in maximum reference image attachments, text accuracy, and result texture. The first 3 models are introduced here, with the remainder on the following page.</p>
+    </div>
+    <img src="../assets/screens/f8a62cb8902eb9b4526a4948b8f5f735ac5824d6f56b7c4be751ec9692886f96.webp" alt="Select an image generation model" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="model-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+        <div class="model-card">
+          <div class="num">— Model 01 —</div>
+          <h3>NANO BANANA 2</h3>
+          <div class="ref">Up to 14 references</div>
+          <div class="desc">General-purpose image generation model. High text accuracy, the most basic and stable model.</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— Model 02 —</div>
+          <h3>NANO BANANA PRO</h3>
+          <div class="ref">Up to 14 references</div>
+          <div class="desc">The upper-tier version of Nano Banana 2, with higher detail and quality.</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— Model 03 —</div>
+          <h3>KLING IMAGE O1</h3>
+          <div class="ref">Up to 10 references</div>
+          <div class="desc">A model with its own distinctive image interpretation style.</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — Models (1/3)</span>
+    <span>Models</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>Prompt</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Prompt —</div>
+      <h2 class="section-title">Enter the prompt</h2>
+      <p class="section-lede">Click the empty field and describe the image you want to generate as text. The Prompt is required.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click the empty field</h3>
+          <p class="step-body">Click the <span class="ui">Prompt</span> field once and describe the image you want to generate as text.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Recommended —</div>
+          <h3 class="step-title">Write in English</h3>
+          <p class="step-body">Writing in English yields more accurate results.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Behavior —</div>
+          <h3 class="step-title">Last prompt is auto-applied</h3>
+          <p class="step-body">If used previously, the last prompt is automatically applied.</p>
+        </div>
+
+
+        <div class="note-box">
+          <div class="label">— Required —</div>
+          <div class="text">The Prompt is mandatory. The Generate button will not activate if it is empty.</div>
+        </div>
+    </div>
+    <img src="../assets/screens/8dfb39eb847fa2a6a59938ce2633450088bd02922946966f57fcc667771df079.webp" alt="Enter the prompt" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — Prompt</span>
+    <span>Prompt</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>Models</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Models · 2 of 3 —</div>
+      <h2 class="section-title">Image generation models — additional</h2>
+      <p class="section-lede">Review the remaining 4 models.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">Z Image is the only model that supports negative prompts, allowing explicit exclusion of unwanted elements. Seedream and Grok Imagine series are each suited to content matching their characteristics.</p>
+    </div>
+    <img src="../assets/screens/f8a62cb8902eb9b4526a4948b8f5f735ac5824d6f56b7c4be751ec9692886f96.webp" alt="Image generation models — additional" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="model-grid">
+
+        <div class="model-card featured">
+          <div class="num">— Model 04 —</div>
+          <h3>Z IMAGE</h3>
+          <div class="ref">No reference support</div>
+          <div class="desc">Supports negative prompts, allowing explicit exclusion of unwanted elements. Supports 1K resolution.</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— Model 05 —</div>
+          <h3>SEEDREAM 5.0 LITE</h3>
+          <div class="ref">Up to 14 references</div>
+          <div class="desc">Suited for content with emotional, soft tones.</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— Model 06 —</div>
+          <h3>GROK IMAGINE IMAGE</h3>
+          <div class="ref">1 reference</div>
+          <div class="desc">A model that supports only 1 reference image attachment.</div>
+        </div>
+        <div class="model-card">
+          <div class="num">— Model 07 —</div>
+          <h3>GROK IMAGINE PRO</h3>
+          <div class="ref">Up to 3 references</div>
+          <div class="desc">The upper-tier version of Grok Imagine Image.</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — Models (2/3)</span>
+    <span>Models</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>Reference Image</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Image —</div>
+      <h2 class="section-title">Attach reference images</h2>
+      <p class="section-lede">Click the dotted box icon to the left of the Prompt input field to attach reference images.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click the dotted box icon</h3>
+          <p class="step-body">Click the dotted box icon to the left of the Prompt input field to attach reference images.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Display —</div>
+          <h3 class="step-title">@image1, @image2 format</h3>
+          <p class="step-body">Attached images appear in the prompt as <span class="ui">@image1</span>, <span class="ui">@image2</span> ... and can be referenced from within the prompt.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Optional —</div>
+          <h3 class="step-title">Not a required field</h3>
+          <p class="step-body">Reference images are optional. Generation is possible with text alone.</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/d15e33ca68a5e38af0425c4a863838558439b1899d7ea16d2ce7f6ddc3e4173f.webp" alt="Attach reference images" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — Reference Image</span>
+    <span>Reference Image</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>Reference Limit (1)</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Limit · 1/3 —</div>
+      <h2 class="section-title">Reference attachment limit by model (1)</h2>
+      <p class="section-lede">The maximum number of reference images differs by model.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="spec-list-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+
+        <div class="spec-item">
+          <div class="name">NANO BANANA 2</div>
+          <div class="feature"><strong>Up to 14</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">NANO BANANA PRO</div>
+          <div class="feature"><strong>Up to 14</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">KLING IMAGE O1</div>
+          <div class="feature"><strong>Up to 10</strong></div>
+        </div>
+      </div>
+    </div>
+    <img src="../assets/screens/63df574a4d8c8cb27c2ee3028f0ce0af4e73f6b3b30b9b7b75c4736b17b1254e.webp" alt="Reference attachment limit by model (1)" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — Reference Limit (1/3)</span>
+    <span>Reference Limit</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>Reference Limit (2)</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Limit · 2/3 —</div>
+      <h2 class="section-title">Reference attachment limit by model (2)</h2>
+      <p class="section-lede">Reference attachment limits for Z Image and Seedream 5.0 Lite.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="spec-list-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+
+        <div class="spec-item">
+          <div class="name">Z IMAGE</div>
+          <div class="feature"><strong>No reference support</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">SEEDREAM 5.0 LITE</div>
+          <div class="feature"><strong>Up to 14</strong></div>
+        </div>
+      </div>
+    </div>
+    <img src="../assets/screens/5f725580bdbb9cbcdfe3d1eb5944b732e2fa29aeec8b3fc605bd0373079e415f.webp" alt="Reference attachment limit by model (2)" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — Reference Limit (2/3)</span>
+    <span>Reference Limit</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Reference Limit (3)</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Reference Limit · 3/3 —</div>
+      <h2 class="section-title">Reference attachment limit by model (3)</h2>
+      <p class="section-lede">Reference attachment limits for the Grok Imagine series.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="spec-list-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+
+        <div class="spec-item">
+          <div class="name">GROK IMAGINE IMAGE</div>
+          <div class="feature"><strong>1</strong></div>
+        </div>
+        <div class="spec-item">
+          <div class="name">GROK IMAGINE PRO</div>
+          <div class="feature"><strong>Up to 3</strong></div>
+        </div>
+      </div>
+    </div>
+    <img src="../assets/screens/280b5ae075535ca528f627530bdd3a4240a490552087efc0960ea30152693401.webp" alt="Reference attachment limit by model (3)" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — Reference Limit (3/3)</span>
+    <span>Reference Limit</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>Image Size</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Image Size —</div>
+      <h2 class="section-title">Select an image aspect ratio</h2>
+      <p class="section-lede">Click the ratio button below the prompt input to choose from 12 aspect ratios.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1fr; margin-bottom: 40px;">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— General —</div>
+        <p class="step-body">The 12 ratios are selected based on the output medium — video, SNS, print, and so on. The most commonly used ratios are 16:9 (landscape wide), 9:16 (vertical), and 1:1 (square).</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note —</div>
+        <p class="step-body">Supported aspect ratios may differ by selected model. When changing models, if a previously selected ratio is unsupported it may be automatically reset to the default value, so verify the ratio after model selection.</p>
+      </div>
+    </div>
+    <img src="../assets/screens/6a2642d88b9ff01ca6ab1eba790d927c26346564dcc88c77e89f891dfcd1d690.webp" alt="Select an image aspect ratio" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="spec-list-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+        <div class="spec-item">
+          <div class="name">16:9</div>
+          <div class="feature">Landscape wide — video, banner</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">9:16</div>
+          <div class="feature">Vertical — mobile, reels, shorts</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">1:1</div>
+          <div class="feature">Square — SNS feed, profile</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">3:2</div>
+          <div class="feature">Landscape — photo standard</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">2:3</div>
+          <div class="feature">Vertical — poster</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">4:3</div>
+          <div class="feature">Landscape — presentation</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">3:4</div>
+          <div class="feature">Vertical</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">5:4</div>
+          <div class="feature">Landscape</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">4:5</div>
+          <div class="feature">Vertical — Instagram</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">21:9</div>
+          <div class="feature">Ultra-wide — cinematic</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">4:1</div>
+          <div class="feature">Panorama horizontal</div>
+        </div>
+        <div class="spec-item">
+          <div class="name">1:4</div>
+          <div class="feature">Panorama vertical</div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — Image Size</span>
+    <span>Image Size</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>Resolution</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Resolution —</div>
+      <h2 class="section-title">Select a resolution</h2>
+      <p class="section-lede">Click the resolution dropdown next to the ratio button to choose from 3 resolutions.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr; margin-bottom: 40px;">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Model-specific support —</div>
+        <p class="step-body">Supported resolutions differ by selected model. <strong>Z Image</strong> only supports <span class="ui">1K</span>, while other models can choose between 1K, 2K, and 4K. The default resolution may also vary by model, so verify the resolution after model selection.</p>
+      </div>
+      <div class="note-box">
+        <div class="label">— Note —</div>
+        <div class="text">When changing models, if the previously selected resolution is unsupported, it may be automatically adjusted to an available value.</div>
+      </div>
+    </div>
+    <img src="../assets/screens/8c4fb72d25cd2759ef856b181827315cf16f6fc7ee5e6498ddc70925a2514d8d.webp" alt="Select a resolution" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="three-col-cards">
+
+        <div class="res-card">
+          <div class="num">— 01 —</div>
+          <div>
+            <div class="big">1K</div>
+            <div class="desc">Fast generation, for draft review</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 02 —</div>
+          <div>
+            <div class="big">2K</div>
+            <div class="desc">Default recommended resolution</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 03 —</div>
+          <div>
+            <div class="big">4K</div>
+            <div class="desc">Highest quality, for print and commercial use</div>
+          </div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — Resolution</span>
+    <span>Options</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 12</span><span class="dot"></span><span>Generate Count</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate Count —</div>
+      <h2 class="section-title">Select the number of images to generate</h2>
+      <p class="section-lede">Use the number buttons next to the resolution to select how many images to generate at once.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr; margin-bottom: 40px;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">Choose one of the 3 options based on your work goal.</p>
+    </div>
+    <img src="../assets/screens/69520e38874c8387dd7a0c44593a9b380e728e60715cd7601b7e3df9594c6b46.webp" alt="Select the number of images to generate" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="three-col-cards">
+
+        <div class="res-card">
+          <div class="num">— 01 —</div>
+          <div>
+            <div class="big">1</div>
+            <div class="desc">Generate 1 image</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 02 —</div>
+          <div>
+            <div class="big">2</div>
+            <div class="desc">Generate 2 images</div>
+          </div>
+        </div>
+        <div class="res-card">
+          <div class="num">— 03 —</div>
+          <div>
+            <div class="big">4</div>
+            <div class="desc">Generate 4 images</div>
+          </div>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Generate Count</span>
+    <span>Options</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>Negative Prompt</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Negative Prompt · Z Image only —</div>
+      <h2 class="section-title">Enter a negative prompt</h2>
+      <p class="section-lede">When the Z Image model is selected, a <span class="ui">Negative prompt</span> input field appears below the prompt.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Condition —</div>
+          <h3 class="step-title">Active only with Z Image</h3>
+          <p class="step-body">The <span class="ui">Negative prompt</span> input field appears only when the Z Image model is selected.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Enter excluded elements</h3>
+          <p class="step-body">Type the elements you want to exclude from the generated result as text.</p>
+        </div>
+
+        <div class="code-example">
+          <span class="label">— Example —</span>
+          blurry, extra fingers, watermark, text, low quality
+        </div>
+
+    </div>
+    <img src="../assets/screens/2bccf1b69433c0204d569b1a7a9dbf2a415458556f719c4334612db036385a5b.webp" alt="Enter a negative prompt" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — Negative Prompt</span>
+    <span>Negative Prompt</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate —</div>
+      <h2 class="section-title">Click the Generate button</h2>
+      <p class="section-lede">After completing all settings, click the yellow <span class="ui">Generate</span> button at the bottom.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click Generate</h3>
+          <p class="step-body">After completing all settings, click the yellow <span class="ui">Generate</span> button at the bottom. The credits shown on the button are consumed and image generation begins.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Condition —</div>
+          <h3 class="step-title">Prompt input required</h3>
+          <p class="step-body">The button activates only when a prompt is entered. If used previously, the last prompt is automatically applied.</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/fb8f12a31d042ce47db3b28b6479df07294510d324d260ebe507df62b1865855.webp" alt="Click the Generate button" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Generate</span>
+    <span>Generate</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>Result</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Result —</div>
+      <h2 class="section-title">Review the result</h2>
+      <p class="section-lede">When generation completes, the result images appear on the right side of the screen.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Review result images</h3>
+          <p class="step-body">When generation completes, the result images appear on the right side of the screen.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Layout —</div>
+          <h3 class="step-title">Horizontal thumbnails when 4 images</h3>
+          <p class="step-body">When generating 4 images, numbered thumbnails (1, 2, 3, 4) are arranged horizontally.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Layout —</div>
+          <h3 class="step-title">Prompt shown with each result</h3>
+          <p class="step-body">The prompt used is displayed below each result.</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/b8b202e6e64d74494cf07d366f95f695a355fb9f3cde6a237faeb17499a9c49b.webp" alt="Review the result" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — Result</span>
+    <span>Result</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>Copy Prompt</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Copy Prompt —</div>
+      <h2 class="section-title">Copy the prompt</h2>
+      <p class="section-lede">A copy icon is located in the upper right of the prompt text shown below the result.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+
+        <div class="step-block">
+          <div class="step-number">— Step 01 —</div>
+          <h3 class="step-title">Click the copy icon</h3>
+          <p class="step-body">Click the copy icon located in the upper right of the prompt text shown below the result.</p>
+        </div>
+        <div class="step-block">
+          <div class="step-number">— Behavior —</div>
+          <h3 class="step-title">Copies to clipboard</h3>
+          <p class="step-body">Clicking copies the prompt to the clipboard, allowing it to be regenerated with the same prompt or used in another model.</p>
+        </div>
+
+
+    </div>
+    <img src="../assets/screens/b206d90f588b7cebe5dbe338620ffad713f1415eae2b94d00a92d528d5cf9a2e.webp" alt="Copy the prompt" style="display: block; width: 100%; height: auto;">
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — Copy Prompt</span>
+    <span>Copy Prompt</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>Detail View</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Detail View —</div>
+      <h2 class="section-title">Detail view of result</h2>
+      <p class="section-lede">Click a thumbnail to expand the image to fullscreen.</p>
+    </div>
+  </div>
+
+  <img src="../assets/screens/bd5258ee79c6322bf29e8a633891d56c3a33234ce941564891d1d8eaa7b0b5a1.webp" alt="Detail view of result" style="display: block; width: 100%; height: auto;">
+
+  <div class="action-grid">
+
+        <div class="action-item">
+          <div class="icon">&lt; &gt;</div>
+          <h4>Navigate</h4>
+          <p>Click the left/right arrows (&lt; &gt;) to move to other generated results.</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">+/-</div>
+          <h4>Zoom in / out</h4>
+          <p>Use the bottom toolbar to zoom in and out.</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">↻</div>
+          <h4>Rotate 90°</h4>
+          <p>Use the bottom toolbar to rotate the image 90° left or right.</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — Detail View</span>
+    <span>Detail View</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>Download &amp; Manage</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Download &amp; Manage —</div>
+      <h2 class="section-title">Download and manage</h2>
+      <p class="section-lede">Three icons are located in the lower right of each result.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr; margin-bottom: 32px;">
+    <img src="../assets/screens/b5bd730f65bf5beecad0f2bb1bddf26486eed3f6aae6412f6f3ca29b0b58e92a.webp" alt="Download and manage" style="display: block; width: 100%; height: auto;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">Three icons in the lower right of each result enable opening in a new window, downloading, and deleting.</p>
+    </div>
+  </div>
+
+  <div class="action-grid">
+
+        <div class="action-item">
+          <div class="icon">↗</div>
+          <h4>Open in new window</h4>
+          <p>Click the first icon to open the image in a new window.</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">↓</div>
+          <h4>Download image</h4>
+          <p>Click the second icon (<span class="ui">↓</span>) to download the image.</p>
+        </div>
+        <div class="action-item">
+          <div class="icon">🗑</div>
+          <h4>Delete image</h4>
+          <p>Click the third icon (trash) to delete the image.</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — Download &amp; Manage</span>
+    <span>Final Step</span>
+  </div>
+</section>
+
+
+
+</body></html>

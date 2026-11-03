@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generator — ユーザーガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 760px; }
+  .section-lede .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .section-lede strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+  .figure-block { margin-bottom: 32px; max-width: 900px; }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="ガイドのナビゲーション" data-zoom-label="画像を拡大"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">ハブに戻る</a><a href="index.html">ガイド一覧</a></div><div class="xconda-manual-languages"><a href="../ko/video.html" hreflang="ko" lang="ko">KO</a><a href="../en/video.html" hreflang="en" lang="en">EN</a><a href="../ja/video.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/video.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>ユーザーガイド</span></div>
+    <div><div class="cover-title-en">VIDEO<br>GEN<br>ERATOR</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">テキストと画像から動画を生成するワークフローガイドです。Veo、Runway、Kling、Grok、Vidu、Seedance など複数の動画エンジンを 1 つのワークスペースで実行できます。</div></div>
+    <div class="cover-bottom-meta"><div><div>ユーザーガイド</div><div>チュートリアル</div></div><div style="text-align:right"><div>10 章</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目次</span><span>10 章</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— ガイド構成 —</span>Tools メニューを開く · サイドバーアイコンを選択 · Models — 動画エンジンの選択 · Text to video · Image to video · モデル仕様 · プロンプト例 · 生成 · 結果の確認と保存</div>
+  </div>
+</section>
+
+<!-- 02: Tools Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Tools メニューから開始</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 開始 —</div><h2 class="section-title">Tools メニューを開く</h2><p class="section-lede">メイン画面上部の <span class="ui">Tools</span> をクリックします。Xconda のすべての生成ツールは、この Tools メニューにまとめられています。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/175a102f94833e4686c2aae34c7c8076d6a37a3acd1b50c42865157d4de4376d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">Video Generator は、動画制作ツールとして Tools メニュー内にあります。</div></div>
+  <div class="footer-meta"><span>002 — Tools メニュー</span><span>TOOLS-ENTRY</span></div>
+</section>
+
+<!-- 03: Sidebar -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>サイドバー</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— サイドバー —</div><h2 class="section-title">サイドバーのアイコンを選択</h2><p class="section-lede">左側の縦サイドバーの <strong>黄色で強調された 2 番目の枠</strong> にあるアイコンをクリックします。Video Generator のワークスペースが開きます。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/fa69496bd0abb3aacc5a89fc1001ca378b0c0af2fa432853783895dc94c9b00b.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">黄色い枠は、現在アクティブなツールを示します。</div></div>
+  <div class="footer-meta"><span>003 — サイドバー</span><span>SIDEBAR</span></div>
+</section>
+
+<!-- 04: Models -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— モデル —</div><h2 class="section-title">Models — 動画エンジンを選択</h2><p class="section-lede">画面上部の <span class="ui">Models</span> ドロップダウンから動画エンジンを選択します。選択肢は <strong>Veo 3.1 / Veo 3.1 Fast</strong>, <strong>Runway Gen-4.5</strong>, <strong>Kling 3.0 Pro / Kling OMNI</strong>, <strong>Grok Imagine Video</strong>, <strong>Vidu Q3</strong>、 <strong>Seedance 2.0 / Seedance 2.0 Fast</strong>です。（モデル構成は変更される場合があります — 最終更新 2026-04-28）</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/14c2ed171048cbf7622ac45d1a0842eacf84446555eeac0e9fe8aacf6cf313d4.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">モデルごとに対応する解像度・長さ・機能が異なります。プロジェクトの要件に合わせて選んでください。</div></div>
+  <div class="footer-meta"><span>004 — モデル</span><span>MODELS</span></div>
+</section>
+
+<!-- 05: Text To Video -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Text To Video</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Text to Video（テキストから動画）—</div><h2 class="section-title">Text to video</h2><p class="section-lede">上部の <span class="ui">Text to video</span> タブを選択します。次に <span class="ui">Prompt</span> フィールドをクリックし、生成したいシーンを描写します。解像度（<strong>480p / 720p / 1080p</strong>）、長さ、アスペクト比（モデルにより異なります）を設定できます。出力から除外したい要素は <span class="ui">Negative Prompt</span> に列挙してください。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/2708e5a7448fc9ec2b90146cb333450a37e918bd081c36cf87145824384e5506.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">安定した結果を得るには、シーン → アクション → カメラ/ライティングの順でプロンプトを書きます。不要な要素は Negative Prompt で明示的に除外してください。</div></div>
+  <div class="footer-meta"><span>005 — Text To Video</span><span>TEXT-TO-VIDEO</span></div>
+</section>
+
+<!-- 06: Image To Video -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Image To Video</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Image to Video（画像から動画）—</div><h2 class="section-title">Image to video</h2><p class="section-lede">上部の <span class="ui">Image to video</span> タブを選択します。開始ショットを <span class="ui">Start frame</span> に、 <span class="ui">End frame</span> にアップロードすると、その間のシーンを AI が生成します。 <strong>Reference Mode</strong> （Seedance 2.0 のみ）： <span class="ui">Frame</span> は画像を正確な開始/終了フレームとして使用し、 <span class="ui">Reference</span> はスタイル・雰囲気・構図の参照として使用します。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/d0eef3ddb068116edabfd76ee5e88f43519a1bfe9cbdc2cfec8d6926f67bb0f1.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">開始/終了画像は、カメラの雰囲気・構図・表情をそろえると、間のシーンが自然につながります。</div></div>
+  <div class="footer-meta"><span>006 — Image To Video</span><span>IMAGE-TO-VIDEO</span></div>
+</section>
+
+<!-- 07: Model Specs -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>モデル仕様</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 仕様 —</div><h2 class="section-title">モデル仕様</h2><p class="section-lede">モデルごとに対応する解像度・長さ・アスペクト比・機能オプションが異なります。開始前に仕様を確認してください。 <strong>Multi-Shot</strong> は <strong>Kling 3.0 Pro</strong> と <strong>Kling OMNI</strong>専用です。（最終更新 2026-04-28）</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/ccd2b7b1010a583d7f659e6b381039cf87ee84cabcbbfa6c3552efb8cadbec0c.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">正確な仕様は画面の表を参照してください。Veo 3.1 の Audio Sync、Seedance の Reference Mode など、モデルごとに得意分野があります。</div></div>
+  <div class="footer-meta"><span>007 — モデル仕様</span><span>MODEL-SPECS</span></div>
+</section>
+
+<!-- 08: Prompt Examples -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>プロンプト例</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— プロンプト例 —</div><h2 class="section-title">プロンプト例</h2><p class="section-lede">参考用のプロンプト例です（Text to Video の場合）： <strong>Text to Video</strong>: <em>"A woman walks alone down a rain-soaked alley at night, neon signs reflecting on the wet pavement. She stops in front of a glass door, hesitates, then pushes it open — warm golden light spills out into the..."</em> — シーン・アクション・雰囲気・ライティングを具体的に描写します。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/01b3b7f2f94edae6a5f6333b994db526c09c204a91feab0b9453f123dafc2356.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">良いプロンプトのコツは、 <strong>設定 → キャラクターの動作 → カメラワーク → ライティング/トーン</strong> を 1 文の流れにまとめることです。</div></div>
+  <div class="footer-meta"><span>008 — プロンプト例</span><span>PROMPT-EXAMPLES</span></div>
+</section>
+
+<!-- 09: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate</h2><p class="section-lede">すべての設定が完了したら、画面下部の黄色い <span class="ui">Generate</span> ボタンをクリックします。マルチショットの場合は、 <span class="ui">Shots</span> エリアで各ショットの長さを秒単位で設定し、 <span class="ui">+ Add Shot</span> でショットを追加します。合計の長さは <strong>15 秒以内</strong>に収めてください。1 回の生成で <strong>50 credits</strong> を消費します（マルチショットは 180 credits）。Generate を押すと進行状況が表示されます。速度はモデルによって異なります。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/31e0f599e9f567797ca32bc3ffe057c9b4d3c5da1e1ed52b9a46d1adf949b0b5.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">Multi-Shot は 1 本の動画を複数のカットに分割する機能です。Kling 3.0 Pro と Kling OMNI でのみ利用できます。</div></div>
+  <div class="footer-meta"><span>009 — 生成</span><span>GENERATE</span></div>
+</section>
+
+<!-- 10: Results -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>結果</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 結果 —</div><h2 class="section-title">結果の確認と保存</h2><p class="section-lede">生成が完了すると、結果が一覧で表示されます。右側のパネルには <strong>日付 / 解像度 / アスペクト比 / 長さ / モデル</strong>が表示されます。再生ボタンでプレビュー、動画本体をクリックすると全画面になります。動画にカーソルを合わせると <span class="ui">Save / Delete</span> アイコンが現れます。Save はファイルをダウンロードし、右側の <span class="ui">Share</span> アイコンはアプリ外へ共有します。</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/85baed045500c5aaf11ff426cb577247dd9d819ab98093b20db54055e852031d.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— メモ —</div><div class="text">結果はリストに蓄積されます。必要なものをダウンロードし、それ以外は削除するとワークスペースが整理されます。</div></div>
+  <div class="footer-meta"><span>010 — 結果</span><span>RESULTS</span></div>
+</section>
+
+
+</body></html>

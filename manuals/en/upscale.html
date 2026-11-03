@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upscale — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 720px; }
+  .section-lede .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .section-lede strong { font-weight: 600; color: var(--midnight); }
+  .figure-block { margin-bottom: 32px; max-width: 800px; }
+  .fig-caption { margin-bottom: 14px; }
+  .fig-caption .fig-title { font-family: var(--body-font); font-weight: 700; font-size: 15px; color: var(--midnight); letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 4px; }
+  .fig-labels { display: grid; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+  .fig-labels.cols-2 { grid-template-columns: 1fr 1fr; }
+  .fig-labels.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .fig-labels .fig-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); text-align: center; }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 720px; border: 1px solid var(--hairline); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head><body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/upscale.html" hreflang="ko" lang="ko">KO</a><a href="../en/upscale.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/upscale.html" hreflang="ja" lang="ja">JA</a><a href="../zh/upscale.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- 01: Cover -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div><div class="cover-title-en">UP<br>SCALE</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">A workflow guide for lifting low-resolution or blurry images into higher resolution with sharper detail. Covers Topaz / Xconda models, 2X-4X scaling, and Face Enhancement in one place.</div></div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>16 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>16 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— Guide Structure —</span>What does Upscale do? · Why use Upscale · Opening Upscaler · Models: Topaz / Xconda · Xconda's in-house model · Uploading the image · Choose 2X / 4X scale · Enhance Model · Subject Detection · Output Format · Face Enhancement · Creativity · Generate · Confirmation dialog · Latest Result / Download</div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Purpose</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose —</div><h2 class="section-title">What does Upscale do?</h2><p class="section-lede">Cleans up low-resolution or blurry images into a higher resolution with sharper detail. Use it when you need to bring photos, AI-generated images, product shots, or portraits up to delivery-grade quality. Combined with <strong>Face Enhancement</strong>, it restores eye, skin, and facial contour detail more reliably on images that include a face.</p></div></div>
+  <div class="figure-block">
+    <div class="fig-caption"><div class="fig-title">Low-res Before / Face Enhancement After</div></div>
+    <img src="../assets/screens/d6a2d90fbff077b4b4c373dc92eccb16c97bd6c3cb92fb31ac7c2a77d4a6dc9c.webp" alt="" class="figure-img">
+    <div class="fig-labels cols-2">
+      <div class="fig-label">Before</div>
+      <div class="fig-label">After</div>
+    </div>
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">A finishing pass that lifts both resolution and detail in a single step.</div></div>
+  <div class="footer-meta"><span>002 — Purpose</span><span>PURPOSE</span></div>
+</section>
+
+<!-- 03: Why -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Why</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Why —</div><h2 class="section-title">Why use Upscale</h2><p class="section-lede">Scale a small source up to <strong>2X</strong> or <strong>4X</strong> while reducing aliasing and blur, so the output is ready for content delivery as-is. Especially useful when the original shot is small, when a generated image is slightly mushy, or when facial detail is lacking.</p></div></div>
+  <div class="figure-block">
+    <div class="fig-caption"><div class="fig-title">Low-res source → Options → Final result</div></div>
+    <img src="../assets/screens/f620d097d07756c438cc2781802c338a7c1e4c40048f718f91c5c8ca7fd96e11.webp" alt="" class="figure-img">
+    <div class="fig-labels cols-3">
+      <div class="fig-label">Source</div>
+      <div class="fig-label">Options</div>
+      <div class="fig-label">Result</div>
+    </div>
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">A single-step tool that backfills three common shortages: capture, generation, and detail.</div></div>
+  <div class="footer-meta"><span>003 — Why</span><span>WHY</span></div>
+</section>
+
+<!-- 04: Entry -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Entry</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Entry —</div><h2 class="section-title">Opening Upscaler</h2><p class="section-lede">Click the <span class="ui">Upscale</span> icon in the left sidebar to enter the Upscaler. Pick the upscale model in the <span class="ui">Models</span> dropdown at the top, then upload an image in the area below.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/f983e7840d9c17049629851d3ddcdcd87bbe1eb35c4a6209596d0a6d4f327ff6.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">The Upscaler flows in four stages: <strong>pick a model → upload an image → set options → Generate</strong>.</div></div>
+  <div class="footer-meta"><span>004 — Entry</span><span>ENTRY</span></div>
+</section>
+
+<!-- 05: Models -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Models —</div><h2 class="section-title">Models: Topaz / Xconda</h2><p class="section-lede">The <span class="ui">Models</span> dropdown lets you choose between <strong>Topaz</strong> and <strong>Xconda</strong>. Topaz exposes scale, Enhance Model, Subject Detection, Output Format, Face Enhancement, and Creativity. Xconda runs the in-house Xconda upscale model.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/86cdd13e44b3af42c3dfcbd646159b7bb2fe5bd22393f9582a0d639b23d03272.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Default is Topaz — best when fine control matters. Pick Xconda when you want a fast, one-click result.</div></div>
+  <div class="footer-meta"><span>005 — Models</span><span>MODELS</span></div>
+</section>
+
+<!-- 06: Xconda Model -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Xconda Model</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Xconda Model —</div><h2 class="section-title">Xconda's in-house model</h2><p class="section-lede">Selecting <span class="ui">Xconda</span> runs the upscale through Xconda's in-house model. Fewer options than Topaz — use it when speed is the priority.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/a16b0f0416010b1bd54a199f469f81069f113f6264d4e464f0f1de2464a1bfe1.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Fewer options mean faster results. For fine-grained control, stay on Topaz.</div></div>
+  <div class="footer-meta"><span>006 — Xconda Model</span><span>XCONDA-MODEL</span></div>
+</section>
+
+<!-- 07: Upload -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Upload</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Upload —</div><h2 class="section-title">Uploading the image</h2><p class="section-lede">Drop the source image into the <span class="ui">Drop Image Here</span> / <span class="ui">Click to Upload</span> area. After upload, a preview appears in the left panel — the <span class="ui">X</span> in the top-right corner removes it.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/c0f7fdfd642139197a89328184fc76d88c3122d8156b4f4ae08a78d1c5af1784.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">For Face Enhancement tests, a near-frontal face that's clearly visible gives the most reliable result.</div></div>
+  <div class="footer-meta"><span>007 — Upload</span><span>UPLOAD</span></div>
+</section>
+
+<!-- 08: Scale -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Scale</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Scale —</div><h2 class="section-title">Choose 2X / 4X scale</h2><p class="section-lede"><span class="ui">2X</span> doubles the source size; <span class="ui">4X</span> quadruples it. Pick 2X for web previews; pick 4X for large screens or high-resolution delivery.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/b931586cc530e3c980c46c383e94f17d6ecbbb16e530355cc4e6a5ad3df92d26.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">2X is faster and cheaper. 4X costs more credits and time but is right for large-format output.</div></div>
+  <div class="footer-meta"><span>008 — Scale</span><span>SCALE</span></div>
+</section>
+
+<!-- 09: Enhance Model -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Enhance Model</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Enhance Model —</div><h2 class="section-title">Enhance Model</h2><p class="section-lede">Pick the enhance model that matches the source. Options like <span class="ui">Standard V2</span>, <span class="ui">Low Resolution V2</span>, <span class="ui">CGI</span>, <span class="ui">High Fidelity V2</span>, and <span class="ui">Text Refine</span> steer the correction direction by source type.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/3dfac1270e97941110c3c3421d658c167364b9b89bce7c84ce54de1efd8261af.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Photos → Standard / High Fidelity. Small sources → Low Resolution. Illustrations/renders → CGI. Text-heavy images → Text Refine.</div></div>
+  <div class="footer-meta"><span>009 — Enhance Model</span><span>ENHANCE-MODEL</span></div>
+</section>
+
+<!-- 10: Subject Detection -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Subject Detection</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Subject Detection —</div><h2 class="section-title">Subject Detection</h2><p class="section-lede">Specifies which region the correction is anchored to. <span class="ui">Foreground</span> centers detection on the foreground subject — ideal for people or products that sit cleanly apart from the background.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/6f6048cb09637a310c9963dba0feb70a71eb3f81450ef61a040e4ea7c4014d8f.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Foreground is most reliable for portraits and product shots with a clean background.</div></div>
+  <div class="footer-meta"><span>010 — Subject Detection</span><span>SUBJECT-DETECTION</span></div>
+</section>
+
+<!-- 11: Output Format -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Output Format</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Output Format —</div><h2 class="section-title">Output Format</h2><p class="section-lede">Pick the save format for the result. <span class="ui">JPG</span> is lightweight and good for general sharing; <span class="ui">PNG</span> is better when you need transparency or further editing downstream.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/acb516d68af307636df284e7303517b45bbc7d312ba5d8a71add5045f4663e27.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">JPG for sharing and previews. PNG for compositing and further edits.</div></div>
+  <div class="footer-meta"><span>011 — Output Format</span><span>OUTPUT-FORMAT</span></div>
+</section>
+
+<!-- 12: Face Enhancement -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Face Enhancement</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Face Enhancement —</div><h2 class="section-title">Face Enhancement</h2><p class="section-lede">Restores sharpness in <strong>eyes, nose, mouth, skin, and facial contours</strong> for images that contain a face. Higher values restore more aggressively; lower values keep more of the original feel. This is the core option for portrait work.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/ab63a09e57b02fa90347b6a42c2ce3a4f2703c8047cf08e0f8f98bead9907816.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">The headline option for portrait work. Start in the middle range — pushing it too high can look artificial.</div></div>
+  <div class="footer-meta"><span>012 — Face Enhancement</span><span>FACE-ENHANCEMENT</span></div>
+</section>
+
+<!-- 13: Creativity -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>Creativity</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Creativity —</div><h2 class="section-title">Creativity</h2><p class="section-lede">Controls how much new interpretation the model brings to the upscale. Low values preserve the source; high values are more aggressive in reconstructing texture and detail.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/ddeaccdc28f76a77970461d55dd868e1155e2fe0f034b47a24509340603a38ae.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Keep low to preserve the source. Push high for richer texture. For faces, low-to-middle is typically the safe zone.</div></div>
+  <div class="footer-meta"><span>013 — Creativity</span><span>CREATIVITY</span></div>
+</section>
+
+<!-- 14: Generate -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Generate</h2><p class="section-lede">Once settings are set, press <span class="ui">Generate</span> to start the upscale. The credit cost appears to the right of the button — <span class="ui">8 credits</span> in the current example.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/6e00d0fed25ad197b3ee22bf4056c8b49f65e0d6e9374fb0b085fb44aa86d872.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Credit cost varies by option combination. Double-check the number right before pressing Generate.</div></div>
+  <div class="footer-meta"><span>014 — Generate</span><span>GENERATE</span></div>
+</section>
+
+<!-- 15: Confirm -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>Confirm</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— Confirm —</div><h2 class="section-title">Confirmation dialog</h2><p class="section-lede">Pressing <span class="ui">Generate</span> opens the "Would you like to generate an image?" confirmation. <span class="ui">OK</span> starts the actual generation; <span class="ui">Cancel</span> returns to the settings screen.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/cb2f671207b3e47fc976b1de8b9ffe0448e2b40fe5fac71a6a1b2332a00fcfab.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">A safety step to prevent accidental credit spend.</div></div>
+  <div class="footer-meta"><span>015 — Confirm</span><span>CONFIRM</span></div>
+</section>
+
+<!-- 16: Result -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 16</span><span class="dot"></span><span>Result</span></div><div class="right"><span>P. 016</span></div></div>
+  <div class="section-header"><div class="section-num">16</div><div class="section-title-block"><div class="eyebrow">— Result —</div><h2 class="section-title">Latest Result / Download</h2><p class="section-lede">When generation completes, the upscaled image appears in the <span class="ui">Latest Result</span> area on the right. The <span class="ui">Download</span> icon at the top-right saves it; <span class="ui">Delete</span> clears unwanted results. <span class="ui">History</span> below keeps prior generations for re-review.</p></div></div>
+  <div class="figure-block">
+    <img src="../assets/screens/513348da5e041bad4b210729b9572debf58c1e2524b419f1e0b71affbcb47f4b.webp" alt="" class="figure-img">
+  </div>
+  <div class="note-box"><div class="label">— Note —</div><div class="text">Latest Result holds the most recent output. History accumulates past results for side-by-side comparison.</div></div>
+  <div class="footer-meta"><span>016 — Result</span><span>RESULT</span></div>
+</section>
+
+
+</body></html>

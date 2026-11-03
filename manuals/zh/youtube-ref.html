@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Ref — 用户指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font, sans-serif);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+  .slide-meta {
+    position: absolute;
+    top: 32px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--slate); font-weight: 500; z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+  .footer-meta {
+    margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light);
+  }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+
+  .section-header {
+    display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+    border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+  }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+
+  /* Good/Bad examples */
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 32px; }
+  .example-block { background: var(--offwhite); padding: 28px 32px; }
+  .example-block.bad { background: var(--midnight); color: #F0EFEA; }
+  .example-block .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 14px; color: var(--slate); }
+  .example-block.bad .label { color: rgba(240,239,234,0.6); }
+  .example-block .item { font-family: var(--body-font); font-size: 14px; line-height: 1.85; margin-bottom: 6px; }
+  .example-block.bad .item { color: rgba(240,239,234,0.85); }
+  .example-block .reason { font-family: var(--body-font); font-size: 12px; color: var(--slate-light); margin-left: 8px; }
+  .example-block.bad .reason { color: rgba(240,239,234,0.5); }
+
+  /* Feature cards */
+  .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .feature-card { background: var(--offwhite); padding: 28px 28px; min-height: 180px; }
+  .feature-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 12px; }
+  .feature-card h4 { font-family: var(--body-font); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .feature-card p { font-family: var(--body-font); font-size: 13.5px; color: var(--slate); line-height: 1.7; }
+
+  /* Use case list */
+  .usecase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 220px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Cover */
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 9vw, 140px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  /* Download dark */
+  .download-section { background: var(--midnight); color: #F0EFEA; }
+  .download-section .slide-meta { color: rgba(240,239,234,0.5); }
+  .download-section .slide-meta .dot { background: #F0EFEA; }
+  .download-section .footer-meta { color: rgba(240,239,234,0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240,239,234,0.15); }
+  .download-section .section-num, .download-section .eyebrow, .download-section .section-title { color: #F0EFEA; }
+  .download-section .section-lede { color: rgba(240,239,234,0.7); }
+  .download-options { display: grid; gap: 1px; background: rgba(240,239,234,0.15); border: 1px solid rgba(240,239,234,0.15); }
+  .download-option { background: var(--midnight); padding: 24px 28px; display: grid; grid-template-columns: 50px 1fr auto; gap: 20px; align-items: center; transition: background 0.3s; }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #F0EFEA; line-height: 1; }
+  .download-option h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: #F0EFEA; margin-bottom: 4px; }
+  .download-option p { font-family: var(--body-font); font-size: 13.5px; color: rgba(240,239,234,0.7); line-height: 1.65; }
+  .download-option p .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .download-option .icon { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: rgba(240,239,234,0.5); }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .feature-grid, .usecase-grid, .example-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="指南导航" data-zoom-label="放大图片"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">返回中心</a><a href="index.html">全部指南</a></div><div class="xconda-manual-languages"><a href="../ko/youtube-ref.html" hreflang="ko" lang="ko">KO</a><a href="../en/youtube-ref.html" hreflang="en" lang="en">EN</a><a href="../ja/youtube-ref.html" hreflang="ja" lang="ja">JA</a><a href="../zh/youtube-ref.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>用户指南</span></div>
+    <div>
+      <div class="cover-title-en">YOUTUBE<br>REF</div>
+      <div class="cover-subtitle" style="margin-top: 32px;">本指南介绍如何从 YouTube 参考视频自动生成 9 场景分镜。</div>
+    </div>
+    <div class="cover-bottom-meta"><div><div>用户指南</div><div>教程</div></div><div style="text-align:right"><div>共 12 章</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>共 12 章</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— 指南内容 —</span>       目的 · 使用场景 · 核心功能 · 提示词技巧 · 进入 · 输入 URL · 角色参考 · Generate · 结果 · 详情视图 · 重新生成 · 下载     </div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">YouTube Ref 的用途</h2><p class="section-lede">当客户发来参考视频说“照这个做”时，YouTube Ref 可快速把基调与氛围可视化，生成分镜草案。</p></div></div>
+
+  <div class="example-grid">
+    <div class="example-block">
+      <div class="label">— 传统方式 —</div>
+      <div class="item">反复观看视频，手动截取关键帧并整理</div>
+      <div class="reason">→ 耗时，且依赖主观解读</div>
+    </div>
+    <div class="example-block" style="background: var(--midnight); color: #F0EFEA;">
+      <div class="label" style="color: rgba(240,239,234,0.6);">— YouTube Ref 的方式 —</div>
+      <div class="item" style="color: #F0EFEA;">仅凭一个链接，AI 自动生成 9 场景分镜</div>
+      <div class="reason" style="color: rgba(240,239,234,0.5);">→ 快速出草案，便于团队内共享方向</div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>002 — 目的</span><span>概览</span></div>
+</section>
+
+<!-- 03: Use Cases -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>使用场景</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 使用场景 —</div><h2 class="section-title">何时使用 YouTube Ref</h2><p class="section-lede">参考分析、策划会议草案、分镜制作、竞品分析。</p></div></div>
+
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>客户参考分析</h4><p>快速把握客户发来的参考视频的视觉基调、构图和色彩。</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>内部策划草案</h4><p>在策划阶段依据参考视频确定方向，并与团队成员共享。</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>分镜草案</h4><p>在拍摄或制作之前，用视觉方式确认整体流程。</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>竞品 / 对标</h4><p>分析竞品广告视频，找出结构与呈现规律。</p></div>
+  </div>
+
+  <div class="note-box"><div class="label">— 说明 —</div><div class="text">YouTube Ref 不会准确还原原视频的实际内容语境，请仅将其作为视觉基调与氛围的参考。</div></div>
+  <div class="footer-meta"><span>003 — 使用场景</span><span>何时</span></div>
+</section>
+
+<!-- 04: Key Features -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>核心功能</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 核心功能 —</div><h2 class="section-title">YouTube Ref 的核心功能</h2><p class="section-lede">链接输入 → 9 场景自动生成、基调与氛围提取、场景自动切分、角色参考、逐场景编辑。</p></div></div>
+
+  <div class="feature-grid">
+    <div class="feature-card"><div class="tag">— 01 —</div><h4>链接 → 9 场景自动生成</h4><p>输入 YouTube 视频链接，AI 会分析视频并生成 9 张关键帧分镜。</p></div>
+    <div class="feature-card"><div class="tag">— 02 —</div><h4>基调与氛围提取</h4><p>依据视频的视觉氛围 —— 色彩、光线和构图 —— 生成图像。</p></div>
+    <div class="feature-card"><div class="tag">— 03 —</div><h4>场景自动切分</h4><p>AI 会自动把视频流程划分为 9 个场景来构成序列。</p></div>
+    <div class="feature-card"><div class="tag">— 04 —</div><h4>角色参考（可选）</h4><p>上传 Body/Outfit 和 Face Detail 图像，即可把角色体现在分镜中。</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — 核心功能</span><span>功能</span></div>
+</section>
+
+<!-- 05: Prompt Tips -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>提示词技巧</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 提示词技巧 —</div><h2 class="section-title">提示词输入准则</h2><p class="section-lede">编辑场景描述（Regenerate）时，加入具体的空间/环境信息可提升准确度。</p></div></div>
+
+  <div class="example-grid">
+    <div class="example-block">
+      <div class="label">— 好的示例 —</div>
+      <div class="item">"Students attending class inside a classroom"</div>
+      <div class="item">"A rainy night in a downtown street, neon sign lighting"</div>
+      <div class="item">"A person running on a beach with the sunset behind"</div>
+    </div>
+    <div class="example-block bad">
+      <div class="label">— 应避免 —</div>
+      <div class="item">"Indoors" <span class="reason">→ 没有说明是哪种室内</span></div>
+      <div class="item">"Outside" <span class="reason">→ 环境描述含糊</span></div>
+      <div class="item">"Nice atmosphere" <span class="reason">→ AI 无法解读的抽象表达</span></div>
+    </div>
+  </div>
+
+  <div class="note-box"><div class="label">— 关键原则 —</div><div class="text">具体描述地点 + 情境 + 氛围。请使用能在视觉上唤起画面的词，而不是抽象表达。</div></div>
+  <div class="footer-meta"><span>005 — 提示词技巧</span><span>准则</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>进入</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 进入 —</div><h2 class="section-title">打开 YouTube Ref</h2><p class="section-lede">点击左侧竖排边栏中第 12 个场记板形状的图标。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击边栏第 12 个图标</h3><p class="step-body">点击左侧竖排边栏中第 12 个场记板形状的图标，即可打开 YouTube Ref 工作区。</p></div></div><div><img src="../assets/screens/9d44e711385e8354dd3f94bf058f09e45cdead5e080197c64597abbf5fd145cf.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>006 — 进入</span><span>打开</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>YouTube URL</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— YouTube URL —</div><h2 class="section-title">输入 YouTube URL</h2><p class="section-lede">点击 YouTube URL 字段，输入参考 YouTube 视频的链接。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击 URL 字段并输入</h3><p class="step-body">点击 <span class="ui">YouTube URL</span> 字段，输入参考 YouTube 视频的链接。</p></div><div class="step-block"><div class="step-number">— 确认 —</div><h3 class="step-title">显示缩略图与标题</h3><p class="step-body">识别到链接后，会显示视频的缩略图和标题。</p></div><div class="note-box"><div class="label">— 必填 —</div><div class="text">如果缺少 URL，Generate 按钮将不可用。</div></div></div><div><img src="../assets/screens/860e2826919d36f22694c0cbb5ce7857d90f234d8620aa787fd2f56147268d6f.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>007 — 输入 URL</span><span>YouTube URL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>角色参考</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 角色参考 · 可选 —</div><h2 class="section-title">上传角色参考</h2><p class="section-lede">如有需要可上传角色参考图像。此项为可选，不上传也可继续。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Body / Outfit（服装 / 轮廓）—</div><h3 class="step-title">服装与轮廓参考</h3><p class="step-body">上传服装和整体轮廓的参考图像。</p></div><div class="step-block"><div class="step-number">— Face Detail（面部细节）—</div><h3 class="step-title">面部细节参考</h3><p class="step-body">上传面部细节的参考图像。</p></div><div class="step-block"><div class="step-number">— 可选 —</div><h3 class="step-title">非必填字段</h3><p class="step-body">这是可选字段，不上传也可继续。</p></div></div><div><img src="../assets/screens/73ce46d382f7222698aac954ff7f3b80a9b9a4e6b02b5fc9b1c57614924e6975.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>008 — 角色参考</span><span>可选</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">点击 Generate 按钮</h2><p class="section-lede">确认视频链接后，点击底部的黄色 <span class="ui">Generate</span> 按钮。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击 Generate</h3><p class="step-body">确认视频链接后，点击底部的黄色 <span class="ui">Generate</span> 按钮。</p></div><div class="step-block"><div class="step-number">— 步骤 02 —</div><h3 class="step-title">在确认弹窗中点击 OK</h3><p class="step-body">在确认弹窗中点击 <span class="ui">OK</span> 即可开始生成 9 场景分镜。</p></div></div><div><img src="../assets/screens/1f74bdf26a1174f0f420841e3d10e4ef581d4da5236738322111f33ad90914a3.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>009 — 生成</span><span>运行</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>结果</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 结果 · 9 场景网格 —</div><h2 class="section-title">查看 9 场景分镜</h2><p class="section-lede">生成完成后，SCENE 01 至 SCENE 09 会以网格形式显示在右侧结果区域。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 结果 —</div><h3 class="step-title">已生成 9 场景网格</h3><p class="step-body">生成完成后，SCENE 01 至 SCENE 09 会以网格形式显示在右侧结果区域。每个场景包含图像与场景描述。</p></div></div><div><img src="../assets/screens/d781def36da7b889f2315a5ff9b4553e617155c100de61f9c319bd281db8ea23.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>010 — 结果</span><span>9 场景网格</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>详情视图</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 详情视图 —</div><h2 class="section-title">场景详情视图</h2><p class="section-lede">点击场景图像即可放大到详情视图。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击场景图像</h3><p class="step-body">点击要查看的场景图像，该场景会放大到详情视图。</p></div><div class="step-block"><div class="step-number">— 关闭 —</div><h3 class="step-title">Esc 或关闭图标</h3><p class="step-body">点击界面上的关闭图标，或按下 <span class="ui">Esc</span> 即可关闭详情视图。</p></div></div><div><img src="../assets/screens/6a1543eb237c30dcf96d11668a4e7c1aedae4c3059ba49c86e8a8a1e0bfa7f7f.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>011 — 详情视图</span><span>视图</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>重新生成</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 重新生成 · 逐场景编辑 —</div><h2 class="section-title">单独编辑并重新生成场景</h2><p class="section-lede">点击场景右侧的铅笔图标，编辑描述后点击 Regenerate，即可只重新渲染该场景。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击铅笔图标</h3><p class="step-body">点击场景右侧的铅笔图标。</p></div><div class="step-block"><div class="step-number">— 步骤 02 —</div><h3 class="step-title">编辑场景描述</h3><p class="step-body">在文本输入区域编辑场景描述。</p></div><div class="step-block"><div class="step-number">— 步骤 03 —</div><h3 class="step-title">点击 Regenerate</h3><p class="step-body">点击 <span class="ui">Regenerate</span> ，即可按修改后的描述重新渲染该场景。点击 <span class="ui">Cancel</span> 放弃更改。</p></div></div><div><img src="../assets/screens/7bd3c4e5a58350316ac021e615a5578dd1129e3f2e1bc847a47f8b5068f8c712.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>012 — 重新生成</span><span>编辑</span></div>
+</section>
+
+<!-- 13: Download -->
+<section class="slide download-section">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>下载</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— 下载 —</div><h2 class="section-title">下载</h2><p class="section-lede">可以一次下载全部场景，也可以单独下载每个场景。</p></div></div>
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div><img src="../assets/screens/727146a22466d25ee661e6413e3f6de5d42208e642d7a257cb30825ec165f68a.webp" alt="" style="display: block; width: 100%; height: auto;"></div>
+    <div class="download-options">
+      <div class="download-option"><div class="num">01</div><div><h4>Download All</h4><p>点击右上角的 <span class="ui">Download All</span> 按钮，即可下载全部 9 个已生成场景。</p></div><div class="icon">↓↓</div></div>
+      <div class="download-option"><div class="num">02</div><div><h4>单独下载</h4><p>点击单个场景上的下载图标，即可只下载该场景。</p></div><div class="icon">↓</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>013 — 下载</span><span>最后一步</span></div>
+</section>
+
+
+
+</body></html>

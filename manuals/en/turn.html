@@ -1,0 +1,1484 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turn — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --kor: 'Inter', 'Pretendard', 'Noto Sans KR', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--kor);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--kor);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.025em;
+  }
+  .section-lede {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.65;
+    max-width: 640px;
+    letter-spacing: -0.01em;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(70px, 10vw, 150px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-title-kor {
+    font-family: var(--kor);
+    font-weight: 600;
+    font-size: 28px;
+    color: rgba(240, 239, 234, 0.95);
+    letter-spacing: -0.025em;
+    margin-top: 24px;
+    line-height: 1.25;
+  }
+  .cover-subtitle {
+    font-family: var(--kor);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 24px;
+    max-width: 460px;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--kor);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.75;
+    letter-spacing: -0.015em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .step-body {
+    font-family: var(--kor);
+    font-size: 15.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  /* Image - 원본 그대로 표시 */
+  .image-plate {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .image-plate img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Spec list grid */
+  .spec-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .spec-item {
+    background: var(--offwhite);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+  }
+  .spec-item .name {
+    font-family: var(--kor);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .spec-item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+  .spec-item .feature {
+    font-family: var(--kor);
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    margin-top: auto;
+  }
+
+  /* Summary list */
+  .summary-list {
+    display: grid;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .summary-item {
+    padding: 28px 32px;
+    background: var(--offwhite-warm);
+    border-left: 3px solid var(--midnight);
+  }
+  .summary-item h4 {
+    font-family: var(--kor);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .summary-item p {
+    font-family: var(--kor);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .spec-list-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .cover-title-kor { font-size: 22px; }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/turn.html" hreflang="ko" lang="ko">KO</a><a href="../en/turn.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/turn.html" hreflang="ja" lang="ja">JA</a><a href="../zh/turn.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>User Guide</span>
+    </div>
+    <div>
+      <div class="cover-title-en">TURN</div>
+      <div class="cover-title-kor">Turn — User Guide</div>
+      <div class="cover-subtitle">A continuous workflow that connects 360° background generation, 3D viewpoint selection, partial editing, subject direction, and final still creation.</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>User Guide</div>
+        <div>Tutorial</div>
+      </div>
+      <div style="text-align:right">
+        <div>30 Chapters</div>
+        <div>2026</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>Contents</span>
+      <span>30 Chapters</span>
+    </div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— Inside the Guide —</span>
+      Overview · Workflow · Entry · Reference (4-direction / prompt) · HDRI · 3D Preview · Cube Map · Replace · Brush · Inpaint · Regen · Freeze Frame · Production · Cinema Style · Cast Reference · Final Still · Downloads · Input Modes
+    </div>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>Overview</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Overview —</div>
+      <h2 class="section-title">What Turn Does</h2>
+      <p class="section-lede">Turn creates a 360° environment and produces a final image from your chosen viewpoint.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Turn first builds the space, then lets you pick a camera angle in 3D Preview, and finally adds the subject and direction in Production.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Freeze Frame is the reference shot; Final Still is the finished result with subject, action, lighting, and style applied.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/d161cc2826e284c7e6b7e83a047fd06c7703222d115b56916177904d0cedcdfd.webp" alt="What Turn Does" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>002 — Overview</span>
+    <span>Overview</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>Use Case</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Use Case —</div>
+      <h2 class="section-title">Why Use Turn</h2>
+      <p class="section-lede">Compare multiple creative directions inside the same space — quickly.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Test lighting, subject placement, and stylistic moods in different versions before the actual shoot.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Useful when you need to show fast visual proposals to clients — ad cuts, product editorials, e-commerce details, or storyboards.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7965704ff7f9c73f85f690791d34b2d36aa7a5bfd83af172dad9840515150e7b.webp" alt="Why Use Turn" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — Use Case</span>
+    <span>Use Case</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>When to Use</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— When to Use —</div>
+      <h2 class="section-title">When to Use Turn</h2>
+      <p class="section-lede">When background generation, partial editing, and subject compositing are needed in one flow.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Start from prompt only when you have no reference, or attach 1 image (or 4-direction images) to anchor the spatial layout more precisely.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Edit the generated environment per direction in Cube Map, then apply face and wardrobe references at the end with Cast Reference.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/476ff5fbfbe57b77b242a0438d2cb12e35f8c0b56d64c3444e04d308aa706168.webp" alt="When to Use Turn" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — When to Use</span>
+    <span>When to Use</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>Workflow</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Workflow —</div>
+      <h2 class="section-title">The Full Turn Workflow</h2>
+      <p class="section-lede">Reference → HDRI → Production → Final Still.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Step 1 takes prompt or directional images. Step 2 confirms the 360° HDRI and Cube Map.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">After fixing the viewpoint with Freeze Frame, Step 3 Production applies character action, lighting, cinema style, and cast.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/8c275c49cd693f8b0204bdd3fea8a1edbff05a01de8ac129b0fd8edc6e4c379e.jpg" alt="The Full Turn Workflow" width="900" height="700">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — Workflow</span>
+    <span>Workflow</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>Entry</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Entry —</div>
+      <h2 class="section-title">How to Enter Turn</h2>
+      <p class="section-lede">Click the Turn icon in the left sidebar.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">After signing into Xconda, scroll down the left vertical menu — the Turn entry will appear.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Clicking it opens the three-step workspace: Reference, HDRI, and Production.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/4bc05c5541e54b68375e2240c4abfbd068ff567cd281b67b2ac7bc833d708777.jpg" alt="How to Enter Turn" width="650" height="860">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — Entry</span>
+    <span>Entry</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>Reference Images</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Step 1 · Reference —</div>
+      <h2 class="section-title">Step 1: Reference Images</h2>
+      <p class="section-lede">Front / Left / Right / Back slots are available.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Drop images into the front, left, right, and back slots to generate a 360° environment anchored to those directions.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">You can fill all four, use just one, or leave them all empty and rely entirely on the prompt.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/deef711189065a95075e0b33b91785691160c73e1484010b48e11734060c11a9.jpg" alt="Step 1: Reference Images" width="545" height="670">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — Reference Images</span>
+    <span>Step 1 · Reference</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>Prompt Only</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Prompt Only —</div>
+      <h2 class="section-title">Using a Prompt Without Images</h2>
+      <p class="section-lede">A description alone is enough to generate a 360° environment.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Even without reference images, Turn will compose the background as long as the description is detailed.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Mention subject, product, props, and lighting mood inside the description to direct how objects and people are placed in the space.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/0e0ba2664ad7866447d052a95c8c83d83f32571755b8bd8f18a00624b90c4dbe.jpg" alt="Using a Prompt Without Images" width="545" height="328">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — Prompt Only</span>
+    <span>Prompt Only</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate —</div>
+      <h2 class="section-title">The Generate Button</h2>
+      <p class="section-lede">Press Generate when your inputs are ready.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">This step starts the HDRI environment generation. It consumes credits and, once complete, advances to Step 2 — the HDRI screen.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/0e0ba2664ad7866447d052a95c8c83d83f32571755b8bd8f18a00624b90c4dbe.jpg" alt="The Generate Button" width="545" height="328">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — Generate</span>
+    <span>Generate</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>3D Preview</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Step 2 · 3D Preview —</div>
+      <h2 class="section-title">Step 2: 3D Preview</h2>
+      <p class="section-lede">Inspect the generated 360° space inside 3D Preview.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Click and drag the canvas with your mouse to freely orbit the camera around the environment.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">When you find the desired angle, press the Generate button in the Freeze Frame area to capture that viewpoint.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7bbda2a4863c2669a7479b54751db16ece18e0ee700366142f8182528ae921fd.jpg" alt="Step 2: 3D Preview" width="795" height="843">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — 3D Preview</span>
+    <span>Step 2 · 3D Preview</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>Camera</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Camera —</div>
+      <h2 class="section-title">Choosing the 3D Preview Angle</h2>
+      <p class="section-lede">Adjust camera direction with click-and-drag.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Turn first builds the full 360° environment, then lets you choose the composition you want from inside it.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Check the scene center, the planned subject position, and the camera direction to find the right angle for Freeze Frame.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/7437737f3c93f04c545ab7c17dace366311d004d24f378b6df5991ec23d04bd9.jpg" alt="Choosing the 3D Preview Angle" width="795" height="525">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — Camera</span>
+    <span>Camera</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 12</span><span class="dot"></span><span>Cube Map</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cube Map —</div>
+      <h2 class="section-title">Cube Map: Six-Face View</h2>
+      <p class="section-lede">Inspect Left, Front, Right, Up, Back, and Down individually.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Cube Map breaks the 360° environment into six directional faces.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Each face has its own Brush, Replace with input, Inpaint, Regen, and Clear controls.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/6b631a5a21dfcddcbc8ef6295c9c0cefa87352ce13eea2349627540899366ea0.jpg" alt="Cube Map: Six-Face View" width="785" height="710">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Cube Map</span>
+    <span>Cube Map</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>Replace with</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Replace —</div>
+      <h2 class="section-title">The Replace with Field</h2>
+      <p class="section-lede">Rewrite details of the chosen face by prompt.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Pick a face in Cube Map, then type the change you want into the Replace with field.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Examples: add a red bag on the floor, add a window on the wall, swap the chair for a different prop.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993606694296584261a3b7a3b8c1d34156fe78d9ea25398f9e1581accd5062.jpg" alt="The Replace with Field" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — Replace with</span>
+    <span>Replace</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Brush</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Brush —</div>
+      <h2 class="section-title">Brush: Mark a Region</h2>
+      <p class="section-lede">Limit edits to the area you paint.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Painting on the canvas creates a red mask over the brushed region.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Running Inpaint with an empty Replace with field uses the brush as a removal tool, erasing the masked object.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/c0fb5b7d98674cbbe481299772460d78421369d01cec66fc6a216662aab1028c.jpg" alt="Brush: Mark a Region" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Brush</span>
+    <span>Brush</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 15</span><span class="dot"></span><span>Inpaint</span></div>
+    <div class="right"><span>P. 015</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Inpaint —</div>
+      <h2 class="section-title">Add or Modify with a Prompt</h2>
+      <p class="section-lede">Type into the field to add or change an object inside the mask.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">After defining a mask, enter a new prompt in Replace with — Turn will add an object at that position or alter the existing detail.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Keep the brush slightly larger than the target rather than too wide; that yields more reliable results.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/1cbe5c3e81986620f8cbe51db3765eaf3f3478a2ac0b90991b48484a7f5cbac0.jpg" alt="Add or Modify with a Prompt" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>015 — Inpaint</span>
+    <span>Inpaint</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 16</span><span class="dot"></span><span>Brush Size</span></div>
+    <div class="right"><span>P. 016</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Brush Size —</div>
+      <h2 class="section-title">Adjusting Brush Size</h2>
+      <p class="section-lede">Use the BRUSH slider to control brush size.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Pick a small brush for tiny props or areas near a face; use a larger one for walls, floors, and large furniture.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Tuning brush size lets you draw masks more precisely.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/8b44315cb15794837a727778a728c4d17441cdd1467767c4c4b26dc3f86c3b98.jpg" alt="Adjusting Brush Size" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>016 — Brush Size</span>
+    <span>Brush Size</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 17</span><span class="dot"></span><span>Clear</span></div>
+    <div class="right"><span>P. 017</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Clear —</div>
+      <h2 class="section-title">The Clear Button</h2>
+      <p class="section-lede">Clear erases the brush mask you painted.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">If you brushed the wrong area or want to reselect, pressing Clear removes the brush marks on the current face.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Clear is not a regenerate button — it only resets your selection, nothing else.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/1b00392060706aee57eacdb14c8cee87e73e0b2b7e53817ca245dd91228c94b4.jpg" alt="The Clear Button" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>017 — Clear</span>
+    <span>Clear</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 18</span><span class="dot"></span><span>Regen</span></div>
+    <div class="right"><span>P. 018</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Regen —</div>
+      <h2 class="section-title">The REGEN Button</h2>
+      <p class="section-lede">REGEN regenerates the entire face from scratch.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Use REGEN when a face looks awkward or its overall composition does not work.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Unlike Inpaint, this rebuilds the directional image entirely, so the variation is much larger.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993606694296584261a3b7a3b8c1d34156fe78d9ea25398f9e1581accd5062.jpg" alt="The REGEN Button" width="785" height="410">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>018 — Regen</span>
+    <span>Regen</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 19</span><span class="dot"></span><span>Freeze Frame</span></div>
+    <div class="right"><span>P. 019</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">19</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Freeze Frame —</div>
+      <h2 class="section-title">Creating a Freeze Frame</h2>
+      <p class="section-lede">Save your chosen 3D Preview viewpoint as a Freeze Frame.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Freeze Frame is the reference scene that comes before the final result.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Use the Download Freeze Frame button at the top right to download this intermediate image separately.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993bd39a42b0d482ca822ac8c733d79547bdf2dc1f90efbdaaaeff71c0b27a.jpg" alt="Creating a Freeze Frame" width="795" height="519">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>019 — Freeze Frame</span>
+    <span>Freeze Frame</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 20</span><span class="dot"></span><span>Production</span></div>
+    <div class="right"><span>P. 020</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">20</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Step 3 · Production —</div>
+      <h2 class="section-title">Step 3: Production</h2>
+      <p class="section-lede">Write your direction inside Subject &amp; Casting.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Decide the character emotion, pose, action, lighting mood, and cinematic details in this field.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Examples: standing by the window, rim lighting, a natural smile, tense shadows, an editorial ad mood.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e556e59dff6a01dec29292b2218496be81921dcd00208e9ce08aeab4b0bf4c1d.jpg" alt="Step 3: Production" width="540" height="360">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>020 — Production</span>
+    <span>Step 3 · Production</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 21</span><span class="dot"></span><span>Cinema Style</span></div>
+    <div class="right"><span>P. 021</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">21</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cinema Style —</div>
+      <h2 class="section-title">Choosing a Cinema Style</h2>
+      <p class="section-lede">Pick the cinematic tone for the result.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">The current options are Normal, Hollywood, Korean, Japanese, Chinese, Film Noir, Cyberpunk, and Anime.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Switching styles changes color, lighting, contrast, and overall atmosphere — even with the same Freeze Frame.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e556e59dff6a01dec29292b2218496be81921dcd00208e9ce08aeab4b0bf4c1d.jpg" alt="Choosing a Cinema Style" width="540" height="360">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>021 — Cinema Style</span>
+    <span>Cinema Style</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 22</span><span class="dot"></span><span>Cast Reference</span></div>
+    <div class="right"><span>P. 022</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">22</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Cast —</div>
+      <h2 class="section-title">Face ID Source / Wardrobe Ref</h2>
+      <p class="section-lede">Provide face and wardrobe references separately.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Drop the face you want to preserve into Face ID Source, and the outfit and styling reference into Wardrobe Ref.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Using both together gives Turn a clearer direction for the subject's face and clothing.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/15808d6d24e776622679f3d8497340b6b4f0bc1168f7591ad29d3cc2fef79751.jpg" alt="Face ID Source / Wardrobe Ref" width="540" height="530">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>022 — Cast Reference</span>
+    <span>Cast</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 23</span><span class="dot"></span><span>Final Still</span></div>
+    <div class="right"><span>P. 023</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">23</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Final Still —</div>
+      <h2 class="section-title">Generate Final Still</h2>
+      <p class="section-lede">Press Generate to produce the Final Still.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Once Production input and Cast Reference are ready, the final Generate button becomes active.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">After generation, the result image appears in the Final Still panel on the right.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/e376a8534492d1f8b46ea422702e33c306771114508f70ba971d9ca6835906ae.jpg" alt="Generate Final Still" width="540" height="530">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>023 — Final Still</span>
+    <span>Final Still</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 24</span><span class="dot"></span><span>Test 1</span></div>
+    <div class="right"><span>P. 024</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">24</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Test 1 · Hollywood —</div>
+      <h2 class="section-title">Production Test 1</h2>
+      <p class="section-lede">Hollywood style / strong rim lighting.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">On the same Freeze Frame, the prompt asked for a model walking in with premium ad lighting.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">The result came back with warm light and strong lens flare — a commercial editorial look.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/a101a48d6db736283d32cb65082b026f8bb46e53187844abb8efcb3153bdb945.jpg" alt="Production Test 1" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>024 — Test 1</span>
+    <span>Test 1 · Hollywood</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 25</span><span class="dot"></span><span>Test 2</span></div>
+    <div class="right"><span>P. 025</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">25</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Test 2 · Korean —</div>
+      <h2 class="section-title">Production Test 2</h2>
+      <p class="section-lede">Korean style / clean ad tone.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">A natural pose paired with bright, clean beauty-ad lighting was used as the prompt.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Same space, but subject placement, expression, and overall tone became calmer and lighter.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/17fceb35ba9f14312a5f63fd9f343e6cdd02234f767974e96c1ad696f2c26b9d.jpg" alt="Production Test 2" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>025 — Test 2</span>
+    <span>Test 2 · Korean</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 26</span><span class="dot"></span><span>Test 3</span></div>
+    <div class="right"><span>P. 026</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">26</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Test 3 · Film Noir —</div>
+      <h2 class="section-title">Production Test 3</h2>
+      <p class="section-lede">Film Noir style / dramatic shadows.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">A subject leaning by the door, strong sidelight, high contrast, and a suspenseful mood went into the prompt.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">The result came out with dark lighting, blind shadows, and a heightened dramatic atmosphere.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/9af6f32f15a3e1089fe4d52f22f6509f1a9566f128dc3c90f3dcd19e8d6ba0e6.jpg" alt="Production Test 3" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>026 — Test 3</span>
+    <span>Test 3 · Film Noir</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 27</span><span class="dot"></span><span>Comparison</span></div>
+    <div class="right"><span>P. 027</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">27</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Comparison —</div>
+      <h2 class="section-title">Freeze Frame vs Final Still</h2>
+      <p class="section-lede">Freeze Frame captures the angle. Final Still is the directed result.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Freeze Frame is the basic camera viewpoint chosen during the HDRI step.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Final Still is the final image with the subject, style, lighting, and action direction from Production applied.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/a101a48d6db736283d32cb65082b026f8bb46e53187844abb8efcb3153bdb945.jpg" alt="Freeze Frame vs Final Still" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>027 — Comparison</span>
+    <span>Comparison</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 28</span><span class="dot"></span><span>Download Freeze Frame</span></div>
+    <div class="right"><span>P. 028</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">28</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Download · Freeze Frame —</div>
+      <h2 class="section-title">Download Freeze Frame</h2>
+      <p class="section-lede">Freeze Frame can be downloaded separately.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Use this when you need the reference scene before Production, or when you want to share the angle for review.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Press the Download Freeze Frame button in the Freeze Frame panel on the right.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/df993bd39a42b0d482ca822ac8c733d79547bdf2dc1f90efbdaaaeff71c0b27a.jpg" alt="Download Freeze Frame" width="795" height="519">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>028 — Download Freeze Frame</span>
+    <span>Download · Freeze Frame</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 29</span><span class="dot"></span><span>Download Final Still</span></div>
+    <div class="right"><span>P. 029</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">29</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Download · Final Still —</div>
+      <h2 class="section-title">Download Final Still</h2>
+      <p class="section-lede">Final Still can also be downloaded on its own.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Note 01 —</div>
+        <p class="step-body">Use the Download Final Still button for delivery files or client-facing share files.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Note 02 —</div>
+        <p class="step-body">Freeze Frame and Final Still come from different stages — keep their download buttons distinct.</p>
+      </div>
+    </div>
+    <div class="image-plate">
+      <img src="../assets/screens/17fceb35ba9f14312a5f63fd9f343e6cdd02234f767974e96c1ad696f2c26b9d.jpg" alt="Download Final Still" width="785" height="515">
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>029 — Download Final Still</span>
+    <span>Download · Final Still</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 30</span><span class="dot"></span><span>Input Modes</span></div>
+    <div class="right"><span>P. 030</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">30</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Input Modes —</div>
+      <h2 class="section-title">When to Use Each Input Mode</h2>
+      <p class="section-lede">Four reference patterns, each suited to a specific situation — pick whichever fits the task at hand.</p>
+    </div>
+  </div>
+
+  <div class="spec-list-grid">
+        <div class="spec-item">
+          <div class="num">— Mode 01 —</div>
+          <div class="name">Prompt Only</div>
+          <p class="feature">Use this when you need to draft a space quickly or have no reference image yet.</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— Mode 02 —</div>
+          <div class="name">Single Image</div>
+          <p class="feature">Use this when you want to extend an existing background image into a 360° space, keeping its mood as the anchor.</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— Mode 03 —</div>
+          <div class="name">4-Direction Images</div>
+          <p class="feature">Use this when the front, left, right, and back of the space need to stay clearly defined.</p>
+        </div>
+        <div class="spec-item">
+          <div class="num">— Mode 04 —</div>
+          <div class="name">Cube Map Edit</div>
+          <p class="feature">Use this after generation, when you want to change only specific elements — windows, furniture, props, subjects, or wall details — on a single face.</p>
+        </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>030 — Input Modes</span>
+    <span>Input Modes</span>
+  </div>
+</section>
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 31</span><span class="dot"></span><span>Summary</span></div>
+    <div class="right"><span>P. 031</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">31</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Summary —</div>
+      <h2 class="section-title">Final Summary</h2>
+      <p class="section-lede">A condensed view of the Turn workflow — the role of each stage and the purpose of each output.</p>
+    </div>
+  </div>
+
+  <div class="summary-list">
+      <div class="summary-item">
+        <h4>The Full Flow</h4>
+        <p>Turn connects background generation, 3D viewpoint selection, partial editing, subject direction, and final still creation into one continuous workflow.</p>
+      </div>
+      <div class="summary-item">
+        <h4>Stage Roles</h4>
+        <p>Reference prepares the input ingredients, HDRI fixes the space and viewpoint, and Production applies the subject and cinematic detail.</p>
+      </div>
+      <div class="summary-item">
+        <h4>Output Distinction</h4>
+        <p>Freeze Frame is the intermediate reference; Final Still is the directed final image. Their purposes differ, so download and manage each separately.</p>
+      </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>031 — Summary</span>
+    <span>Final Summary</span>
+  </div>
+</section>
+
+
+
+</body></html>

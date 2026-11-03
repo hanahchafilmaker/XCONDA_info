@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Ref — User Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --body-font: 'Inter', sans-serif; }
+
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font, sans-serif);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+  .slide-meta {
+    position: absolute;
+    top: 32px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--slate); font-weight: 500; z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+  .footer-meta {
+    margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light);
+  }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+
+  .section-header {
+    display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+    border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+  }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+
+  /* Good/Bad examples */
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 32px; }
+  .example-block { background: var(--offwhite); padding: 28px 32px; }
+  .example-block.bad { background: var(--midnight); color: #F0EFEA; }
+  .example-block .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 14px; color: var(--slate); }
+  .example-block.bad .label { color: rgba(240,239,234,0.6); }
+  .example-block .item { font-family: var(--body-font); font-size: 14px; line-height: 1.85; margin-bottom: 6px; }
+  .example-block.bad .item { color: rgba(240,239,234,0.85); }
+  .example-block .reason { font-family: var(--body-font); font-size: 12px; color: var(--slate-light); margin-left: 8px; }
+  .example-block.bad .reason { color: rgba(240,239,234,0.5); }
+
+  /* Feature cards */
+  .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .feature-card { background: var(--offwhite); padding: 28px 28px; min-height: 180px; }
+  .feature-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 12px; }
+  .feature-card h4 { font-family: var(--body-font); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .feature-card p { font-family: var(--body-font); font-size: 13.5px; color: var(--slate); line-height: 1.7; }
+
+  /* Use case list */
+  .usecase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 220px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+
+  /* Cover */
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 9vw, 140px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  /* Download dark */
+  .download-section { background: var(--midnight); color: #F0EFEA; }
+  .download-section .slide-meta { color: rgba(240,239,234,0.5); }
+  .download-section .slide-meta .dot { background: #F0EFEA; }
+  .download-section .footer-meta { color: rgba(240,239,234,0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240,239,234,0.15); }
+  .download-section .section-num, .download-section .eyebrow, .download-section .section-title { color: #F0EFEA; }
+  .download-section .section-lede { color: rgba(240,239,234,0.7); }
+  .download-options { display: grid; gap: 1px; background: rgba(240,239,234,0.15); border: 1px solid rgba(240,239,234,0.15); }
+  .download-option { background: var(--midnight); padding: 24px 28px; display: grid; grid-template-columns: 50px 1fr auto; gap: 20px; align-items: center; transition: background 0.3s; }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #F0EFEA; line-height: 1; }
+  .download-option h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: #F0EFEA; margin-bottom: 4px; }
+  .download-option p { font-family: var(--body-font); font-size: 13.5px; color: rgba(240,239,234,0.7); line-height: 1.65; }
+  .download-option p .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .download-option .icon { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: rgba(240,239,234,0.5); }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .feature-grid, .usecase-grid, .example-grid { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 64px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/youtube-ref.html" hreflang="ko" lang="ko">KO</a><a href="../en/youtube-ref.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/youtube-ref.html" hreflang="ja" lang="ja">JA</a><a href="../zh/youtube-ref.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div>
+      <div class="cover-title-en">YOUTUBE<br>REF</div>
+      <div class="cover-subtitle" style="margin-top: 32px;">A workflow guide for auto-generating 9-scene storyboards from YouTube reference videos.</div>
+    </div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>12 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>12 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— Guide Contents —</span>
+      Purpose · Use Cases · Key Features · Prompt Tips · Entry · URL Input · Character References · Generate · Result · Detail View · Regenerate · Download
+    </div>
+  </div>
+</section>
+
+<!-- 02: Purpose -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Purpose</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose —</div><h2 class="section-title">Purpose of YouTube Ref</h2><p class="section-lede">When a client sends a reference video saying "make it like this," YouTube Ref quickly visualizes the tone and mood to produce a storyboard draft.</p></div></div>
+
+  <div class="example-grid">
+    <div class="example-block">
+      <div class="label">— Traditional method —</div>
+      <div class="item">Watch the video repeatedly, manually capture keyframes and organize</div>
+      <div class="reason">→ Time-consuming, reliant on subjective interpretation</div>
+    </div>
+    <div class="example-block" style="background: var(--midnight); color: #F0EFEA;">
+      <div class="label" style="color: rgba(240,239,234,0.6);">— YouTube Ref method —</div>
+      <div class="item" style="color: #F0EFEA;">AI auto-generates a 9-scene storyboard from a link alone</div>
+      <div class="reason" style="color: rgba(240,239,234,0.5);">→ Quick draft, useful for sharing direction within the team</div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>002 — Purpose</span><span>Overview</span></div>
+</section>
+
+<!-- 03: Use Cases -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Use Cases</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Use Cases —</div><h2 class="section-title">When to use YouTube Ref</h2><p class="section-lede">Reference analysis, planning meeting drafts, storyboard production, and benchmark analysis.</p></div></div>
+
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>Client reference analysis</h4><p>Quickly identify the visual tone, composition, and color of a reference video sent by a client.</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>Internal planning draft</h4><p>Set direction based on a reference video during the planning phase and share with team members.</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>Storyboard draft</h4><p>Visually confirm the full flow before shooting or production.</p></div>
+    <div class="usecase-card"><div class="num">04</div><h4>Competitor / benchmark</h4><p>Analyze competitor ad videos to identify structure and direction patterns.</p></div>
+  </div>
+
+  <div class="note-box"><div class="label">— Note —</div><div class="text">YouTube Ref does not accurately reflect the actual content context of the original video. Use it as a visual tone-and-mood reference only.</div></div>
+  <div class="footer-meta"><span>003 — Use Cases</span><span>When</span></div>
+</section>
+
+<!-- 04: Key Features -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Key Features</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Key Features —</div><h2 class="section-title">Key features of YouTube Ref</h2><p class="section-lede">Link input → 9-scene auto-generation, tone-and-mood extraction, auto scene splitting, character reference, per-scene editing.</p></div></div>
+
+  <div class="feature-grid">
+    <div class="feature-card"><div class="tag">— 01 —</div><h4>Link → 9-scene auto-generation</h4><p>Enter a YouTube video link and AI analyzes the video to generate a 9-keyframe storyboard.</p></div>
+    <div class="feature-card"><div class="tag">— 02 —</div><h4>Tone-and-mood extraction</h4><p>Images are generated based on the visual atmosphere — color, lighting, and composition — of the video.</p></div>
+    <div class="feature-card"><div class="tag">— 03 —</div><h4>Auto scene splitting</h4><p>AI automatically divides the video flow into 9 scenes to compose the sequence.</p></div>
+    <div class="feature-card"><div class="tag">— 04 —</div><h4>Character reference (optional)</h4><p>Upload Body/Outfit and Face Detail images to have the character reflected in the storyboard.</p></div>
+  </div>
+  <div class="footer-meta"><span>004 — Key Features</span><span>Features</span></div>
+</section>
+
+<!-- 05: Prompt Tips -->
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Prompt Tips</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Prompt Tips —</div><h2 class="section-title">Prompt input guidelines</h2><p class="section-lede">When editing scene descriptions (Regenerate), including specific space/environment information improves accuracy.</p></div></div>
+
+  <div class="example-grid">
+    <div class="example-block">
+      <div class="label">— Good examples —</div>
+      <div class="item">"Students attending class inside a classroom"</div>
+      <div class="item">"A rainy night in a downtown street, neon sign lighting"</div>
+      <div class="item">"A person running on a beach with the sunset behind"</div>
+    </div>
+    <div class="example-block bad">
+      <div class="label">— Avoid —</div>
+      <div class="item">"Indoors" <span class="reason">→ Not specific about what kind of interior</span></div>
+      <div class="item">"Outside" <span class="reason">→ Environment is vague</span></div>
+      <div class="item">"Nice atmosphere" <span class="reason">→ Abstract expression AI cannot interpret</span></div>
+    </div>
+  </div>
+
+  <div class="note-box"><div class="label">— Key Principle —</div><div class="text">Describe place + situation + mood concretely. Use visually evocative words rather than abstract expressions.</div></div>
+  <div class="footer-meta"><span>005 — Prompt Tips</span><span>Guidelines</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Entry</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Entry —</div><h2 class="section-title">Open YouTube Ref</h2><p class="section-lede">Click the 12th clapperboard-shaped icon on the left vertical sidebar.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click the 12th sidebar icon</h3><p class="step-body">Click the 12th clapperboard-shaped icon on the left vertical sidebar. This opens the YouTube Ref workspace.</p></div></div><div><img src="../assets/screens/9d44e711385e8354dd3f94bf058f09e45cdead5e080197c64597abbf5fd145cf.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>006 — Entry</span><span>Open</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>YouTube URL</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— YouTube URL —</div><h2 class="section-title">Enter the YouTube URL</h2><p class="section-lede">Click the YouTube URL field and enter the link to the reference YouTube video.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click the URL field and enter</h3><p class="step-body">Click the <span class="ui">YouTube URL</span> field and enter the link to the reference YouTube video.</p></div><div class="step-block"><div class="step-number">— Verify —</div><h3 class="step-title">Thumbnail and title displayed</h3><p class="step-body">Once the link is recognized, the video thumbnail and title are displayed.</p></div><div class="note-box"><div class="label">— Required —</div><div class="text">The Generate button will not activate if the URL is missing.</div></div></div><div><img src="../assets/screens/860e2826919d36f22694c0cbb5ce7857d90f234d8620aa787fd2f56147268d6f.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>007 — URL Input</span><span>YouTube URL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Character References</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Character References · Optional —</div><h2 class="section-title">Upload character references</h2><p class="section-lede">Upload character reference images if needed. This is optional — you can proceed without uploading.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Body / Outfit —</div><h3 class="step-title">Outfit and silhouette reference</h3><p class="step-body">Upload an outfit and overall silhouette reference image.</p></div><div class="step-block"><div class="step-number">— Face Detail —</div><h3 class="step-title">Face detail reference</h3><p class="step-body">Upload a face detail reference image.</p></div><div class="step-block"><div class="step-number">— Optional —</div><h3 class="step-title">Not a required field</h3><p class="step-body">This is an optional field. You can proceed without uploading.</p></div></div><div><img src="../assets/screens/73ce46d382f7222698aac954ff7f3b80a9b9a4e6b02b5fc9b1c57614924e6975.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>008 — Character Ref</span><span>Optional</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Click the Generate button</h2><p class="section-lede">After verifying the video link, click the yellow <span class="ui">Generate</span> button.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click Generate</h3><p class="step-body">After verifying the video link, click the yellow <span class="ui">Generate</span> button.</p></div><div class="step-block"><div class="step-number">— Step 02 —</div><h3 class="step-title">Click OK in the confirmation dialog</h3><p class="step-body">Click <span class="ui">OK</span> in the confirmation dialog to begin generating the 9-scene storyboard.</p></div></div><div><img src="../assets/screens/1f74bdf26a1174f0f420841e3d10e4ef581d4da5236738322111f33ad90914a3.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>009 — Generate</span><span>Run</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Result</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Result · 9-Scene Grid —</div><h2 class="section-title">Review the 9-scene storyboard</h2><p class="section-lede">When generation completes, SCENE 01 through SCENE 09 are displayed as a grid in the right result area.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Result —</div><h3 class="step-title">9-scene grid generated</h3><p class="step-body">When generation completes, SCENE 01 through SCENE 09 are displayed as a grid in the right result area. Each scene includes an image and a scene description.</p></div></div><div><img src="../assets/screens/d781def36da7b889f2315a5ff9b4553e617155c100de61f9c319bd281db8ea23.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>010 — Result</span><span>9-Scene Grid</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Detail View</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Detail View —</div><h2 class="section-title">Scene detail view</h2><p class="section-lede">Click a scene image to expand it into the detail view.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click a scene image</h3><p class="step-body">Click the scene image you want to review. The scene expands into the detail view.</p></div><div class="step-block"><div class="step-number">— Close —</div><h3 class="step-title">Esc or close icon</h3><p class="step-body">Click the close icon on screen or press <span class="ui">Esc</span> to close the detail view.</p></div></div><div><img src="../assets/screens/6a1543eb237c30dcf96d11668a4e7c1aedae4c3059ba49c86e8a8a1e0bfa7f7f.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>011 — Detail View</span><span>View</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Regenerate</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Regenerate · Per-scene Edit —</div><h2 class="section-title">Edit and regenerate individual scenes</h2><p class="section-lede">Click the pencil icon to the right of a scene, edit the description, and click Regenerate to re-render that scene.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click the pencil icon</h3><p class="step-body">Click the pencil icon to the right of the scene.</p></div><div class="step-block"><div class="step-number">— Step 02 —</div><h3 class="step-title">Edit the scene description</h3><p class="step-body">Edit the scene description in the text input area.</p></div><div class="step-block"><div class="step-number">— Step 03 —</div><h3 class="step-title">Click Regenerate</h3><p class="step-body">Click <span class="ui">Regenerate</span> to re-render the scene with the revised description. Click <span class="ui">Cancel</span> to discard changes.</p></div></div><div><img src="../assets/screens/7bd3c4e5a58350316ac021e615a5578dd1129e3f2e1bc847a47f8b5068f8c712.webp" alt="" style="display: block; width: 100%; height: auto;"></div></div>
+  <div class="footer-meta"><span>012 — Regenerate</span><span>Edit</span></div>
+</section>
+
+<!-- 13: Download -->
+<section class="slide download-section">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>Download</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Download —</div><h2 class="section-title">Download</h2><p class="section-lede">Download all scenes at once or individual scenes separately.</p></div></div>
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div><img src="../assets/screens/727146a22466d25ee661e6413e3f6de5d42208e642d7a257cb30825ec165f68a.webp" alt="" style="display: block; width: 100%; height: auto;"></div>
+    <div class="download-options">
+      <div class="download-option"><div class="num">01</div><div><h4>Download All</h4><p>Click the <span class="ui">Download All</span> button in the upper right to download all 9 generated scenes.</p></div><div class="icon">↓↓</div></div>
+      <div class="download-option"><div class="num">02</div><div><h4>Individual download</h4><p>Click the download icon on an individual scene to download that scene only.</p></div><div class="icon">↓</div></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>013 — Download</span><span>Final Step</span></div>
+</section>
+
+
+
+</body></html>

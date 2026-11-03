@@ -1,0 +1,1466 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directors Cut — User Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #1D2A4D;
+    --midnight-deep: #141E3A;
+    --offwhite: #F0EFEA;
+    --offwhite-warm: #E8E6DE;
+    --slate: #4A4A4A;
+    --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+    --hairline-light: rgba(29, 42, 77, 0.08);
+    --body-font: 'Inter', sans-serif;
+    --highlight: #C8B560;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--offwhite);
+    color: var(--midnight);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+
+  /* ========== SHARED ========== */
+  .slide {
+    min-height: 100vh;
+    padding: 80px;
+    position: relative;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-meta {
+    position: absolute;
+    top: 32px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 500;
+    z-index: 5;
+  }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot {
+    width: 4px; height: 4px;
+    background: var(--midnight); border-radius: 50%;
+    align-self: center;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--midnight);
+    font-weight: 500;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 60px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 36px;
+    margin-bottom: 50px;
+    align-items: end;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 130px;
+    line-height: 0.85;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+  }
+
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-title {
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.15;
+    color: var(--midnight);
+    letter-spacing: -0.03em;
+  }
+  .section-lede {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--slate);
+    margin-top: 18px;
+    line-height: 1.7;
+    max-width: 640px;
+    letter-spacing: -0.005em;
+  }
+
+  /* Image plate */
+  .plate {
+    background: var(--midnight-deep);
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .plate::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -1px;
+    left: 0;
+    background: var(--midnight);
+    color: var(--offwhite);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    z-index: 2;
+  }
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(240, 239, 234, 0.08);
+  }
+  .plate-caption {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(240, 239, 234, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* ========== 01 — COVER ========== */
+  .cover {
+    background: var(--midnight);
+    color: var(--offwhite);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .cover-left {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .cover-right {
+    background: var(--offwhite);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+  .cover-meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+  }
+  .cover-title-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 11vw, 160px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .cover-subtitle {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(240, 239, 234, 0.75);
+    margin-top: 32px;
+    max-width: 440px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .cover-bottom-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .cover-bottom-meta div {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 239, 234, 0.6);
+    line-height: 1.8;
+  }
+  .cover-volume {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 220px;
+    line-height: 0.8;
+    color: var(--midnight);
+    letter-spacing: -0.04em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-volume-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--midnight);
+    line-height: 1.75;
+    letter-spacing: -0.005em;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-tag .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ========== Common content layouts ========== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .step-block {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .step-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+  .step-title {
+    font-family: var(--body-font);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .step-body {
+    font-family: var(--body-font);
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.8;
+    letter-spacing: -0.005em;
+  }
+  .step-body .ui {
+    font-family: var(--body-font);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+  .step-body strong {
+    font-weight: 600;
+    color: var(--midnight);
+  }
+
+  /* Highlighted box note */
+  .note-box {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: var(--midnight);
+    color: var(--offwhite);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .note-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(240, 239, 234, 0.2);
+    padding-right: 28px;
+    white-space: nowrap;
+  }
+  .note-box .text {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+
+  /* ========== Engine cards ========== */
+  .engine-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .engine-card {
+    background: var(--offwhite);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    min-height: 360px;
+  }
+  .engine-card.featured {
+    background: var(--midnight);
+    color: var(--offwhite);
+  }
+  .engine-card .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: var(--slate);
+  }
+  .engine-card.featured .tag { color: rgba(240, 239, 234, 0.6); }
+  .engine-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .engine-card .sub {
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: 24px;
+    letter-spacing: -0.005em;
+  }
+  .engine-card.featured .sub { color: rgba(240, 239, 234, 0.7); }
+  .spec-list { margin-top: auto; list-style: none; }
+  .spec-list li {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    padding: 11px 0;
+    border-top: 1px solid var(--hairline-light);
+    font-size: 13.5px;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+  .engine-card.featured .spec-list li {
+    border-top: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .spec-list li:last-child { border-bottom: 1px solid var(--hairline-light); }
+  .engine-card.featured .spec-list li:last-child { border-bottom: 1px solid rgba(240, 239, 234, 0.15); }
+  .spec-list .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    padding-top: 4px;
+  }
+  .engine-card.featured .spec-list .label { color: rgba(240, 239, 234, 0.5); }
+  .spec-list .value { color: var(--midnight); font-weight: 500; }
+  .engine-card.featured .spec-list .value { color: var(--offwhite); }
+
+  /* ========== Director list ========== */
+  .director-list {
+    border-top: 1px solid var(--midnight);
+    margin-top: 40px;
+  }
+  .director-row {
+    display: grid;
+    grid-template-columns: 60px 220px 1fr 40px;
+    gap: 32px;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--hairline);
+    transition: padding 0.4s ease, background 0.4s ease;
+  }
+  .director-row:hover {
+    padding-left: 20px;
+    background: linear-gradient(90deg, rgba(29,42,77,0.04) 0%, transparent 100%);
+  }
+  .director-row .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--slate-light);
+    letter-spacing: 0.1em;
+  }
+  .director-row .name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .director-row .desc {
+    font-family: var(--body-font);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.7;
+    letter-spacing: -0.005em;
+  }
+  .director-row .arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--slate-light);
+    text-align: right;
+  }
+
+  /* ========== Art style cards ========== */
+  .artstyle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .art-card {
+    background: var(--offwhite);
+    padding: 32px 24px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+  }
+  .art-card:hover { background: var(--midnight); color: var(--offwhite); }
+  .art-card:hover .art-num,
+  .art-card:hover .art-card-name,
+  .art-card:hover .art-card-sub,
+  .art-card:hover .art-card-desc { color: var(--offwhite); }
+  .art-card:hover .art-card-sub { color: rgba(240, 239, 234, 0.7); }
+  .art-card:hover .art-card-desc { color: rgba(240, 239, 234, 0.85); }
+  .art-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--slate-light);
+    transition: color 0.3s ease;
+  }
+  .art-card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    line-height: 1.05;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+  }
+  .art-card-sub {
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--slate);
+    margin-top: 6px;
+    letter-spacing: -0.005em;
+    transition: color 0.3s ease;
+  }
+  .art-card-desc {
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--slate);
+    margin-top: 14px;
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    transition: color 0.3s ease;
+  }
+
+  /* ========== Hero product split ========== */
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+  .product-block {
+    background: var(--offwhite);
+    padding: 36px 32px;
+  }
+  .product-block .tag-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .product-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--midnight);
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .product-block .sub {
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--slate);
+    letter-spacing: -0.005em;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .product-block .body {
+    font-family: var(--body-font);
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.8;
+    letter-spacing: -0.005em;
+  }
+  .product-block .body .ui {
+    font-family: var(--body-font);
+    background: var(--offwhite-warm);
+    padding: 1px 8px;
+    border: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--midnight);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+
+  /* ========== Edit flow ========== */
+  .edit-flow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+  .edit-step {
+    background: var(--offwhite);
+    padding: 32px 24px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+  }
+  .edit-step .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 0.9;
+    color: var(--midnight);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .edit-step h4 {
+    font-family: var(--body-font);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .edit-step p {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.75;
+    letter-spacing: -0.005em;
+  }
+
+  /* ========== Download dark section ========== */
+  .download-section {
+    background: var(--midnight);
+    color: var(--offwhite);
+  }
+  .download-section .slide-meta { color: rgba(240, 239, 234, 0.5); }
+  .download-section .slide-meta .dot { background: var(--offwhite); }
+  .download-section .footer-meta { color: rgba(240, 239, 234, 0.4); border-top-color: rgba(240,239,234,0.15); }
+  .download-section .section-header { border-bottom-color: rgba(240, 239, 234, 0.15); }
+  .download-section .section-num { color: var(--offwhite); }
+  .download-section .eyebrow { color: var(--offwhite); }
+  .download-section .section-title { color: var(--offwhite); }
+  .download-section .section-lede { color: rgba(240, 239, 234, 0.7); }
+
+  .download-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: rgba(240, 239, 234, 0.15);
+    border: 1px solid rgba(240, 239, 234, 0.15);
+  }
+  .download-option {
+    background: var(--midnight);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .download-option:hover { background: var(--midnight-deep); }
+  .download-option .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--offwhite);
+    line-height: 1;
+  }
+  .download-option h4 {
+    font-family: var(--body-font);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--offwhite);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .download-option p {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    color: rgba(240, 239, 234, 0.7);
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+  }
+  .download-option p .ui {
+    font-family: var(--body-font);
+    background: rgba(240, 239, 234, 0.1);
+    padding: 1px 8px;
+    border: 1px solid rgba(240, 239, 234, 0.2);
+    font-size: 12px;
+    color: var(--offwhite);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 2px;
+  }
+  .download-option .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: rgba(240, 239, 234, 0.5);
+    font-weight: 500;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 32px; }
+    .engine-cards { grid-template-columns: 1fr; }
+    .director-row { grid-template-columns: 40px 1fr; gap: 16px; padding: 18px 0; }
+    .director-row .desc, .director-row .arrow { grid-column: 1 / -1; }
+    .director-row .name { font-size: 22px; }
+    .artstyle-grid { grid-template-columns: 1fr 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
+    .edit-flow { grid-template-columns: 1fr; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .cover-title-en { font-size: 80px; }
+    .cover-volume { font-size: 120px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../assets/navigation.css"></head>
+<body><nav class="xconda-manual-nav notranslate" aria-label="Guide navigation" data-zoom-label="Enlarge image"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../#guides">XCONDA HUB</a><a href="../../#guides">Back to the hub</a><a href="index.html">All guides</a></div><div class="xconda-manual-languages"><a href="../ko/directors-cut.html" hreflang="ko" lang="ko">KO</a><a href="../en/directors-cut.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/directors-cut.html" hreflang="ja" lang="ja">JA</a><a href="../zh/directors-cut.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<!-- ========== 01 — COVER ========== -->
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top">
+      <span>Xconda / 2026</span>
+      <span>No. 01</span>
+    </div>
+    <div>
+      <div class="cover-title-en">DIRECTORS<br>CUT</div>
+      <div class="cover-subtitle">User Manual — from image engine selection to 9-cut grid download.</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div>
+        <div>User Manual</div>
+        <div>Edition I</div>
+      </div>
+      <div style="text-align:right">
+        <div>13 Chapters</div>
+        <div>Tutorial</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)">
+      <span>Volume</span>
+      <span>The Archive</span>
+    </div>
+    <div>
+      <div class="cover-volume-label">— Volume —</div>
+      <div class="cover-volume">01</div>
+    </div>
+    <div class="cover-tag">
+      <span class="label">— Manual Contents —</span>
+      Getting Started · Image Engine · Year &amp; Location · Scenario · Director Style · Art Style · Product / Model · Generate · Edit · Download
+    </div>
+  </div>
+</section>
+
+<!-- ========== 02 — ENTRY ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 02</span><span class="dot"></span><span>Getting Started</span></div>
+    <div class="right"><span>P. 002</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Getting Started · Entry —</div>
+      <h2 class="section-title">Open Directors Cut</h2>
+      <p class="section-lede">Click the 8th icon on the left vertical sidebar — the one inside the yellow frame — to open Directors Cut.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">Locate the sidebar icon</h3>
+        <p class="step-body">On the left vertical navigation bar, find the 8th icon from the top. It is highlighted with a yellow frame.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">Click to open</h3>
+        <p class="step-body">Click the icon once to open the Directors Cut workspace.</p>
+      </div>
+    </div>
+    <div class="plate" data-fig="Fig. 02.01">
+      <img src="../assets/screens/205e076852e0559fd56c087a2bad0797bf6e7044f79822c0ab280ef78e0085f6.webp" alt="Sidebar 8th icon location">
+      <div class="plate-caption">
+        <span>— 8th icon · yellow frame —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>Directors Cut · User Manual</span>
+    <span>002 — Getting Started</span>
+  </div>
+</section>
+
+<!-- ========== 03 — IMAGE ENGINE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 03</span><span class="dot"></span><span>Image Engine</span></div>
+    <div class="right"><span>P. 003</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Image Engine Selection —</div>
+      <h2 class="section-title">Select an image engine</h2>
+      <p class="section-lede">Choose between two engines based on your work goal — drafting or final delivery.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 03.01">
+      <img src="../assets/screens/a5271c12372972b0fc3819ba9ab94f40990e2bc9010f17c1b2c6c3dc3417f5cf.webp" alt="Image engine selection — Standard and Cinema Pro">
+      <div class="plate-caption">
+        <span>— Standard / Cinema Pro —</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Standard —</div>
+        <h3 class="step-title">For drafts and ideation</h3>
+        <p class="step-body">Fast generation with solid base composition, but limited detail. Best for drafts, idea exploration, and creating reference images.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Cinema Pro —</div>
+        <h3 class="step-title">For final ad / video output</h3>
+        <p class="step-body">Very high detail (skin, texture, lighting), strong cinematography understanding (close-ups, low angles, depth of field), naturalistic lighting, and excellent consistency across frames. Suitable for direct use in ads and video. Slower generation speed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="engine-cards">
+    <div class="engine-card">
+      <div class="tag">— Engine A —</div>
+      <h3>STANDARD</h3>
+      <div class="sub">Gemini 2.5 Flash · 4 credits per cut</div>
+      <ul class="spec-list">
+        <li><span class="label">Speed</span><span class="value">Fast</span></li>
+        <li><span class="label">Composition</span><span class="value">Solid base framing</span></li>
+        <li><span class="label">Detail</span><span class="value">Limited</span></li>
+        <li><span class="label">Best for</span><span class="value">Drafts, ideation, references</span></li>
+      </ul>
+    </div>
+    <div class="engine-card featured">
+      <div class="tag">— Engine B —</div>
+      <h3>CINEMA PRO</h3>
+      <div class="sub">Gemini 3.1 Pro · 7 credits per cut</div>
+      <ul class="spec-list">
+        <li><span class="label">Speed</span><span class="value">Slower</span></li>
+        <li><span class="label">Detail</span><span class="value">Very high (skin · texture · light)</span></li>
+        <li><span class="label">Camera</span><span class="value">Close-up · low angle · depth</span></li>
+        <li><span class="label">Lighting</span><span class="value">Naturalistic</span></li>
+        <li><span class="label">Consistency</span><span class="value">Strong across frames</span></li>
+        <li><span class="label">Best for</span><span class="value">Ad / video ready output</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>003 — Image Engine</span>
+    <span>Selection</span>
+  </div>
+</section>
+
+<!-- ========== 04 — YEAR & LOCATION ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 04</span><span class="dot"></span><span>Year &amp; Location</span></div>
+    <div class="right"><span>P. 004</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Year &amp; Location —</div>
+      <h2 class="section-title">Set time and place</h2>
+      <p class="section-lede">A core step that determines the mood and mise-en-scène of the result. Fill in the Year and Location fields.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— 04.A · Red frame —</div>
+        <h3 class="step-title">Year — temporal setting</h3>
+        <p class="step-body">Click the empty input below the <span class="ui">Year</span> field (red frame) and enter the era or period you want to set.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— 04.B · Yellow frame —</div>
+        <h3 class="step-title">Location — spatial setting</h3>
+        <p class="step-body">Click the empty input below the <span class="ui">Location</span> field (yellow frame) and enter the city or place.</p>
+      </div>
+    </div>
+    <div class="plate" data-fig="Fig. 04.01">
+      <img src="../assets/screens/252d1cd9df79d898a3dc0a610612846f53578221e80ac244d55e237c45ff280d.webp" alt="Year and Location input fields">
+      <div class="plate-caption">
+        <span>— Year · Location —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>004 — Year &amp; Location</span>
+    <span>Time &amp; Place</span>
+  </div>
+</section>
+
+<!-- ========== 05 — SCENARIO ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 05</span><span class="dot"></span><span>Scenario</span></div>
+    <div class="right"><span>P. 005</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Scenario —</div>
+      <h2 class="section-title">Write the scenario</h2>
+      <p class="section-lede">Enter the story or situation you want to produce as text. The Scenario field is required.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 05.01">
+      <img src="../assets/screens/65e71cc45bed4ab04f853805ec71ff8e939b68ecf99fb3bbc5af981d48788769.webp" alt="Scenario input field">
+      <div class="plate-caption">
+        <span>— Scenario field —</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">Click and type</h3>
+        <p class="step-body">Click the <span class="ui">Scenario</span> field once and enter the story or situation you want to produce as text.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">Meet the minimum length</h3>
+        <p class="step-body">Note: the input must exceed a minimum character count.</p>
+      </div>
+      <div class="note-box">
+        <div class="label">— Required —</div>
+        <div class="text">The Scenario field is mandatory. The Generate button will not activate if it is empty.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>005 — Scenario</span>
+    <span>Required Input</span>
+  </div>
+</section>
+
+<!-- ========== 06 — DIRECTOR STYLE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 06</span><span class="dot"></span><span>Director Style</span></div>
+    <div class="right"><span>P. 006</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Director Style —</div>
+      <h2 class="section-title">Select a director style</h2>
+      <p class="section-lede">A core step that determines direction and tone-and-mood. Choose one of the 5 styles inside the red frame.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">Each of the 5 styles carries its own directorial grammar. Detailed descriptions of each style appear on the next page.</p>
+    </div>
+    <div class="plate" data-fig="Fig. 06.01">
+      <img src="../assets/screens/208f3cf519ba9f925b8fd4e2782ba719767ea221618abe67f96d25b51755d7ab.webp" alt="Director style selection">
+      <div class="plate-caption">
+        <span>— 5 styles · red frame —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="director-list">
+    <div class="director-row">
+      <div class="num">— 01 —</div>
+      <div class="name">WES<br>ANDERSON</div>
+      <div class="desc">Symmetrical composition, pastel palette, static camera. Storybook precision and an architecturally arranged mise-en-scène.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 02 —</div>
+      <div class="name">SPIKE<br>JONZE</div>
+      <div class="desc">Direction where the line between reality and fantasy blurs. Emotional, human-centered storytelling with a dreamlike, lyrical mood.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 03 —</div>
+      <div class="name">WIEDEN<br>+ KENNEDY</div>
+      <div class="desc">Message-driven advertising style. Strong brand identity emphasis with impactful copy and direction.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 04 —</div>
+      <div class="name">THE BAKER<br>BROTHERS</div>
+      <div class="desc">Fast tempo, trend-aware cut editing. Stylish commercial direction with strong rhythm and visual stimulation.</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="director-row">
+      <div class="num">— 05 —</div>
+      <div class="name">SHOW<br>YANAGISAWA</div>
+      <div class="desc">Japanese minimalist direction. Emotional expression through natural light and negative space, with a quiet, emotion-led pace.</div>
+      <div class="arrow">→</div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>006 — Director Style</span>
+    <span>5 Options</span>
+  </div>
+</section>
+
+<!-- ========== 07 — STYLE NOTES ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 07</span><span class="dot"></span><span>Style Details</span></div>
+    <div class="right"><span>P. 007</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Director Style · Details —</div>
+      <h2 class="section-title">Style details</h2>
+      <p class="section-lede">Reference for each director style as displayed on screen. Detailed descriptions of the 5 styles introduced on the previous page.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="plate" data-fig="Fig. 07.01">
+      <img src="../assets/screens/208f3cf519ba9f925b8fd4e2782ba719767ea221618abe67f96d25b51755d7ab.webp" alt="Director style detailed descriptions">
+      <div class="plate-caption">
+        <span>— On-screen reference —</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Selection guide —</div>
+        <h3 class="step-title">Match the style to the goal</h3>
+        <p class="step-body">For ordered composition, choose <strong>Wes Anderson</strong>. For emotional atmosphere, <strong>Spike Jonze</strong>. For strong messages, <strong>Wieden+Kennedy</strong>. For trendy advertising, <strong>The Baker Brothers</strong>. For quiet, emotion-led expression, <strong>Show Yanagisawa</strong>.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Retry —</div>
+        <h3 class="step-title">Regenerate with a different style</h3>
+        <p class="step-body">If the result does not match your intent, change the director style and regenerate.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>007 — Style Details</span>
+    <span>Reference</span>
+  </div>
+</section>
+
+<!-- ========== 08 — ART STYLE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 08</span><span class="dot"></span><span>Art Style</span></div>
+    <div class="right"><span>P. 008</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Art Style —</div>
+      <h2 class="section-title">Select an art style</h2>
+      <p class="section-lede">Choose one of 4 options inside the red frame. This step determines the medium of the result — live action, animation, claymation, or 3D.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <p class="step-body" style="font-size: 15px;">The visual language of the result changes completely depending on the medium chosen. Match it to the advertising goal and target audience.</p>
+    </div>
+    <div class="plate" data-fig="Fig. 08.01">
+      <img src="../assets/screens/7d5c8cc4f9228b828491d7499c6adbf6a1b4e37e742c19524660dce1fd859aae.webp" alt="Art style — 4 options">
+      <div class="plate-caption">
+        <span>— 4 art styles —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="artstyle-grid">
+    <div class="art-card">
+      <div class="art-num">— 01 —</div>
+      <div>
+        <div class="art-card-name">LIVE<br>ACTION</div>
+        <div class="art-card-sub">Arri Alexa</div>
+        <div class="art-card-desc">Realism · film · advertising</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <div class="art-num">— 02 —</div>
+      <div>
+        <div class="art-card-name">STUDIO<br>GHIBLI</div>
+        <div class="art-card-sub">Anime</div>
+        <div class="art-card-desc">Emotion · warmth · fantasy</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <div class="art-num">— 03 —</div>
+      <div>
+        <div class="art-card-name">STOP-MOTION<br>CLAYMATION</div>
+        <div class="art-card-sub">Handcraft</div>
+        <div class="art-card-desc">Texture · craft · personality</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <div class="art-num">— 04 —</div>
+      <div>
+        <div class="art-card-name">3D<br>ANIMATION</div>
+        <div class="art-card-sub">Pixar Style</div>
+        <div class="art-card-desc">Charm · mass-appeal · character</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>008 — Art Style</span>
+    <span>Medium</span>
+  </div>
+</section>
+
+<!-- ========== 09 — HERO PRODUCT / MUSE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 09</span><span class="dot"></span><span>Product · Model Images</span></div>
+    <div class="right"><span>P. 009</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Product / Model Images · Optional —</div>
+      <h2 class="section-title">Attach product / model images</h2>
+      <p class="section-lede">This step generates 9 cuts with visual continuity through facial recognition (face lock). It is optional — product-only campaigns are also supported.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-bottom: 0;">
+    <div class="plate" data-fig="Fig. 09.01">
+      <img src="../assets/screens/15570d7b23f794bcb6708f6a892f8b823d90349b917c6e102e3329b53945ca53.webp" alt="Hero Product and Hero Muse upload screen">
+      <div class="plate-caption">
+        <span>— Hero Product · Hero Muse —</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Method —</div>
+        <h3 class="step-title">Click or drag</h3>
+        <p class="step-body">Click the gray field directly below to select a file, or drag and drop the image file to attach the photo.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Recommended —</div>
+        <h3 class="step-title">Use background-free images</h3>
+        <p class="step-body">In general, using images without backgrounds improves recognition accuracy and helps maintain consistency across the result.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-block">
+      <div class="tag-line">
+        <span>— Left / Red frame —</span>
+        <span>Optional</span>
+      </div>
+      <h3>HERO PRODUCT</h3>
+      <span class="sub">Product image</span>
+      <p class="body">Attach the product image that will appear in the advertisement. It functions as the central object across the result. Click the gray field directly below to insert, or drag and drop the image file to attach the photo.</p>
+    </div>
+    <div class="product-block">
+      <div class="tag-line">
+        <span>— Right / Yellow frame —</span>
+        <span>Optional</span>
+      </div>
+      <h3>HERO MUSE</h3>
+      <span class="sub">Model image</span>
+      <p class="body">Attach the model image that will appear in the advertisement. Use a front-facing photo where possible. Facial recognition (face lock) keeps the same model across all 9 cuts.</p>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">Neither field is strictly required — product-only campaigns are also supported. Using background-free images improves recognition accuracy and helps maintain consistency across the result.</div>
+  </div>
+
+  <div class="footer-meta">
+    <span>009 — Product · Model Images</span>
+    <span>Hero Product · Muse</span>
+  </div>
+</section>
+
+<!-- ========== 10 — GENERATE ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 10</span><span class="dot"></span><span>Generate</span></div>
+    <div class="right"><span>P. 010</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate —</div>
+      <h2 class="section-title">Click the Generate button</h2>
+      <p class="section-lede">Click the Generate button activated at the bottom of the screen, inside the red frame.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;">
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">Confirm the button is active</h3>
+        <p class="step-body">When all required fields (Image Engine, Year, Location, Scenario, Director Style, Art Style) are filled, the Generate button at the bottom of the screen becomes active.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">Click the button</h3>
+        <p class="step-body">Click the activated Generate button inside the red frame to begin image generation.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 03 —</div>
+        <h3 class="step-title">9-cut grid is generated</h3>
+        <p class="step-body">After clicking Generate, look to the right of the screen — a single grid composed of 9 images is generated.</p>
+      </div>
+    </div>
+    <div class="plate" data-fig="Fig. 10.01">
+      <img src="../assets/screens/c5d3ea707213d3ba3da1cb3b02690b9189efcb72dcf55a329d28f3ee72a64dac.webp" alt="Generate button location — bottom red frame">
+      <div class="plate-caption">
+        <span>— Generate button —</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>010 — Generate</span>
+    <span>Run</span>
+  </div>
+</section>
+
+<!-- ========== 11 — THE GRID ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 11</span><span class="dot"></span><span>9-Cut Grid</span></div>
+    <div class="right"><span>P. 011</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— 9-Cut Grid —</div>
+      <h2 class="section-title">Review the 9-cut grid</h2>
+      <p class="section-lede">After clicking the Generate button, a single grid composed of 9 images appears on the right side of the screen.</p>
+    </div>
+  </div>
+
+  <div class="plate" data-fig="Fig. 11.01" style="max-width: 1100px; margin: 0 auto;">
+    <img src="../assets/screens/e9d8bf83c9caf98ce2b3303a0a7390b3cbabc36d324ec3ceee311e3aef37f493.webp" alt="Generated 9-cut grid result">
+    <div class="plate-caption">
+      <span>— 3 × 3 grid · 9 frames —</span>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>011 — 9-Cut Grid</span>
+    <span>Result</span>
+  </div>
+</section>
+
+<!-- ========== 12 — EDIT ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 12</span><span class="dot"></span><span>Per-frame Edit</span></div>
+    <div class="right"><span>P. 012</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Per-frame Editing —</div>
+      <h2 class="section-title">Edit individual images</h2>
+      <p class="section-lede">Each image can be edited individually. Click the pen icon to revise the prompt, then click Regenerate to re-render only that image.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 12.01">
+      <img src="../assets/screens/60811260343bf1e46afec8c2ce78479011318401dbe3aab0bf3746f333697d01.webp" alt="Per-frame editing screen">
+      <div class="plate-caption">
+        <span>— Pen icon · Regenerate —</span>
+      </div>
+    </div>
+    <div>
+      <div class="step-block">
+        <div class="step-number">— Step 01 —</div>
+        <h3 class="step-title">Click the pen icon</h3>
+        <p class="step-body">Click the pen-shaped icon inside the yellow frame at the bottom-right of the image to display its prompt.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 02 —</div>
+        <h3 class="step-title">Edit the prompt</h3>
+        <p class="step-body">Type the revised prompt into the field.</p>
+      </div>
+      <div class="step-block">
+        <div class="step-number">— Step 03 —</div>
+        <h3 class="step-title">Click Regenerate</h3>
+        <p class="step-body">Click the activated yellow <span class="ui">Regenerate</span> button inside the red frame to re-render only that image.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="edit-flow">
+    <div class="edit-step">
+      <div class="num">01</div>
+      <h4>Click pen icon</h4>
+      <p>Pen icon inside the yellow frame at image bottom-right → prompt is displayed</p>
+    </div>
+    <div class="edit-step">
+      <div class="num">02</div>
+      <h4>Enter prompt</h4>
+      <p>Type the revised prompt</p>
+    </div>
+    <div class="edit-step">
+      <div class="num">03</div>
+      <h4>Regenerate</h4>
+      <p>Click the yellow Regenerate button inside the red frame → only that image is re-rendered</p>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>012 — Per-frame Edit</span>
+    <span>Revise</span>
+  </div>
+</section>
+
+<!-- ========== 13 — AFTER EDIT ========== -->
+<section class="slide">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 13</span><span class="dot"></span><span>After Edit</span></div>
+    <div class="right"><span>P. 013</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— After the Edit —</div>
+      <h2 class="section-title">Review the edited result</h2>
+      <p class="section-lede">In this example, the 9th image was edited to remove the figure. Only the chosen images are revised — any frame can be edited any number of times, in any order.</p>
+    </div>
+  </div>
+
+  <div class="plate" data-fig="Fig. 13.01" style="max-width: 1100px; margin: 0 auto 32px;">
+    <img src="../assets/screens/6f718a2c02fbcb16edfcf92adb449f064173666fca5dfa7e6175235d04e2211a.webp" alt="Grid result after per-frame edit">
+    <div class="plate-caption">
+      <span>— Frame 09 · revised —</span>
+    </div>
+  </div>
+
+  <div class="note-box" style="max-width: 1100px; margin: 0 auto;">
+    <div class="label">— Note —</div>
+    <div class="text">Only the chosen images are revised. Any frame can be edited any number of times, in any order. The other images are not affected.</div>
+  </div>
+
+  <div class="footer-meta">
+    <span>013 — After Edit</span>
+    <span>Result</span>
+  </div>
+</section>
+
+<!-- ========== 14 — DOWNLOAD ========== -->
+<section class="slide download-section">
+  <div class="slide-meta">
+    <div class="left"><span>Chapter 14</span><span class="dot"></span><span>Download</span></div>
+    <div class="right"><span>P. 014</span></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Download —</div>
+      <h2 class="section-title">Download</h2>
+      <p class="section-lede">You can download individual images or all 9 images at once.</p>
+    </div>
+  </div>
+
+  <div class="two-col" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="plate" data-fig="Fig. 14.01" style="background: rgba(240, 239, 234, 0.05);">
+      <img src="../assets/screens/2f2e0f74a74f5dd024f97c76a93fcc4db21a84cfe3fbe79f798bdfa836d8c9ae.webp" alt="Download options screen">
+      <div class="plate-caption">
+        <span>— Download options —</span>
+      </div>
+    </div>
+    <div class="download-options" style="align-self: start;">
+      <div class="download-option">
+        <div class="num">01</div>
+        <div>
+          <h4>Individual download</h4>
+          <p>Click the download icon inside the yellow frame to download a single image.</p>
+        </div>
+        <div class="icon">↓</div>
+      </div>
+      <div class="download-option">
+        <div class="num">02</div>
+        <div>
+          <h4>Download all</h4>
+          <p>Click the <span class="ui">Download All</span> button inside the red frame to download all 9 images at once.</p>
+        </div>
+        <div class="icon">↓↓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <span>014 — Download</span>
+    <span>Final Step</span>
+  </div>
+</section>
+
+
+
+</body></html>
