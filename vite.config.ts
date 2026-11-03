@@ -9,15 +9,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * 개발 서버에서 글 주소(/post/{slug}/ · /notice/… · /qna/… · /guide/…)를 개발 진입점으로 넘깁니다.
- * (운영에서는 scripts/build-seo.mjs 가 만든 글별 index.html 이 같은 역할을 합니다)
+ * 개발 서버에서 홈과 글 주소(/post/{slug}/ · /notice/… · /qna/… · /guide/…)를
+ * 개발 진입점으로 넘깁니다. 그래야 홈 공유 주소도 오래된 배포 번들이 아닌 현재 코드를 엽니다.
+ * (운영에서는 scripts/build-seo.mjs 가 만든 index.html 이 같은 역할을 합니다)
  */
 const articleRoutesInDev = {
   name: "xconda-article-routes-dev",
   configureServer(server: { middlewares: { use: (fn: (req: { url?: string }, res: unknown, next: () => void) => void) => void } }) {
     server.middlewares.use((req, _res, next) => {
       const url = req.url ?? "";
-      if (/^\/(?:post|notice|qna|guide)\/[^/?#]+\/?(?:\?.*)?$/.test(url)) {
+      if (/^\/(?:\?.*)?$/.test(url) || /^\/(?:post|notice|qna|guide)\/[^/?#]+\/?(?:\?.*)?$/.test(url)) {
         const query = url.includes("?") ? url.slice(url.indexOf("?")) : "";
         req.url = `/dev.html${query}`;
       }

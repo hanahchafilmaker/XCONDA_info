@@ -379,11 +379,13 @@ export function GhostButton({
   href,
   onClick,
   className,
+  "aria-haspopup": ariaHasPopup,
 }: {
   children: ReactNode;
   href?: string;
   onClick?: () => void;
   className?: string;
+  "aria-haspopup"?: "dialog";
 }) {
   const cls = cn(
     "inline-flex items-center justify-center gap-2 rounded-full border border-black/12 px-5 py-2.5 text-[14px] font-medium text-neutral-800 transition-colors hover:border-black/25 hover:bg-black/[0.04] hover:text-black active:scale-[0.98]",
@@ -394,7 +396,7 @@ export function GhostButton({
       {children}
     </a>
   ) : (
-    <button type="button" onClick={onClick} className={cls}>
+    <button type="button" onClick={onClick} aria-haspopup={ariaHasPopup} className={cls}>
       {children}
     </button>
   );
