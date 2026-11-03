@@ -77,7 +77,7 @@ export default async function FeaturePage({ params }: Params) {
   const url = `${SITE}${lang === "ko" ? "/ko" : ""}/${featureData.basePath}/${page.slug}/`;
   const studioHref = `${lang === "ko" ? "/ko" : ""}/studio/${page.studio}`;
   const hubHref = `https://hub.xconda.ai/${lang === "ko" ? "" : "en/"}qna/`; // 허브 글은 `page.hub` 슬러그로 연결
-  const hubPostHref = `https://hub.xconda.ai/${lang === "ko" ? "" : "en/"}post/${page.hub}/`;
+  const hubPostHref = `https://hub.xconda.ai/${lang === "ko" ? "" : "en/"}${page.hubSection}/${page.hub}/`;
 
   return (
     <main>

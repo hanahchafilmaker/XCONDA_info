@@ -3,8 +3,8 @@ import type { ToolTranslation } from "./types";
 /** English copy translated from the product instructions in tools.ts. */
 export const TOOL_EN: Record<string, ToolTranslation> = {
   turn: {
-    tagline: "One photo → 360° space creation and background/space locking",
-    desc: "Build a 360° six-faced cube map from a single photo to lock your background space. Maintain complete spatial consistency across Dutch angles, bird's-eye views, and camera moves.",
+    tagline: "One photo is enough; use up to four from different directions",
+    desc: "Build a 360° six-faced cube map from photos or a written description to lock your background space. Keep the same space across different angles and camera moves.",
     steps: [
       "In Reference, add Front / Left / Right / Back references or write a Description.",
       "Generate the 360° HDRI and choose a camera viewpoint in 3D Preview.",

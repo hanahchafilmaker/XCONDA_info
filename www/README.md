@@ -6,6 +6,9 @@
 허브(hub.xconda.ai)는 이미 정비했고, www 쪽은 소스 저장소가 이 작업 환경에 연결되어 있지 않아
 **원고·코드·검증 스크립트까지 만들어 두고 적용 지점을 명시**했습니다.
 
+2026-11-02 메인·허브 개선 요청의 현재 확인 사항, 메인 소스에 적용할 할인 카드와 미확정 항목은
+**[`landing-1102.md`](./landing-1102.md)** 에 따로 정리했습니다. 이 패키지만으로 메인 운영 사이트가 바뀌지는 않습니다.
+
 ---
 
 ## 0. 지금 www 의 상태 (2026-10-25 직접 확인)
@@ -16,6 +19,8 @@
 | `https://www.xconda.ai/ko` | 정상 한국어 랜딩 (KBS 제작 인증, 16개 툴 카드, 크레딧 5종) | 언어별 주소는 이미 있음 |
 | `https://www.xconda.ai/ko/studio/turn` | `→ /login?redirect=/ko/studio/turn` | **모든 툴 화면이 로그인 뒤** → 검색·AI 에 노출되는 툴 페이지 0개 |
 | 사이트맵에 `/ko` 없음 | 한국어 페이지가 사이트맵·canonical·hreflang 에서 빠짐 | 한국어 검색 노출 손실 |
+
+> 2026-11-03 추가 확인: 메인 홈은 `/`, `/ko`, `/ja`, `/zh`에서 언어별 화면이 보입니다. `/en`은 404 화면이며 사이트맵에는 언어별 홈이 아직 보이지 않습니다. 실제 canonical·hreflang 태그는 별도 확인이 필요합니다. 아래 기능 페이지 원고는 한국어·영어만 제공합니다.
 
 핵심 한 줄: **"flexboard", "ai 스토리보드", "ai 영상 생성" 같은 검색어를 받을 공개 페이지가 없다.**
 허브 블로그가 그 자리를 일부 메우고 있지만, 제품 페이지가 없으면 구매 의도 검색은 www 로 오지 않습니다.
@@ -32,7 +37,7 @@
     expression, drct-seq, arw-view
   - 모델 2종: seedance-2-5, nano-banana-pro
 - 주소: `www.xconda.ai/features/<slug>` · `www.xconda.ai/ko/features/<slug>`
-- 각 항목: `title` · `description`(155자 이내) · `h1` · `intro` · `features[4]` · `faq[3]` · `hub`(허브 글 슬러그)
+- 각 항목: `title` · `description`(155자 이내) · `h1` · `intro` · `features[4]` · `faq[3]` · `hub`(허브 글 슬러그) · `hubSection`(실제 `post`·`guide`·`qna` 경로)
 - 구현 예시: `www/snippets/features-page.tsx` (Next.js App Router)
 - **스튜디오(`/studio/*`)는 그대로 로그인 뒤에 두고, 이 페이지만 공개**합니다.
   공개 페이지의 CTA 가 `/studio/<tool>` 로 보내고, 그쪽은 지금처럼 로그인으로 리다이렉트(307)됩니다.

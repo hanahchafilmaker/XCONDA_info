@@ -4,7 +4,7 @@
     "각 항목은 `features/<slug>` 공개 페이지 하나에 대응합니다. 스튜디오(로그인 뒤 앱)는 그대로 두고, 이 페이지만 공개로 여는 구성입니다.",
     "경로 규칙: 영어 www.xconda.ai/features/<slug>, 한국어 www.xconda.ai/ko/features/<slug>.",
     "글자수 상한은 scripts/www/validate-feature-pages.mjs 가 검사합니다(제목 60자 · 설명 155자).",
-    "hub 값은 hub.xconda.ai 의 실제 글 주소(슬러그)입니다 — 기능 페이지 → 허브 가이드로 내부 링크를 걸어 검색·AI 인용을 이어 붙입니다."
+    "hub 는 허브 글 슬러그, hubSection 은 실제 주소 구분(post·guide·qna·notice)입니다. 기능 페이지에서 해당 허브 글로 연결합니다."
   ],
   "basePath": "features",
   "cta": {
@@ -17,7 +17,8 @@
       "slug": "flexboard",
       "name": "FLEXBOARD",
       "studio": "flexboard",
-      "hub": "flexboard-storyboard-7-steps",
+      "hub": "flexboard-storyboard-guide",
+      "hubSection": "guide",
       "ko": {
         "title": "플렉스보드(FLEXBOARD) — 컷별 AI 스토리보드 제작 도구 | XCONDA",
         "description": "시나리오를 컷으로 나누고 컷마다 이미지·대사·효과음을 붙이는 AI 스토리보드 도구. 마음에 안 드는 컷만 골라 고친 뒤 Seedance 2.5로 영상을 만듭니다.",
@@ -76,6 +77,7 @@
       "name": "Blocking Board",
       "studio": "blocking-board",
       "hub": "why-puppet-video",
+      "hubSection": "qna",
       "ko": {
         "title": "블로킹 보드 — 카메라·동선을 미리 짜는 디지털 리허설 | XCONDA",
         "description": "평면도에 인물 위치와 이동 경로를 그리고 3D 무대에서 재생해 시선·180도 축·충돌을 점검합니다. 퍼펙 영상과 샷 리스트까지 내보냅니다.",
@@ -134,13 +136,14 @@
       "name": "360 Turn Studio",
       "studio": "turn",
       "hub": "what-is-turn",
+      "hubSection": "qna",
       "ko": {
-        "title": "360 Turn Studio — 한 장의 사진으로 360° 가상 세트 | XCONDA",
-        "description": "사진 한 장이나 설명으로 360도 돌려볼 수 있는 공간을 만들고, 원하는 각도에서 인물을 넣어 컷마다 배경이 유지되는 키 이미지를 뽑습니다.",
+        "title": "360 Turn Studio — 사진 1장부터 360° 가상 세트 | XCONDA",
+        "description": "사진 1장이면 충분, 방향별로 최대 4장까지. 글 설명만으로도 360도 공간을 만들고, 원하는 각도에서 인물을 넣어 일관된 키 이미지를 뽑습니다.",
         "h1": "360 Turn Studio",
-        "intro": "Turn은 사진 한 장이나 글 설명으로 360도 회전하는 가상 세트를 만듭니다. 한 공간을 만들어 두고 그 안에서 카메라만 돌리기 때문에, 컷이 바뀌어도 문·창문·소품 위치가 그대로 유지됩니다.",
+        "intro": "Turn은 사진 1장이면 충분하고 방향별로 최대 4장까지 사용할 수 있으며, 글 설명만으로도 360도 회전하는 가상 세트를 만듭니다. 한 공간을 만들어 두고 그 안에서 카메라만 돌리기 때문에, 컷이 바뀌어도 문·창문·소품 위치가 그대로 유지됩니다.",
         "features": [
-          "참조 이미지 한 장 또는 프롬프트로 360° 공간 생성",
+          "사진 1장이면 충분, 방향별로 최대 4장까지 또는 글 설명으로 360° 공간 생성",
           "마스크 브러시로 오브젝트 추가·삭제",
           "원하는 앵글에서 캐릭터를 배치해 키 이미지 제작",
           "컷이 이어져도 배경·조명이 흔들리지 않는 연속 촬영"
@@ -152,7 +155,7 @@
           },
           {
             "q": "어떤 파일을 올릴 수 있나요?",
-            "a": "참조용 이미지 파일을 올리거나, 글로 공간을 설명해 생성할 수 있습니다."
+            "a": "사진 1장이면 충분하고 Front·Left·Right·Back 방향별로 최대 4장까지 사용할 수 있습니다. 이미지 없이 글로 공간을 설명해 생성할 수도 있습니다."
           },
           {
             "q": "스토리보드와 함께 쓸 수 있나요?",
@@ -161,12 +164,12 @@
         ]
       },
       "en": {
-        "title": "360 Turn Studio — a 360° virtual set from one photo",
-        "description": "Build an orbitable set from a single photo or a written description, then shoot key images from any angle with the background kept intact.",
+        "title": "360 Turn Studio — a 360° set from 1 to 4 photos",
+        "description": "Build an orbitable set from one photo (up to four from different directions) or a written description, then capture key images with the background intact.",
         "h1": "360 Turn Studio",
-        "intro": "Turn builds an orbitable set from one photo or a written description. Because you build one space and only move the camera inside it, doors, windows and props stay where they were from shot to shot.",
+        "intro": "Turn builds an orbitable set from one photo, up to four from different directions, or a written description. Because you build one space and only move the camera inside it, doors, windows and props stay where they were from shot to shot.",
         "features": [
-          "Generate a 360° space from a single reference image or a prompt",
+          "One photo is enough; use up to four from different directions, or a prompt",
           "Add or remove objects with the mask brush",
           "Place a character at any angle and capture key images",
           "Keep background and lighting stable across consecutive shots"
@@ -178,7 +181,7 @@
           },
           {
             "q": "What can I upload?",
-            "a": "A reference image, or nothing at all — you can describe the space in words and generate it."
+            "a": "One photo is enough, or use up to four for Front, Left, Right and Back. You can also leave them empty and describe the space in words."
           },
           {
             "q": "Does it work with storyboards?",
@@ -192,6 +195,7 @@
       "name": "Director's Cut",
       "studio": "directors-cut",
       "hub": "ai-video-9-cut-curse-fix",
+      "hubSection": "post",
       "ko": {
         "title": "디렉터스 컷 — 감독 스타일로 9컷 광고 영상 만들기 | XCONDA",
         "description": "연도와 장소, 시나리오를 넣고 감독 스타일과 아트 분위기를 고르면 9컷 스토리보드를 만듭니다. 마음에 안 드는 컷만 프롬프트를 고쳐 다시 만듭니다.",
@@ -250,6 +254,7 @@
       "name": "AI Image Generator",
       "studio": "image",
       "hub": "skillry-ai-video-prompt-reference",
+      "hubSection": "post",
       "ko": {
         "title": "AI 이미지 생성 — Grok·Seedream·Nano Banana Pro 한곳에서 | XCONDA",
         "description": "Grok Imagine, Seedream Lite, Z Image, Nano Banana Pro 등 모델을 골라 이미지를 만듭니다. 모델사 고유 파라미터까지 워크스페이스 안에서 그대로 씁니다.",
@@ -308,6 +313,7 @@
       "name": "AI Video Generator",
       "studio": "video",
       "hub": "seedance-2-5-length-resolution",
+      "hubSection": "qna",
       "ko": {
         "title": "AI 영상 생성 — Seedance 2.5·Kling·Veo 한 화면에서 | XCONDA",
         "description": "글, 이미지, 시작·끝 프레임, 레퍼런스로 영상을 만듭니다. Seedance 2.5는 최대 30초까지 소리와 함께 생성하고, 컷마다 길이와 화면비를 직접 정합니다.",
@@ -366,6 +372,7 @@
       "name": "Upscaler",
       "studio": "upscale",
       "hub": "seedance-storyboard-before-render",
+      "hubSection": "post",
       "ko": {
         "title": "업스케일러 — 이미지를 6K 화질로 | XCONDA",
         "description": " 낮은 해상도의 컷 이미지나 사진을 6K까지 끌어올립니다. 스토리보드 시트를 인쇄하거나 큰 화면에 띄울 때 유용하며, 결과를 다시 영상 생성 입력으로 쓸 수 있습니다.",
@@ -424,6 +431,7 @@
       "name": "Face Swap",
       "studio": "face-swap",
       "hub": "real-person-celebrity-reference",
+      "hubSection": "qna",
       "ko": {
         "title": "페이스 스왑 — 원하는 얼굴로 자연스럽게 교체 | XCONDA",
         "description": " 인물 사진의 얼굴을 다른 얼굴로 교체합니다. 표정과 조명은 유지하면서 캐릭터만 바꿔야 할 때 쓰이며, 컷마다 다른 인물을 넣어 비교할 수 있습니다.",
@@ -482,6 +490,7 @@
       "name": "ClothSwap",
       "studio": "cloth-swap",
       "hub": "ai-video-background-consistency",
+      "hubSection": "post",
       "ko": {
         "title": "클로스 스왑 — 컷마다 의상을 일정하게 유지 | XCONDA",
         "description": "교체할 의상 영역을 브러시로 칠하고 원하는 의상 이미지를 올리면 그 부분만 바뀝니다. 컷이 이어져도 의상이 흔들리지 않게 맞춥니다.",
@@ -540,6 +549,7 @@
       "name": "Scene Snap",
       "studio": "scene-snap",
       "hub": "scenario-to-final-video",
+      "hubSection": "post",
       "ko": {
         "title": "씬 스냅 — 이미지 한 장으로 6키프레임 스토리보드 | XCONDA",
         "description": " 이미지를 올리면 영화 같은 6키프레임 스토리보드로 확장합니다. 장면 전환과 카메라 흐름을 빠르게 잡고, 결과를 FLEXBOARD에서 다시 편집할 수 있습니다.",
@@ -598,6 +608,7 @@
       "name": "YouTube Ref",
       "studio": "youtube-ref",
       "hub": "ai-video-motion-ideas",
+      "hubSection": "post",
       "ko": {
         "title": "유튜브 레퍼런스 — 영상 링크로 9컷 스토리보드 | XCONDA",
         "description": "유튜브 링크를 붙여넣으면 9컷 스토리보드를 만들고, 필요하면 캐릭터 레퍼런스를 더해 내 캐릭터와 톤으로 다시 만듭니다. 구성만 참고하고 컷은 새로 생성됩니다.",
@@ -656,6 +667,7 @@
       "name": "SpinAngle",
       "studio": "spin-angle",
       "hub": "physics-inversion-patent-verify-before-render",
+      "hubSection": "post",
       "ko": {
         "title": "스핀 앵글 — 원을 그려 카메라 위치 지정 | XCONDA",
         "description": "이미지 위에 원을 그려 카메라 위치를, 화살표로 방향을 지정하면 그 시점에서 본 장면을 생성합니다. 3D 모델링 없이 앵글을 바꿉니다.",
@@ -714,6 +726,7 @@
       "name": "CineGrade AI",
       "studio": "cine-grade",
       "hub": "kbs-documentary-seongmul-xconda",
+      "hubSection": "post",
       "ko": {
         "title": "시네그레이드 AI — 영화 스틸로 색보정 | XCONDA",
         "description": " 영화 스틸 이미지를 참조로 올리면 색보정·대비·분위기를 내 사진에 즉시 적용합니다. 컷 전체 톤을 한 번에 맞출 때 쓰는 도구입니다.",
@@ -772,6 +785,7 @@
       "name": "Cinematic Image Blender",
       "studio": "background-blend",
       "hub": "ai-video-background-consistency",
+      "hubSection": "post",
       "ko": {
         "title": "시네마틱 이미지 블렌더 — 인물과 배경 합성 | XCONDA",
         "description": "인물 사진과 배경 사진을 올리면 자연스럽게 합성해 영화 같은 장면을 만듭니다. 촬영 없이 원하는 배경에 인물을 세울 때 씁니다.",
@@ -830,6 +844,7 @@
       "name": "Auto Angle Generator",
       "studio": "auto-angle",
       "hub": "ai-video-9-cut-curse-fix",
+      "hubSection": "post",
       "ko": {
         "title": "오토 앵글 제너레이터 — 샷을 자동으로 바꿔 생성 | XCONDA",
         "description": " 한 장면을 다양한 샷 사이즈와 앵글로 자동 변환합니다. 같은 장면을 여러 컷으로 나눌 때 카메라 변화를 빠르게 확보할 수 있습니다.",
@@ -888,6 +903,7 @@
       "name": "Expression Transformer",
       "studio": "expression",
       "hub": "ai-video-background-consistency",
+      "hubSection": "post",
       "ko": {
         "title": "표정 변환 — 얼굴은 그대로, 표정만 바꾸기 | XCONDA",
         "description": "텍스트 한 줄로 인물의 표정을 바꿉니다. 얼굴 정체성은 유지하면서 웃음·놀람·슬픔 등 감정만 바꿀 때 쓰는 도구입니다. 감정선이 이어지는 컷을 만들 수 있습니다.",
@@ -943,13 +959,14 @@
     },
     {
       "slug": "drct-seq",
-      "name": "Directors Sequence",
+      "name": "Director's Sequence",
       "studio": "drct-seq",
       "hub": "scenario-to-final-video",
+      "hubSection": "post",
       "ko": {
         "title": "디렉터스 시퀀스 — 키프레임 한 장으로 8연속 장면 | XCONDA",
         "description": " 키프레임 한 장을 올리면 이어지는 8개 장면을 자동으로 만듭니다. 시간 흐름이 있는 시퀀스를 빠르게 확보하고 필요한 컷만 다시 만듭니다.",
-        "h1": "디렉터스 시퀀스(Directors Sequence)",
+        "h1": "디렉터스 시퀀스(Director's Sequence)",
         "intro": "한 장면에서 시작해 시간이 흐르는 8개의 연속 장면을 만듭니다. 짧은 시퀀스를 빠르게 구성하고, 필요한 컷만 다시 만드는 방식으로 다듬습니다. 짧은 시퀀스를 먼저 만들고 마음에 드는 컷만 남기는 방식이, 처음부터 한 컷씩 만드는 것보다 빠릅니다.",
         "features": [
           "키프레임 1장 → 8연속 장면",
@@ -973,9 +990,9 @@
         ]
       },
       "en": {
-        "title": "Directors Sequence — 8 continuous shots from one keyframe",
+        "title": "Director's Sequence — 8 continuous shots from one keyframe",
         "description": "Upload one keyframe and get eight continuous shots with time and transitions, then regenerate only what you need.",
-        "h1": "Directors Sequence",
+        "h1": "Director's Sequence",
         "intro": "One keyframe becomes eight continuous shots with time passing between them. Build the sequence fast, then regenerate only the shots that miss — much quicker than shooting shot by shot from scratch.",
         "features": [
           "One keyframe becomes eight continuous shots",
@@ -1004,6 +1021,7 @@
       "name": "Arrow View",
       "studio": "arw-view",
       "hub": "physics-inversion-patent-verify-before-render",
+      "hubSection": "post",
       "ko": {
         "title": "애로우 뷰 — 화살표만 그려 카메라 시점 생성 | XCONDA",
         "description": "이미지를 올리고 화살표로 카메라 방향을 지정하면 그 시점의 장면을 생성합니다. 3D 모델링 없이 컷마다 다른 방향을 확보합니다.",
@@ -1062,6 +1080,7 @@
       "name": "Seedance 2.5",
       "studio": "video",
       "hub": "seedance-2-5-length-resolution",
+      "hubSection": "qna",
       "ko": {
         "title": "Seedance 2.5 — 30초 영상·오디오 동시 생성 | XCONDA",
         "description": "ByteDance Seed의 Seedance 2.5를 XCONDA에서 제공합니다. 최대 30초, 영상·오디오 동시 생성, 레퍼런스 최대 50개, 타임스탬프 편집을 지원합니다.",
@@ -1120,6 +1139,7 @@
       "name": "Nano Banana Pro",
       "studio": "image",
       "hub": "flux-3-image-release",
+      "hubSection": "post",
       "ko": {
         "title": "나노 바나나 프로 — 정밀한 이미지 생성·편집 | XCONDA",
         "description": "나노 바나나 프로를 XCONDA 워크스페이스에서 그대로 씁니다. 참조 이미지와 프롬프트를 조합해 일관된 캐릭터·제품 이미지를 만듭니다.",

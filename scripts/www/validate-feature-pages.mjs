@@ -6,13 +6,14 @@
  *   1) 20개 페이지 · slug 중복 없음 · kebab-case
  *   2) 제목·설명 길이 (검색 결과에서 잘리지 않는 범위)
  *   3) 본문 구성 (h1 · intro · features 3~6 · faq 2~5)
- *   4) `hub` 값이 실제 허브 글 슬러그인지 (notion-content.json 대조)
+ *   4) `hub` · `hubSection` 이 실제 허브 글 경로와 일치하고 영어 번역이 있는지
  *
  * 실패하면 exit 1 — www 저장소에 옮기기 전에 여기서 먼저 막습니다.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { routePrefixFor } from "../../src/content/seo.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(here, "../..");
@@ -40,9 +41,12 @@ const basePath = data?.basePath ?? "features";
 
 if (pages.length !== 20) fail(`기능 페이지가 ${pages.length}개입니다 — 20개여야 합니다.`);
 
-const hubSlugs = new Set(
-  (JSON.parse(fs.readFileSync(SNAPSHOT, "utf8")).rows ?? []).map((r) => String(r.Slug ?? "").trim()).filter(Boolean),
+const hubRows = new Map(
+  (JSON.parse(fs.readFileSync(SNAPSHOT, "utf8")).rows ?? [])
+    .filter((r) => String(r.Slug ?? "").trim() && r.Published !== false)
+    .map((r) => [String(r.Slug).trim(), r]),
 );
+const hubEnglish = JSON.parse(fs.readFileSync(path.join(ROOT, "content/i18n/en.json"), "utf8")).entries ?? {};
 
 const seen = new Set();
 const rows = [];
@@ -54,8 +58,16 @@ for (const p of pages) {
 
   if (!p?.name) fail(`${id}: name 이 없습니다.`);
   if (!p?.studio) warn(`${id}: studio 경로가 없습니다(스튜디오 연결 없음).`);
-  if (!p?.hub) fail(`${id}: hub(허브 가이드 슬러그)가 없습니다.`);
-  else if (!hubSlugs.has(p.hub)) fail(`${id}: hub "${p.hub}" 가 허브 글 목록에 없습니다.`);
+  if (!p?.hub) fail(`${id}: hub(허브 글 슬러그)가 없습니다.`);
+  else if (!hubRows.has(p.hub)) fail(`${id}: hub "${p.hub}" 가 허브 글 목록에 없습니다.`);
+  else {
+    const section = routePrefixFor(hubRows.get(p.hub).__type);
+    if (!section || p.hubSection !== section) {
+      fail(`${id}: hubSection "${p.hubSection ?? "(없음)"}" — 실제 경로는 ${section ?? "확인 필요"} 입니다.`);
+    } else if (!hubEnglish[`${section}/${p.hub}`]) {
+      fail(`${id}: 허브 영어 번역 ${section}/${p.hub} 이 없어 /en/ 링크를 만들 수 없습니다.`);
+    }
+  }
 
   for (const lang of ["ko", "en"]) {
     const c = p?.[lang];

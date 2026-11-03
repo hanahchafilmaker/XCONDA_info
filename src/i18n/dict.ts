@@ -201,8 +201,8 @@ export const DICT: Dict = {
 
   /* ----------------------------- 푸터 ----------------------------- */
   "footer.tagline": {
-    ko: "AI Storyboard for Ad Campaigns. XCONDA의 모든 소식과 사용법을 가장 빠르게 전합니다.",
-    en: "AI Storyboard for Ad Campaigns. The fastest way to get all XCONDA news and how-tos.",
+    ko: "Directing Tools for AI Video — Storyboard & Blocking. XCONDA의 모든 소식과 사용법을 가장 빠르게 전합니다.",
+    en: "Directing Tools for AI Video — Storyboard & Blocking. The fastest way to get all XCONDA news and how-tos.",
   },
   "footer.navAria": { ko: "푸터", en: "Footer" },
   "footer.poweredNotion": { ko: "Powered by Notion", en: "Powered by Notion" },
