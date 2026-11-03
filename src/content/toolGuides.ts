@@ -124,7 +124,7 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
           "Cube Map 수정: 생성 후 특정 방향의 창문·가구·소품·벽면 디테일만 바꿀 때 사용합니다.",
         ] },
       ]),
-      { type: "p", text: "레퍼런스는 4장을 모두 넣어도 되고, 1장만 넣거나 전부 비운 채 Description만으로 시작해도 됩니다. 이미지 없이 진행할 때는 공간, 인물, 제품, 소품, 조명 분위기를 구체적으로 적어 주세요." },
+      { type: "p", text: "사진 1장이면 충분, 방향별로 최대 4장까지 사용할 수 있습니다. 이미지를 전부 비운 채 Description만으로도 시작할 수 있습니다. 이미지 없이 진행할 때는 공간, 인물, 제품, 소품, 조명 분위기를 구체적으로 적어 주세요." },
       callout("Reference 단계의 Generate는 크레딧을 사용하며, 완료되면 HDRI 단계로 이동합니다.", "⚡"),
       { type: "h2", text: "2. HDRI — 시점 선택과 부분 수정" },
       { type: "ol", items: [
@@ -185,7 +185,7 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
           "Cube Map edit: change a window, furniture, prop, wall, or other detail on one face after generation.",
         ] },
       ]),
-      { type: "p", text: "Use all four reference slots, only one, or leave them empty and rely on Description. For prompt-only work, describe the space, subject, product, props, and lighting mood in detail." },
+      { type: "p", text: "One photo is enough; use up to four from different directions, or leave the slots empty and rely on Description. For prompt-only work, describe the space, subject, product, props, and lighting mood in detail." },
       callout("Generate in the Reference step consumes credits and advances to HDRI when complete.", "⚡"),
       { type: "h2", text: "2. HDRI — choose an angle and refine the space" },
       { type: "ol", items: [
@@ -1449,7 +1449,7 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
       { type: "p", text: "키프레임 한 장을 기준으로 8개의 연속 장면을 자동 생성합니다. 한 장의 이미지에서 이야기가 이어지는 시퀀스를 빠르게 만들 수 있습니다." },
       { type: "h2", text: "사용 순서" },
       { type: "ol", items: [
-        "왼쪽 사이드바 16번째 아이콘으로 Directors Sequence를 엽니다.",
+        "왼쪽 사이드바 16번째 아이콘으로 Director's Sequence를 엽니다.",
         "KEY FRAME 영역의 업로드 박스 또는 New Key Frame 버튼으로 기준 이미지를 업로드합니다. (필수)",
         "(선택) Synopsis에 제작할 이야기·분위기·배경을 입력합니다.",
         "Directors Note에 다음 장면에 반영할 연출 메모를 입력하거나 수정합니다.",
@@ -1472,7 +1472,7 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
       { type: "p", text: "Automatically generate 8 consecutive scenes from a single keyframe — build a story-driven sequence from one image in minutes." },
       { type: "h2", text: "How to use" },
       { type: "ol", items: [
-        "Open Directors Sequence from the 16th sidebar icon.",
+        "Open Director's Sequence from the 16th sidebar icon.",
         "Upload the base image via the KEY FRAME upload box or the New Key Frame button. (Required)",
         "(Optional) Describe the story, mood, and setting in Synopsis.",
         "Enter or edit the direction memo for upcoming scenes in Directors Note.",

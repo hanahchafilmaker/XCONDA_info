@@ -164,7 +164,7 @@ function featureBody({ page, lang }) {
   const copy = page[lang];
   const L = LABELS[lang];
   const studio = `${lang === "ko" ? "/ko" : ""}/studio/${page.studio}`;
-  const hubPost = `https://hub.xconda.ai/${lang === "ko" ? "" : "en/"}post/${page.hub}/`;
+  const hubPost = `https://hub.xconda.ai/${lang === "ko" ? "" : "en/"}${page.hubSection}/${page.hub}/`;
   const related = pages.filter((p) => p.slug !== page.slug).slice(0, 4);
 
   return [
