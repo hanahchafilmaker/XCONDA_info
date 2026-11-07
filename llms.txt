@@ -17,6 +17,8 @@
 ## 툴 사용법
 
 - [FLEXBOARD 스토리보드 만들기 7단계 - AI 영상제작 과정](https://hub.xconda.ai/guide/flexboard-storyboard-guide/): 시나리오를 컷별 스토리보드로 만들고, 문제 있는 컷만 골라 고친 뒤 시댄스(Seedance) 2.5로 넘기는 FLEXBOARD 사용법을 7단계로 정리했습니다.
+- [XCONDA Image Generator 입력 조건 안내](https://hub.xconda.ai/guide/xconda-image-generator-input-guide/): Image Generator에서 모델마다 다른 프롬프트 글자 수·해상도·결과 비율·참조 한도와 참조 파일 규격을 정리했습니다. 입력 조건 안내 시리즈 1편입니다.
+- [XCONDA Video Generator 입력 조건 안내](https://hub.xconda.ai/guide/xconda-video-generator-input-guide/): Video Generator의 생성 모드, 모델별 기본 옵션과 입력 개수, 함께 쓸 수 없는 조합, Video edit·extend 조건, 모델별 파일 규격을 정리했습니다. 입력 조건 안내 시리즈 2편입니다.
 
 ## 공지사항
 

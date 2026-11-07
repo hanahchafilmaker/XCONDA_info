@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/guide/</loc>
-    <lastmod>2026-10-24</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/welcome-credits-500/</loc>
@@ -114,19 +114,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/gpt-6-1-terra-astra-sol/</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/deepmind-genie-4-world-model/</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/corridorkey-2-0-greenscreen-ai/</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/lemo-opuscar-code-only-film/</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/xconda-video-generator-seedance-2-5/</loc>
@@ -150,15 +150,23 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/blender-addon-single-photo-3d-model/</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/ai-web-drama-first-episode-guide/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/xconda-skill-set/</loc>
     <lastmod>2026-11-06</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/guide/xconda-image-generator-input-guide/</loc>
+    <lastmod>2026-11-07</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/guide/xconda-video-generator-input-guide/</loc>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/contact-inquiry/</loc>
