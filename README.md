@@ -34,7 +34,7 @@ npm run build        # dist/dev.html → index.html + 글별 페이지 · sitema
 | [`admin-guide.html`](./admin-guide.html) | 운영자 | 콘텐츠 관리 실무 매뉴얼(색인 제외) |
 | [`user-guide.html`](./user-guide.html) | 사용자 | 스튜디오 19개 툴 사용 가이드(공개·색인) |
 | [`www/README.md`](./www/README.md) | 개발자 | www.xconda.ai 기능 페이지 원고·산출물·이관 절차 |
-| [`reports/`](./reports) | 의사결정자 | SEO/GEO 감사 · 개선 리포트 · 번역 QC |
+| [`reports/`](./reports) | 의사결정자 | SEO/GEO 감사 · 개선 리포트 · 번역 QC · 사고 대응 보고(색인 차단) |
 
 ## 자동화
 
@@ -45,6 +45,7 @@ npm run build        # dist/dev.html → index.html + 글별 페이지 · sitema
 | **www 기능 페이지 산출물** | main 의 `www/**` 변경 | `www:check`·`www:build` 후 `www-dist` 아티팩트(30일) 업로드 |
 | **pages build and deployment** | main 푸시 | GitHub Pages 배포 |
 
+`npm run content:audit` 는 **발행 전 점검**입니다 — 노션 스냅샷만 읽어(읽기 전용) 게시된 글의 `Slug`·`SEO 제목`·`SEO 설명`·커버 누락과 중복 후보를 표로 보여 줍니다. 대시보드 없이 114건을 30초에 확인할 수 있고, 판정 기준은 빌드와 같은 `src/content/seo.js`·`src/content/classify.js` 를 씁니다(`-- --check` 는 오류가 있으면 exit 1).
 `npm run i18n:qc` 는 번역 초안의 연락처·숫자·통화·제목 중복을 점검합니다(`-- --write` 로 `reports/` 갱신).
 `npm run i18n:progress` 는 **검수 진행률**을 셉니다 — 95항목 × 3언어 중 `YYYY-MM-DD 검수 완료(검수자)` 로 표시된 항목 수와, 기계 점검이 문제를 찾은 항목을 묶어 `reports/i18n-progress-<날짜>.md` 로 남깁니다. CI(`build-site.yml`)는 이 스크립트를 `-- --summary` 로 불러 **실행 요약에 진행률과 "번역이 없는 원문(새 글)"** 을 남깁니다.
 공유 미리보기 카드는 언어별로 따로 있습니다 — `npm run og:cards` 가 언어 홈 · 목록 · 커버 없는 글의 1200×630 카드를 `assets/img/og/lang/` 에 그리고 목록(manifest)을 갱신합니다(카드는 커밋되는 산출물이라 CI 에 Pillow 가 필요 없습니다).
