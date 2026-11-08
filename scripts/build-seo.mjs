@@ -10,7 +10,7 @@
  *   qna/{slug}/index.html      Q&A
  *   guide/{slug}/index.html    툴 사용법 (노션 가이드)
  *   sitemap.xml                주소 조건을 통과한 글만 (게시 해제된 글은 다음 생성 때 빠집니다)
- *   robots.txt                 사이트맵 위치 안내
+ *   robots.txt                 사이트맵 위치 안내 + /reports/ 색인 차단(사고 대응 문서)
  *   index.html                 홈 — 기본 메타 (한국어 문구는 src/content/seo.js 한 곳)
  *
  * 각 글 파일은 빌드된 앱 HTML(index.html)을 그대로 쓰고 <head> 와 #root 만 바꿉니다.
