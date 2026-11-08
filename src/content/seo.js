@@ -556,9 +556,18 @@ export function sitemapXml(urls) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
-/** robots.txt — 모든 크롤러 허용 + 사이트맵 위치 */
+/**
+ * robots.txt — 모든 크롤러 허용 + 사이트맵 위치
+ *
+ * `/reports/` 만 예외로 막습니다. 이 폴더에는 SEO 감사 문서와 함께 **사고 대응·피해액·
+ * 수사 관련 보고서**가 Markdown/Word 로 들어 있고, GitHub Pages 는 저장소 루트를 그대로
+ * 서빙하므로 아무 설정이 없으면 그대로 공개됩니다. 문서에 적힌 계정·금액·대응 상태가
+ * 검색 결과에 노출되지 않도록 색인만이라도 차단합니다.
+ * ⚠️ robots.txt 는 **색인 요청 차단**일 뿐 접근 제어가 아닙니다. 주소를 아는 사람은
+ *    여전히 내려받을 수 있으므로, 민감한 보고서는 비공개 저장소로 옮기는 것이 원칙입니다.
+ */
 export function robotsTxt(siteUrl) {
-  return `User-agent: *\nAllow: /\n\nSitemap: ${absoluteUrl(siteUrl, "sitemap.xml")}\n`;
+  return `User-agent: *\nAllow: /\nDisallow: /reports/\n\nSitemap: ${absoluteUrl(siteUrl, "sitemap.xml")}\n`;
 }
 
 /**

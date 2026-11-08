@@ -416,6 +416,10 @@ test("사이트맵은 조건을 통과한 글과 홈만 담고, robots.txt 는 �
   // 홈도 lastmod 를 갖습니다(전에는 비어 있었습니다)
   assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/<\/loc>\n    <lastmod>/);
   assert.match(pageOf("robots.txt"), /Sitemap: https:\/\/example\.test\/XCONDA_info\/sitemap\.xml/);
+  // `/reports/` 는 색인에서 제외합니다 — 사고 대응·피해액 문서가 Markdown/Word 로 들어 있어
+  // GitHub Pages 가 그대로 공개 서빙합니다(robots.txt 는 색인만 막고 다운로드는 못 막습니다).
+  assert.match(pageOf("robots.txt"), /Disallow: \/reports\//);
+  assert.match(pageOf("robots.txt"), /Allow: \//);
 });
 
 test("홈 index.html 은 한국어 기본 메타를 한 번만 갖고, 크롤러용 글 목록을 정적 HTML 로 담는다", () => {
