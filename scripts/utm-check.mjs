@@ -36,7 +36,7 @@ export const ALLOWED_TEAM = ["mhw", "cb"];
 export const EXAMPLES = [
   "https://www.xconda.ai/?utm_source=instagram&utm_medium=social&utm_campaign=flexboard_202611&utm_content=mhw_reel01",
   "https://www.xconda.ai/?utm_source=youtube&utm_medium=video&utm_campaign=flexboard_202611&utm_content=cb_video01",
-  "https://hub.xconda.ai/post/kbs-documentary-seongmul-xconda/?utm_source=instagram&utm_medium=social&utm_campaign=case_kbs_202611&utm_content=cb_post03",
+  "https://hub.xconda.ai/en/post/kbs-documentary-seongmul-xconda/?utm_source=instagram&utm_medium=social&utm_campaign=case_kbs_202611&utm_content=cb_post03",
   "https://www.xconda.ai/?utm_source=newsletter&utm_medium=email&utm_campaign=flexboard_202611&utm_content=cb_mail01",
   "https://www.xconda.ai/?utm_source=reddit&utm_medium=community&utm_campaign=flexboard_202611&utm_content=mhw_reddit01",
   "https://www.xconda.ai/?utm_source=instagram&utm_medium=paid&utm_campaign=flexboard_202611&utm_content=mhw_ad01&utm_term=ai_storyboard",
