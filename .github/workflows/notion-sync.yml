@@ -102,7 +102,10 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          node scripts/notion-snapshot.mjs --out notion-content.json 2>&1 | tee /tmp/notion-snapshot.log
+          # --heartbeat-min 0 = 하트비트로는 파일을 쓰지 않음(콘텐츠가 바뀔 때만 커밋·배포).
+          # 1시간마다 1.5MB 스냅샷을 다시 커밋해 사이트를 통째로 재배포하던 것을 없앱니다.
+          # 동기화 생존 여부는 사이트 배지가 GitHub Actions 실행 상태로 직접 확인합니다.
+          node scripts/notion-snapshot.mjs --out notion-content.json --heartbeat-min 0 2>&1 | tee /tmp/notion-snapshot.log
 
       - name: 동기화 결과를 실행 요약에 남긴다
         # 성공/실패와 무관하게 항상 돕니다. 실패한 날은 사이트가 **직전 스냅샷 상태**라는 사실과

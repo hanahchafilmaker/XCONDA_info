@@ -197,7 +197,7 @@ XCONDA_info/
    node scripts/notion-snapshot.mjs --out notion-content.json
       · 서버에서 www.notion.so/api/v3 호출 (CORS 없음, 3회 재시도)
       · 행(row) + 본문(record map)을 슬림화해 저장
-      · 내용이 같으면 쓰지 않음(하트비트 60분) → 빈 커밋 방지
+      · 내용이 같으면 쓰지 않음(하트비트 기본 OFF — `--heartbeat-min 0`) → 빈 커밋·재배포 0회
       · Summary 탭에 "글→섹션" 분류표 + 확인 필요 항목 기록
              │
              ▼  (변경 있을 때만 커밋)
@@ -246,7 +246,8 @@ XCONDA_info/
 | `src/content/fields.js` (+`.d.ts`) | 노션 속성 별칭(`Cover`/`커버`), 썸네일 파생(페이지 커버 → 본문 첫 이미지), 작성자, 노션 이미지 프록시 서명 | 위와 동일 |
 | `src/notion.ts` | 엔드포인트 결정, 속성→`Entry` 변환(`mapPage`), Notion 블록→`Block[]`(`mapBlocks`), 로컬 캐시, 날짜/시간 포맷 | Worker(비공개) 경로와 공개 경로를 모두 처리 |
 | `src/notionPublic.ts` | 공개 페이지 어댑터. **스냅샷 우선 → 공개 프록시 보조**, 구 record-map 디코딩, 스냅샷 `__type` 우선 적용 | 여기가 "노션엔 뉴스인데 사이트엔 공지"가 갈리는 지점. `scripts/smoke-sections.mjs`가 실제 코드로 검증 |
-| `src/notionSnapshot.ts` | 스냅샷 fetch/TTL(60초)/낡음 판정(6시간)/페이지 본문 조회 | `SNAPSHOT_STALE_MS`는 하트비트(60분)보다 충분히 커야 함 |
+| `src/notionSnapshot.ts` | 스냅샷 fetch/TTL(60초)/낡음 판정(7일)/페이지 본문 조회 | 스냅샷은 이제 **콘텐츠가 바뀔 때만** 갱신되므로 "오래된 스냅샷"은 정상. 동기화 생존은 `src/syncHealth.ts` 가 담당 |
+| `src/syncHealth.ts` · `src/content/syncHealth.js` | 배지용 동기화 생존 신호 — 공개 저장소 Actions 실행 상태(익명, 60회/시간). 실패하면 조용히 null → 스냅샷 시각으로 폴백 | 사이트가 외부 API(api.github.com)를 읽는 유일한 곳. CSP 없음, CORS 허용 |
 | `src/content/ContentContext.tsx` | 데이터 소유. 동기화·폴링·섹션 분류·정렬·모달 상태·딥링크 | 정렬 규칙은 여기(공지는 `pinned` 우선, 가이드·FAQ는 `order`, 나머지는 날짜 내림차순) |
 | `src/i18n/dict.ts` (224키) | UI 문구 한/영 사전 + `META`(4언어 title/메타) + 비 React 유틸용 전역 언어 변수 | 키는 `ko`/`en` **항상 동시 추가** |
 | `src/i18n/google.ts` | Google 번역 위젯 연동 — `Target`(ko/en/ja/zh-CN), `googtrans` 쿠키 설정/해독, 위젯 로더 `loadTranslateWidget`(EN/JA/ZH만) | 위젯 UI는 숨김. 쿠키는 언어 결정의 **결과물**(입력 아님) |
@@ -257,7 +258,7 @@ XCONDA_info/
 | `src/content/sample.ts` / `sample.en.ts` | Notion 미연동(샘플 모드)일 때 보여줄 23개 예시 글 | `?notion=off`로 확인 가능 |
 | `src/components/volt.tsx` | 디자인 시스템 프리미티브(Logo, SectionHeader, Reveal, Tabs, Pill, FilterChip, VoltButton, GhostButton, Modal, 아이콘) | 새 UI는 여기의 컴포넌트 조합으로 만듭니다 |
 | `src/components/common.tsx` | 콘텐츠 공용 컴포넌트(`CategoryBadge`, `TypeLabel`, `Byline`, `NewBadge`, `SyncButton`, `SyncStatus`, `SmartImage`, `RichText`, `Blocks`) | `SyncStatus`가 동기화 배지 |
-| `scripts/notion-snapshot.mjs` (720줄) | 스냅샷 생성기 + Actions Summary 리포트 + 하트비트 판정(`shouldWriteSnapshot`) | Notion 비공개 API(`www.notion.so/api/v3`) 사용 → 노션 변경 시 깨질 수 있는 **유일한 취약 지점** |
+| `scripts/notion-snapshot.mjs` | 스냅샷 생성기 + Actions Summary 리포트 + 변경 판정(`shouldWriteSnapshot`) + 본문 재사용/요동 방지 | Notion 비공개 API(`www.notion.so/api/v3`) 사용 → 노션 변경 시 깨질 수 있는 **유일한 취약 지점** |
 
 ### 7.1 SEO · GEO 출력물 (2026-10-25 정비)
 
@@ -421,7 +422,7 @@ type Entry = {
 ### 9.3 빈 커밋 방지 3중 장치
 
 1. **내용 지문 비교** (`stableStringify` → `snapshotContentKey`): `source` · `rows` · `pages`가 같으면 파일을 쓰지 않습니다.
-2. **하트비트** (`HEARTBEAT_MS = 60분`): 내용이 같아도 1시간 지나면 한 번 갱신 — 배지의 "n분 전"과 낡음 판정이 `generatedAt`에 의존하기 때문입니다.
+2. ~~**하트비트** (`HEARTBEAT_MS = 60분`)~~ — **2026-11-10 폐지(기본 OFF)**: 내용이 같아도 1시간마다 1.5MB 스냅샷을 다시 커밋해 **하루 24회 사이트 전체 재배포**가 일어났습니다. 이제 워크플로가 `--heartbeat-min 0` 으로 돌고, 배지는 스냅샷 시각 대신 **Actions 실행 상태**(`src/syncHealth.ts`)를 씁니다. 수동 하트비트가 필요하면 `--heartbeat-min 60`.
 3. **커밋 전 `git status` 확인**: 변경 없으면 커밋 생략 → GitHub Pages 빌드(시간당 10회 soft limit)를 소모하지 않습니다.
 
 ### 9.4 낡음(stale) 판정과 폴백
@@ -642,6 +643,7 @@ npm run build
 | 14 | **글 주소·미리보기 반영 지연** — 노션을 고쳐도 `/post/{slug}/` 페이지·sitemap·공유 미리보기는 **동기화 워크플로가 돌아야** 바뀜. 카카오·X·Google 은 미리보기를 캐시함 | 반영 시간은 9.2 와 같습니다. 캐시는 카카오 공유 디버거 · X 카드 검증기 · Google Search Console **URL 검사 → 색인 생성 요청**으로 갱신. Slug 를 바꾸면 옛 주소는 404 가 되므로 **Slug 는 발행 후 바꾸지 않기** |
 | 15 | **노션 공개 API 의 레이트리밋(`HTTP 429` · Cloudflare `Error 1015`)** — 2026-11-08 05:13Z~11-10 00:53Z, 44시간 동안 동기화가 **매 실행 실패**해 그 사이 쓴 글이 사이트에 올라가지 않았음. 5분 주기 동기화가 실행마다 글 40여 건 + Q&A 70여 건의 **본문을 매번 새로** 요청해 노션 쪽 제한에 걸린 것 | **본문 재사용**으로 해결 — 행의 `__modified`(노션 `last_edited_time`)가 그대로면 이전 스냅샷 본문을 그대로 씀(`reusableBody` · `loadHubQna` 의 `previous` 캐시). 요청 수 100+/회 → 평시 5~6/회. 429 는 `Retry-After` 를 존중해 길게 재시도. **수정 시각을 모르면 재사용하지 않음**(안전한 쪽) |
 | 16 | **실패한 동기화가 초록불로 보였음** — `continue-on-error` 때문에 스냅샷이 실패해도 워크플로 결론은 `success` | 이제 마지막 스텝이 실행을 **실패로 되돌리고**(`::error::` + exit 1), 실패 로그 마지막 20줄을 실행 요약에 남김. 저장소 `Actions` 목록에서 빨간불이면 실제로 반영이 멈춘 상태 |
+| 17 | **내용이 그대로여도 사이트 전체가 다시 배포되던 문제** — ①1시간 하트비트(1.5MB 스냅샷 재커밋, 하루 24회) ②Q&A 답변이 일부만 읽혀 비었다가 되돌아오는 **요동 커밋**(표본 30쌍 중 8쌍, 바뀐 속성 43건 중 42건이 `Summary`) | ①하트비트 폐지 — **콘텐츠가 바뀔 때만** 커밋·배포, 생존 신호는 Actions 상태로 ②읽기 실패/빈 본문이면 **이전 스냅샷 본문·답변을 그대로 유지**(`previousBodyOf` · `previousQnaRow`, `report.kept`) ③본문 재사용(#120)으로 요청 100+/회 → 평시 5~6/회 |
 
 ---
 

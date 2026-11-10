@@ -1,9 +1,10 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Check, Copy, ExternalLink, ImageOff, PenLine } from "lucide-react";
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { useLang, typeLabel } from "../i18n";
 import { formatDate, isPublicEndpoint, timeAgo } from "../notion";
+import { cachedSyncHealth, loadSyncHealth, type SyncHealth } from "../syncHealth";
 import { cn } from "../utils/cn";
 
 /* ----------------------------- Badges ----------------------------- */
@@ -80,7 +81,7 @@ export function NewBadge() {
  */
 
 /**
- * 서버 스냅샷이 이 시간보다 오래됐으면 "지연"으로 표시합니다.
+ * 마지막 동기화가 이 시간보다 오래됐으면 "지연"으로 표시합니다.
  * GitHub 의 기본 `schedule` 은 수 시간까지 밀리므로, 배지만 초록색으로 두면
  * "노션에 올렸는데 사이트엔 왜 안 나오지?" 의 원인을 알 수 없습니다.
  * (해결: NOTION_SETUP.md 「⏱ 반영 속도 보장하기」 — 외부 스케줄러 10분 호출)
@@ -90,21 +91,39 @@ const SYNC_DELAY_MS = 90 * 60 * 1000;
 export function SyncStatus({ className }: { className?: string }) {
   const { t, pick } = useLang();
   const { source, status, syncedAt, endpoint } = useContent();
+  // 동기화 생존 신호는 이제 "스냅샷이 언제 다시 쓰였나"가 아니라 **Actions 실행 상태**입니다.
+  // (스냅샷은 콘텐츠가 바뀔 때만 커밋되므로, 조용한 날에는 며칠 전 파일이 정상입니다.)
+  const [health, setHealth] = useState<SyncHealth | null>(() => cachedSyncHealth());
+  useEffect(() => {
+    let alive = true;
+    loadSyncHealth().then((value) => {
+      if (alive && value) setHealth(value);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
   const live = source === "notion" && status !== "error";
   const isPublic = endpoint ? isPublicEndpoint(endpoint) : false;
-  const ago = syncedAt ? timeAgo(syncedAt) : "";
-  const delayed = live && isPublic && !!syncedAt && Date.now() - syncedAt > SYNC_DELAY_MS;
+  // 배지 시각 = 마지막 **성공** 동기화 시각(Actions) → 없으면 스냅샷 생성 시각.
+  const lastOkAt = health && Number.isFinite(health.lastSuccessAt) ? health.lastSuccessAt : null;
+  const shownAt = lastOkAt ?? syncedAt ?? null;
+  const ago = shownAt ? timeAgo(shownAt) : "";
+  const failed = live && isPublic && health ? !health.ok : false;
+  const delayed = live && isPublic && !failed && !!shownAt && Date.now() - shownAt > SYNC_DELAY_MS;
   const label =
     status === "loading"
       ? t("sync.loading")
       : status === "syncing"
         ? t("sync.syncing")
         : live
-          ? delayed
-            ? pick(`Notion 동기화 지연 · ${ago}`, `Notion sync delayed · ${ago}`)
-            : isPublic
-              ? pick(`Notion 동기화 · ${ago}`, `Notion Synced · ${ago}`)
-              : pick(`Notion 실시간 연동 · ${ago}`, `Live from Notion · ${ago}`)
+          ? failed
+            ? pick(`Notion 동기화 실패 · 성공 ${ago}`, `Notion sync failed · last success ${ago}`)
+            : delayed
+              ? pick(`Notion 동기화 지연 · ${ago}`, `Notion sync delayed · ${ago}`)
+              : isPublic
+                ? pick(`Notion 동기화 · ${ago}`, `Notion Synced · ${ago}`)
+                : pick(`Notion 실시간 연동 · ${ago}`, `Live from Notion · ${ago}`)
           : status === "error"
             ? t("sync.error")
             : t("sync.sample");
@@ -112,7 +131,12 @@ export function SyncStatus({ className }: { className?: string }) {
     <div
       className={cn("inline-flex items-center gap-2 text-[13px] text-neutral-500", className)}
       title={
-        delayed
+        failed
+          ? pick(
+              `마지막 동기화 실행이 실패했습니다(마지막 성공 ${ago}). 그 이후 노션에 올린 글·수정은 사이트에 반영되지 않았습니다 — 저장소 Actions → “Notion 동기화” 실행 상태와 요약을 확인하세요.`,
+              `The last sync run failed (last success ${ago}). Notion changes since then are not on the site yet — check the “Notion 동기화” workflow in Actions.`
+            )
+          : delayed
           ? pick(
               `서버 동기화가 ${ago} 멈춰 있습니다 — 노션에 올린 새 글이 아직 사이트에 반영되지 않았을 수 있습니다. 저장소 Actions → “Notion 동기화” → Run workflow 로 즉시 반영하거나, NOTION_SETUP.md 의 「⏱ 반영 속도 보장하기」대로 외부 스케줄러를 설정하면 약 10분 주기로 반영됩니다.`,
               `The server snapshot is ${ago} — new Notion posts may not appear yet. Run the “Notion 동기화” workflow in Actions, or set up the external scheduler described in NOTION_SETUP.md for ~10-minute updates.`
@@ -126,7 +150,15 @@ export function SyncStatus({ className }: { className?: string }) {
       <span
         className={cn(
           "h-1.5 w-1.5 rounded-full",
-          live ? (delayed ? "bg-amber-400" : "bg-emerald-400") : status === "error" ? "bg-rose-400" : "bg-amber-400"
+          live
+            ? failed
+              ? "bg-rose-400"
+              : delayed
+                ? "bg-amber-400"
+                : "bg-emerald-400"
+            : status === "error"
+              ? "bg-rose-400"
+              : "bg-amber-400"
         )}
       />
       <NotionMark className="h-3.5 w-3.5 text-neutral-500" />

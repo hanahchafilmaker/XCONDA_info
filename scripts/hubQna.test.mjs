@@ -355,6 +355,34 @@ test("loadHubQna: 질문 페이지가 그대로면 본문을 다시 읽지 않�
   assert.equal(third.loaded.length, 2); // 표(1) + 수정된 문항(1)
 });
 
+test("loadHubQna: 본문을 끝내 못 읽으면 이전 답변을 그대로 둔다 (빈 답변 노출·요동 커밋 방지)", async () => {
+  const first = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }));
+  const previous = {
+    // 질문이 방금 수정된 상황(이전 __modified 와 다름) → 캐시를 쓰지 않고 본문을 다시 읽는다
+    rows: first.value.rows.map((r) =>
+      r.id === "11111111111111111111111111111111" ? { ...r, __modified: "2020-01-01" } : r
+    ),
+    pages: first.value.pages,
+  };
+
+  // 질문 페이지가 계속 빈 본문으로 온다(레이트리밋) → 재시도 후 실패
+  const flaky = { "11111111-1111-1111-1111-111111111111": 99 };
+  const second = await withFakeNotion(
+    () => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, previous }),
+    { flaky }
+  );
+
+  assert.equal(second.value.report.kept, 1); // 이전 답변 유지
+  const kept = second.value.rows.find((r) => r.id === "11111111111111111111111111111111");
+  assert.equal(kept.Summary, "답변 본문입니다."); // 빈 문자열로 덮어쓰지 않는다
+  assert.ok(second.value.pages[kept.id], "모달 본문도 유지된다");
+  assert.equal(
+    second.value.rows.some((r) => r.id === kept.id && !String(r.Summary ?? "").trim()),
+    false,
+    "빈 답변이 게시되면 안 된다"
+  );
+});
+
 test("loadHubQna: 본문이 일시적으로 비어 오면 다시 읽어 답변을 채운다 (레이트리밋 대비)", async () => {
   const { value: result } = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }), {
     flaky: { "11111111-1111-1111-1111-111111111111": 1 }, // 첫 요청은 빈 recordMap

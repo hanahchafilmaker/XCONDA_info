@@ -35,12 +35,13 @@ const TTL_MS = 60_000;
 
 /**
  * 이 시간 이상 오래된 스냅샷은 "낡음(stale)"으로 취급해 공개 API 를 먼저 시도합니다.
- * 워크플로는 내용이 같아도 1시간마다 스냅샷을 갱신(하트비트)하므로, 동기화가 정상이라면
- * 6시간이 지날 수 없습니다 → 6시간 초과 = 동기화 트리거(스케줄)가 멈춘 것으로 간주합니다.
- * (GitHub 기본 cron 만 쓰면 실행 간격이 2~8시간이라 이 값을 넘는 일이 실제로 생깁니다.
- *  외부 스케줄러 설정 방법: NOTION_SETUP.md 「⏱ 반영 속도 보장하기」)
+ *
+ * ⚠️ 2026-11-10 부터 스냅샷은 **콘텐츠가 바뀔 때만** 커밋됩니다(1시간 하트비트 제거).
+ *    그래서 "스냅샷이 6시간 넘게 그대로"는 **정상**이고(그동안 노션에 새 글이 없었다는 뜻),
+ *    동기화가 살아 있는지는 `syncHealth.ts` 가 Actions 실행 상태로 따로 확인합니다.
+ *    여기 값은 "스냅샷이 아예 만들어지지 않은 사이트"를 구제하는 최후 수단이라 넉넉히 둡니다.
  */
-export const SNAPSHOT_STALE_MS = 6 * 60 * 60 * 1000;
+export const SNAPSHOT_STALE_MS = 7 * 24 * 60 * 60 * 1000;
 
 let pending: Promise<NotionSnapshot | null> | null = null;
 let cached: { at: number; value: NotionSnapshot | null } | null = null;

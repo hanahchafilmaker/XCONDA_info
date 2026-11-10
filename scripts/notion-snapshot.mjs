@@ -421,15 +421,27 @@ export function reusableBody(previous, row) {
   return cached;
 }
 
+/** 이전 스냅샷에 남아 있는 본문 블록맵 (없거나 비었으면 null) */
+function previousBodyOf(previous, id) {
+  const body = previous?.pages?.[id];
+  return isRecord(body) && Object.keys(body).length ? body : null;
+}
+
+/** 이전 스냅샷의 허브 Q&A 행 + 본문 (없으면 null) — 수정 시각과 무관하게 찾습니다. */
+function previousQnaRow(previous, id) {
+  if (!isRecord(previous) || !Array.isArray(previous.rows) || !id) return null;
+  const row = previous.rows.find((r) => r?.id === id && r?.__source === HUB_QNA_SOURCE);
+  if (!row) return null;
+  return { row, body: previousBodyOf(previous, id) };
+}
+
 /** 허브 Q&A 문항 — 질문 페이지가 그대로면 이전 스냅샷의 사이트 행·본문을 그대로 씁니다. */
 function cachedQnaRow(previous, id, modified) {
-  if (!isRecord(previous) || !isRecord(previous.pages) || !id || !modified) return null;
-  const before = (Array.isArray(previous.rows) ? previous.rows : []).find(
-    (r) => r?.id === id && r?.__source === HUB_QNA_SOURCE
-  );
-  if (!before || String(before.__modified ?? "") !== String(modified)) return null;
-  if (!isRecord(previous.pages[id])) return null;
-  return before;
+  if (!modified) return null;
+  const cached = previousQnaRow(previous, id);
+  if (!cached || !cached.body) return null;
+  if (String(cached.row.__modified ?? "") !== String(modified)) return null;
+  return cached.row;
 }
 
 /**
@@ -446,6 +458,7 @@ export async function loadHubQna({ pageId, databaseId, previous } = {}) {
     skipped: null,
     rowCount: 0,
     reused: 0, // 본문을 다시 읽지 않고 이전 스냅샷에서 재사용한 문항 수
+    kept: 0, // 읽기 실패로 이전 스냅샷의 답변을 그대로 쓴 문항 수
     included: [],
     excluded: [],
     missingAnswer: [],
@@ -548,6 +561,22 @@ export async function loadHubQna({ pageId, databaseId, previous } = {}) {
       body = await loadBodyMap(row.id);
     } catch (error) {
       report.notes.push(`본문 로드 실패 — "${info.title}": ${error?.message ?? error}`);
+    }
+    if (!body) {
+      // 본문을 못 읽었다고 **빈 답변을 게시하지 않습니다.** 이전 스냅샷의 답변이 있으면 그대로 씁니다.
+      // (빈 답변이 게시되면 사이트에는 "답변 없는 Q&A"가 잠깐 보이고, 다음 실행에서 되돌아오는 요동 커밋이 생깁니다.)
+      const fallback = previousQnaRow(previous, row.id);
+      if (fallback?.body) {
+        result.rows.push(fallback.row);
+        result.pages[row.id] = fallback.body;
+        info.answerLength = String(fallback.row.Summary ?? "").length;
+        info.answerFrom = "cache";
+        if (!info.answerLength) report.missingAnswer.push(info);
+        report.included.push(info);
+        report.kept += 1;
+        console.warn(`  └ Q&A 본문 읽기 실패 — 이전 답변 유지: "${info.title}"`);
+        continue;
+      }
     }
     await sleep(200);
     const answer = body ? hubAnswerFromPage(body, row.id) : { text: "", from: "none", sections: [] };
@@ -697,6 +726,7 @@ export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
   //  - 수정되지 않은 글은 이전 스냅샷의 본문을 그대로 씁니다(노션 레이트리밋 회피).
   const pages = {};
   let reusedBodies = 0;
+  let keptBodies = 0; // 읽기 실패로 이전 본문을 그대로 쓴 수
   for (const row of rows) {
     const cachedBody = reusableBody(previous, row);
     if (cachedBody) {
@@ -707,6 +737,14 @@ export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
         pages[row.id] = await loadBlockMap(row.id);
       } catch (error) {
         console.warn(`  · 본문 로드 실패 (${row.id}): ${error?.message ?? error}`);
+        // 읽기에 실패했다고 **빈 본문을 게시하지 않습니다.** 이전 스냅샷에 본문이 있으면 그대로 씁니다.
+        // (빈 본문을 쓰면 사이트에서 글이 잠깐 사라지고, 다음 실행에서 되돌아오는 요동 커밋이 생깁니다.)
+        const fallback = previousBodyOf(previous, row.id);
+        if (fallback) {
+          pages[row.id] = fallback;
+          keptBodies += 1;
+          console.warn(`  └ 이전 스냅샷 본문 유지 (${row.id}) — 빈 본문 게시 방지`);
+        }
       }
     }
 
@@ -745,7 +783,8 @@ export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
     `[Notion Sync] 허브 Q&A: 포함 ${qna.report.included.length} · 제외 ${qna.report.excluded.length} (읽은 문항 ${qna.report.rowCount} · 본문 재사용 ${qna.report.reused})`
   );
   console.log(
-    `[Notion Sync] 본문 요청 절약: 글 ${reusedBodies}/${rows.length - qna.rows.length} · Q&A ${qna.report.reused}/${qna.rows.length} 재사용`
+    `[Notion Sync] 본문 요청 절약: 글 ${reusedBodies}/${rows.length - qna.rows.length} · Q&A ${qna.report.reused}/${qna.rows.length} 재사용` +
+      (keptBodies || qna.report.kept ? ` · 읽기 실패로 이전 본문 유지 ${keptBodies + qna.report.kept}건` : "")
   );
 
   return {
@@ -1014,8 +1053,14 @@ export async function appendSyncSummary(markdown) {
  * GitHub Pages(브랜치 배포)는 시간당 10회 빌드가 soft limit 이라, 외부 스케줄러로 동기화를
  * 자주 호출하려면 "내용이 바뀔 때만" 파일을 갱신해야 합니다.
  *
- * 단, 사이트의 "n분 전" 표시와 낡음(stale) 판정이 generatedAt 에 의존하므로
- * 내용이 같아도 HEARTBEAT_MS 가 지나면 한 번 갱신(하트비트)합니다.
+ * 단, 사이트의 "n분 전" 표시가 generatedAt 에 의존하므로 예전에는 내용이 같아도
+ * HEARTBEAT_MS(1시간)마다 한 번씩 파일을 다시 썼습니다(하트비트).
+ *
+ * ⚠️ 2026-11-10 부터 **하트비트를 기본으로 끕니다**(워크플로가 `--heartbeat-min 0` 을 넘깁니다).
+ *    1시간마다 1.5MB 스냅샷을 다시 커밋해 하루 24회 사이트를 재배포했고, 그게 "매번 사이트 전체가
+ *    갱신되는" 주 원인이었습니다. 이제 **콘텐츠가 실제로 바뀔 때만** 커밋합니다.
+ *    동기화가 살아 있는지는 사이트 상단 배지가 GitHub Actions 실행 상태로 직접 확인합니다
+ *    (`src/syncHealth.ts`). 수동으로 하트비트가 필요하면 `--heartbeat-min 60`.
  */
 export const HEARTBEAT_MS = 60 * 60 * 1000;
 
@@ -1058,10 +1103,11 @@ export const snapshotContentKey = (snapshot) =>
 export function shouldWriteSnapshot(previous, next, { now = Date.now(), heartbeatMs = HEARTBEAT_MS } = {}) {
   if (!isRecord(previous) || !Array.isArray(previous.rows)) return { write: true, reason: "이전 스냅샷 없음" };
   if (snapshotContentKey(previous) !== snapshotContentKey(next)) return { write: true, reason: "내용 변경" };
+  // generatedAt 이 깨졌으면 표시·판정이 어긋나므로 한 번 바로잡습니다(내용은 그대로).
   const previousAt = Date.parse(previous.generatedAt ?? "");
-  if (!Number.isFinite(previousAt) || previousAt > now || now - previousAt >= heartbeatMs) {
-    return { write: true, reason: "하트비트 갱신" };
-  }
+  if (!Number.isFinite(previousAt) || previousAt > now) return { write: true, reason: "하트비트 갱신" };
+  // heartbeatMs <= 0 → 하트비트 없음: 내용이 같으면 파일을 건드리지 않습니다(커밋·재배포 0회).
+  if (heartbeatMs > 0 && now - previousAt >= heartbeatMs) return { write: true, reason: "하트비트 갱신" };
   return { write: false, reason: "변경 없음" };
 }
 

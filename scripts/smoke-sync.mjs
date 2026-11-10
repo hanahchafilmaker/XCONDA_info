@@ -46,7 +46,7 @@ const reply = (status, body) => ({
  * @param proxy           "dead" = splitbee /table 500 + /page 는 표 없음 (현재 실제 상태)
  *                        "live" = /table 이 행 4개(새 글 1개 포함)를 돌려줌
  */
-async function runScenario({ name, snapshotAgeMin, proxy }) {
+async function runScenario({ name, snapshotAgeMin, proxy, health }) {
   const problems = [];
   const vc = new VirtualConsole();
   vc.on("jsdomError", (e) => problems.push(`jsdomError: ${e.message}`));
@@ -79,6 +79,17 @@ async function runScenario({ name, snapshotAgeMin, proxy }) {
   window.fetch = async (input) => {
     const url = String(input);
     calls.push(url);
+    if (url.includes("api.github.com")) {
+      // Actions 실행 상태 — 배지가 "동기화가 살아 있는가"를 확인하는 경로
+      if (!health) return reply(503, "unavailable");
+      const at = (min) => new Date(Date.now() - min * 60_000).toISOString();
+      return reply(200, {
+        workflow_runs: [
+          { status: "completed", conclusion: health.lastRunOk ? "success" : "failure", updated_at: at(health.lastRunMinAgo) },
+          { status: "completed", conclusion: "success", updated_at: at(health.lastSuccessMinAgo) },
+        ],
+      });
+    }
     if (url.includes("notion-content.json")) return reply(200, snapshot);
     if (url.includes("/v1/table/")) {
       return proxy === "live" ? reply(200, [...snapshotRows, row(4, { Title: "방금 올린 새 글" })]) : reply(500, "Internal Server Error");
@@ -131,6 +142,34 @@ const scenarios = [
       if (!HOURS(1).test(r.initial.badge)) fail(`초기 배지가 1시간 전이 아님: "${r.initial.badge}"`);
       if (JUST_NOW.test(r.initial.badge)) fail(`스냅샷으로 폴백했는데 '방금 전' 표시: "${r.initial.badge}"`);
       if (r.initial.rows !== 3) fail(`행 수가 3이 아님: ${r.initial.rows}`);
+    },
+  },
+  {
+    // 동기화가 살아 있으면, 스냅샷이 며칠 전이어도(=그 사이 새 글이 없었을 뿐) 배지는 최근 동기화를 보여 준다.
+    // (2026-11-10: 1시간 하트비트 제거 — 스냅샷은 콘텐츠가 바뀔 때만 커밋된다)
+    spec: {
+      name: "스냅샷은 3일 전 · 마지막 동기화는 2분 전",
+      snapshotAgeMin: 3 * 24 * 60,
+      proxy: "dead",
+      health: { lastRunOk: true, lastRunMinAgo: 2, lastSuccessMinAgo: 2 },
+    },
+    check: (r, fail) => {
+      if (!MINUTES(2).test(r.initial.badge)) fail(`배지가 마지막 동기화(2분 전)를 보여 주지 않음: "${r.initial.badge}"`);
+      if (/지연|delayed/.test(r.initial.badge)) fail(`동기화가 살아 있는데 '지연' 표시: "${r.initial.badge}"`);
+      if (r.initial.rows !== 3) fail(`행 수가 3이 아님: ${r.initial.rows}`);
+    },
+  },
+  {
+    // 마지막 실행이 실패하면 배지가 그것을 말해 준다 (44시간 침묵 사고의 재발 방지).
+    spec: {
+      name: "마지막 동기화 실패 · 마지막 성공은 2일 전",
+      snapshotAgeMin: 60,
+      proxy: "dead",
+      health: { lastRunOk: false, lastRunMinAgo: 5, lastSuccessMinAgo: 2 * 24 * 60 },
+    },
+    check: (r, fail) => {
+      if (!/실패|failed/i.test(r.initial.badge)) fail(`실패를 알리지 않음: "${r.initial.badge}"`);
+      if (!/2일 전|2d ago/.test(r.initial.badge)) fail(`마지막 성공 시각이 없음: "${r.initial.badge}"`);
     },
   },
   {
