@@ -79,6 +79,20 @@ test("내용이 같아도 하트비트가 지나면 쓴다 (n분 전 표시·sta
   assert.deepEqual(old, { write: true, reason: "하트비트 갱신" });
 });
 
+test("하트비트를 끄면(0) 내용이 같을 때 파일을 건드리지 않는다 — 매번 재배포 방지", () => {
+  // 2026-11-10: 1시간마다 1.5MB 스냅샷을 다시 커밋해 하루 24회 사이트 전체를 재배포하던 문제.
+  // 워크플로는 `--heartbeat-min 0` 으로 돌고, 콘텐츠가 바뀔 때만 커밋합니다.
+  const old = shouldWriteSnapshot(snapshot({ generatedAt: minutesAgo(600) }), snapshot(), { now: NOW, heartbeatMs: 0 });
+  assert.deepEqual(old, { write: false, reason: "변경 없음" });
+
+  // 그래도 내용이 바뀌면 반드시 씁니다.
+  const edited = snapshot({ rows: [{ id: "row-1", Title: "수정됨" }] });
+  assert.deepEqual(shouldWriteSnapshot(snapshot({ generatedAt: minutesAgo(600) }), edited, { now: NOW, heartbeatMs: 0 }), {
+    write: true,
+    reason: "내용 변경",
+  });
+});
+
 test("하트비트 간격은 옵션으로 조정할 수 있다", () => {
   const previous = snapshot({ generatedAt: minutesAgo(20) });
   assert.equal(shouldWriteSnapshot(previous, snapshot(), { now: NOW, heartbeatMs: 30 * 60_000 }).write, false);

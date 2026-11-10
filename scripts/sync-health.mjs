@@ -67,8 +67,10 @@ export function summaryMarkdown({ outcome = "", info = null, now = new Date() } 
     lines.push("| 항목 | 값 |", "|---|---|");
     lines.push(`| 스냅샷 생성 시각 | ${info.generatedAt || "(기록 없음)"} |`);
     if (age !== null) {
-      const stale = age > 6;
-      lines.push(`| 경과 | ${age}시간${stale ? " ⚠️ 오래됨" : ""} |`);
+      // 2026-11-10 부터 스냅샷은 **콘텐츠가 바뀔 때만** 갱신됩니다(하트비트 제거).
+      // 그래서 "며칠 전 스냅샷"은 정상일 수 있습니다 — 오래됨 경고는 일주일 기준으로만 냅니다.
+      const stale = age > 24 * 7;
+      lines.push(`| 마지막 콘텐츠 변경 | ${age}시간 전${stale ? " ⚠️ 오래됨 (동기화가 일주일 넘게 새 글을 못 올림)" : ""} |`);
     }
     lines.push(`| 글 수 | ${info.rows}건 (게시 ${info.published}) |`);
     lines.push(`| Slug 없는 글 | ${info.withoutSlug}건 |`);

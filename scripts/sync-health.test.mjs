@@ -30,7 +30,7 @@ test("실패하면 '직전 스냅샷 그대로'라는 사실을 요약에 남긴
   });
   assert.match(md, /스냅샷 생성 실패/);
   assert.match(md, /직전 스냅샷 그대로/);
-  assert.match(md, /경과 \| 3\.9시간/);
+  assert.match(md, /마지막 콘텐츠 변경 \| 3\.9시간 전/);
   assert.match(md, /Slug 없는 글 \| 2건/);
   assert.match(md, /NOTION_TOKEN/);
   assert.match(md, /npm run content:audit/);
