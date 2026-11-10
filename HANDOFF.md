@@ -282,12 +282,13 @@ XCONDA_info/
 | 번역 본문(`blocks`) | `build-seo.mjs` › `localizedBlockProblems` · `mergeLocalizedBlocks` · `bodyImagesOf` | `content/i18n/<언어>.json` 의 `entries[키].blocks` 에 **p · h2 · h3 · ul · ol · quote · table · callout · code · todo 10종**을 씁니다(번역가가 다루는 최소 형식). 본문 이미지는 번역하지 않고 **한국어 원문 위치**(앞에 있던 글 블록 수)에 자동으로 들어갑니다. 형식이 틀리면 그 글의 본문만 빼고 빌드 경고를 남깁니다 |
 | 언어별 주소 `/en/` · `/ja/` · `/zh/` | `build-seo.mjs` › `localizedPages` + `content/i18n/<언어>.json` | **사람이 검수한 번역이 있는 글만** 정적 페이지를 만듭니다(없으면 한국어만). 번역 페이지에는 앱 번들을 넣지 않고(`staticOnlyTemplate`) ko ↔ 번역을 hreflang 으로 서로 연결합니다. 2026-10-25 기준 **Q&A 73건 × 3언어(영어·일본어·중국어) 전체**, 즉 `/en/`·`/ja/`·`/zh/` 각 75페이지(홈+목록+73). 번역은 모두 `review: "AI 1차 번역(초안)"` 상태라 원어민 검수가 남아 있습니다. 새 번역은 json 에 추가하고 `npm run build` — 언어 파일만 늘리면 페이지·사이트맵·hreflang 이 함께 늘어납니다 |
 | `assets/i18n-paths.json` | `build-seo.mjs` › `localizedPages` | 앱의 언어 전환기가 "이 경로에 번역 주소가 있나" 확인하는 목록. 있으면 `/en/…` 으로 이동, 없으면 기존 Google 번역 위젯으로 폴백(`src/i18n/index.tsx` › `localizedHrefFor`) |
-| `user-guide.html` · `admin-guide.html` | 정적 HTML (저장소 루트) | `user-guide.html` = 공개 가이드 → canonical + 사이트맵(`EXTRA_INDEX_PAGES`). `admin-guide.html` = 내부 운영 매뉴얼 → `noindex, nofollow`, 사이트맵 제외(2026-10-25 A4) |
+| `user-guide.html` · `admin-guide.html` | 정적 HTML (저장소 루트) | `user-guide.html` = 공개 가이드 → canonical + 사이트맵(`EXTRA_INDEX_PAGES`). `admin-guide.html` = 내부 운영 매뉴얼 → `noindex, nofollow`, 사이트맵 제외(2026-10-25 A4). 분리해 둔 `admin-guide-fields.html` · `admin-guide-simple.html` · `admin-guide-sns.html` 도 같은 정책(2026-11-10 — 이 셋에 `noindex` 가 빠져 있었음. `seo.test.mjs` 가 네 파일을 모두 검사) |
 
 ⚠️ 함께 지킬 것
 - 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
 - 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
+- **원문이 사라진 번역 페이지는 빌드가 정리합니다**(2026-11-10). 노션에서 글을 내리면 한국어 폴더(`post/` 등)는 통째로 다시 만들어지지만 `en/`·`ja/`·`zh/` 는 이번 빌드에 없는 파일이 그대로 남아, 사라진 한국어 주소를 hreflang·canonical 로 가리켰습니다(Search Console 색인 오류의 원인). 이제 `writeSite`(`build-seo.mjs` › `staleLocalizedPages`)가 그런 페이지를 **같은 언어 목록으로 보내는 `noindex` 안내 페이지**로 바꿉니다 — 이미 색인된 주소가 곧바로 404 가 되지 않게, `REDIRECTS` 와 같은 방식입니다. 빌드 로그에 `낡은 번역 페이지 N개 → 목록으로 리디렉션` 으로 나옵니다. 같은 언어의 목록·홈이 없으면 한국어 홈으로 보냅니다.
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
 - **`dev.html` 은 noindex**: 이 파일은 개발 진입점이면서 저장소 루트에 커밋되어 **`/dev.html` 로도 열립니다**. 검색에 개발 껍데기가 노출되지 않도록 `<!-- DEV-ONLY:START --> … <!-- DEV-ONLY:END -->` 안에 `noindex` 를 두고, 빌드(`applyHead`)가 **그 블록을 지웁니다**. 지우지 않으면 배포되는 `index.html` 이 noindex 를 물려받아 **홈페이지가 검색에서 빠집니다** — `seo.test.mjs` 가 회귀를 막습니다(2026-10-26).

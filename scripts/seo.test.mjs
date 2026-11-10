@@ -17,6 +17,7 @@ import test from "node:test";
 import vm from "node:vm";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -53,6 +54,8 @@ import {
   renderSeoSite,
   localizedBlockProblems,
   mergeLocalizedBlocks,
+  staleLocalizedPages,
+  writeSite,
   bodyImagesOf,
   bodyMediaOf,
   flattenBlocks,
@@ -828,7 +831,15 @@ test("동기가 받아 둔 뉴스 링크 이미지(__linkImage)는 절대 주소
  * ------------------------------------------------------------------------ */
 test("관리자 매뉴얼은 noindex, 사용자 가이드는 canonical + 사이트맵에 들어간다", () => {
   const read = (f) => fs.readFileSync(path.join(here, "..", f), "utf8");
-  assert.match(read("admin-guide.html"), /<meta name="robots" content="noindex, nofollow">/);
+  // 정본(admin-guide.html)과 분리된 운영 문서 조각도 같은 정책 — 하나라도 빠지면 색인됩니다.
+  for (const file of [
+    "admin-guide.html",
+    "admin-guide-fields.html",
+    "admin-guide-simple.html",
+    "admin-guide-sns.html",
+  ]) {
+    assert.match(read(file), /<meta name="robots" content="noindex, nofollow">/, file);
+  }
   assert.match(read("user-guide.html"), /<link rel="canonical" href="https:\/\/hub\.xconda\.ai\/user-guide\.html" \/>/);
   // noindex 페이지는 사이트맵에 없고, 공개 가이드는 있습니다.
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
@@ -1439,4 +1450,96 @@ test("SEO 설명과 요약이 없으면 첫 본문 문단을 메타 설명으로
   const out = renderSeoSite({ rows, pages, template: TEMPLATE, siteUrl: SITE, translations: {} });
   assert.match(out.files.get("post/paragraph-test/index.html"), /<meta name="description" content="첫 본문 문단입니다\."/);
   assert.ok(out.warnings.some(w => w.includes("SEO 설명 대체: 본문 첫 문단")));
+});
+
+
+/* ------------------- 8) 낡은 번역 페이지 정리 (원문이 사라진 글) ------------------- */
+
+/**
+ * 노션에서 글이 내려가면 한국어 폴더는 통째로 다시 만들어지지만,
+ * 언어 폴더(`en/ ja/ zh/`)는 번역 항목이 남아 있으면 예전 파일이 그대로 살아남습니다.
+ * 그런 파일은 존재하지 않는 한국어 주소를 hreflang 으로 가리키고 사이트맵에도 없어서
+ * Search Console 에 "색인 생성" 오류로 잡힙니다. 빌드가 이런 파일을 걷어내는지 봅니다.
+ */
+function tempSite() {
+  return fs.mkdtempSync(path.join(os.tmpdir(), "xconda-seo-cleanup-"));
+}
+
+test("빌드 결과에 없는 언어 폴더 페이지만 낡은 페이지로 잡는다", () => {
+  const root = tempSite();
+  const write = (rel) => {
+    fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+    fs.writeFileSync(path.join(root, rel), "x", "utf8");
+  };
+  write("post/live/index.html"); // 한국어: 통째로 다시 만들므로 대상 아님
+  write("en/index.html");
+  write("en/post/live/index.html");
+  write("en/post/gone/index.html"); // ← 원문이 사라진 번역 페이지
+  write("ja/post/gone/index.html");
+  write("zh/post/gone/index.html");
+  write("en/assets/keep.css"); // index.html 이 아니면 건드리지 않음
+
+  const files = new Map([
+    ["post/live/index.html", "ko"],
+    ["en/index.html", "home"],
+    ["en/post/live/index.html", "en"],
+  ]);
+  assert.deepEqual(staleLocalizedPages(root, files), [
+    "en/post/gone/index.html",
+    "ja/post/gone/index.html",
+    "zh/post/gone/index.html",
+  ]);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보내는 안내 페이지로 바꾼다", () => {
+  const root = tempSite();
+  const write = (rel, body = "x") => {
+    fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+    fs.writeFileSync(path.join(root, rel), body, "utf8");
+  };
+  write("post/gone/index.html", "옛 한국어 글"); // 한국어는 통째로 지워져야 함
+  write("en/post/gone/index.html", "옛 번역 글");
+
+  const files = new Map([
+    ["post/live/index.html", "<html>ko live</html>"],
+    ["en/index.html", "<html>en home</html>"],
+    ["en/post/index.html", "<html>en list</html>"],
+    ["en/post/live/index.html", "<html>en live</html>"],
+  ]);
+  const cleaned = writeSite({ files, siteUrl: "https://example.test/" }, root);
+
+  assert.deepEqual(cleaned, ["en/post/gone/index.html"]);
+  // 한국어 폴더는 통째로 새로 만들어짐
+  assert.equal(fs.existsSync(path.join(root, "post/gone")), false);
+  assert.equal(fs.readFileSync(path.join(root, "post/live/index.html"), "utf8"), "<html>ko live</html>");
+  // 번역 페이지는 404 대신 안내(리디렉션) 페이지 → 색인 제외 + 같은 언어 목록으로 이동
+  const stub = fs.readFileSync(path.join(root, "en/post/gone/index.html"), "utf8");
+  assert.match(stub, /http-equiv="refresh" content="0; url=https:\/\/example\.test\/en\/post\/"/);
+  assert.match(stub, /rel="canonical" href="https:\/\/example\.test\/en\/post\/"/);
+  assert.match(stub, /name="robots" content="noindex"/);
+  assert.match(stub, /<html lang="en">/);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 한국어 홈으로 보낸다", () => {
+  const root = tempSite();
+  const enOnlyHome = new Map([["en/index.html", "home"]]);
+  fs.mkdirSync(path.join(root, "en/post/gone"), { recursive: true });
+  fs.writeFileSync(path.join(root, "en/post/gone/index.html"), "옛 번역 글", "utf8");
+  writeSite({ files: enOnlyHome, siteUrl: "https://example.test/" }, root);
+  assert.match(
+    fs.readFileSync(path.join(root, "en/post/gone/index.html"), "utf8"),
+    /url=https:\/\/example\.test\/en\//,
+  );
+
+  const empty = new Map();
+  fs.mkdirSync(path.join(root, "ja/post/gone"), { recursive: true });
+  fs.writeFileSync(path.join(root, "ja/post/gone/index.html"), "옛 번역 글", "utf8");
+  writeSite({ files: empty, siteUrl: "https://example.test/" }, root);
+  assert.match(
+    fs.readFileSync(path.join(root, "ja/post/gone/index.html"), "utf8"),
+    /url=https:\/\/example\.test\/"/,
+  );
+  fs.rmSync(root, { recursive: true, force: true });
 });
