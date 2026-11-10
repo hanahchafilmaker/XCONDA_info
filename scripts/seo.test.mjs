@@ -54,6 +54,7 @@ import {
   renderSeoSite,
   localizedBlockProblems,
   mergeLocalizedBlocks,
+  skipInSitemap,
   staleLocalizedPages,
   writeSite,
   bodyImagesOf,
@@ -983,8 +984,8 @@ test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 
   assert.match(ko, /hreflang="en" href="https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/"/);
   // 번역이 없는 글에는 영어 주소를 만들지 않습니다(중복 방지)
   assert.equal([...out.files.keys()].filter((f) => f.startsWith("en/") && f.includes("deepseek")).length, 0);
-  // 사이트맵에도 들어갑니다
-  assert.match(out.files.get("sitemap.xml"), /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/<\/loc>/);
+  // 번역 Q&A 는 사이트맵에서 뺍니다(얇은 페이지가 크롤 예산을 잡아먹지 않게) — 페이지는 그대로 있습니다.
+  assert.doesNotMatch(out.files.get("sitemap.xml"), /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\//);
 });
 
 test("번역 파일에 원문이 없는 글이 있으면 경고만 남기고 건너뛴다", () => {
@@ -1542,4 +1543,74 @@ test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 �
     /url=https:\/\/example\.test\/"/,
   );
   fs.rmSync(root, { recursive: true, force: true });
+});
+
+
+/* ------------- 9) 크롤 예산 — 번역 Q&A 사이트맵 제외 · 한국어 글 → 번역본 링크 ------------- */
+
+/**
+ * Search Console 2026-11-10: "발견됨 - 현재 색인이 생성되지 않음" 324건.
+ * 사이트맵 407개 중 288개가 번역 페이지였고 그중 222개가 얇은 Q&A 번역이었습니다.
+ * → 번역 Q&A 는 **사이트맵에서만** 빼고(페이지는 유지), 한국어 글에서는 번역본으로
+ *    실제 <a> 링크를 걸어 발견 경로를 남깁니다.
+ */
+test("사이트맵에서 빼는 번역 주소는 Q&A 뿐이다", () => {
+  const s = "https://hub.example.test/";
+  assert.equal(skipInSitemap("https://hub.example.test/en/qna/", s), true);
+  assert.equal(skipInSitemap("https://hub.example.test/en/qna/refund/", s), true);
+  assert.equal(skipInSitemap("https://hub.example.test/ja/qna/refund/", s), true);
+  assert.equal(skipInSitemap("https://hub.example.test/zh/qna/", s), true);
+  // 번역 글·공지·가이드·홈과 한국어 주소는 그대로 둡니다.
+  assert.equal(skipInSitemap("https://hub.example.test/en/post/a/", s), false);
+  assert.equal(skipInSitemap("https://hub.example.test/en/", s), false);
+  assert.equal(skipInSitemap("https://hub.example.test/qna/refund/", s), false);
+  assert.equal(skipInSitemap("https://hub.example.test/qna/", s), false);
+});
+
+const BILINGUAL_FIXTURE = {
+  en: {
+    ...EN_FIXTURE.en,
+    sections: { qna: { title: "XCONDA Q&A (English)" }, post: { title: "Blog (English)" } },
+    entries: {
+      "qna/refund-policy": { title: "How do refunds work?", summary: "Ask within 7 days for unused credits." },
+      "post/deepseek-official-harness": { title: "DeepSeek official harness", summary: "A plugin-first harness." },
+    },
+  },
+};
+
+test("번역 Q&A 는 페이지를 만들되 사이트맵에는 넣지 않고, 번역 글은 사이트맵에 남긴다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: BILINGUAL_FIXTURE,
+  });
+  const sitemap = out.files.get("sitemap.xml");
+  assert.ok(out.files.get("en/qna/refund-policy/index.html"), "번역 Q&A 페이지는 그대로 있어야 합니다");
+  assert.doesNotMatch(sitemap, /\/en\/qna\//);
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/en\/post\/deepseek-official-harness\/<\/loc>/);
+  // 한국어 Q&A 주소는 사이트맵에 남습니다(원문은 색인 대상).
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/qna\/refund-policy\/<\/loc>/);
+});
+
+test("한국어 글에는 번역본으로 가는 실제 링크가 붙고, Q&A 에는 붙지 않는다", () => {
+  const out = renderSeoSite({
+    rows: fixtureRows,
+    pages: pagesFixture,
+    template: TEMPLATE,
+    siteUrl: SITE,
+    ogManifest: {},
+    translations: BILINGUAL_FIXTURE,
+  });
+  const koPost = out.files.get("post/deepseek-official-harness/index.html");
+  assert.match(
+    koPost,
+    /<nav class="seo-langs" aria-label="다른 언어로 읽기">[\s\S]*?<a href="https:\/\/example\.test\/XCONDA_info\/en\/post\/deepseek-official-harness\/" hreflang="en" lang="en">English<\/a>/,
+  );
+  // 번역이 없는 글에는 언어 링크가 없습니다.
+  assert.doesNotMatch(koPost, /hreflang="ja"/);
+  // Q&A 는 번역이 있어도 링크를 달지 않습니다(사이트맵 제외 정책과 같은 이유).
+  assert.doesNotMatch(out.files.get("qna/refund-policy/index.html"), /class="seo-langs"/);
 });
