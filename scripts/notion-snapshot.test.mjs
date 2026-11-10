@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import {
   HEARTBEAT_MS,
   checkMassRemoval,
+  reusableBody,
   renderMassRemovalSummary,
   renderSyncSummary,
   shouldWriteSnapshot,
@@ -303,4 +304,38 @@ test("커버 로컬 사본 경로는 원본 스냅샷 변경으로 취급하지 
   const original = snapshot();
   const copied = snapshot({ rows: [{ ...original.rows[0], __coverLocal: "assets/img/covers/test.png" }] });
   assert.equal(snapshotContentKey(original), snapshotContentKey(copied));
+});
+
+
+/* -------------------- 본문 재사용 (노션 레이트리밋 회피) -------------------- */
+
+test("reusableBody: 수정되지 않은 글은 이전 스냅샷 본문을 그대로 쓴다", () => {
+  // 2026-11-08 동기화가 44시간 멈춘 원인은 노션 공개 API 의 HTTP 429(Cloudflare 1015).
+  // 5분마다 모든 글 본문을 다시 읽어 레이트리밋에 걸렸으므로, 수정 시각이 같으면 재사용한다.
+  const previous = snapshot({
+    rows: [{ id: "row-1", Title: "공지", __modified: "2026-11-08" }],
+  });
+  const row = { id: "row-1", Title: "공지", __modified: "2026-11-08" };
+  assert.deepEqual(reusableBody(previous, row), previous.pages["row-1"]);
+});
+
+test("reusableBody: 수정 시각이 다르거나 없으면 다시 읽는다 (안전한 쪽으로 판단)", () => {
+  const previous = snapshot({ rows: [{ id: "row-1", __modified: "2026-11-08" }] });
+  // 본문만 수정한 경우
+  assert.equal(reusableBody(previous, { id: "row-1", __modified: "2026-11-10" }), null);
+  // 수정 시각을 모르는 행 · 이전 스냅샷에 없는 행 · 본문이 비어 있는 행
+  assert.equal(reusableBody(previous, { id: "row-1" }), null);
+  assert.equal(reusableBody(previous, { id: "row-2", __modified: "2026-11-08" }), null);
+  assert.equal(reusableBody(snapshot({ pages: {} }), { id: "row-1", __modified: "2026-11-08" }), null);
+  assert.equal(reusableBody(null, { id: "row-1", __modified: "2026-11-08" }), null);
+});
+
+test("reusableBody: 재사용해도 스냅샷 내용 지문은 달라지지 않는다", () => {
+  const previous = snapshot({ rows: [{ id: "row-1", __modified: "2026-11-08" }] });
+  const reused = {
+    ...previous,
+    generatedAt: minutesAgo(0),
+    pages: { "row-1": reusableBody(previous, { id: "row-1", __modified: "2026-11-08" }) },
+  };
+  assert.equal(snapshotContentKey(previous), snapshotContentKey(reused));
 });
