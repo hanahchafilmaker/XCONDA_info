@@ -831,7 +831,15 @@ test("동기가 받아 둔 뉴스 링크 이미지(__linkImage)는 절대 주소
  * ------------------------------------------------------------------------ */
 test("관리자 매뉴얼은 noindex, 사용자 가이드는 canonical + 사이트맵에 들어간다", () => {
   const read = (f) => fs.readFileSync(path.join(here, "..", f), "utf8");
-  assert.match(read("admin-guide.html"), /<meta name="robots" content="noindex, nofollow">/);
+  // 정본(admin-guide.html)과 분리된 운영 문서 조각도 같은 정책 — 하나라도 빠지면 색인됩니다.
+  for (const file of [
+    "admin-guide.html",
+    "admin-guide-fields.html",
+    "admin-guide-simple.html",
+    "admin-guide-sns.html",
+  ]) {
+    assert.match(read(file), /<meta name="robots" content="noindex, nofollow">/, file);
+  }
   assert.match(read("user-guide.html"), /<link rel="canonical" href="https:\/\/hub\.xconda\.ai\/user-guide\.html" \/>/);
   // noindex 페이지는 사이트맵에 없고, 공개 가이드는 있습니다.
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
