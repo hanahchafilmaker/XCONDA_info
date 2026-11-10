@@ -96,8 +96,13 @@ jobs:
         # 2026-11-07 21:25Z 부터 11/08 02:05Z 까지 51회 연속 실패해도 사이트 상단의
         # "Notion 동기화 · <시각>" 배지가 60분 지연을 표시할 뿐, 아무 알림이 가지 않았습니다.
         # 실패는 조용히 넘어가면 안 되므로, 다음 스텝이 실패를 **실행 요약과 경고**로 남깁니다.
+        # (2026-11-08 05:13Z 이후 44시간 동안 매 실행이 이 단계에서 실패했는데, continue-on-error
+        #  때문에 실행이 초록불로 보여 아무도 알아채지 못했습니다. 이제 출력을 파일로 남기고
+        #  마지막 스텝이 실행을 빨간불로 되돌립니다.)
         continue-on-error: true
-        run: node scripts/notion-snapshot.mjs --out notion-content.json
+        run: |
+          set -o pipefail
+          node scripts/notion-snapshot.mjs --out notion-content.json 2>&1 | tee /tmp/notion-snapshot.log
 
       - name: 동기화 결과를 실행 요약에 남긴다
         # 성공/실패와 무관하게 항상 돕니다. 실패한 날은 사이트가 **직전 스냅샷 상태**라는 사실과
@@ -108,8 +113,26 @@ jobs:
         run: |
           node scripts/sync-health.mjs >> "$GITHUB_STEP_SUMMARY"
           if [ "${SNAPSHOT_OUTCOME}" != "success" ]; then
+            {
+              echo ""
+              echo "### 실패 로그 (마지막 20줄)"
+              echo ""
+              echo '```'
+              tail -n 20 /tmp/notion-snapshot.log 2>/dev/null || echo "(로그를 남기지 못했습니다)"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
             echo "::warning::Notion 스냅샷 생성 실패 — 사이트는 직전 스냅샷 상태로 유지됩니다. 실행 요약의 점검 순서를 확인하세요."
           fi
+
+      - name: 동기화 실패는 실행을 실패로 표시한다
+        # continue-on-error 로 스냅샷 단계를 계속 진행시키면 실행이 **초록불**로 끝나,
+        # 실패가 44시간 방치되는 일이 생깁니다(2026-11-08 05:13Z~11-10 00:53Z 실측).
+        # 요약·경고는 위 스텝에서 이미 남겼으므로, 마지막에 실행 자체를 실패로 되돌립니다.
+        if: always() && steps.snapshot.outcome != 'success'
+        run: |
+          reason="$(grep -E '✖|HTTP [0-9]+|Error|error' /tmp/notion-snapshot.log 2>/dev/null | tail -n 1 | cut -c1-400)"
+          echo "::error::Notion 스냅샷 생성 실패 — 사이트는 직전 스냅샷 상태입니다.${reason:+ 원인: ${reason}}"
+          exit 1
 
       - uses: actions/upload-artifact@v4
         # 스냅샷을 만들지 못했으면(자격증명·노션 응답 문제) 옛 파일을 올리지 않습니다.
