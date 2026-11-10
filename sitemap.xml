@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/guide/</loc>
@@ -146,7 +146,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/video-prompt-editor/</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/blender-addon-single-photo-3d-model/</loc>
@@ -177,8 +177,12 @@
     <lastmod>2026-11-07</lastmod>
   </url>
   <url>
+    <loc>https://hub.xconda.ai/post/ai-prompt-editor/</loc>
+    <lastmod>2026-11-10</lastmod>
+  </url>
+  <url>
     <loc>https://hub.xconda.ai/qna/contact-inquiry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/card-information-security/</loc>
@@ -186,15 +190,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/ai-video-training-courses/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/company-business-info/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/payment-seller-name/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/personal-data-retention/</loc>
@@ -214,7 +218,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/uploaded-content-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/personal-data-sale-ads/</loc>
@@ -230,11 +234,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/error-support/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/commission-video-production/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/governing-law-disputes/</loc>
@@ -242,11 +246,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/data-operation-location/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/how-to-access-hub/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/skills-claude-paid-plan/</loc>
@@ -254,11 +258,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/seedance-prompt-retry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/how-to-install-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/flexboard-panel-vs-sheet/</loc>
@@ -266,19 +270,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/flexboard-edit-single-cut/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/what-is-blocking-board/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/where-to-get-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/commercial-use/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/flexboard-download-storyboard/</loc>
@@ -286,7 +290,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/blocking-board-export/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/output-copyright/</loc>
@@ -294,7 +298,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/flexboard-auto-refine-instant-apply/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/seedance-reference-limits/</loc>
@@ -306,11 +310,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/why-puppet-video/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/real-person-celebrity-reference/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/seedance-2-5-length-resolution/</loc>
@@ -322,11 +326,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/seedance-prompt-language/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/what-is-flexboard/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/before-chargeback/</loc>
@@ -334,27 +338,27 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/what-is-turn/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/xconda-video-workflow-overview/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/turn-image-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/multiple-face-photos-accuracy/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/why-faces-change-between-cuts/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/turn-without-photos/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/mixing-with-live-footage/</loc>
@@ -362,7 +366,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/turn-props-wallpaper/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/flexboard-cut-count-and-length/</loc>
@@ -370,15 +374,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/video-generation-inputs/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/best-stage-to-edit/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/current-discount-events/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/payment-failed/</loc>
@@ -386,15 +390,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/flexboard-character-consistency/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/sound-and-editing/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/turn-room-size-credits/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/international-payment/</loc>
@@ -426,7 +430,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/supported-ai-models/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/non-refundable-cases/</loc>
@@ -434,7 +438,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/what-is-xconda/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/credit-expiry-and-refund-policy/</loc>
@@ -454,7 +458,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/xconda-vs-other-ai-video-tools/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/eu-uk-withdrawal-refund/</loc>
@@ -466,7 +470,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/how-credits-are-deducted/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/user-guide.html</loc>
@@ -549,7 +553,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/ai-video-training-courses/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/before-chargeback/</loc>
@@ -557,11 +561,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/best-stage-to-edit/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/blocking-board-export/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/cancel-subscription/</loc>
@@ -573,19 +577,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/commercial-use/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/commission-video-production/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/company-business-info/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/contact-inquiry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/cookies/</loc>
@@ -605,15 +609,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/current-discount-events/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/data-operation-location/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/error-support/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/eu-uk-withdrawal-refund/</loc>
@@ -621,11 +625,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/flexboard-auto-refine-instant-apply/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/flexboard-character-consistency/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/flexboard-cut-count-and-length/</loc>
@@ -637,7 +641,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/flexboard-edit-single-cut/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/flexboard-panel-vs-sheet/</loc>
@@ -649,15 +653,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/how-credits-are-deducted/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/how-to-access-hub/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/how-to-install-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/how-to-request-refund/</loc>
@@ -689,7 +693,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/multiple-face-photos-accuracy/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/non-refundable-cases/</loc>
@@ -705,7 +709,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/payment-seller-name/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/personal-data-collected/</loc>
@@ -725,7 +729,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/real-person-celebrity-reference/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/seedance-2-5-length-resolution/</loc>
@@ -733,11 +737,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/seedance-prompt-language/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/seedance-prompt-retry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/seedance-reference-limits/</loc>
@@ -749,7 +753,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/sound-and-editing/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/subscription-auto-renewal/</loc>
@@ -761,7 +765,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/supported-ai-models/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/terms-change-notice/</loc>
@@ -769,43 +773,43 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/turn-image-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/turn-props-wallpaper/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/turn-room-size-credits/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/turn-without-photos/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/uploaded-content-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/video-generation-inputs/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/what-is-blocking-board/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/what-is-flexboard/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/what-is-turn/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/what-is-xconda/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/what-is-xconda-claude-skill/</loc>
@@ -813,7 +817,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/where-to-get-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/who-made-xconda/</loc>
@@ -821,19 +825,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/why-faces-change-between-cuts/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/why-puppet-video/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/xconda-video-workflow-overview/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/qna/xconda-vs-other-ai-video-tools/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/en/guide/</loc>
@@ -928,7 +932,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/ai-video-training-courses/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/before-chargeback/</loc>
@@ -936,11 +940,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/best-stage-to-edit/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/blocking-board-export/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/cancel-subscription/</loc>
@@ -952,19 +956,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/commercial-use/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/commission-video-production/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/company-business-info/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/contact-inquiry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/cookies/</loc>
@@ -984,15 +988,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/current-discount-events/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/data-operation-location/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/error-support/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/eu-uk-withdrawal-refund/</loc>
@@ -1000,11 +1004,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/flexboard-auto-refine-instant-apply/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/flexboard-character-consistency/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/flexboard-cut-count-and-length/</loc>
@@ -1016,7 +1020,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/flexboard-edit-single-cut/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/flexboard-panel-vs-sheet/</loc>
@@ -1028,15 +1032,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/how-credits-are-deducted/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/how-to-access-hub/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/how-to-install-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/how-to-request-refund/</loc>
@@ -1068,7 +1072,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/multiple-face-photos-accuracy/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/non-refundable-cases/</loc>
@@ -1084,7 +1088,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/payment-seller-name/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/personal-data-collected/</loc>
@@ -1104,7 +1108,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/real-person-celebrity-reference/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/seedance-2-5-length-resolution/</loc>
@@ -1112,11 +1116,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/seedance-prompt-language/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/seedance-prompt-retry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/seedance-reference-limits/</loc>
@@ -1128,7 +1132,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/sound-and-editing/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/subscription-auto-renewal/</loc>
@@ -1140,7 +1144,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/supported-ai-models/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/terms-change-notice/</loc>
@@ -1148,43 +1152,43 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/turn-image-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/turn-props-wallpaper/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/turn-room-size-credits/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/turn-without-photos/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/uploaded-content-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/video-generation-inputs/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/what-is-blocking-board/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/what-is-flexboard/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/what-is-turn/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/what-is-xconda/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/what-is-xconda-claude-skill/</loc>
@@ -1192,7 +1196,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/where-to-get-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/who-made-xconda/</loc>
@@ -1200,19 +1204,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/why-faces-change-between-cuts/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/why-puppet-video/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/xconda-video-workflow-overview/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/qna/xconda-vs-other-ai-video-tools/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/ja/guide/</loc>
@@ -1307,7 +1311,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/ai-video-training-courses/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/before-chargeback/</loc>
@@ -1315,11 +1319,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/best-stage-to-edit/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/blocking-board-export/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/cancel-subscription/</loc>
@@ -1331,19 +1335,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/commercial-use/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/commission-video-production/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/company-business-info/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/contact-inquiry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/cookies/</loc>
@@ -1363,15 +1367,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/current-discount-events/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/data-operation-location/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/error-support/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/eu-uk-withdrawal-refund/</loc>
@@ -1379,11 +1383,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/flexboard-auto-refine-instant-apply/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/flexboard-character-consistency/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/flexboard-cut-count-and-length/</loc>
@@ -1395,7 +1399,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/flexboard-edit-single-cut/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/flexboard-panel-vs-sheet/</loc>
@@ -1407,15 +1411,15 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/how-credits-are-deducted/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/how-to-access-hub/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/how-to-install-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/how-to-request-refund/</loc>
@@ -1447,7 +1451,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/multiple-face-photos-accuracy/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/non-refundable-cases/</loc>
@@ -1463,7 +1467,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/payment-seller-name/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/personal-data-collected/</loc>
@@ -1483,7 +1487,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/real-person-celebrity-reference/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/seedance-2-5-length-resolution/</loc>
@@ -1491,11 +1495,11 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/seedance-prompt-language/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/seedance-prompt-retry/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/seedance-reference-limits/</loc>
@@ -1507,7 +1511,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/sound-and-editing/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/subscription-auto-renewal/</loc>
@@ -1519,7 +1523,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/supported-ai-models/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/terms-change-notice/</loc>
@@ -1527,43 +1531,43 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/turn-image-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/turn-props-wallpaper/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/turn-room-size-credits/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/turn-without-photos/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/uploaded-content-usage/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/video-generation-inputs/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/what-is-blocking-board/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-02</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/what-is-flexboard/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/what-is-turn/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/what-is-xconda/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/what-is-xconda-claude-skill/</loc>
@@ -1571,7 +1575,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/where-to-get-skills/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/who-made-xconda/</loc>
@@ -1579,19 +1583,19 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/why-faces-change-between-cuts/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/why-puppet-video/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/xconda-video-workflow-overview/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/qna/xconda-vs-other-ai-video-tools/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/zh/guide/</loc>
