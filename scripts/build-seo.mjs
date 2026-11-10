@@ -82,6 +82,29 @@ export const GENERATED_DIRS = ["post", "notice", "qna", "guide"];
 export const LOCALE_PREFIXES = SITE_LANGS.map((l) => l.prefix).filter(Boolean);
 
 /**
+ * 사이트맵에서 **빼는** 번역 섹션 — 지금은 Q&A 하나입니다.
+ *
+ * 번역 Q&A 는 `74 × 3언어 = 222개`로 사이트맵 407개의 55%를 차지하는데, 내용은
+ * "질문 한 줄 + 답변 두세 줄"짜리 얇은 페이지입니다. 신생 도메인에서 이런 대량·얇은
+ * 페이지는 Google 크롤 예산을 잡아먹고, 2026-11-10 Search Console 기준
+ * **"발견됨 - 현재 색인이 생성되지 않음 324건"** 의 주된 공급원이었습니다.
+ *
+ * 페이지 자체는 그대로 둡니다(앱 화면 · hreflang · 내부 링크로 도달 가능).
+ * **사이트맵에서만** 빼서 크롤 예산을 한국어 페이지와 번역 글·공지·가이드에 모읍니다.
+ * 원어민 검수가 끝난 번역부터 이 목록에서 빼면 됩니다.
+ */
+export const SITEMAP_SKIP_LOCALIZED_SECTIONS = ["qna"];
+
+/** 언어별 주소 중 사이트맵에서 뺄 주소인가 (`/en/qna/…` · `/en/qna/`) */
+export function skipInSitemap(loc, site = DEFAULT_SITE_URL) {
+  const base = site.endsWith("/") ? site : `${site}/`;
+  if (!loc.startsWith(base)) return false;
+  const [lang, section] = loc.slice(base.length).split("/");
+  if (!LOCALE_PREFIXES.includes(`${lang}/`)) return false;
+  return SITEMAP_SKIP_LOCALIZED_SECTIONS.includes(section);
+}
+
+/**
  * 옮겨진 글의 옛 주소 → 새 주소 (사이트 기준 경로, 앞 슬래시 없음, 끝 슬래시 있음).
  * 노션에서 글을 내리거나 합칠 때 여기에 한 줄 추가하면, 옛 주소로 들어온 방문자와
  * 검색엔진이 새 글로 바로 이동합니다. GitHub Pages 는 서버 301 을 쓸 수 없어서
@@ -815,7 +838,7 @@ const paragraphsHtml = (text) =>
  * 글 한 건의 #root 내용. 앱이 로드되면 React 가 이 내용을 지우고 상세 화면으로 바꿉니다.
  * 자바스크립트를 실행하지 않는 크롤러와 공유 미리보기 확인용으로도 쓰입니다.
  */
-export function articleBodyHtml({ prefix, type, title, date, modified, author, summary, cover, blocks, related = [] }) {
+export function articleBodyHtml({ prefix, type, title, date, modified, author, summary, cover, blocks, related = [], languages = [] }) {
   // 허브 메인으로 가는 상대 경로 (post/{slug}/ 기준 두 단계 위)
   const hubHref = "../../";
   const section = SECTION_LABELS[type] ?? "";
@@ -830,6 +853,19 @@ export function articleBodyHtml({ prefix, type, title, date, modified, author, s
   return [
     `<div id="root"><main class="seo-article" data-prefix="${prefix}">`,
     `<nav aria-label="breadcrumb"><a href="${hubHref}">${escapeHtml(SITE_NAME)}</a> / ${escapeHtml(section)}</nav>`,
+    // 번역본으로 가는 **실제 링크** — <head> 의 hreflang 은 크롤러의 발견 경로가 아니고,
+    // 앱의 언어 토글은 JS 로만 동작합니다. 검색엔진이 번역 페이지를 찾을 수 있게 <a> 로 둡니다.
+    languages.length
+      ? [
+          `<nav class="seo-langs" aria-label="다른 언어로 읽기">`,
+          `<span>다른 언어로 읽기:</span>`,
+          ...languages.map(
+            (l) =>
+              `<a href="${escapeHtml(l.href)}" hreflang="${escapeHtml(l.lang)}" lang="${escapeHtml(l.lang)}">${escapeHtml(l.name)}</a>`,
+          ),
+          `</nav>`,
+        ].join("")
+      : "",
     `<article>`,
     `<h1>${escapeHtml(title)}</h1>`,
     byline ? `<p class="seo-meta">${byline}</p>` : "",
@@ -1292,6 +1328,16 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
           0,
           3,
         );
+    // 한국어 글 → 번역본 링크. Q&A 는 번역분을 사이트맵에서 뺀 정책과 맞춰 링크도 달지 않습니다
+    // (얇은 번역 페이지로 크롤 예산이 다시 몰리는 것을 막습니다).
+    const languages =
+      type === "faq"
+        ? []
+        : SITE_LANGS.filter((l) => l.code !== "ko" && langsForPath(`${c.prefix}/${slug}`).includes(l.code)).map((l) => ({
+            lang: l.hreflang,
+            name: l.name,
+            href: localizedUrl(site, l.code, `${c.prefix}/${slug}/`),
+          }));
     const body = articleBodyHtml({
       prefix: c.prefix,
       type,
@@ -1303,6 +1349,7 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       cover: coverRaw,
       blocks,
       related: relatedFinal,
+      languages,
     });
     const html = injectRoot(applyHead(template, head), body);
     files.set(`${c.prefix}/${slug}/index.html`, html);
@@ -1469,7 +1516,11 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
   for (const [file, html] of localized.files) files.set(file, html);
   for (const msg of localized.missing) warnings.push(msg);
   const localizedBodies = localized.bodyCount ?? {};
-  for (const u of localized.urls) sitemapUrls.push(u);
+  for (const u of localized.urls) {
+    // 번역 Q&A 같이 사이트맵에서 빼기로 한 섹션은 넘깁니다(페이지는 그대로 만듭니다).
+    if (skipInSitemap(u.loc, site)) continue;
+    sitemapUrls.push(u);
+  }
   // 앱(React)의 언어 전환기가 "이 경로에 번역 주소가 있나?" 를 확인하는 목록.
   // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
   if (Object.keys(localized.paths).length) {

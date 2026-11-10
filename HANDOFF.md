@@ -288,6 +288,8 @@ XCONDA_info/
 - 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
 - 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
+- **번역 Q&A 는 사이트맵에서 뺍니다**(2026-11-10). Search Console "발견됨 - 현재 색인이 생성되지 않음" 324건의 주된 공급원이 **얇은 번역 Q&A(74 × 3언어 = 222)** 였습니다(사이트맵 407개 중 55%). `build-seo.mjs` › `SITEMAP_SKIP_LOCALIZED_SECTIONS`(현재 `qna`)에 적힌 섹션은 **페이지는 그대로 만들되 사이트맵에만 넣지 않습니다** → 사이트맵 407 → 185. 원어민 검수가 끝난 번역부터 이 목록에서 빼면 됩니다. `seo.test.mjs` 가 고정합니다.
+- **한국어 글 → 번역본 링크**(2026-11-10). `<head>` 의 hreflang 은 크롤러의 **발견 경로가 아니고** 앱의 언어 토글은 JS 로만 동작합니다. 그래서 `articleBodyHtml` 이 `languages` 를 받아 글 상단에 `<a hreflang="en|ja|zh">` 링크를 싣습니다(현재 18개 글). Q&A 에는 달지 않습니다 — 위 사이트맵 정책과 같은 이유(얇은 번역 페이지로 크롤 예산이 몰리는 것 방지).
 - **원문이 사라진 번역 페이지는 빌드가 정리합니다**(2026-11-10). 노션에서 글을 내리면 한국어 폴더(`post/` 등)는 통째로 다시 만들어지지만 `en/`·`ja/`·`zh/` 는 이번 빌드에 없는 파일이 그대로 남아, 사라진 한국어 주소를 hreflang·canonical 로 가리켰습니다(Search Console 색인 오류의 원인). 이제 `writeSite`(`build-seo.mjs` › `staleLocalizedPages`)가 그런 페이지를 **같은 언어 목록으로 보내는 `noindex` 안내 페이지**로 바꿉니다 — 이미 색인된 주소가 곧바로 404 가 되지 않게, `REDIRECTS` 와 같은 방식입니다. 빌드 로그에 `낡은 번역 페이지 N개 → 목록으로 리디렉션` 으로 나옵니다. 같은 언어의 목록·홈이 없으면 한국어 홈으로 보냅니다.
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
