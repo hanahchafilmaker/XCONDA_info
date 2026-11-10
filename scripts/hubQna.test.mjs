@@ -192,6 +192,8 @@ const SCHEMA = {
 
 const qnaRow = (id, { no, status, publish, priority = 1, category = "엑스콘다 소개", question }) => ({
   id,
+  // 본문 재사용 캐시의 기준이 되는 수정 시각(ms) — 노션 블록의 last_edited_time
+  last_edited_time: 1_760_000_000_000,
   properties: {
     [PROP.title]: [[question]],
     [PROP.no]: [[String(no)]],
@@ -326,6 +328,31 @@ test("loadHubQna: 게시 대상만 행으로 만들고, 내부 근거는 본문�
   assert.equal(loaded.includes("22222222-2222-2222-2222-222222222222"), false);
   assert.equal(loaded.includes("33333333-3333-3333-3333-333333333333"), false);
   assert.equal(loaded.length, 3); // 표 1 + 포함 행 2
+});
+
+test("loadHubQna: 질문 페이지가 그대로면 본문을 다시 읽지 않는다 (노션 레이트리밋 회피)", async () => {
+  // 2026-11-08 동기화가 44시간 멈춘 원인은 노션 공개 API 의 HTTP 429(Cloudflare 1015) 였습니다.
+  // 5분마다 Q&A 70여 건의 본문을 다시 받아 레이트리밋에 걸렸으므로, 수정되지 않은 문항은
+  // 이전 스냅샷의 행 · 본문을 재사용합니다.
+  const first = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }));
+  const previous = { rows: first.value.rows, pages: first.value.pages };
+  assert.equal(first.value.report.reused, 0);
+  assert.ok(first.value.rows[0].__modified, "다음 실행에서 재사용할 수 있도록 __modified 를 남긴다");
+
+  const second = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, previous }));
+  assert.equal(second.value.report.reused, 2); // 포함 문항 2건 모두 캐시 적중
+  assert.equal(second.loaded.length, 1); // 표(1) 만 읽고 문항 본문은 읽지 않는다
+  assert.deepEqual(second.value.rows, first.value.rows); // 행 내용은 그대로
+  assert.deepEqual(second.value.pages, first.value.pages); // 모달 본문도 그대로
+
+  // 질문 페이지가 수정되면(__modified 가 달라지면) 다시 읽는다
+  const edited = {
+    rows: previous.rows.map((r, i) => (i === 0 ? { ...r, __modified: "2026-11-10" } : r)),
+    pages: previous.pages,
+  };
+  const third = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, previous: edited }));
+  assert.equal(third.value.report.reused, 1); // 바뀐 1건만 다시 읽는다
+  assert.equal(third.loaded.length, 2); // 표(1) + 수정된 문항(1)
 });
 
 test("loadHubQna: 본문이 일시적으로 비어 오면 다시 읽어 답변을 채운다 (레이트리밋 대비)", async () => {

@@ -22,6 +22,7 @@
 import { SECTION_LABELS, TYPE_CHOICES, classifyType, pickRow } from "../src/content/classify.js";
 import { AUTHOR_KEYS, COVER_KEYS, COVER_SOURCE_LABELS, coverFromPageMap, personNames, signNotionImage } from "../src/content/fields.js";
 import {
+  HUB_QNA_SOURCE,
   hubAnswerFromPage,
   hubPublicPageMap,
   hubQnaCategory,
@@ -70,6 +71,15 @@ const dashed = (id) => {
   return `${raw.slice(0, 8)}-${raw.slice(8, 12)}-${raw.slice(12, 16)}-${raw.slice(16, 20)}-${raw.slice(20)}`;
 };
 
+/**
+ * 노션 공개 API 호출.
+ *
+ * ⚠️ 2026-11-08 05:13Z 이후 동기화가 44시간 동안 매번 실패한 원인은 **HTTP 429(Cloudflare 1015,
+ *    "You are being rate limited")** 였습니다. 5분마다 도는 동기화가 한 번에 100건이 넘는
+ *    `loadPageChunk`(글 본문 + Q&A 본문)를 요청해 노션 쪽 레이트리밋에 걸린 것입니다.
+ *    그래서 ① 429 는 `Retry-After` 를 존중해 더 길게 쉬고, ② 본문은 바뀐 것만 다시 읽습니다
+ *    (`reusableBody` · `loadHubQna` 의 previous 캐시).
+ */
 async function notionPost(path, body, { retries = 3 } = {}) {
   let lastError;
   for (let attempt = 1; attempt <= retries; attempt += 1) {
@@ -85,7 +95,13 @@ async function notionPost(path, body, { retries = 3 } = {}) {
         signal: AbortSignal.timeout(30_000),
       });
       const text = await res.text();
-      if (!res.ok) throw new Error(`${path} HTTP ${res.status}: ${text.slice(0, 300)}`);
+      if (!res.ok) {
+        const error = new Error(`${path} HTTP ${res.status}: ${text.slice(0, 300)}`);
+        error.status = res.status;
+        const retryAfter = Number(res.headers.get("retry-after"));
+        if (Number.isFinite(retryAfter) && retryAfter > 0) error.retryAfterMs = Math.min(retryAfter, 60) * 1000;
+        throw error;
+      }
       try {
         return JSON.parse(text);
       } catch {
@@ -94,7 +110,14 @@ async function notionPost(path, body, { retries = 3 } = {}) {
     } catch (error) {
       lastError = error;
       console.warn(`  ! ${path} 시도 ${attempt}/${retries} 실패: ${error?.message ?? error}`);
-      if (attempt < retries) await new Promise((r) => setTimeout(r, attempt * 1200));
+      if (attempt < retries) {
+        // 429(레이트리밋)는 짧게 재시도하면 더 오래 막힙니다 — 길게, 지터를 섞어 쉽니다.
+        const waitMs =
+          error?.status === 429
+            ? (error.retryAfterMs ?? attempt * 6_000) + Math.floor(Math.random() * 1_000)
+            : attempt * 1_200;
+        await new Promise((r) => setTimeout(r, waitMs));
+      }
     }
   }
   throw lastError;
@@ -375,6 +398,40 @@ const msToDate = (value) => {
   return Number.isFinite(date.getTime()) ? date.toISOString().slice(0, 10) : "";
 };
 
+/* --------------------------- 본문 재사용 캐시 --------------------------- */
+
+/**
+ * 이전 스냅샷의 본문을 그대로 써도 되는지 판단합니다.
+ *
+ * 노션 공개 API 는 한 번에 100건이 넘는 요청을 레이트리밋(429)합니다. 그런데 동기화는 5분마다
+ * 돌면서 **모든 글의 본문**을 다시 읽고 있었습니다. 행의 `last_edited_time`(스냅샷의 `__modified`)이
+ * 그대로면 본문도 그대로이므로, 그때는 이전 스냅샷의 본문 블록을 재사용합니다.
+ * (수정 시각을 모르는 경우에는 안전하게 다시 읽습니다.)
+ *
+ * @returns {object|null} 재사용할 `pages[id]` 블록맵 (없으면 null)
+ */
+export function reusableBody(previous, row) {
+  if (!isRecord(previous) || !isRecord(previous.pages) || !isRecord(row) || !row.id) return null;
+  const cached = previous.pages[row.id];
+  if (!isRecord(cached) || Object.keys(cached).length === 0) return null;
+  const before = (Array.isArray(previous.rows) ? previous.rows : []).find((r) => r?.id === row.id);
+  if (!before) return null;
+  const modified = String(row.__modified ?? "");
+  if (!modified || String(before.__modified ?? "") !== modified) return null;
+  return cached;
+}
+
+/** 허브 Q&A 문항 — 질문 페이지가 그대로면 이전 스냅샷의 사이트 행·본문을 그대로 씁니다. */
+function cachedQnaRow(previous, id, modified) {
+  if (!isRecord(previous) || !isRecord(previous.pages) || !id || !modified) return null;
+  const before = (Array.isArray(previous.rows) ? previous.rows : []).find(
+    (r) => r?.id === id && r?.__source === HUB_QNA_SOURCE
+  );
+  if (!before || String(before.__modified ?? "") !== String(modified)) return null;
+  if (!isRecord(previous.pages[id])) return null;
+  return before;
+}
+
 /**
  * 허브 Q&A 표(`XCONDA 허브 Q&A`)를 읽어 **사이트 행**으로 바꿉니다.
  *
@@ -382,12 +439,13 @@ const msToDate = (value) => {
  *     `내부 근거` 는 제외)은 `src/content/hubQna.js` 한 곳에서 관리합니다 — 사이트도 같은 함수를 씁니다.
  *   ▸ 이 표를 읽지 못해도 메인 동기화는 계속됩니다(경고만 남기고 넘어갑니다).
  */
-export async function loadHubQna({ pageId, databaseId } = {}) {
+export async function loadHubQna({ pageId, databaseId, previous } = {}) {
   const page = extractId(firstFilled(pageId, process.env.NOTION_FAQ_PAGE_ID, DEFAULT_FAQ_PAGE_ID));
   const viewId = extractId(firstFilled(databaseId, process.env.NOTION_FAQ_DATABASE_ID, DEFAULT_FAQ_DATABASE_ID));
   const report = {
     skipped: null,
     rowCount: 0,
+    reused: 0, // 본문을 다시 읽지 않고 이전 스냅샷에서 재사용한 문항 수
     included: [],
     excluded: [],
     missingAnswer: [],
@@ -469,6 +527,21 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
       continue;
     }
 
+    /* 질문 페이지가 그대로면 본문을 다시 읽지 않습니다 — 5분마다 70여 건을 다시 받아
+     * 노션 레이트리밋(429)에 걸리던 문제의 주 원인이었습니다. */
+    const modified = msToDate(block.last_edited_time);
+    const cached = cachedQnaRow(previous, row.id, modified);
+    if (cached) {
+      result.rows.push(cached);
+      if (isRecord(previous.pages?.[row.id])) result.pages[row.id] = previous.pages[row.id];
+      info.answerLength = String(cached.Summary ?? "").length;
+      info.answerFrom = "cache";
+      if (!info.answerLength) report.missingAnswer.push(info);
+      report.included.push(info);
+      report.reused += 1;
+      continue;
+    }
+
     let body;
     try {
       // 문항이 많으면 연속 요청이 잠깐 막히므로, 본문은 재시도 + 요청 사이 짧은 휴식으로 읽습니다.
@@ -490,6 +563,8 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
       summary: answer.text,
       dateFallback: msToDate(block.created_time ?? block.last_edited_time),
     });
+    // 다음 실행에서 본문을 재사용할 수 있도록 수정 시각을 남깁니다(메인 표 행의 __modified 와 같은 규칙).
+    if (modified) siteRow.__modified = modified;
     result.rows.push(siteRow);
     if (Object.keys(publicBody.map).length) result.pages[siteRow.id] = publicBody.map;
     report.included.push(info);
@@ -532,7 +607,7 @@ export async function loadHubQna({ pageId, databaseId } = {}) {
 /** 빈 문자열(설정하지 않은 GitHub Variables 가 공백으로 넘어오는 경우)은 없는 값으로 취급합니다. */
 const firstFilled = (...values) => values.find((v) => typeof v === "string" && v.trim() !== "");
 
-export async function buildSnapshot({ pageId, databaseId } = {}) {
+export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
   const page = extractId(firstFilled(pageId, process.env.NOTION_PAGE_ID, DEFAULT_PAGE_ID));
   const database = extractId(firstFilled(databaseId, process.env.NOTION_DATABASE_ID, DEFAULT_DATABASE_ID));
   if (!page && !database) throw new Error("NOTION_PAGE_ID 또는 NOTION_DATABASE_ID 가 필요합니다");
@@ -619,12 +694,20 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
   }
 
   // 각 글의 본문 블록(상세 모달용)까지 미리 담아 둡니다.
+  //  - 수정되지 않은 글은 이전 스냅샷의 본문을 그대로 씁니다(노션 레이트리밋 회피).
   const pages = {};
+  let reusedBodies = 0;
   for (const row of rows) {
-    try {
-      pages[row.id] = await loadBlockMap(row.id);
-    } catch (error) {
-      console.warn(`  · 본문 로드 실패 (${row.id}): ${error?.message ?? error}`);
+    const cachedBody = reusableBody(previous, row);
+    if (cachedBody) {
+      pages[row.id] = cachedBody;
+      reusedBodies += 1;
+    } else {
+      try {
+        pages[row.id] = await loadBlockMap(row.id);
+      } catch (error) {
+        console.warn(`  · 본문 로드 실패 (${row.id}): ${error?.message ?? error}`);
+      }
     }
 
     /* 썸네일 확정 — Cover 속성 → 페이지 커버 → 본문 첫 이미지 (규칙: src/content/fields.js) */
@@ -654,12 +737,15 @@ export async function buildSnapshot({ pageId, databaseId } = {}) {
   /* ------------------------------ 허브 Q&A 표 병합 ------------------------------ */
   // 고객 지원 Q&A(질문 1건 = 페이지 1개, 답변은 페이지 본문의 `답변` 섹션)를 같은 스냅샷에 합칩니다.
   // 노출 판단(상태 · 허브 게시)과 본문 필터(내부 근거 제외)는 src/content/hubQna.js 한 곳에서 관리합니다.
-  const qna = await loadHubQna({ pageId: faqPage, databaseId: faqView });
+  const qna = await loadHubQna({ pageId: faqPage, databaseId: faqView, previous });
   rows.push(...qna.rows);
   Object.assign(pages, qna.pages);
   if (qna.report.skipped) console.warn(`⚠️ [Notion Sync 경고] 허브 Q&A: ${qna.report.skipped}`);
   console.log(
-    `[Notion Sync] 허브 Q&A: 포함 ${qna.report.included.length} · 제외 ${qna.report.excluded.length} (읽은 문항 ${qna.report.rowCount})`
+    `[Notion Sync] 허브 Q&A: 포함 ${qna.report.included.length} · 제외 ${qna.report.excluded.length} (읽은 문항 ${qna.report.rowCount} · 본문 재사용 ${qna.report.reused})`
+  );
+  console.log(
+    `[Notion Sync] 본문 요청 절약: 글 ${reusedBodies}/${rows.length - qna.rows.length} · Q&A ${qna.report.reused}/${qna.rows.length} 재사용`
   );
 
   return {
@@ -1105,64 +1191,66 @@ if (isMain) {
   const heartbeatMin = heartbeatIndex >= 0 ? Number(args[heartbeatIndex + 1]) : NaN;
   const heartbeatMs = Number.isFinite(heartbeatMin) && heartbeatMin >= 0 ? heartbeatMin * 60_000 : HEARTBEAT_MS;
 
-  buildSnapshot()
-    .then(async (snapshot) => {
-      // 스냅샷 파일에는 generatedAt · source · rows · pages 만 저장합니다.
-      // (report 는 Actions 요약 전용 — 파일 크기와 커밋 노이즈를 늘리지 않습니다)
-      const payload = { generatedAt: snapshot.generatedAt, source: snapshot.source, rows: snapshot.rows, pages: snapshot.pages };
-      const json = `${JSON.stringify(payload, null, 0)}\n`;
-      if (print) console.log(JSON.stringify(payload.rows, null, 2));
-      const { readFile, writeFile } = await import("node:fs/promises");
+  // 이전 스냅샷을 **먼저** 읽습니다 — 본문 재사용 캐시(reusableBody)의 기준이 됩니다.
+  (async () => {
+    const { readFile, writeFile } = await import("node:fs/promises");
+    let previous = null;
+    try {
+      previous = JSON.parse(await readFile(out, "utf8"));
+    } catch {
+      /* 첫 생성이거나 읽을 수 없음 → 새로 씁니다 */
+    }
 
-      let previous = null;
-      try {
-        previous = JSON.parse(await readFile(out, "utf8"));
-      } catch {
-        /* 첫 생성이거나 읽을 수 없음 → 새로 씁니다 */
-      }
-      const decision = force ? { write: true, reason: "--force" } : shouldWriteSnapshot(previous, payload, { heartbeatMs });
+    const snapshot = await buildSnapshot({ previous });
+    // 스냅샷 파일에는 generatedAt · source · rows · pages 만 저장합니다.
+    // (report 는 Actions 요약 전용 — 파일 크기와 커밋 노이즈를 늘리지 않습니다)
+    const payload = { generatedAt: snapshot.generatedAt, source: snapshot.source, rows: snapshot.rows, pages: snapshot.pages };
+    const json = `${JSON.stringify(payload, null, 0)}\n`;
+    if (print) console.log(JSON.stringify(payload.rows, null, 2));
 
-      // 대량 삭제 가드 — 사고로 글이 통째로 사라진 스냅샷은 게시하지 않습니다.
-      const guard = allowShrink
-        ? { block: false, reason: "" }
-        : checkMassRemoval(previous, payload);
-      if (guard.block) {
-        const message = `✖ 대량 삭제 감지 — ${out} 을(를) 덮어쓰지 않았습니다. ${guard.reason}`;
-        console.error(message);
-        console.error("  의도된 삭제라면 --allow-shrink (또는 ALLOW_SNAPSHOT_SHRINK=1) 로 다시 실행하세요.");
-        await appendSyncSummary(
-          renderMassRemovalSummary({
-            reason: guard.reason,
-            out,
-            previousGeneratedAt: previous?.generatedAt ?? null,
-          })
-        );
-        process.exit(1);
-      }
+    const decision = force ? { write: true, reason: "--force" } : shouldWriteSnapshot(previous, payload, { heartbeatMs });
 
-      let writeReason;
-      if (decision.write) {
-        await writeFile(out, json, "utf8");
-        writeReason = `갱신 (${decision.reason})`;
-        console.log(
-          `✔ ${out} 갱신 (${decision.reason}) — 글 ${payload.rows.length}개 (Q&A ${payload.rows.filter((r) => r.__source === "hub-qna").length}개 포함) / 본문 ${Object.keys(payload.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
-        );
-      } else {
-        writeReason = `유지 (${decision.reason})`;
-        console.log(
-          `＝ ${out} 유지 (${decision.reason}) — 글 ${payload.rows.length}개, 내용 동일 · 마지막 갱신 ${previous.generatedAt} (하트비트 ${Math.round(heartbeatMs / 60_000)}분) → 빈 커밋 방지`
-        );
-      }
+    // 대량 삭제 가드 — 사고로 글이 통째로 사라진 스냅샷은 게시하지 않습니다.
+    const guard = allowShrink
+      ? { block: false, reason: "" }
+      : checkMassRemoval(previous, payload);
+    if (guard.block) {
+      const message = `✖ 대량 삭제 감지 — ${out} 을(를) 덮어쓰지 않았습니다. ${guard.reason}`;
+      console.error(message);
+      console.error("  의도된 삭제라면 --allow-shrink (또는 ALLOW_SNAPSHOT_SHRINK=1) 로 다시 실행하세요.");
+      await appendSyncSummary(
+        renderMassRemovalSummary({
+          reason: guard.reason,
+          out,
+          previousGeneratedAt: previous?.generatedAt ?? null,
+        })
+      );
+      process.exit(1);
+    }
 
-      // 어느 글이 어느 섹션으로 들어갔는지 + 노션에서 손볼 곳을 요약으로 남깁니다.
-      const summary = renderSyncSummary({
-        report: snapshot.report,
-        generatedAt: payload.generatedAt,
-        writeReason,
-        previousGeneratedAt: previous?.generatedAt ?? null,
-      });
-      if (!(await appendSyncSummary(summary))) console.log(`\n${summary}`);
-    })
+    let writeReason;
+    if (decision.write) {
+      await writeFile(out, json, "utf8");
+      writeReason = `갱신 (${decision.reason})`;
+      console.log(
+        `✔ ${out} 갱신 (${decision.reason}) — 글 ${payload.rows.length}개 (Q&A ${payload.rows.filter((r) => r.__source === "hub-qna").length}개 포함) / 본문 ${Object.keys(payload.pages).length}개 (${(json.length / 1024).toFixed(1)} KB)`
+      );
+    } else {
+      writeReason = `유지 (${decision.reason})`;
+      console.log(
+        `＝ ${out} 유지 (${decision.reason}) — 글 ${payload.rows.length}개, 내용 동일 · 마지막 갱신 ${previous.generatedAt} (하트비트 ${Math.round(heartbeatMs / 60_000)}분) → 빈 커밋 방지`
+      );
+    }
+
+    // 어느 글이 어느 섹션으로 들어갔는지 + 노션에서 손볼 곳을 요약으로 남깁니다.
+    const summary = renderSyncSummary({
+      report: snapshot.report,
+      generatedAt: payload.generatedAt,
+      writeReason,
+      previousGeneratedAt: previous?.generatedAt ?? null,
+    });
+    if (!(await appendSyncSummary(summary))) console.log(`\n${summary}`);
+    })()
     .catch(async (error) => {
       console.error(`✖ Notion 스냅샷 생성 실패: ${error?.message ?? error}`);
       const help = [
@@ -1173,6 +1261,8 @@ if (isMain) {
         "```",
         "",
         "**확인 순서**",
+        "0. `HTTP 429` · `Error 1015 (rate limited)` 라면 노션 쪽 레이트리밋입니다 — 15분쯤 뒤 다시 실행하면 됩니다.",
+        "   (5분 주기로 100건이 넘는 본문을 요청하던 것이 원인이라, 지금은 바뀐 글만 다시 읽습니다.)",
         "1. 노션 페이지 공유 → **웹에 게시(Publish)** 상태인지",
         "2. 페이지 안에 표(데이터베이스)가 있고, `Published` 체크된 행이 있는지",
         "3. 저장소 Settings → Variables 의 `NOTION_PAGE_ID` / `NOTION_DATABASE_ID` 가 맞는지",
