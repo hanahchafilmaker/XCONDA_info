@@ -37,15 +37,29 @@ jobs:
           NOTION_FAQ_DATABASE_ID: ${{ vars.NOTION_FAQ_DATABASE_ID }}
         run: |
           set -o pipefail
-          node scripts/notion-snapshot.mjs --out /tmp/probe.json 2>&1 | tee /tmp/probe.log || true
-          echo "===== 마지막 30줄 ====="
-          tail -n 30 /tmp/probe.log
+          # main 과 **같은 조건**으로 돌린다 — 저장소에 커밋된 스냅샷을 이전 상태로 두고 비교한다.
+          cp notion-content.json /tmp/probe.json
+          node scripts/notion-snapshot.mjs --out /tmp/probe.json 2>&1 | tee /tmp/probe.log || echo "EXIT=$?"
+          echo "===== 요약 줄 ====="
+          grep -nE '✖|✔|＝|허브 Q&A|표에서 읽은|제외|가드|삭제|실패|시도' /tmp/probe.log | tail -n 20 || true
           echo "===== 애너테이션 ====="
+          {
+            node -e '
+              const fs=require("fs");
+              const prev=JSON.parse(fs.readFileSync("notion-content.json","utf8"));
+              const next=JSON.parse(fs.readFileSync("/tmp/probe.json","utf8"));
+              const count=(s)=>{const m={};for(const r of s.rows??[]){const k=r.__type??"(none)";m[k]=(m[k]??0)+1;}return m;};
+              console.log(`PROBE 이전 rows=${prev.rows.length} ${JSON.stringify(count(prev))}`);
+              console.log(`PROBE 이후 rows=${next.rows.length} ${JSON.stringify(count(next))}`);
+            ' 2>&1 || echo "PROBE 비교 실패"
+          } > /tmp/probe-cmp.txt
+          cat /tmp/probe-cmp.txt
+          cat /tmp/probe-cmp.txt /tmp/probe.log | grep -E 'PROBE|✖|✔|＝|허브 Q&A|표에서 읽은|가드|삭제|실패|HTTP' | tail -n 25 > /tmp/probe-annot.txt || true
           while IFS= read -r line; do
             safe="${line//%/%25}"
             safe="${safe//$'\r'/}"
             echo "::warning::${safe}"
-          done < <(tail -n 30 /tmp/probe.log)
+          done < /tmp/probe-annot.txt
 
       - name: 결과 요약
         if: always()
