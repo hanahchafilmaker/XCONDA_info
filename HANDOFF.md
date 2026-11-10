@@ -288,6 +288,7 @@ XCONDA_info/
 - 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
 - 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
+- **원문이 사라진 번역 페이지는 빌드가 정리합니다**(2026-11-10). 노션에서 글을 내리면 한국어 폴더(`post/` 등)는 통째로 다시 만들어지지만 `en/`·`ja/`·`zh/` 는 이번 빌드에 없는 파일이 그대로 남아, 사라진 한국어 주소를 hreflang·canonical 로 가리켰습니다(Search Console 색인 오류의 원인). 이제 `writeSite`(`build-seo.mjs` › `staleLocalizedPages`)가 그런 페이지를 **같은 언어 목록으로 보내는 `noindex` 안내 페이지**로 바꿉니다 — 이미 색인된 주소가 곧바로 404 가 되지 않게, `REDIRECTS` 와 같은 방식입니다. 빌드 로그에 `낡은 번역 페이지 N개 → 목록으로 리디렉션` 으로 나옵니다. 같은 언어의 목록·홈이 없으면 한국어 홈으로 보냅니다.
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
 - **`dev.html` 은 noindex**: 이 파일은 개발 진입점이면서 저장소 루트에 커밋되어 **`/dev.html` 로도 열립니다**. 검색에 개발 껍데기가 노출되지 않도록 `<!-- DEV-ONLY:START --> … <!-- DEV-ONLY:END -->` 안에 `noindex` 를 두고, 빌드(`applyHead`)가 **그 블록을 지웁니다**. 지우지 않으면 배포되는 `index.html` 이 noindex 를 물려받아 **홈페이지가 검색에서 빠집니다** — `seo.test.mjs` 가 회귀를 막습니다(2026-10-26).

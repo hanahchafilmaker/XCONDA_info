@@ -78,6 +78,9 @@ const REPO_ROOT = path.resolve(here, "..");
 /** 생성물로 소유하는 폴더 (빌드 때마다 통째로 다시 만듭니다) */
 export const GENERATED_DIRS = ["post", "notice", "qna", "guide"];
 
+/** 번역 페이지를 두는 언어 접두사 (`en/` `ja/` `zh/`) — SITE_LANGS 에서 가져옵니다 */
+export const LOCALE_PREFIXES = SITE_LANGS.map((l) => l.prefix).filter(Boolean);
+
 /**
  * 옮겨진 글의 옛 주소 → 새 주소 (사이트 기준 경로, 앞 슬래시 없음, 끝 슬래시 있음).
  * 노션에서 글을 내리거나 합칠 때 여기에 한 줄 추가하면, 옛 주소로 들어온 방문자와
@@ -90,12 +93,12 @@ export const REDIRECTS = {
   "post/flexboard-storyboard-7-steps/": "guide/flexboard-storyboard-guide/", // 2026-11-02 가이드로 통합 (SNS 배포 글)
 };
 
-export function redirectHtml(targetUrl) {
+export function redirectHtml(targetUrl, htmlLang = "ko") {
   const u = escapeHtml(targetUrl);
   const js = JSON.stringify(targetUrl).replace(/</g, "\\u003c");
   return [
     "<!doctype html>",
-    '<html lang="ko"><head><meta charset="utf-8">',
+    `<html lang="${escapeHtml(htmlLang)}"><head><meta charset="utf-8">`,
     "<title>페이지가 이동했습니다</title>",
     `<meta http-equiv="refresh" content="0; url=${u}">`,
     `<link rel="canonical" href="${u}">`,
@@ -1584,13 +1587,75 @@ function parseArgs(argv) {
   return opts;
 }
 
+/**
+ * 언어 폴더(`en/` `ja/` `zh/`)에 남아 있는, 이번 빌드에서 만들지 않은 `index.html` 목록.
+ *
+ * 한국어 폴더는 통째로 지우고 다시 만들지만(`GENERATED_DIRS`), 언어 폴더는
+ * 번역 파일이 있는 글만 골라 만들기 때문에 예전 파일이 그대로 남습니다.
+ * 노션에서 글이 내려가거나 번역 항목이 빠지면 **원문이 사라진 번역 페이지만**
+ * 계속 살아남아, 존재하지 않는 한국어 주소를 hreflang·canonical 로 가리키게 됩니다
+ * (Search Console "색인 생성" 오류의 원인). 그래서 빌드 결과에 없는 파일은 걷어냅니다.
+ *
+ * @param {string} root 사이트 루트
+ * @param {Map<string,string>} files 이번 빌드가 만든 파일(사이트 기준 경로)
+ * @returns {string[]} 이번 빌드에 없는 번역 페이지 경로(`en/post/old-slug/index.html`)
+ */
+export function staleLocalizedPages(root, files) {
+  const stale = [];
+  for (const prefix of LOCALE_PREFIXES) {
+    const dir = path.join(root, prefix);
+    if (!fs.existsSync(dir)) continue;
+    const walk = (abs, relBase) => {
+      let entries = [];
+      try {
+        entries = fs.readdirSync(abs, { withFileTypes: true });
+      } catch {
+        return;
+      }
+      for (const e of entries) {
+        const rel = `${relBase}${e.name}`;
+        if (e.isDirectory()) walk(path.join(abs, e.name), `${rel}/`);
+        else if (e.name === "index.html" && !files.has(rel)) stale.push(rel);
+      }
+    };
+    walk(dir, prefix);
+  }
+  return stale.sort();
+}
+
+/** 낡은 번역 페이지가 보낼 곳 — 같은 언어의 섹션 목록 → 같은 언어 홈 → 한국어 홈 */
+function staleRedirectTarget(files, siteUrl, code, section) {
+  if (files.has(`${code}/${section}/index.html`)) return localizedUrl(siteUrl, code, `${section}/`);
+  if (files.has(`${code}/index.html`)) return localizedUrl(siteUrl, code, "");
+  return localizedUrl(siteUrl, "ko", "");
+}
+
+/**
+ * 사이트 파일을 씁니다. 지우고 다시 만드는 범위를 정확히 지키는 것이 핵심입니다.
+ * - `post/ notice/ qna/ guide/` (한국어) 는 통째로 지우고 새로 씁니다.
+ * - 언어 폴더는 이번 빌드에 없는 페이지만 골라 **리디렉션 안내 페이지**로 바꿉니다.
+ *   (파일을 지우면 이미 색인된 주소가 곧바로 404 가 되므로, 기존 `REDIRECTS` 와 같은 방식)
+ * @returns {string[]} 리디렉션으로 바꾼 낡은 번역 페이지
+ */
 export function writeSite(result, root) {
   for (const dir of GENERATED_DIRS) fs.rmSync(path.join(root, dir), { recursive: true, force: true });
+
+  const stale = staleLocalizedPages(root, result.files ?? new Map());
+  for (const rel of stale) {
+    const [, code = "", section = ""] = rel.match(/^([^/]+)\/([^/]+)\//) ?? [];
+    const lang = langByCode(code);
+    const target = lang
+      ? staleRedirectTarget(result.files ?? new Map(), result.siteUrl, code, section)
+      : localizedUrl(result.siteUrl, "ko", "");
+    fs.writeFileSync(path.join(root, rel), redirectHtml(target, lang?.htmlLang ?? "ko"), "utf8");
+  }
+
   for (const [rel, content] of result.files) {
     const target = path.join(root, rel);
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, content, "utf8");
   }
+  return stale;
 }
 
 function main() {
@@ -1600,9 +1665,13 @@ function main() {
   const siteUrl = (process.env.SITE_URL || "").trim() || DEFAULT_SITE_URL;
 
   const result = renderSeoSite({ rows: snapshot.rows ?? [], pages: snapshot.pages ?? {}, template, siteUrl });
-  writeSite(result, opts.root);
+  const stale = writeSite(result, opts.root);
 
   console.log(`✔ 글별 주소 ${result.pages.length}개 · 제외 ${result.skipped.length}개 · 사이트맵·robots.txt 갱신 (${result.siteUrl})`);
+  if (stale.length) {
+    console.log(`  낡은 번역 페이지 ${stale.length}개 → 목록으로 리디렉션 (원문 없음)`);
+    for (const rel of stale) console.log(`    · /${rel.replace(/index\.html$/, "")}`);
+  }
   const bodies = Object.entries(result.localizedBodies ?? {});
   if (bodies.length) {
     console.log(`  번역 본문(blocks) 있음 — ${bodies.map(([code, n]) => `${code} ${n}편`).join(" · ")}`);
