@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/notice/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/</loc>
@@ -19,6 +19,10 @@
   <url>
     <loc>https://hub.xconda.ai/guide/</loc>
     <lastmod>2026-11-08</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/notice/seedance-credit-pricing/</loc>
+    <lastmod>2026-11-11</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/ai-prompt-editor/</loc>

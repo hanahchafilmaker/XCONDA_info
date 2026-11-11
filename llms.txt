@@ -22,6 +22,7 @@
 
 ## 공지사항
 
+- [Seedance 크레딧 단가표 | 480p·720p·1080p 초당 차감 크레딧](https://hub.xconda.ai/notice/seedance-credit-pricing/): Seedance 영상 생성 시 해상도·영상 길이별 차감 크레딧과 영상 레퍼런스 입력 시 단가 안내.
 - [XCONDA 웰컴 크레딧 500 지급 재개 | 신규 가입 혜택](https://hub.xconda.ai/notice/welcome-credits-500/): XCONDA에 새로 가입하면 웰컴 크레딧 500을 다시 받을 수 있습니다.
 - [Kling 4.0 XCONDA 출시 | 최대 30초 영상 생성](https://hub.xconda.ai/notice/kling-40-xconda/): Kling 4.0을 XCONDA에서 바로 사용할 수 있습니다. 한 번에 최대 30초 영상을 만들 수 있고, 21:9 시네마틱 비율과 이미지·영상 레퍼런스를 지원합니다
 - [XCONDA 홈페이지 개편 | Flex Board·블로킹 보드·Turn](https://hub.xconda.ai/notice/xconda-landing-renewal/): Flex Board, 블로킹 보드, Turn의 특징을 한눈에 비교하고 내 작업에 맞는 툴을 쉽게 고를 수 있습니다.
