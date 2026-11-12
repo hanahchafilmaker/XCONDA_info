@@ -71,6 +71,7 @@
 
 ## Q&A
 
+- [이미지 프롬프트는 몇 자까지 쓰는 게 좋나요?](https://hub.xconda.ai/qna/image-prompt-length/): 이미지 프롬프트는 영어 기준 약 600자 이내로 쓰는 것을 권장합니다. 이미지 생성 모델을 제공하는 BytePlus의 권장 사항이며, 프롬프트가 이보다 길어지면 모델이 세부 내용을 지나치게 따지면서 이미지 품질이 떨어질 수 있습니다. 강제로 막는 제한이 아니라 권장…
 - [문의는 어디로 하나요?](https://hub.xconda.ai/qna/contact-inquiry/): 고객센터는 모든 고객에게 한 곳에서 운영합니다. 이메일 cubeberry@cuberry.kr, 전화 +82-70-8095-2302, 평일 10:00~17:00(한국시간, 점심 12:00~13:00)입니다. 미국 법인(Cubeberry Co., Ltd…
 - [카드 정보는 안전하게 보관되나요?](https://hub.xconda.ai/qna/card-information-security/): 카드 정보는 Stripe 또는 PortOne(토스페이먼츠, 카카오페이, Eximbay)이 처리하고, 큐브베리 서버에는 전체 카드 번호를 저장하지 않습니다. 확인용으로 카드 끝 4자리와 유효기간만 보관합니다.
 - [AI 영상 제작 교육이나 강의도 하나요?](https://hub.xconda.ai/qna/ai-video-training-courses/): 네. AI 영상 제작 웹세미나를 정기적으로 열 계획입니다. 일정과 신청 방법은 허브 공지사항으로 안내하겠습니다.
@@ -90,5 +91,4 @@
 - [엑스콘다 데이터는 어디에서 운영되나요?](https://hub.xconda.ai/qna/data-operation-location/): 엑스콘다는 Amazon Web Services에서 운영하며, 저장된 데이터는 전송 중과 저장 중에 암호화됩니다. 개인정보는 주 운영지인 한국, 그리고 미국(미국 법인, Stripe, 클라우드 업체)과 서비스 제공사가 있는 나라에서 처리·저장될 수 있습니다. 국가 간…
 - [허브에는 어떻게 들어가나요?](https://hub.xconda.ai/qna/how-to-access-hub/): 엑스콘다 홈페이지(xconda.ai)에서 Resources 메뉴의 Hub로 들어가실 수 있습니다.
 - [스킬을 쓰려면 Claude 유료 플랜이 필요한가요?](https://hub.xconda.ai/qna/skills-claude-paid-plan/): Anthropic 고객센터 안내에 따르면 스킬은 Free, Pro, Max, Team, Enterprise 플랜에서 쓸 수 있고, 설정에서 코드 실행(code execution) 기능을 켜야 합니다. 플랜마다 사용량 한도가 다르니, 긴 시나리오를 자주 작업한다면 유료…
-- [결과가 마음에 안 들면 프롬프트를 처음부터 다시 써야 하나요?](https://hub.xconda.ai/qna/seedance-prompt-retry/): 아닙니다. XCONDA 프롬프트 스킬에서 결과를 보고 고칠 점을 대화로 요청하면 편집기의 프롬프트가 수정되고, 그걸로 다시 생성합니다. 완성도가 오를 때까지 이 과정을 반복합니다.
-- … 외 53건은 https://hub.xconda.ai/sitemap.xml 참고
+- … 외 54건은 https://hub.xconda.ai/sitemap.xml 참고
