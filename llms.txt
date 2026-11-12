@@ -33,6 +33,7 @@
 - [Seedance 30% 할인, 패키지별 제작 수량 (종료)](https://hub.xconda.ai/notice/seedance-30-off-package-quantities/): 행사 기간(10월 7일~11월 6일 KST)에 크레딧 사용량 30% 할인을 적용했을 때 패키지별로 만들 수 있던 Seedance 영상 수량입니다. 할인은 11월 6일 오전 11시에 종료되었으며, 지금은 기존 수량이 적용됩니다.
 - [Seedance 2.5 프로모션, 최대 30% 할인 (종료)](https://hub.xconda.ai/notice/seedance-2-5-promotion-30-off/): XCONDA에서 Seedance 2.5 프로모션을 진행했습니다. 10월 7일 오전 11시부터 11월 6일 오전 11시까지(KST) 최대 30% 할인했으며, 11월 6일에 종료되었습니다. 36컷 스토리보드 엔진 FLEXBOARD 출시 기념 프로모션이었습니다.
 - [Seedance 2.5 업데이트, 30초 영상·동시 생성](https://hub.xconda.ai/notice/seedance-2-5-update/): Seedance 2.5 API가 XCONDA에서 정식 제공됩니다. 최대 30초 영상 생성, 영상·오디오 동시 생성, 레퍼런스 최대 50개, 타임스탬프 기반 편집, 그린스크린 배경 교체를 지원합니다.
+- [Seedream 5.5 XCONDA 출시 | 이미지 40% 할인](https://hub.xconda.ai/notice/seedream-55-xconda/): XCONDA 이미지 기본 모델이 Seedream 5.5로 바뀌었습니다. 여러 번 수정해도 구도·조명·색이 유지되고, 지금 40% 할인가로 만들 수 있습니다.
 
 ## 뉴스
 
