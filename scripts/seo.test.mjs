@@ -21,6 +21,8 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  siteJsonLd,
+  isEndedTitle,
   DEFAULT_SITE_URL,
   OG_LANG_DIR,
   OG_LANG_MANIFEST_PATH,
@@ -50,6 +52,8 @@ import {
 } from "../src/content/seo.js";
 import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
 import {
+  localizedDate,
+  promoteSubheadings,
   applyHead,
   renderSeoSite,
   localizedBlockProblems,
@@ -1237,7 +1241,38 @@ test("체크리스트(todo) 블록은 항목 배열로 번역한다", () => {
   assert.match(localizedBlockProblems([{ type: "todo", items: [] }])[0], /items 배열/);
 });
 
-test("본문이 있으면 요약을 첫 문단으로 중복 출력하지 않는다", () => {
+test("번역 본문이 있어도 요약(도입·답변)을 싣고, 본문 첫 글과 같은 말일 때만 생략한다", () => {
+  const render = (blocks) =>
+    renderSeoSite({
+      rows: fixtureRows,
+      pages: pagesFixture,
+      template: TEMPLATE,
+      siteUrl: SITE,
+      ogManifest: {},
+      translations: {
+        en: {
+          ...EN_FIXTURE.en,
+          entries: {
+            "qna/refund-policy": { title: "How do refunds work?", summary: "Ask within 7 days\n\nfor unused credits.", blocks },
+          },
+        },
+      },
+    }).files.get("en/qna/refund-policy/index.html");
+  const articleOf = (html) => html.slice(html.indexOf("<article>"), html.indexOf("</article>"));
+
+  // Q&A 는 요약이 곧 답변입니다 — 본문(출처 블록)만 있고 답변이 빠지던 문제(2026-11-14)
+  const en = render([{ type: "h2", text: "Source" }, { type: "p", text: "Terms 4.2." }]);
+  assert.match(articleOf(en), /<p>Ask within 7 days<\/p><p>for unused credits\.<\/p>/);
+  assert.match(articleOf(en), /Terms 4\.2\./);
+  // 메타 설명은 줄바꿈 없는 한 줄
+  assert.match(en, /<meta name="description" content="Ask within 7 days for unused credits\."/);
+
+  // 본문 첫 글이 요약과 같은 말이면 두 번 싣지 않는다
+  const same = render([{ type: "p", text: "Ask within 7 days for unused credits. More detail follows." }]);
+  assert.equal(articleOf(same).split("Ask within 7 days").length - 1, 1);
+});
+
+test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 문구 (MHW 검토 1~3순위)", () => {
   const out = renderSeoSite({
     rows: fixtureRows,
     pages: pagesFixture,
@@ -1247,23 +1282,62 @@ test("본문이 있으면 요약을 첫 문단으로 중복 출력하지 않는�
     translations: {
       en: {
         ...EN_FIXTURE.en,
+        ui: { ...EN_FIXTURE.en.ui, note: "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): cubeberry@cuberry.kr" },
         entries: {
           "qna/refund-policy": {
             title: "How do refunds work?",
             summary: "Ask within 7 days for unused credits.",
-            blocks: [{ type: "p", text: "Seven days from payment." }],
+            blocks: [{ type: "p", text: "What you need" }, { type: "ul", items: ["Order number"] }, { type: "p", text: "**How to ask**" }, { type: "p", text: "Email us." }],
           },
         },
       },
     },
   });
   const en = out.files.get("en/qna/refund-policy/index.html");
-  const body = en.slice(en.indexOf("<article>"), en.indexOf("</article>"));
-  const summaryHits = body.split("Ask within 7 days for unused credits.").length - 1;
-  assert.equal(summaryHits, 0, "본문이 있으면 요약은 메타 설명으로만 씁니다");
-  assert.match(body, /Seven days from payment\./);
-  // 메타 설명에는 남아 있어야 합니다
-  assert.match(en, /<meta name="description" content="Ask within 7 days for unused credits\."/);
+  // 소제목 구실을 하는 문단은 h2
+  assert.match(en, /<h2>What you need<\/h2>/);
+  assert.match(en, /<h2>How to ask<\/h2>/);
+  assert.match(en, /<p class="notion-default">Email us\.<\/p>/);
+  // 글 위·아래 제품 링크 + UTM
+  for (const placement of ["top", "bottom"]) {
+    assert.match(en, new RegExp(`data-cta="${placement}"[^>]*><a href="https://www\\.xconda\\.ai/\\?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_${placement}"`));
+  }
+  // 한글 글쓴이를 그대로 내보내지 않는다 — 표기가 없으면 팀 이름
+  const meta = en.match(/<p class="seo-meta">(.*?)<\/p>/)[1];
+  assert.doesNotMatch(meta, /[가-힣]/);
+  assert.match(meta, /XCONDA Team$/);
+  // 하단 문구 — "primary source" 표현 없음, 문의처는 mailto
+  assert.doesNotMatch(en, /primary source/i);
+  assert.match(en, /<a href="mailto:cubeberry@cuberry\.kr">cubeberry@cuberry\.kr<\/a>/);
+  // 한국어 글에도 제품 링크가 붙는다
+  assert.match(out.files.get("qna/refund-policy/index.html"), /data-cta="top"[^>]*><a href="https:\/\/www\.xconda\.ai\/ko\?utm_source=hub/);
+});
+
+test("번역 페이지 보조 함수 — 날짜 표기 · 소제목 승격 · 끝난 행사 판정", () => {
+  assert.equal(localizedDate("en", "2026-10-07"), "October 7, 2026");
+  assert.equal(localizedDate("ja", "2026-10-07"), "2026年10月7日");
+  assert.equal(localizedDate("en", ""), "");
+  // 문장으로 끝나는 문단·긴 문단은 그대로 둔다
+  const kept = promoteSubheadings([{ type: "p", text: "This is a sentence." }, { type: "ul", items: [] }]);
+  assert.equal(kept[0].type, "p");
+  // h2 가 없고 h3 만 있으면 h3 → h2
+  assert.deepEqual(promoteSubheadings([{ type: "h3", text: "Step 1" }, { type: "p", text: "Do it." }]).map((b) => b.type), ["h2", "p"]);
+  assert.ok(isEndedTitle("Seedance 2.5 프로모션 — 최대 30% 할인 (10/7~11/6, 종료)"));
+  assert.ok(isEndedTitle("제목", "패키지별 제작 가능 수량 (종료)"));
+  assert.ok(!isEndedTitle("서비스 종료 안내가 아닌 일반 글"));
+});
+
+test("회사 명찰 — Cubeberry 표기, 한국 법인 = 개발·운영사, 미국 법인 = 공인 리셀러", () => {
+  const [org, reseller] = siteJsonLd("https://hub.example.test/");
+  assert.equal(org["@id"], "https://www.cuberry.kr/#organization"); // 회사 번호는 cuberry.kr 유지
+  assert.equal(org.name, "Cubeberry");
+  assert.match(org.description, /Developer and operator of XCONDA/);
+  assert.equal(org.contactPoint.email, "cubeberry@cuberry.kr");
+  assert.ok(org.sameAs.includes("https://www.xconda.ai"));
+  assert.ok(org.sameAs.some((u) => u.includes("youtube.com")));
+  assert.match(reseller.description, /Authorized reseller/);
+  assert.equal(reseller.email, "info@cubeberry.ai");
+  assert.equal(reseller.url, undefined, "cubeberry.ai 는 개선 전까지 공식 주소로 연결하지 않습니다");
 });
 
 test("번역 본문 형식이 틀리면 페이지에 넣지 않고 경고를 남긴다", () => {

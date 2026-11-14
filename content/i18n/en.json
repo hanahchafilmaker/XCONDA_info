@@ -3,10 +3,11 @@
     "XCONDA허브 영어판 원문. 이 파일에 있는 글만 /en/ 주소가 만들어집니다(빌드: scripts/build-seo.mjs).",
     "번역은 **사람이 검수**해 넣습니다. 기계번역을 그대로 넣지 마세요 — 같은 내용을 두 주소로 내보내면 검색에서 중복으로 처리됩니다.",
     "키 규칙: entries 의 키는 `주소/슬러그`(예: qna/contact-inquiry). 원문 글이 사라지면 빌드가 경고하고 그 주소는 만들지 않습니다.",
+    "authors 는 한국어 글쓴이 표기 → 영어 표기 표입니다(예: \"이진서 대표\": \"Jinseo Lee, CEO\"). 표에 없고 노션 `Author EN` 도 비어 있으면 글쓴이는 \"XCONDA Team\" 으로 나갑니다 — 한글 이름을 영어 페이지에 그대로 내보내지 않습니다. 영문 철자는 본인 확인 후 넣으세요.",
     "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변). 블로그·가이드는 본문 번역(bodies)이 아직 없어 영어 주소를 만들지 않습니다."
   ],
   "lang": "en",
-  "updated": "2026-10-25",
+  "updated": "2026-11-14",
   "site": {
     "title": "XCONDA Hub — Q&A, Guides and Notices",
     "description": "English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry."
@@ -16,14 +17,29 @@
     "hubHome": "XCONDA Hub home",
     "koreanOriginal": "Read this in Korean",
     "allSections": "All topics",
-    "note": "English pages are translated by the XCONDA team. The Korean hub is the primary source; contact cubeberry@cuberry.kr if anything here disagrees with it.",
+    "note": "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): cubeberry@cuberry.kr",
     "articleCount": "articles"
   },
   "sections": {
     "qna": {
       "title": "XCONDA Q&A (English)",
       "description": "Reviewed English answers to the questions XCONDA users ask most: pricing and cancellation, privacy and payments, tools and workflows."
+    },
+    "notice": {
+      "title": "XCONDA Notices",
+      "description": "Product updates, releases and promotions from the XCONDA team."
+    },
+    "post": {
+      "title": "XCONDA Blog",
+      "description": "Workflows, case studies and news about AI storyboard and video production with XCONDA."
+    },
+    "guide": {
+      "title": "XCONDA Guides",
+      "description": "Step-by-step guides to the XCONDA tools: FLEXBOARD, Turn and Blocking Board."
     }
+  },
+  "authors": {
+    "이진서 대표": "Jinseo Lee, CEO"
   },
   "entries": {
     "guide/flexboard-storyboard-guide": {
@@ -420,8 +436,8 @@
       ]
     },
     "notice/seedance-2-5-promotion-30-off": {
-      "title": "Seedance 2.5 promotion: up to 30% off (10/7–11/6)",
-      "summary": "XCONDA is running a Seedance 2.5 promotion: up to 30% off from 11:00 on 7 October to 11:00 on 6 November 2026 (KST), celebrating the launch of the 36-cut storyboard engine FLEXBOARD.",
+      "title": "Seedance 2.5 promotion: up to 30% off (10/7–11/6, ended)",
+      "summary": "XCONDA ran a Seedance 2.5 promotion with up to 30% off from 11:00 on 7 October to 11:00 on 6 November 2026 (KST). It ended on 6 November. The promotion marked the launch of the 36-cut storyboard engine FLEXBOARD.",
       "blocks": [
         {
           "type": "p",
@@ -625,8 +641,8 @@
       ]
     },
     "notice/seedance-30-off-package-quantities": {
-      "title": "Seedance 30% credit discount: how many videos each package now makes",
-      "summary": "How many Seedance videos each package can produce with the 30% credit discount applied. Package prices are unchanged.",
+      "title": "Seedance 30% credit discount: videos per package during the promotion (ended)",
+      "summary": "How many Seedance videos each package could produce while the 30% credit discount applied (7 October to 6 November 2026, KST). The discount ended at 11:00 on 6 November and the standard quantities apply now.",
       "blocks": [
         {
           "type": "p",
