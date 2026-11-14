@@ -1810,3 +1810,51 @@ test("본문 이미지의 노션 프록시 주소는 경고하지 않고, 다운
   });
   assert.ok(withPdf.warnings.some((w) => w.includes("노션 원본 파일 주소")), "노션 파일 링크는 계속 경고해야 합니다");
 });
+
+/* ------------------------------------------------------------------------------------------
+ * 글쓴이 영문 표기 · 일·중 하단 문구 (2026-11-14 · 대표 확정 표기)
+ *   - 영문 표기는 content/i18n/en.json 의 `authors` 표가 유일한 출처입니다.
+ *     한글 이름이 영어 페이지에 새어 나가지 않는지, 확정 표기가 그대로 나오는지 봅니다.
+ *   - 일·중 하단 문구는 영어 교체 문구를 그 언어로 옮긴 것 — "한국어 허브가 원문" 표현이
+ *     남아 있으면 안 됩니다(MHW 지적의 원인).
+ * ------------------------------------------------------------------------------------------ */
+test("글쓴이 영문 표기 — 확정 표기가 그대로 나오고, 표에 없으면 한글 대신 팀 이름", () => {
+  const dict = JSON.parse(fs.readFileSync(path.join(here, "..", "content/i18n/en.json"), "utf8"));
+  // 대표 확정(2026-11-14)
+  assert.deepEqual(dict.authors, {
+    "이진서 대표": "Jinseo Lee, CEO",
+    "박찬혁 감독": "Park Chan-hyeok",
+    "나서영 기획": "Na Seo-yeong",
+    "김재환 PD": "Kim Jae-hwan",
+    "차하나 PD": "Cha Hana",
+    "황보민혁 PD": "Hwangbo Min-hyeok",
+  });
+  // 확정 표기는 로마자만 — 한글이 섞이면 영어 페이지에 그대로 나갑니다
+  for (const [ko, en] of Object.entries(dict.authors)) {
+    assert.ok(!/[가-힣]/.test(en), `${ko} → ${en} 에 한글이 있습니다`);
+  }
+  // 번역 본문(entries)에도 한글 이름이 남아 있지 않아야 합니다.
+  // `authors` 표의 **키**는 한국어 원문 표기라 한글이 맞습니다 — 본문만 봅니다.
+  for (const lang of ["en", "ja", "zh"]) {
+    const dict = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+    const body = JSON.stringify({ entries: dict.entries, ui: dict.ui });
+    for (const ko of ["박찬혁", "나서영", "김재환", "차하나", "황보민혁"]) {
+      assert.ok(!body.includes(ko), `${lang}.json 본문에 한글 이름이 남아 있습니다: ${ko}`);
+    }
+  }
+});
+
+test("일·중 하단 문구 — 한국어 허브가 원문이라는 표현 없이 문의처만 안내한다", () => {
+  for (const [lang, banned] of [
+    ["ja", ["原文", "韓国語ハブ"]],
+    ["zh", ["原始版本", "韩语 Hub"]],
+  ]) {
+    const dict = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+    const note = dict.ui.note;
+    for (const word of banned) {
+      assert.ok(!note.includes(word), `${lang}: "${word}" 표현이 남아 있습니다 — ${note}`);
+    }
+    assert.match(note, /Cubeberry Co\., Ltd\./, `${lang}: 운영사 이름이 없습니다`);
+    assert.match(note, /cubeberry@cuberry\.kr/, `${lang}: 문의처 메일이 없습니다`);
+  }
+});

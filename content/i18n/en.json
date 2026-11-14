@@ -39,7 +39,12 @@
     }
   },
   "authors": {
-    "이진서 대표": "Jinseo Lee, CEO"
+    "이진서 대표": "Jinseo Lee, CEO",
+    "박찬혁 감독": "Park Chan-hyeok",
+    "나서영 기획": "Na Seo-yeong",
+    "김재환 PD": "Kim Jae-hwan",
+    "차하나 PD": "Cha Hana",
+    "황보민혁 PD": "Hwangbo Min-hyeok"
   },
   "entries": {
     "guide/flexboard-storyboard-guide": {
