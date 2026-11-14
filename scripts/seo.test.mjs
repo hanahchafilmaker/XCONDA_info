@@ -1758,3 +1758,55 @@ test("공개 주소 스위치 — 영어 주소는 허브 사이트맵에서 빠
   // 번역 Q&A 는 지금처럼 사이트맵에서 뺀다
   assert.ok(!locs.some((l) => l.includes("/qna/")));
 });
+
+/* ------------------------------------------------------------------------------------------
+ * 목록·홈의 제품 링크 + 노션 원본 주소 경고 (2026-11-14 · MHW 검토 2순위 잔여 구멍)
+ *   글 페이지에만 제품 링크가 있고 홈·목록에는 없어서, 검색으로 목록에 들어온 방문자가
+ *   제품 사이트로 갈 길이 없었습니다. 이미지 프록시를 경고로 오인하던 것도 함께 고정합니다.
+ * ------------------------------------------------------------------------------------------ */
+test("홈·목록 페이지에도 제품 사이트 링크가 붙는다 (글 페이지와 같은 UTM)", () => {
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE });
+  for (const file of ["index.html", "post/index.html", "qna/index.html"]) {
+    const html = out.files.get(file);
+    assert.ok(html, `${file} 이 생성되지 않았습니다`);
+    assert.match(html, /data-cta="bottom" data-cta-scope="listing"/, `${file} 에 목록용 제품 링크가 없습니다`);
+    assert.match(
+      html,
+      /<a href="https:\/\/www\.xconda\.ai\/ko\?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_bottom" data-cta-kind="start">/,
+      `${file} 의 시작 링크가 규칙(§6-1)과 다릅니다`,
+    );
+  }
+  // (fixture 의 공지·가이드는 주소 조건을 통과하지 못해 목록이 만들어지지 않습니다.)
+  // 언어별 홈·목록에도 그 언어 문구로 붙는다
+  const enList = out.files.get("en/index.html");
+  assert.match(enList, /data-cta-scope="listing"/);
+  assert.match(enList, />Start free</);
+  // 글 페이지는 기존 상단·하단 링크 그대로 (목록용이 섞이면 두 번 붙습니다)
+  const enArticle = out.files.get("en/qna/refund-policy/index.html") ?? "";
+  assert.doesNotMatch(enArticle, /data-cta-scope="listing"/);
+});
+
+test("본문 이미지의 노션 프록시 주소는 경고하지 않고, 다운로드 링크·원본 주소만 경고한다", () => {
+  const id = "11111111-2222-3333-4444-666666666666";
+  const rows = [{ id, Title: "이미지 경고 테스트", __type: "blog", Published: true, Slug: "image-warning-test", Summary: "요약" }];
+  const page = (children) => ({
+    [id]: { [id]: { value: { id, type: "page", content: children.map((c) => c.id) } }, ...Object.fromEntries(children.map((c) => [c.id, { value: c }])) },
+  });
+  // ① 이미지 프록시 주소만 있으면 경고 없음
+  const imageOnly = renderSeoSite({
+    rows, template: TEMPLATE, siteUrl: SITE, translations: {}, ogManifest: {},
+    pages: page([{ id: "c1", type: "image", properties: { source: [["attachment:abc:image.png"]], caption: [] } }]),
+  });
+  const imageHtml = imageOnly.files.get("post/image-warning-test/index.html");
+  assert.match(imageHtml, /<img src="https:\/\/www\.notion\.so\/image\//, "이미지가 노션 프록시 주소로 바뀌지 않았습니다");
+  assert.ok(
+    !imageOnly.warnings.some((w) => w.includes("노션 원본 파일 주소")),
+    `이미지 프록시를 경고하면 안 됩니다: ${imageOnly.warnings.join(" / ")}`,
+  );
+  // ② 다운로드(PDF) 링크가 노션 주소면 경고
+  const withPdf = renderSeoSite({
+    rows, template: TEMPLATE, siteUrl: SITE, translations: {}, ogManifest: {},
+    pages: page([{ id: "c2", type: "pdf", properties: { source: [["https://prod-files-secure.s3.us-west-2.amazonaws.com/x.pdf"]] } }]),
+  });
+  assert.ok(withPdf.warnings.some((w) => w.includes("노션 원본 파일 주소")), "노션 파일 링크는 계속 경고해야 합니다");
+});
