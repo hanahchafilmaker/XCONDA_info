@@ -734,7 +734,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
             inLanguage: lang.hreflang,
             isPartOf: { "@id": `${absoluteUrl(site, "")}#website` },
           },
-        ]),
+        ], code),
       });
       // 본문 번역(blocks)이 있으면 한국어 원문과 같은 구조(h1·메타·본문)로 싣습니다.
       // 이미지는 한국어 원문 위치를 그대로 따릅니다. 요약은 메타 설명으로만 쓰고,
@@ -843,6 +843,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         publishedTime: "",
         ogLocale: lang.ogLocale,
         alternates: hreflangAlternates(site, path, langCodes),
+        // 문의처는 언어에 따라 갈립니다 — 영어는 미국 법인, 그 밖에는 한국 법인.
+        siteLd: jsonLdGraph(site, [], code),
       });
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
@@ -876,6 +878,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       publishedTime: "",
       ogLocale: lang.ogLocale,
       alternates: homeAlternates,
+      siteLd: jsonLdGraph(site, [], code),
     });
     const body = [
       `<div id="root"><main class="seo-article" data-lang="${code}">`,

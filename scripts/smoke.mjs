@@ -176,7 +176,7 @@ const result = {
   // notranslate 스팬으로 보호된 상태여야 합니다.
   langCodeTexts: qa("header button[aria-pressed] > span.notranslate").map((s) => s.textContent?.trim()),
   syncStatus: qa("#news [aria-label]").length > 0,
-  // 문의 메일 — Q&A 섹션 · 푸터 모두 info@cubeberry.ai (대표님 확인 주소)
+  // 문의 메일 — 한국어 화면이므로 Q&A 섹션 · 푸터 모두 한국 법인 주소
   contactEmails: qa('#faq a[href^="mailto:"], footer a[href^="mailto:"]').map((a) => a.getAttribute("href")),
 };
 
@@ -213,8 +213,9 @@ if (JSON.stringify(result.langCodeTexts) !== JSON.stringify(["KO", "EN", "JA", "
   fail.push(`language codes missing or not notranslate-protected: ${JSON.stringify(result.langCodeTexts)}`);
 }
 if (!/[가-힣]/.test(interactions.h1AfterKo ?? "")) fail.push("hero copy did not become Korean");
-if (result.contactEmails.length < 2 || result.contactEmails.some((h) => h !== "mailto:info@cubeberry.ai")) {
-  fail.push(`contact email must be info@cubeberry.ai (Q&A + footer): ${JSON.stringify(result.contactEmails)}`);
+// 문의처는 화면 언어를 따릅니다 — 스모크는 한국어 화면이라 한국 법인이어야 합니다.
+if (result.contactEmails.length < 2 || result.contactEmails.some((h) => h !== "mailto:cubeberry@cuberry.kr")) {
+  fail.push(`contact email must be cubeberry@cuberry.kr on KO screen (Q&A + footer): ${JSON.stringify(result.contactEmails)}`);
 }
 // 랜딩 뉴스 섹션의 "Notion" 연결 카드는 숨김 (노션 원본 DB 링크를 랜딩에 노출하지 않음)
 const notionCards = doc.querySelectorAll('#news a[href*="notion.site"], #news a[href*="notion.so"]').length;

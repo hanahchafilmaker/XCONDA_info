@@ -707,11 +707,25 @@ export const OFFICIAL_SAME_AS = [
  */
 export const RESELLER_ID = "https://www.cuberry.kr/#reseller-us";
 /**
- * XCONDA 문의처 — 대표 확정(2026-11-14: "info@cubeberry.ai 가 문의가 맞아").
- * 개발·운영사는 한국 법인이지만, 문의 창구는 미국 법인 메일 하나로 통일합니다.
- * 정적 페이지 하단 문구(content/i18n/{en,ja,zh}.json `ui.note`)와 앱 Q&A·푸터가 같은 주소입니다.
+ * 문의처는 **언어에 따라 갈립니다** — 대표 확정(2026-11-14).
+ *
+ *   영어 페이지            → info@cubeberry.ai     (미국 법인)
+ *   한국어·일본어·중국어    → cubeberry@cuberry.kr  (한국 법인)
+ *
+ * 개발·운영사는 세 언어 모두 한국 법인입니다. 갈리는 것은 **문의 창구**뿐입니다.
+ * 정적 페이지 하단 문구(content/i18n/{en,ja,zh}.json `ui.note`), 앱 Q&A·푸터,
+ * 구조화 데이터 contactPoint 가 모두 이 함수를 씁니다.
  */
-export const SUPPORT_EMAIL = "info@cubeberry.ai";
+export const SUPPORT_EMAIL_US = "info@cubeberry.ai";
+export const SUPPORT_EMAIL_KR = "cubeberry@cuberry.kr";
+
+/** 언어 코드(en·ko·ja·zh) → 문의 메일. */
+export function supportEmailFor(lang) {
+  return String(lang ?? "").slice(0, 2) === "en" ? SUPPORT_EMAIL_US : SUPPORT_EMAIL_KR;
+}
+
+/** 한국어(기본값) 문의처. */
+export const SUPPORT_EMAIL = SUPPORT_EMAIL_KR;
 
 /**
  * 전 페이지 공통 명찰: 운영사(Organization) + 공인 리셀러(Organization) + 이 사이트(WebSite)
@@ -721,7 +735,7 @@ export const SUPPORT_EMAIL = "info@cubeberry.ai";
  *   - Cubeberry Co., Ltd(Delaware) = Stripe 결제를 자기 명의로 판매·청구하는 공인 리셀러
  * 회사 번호(@id)는 cuberry.kr 것을 유지합니다 — cuberry.kr · www 와 같은 값이어야 한 회사로 묶입니다.
  */
-export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
+export function siteJsonLd(siteUrl = DEFAULT_SITE_URL, lang = "ko") {
   const site = absoluteUrl(siteUrl, "");
   return [
     {
@@ -739,7 +753,7 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: SUPPORT_EMAIL,
+        email: supportEmailFor(lang),
         availableLanguage: ["ko", "en", "ja", "zh"],
       },
       // 회사(큐브베리)와 제품(XCONDA)을 분리해 선언합니다. 이게 없으면 AI 는
@@ -900,6 +914,6 @@ export function howToJsonLd({ url, name, description, image, date, author, steps
 
 
 /** 사이트 공통 + 페이지별 명찰을 하나의 @graph 스크립트로 묶습니다. */
-export function jsonLdGraph(siteUrl = DEFAULT_SITE_URL, extra = []) {
-  return { "@context": "https://schema.org", "@graph": [...siteJsonLd(siteUrl), ...extra.filter(Boolean)] };
+export function jsonLdGraph(siteUrl = DEFAULT_SITE_URL, extra = [], lang = "ko") {
+  return { "@context": "https://schema.org", "@graph": [...siteJsonLd(siteUrl, lang), ...extra.filter(Boolean)] };
 }

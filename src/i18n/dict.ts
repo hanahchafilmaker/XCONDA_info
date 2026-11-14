@@ -361,6 +361,14 @@ export const DICT: Dict = {
     en: "© 2026 XCONDA. All rights reserved. · Guides may change without prior notice.",
   },
   "v.footer.backToTop": { ko: "맨 위로", en: "Back to top" },
+  /**
+   * 두 법인의 역할 — 푸터 하단에 한 줄로 표기합니다(의견서 §4).
+   * 개발·운영은 한국 법인, Stripe 결제 판매·청구는 미국 법인이 맡습니다.
+   */
+  "v.footer.entities": {
+    ko: "XCONDA 개발·운영: 주식회사 큐브베리(한국) · Stripe 결제 판매·청구: Cubeberry Co., Ltd (Delaware, US)",
+    en: "XCONDA developed and operated by Cubeberry Co., Ltd. (Korea) · Stripe payments sold and billed by Cubeberry Co., Ltd (Delaware, US)",
+  },
 
   "v.search.placeholder": {
     ko: "공지 · 뉴스 · 툴 사용법 · 블로그를 검색하세요 (예: 크레딧, Kling, 컨티뉴이티)",

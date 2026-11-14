@@ -16,7 +16,7 @@
     "hubHome": "XCONDA ハブ ホーム",
     "koreanOriginal": "韓国語の原文を見る",
     "allSections": "すべての話題",
-    "note": "XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）まで：info@cubeberry.ai",
+    "note": "XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）まで：cubeberry@cuberry.kr",
     "articleCount": "件の記事"
   },
   "sections": {
@@ -4201,7 +4201,7 @@
     },
     "qna/contact-inquiry": {
       "title": "問い合わせ先はどこですか？",
-      "summary": "サポート窓口はすべてのお客様に対して一か所で運営しています。メール cubeberry@cuberry.kr、電話 +82-70-8095-2302、平日 10:00〜17:00（韓国時間、昼休み 12:00〜13:00）です。米国法人（Cubeberry Co., Ltd, Delaware）は info@cubeberry.ai、電話 +1-888-202-1989、ニューヨーク住所は 276 5th Ave, Ste 704-2816, New York, NY 10001 です。米国法人で購入した件の返金も同じ窓口にご依頼いただけます。",
+      "summary": "XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）が承ります。メール cubeberry@cuberry.kr、電話 +82-70-8095-2302、平日 10:00〜17:00（韓国時間、昼休み 12:00〜13:00）です。英語でのお問い合わせは米国法人 Cubeberry Co., Ltd（Delaware、info@cubeberry.ai、+1-888-202-1989）でも承ります。米国法人でご購入いただいた件の返金も同じ窓口にご依頼いただけます。",
       "blocks": [
         {
           "type": "h2",

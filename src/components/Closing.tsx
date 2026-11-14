@@ -2,7 +2,7 @@ import { STUDIO_URL, TOOLS } from "../content/tools";
 import { CHANNELS } from "../content/channels";
 import { useLang } from "../i18n";
 import { Logo, Reveal, VoltButton } from "./volt";
-import { SUPPORT_EMAIL } from "./Qna";
+import { supportEmailFor } from "./Qna";
 
 const socialColors: Record<string, string> = {
   x: "text-black",
@@ -13,7 +13,9 @@ const socialColors: Record<string, string> = {
 };
 
 export default function Closing() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  // 푸터 문의처도 화면 언어를 따릅니다(영어 = 미국 법인, 그 밖 = 한국 법인).
+  const supportEmail = supportEmailFor(lang);
   const footerTools = TOOLS.slice(0, 5);
 
   return (
@@ -111,8 +113,10 @@ export default function Closing() {
 
           <div className="mt-12 flex flex-col gap-3 border-t border-black/[0.06] pt-6 text-[12.5px] text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
             <p>{t("v.footer.rights")}</p>
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-neutral-700">
-              {SUPPORT_EMAIL}
+            {/* 두 법인의 역할 — 개발·운영(한국)과 Stripe 결제 판매·청구(미국)를 구분해 표기합니다. */}
+            <p className="sm:order-3 sm:basis-full sm:pt-1">{t("v.footer.entities")}</p>
+            <a href={`mailto:${supportEmail}`} className="transition-colors hover:text-neutral-700">
+              {supportEmail}
             </a>
           </div>
         </div>

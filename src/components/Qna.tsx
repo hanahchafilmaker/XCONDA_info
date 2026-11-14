@@ -5,8 +5,20 @@ import { useContent } from "../content/ContentContext";
 import { useLang } from "../i18n";
 import { IconArrow, IconPlus, Reveal, SectionHeader } from "./volt";
 
-/** 문의 메일 — Q&A 섹션 링크 · 푸터(Closing.tsx)에 노출됩니다. */
-const SUPPORT_EMAIL = "info@cubeberry.ai";
+/**
+ * 문의 메일 — 언어에 따라 갈립니다(대표 확정 2026-11-14).
+ *   영어 화면(앱 언어 EN)      → info@cubeberry.ai    (미국 법인)
+ *   한국어·일본어·중국어 화면  → cubeberry@cuberry.kr (한국 법인)
+ * 앱은 ja/zh 도 한국어 원문을 그리므로 `lang`(ko|en) 만 보면 됩니다.
+ * Q&A 섹션 링크 · 푸터(Closing.tsx) · 구조화 데이터가 같은 규칙을 씁니다.
+ */
+const SUPPORT_EMAIL_EN = "info@cubeberry.ai";
+const SUPPORT_EMAIL_KO = "cubeberry@cuberry.kr";
+
+/** 화면 언어 → 문의 메일. */
+function supportEmailFor(lang: string): string {
+  return String(lang).slice(0, 2) === "en" ? SUPPORT_EMAIL_EN : SUPPORT_EMAIL_KO;
+}
 
 function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; onOpen: () => void }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -50,7 +62,8 @@ const PAGE = 5;
 
 /** Q&A 섹션 — Notion `Type = FAQ`(또는 Q&A) 글이 노출됩니다. */
 export default function Qna() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const supportEmail = supportEmailFor(lang);
   const { faqs, openEntry } = useContent();
   const [showAll, setShowAll] = useState(false);
   const visible = showAll ? faqs : faqs.slice(0, PAGE);
@@ -61,10 +74,10 @@ export default function Qna() {
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
           <SectionHeader title={t("v.faq.lead")} sub={t("v.faq.sub")} />
           <a
-            href={`mailto:${SUPPORT_EMAIL}`}
+            href={`mailto:${supportEmail}`}
             className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-medium text-volt-400 hover:text-volt-300"
           >
-            {SUPPORT_EMAIL} <IconArrow className="h-4 w-4" />
+            {supportEmail} <IconArrow className="h-4 w-4" />
           </a>
         </Reveal>
 
@@ -94,4 +107,4 @@ export default function Qna() {
   );
 }
 
-export { SUPPORT_EMAIL };
+export { supportEmailFor, SUPPORT_EMAIL_EN, SUPPORT_EMAIL_KO };
