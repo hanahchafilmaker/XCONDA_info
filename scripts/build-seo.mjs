@@ -542,7 +542,7 @@ const noteHtml = (text) =>
 
 /** 제품 사이트 링크 묶음(글 상단·하단) — 주소·문구는 src/content/cta.js 한 곳에서 만듭니다. */
 export function productLinksHtml({ lang = "ko", tool = "", title = "", placement = "bottom" } = {}) {
-  const { label, links } = productLinks({ lang, tool, title, placement });
+  const { label, links } = productLinks({ lang, tool, title });
   return [
     `<nav class="seo-cta" data-cta="${escapeHtml(placement)}" aria-label="${escapeHtml(label)}">`,
     ...links.map((l) => `<a href="${escapeHtml(l.href)}" data-cta-kind="${escapeHtml(l.kind)}">${escapeHtml(l.label)}</a>`),
