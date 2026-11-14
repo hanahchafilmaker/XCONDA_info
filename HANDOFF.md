@@ -536,7 +536,7 @@ npm run build
 | `DEFAULT_SITE_URL` (`https://hub.xconda.ai/`) · `SITE_META` (사이트 기본 제목·설명·OG 이미지) | `src/content/seo.js` · 기본 공유 이미지 `assets/img/og/xconda-hub-1200x630.png` |
 | `STUDIO_URL = "https://www.xconda.ai"` | `src/content/tools.ts` |
 | `NOTION_NEWS_URL` | `src/content/channels.tsx` |
-| 문의 메일 `SUPPORT_EMAIL = "info@cubeberry.ai"` (Q&A 섹션 · 푸터 노출) | `src/components/Qna.tsx` |
+| 문의 메일 `SUPPORT_EMAIL = "info@cubeberry.ai"` (Q&A 섹션 · 푸터 노출) — 정적 페이지 하단 문구·구조화 데이터와 **같은 주소**여야 함(대표 확정 11/14) | `src/components/Qna.tsx`, `src/content/seo.js`, `content/i18n/{en,ja,zh}.json` `ui.note` |
 | SNS 채널 카드 링크(`href: ""` = 준비 중) | `src/content/channels.tsx` |
 
 ---

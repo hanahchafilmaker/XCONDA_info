@@ -20,7 +20,7 @@
 | 영어 콘텐츠 위치 | 영어 허브 전체(공지·블로그·가이드·Q&A)를 xconda.ai/hub/로 옮김. 블로그만 따로 떼지 않음 |
 | 한국어 허브 | hub.xconda.ai 그대로 유지. 한국 X·인스타그램 자동 게시도 현행 유지 |
 | 회사 공식 사이트 | 2단계 전환. 현재는 cuberry.kr(회사 소개 + 스튜디오) 유지. cubeberry.ai가 최신 정보로 개선되면 cuberry.kr은 스튜디오 중심으로 바꾸고, 회사 홈페이지는 두 법인을 함께 소개하는 cubeberry.ai로 연결 |
-| 문의 메일 | 모든 허브 글(영어·일본어·중국어 포함)은 개발·운영사인 한국 법인 cubeberry@cuberry.kr 유지. 미국 법인(info@cubeberry.ai)은 푸터에서 Stripe 결제 판매사로 표기. 대표 메일(ceo@cubeberry.ai)은 두 법인 공통 대표 메일로 유지 |
+| 문의 메일 | **문의 창구는 info@cubeberry.ai 하나로 통일**(11/14 대표 확정 — 아래 §4 참조). 정적 페이지 하단 문구(영·일·중)·앱 Q&A·푸터·구조화 데이터가 모두 같은 주소를 씀. 대표 메일(ceo@cubeberry.ai)은 두 법인 공통 대표 메일로 유지 |
 | 가장 먼저 고칠 것 | 영어 글 하단 "The Korean hub is the primary source" 문구, 허브 → www 링크 부재, 영어 번역 누락, 끝난 프로모션 노출 |
 
 비유하면 공장(노션)은 그대로 두고, 미국 손님용 안내소를 미국 매장(xconda.ai) 안에 하나 더 차리는 것임. 한국 본점의 종합 안내소(hub.xconda.ai)는 그대로이며, 안내소가 쪼개지는 것이 아님.
@@ -73,11 +73,17 @@ MHW 영문 원문의 주장을 페이지 소스 기준으로 확인함.
 
 | 법인 | 역할 | 문의 메일 | 표시 위치 |
 |---|---|---|---|
-| 주식회사 큐브베리(한국) | XCONDA 개발·운영사 | cubeberry@cuberry.kr | 모든 허브 글(영어 포함), cuberry.kr, 푸터 |
-| Cubeberry Co., Ltd(Delaware) | Stripe 결제를 자기 명의로 판매·청구하는 공인 리셀러 | info@cubeberry.ai | cubeberry.ai, 푸터 |
+| 주식회사 큐브베리(한국) | XCONDA 개발·운영사 | cubeberry@cuberry.kr | cuberry.kr, 사업자 정보, 회사 정보 글(주소·등록번호와 함께) |
+| Cubeberry Co., Ltd(Delaware) | Stripe 결제를 자기 명의로 판매·청구하는 공인 리셀러 | info@cubeberry.ai | **모든 허브 글 하단 문구(영·일·중)·앱 Q&A·푸터·구조화 데이터 contactPoint**, cubeberry.ai |
 | 두 법인 공통 | 대표(이진서) | ceo@cubeberry.ai | 회사 정보, IR·발표 자료 |
 
-XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사만 답할 수 있으므로, 영어 허브 글에도 한국 법인 메일을 붙이는 현재 방식이 맞음. 대표 메일은 두 법인 공통 대표를 가리키고 계정도 대표가 직접 통제하므로 문제가 없음. 일본어·중국어 페이지도 같은 이유로 한국 법인 메일을 유지함(11/14 대표 결정).
+**11/14 대표 확정으로 결론이 바뀜.** 처음에는 "XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사만 답할 수 있다"는 이유로 모든 허브 글에 한국 법인 메일을 붙이는 것이 맞다고 판단했음. 그러나 대표가 **문의 창구는 info@cubeberry.ai 하나로 통일**한다고 확정함(11/14 "info@cubeberry.ai 가 문의가 맞아"). 초판의 판단은 이 결정으로 대체됨.
+
+확정 내용:
+- **허브 글 하단 문구(영·일·중)·앱 Q&A·푸터·구조화 데이터 contactPoint = info@cubeberry.ai**
+- 한국 법인 메일(cubeberry@cuberry.kr)은 **회사 정보성 위치에 그대로 남김** — 사업자 정보 글(주소·등록번호·전화와 함께), cuberry.kr, 개인정보·환불·결제 문의 안내 문장. 두 법인을 구분해 설명하는 글에서는 두 주소가 함께 나오는 것이 맞음
+- 대표 메일(ceo@cubeberry.ai)은 두 법인 공통 대표 메일로 유지
+- 문의 창구가 미국 법인 메일이어도 **개발·운영 주체는 한국 법인**이라는 표기는 그대로 둠(문구에 "Cubeberry Co., Ltd. (Korea)" 유지)
 
 ## 5. 선택지 비교와 결론
 
@@ -103,7 +109,7 @@ XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사
 
 | 순위 | 작업 | 내용 | 담당 | 공수(추정) | 시점 |
 |---|---|---|---|---|---|
-| 1 | 영어 글 하단 문구 교체 | "The Korean hub is the primary source"를 삭제하고 "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): cubeberry@cuberry.kr"로 바꿈. 템플릿 1곳 수정 | 전유준 | 0.5일 | 11/21까지 |
+| 1 | 영어 글 하단 문구 교체 | "The Korean hub is the primary source"를 삭제하고 "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): info@cubeberry.ai"로 바꿈. 템플릿 1곳 수정(11/14 문의처 확정 반영) | 전유준 | 0.5일 | 11/21까지 |
 | 2 | 허브 글에 제품 사이트 링크 추가 | 글 상단·하단에 관련 기능 페이지, 무료 시작, 요금 링크(UTM 규칙 v1.0 적용) | 전유준, 차하나(문구) | 1일 | 11/21까지 |
 | 3 | 영어 번역 누락 점검 | 빠진 도입 문단 복원, 소제목 h2, 화면에 작성·수정일, 끝난 프로모션 제외, 설명 문구 줄바꿈 제거, 영어 글 글쓴이 영문 표기 | 전유준, 차하나 | 1일 | 11/21까지 |
 | 4 | 구조화 데이터 정리 | 허브·cuberry.kr 회사 이름을 Cubeberry로, cuberry.kr sameAs에 xconda.ai·허브·공식 SNS 추가, 푸터와 같이 한국 법인 = 개발·운영사, 미국 법인 = 공인 리셀러로 표기. 회사 번호(@id)는 cuberry.kr 유지 | 전유준, 나서영(값 확인) | 1일 | 11/21까지 |
@@ -146,7 +152,7 @@ XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사
 1. **영어 콘텐츠 위치:** 노션 기반 발행 방식은 유지하면서, 영어 허브 전체(공지·블로그·가이드·Q&A)를 리버스 프록시로 xconda.ai/hub/ 아래에서 제공하겠습니다. 기술팀이 가능하다고 확인했고, 12월 중 적용을 목표로 합니다. 한국어 허브는 hub.xconda.ai에 그대로 두고 언어별 페이지는 hreflang으로 서로 연결합니다. 별도 블로그 시스템은 만들지 않습니다.
 2. **확인된 약점:** 허브에서 제품 사이트로의 연결 부족, 영어 번역의 누락과 현지화 부족, 영어 페이지 하단의 "The Korean hub is the primary source" 문구는 말씀대로입니다. 11/21까지 이 문구 삭제, xconda.ai 링크 추가, 번역 누락 점검을 먼저 진행하겠습니다.
 3. **기술 설정:** 영어 페이지는 lang="en", 영어 주소 자신을 canonical로 쓰고, 한·영·일·중 페이지가 hreflang으로 서로 연결되어 있습니다. 구글에 한국어를 원본으로 지정한 설정은 없으며, 오해를 준 것은 위 하단 문구였습니다.
-4. **회사 정보:** XCONDA는 한국 법인이 개발·운영하고, 미국 법인은 Stripe 결제를 맡는 공인 리셀러입니다. 그래서 허브의 운영사와 문의처는 한국 법인(cuberry.kr, cubeberry@cuberry.kr)이 맞습니다. 이 관계를 구조화 데이터에도 반영하겠습니다. cubeberry.ai는 현재 정보가 오래되어, 최신 정보로 개선된 뒤 두 법인을 함께 소개하는 회사 홈페이지로 삼으려 합니다. 그때 cuberry.kr은 스튜디오 중심 사이트로 바꾸고 cubeberry.ai로 안내하겠습니다. 한국 법인 관련 내용(실적·대표·본사 정보)은 본사 확인 후 반영하는 것으로 부탁드리며, 수정이 필요한 항목은 따로 정리해 보내드리겠습니다.
+4. **회사 정보:** XCONDA는 한국 법인이 개발·운영하고, 미국 법인은 Stripe 결제를 맡는 공인 리셀러입니다. 그래서 XCONDA의 개발·운영 주체는 한국 법인이며, 회사 정보(사업자 등록·주소·대표)도 한국 법인 기준으로 안내합니다. 문의 메일은 미국 법인 주소(info@cubeberry.ai)로 통일해 안내하고 있으며, 이 관계를 구조화 데이터에도 반영했습니다. cubeberry.ai는 현재 정보가 오래되어, 최신 정보로 개선된 뒤 두 법인을 함께 소개하는 회사 홈페이지로 삼으려 합니다. 그때 cuberry.kr은 스튜디오 중심 사이트로 바꾸고 cubeberry.ai로 안내하겠습니다. 한국 법인 관련 내용(실적·대표·본사 정보)은 본사 확인 후 반영하는 것으로 부탁드리며, 수정이 필요한 항목은 따로 정리해 보내드리겠습니다.
 5. **콘텐츠 계획:** 성과는 주소보다 콘텐츠에서 나오므로, 30·60·90일 계획에 미국 현지화 원본 글의 발행 편수, 타깃 키워드, 주제 목록을 넣어 주시면 감사하겠습니다. 영어 글 주소 이름(슬러그)은 지금부터 확정해 사용하겠습니다.
 6. **성과 점검:** 60일 뒤 서치콘솔의 미국 노출·클릭, AI 답변 인용, 가입 전환을 함께 보고 다음 단계를 결정하면 좋겠습니다.
 
@@ -160,7 +166,7 @@ XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사
 
 | 항목 | 선택지 | 권고 |
 |---|---|---|
-| 일본어·중국어 페이지 문의 메일 | 한국 법인 / 미국 법인 | 결정됨(11/14): 한국 법인(cubeberry@cuberry.kr). XCONDA 질문은 한국 본사가 답하며 일본 PoC도 한국 법인 사업임 |
+| 허브 문의 메일(영·일·중) | 한국 법인 / 미국 법인 | **정정 결정(11/14)**: 미국 법인(info@cubeberry.ai)으로 통일. 초판의 "한국 법인 유지" 판단을 대표가 뒤집음 |
 | 허브 x-default(기본 언어) | 한국어 유지 / 영어로 변경 | 결정됨(11/14): 현재는 한국어 유지. MHW의 영어 원문 글이 발행되기 시작하면 영어로 변경을 다시 결정함 |
 | cuberry.kr의 역할 | 스튜디오 전용 / 회사 소개 + 스튜디오 | 결정됨(11/14): 현재는 회사 소개 + 스튜디오 유지, cubeberry.ai 개선 후 스튜디오 중심으로 전환하고 회사 홈페이지는 cubeberry.ai로 연결. 전환 기준: 깨진·출처 없는 수치 정리, 현재 핵심 도구·실적 반영, 표기 통일, 대표·팀 소개, 두 법인 정보, 구조화 데이터 |
 
@@ -207,8 +213,14 @@ XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사
 - 출처는 `content/i18n/en.json` 의 `authors` 표 하나입니다. 노션 `Author EN` 칸을 채우면 그 값이 우선합니다.
 - 실제로 영어 페이지에 나가는 글은 **18건**(확정 표기), 나머지는 `XCONDA Team`. 글쓴이가 아예 비어 있는 글은 Q&A 74건·공지 1건(`seedream-55-xconda`)입니다.
 - 표기 규칙: 이름은 `이름 성` 순서(한국어 순서 유지), 성은 붙여 쓰고 이름은 하이픈(`Chan-hyeok`), 예외로 `차하나`는 `Cha Hana`(하이픈 없음). 같은 표기를 계속 써야 AI가 같은 사람으로 인식하므로 **바꿀 때는 이 표만 고칩니다.**
-- 일·중 하단 문구도 영어와 같은 내용으로 교체 — 日本語 `XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）まで：cubeberry@cuberry.kr` · 中文 `有关 XCONDA 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）：cubeberry@cuberry.kr`. "한국어 허브가 원문" 표현은 세 언어 모두에서 사라졌습니다.
-- 고친 곳: `content/i18n/{en,ja,zh}.json`. 테스트: `scripts/seo.test.mjs`(확정 표기 고정 · 한글 이름이 번역 본문에 새지 않는지 · 일·중 문구에 원문 표현이 없는지).
+- **`차하나 PD → Cha Hana` 는 하이픈 없이 확정**(11/14 대표: "Cha Hana는 하이픈 없어"). 나머지 다섯 명의 하이픈 표기는 유지합니다. 나중에 누가 보고 오타로 "고치는" 일이 없도록 `en.json` 에 `_comment_authors` 주석을 남겼습니다.
+- **문의 메일은 info@cubeberry.ai 로 통일**(11/14 대표 확정). 아래 세 위치가 모두 같은 주소를 씁니다.
+  - 정적 페이지 하단 문구 — 영어·일본어·중국어 288페이지(각 96페이지)
+  - 앱 화면 — Q&A 섹션 링크, 푸터 (`src/components/Qna.tsx` → `Closing.tsx` 가 같은 값을 import)
+  - 구조화 데이터 — `Organization.contactPoint.email`
+  - 한국 법인 메일(cubeberry@cuberry.kr)은 사업자 정보 글·개인정보·환불 안내 등 **회사 정보성 위치에 그대로 유지**합니다. 두 법인을 구분해 설명하는 글에서는 두 주소가 함께 나옵니다.
+- 일·중 하단 문구도 영어와 같은 내용으로 교체 — 日本語 `XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）まで：info@cubeberry.ai` · 中文 `有关 XCONDA 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）：info@cubeberry.ai`. "한국어 허브가 원문" 표현은 세 언어 모두에서 사라졌습니다.
+- 고친 곳: `content/i18n/{en,ja,zh}.json`, `src/content/seo.js`. 테스트: `scripts/seo.test.mjs` — 확정 표기 고정 · `Cha Hana` 하이픈 없음 고정 · 한글 이름이 번역 본문에 새지 않는지 · 일·중 문구에 "원문" 표현이 없는지 · **문의 메일이 네 위치에서 모두 같은 주소인지**.
 
 **2순위 잔여 구멍 — 목록·홈의 제품 링크 (11/14 추가 반영)**
 
@@ -258,7 +270,7 @@ XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사
       "description": "Developer and operator of XCONDA, the AI storyboard and video production platform.",
       "url": "https://www.cuberry.kr/",
       "email": "ceo@cubeberry.ai",
-      "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "cubeberry@cuberry.kr" },
+      "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "info@cubeberry.ai", "availableLanguage": ["ko", "en", "ja", "zh"] },
       "brand": { "@type": "Brand", "name": "Xconda", "alternateName": ["엑스콘다"] },
       "sameAs": [
         "https://www.xconda.ai",

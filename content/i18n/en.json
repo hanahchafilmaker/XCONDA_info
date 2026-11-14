@@ -17,7 +17,7 @@
     "hubHome": "XCONDA Hub home",
     "koreanOriginal": "Read this in Korean",
     "allSections": "All topics",
-    "note": "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): cubeberry@cuberry.kr",
+    "note": "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): info@cubeberry.ai",
     "articleCount": "articles"
   },
   "sections": {
@@ -46,6 +46,7 @@
     "차하나 PD": "Cha Hana",
     "황보민혁 PD": "Hwangbo Min-hyeok"
   },
+  "_comment_authors": "본인 확인 완료(2026-11-14). 차하나 PD 만 하이픈 없이 Cha Hana — 오타가 아니므로 Ha-na 로 고치지 마세요. 표기를 바꾸면 영어 페이지 전체의 글쓴이가 바뀝니다.",
   "entries": {
     "guide/flexboard-storyboard-guide": {
       "title": "FLEXBOARD Storyboards in 7 Steps - AI Video Production Workflow",
