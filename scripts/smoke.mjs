@@ -110,7 +110,7 @@ click(blogCard);
 await new Promise((r) => setTimeout(r, 500));
 const modal = q('div[role="dialog"][aria-modal="true"]');
 const modalByline = modal?.querySelector("[data-byline]")?.getAttribute("data-byline") ?? null;
-const modalProductLink = modal?.querySelector('[data-cta="bottom"] a[href^="https://www.xconda.ai/"]:not([href*="utm_"])')?.textContent?.trim() ?? null;
+const modalProductLink = modal?.querySelector('[data-cta="bottom"] a[href^="https://www.xconda.ai/"][href*="utm_source=hub"]')?.textContent?.trim() ?? null;
 window.document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
 await new Promise((r) => setTimeout(r, 300));
 
