@@ -23,6 +23,9 @@ import { fileURLToPath } from "node:url";
 import {
   siteJsonLd,
   SUPPORT_EMAIL,
+  SUPPORT_EMAIL_KR,
+  SUPPORT_EMAIL_US,
+  supportEmailFor,
   isEndedTitle,
   DEFAULT_SITE_URL,
   OG_LANG_DIR,
@@ -1334,7 +1337,8 @@ test("회사 명찰 — Cubeberry 표기, 한국 법인 = 개발·운영사, 미
   assert.equal(org["@id"], "https://www.cuberry.kr/#organization"); // 회사 번호는 cuberry.kr 유지
   assert.equal(org.name, "Cubeberry");
   assert.match(org.description, /Developer and operator of XCONDA/);
-  assert.equal(org.contactPoint.email, "info@cubeberry.ai"); // 대표 확정(11/14) — 문의 창구는 미국 법인 메일 하나
+  assert.equal(org.contactPoint.email, "cubeberry@cuberry.kr"); // 기본(한국어) = 한국 법인
+  assert.equal(siteJsonLd("https://hub.example.test/", "en")[0].contactPoint.email, "info@cubeberry.ai"); // 영어 = 미국 법인
   assert.ok(org.sameAs.includes("https://www.xconda.ai"));
   assert.ok(org.sameAs.some((u) => u.includes("youtube.com")));
   assert.match(reseller.description, /Authorized reseller/);
@@ -1858,29 +1862,69 @@ test("일·중 하단 문구 — 한국어 허브가 원문이라는 표현 없�
       assert.ok(!note.includes(word), `${lang}: "${word}" 표현이 남아 있습니다 — ${note}`);
     }
     assert.match(note, /Cubeberry Co\., Ltd\./, `${lang}: 운영사 이름이 없습니다`);
-    assert.match(note, /info@cubeberry\.ai/, `${lang}: 문의처 메일이 없습니다`);
+    assert.match(note, /cubeberry@cuberry\.kr/, `${lang}: 문의처 메일이 없습니다`);
   }
 });
 
-test("문의 메일은 한 곳에서만 정의한다 — 정적 하단 문구·앱 Q&A·푸터·구조화 데이터가 같은 주소", () => {
-  // 대표 확정(2026-11-14): 문의 창구는 info@cubeberry.ai 하나. 개발·운영사는 한국 법인 그대로입니다.
-  assert.equal(SUPPORT_EMAIL, "info@cubeberry.ai");
-  const [org] = siteJsonLd("https://hub.example.test/");
-  assert.equal(org.contactPoint.email, SUPPORT_EMAIL);
+test("문의 메일은 언어로 갈린다 — 영어는 미국 법인, 한국어·일·중은 한국 법인", () => {
+  // 대표 확정(2026-11-14): 한국어=한국 법인, 영어=미국 법인, 일본어·중국어=한국어를 따름
+  assert.equal(SUPPORT_EMAIL_KR, "cubeberry@cuberry.kr");
+  assert.equal(SUPPORT_EMAIL_US, "info@cubeberry.ai");
+  assert.equal(supportEmailFor("en"), SUPPORT_EMAIL_US);
+  for (const lang of ["ko", "ja", "zh", undefined, ""]) {
+    assert.equal(supportEmailFor(lang), SUPPORT_EMAIL_KR, `${lang}: 한국 법인이어야 합니다`);
+  }
+  assert.equal(SUPPORT_EMAIL, SUPPORT_EMAIL_KR, "기본값은 한국 법인");
 
-  // 정적 페이지 하단 문구(영·일·중)도 같은 주소를 가리켜야 합니다.
-  for (const lang of ["en", "ja", "zh"]) {
-    const dict = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
-    assert.equal(dict.ui.note.includes(SUPPORT_EMAIL), true, `${lang}: 하단 문구가 ${SUPPORT_EMAIL} 를 가리키지 않습니다`);
-    assert.equal(dict.ui.note.includes("cubeberry@cuberry.kr"), false, `${lang}: 옛 주소가 남아 있습니다`);
+  // 구조화 데이터도 언어를 따릅니다.
+  assert.equal(siteJsonLd("https://hub.example.test/", "en")[0].contactPoint.email, SUPPORT_EMAIL_US);
+  assert.equal(siteJsonLd("https://hub.example.test/", "ja")[0].contactPoint.email, SUPPORT_EMAIL_KR);
+  assert.equal(jsonLdGraph("https://hub.example.test/", [], "en")["@graph"][0].contactPoint.email, SUPPORT_EMAIL_US);
+
+  // 정적 하단 문구 — en 은 미국 법인, ja/zh/ko 는 한국 법인
+  const noteOf = (lang) =>
+    JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8")).ui.note;
+  assert.equal(noteOf("en").includes(SUPPORT_EMAIL_US), true, "en 하단 문구가 미국 법인이 아닙니다");
+  assert.equal(noteOf("en").includes(SUPPORT_EMAIL_KR), false, "en 하단 문구에 한국 법인 메일이 남았습니다");
+  for (const lang of ["ja", "zh"]) {
+    assert.equal(noteOf(lang).includes(SUPPORT_EMAIL_KR), true, `${lang} 하단 문구가 한국 법인이 아닙니다`);
+    assert.equal(noteOf(lang).includes(SUPPORT_EMAIL_US), false, `${lang} 하단 문구에 미국 법인 메일이 남았습니다`);
   }
 
-  // 앱 화면(Q&A 섹션·푸터)도 같은 값이어야 합니다 — 소스를 직접 봅니다.
+  // 앱 화면 — 언어를 보고 고릅니다(푸터는 Q&A 의 함수를 그대로 import).
   const qna = fs.readFileSync(path.join(here, "..", "src/components/Qna.tsx"), "utf8");
-  assert.match(qna, /const SUPPORT_EMAIL = "info@cubeberry\.ai"/, "앱 문의처가 바뀌었습니다");
-  assert.match(fs.readFileSync(path.join(here, "..", "src/components/Closing.tsx"), "utf8"), /import \{ SUPPORT_EMAIL \} from "\.\/Qna"/, "푸터는 Q&A 의 문의처를 그대로 씁니다");
+  assert.match(qna, /supportEmailFor\(lang\)/, "Q&A 가 화면 언어를 보지 않습니다");
+  assert.match(fs.readFileSync(path.join(here, "..", "src/components/Closing.tsx"), "utf8"), /supportEmailFor\(lang\)/, "푸터가 화면 언어를 보지 않습니다");
 
   // 미국 법인 노드는 문의처와 별개로 유지 — Stripe 판매사 표기용
-  const [, reseller] = siteJsonLd("https://hub.example.test/");
-  assert.equal(reseller.email, "info@cubeberry.ai");
+  assert.equal(siteJsonLd("https://hub.example.test/")[1].email, SUPPORT_EMAIL_US);
+});
+
+test("영어 글 본문도 미국 법인 메일·전화로 맞춘다 (한국 법인 전화가 남지 않는다)", () => {
+  const dict = JSON.parse(fs.readFileSync(path.join(here, "..", "content/i18n/en.json"), "utf8"));
+  for (const [slug, e] of Object.entries(dict.entries)) {
+    const body = JSON.stringify(e);
+    // 사업자 정보(법정 공시)만 예외 — 한국 등록 정보라 한국 법인 연락처가 맞습니다.
+    if (slug === "qna/company-business-info") {
+      assert.match(body, /cubeberry@cuberry\.kr/);
+      assert.match(body, /\+82-70-8095-2302/);
+      continue;
+    }
+    // 두 법인을 함께 안내하는 글(한국 고객은 한국 법인 주소로) — 한국 법인 메일이 나오는 것이 맞습니다.
+    if (slug === "qna/contact-inquiry") {
+      assert.match(body, /info@cubeberry\.ai/);
+      assert.match(body, /cubeberry@cuberry\.kr/);
+      continue;
+    }
+    assert.equal(body.includes("cubeberry@cuberry.kr"), false, `${slug}: 영어 글에 한국 법인 메일이 남았습니다`);
+    assert.equal(body.includes("+82-70-8095-2302"), false, `${slug}: 영어 글에 한국 법인 전화가 남았습니다`);
+  }
+  // 일·중은 한국 법인 유지 — 단, contact-inquiry 는 두 창구를 함께 안내하므로 예외
+  for (const lang of ["ja", "zh"]) {
+    const d = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+    for (const [slug, e] of Object.entries(d.entries)) {
+      if (slug === "qna/contact-inquiry") continue;
+      assert.equal(JSON.stringify(e).includes("info@cubeberry.ai"), false, `${lang} ${slug}: 미국 법인 메일이 들어갔습니다`);
+    }
+  }
 });
