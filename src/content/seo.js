@@ -242,7 +242,41 @@ export const SITE_LANGS = [
 export const langByCode = (code) => SITE_LANGS.find((l) => l.code === code) ?? null;
 
 /**
+ * 언어별 **공개 주소** 스위치 (2026-11-14 · MHW 검토 의견서 B안).
+ * -----------------------------------------------------------------------------
+ * 값을 넣으면 그 언어의 페이지는 이 주소 아래에 있는 것으로 선언됩니다
+ * (canonical · og:url · hreflang · 구조화 데이터 · 사이트맵 · 언어 전환 링크 전부).
+ *
+ *   en: "https://www.xconda.ai/hub/"   ← 영어 허브를 제품 사이트 하위 폴더로
+ *   en: ""                             ← 끔(기본). 지금처럼 hub.xconda.ai/en/
+ *
+ * ⚠️ 파일은 계속 이 저장소의 `en/` 폴더에 만들어집니다. 제품 사이트 쪽에
+ *    `www.xconda.ai/hub/*` → `hub.xconda.ai/en/*` 리버스 프록시가 **먼저** 열려 있어야 합니다.
+ *    프록시 없이 켜면 영어 페이지의 대표 주소가 없는 주소를 가리키고, hub.xconda.ai/en/ 방문자는
+ *    없는 주소로 넘어갑니다. 순서와 프록시 조건: reports/en-hub-subdirectory-handoff-20261114.md
+ * 켜고 끄는 방법: 아래 값 한 줄만 바꿔 커밋 → 빌드가 나머지를 다시 만듭니다.
+ */
+export const LOCALE_BASE_URLS = { en: "" };
+
+let activeLocaleBases = { ...LOCALE_BASE_URLS };
+
+/** 빌드·테스트가 스위치 값을 바꿔 끼울 때 씁니다. 이전 값을 돌려줍니다(끝나면 되돌리세요). */
+export function setLocaleBaseUrls(map) {
+  const previous = activeLocaleBases;
+  activeLocaleBases = { ...(map ?? LOCALE_BASE_URLS) };
+  return previous;
+}
+
+/** 그 언어의 공개 주소(끝 `/` 포함). 스위치가 꺼져 있으면 빈 문자열. */
+export function localeBaseUrl(code) {
+  const base = String(activeLocaleBases?.[code] ?? "").trim();
+  if (!/^https?:\/\//.test(base)) return "";
+  return base.endsWith("/") ? base : `${base}/`;
+}
+
+/**
  * 언어 + 사이트 안 경로 → 절대 주소. 기준 언어(ko)는 접두사를 붙이지 않습니다.
+ * 공개 주소 스위치(LOCALE_BASE_URLS)가 켜진 언어는 그 주소 아래로 만듭니다.
  * @param {string} siteUrl 사이트 주소(끝 / 허용)
  * @param {string} code 언어 코드(ko·en·ja·zh)
  * @param {string} [path] `qna/refund/` 같은 사이트 안 경로
@@ -250,6 +284,8 @@ export const langByCode = (code) => SITE_LANGS.find((l) => l.code === code) ?? n
 export function localizedUrl(siteUrl, code, path = "") {
   const lang = langByCode(code);
   const rel = String(path ?? "").replace(/^\/+/, "");
+  const external = lang ? localeBaseUrl(lang.code) : "";
+  if (external) return `${external}${rel}`;
   return absoluteUrl(siteUrl, `${lang ? lang.prefix : ""}${rel}`);
 }
 

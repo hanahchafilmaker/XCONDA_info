@@ -53,6 +53,8 @@ import {
   hreflangAlternates,
   isEndedTitle,
   langByCode,
+  localeBaseUrl,
+  setLocaleBaseUrls,
   llmsTxt,
   localizedUrl,
   localizedOgImageUrl,
@@ -541,8 +543,8 @@ const noteHtml = (text) =>
   escapeHtml(text).replace(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g, (mail) => `<a href="mailto:${mail}">${mail}</a>`);
 
 /** 제품 사이트 링크 묶음(글 상단·하단) — 주소·문구는 src/content/cta.js 한 곳에서 만듭니다. */
-export function productLinksHtml({ lang = "ko", tool = "", title = "", placement = "bottom" } = {}) {
-  const { label, links } = productLinks({ lang, tool, title, placement });
+export function productLinksHtml({ lang = "ko", tool = "", title = "", placement = "bottom", utm = true } = {}) {
+  const { label, links } = productLinks({ lang, tool, title, placement, utm });
   return [
     `<nav class="seo-cta" data-cta="${escapeHtml(placement)}" aria-label="${escapeHtml(label)}">`,
     ...links.map((l) => `<a href="${escapeHtml(l.href)}" data-cta-kind="${escapeHtml(l.kind)}">${escapeHtml(l.label)}</a>`),
@@ -558,6 +560,17 @@ export function productLinksHtml({ lang = "ko", tool = "", title = "", placement
  * configured base pathname: previews and project deployments stay same-origin.
  * Article URLs intentionally remain translated reading pages.
  */
+/**
+ * 공개 주소가 다른 곳(예: www.xconda.ai/hub/)으로 옮겨진 언어의 페이지에 넣는 이동 스크립트.
+ * 같은 파일이 두 주소로 열립니다 — 프록시를 거친 새 주소와, 예전 주소(hub.xconda.ai/en/…).
+ * 예전 주소로 **직접** 들어온 방문자만 새 주소로 보냅니다(쿼리·해시 유지 — UTM 이 사라지지 않게).
+ * GitHub Pages 는 서버 301 을 쓸 수 없어, 검색엔진에는 canonical 이, 사람에게는 이 스크립트가 신호입니다.
+ */
+export function movedHostScript(site, targetUrl) {
+  const config = JSON.stringify({ host: new URL(site).hostname, to: targetUrl }).replace(/</g, "\\u003c");
+  return `<script data-hub-moved>(function(){var c=${config};if(location.hostname===c.host)location.replace(c.to+location.search+location.hash)})();</script>`;
+}
+
 export function localizedHubEntry(site, code, anchor = "") {
   const basePath = new URL(site).pathname.replace(/\/?$/, "/");
   const target = code === "zh" ? "zh-CN" : code;
@@ -625,6 +638,12 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
     if (!lang || !t) continue;
     const ui = t.ui ?? {};
     const uiDefaults = LOCALIZED_UI_DEFAULTS[code] ?? LOCALIZED_UI_DEFAULTS.en;
+    // 이 언어의 공개 주소가 다른 사이트 아래(예: www.xconda.ai/hub/)인가 — 스위치: LOCALE_BASE_URLS
+    const moved = Boolean(localeBaseUrl(code));
+    // 옮겨진 언어: 예전 주소 방문자를 새 주소로 보내고, 허브 앱으로 넘기는 스크립트는 넣지 않습니다
+    // (프록시 아래에서 앱 주소 `/?lang=en` 은 제품 사이트 첫 화면이 되기 때문). 제품 링크의 UTM 도 뺍니다.
+    const movedHead = (pageUrl) => (moved ? `\n    ${movedHostScript(site, pageUrl)}` : "");
+    const entryScript = (anchor) => (moved ? "" : `\n${localizedHubEntry(site, code, anchor)}`);
     currentLangCode = code;
     const homeTitle = t.site?.title ?? lang.name;
     const homeDescription = t.site?.description ?? "";
@@ -754,6 +773,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       });
       translatedLd.inLanguage = lang.hreflang;
       head += `\n    ${jsonLdScript({ "@context": "https://schema.org", ...translatedLd }, true)}`;
+      head += movedHead(url);
       if (bodyHtml) bodyCount[code] = (bodyCount[code] ?? 0) + 1;
       const body = [
         `<div id="root"><main class="seo-article" data-lang="${code}">`,
@@ -763,11 +783,11 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `<h1>${escapeHtml(title)}</h1>`,
         `<p class="seo-meta">${metaLine}</p>`,
         it.record.ended ? `<p class="seo-ended" role="note">${escapeHtml(ui.ended ?? uiDefaults.ended)}</p>` : "",
-        productLinksHtml({ lang: code, tool: it.record.tool, title: `${it.record.title} ${title}`, placement: "top" }),
+        productLinksHtml({ lang: code, tool: it.record.tool, title: `${it.record.title} ${title}`, placement: "top", utm: !moved }),
         // 도입 문단 — 한국어 페이지처럼 요약을 본문 앞에 싣습니다(본문 첫 글과 같은 말이면 생략).
         !bodyHtml || !summaryRepeatsBody(summaryText, bodyBlocks) ? paragraphsHtml(summaryText) : "",
         bodyHtml,
-        productLinksHtml({ lang: code, tool: it.record.tool, title: `${it.record.title} ${title}`, placement: "bottom" }),
+        productLinksHtml({ lang: code, tool: it.record.tool, title: `${it.record.title} ${title}`, placement: "bottom", utm: !moved }),
         `<p><a href="${escapeHtml(koUrl)}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
         `</article>`,
         siblings.length
@@ -786,7 +806,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         .filter(Boolean)
         .join("\n");
       files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, head), body), lang.htmlLang));
-      urls.push({ loc: url, lastmod: it.record.modified || it.record.date || undefined });
+      urls.push({ loc: url, lastmod: it.record.modified || it.record.date || undefined, code, section: it.prefix });
       (paths[code] ??= []).push(path);
     }
 
@@ -824,9 +844,9 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `</main></div>`,
       ].join("\n");
       const anchor = { guide: "guides", notice: "notices", post: "blog", qna: "faq" }[prefix] ?? "";
-      const entryHead = `${head}\n${localizedHubEntry(site, code, anchor)}`;
+      const entryHead = `${head}${movedHead(url)}${entryScript(anchor)}`;
       files.set(`${lang.prefix}${path}index.html`, applyHtmlLang(injectRoot(applyHead(base, entryHead), body), lang.htmlLang));
-      urls.push({ loc: url });
+      urls.push({ loc: url, code, section: prefix });
     }
 
     // 언어 홈 (/en/)
@@ -861,11 +881,11 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       ui.note ? `<p class="seo-note">${noteHtml(ui.note)}</p>` : "",
       `</main></div>`,
     ].join("\n");
-    const entryHead = `${head}\n${localizedHubEntry(site, code)}`;
+    const entryHead = `${head}${movedHead(homeUrl)}${entryScript("")}`;
     files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, entryHead), body), lang.htmlLang));
     // 앱의 언어 전환기가 홈에서도 그 언어 주소로 보낼 수 있게 빈 경로를 넣어 둡니다.
     (paths[code] ??= []).unshift("");
-    urls.push({ loc: homeUrl });
+    urls.push({ loc: homeUrl, code, section: "" });
   }
 
   return { files, urls, missing, paths, bodyCount };
@@ -1220,7 +1240,21 @@ export function readOgLangManifest(warnings = []) {
  * @param {{ rows: object[], pages?: object, template: string, siteUrl?: string }} input
  * @returns {{ files: Map<string, string>, pages: object[], skipped: object[], warnings: string[], siteUrl: string }}
  */
-export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, ogLangManifest: ogLangManifestInput, translations: translationsInput } = {}) {
+/**
+ * 사이트 전체를 만듭니다. `localeBases` 를 넘기면 그 빌드에서만 언어별 공개 주소 스위치를 바꿉니다
+ * (테스트·미리보기용. 넘기지 않으면 src/content/seo.js 의 LOCALE_BASE_URLS 값).
+ */
+export function renderSeoSite({ localeBases, ...input } = {}) {
+  if (!localeBases) return renderSeoSiteWith(input);
+  const previous = setLocaleBaseUrls(localeBases);
+  try {
+    return renderSeoSiteWith(input);
+  } finally {
+    setLocaleBaseUrls(previous);
+  }
+}
+
+function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, ogLangManifest: ogLangManifestInput, translations: translationsInput } = {}) {
   let template = inputTemplate;
   const site = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
   // 인라인 번들 → 공용 자산(assets/app.js · app.css). 이미 분리된 템플릿이면 그대로 둡니다.
@@ -1641,10 +1675,23 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
   for (const [file, html] of localized.files) files.set(file, html);
   for (const msg of localized.missing) warnings.push(msg);
   const localizedBodies = localized.bodyCount ?? {};
+  // 공개 주소가 다른 사이트로 옮겨진 언어(스위치: LOCALE_BASE_URLS)의 주소는 허브 사이트맵에 넣지 않고,
+  // 그 언어 폴더의 사이트맵(`en/sitemap.xml` → 프록시로 www.xconda.ai/hub/sitemap.xml)에 따로 모읍니다.
+  // 사이트맵은 자기 호스트의 주소만 실을 수 있기 때문입니다.
+  const movedSitemaps = new Map();
   for (const u of localized.urls) {
     // 번역 Q&A 같이 사이트맵에서 빼기로 한 섹션은 넘깁니다(페이지는 그대로 만듭니다).
-    if (skipInSitemap(u.loc, site)) continue;
-    sitemapUrls.push(u);
+    if (skipInSitemap(u.loc, site) || SITEMAP_SKIP_LOCALIZED_SECTIONS.includes(u.section)) continue;
+    const entry = { loc: u.loc, ...(u.lastmod ? { lastmod: u.lastmod } : {}) };
+    if (localeBaseUrl(u.code)) {
+      if (!movedSitemaps.has(u.code)) movedSitemaps.set(u.code, []);
+      movedSitemaps.get(u.code).push(entry);
+    } else {
+      sitemapUrls.push(entry);
+    }
+  }
+  for (const [code, list] of movedSitemaps) {
+    files.set(`${langByCode(code).prefix}sitemap.xml`, sitemapXml(list));
   }
   // 앱(React)의 언어 전환기가 "이 경로에 번역 주소가 있나?" 를 확인하는 목록.
   // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
@@ -1663,8 +1710,9 @@ export function renderSeoSite({ rows, pages = {}, template: inputTemplate, siteU
       const prefix = lang.prefix;
       if (prefix && !builtLangs.has(lang.code)) continue; // 번역 사이트가 없는 언어는 건너뜀
       if (files.has(`${prefix}${from}index.html`)) continue; // 같은 주소에 실제 글이 있으면 글이 우선
-      const target = prefix && files.has(`${prefix}${to}index.html`) ? `${prefix}${to}` : to;
-      files.set(`${prefix}${from}index.html`, redirectHtml(absoluteUrl(site, target)));
+      // 번역본이 있으면 그 언어의 새 글로(공개 주소 스위치 반영), 없으면 한국어 새 글로 보냅니다.
+      const targetUrl = prefix && files.has(`${prefix}${to}index.html`) ? localizedUrl(site, lang.code, to) : absoluteUrl(site, to);
+      files.set(`${prefix}${from}index.html`, redirectHtml(targetUrl));
     }
   }
   files.set("sitemap.xml", sitemapXml(sitemapUrls));
@@ -1815,6 +1863,10 @@ function staleRedirectTarget(files, siteUrl, code, section) {
  */
 export function writeSite(result, root) {
   for (const dir of GENERATED_DIRS) fs.rmSync(path.join(root, dir), { recursive: true, force: true });
+  // 언어 폴더의 사이트맵은 공개 주소 스위치가 켜진 언어에만 있습니다 — 스위치를 끄면 지웁니다.
+  for (const prefix of LOCALE_PREFIXES) {
+    if (!result.files?.has(`${prefix}sitemap.xml`)) fs.rmSync(path.join(root, prefix, "sitemap.xml"), { force: true });
+  }
 
   const stale = staleLocalizedPages(root, result.files ?? new Map());
   for (const rel of stale) {

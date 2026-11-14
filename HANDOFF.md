@@ -619,6 +619,7 @@ npm run build
 | **섹션 추가** | ① `src/content/types.ts` `EntryType` ② `classify.js`(`TYPE_ALIASES`·`SECTION_LABELS`) ③ `ContentContext`(그룹·정렬) ④ `App.tsx`(배치) ⑤ `Nav.tsx` `LINKS` ⑥ `SearchOverlay.tsx` `Kind` ⑦ `dict.ts`(`nav.*`, `section.*`) ⑧ 테스트 |
 | **노션 속성 추가** | ① `src/content/fields.js`(별칭 키) 또는 `classify.js`(분류 관련) ② `src/notion.ts` `mapPage` ③ `scripts/notion-snapshot.mjs`(행 추출 · 요약) ④ `src/content/types.ts` `Entry` ⑤ 테스트 + `NOTION_SETUP.md` 표 갱신 |
 | **분류 규칙 변경** | `src/content/classify.js` **한 곳만** → `npm run test:unit` (사이트·스크립트 동시 반영) |
+| **영어 허브를 `www.xconda.ai/hub/` 로 옮기기(켜기/끄기)** | `src/content/seo.js` `LOCALE_BASE_URLS.en` 한 줄 → `npm run build`. **제품 사이트 프록시가 먼저** 열려 있어야 함(`npm run proxy:check` 로 확인). 조건·순서: `reports/en-hub-subdirectory-handoff-20261114.md` |
 | **디자인 토큰/색 변경** | `src/index.css` `@theme` |
 | **디버그: 노션 없이 보기** | `?notion=off` (샘플 모드) |
 | **디버그: 다른 노션 페이지로 보기** | `?notion=<페이지 URL 또는 32자리 ID>` |

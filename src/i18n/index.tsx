@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { hubBaseFromPathname } from "../content/seo";
+import { hubBaseFromPathname, localeBaseUrl } from "../content/seo";
 import { setCurrentLang, translate, type Lang } from "./dict";
 import { applyGoogtransCookie, isTarget, loadTranslateWidget, readGoogtransTarget, type Target } from "./google";
 
@@ -232,7 +232,9 @@ export function localizedHrefFor(target: Target, pathname: string): string | nul
   const base = hubBaseFromPathname(pathname);
   const rel = String(pathname).slice(base.length);
   if (!list.includes(rel)) return null;
-  return `${base}${code}/${rel}`;
+  // 공개 주소 스위치가 켜진 언어(예: 영어 → www.xconda.ai/hub/)는 그 주소로 보냅니다.
+  const external = localeBaseUrl(code);
+  return external ? `${external}${rel}` : `${base}${code}/${rel}`;
 }
 
 let bootedTarget: Target | null = null;
