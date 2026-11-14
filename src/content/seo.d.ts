@@ -114,6 +114,9 @@ export function escapeXml(value: unknown): string;
 
 /** 구조화 데이터(JSON-LD) — 빌드 스크립트(scripts/build-seo.mjs)가 <head> 에 넣습니다. */
 export const ORG_ID: string;
+export const RESELLER_ID: string;
+export const SUPPORT_EMAIL: string;
+export function isEndedTitle(...titles: unknown[]): boolean;
 export const WWW_URL: string;
 export const ORG_LOGO_PATH: string;
 export const OFFICIAL_SAME_AS: string[];

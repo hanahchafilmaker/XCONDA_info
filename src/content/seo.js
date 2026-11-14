@@ -664,24 +664,57 @@ export const OFFICIAL_SAME_AS = [
   "https://blog.naver.com/dramajustice",
 ];
 
-/** 전 페이지 공통 명찰: 운영사(Organization) + 이 사이트(WebSite) */
+/**
+ * 미국 법인(공인 리셀러)의 식별자. cubeberry.ai 는 정보가 갱신되기 전이라 공식 회사 주소로
+ * 연결하지 않습니다(2026-11-14 대표 결정) — 그래서 @id 도 한국 법인 주소 아래에 두고 `url` 은 넣지 않습니다.
+ * cubeberry.ai 가 개선되면 이 노드에 `url` 을 추가하세요(@id 는 그대로).
+ */
+export const RESELLER_ID = "https://www.cuberry.kr/#reseller-us";
+/** XCONDA 문의처 — 기능·사용법·크레딧 질문은 개발·운영사(한국 법인)가 답합니다. */
+export const SUPPORT_EMAIL = "cubeberry@cuberry.kr";
+
+/**
+ * 전 페이지 공통 명찰: 운영사(Organization) + 공인 리셀러(Organization) + 이 사이트(WebSite)
+ *
+ * 두 법인의 역할은 사이트 푸터와 같게 적습니다.
+ *   - 주식회사 큐브베리(한국) = XCONDA 개발·운영사 → 허브·제품의 publisher, 문의처
+ *   - Cubeberry Co., Ltd(Delaware) = Stripe 결제를 자기 명의로 판매·청구하는 공인 리셀러
+ * 회사 번호(@id)는 cuberry.kr 것을 유지합니다 — cuberry.kr · www 와 같은 값이어야 한 회사로 묶입니다.
+ */
 export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
   const site = absoluteUrl(siteUrl, "");
   return [
     {
       "@type": "Organization",
       "@id": ORG_ID,
-      name: "CUBEBERRY",
+      // 표기는 Cubeberry 로 통일합니다(전부 대문자 CUBEBERRY 는 쓰지 않습니다).
+      name: "Cubeberry",
       alternateName: "큐브베리",
       legalName: "주식회사 큐브베리",
+      description: "Developer and operator of XCONDA, the AI storyboard and video production platform.",
       url: "https://www.cuberry.kr/",
       logo: "https://www.cuberry.kr/images/logo-512.png",
       foundingDate: "2023-08",
       email: "ceo@cubeberry.ai",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: SUPPORT_EMAIL,
+        availableLanguage: ["ko", "en", "ja", "zh"],
+      },
       // 회사(큐브베리)와 제품(XCONDA)을 분리해 선언합니다. 이게 없으면 AI 는
       // "XCONDA" 라는 이름을 회사 별칭으로만 보고, 제품 엔터티로 인식하지 못합니다.
       brand: { "@type": "Brand", name: BRAND_NAME, alternateName: ["엑스콘다"] },
-      sameAs: [WWW_URL, site.replace(/\/$/, "")],
+      sameAs: [WWW_URL, site.replace(/\/$/, ""), ...OFFICIAL_SAME_AS],
+    },
+    {
+      "@type": "Organization",
+      "@id": RESELLER_ID,
+      name: "Cubeberry Co., Ltd",
+      description:
+        "Authorized reseller of XCONDA. Sells and bills XCONDA purchases paid through Stripe under its own name. XCONDA is developed and operated by Cubeberry Co., Ltd. (Korea).",
+      email: "info@cubeberry.ai",
+      address: { "@type": "PostalAddress", addressRegion: "DE", addressCountry: "US" },
     },
     {
       "@type": "WebSite",
@@ -692,6 +725,15 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL) {
       inLanguage: "ko-KR",
     },
   ];
+}
+
+/**
+ * 끝난 행사 글인지 — 제목(또는 SEO 제목)에 `(종료)` · `(10/7~11/6, 종료)` 표기가 있으면 끝난 것으로 봅니다.
+ * 날짜를 계산하지 않고 **노션 제목의 표기**만 믿습니다(빌드 시점에 따라 결과가 바뀌지 않게).
+ * 끝난 글은 주소는 그대로 두되 「관련 글」 추천에서 뺍니다.
+ */
+export function isEndedTitle(...titles) {
+  return titles.some((t) => /\((?:[^()]*[,·]\s*)?종료\)/.test(String(t ?? "")));
 }
 
 /**
@@ -710,6 +752,7 @@ export function appJsonLd() {
     url: WWW_URL,
     inLanguage: "ko-KR",
     publisher: { "@id": ORG_ID },
+    creator: { "@id": ORG_ID },
     sameAs: OFFICIAL_SAME_AS,
     description:
       "광고·드라마용 AI 스토리보드와 영상을 만드는 SaaS 플랫폼. 시나리오 한 편으로 컷별 스토리보드(FLEXBOARD)를 만들고, 360도 가상 세트(Turn)와 블로킹 보드로 인물·공간·구도를 고정한 뒤 영상으로 넘깁니다.",

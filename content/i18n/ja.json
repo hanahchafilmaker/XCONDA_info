@@ -6,7 +6,7 @@
     "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변)."
   ],
   "lang": "ja",
-  "updated": "2026-10-25",
+  "updated": "2026-11-14",
   "site": {
     "title": "XCONDA ハブ — Q&A・ガイド・お知らせ",
     "description": "XCONDA についての日本語での回答。料金と返金、プライバシーと決済、FLEXBOARD・Turn・Blocking Board の使い方まで。Cubeberry 提供。"
@@ -23,6 +23,18 @@
     "qna": {
       "title": "XCONDA Q&A（日本語）",
       "description": "XCONDA ユーザーからよく寄せられる質問への日本語回答。料金と解約、プライバシーと決済、ツールと制作フローについて。"
+    },
+    "notice": {
+      "title": "XCONDA お知らせ",
+      "description": "XCONDA チームからのアップデート・リリース・キャンペーンのお知らせ。"
+    },
+    "post": {
+      "title": "XCONDA ブログ",
+      "description": "XCONDA による AI ストーリーボード・映像制作のワークフロー、事例、ニュース。"
+    },
+    "guide": {
+      "title": "XCONDA ガイド",
+      "description": "FLEXBOARD・Turn・Blocking Board など XCONDA ツールの使い方ガイド。"
     }
   },
   "entries": {
@@ -420,8 +432,8 @@
       ]
     },
     "notice/seedance-2-5-promotion-30-off": {
-      "title": "Seedance 2.5 プロモーション開始 — 最大 30% 割引（10/7〜11/6）",
-      "summary": "XCONDA で Seedance 2.5 プロモーションを実施します。2026 年 10 月 7 日 11 時から 11 月 6 日 11 時まで（KST）、最大 30% 割引。36 カットのストーリーボードエンジン FLEXBOARD のリリース記念です。",
+      "title": "Seedance 2.5 プロモーション — 最大 30% 割引（10/7〜11/6、終了）",
+      "summary": "XCONDA で Seedance 2.5 プロモーションを実施しました。2026 年 10 月 7 日 11 時から 11 月 6 日 11 時まで（KST）最大 30% 割引で、11 月 6 日に終了しました。36 カットのストーリーボードエンジン FLEXBOARD のリリース記念でした。",
       "blocks": [
         {
           "type": "p",
@@ -625,8 +637,8 @@
       ]
     },
     "notice/seedance-30-off-package-quantities": {
-      "title": "Seedance 30% 割引適用 — パッケージ別の制作可能本数",
-      "summary": "クレジット使用量 30% 割引を適用したとき、パッケージごとに作れる Seedance 映像の本数をまとめました。パッケージ価格は変わりません。",
+      "title": "Seedance 30% 割引適用 — パッケージ別の制作可能本数（終了）",
+      "summary": "キャンペーン期間（10 月 7 日〜11 月 6 日 KST）にクレジット使用量 30% 割引を適用したとき、パッケージごとに作れた Seedance 映像の本数です。割引は 11 月 6 日 11 時に終了し、現在は通常の本数が適用されます。",
       "blocks": [
         {
           "type": "p",

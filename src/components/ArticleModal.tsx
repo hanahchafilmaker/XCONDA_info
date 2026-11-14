@@ -8,9 +8,37 @@ import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel, youTubeEmbed } from "./common";
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
-import { STUDIO_URL, TOOLS } from "../content/tools";
+import { TOOLS } from "../content/tools";
 import { htmlGuideLabels, htmlGuidePath } from "../content/htmlGuides";
 import { hubAbsolute, hubBase, shareUrlFor } from "../seo";
+import { productLinks } from "../content/cta";
+import { isEndedTitle } from "../content/seo";
+
+/**
+ * 제품 사이트 링크(관련 툴 · 무료 시작 · 요금). 정적 페이지(scripts/build-seo.mjs)와 같은
+ * 함수(src/content/cta.js)로 주소를 만들어 UTM 이 어긋나지 않게 합니다.
+ */
+function ProductLinks({ lang, tool, title, placement }: { lang: string; tool?: string; title: string; placement: "top" | "bottom" }) {
+  const { label, links } = productLinks({ lang, tool, title, placement });
+  return (
+    <nav aria-label={label} data-cta={placement} className={cn("notranslate flex flex-wrap gap-2", placement === "top" ? "mt-5" : "mt-10")}>
+      {links.map((link, i) => (
+        <a
+          key={link.kind}
+          href={link.href}
+          data-cta-kind={link.kind}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition active:scale-95",
+            i === 0 ? "border-black bg-black text-white hover:opacity-80" : "border-black/20 text-neutral-800 hover:border-black"
+          )}
+        >
+          {link.label}
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+        </a>
+      ))}
+    </nav>
+  );
+}
 
 const KIND_TONE = {
   New: "border-emerald-400/25 bg-emerald-400/10 text-emerald-300",
@@ -101,7 +129,8 @@ export default function ArticleModal() {
   const guidePath = guideTool ? htmlGuidePath(guideTool.slug, target) : undefined;
 
   const related = entries
-    .filter((e) => e.id !== active.id && e.type === active.type && e.type !== "faq")
+    // 끝난 행사 글(제목에 「종료」)은 추천하지 않습니다 — 정적 페이지의 관련 글과 같은 기준.
+    .filter((e) => e.id !== active.id && e.type === active.type && e.type !== "faq" && !isEndedTitle(e.title))
     .slice(0, 3);
 
   const share = () => {
@@ -311,6 +340,7 @@ export default function ArticleModal() {
               {active.title}
             </h2>
             {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-neutral-500">{active.summary}</p>}
+            <ProductLinks lang={String(target).slice(0, 2)} tool={active.tool} title={active.title} placement="top" />
 
             {guidePath && !modalGuidePath && (
               <a
@@ -388,10 +418,7 @@ export default function ArticleModal() {
                 </ul>
               </div>
             )}
-            <a href={STUDIO_URL} className="mt-10 inline-flex items-center gap-2 rounded-full border border-volt-400/40 px-5 py-3 text-sm font-medium text-volt-400 transition hover:border-volt-400 hover:text-volt-300">
-              {t("modal.visitXconda")}
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+            <ProductLinks lang={String(target).slice(0, 2)} tool={active.tool} title={active.title} placement="bottom" />
           </article>
         </div>
       </div>
