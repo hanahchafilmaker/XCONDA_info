@@ -43,8 +43,11 @@ const LABELS = {
 const HOME_PATH = { ko: "/ko", en: "/", ja: "/", zh: "/" };
 
 /** 제품 사이트 경로 + UTM → 절대 주소 */
-export function wwwUrl(path = "/", placement = "bottom") {
+export function wwwUrl(path = "/", placement = "bottom", utm = true) {
   const url = new URL(path, WWW_ORIGIN);
+  // 제품 사이트 하위 폴더(www.xconda.ai/hub/)에서 보이는 페이지의 링크는 **같은 사이트 안 이동**입니다.
+  // 내부 링크에는 UTM 을 붙이지 않습니다(UTM 규칙) — 붙이면 방문자의 원래 유입이 덮어써집니다.
+  if (!utm) return url.href;
   for (const [k, v] of Object.entries(HUB_UTM)) url.searchParams.set(k, v);
   url.searchParams.set("utm_content", PLACEMENT[placement] ?? PLACEMENT.bottom);
   return url.href;
@@ -58,15 +61,15 @@ export function toolLinkFor({ tool = "", title = "" } = {}) {
 
 /**
  * 글 하나에 붙일 제품 링크 목록.
- * @param {{ lang?: string, tool?: string, title?: string, placement?: "top"|"bottom" }} input
+ * @param {{ lang?: string, tool?: string, title?: string, placement?: "top"|"bottom", utm?: boolean }} input
  * @returns {{ label: string, links: Array<{ kind: "tool"|"start"|"pricing", label: string, href: string }> }}
  */
-export function productLinks({ lang = "ko", tool = "", title = "", placement = "bottom" } = {}) {
+export function productLinks({ lang = "ko", tool = "", title = "", placement = "bottom", utm = true } = {}) {
   const l = LABELS[lang] ?? LABELS.en;
   const toolLink = toolLinkFor({ tool, title });
   const links = [];
-  if (toolLink) links.push({ kind: "tool", label: l.tool(toolLink.name), href: wwwUrl(toolLink.path, placement) });
-  links.push({ kind: "start", label: l.start, href: wwwUrl(HOME_PATH[lang] ?? "/", placement) });
-  links.push({ kind: "pricing", label: l.pricing, href: wwwUrl("/pricing", placement) });
+  if (toolLink) links.push({ kind: "tool", label: l.tool(toolLink.name), href: wwwUrl(toolLink.path, placement, utm) });
+  links.push({ kind: "start", label: l.start, href: wwwUrl(HOME_PATH[lang] ?? "/", placement, utm) });
+  links.push({ kind: "pricing", label: l.pricing, href: wwwUrl("/pricing", placement, utm) });
   return { label: l.aria, links };
 }

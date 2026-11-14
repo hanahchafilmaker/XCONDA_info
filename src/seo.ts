@@ -10,6 +10,7 @@
 import {
   DEFAULT_OG_IMAGE_PATH,
   hubBaseFromPathname,
+  localizedUrl,
   resolveArticleMeta,
   routePathFor,
   sectionPageFromPathname,
@@ -103,7 +104,7 @@ function applyHead(v: HeadValues) {
         // 이전 요청이 늦게 도착해 현재 페이지를 덮어쓰지 않도록 합니다.
         if (document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href !== v.url) return;
         for (const [code, hreflang] of [["en", "en"], ["ja", "ja"], ["zh", "zh-Hans"]]) {
-          if (Array.isArray(paths[code]) && paths[code].includes(path)) addAlternate(hreflang, `${base}${code}/${path}`);
+          if (Array.isArray(paths[code]) && paths[code].includes(path)) addAlternate(hreflang, localizedUrl(base, code, path));
         }
       }).catch(() => {});
   }

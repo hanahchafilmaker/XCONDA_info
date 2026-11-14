@@ -18,7 +18,8 @@
     "i18n:progress": "node scripts/i18n-progress.mjs",
     "content:audit": "node scripts/content-audit.mjs",
     "content:audit:md": "node scripts/content-audit.mjs --md",
-    "utm:check": "node scripts/utm-check.mjs"
+    "utm:check": "node scripts/utm-check.mjs",
+    "proxy:check": "node scripts/check-en-proxy.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",

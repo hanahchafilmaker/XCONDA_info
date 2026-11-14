@@ -32,6 +32,7 @@ import {
   localOgImageUrl,
   localizedOgImageUrl,
   localizedUrl,
+  LOCALE_BASE_URLS,
   ogLangManifestKey,
   ogManifestKey,
   relatedArticles,
@@ -1687,4 +1688,73 @@ test("한국어 글에는 번역본으로 가는 실제 링크가 붙고, Q&A �
   assert.doesNotMatch(koPost, /hreflang="ja"/);
   // Q&A 는 번역이 있어도 링크를 달지 않습니다(사이트맵 제외 정책과 같은 이유).
   assert.doesNotMatch(out.files.get("qna/refund-policy/index.html"), /class="seo-langs"/);
+});
+
+/* ------------------------------------------------------------------------------------------
+ * 영어 허브를 제품 사이트 하위 폴더로 — 공개 주소 스위치 (2026-11-14 · MHW 검토 B안)
+ * ------------------------------------------------------------------------------------------ */
+test("공개 주소 스위치 — 꺼져 있으면(기본) 영어 주소는 지금처럼 허브의 /en/ 이다", () => {
+  assert.equal(LOCALE_BASE_URLS.en, "", "프록시가 열리기 전에는 스위치를 켠 채 커밋하지 않습니다");
+  assert.equal(localizedUrl("https://hub.example.test/", "en", "qna/a/"), "https://hub.example.test/en/qna/a/");
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE });
+  assert.ok(!out.files.has("en/sitemap.xml"));
+  assert.doesNotMatch(out.files.get("en/qna/refund-policy/index.html"), /data-hub-moved/);
+  assert.match(out.files.get("en/index.html"), /data-hub-entry/);
+});
+
+test("공개 주소 스위치 — 켜면 영어 페이지가 www.xconda.ai/hub/ 아래로 선언된다", () => {
+  const BASE = "https://www.xconda.ai/hub/";
+  const out = renderSeoSite({
+    rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE,
+    localeBases: { en: BASE },
+  });
+  // 파일 위치는 그대로(en/…) — 프록시가 /hub/* → /en/* 로 연결합니다
+  const en = out.files.get("en/qna/refund-policy/index.html");
+  const ko = out.files.get("qna/refund-policy/index.html");
+  const newUrl = `${BASE}qna/refund-policy/`;
+  assert.match(en, new RegExp(`<link rel="canonical" href="${newUrl}" />`));
+  assert.match(en, new RegExp(`<meta property="og:url" content="${newUrl}" />`));
+  // hreflang 은 서로를 주소 전체로 가리킨다 (영어 = 새 주소, 한국어 = 허브)
+  for (const html of [en, ko]) {
+    assert.match(html, new RegExp(`hreflang="en" href="${newUrl}"`));
+    assert.match(html, new RegExp(`hreflang="ko" href="${SITE}qna/refund-policy/"`));
+    assert.match(html, new RegExp(`hreflang="x-default" href="${SITE}qna/refund-policy/"`));
+  }
+  assert.doesNotMatch(en, new RegExp(`${SITE}en/`), "영어 페이지에 예전 /en/ 주소가 남아 있습니다");
+  // 예전 주소로 직접 온 방문자만 새 주소로 (쿼리·해시 유지)
+  assert.match(en, /<script data-hub-moved>.*location\.hostname===c\.host.*location\.search\+location\.hash/);
+  assert.ok(en.includes(`"to":"${newUrl}"`));
+  // 영어 홈·목록은 허브 앱으로 넘기지 않는다 (프록시 아래에서 /?lang=en 은 제품 사이트 첫 화면)
+  for (const file of ["en/index.html", "en/qna/index.html"]) {
+    assert.doesNotMatch(out.files.get(file), /data-hub-entry/);
+    assert.match(out.files.get(file), /data-hub-moved/);
+  }
+  // 제품 사이트 안의 페이지가 되므로 제품 링크에 UTM 을 붙이지 않는다 (한국어 허브는 그대로)
+  assert.doesNotMatch(en, /www\.xconda\.ai\/[^"]*utm_/);
+  assert.match(ko, /www\.xconda\.ai\/ko\?utm_source=hub/);
+  // 프록시 아래에서 깨지는 상대 자산 주소가 없어야 한다 (이동 링크 ../ 와 같은 폴더 ./ 만 허용)
+  const rel = [...en.matchAll(/(?:href|src)="([^"]+)"/g)].map((m) => m[1]).filter((u) => !/^(https?:|data:|mailto:|#|\.\.?\/)/.test(u));
+  assert.deepEqual(rel, []);
+  // 스위치는 그 빌드에만 적용되고 되돌아온다
+  assert.equal(localizedUrl(SITE, "en", ""), `${SITE}en/`);
+});
+
+test("공개 주소 스위치 — 영어 주소는 허브 사이트맵에서 빠지고 en/sitemap.xml 로 간다", () => {
+  const rows = fixtureRows;
+  const key = "post/opus-5-5-trending";
+  const translations = { en: { ...EN_FIXTURE.en, entries: { ...EN_FIXTURE.en.entries, [key]: { title: "First post", summary: "English summary." } } } };
+  const out = renderSeoSite({
+    rows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations,
+    localeBases: { en: "https://www.xconda.ai/hub" }, // 끝 슬래시 없어도 됨
+  });
+  const hubMap = out.files.get("sitemap.xml");
+  assert.doesNotMatch(hubMap, /www\.xconda\.ai/);
+  assert.doesNotMatch(hubMap, new RegExp(`${SITE}en/`));
+  const enMap = out.files.get("en/sitemap.xml");
+  assert.ok(enMap, "en/sitemap.xml 이 만들어져야 합니다");
+  assert.match(enMap, /<loc>https:\/\/www\.xconda\.ai\/hub\/<\/loc>/);
+  const locs = [...enMap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.ok(locs.every((l) => l.startsWith("https://www.xconda.ai/hub/")));
+  // 번역 Q&A 는 지금처럼 사이트맵에서 뺀다
+  assert.ok(!locs.some((l) => l.includes("/qna/")));
 });

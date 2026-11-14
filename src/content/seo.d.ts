@@ -19,6 +19,9 @@ export type SiteLang = {
 export const SITE_LANGS: SiteLang[];
 export const langByCode: (code: string) => SiteLang | null;
 export function localizedUrl(siteUrl: string, code: string, path?: string): string;
+export const LOCALE_BASE_URLS: Record<string, string>;
+export function setLocaleBaseUrls(map?: Record<string, string> | null): Record<string, string>;
+export function localeBaseUrl(code: string): string;
 export function hreflangAlternates(
   siteUrl: string,
   path: string,
