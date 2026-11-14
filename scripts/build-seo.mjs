@@ -29,7 +29,7 @@ import { fileURLToPath } from "node:url";
 import { SECTION_LABELS } from "../src/content/classify.js";
 import { AUTHOR_EN_KEYS, AUTHOR_KEYS, COVER_KEYS, coverFromPageMap } from "../src/content/fields.js";
 import { mentionIndex } from "../src/content/mentions.js";
-import { productLinks } from "../src/content/cta.js";
+import { listingLinks, productLinks } from "../src/content/cta.js";
 import { blocksToHtml, cleanFaqBlocks, firstParagraphText, parseLegacyRecordMap } from "../src/content/body.js";
 import {
   DEFAULT_OG_IMAGE_PATH,
@@ -552,6 +552,19 @@ export function productLinksHtml({ lang = "ko", tool = "", title = "", placement
   ].join("");
 }
 
+/**
+ * 목록·홈 페이지용 제품 링크 묶음 — 글 페이지와 같은 모양(`data-cta`)으로 넣습니다.
+ * 글 페이지에만 링크가 있고 목록에는 없어서, 목록으로 들어온 방문자가 제품 사이트로 갈 길이
+ * 없던 문제를 메웁니다. 홈은 언어별 홈(`/en/` …)이 아니라 한국어 홈(`/`)에만 붙입니다.
+ */
+export function listingLinksHtml({ lang = "ko", placement = "bottom", utm = true } = {}) {
+  const { label, links } = listingLinks({ lang, placement, utm });
+  return [
+    `<nav class="seo-cta" data-cta="${escapeHtml(placement)}" data-cta-scope="listing" aria-label="${escapeHtml(label)}">`,
+    ...links.map((l) => `<a href="${escapeHtml(l.href)}" data-cta-kind="${escapeHtml(l.kind)}">${escapeHtml(l.label)}</a>`),
+    `</nav>`,
+  ].join("");
+}
 
 /**
  * Localized home/list URLs retain translated, crawlable HTML as a no-JS
@@ -841,6 +854,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         ...list.map((it) => `<li><a href="./${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
         `</ul>`,
         `<p><a href="${escapeHtml(localizedUrl(site, "ko", path))}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
+        // 목록으로 바로 들어온 방문자용 제품 링크. 영어가 제품 사이트 아래로 옮겨지면(moved) 같은 사이트 이동이라 UTM 을 뺍니다.
+        listingLinksHtml({ lang: code, placement: "bottom", utm: !moved }),
         `</main></div>`,
       ].join("\n");
       const anchor = { guide: "guides", notice: "notices", post: "blog", qna: "faq" }[prefix] ?? "";
@@ -879,6 +894,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         ].join("\n");
       }),
       ui.note ? `<p class="seo-note">${noteHtml(ui.note)}</p>` : "",
+      // 언어 홈으로 바로 들어온 방문자용 제품 링크(목록 페이지와 같은 규칙).
+      listingLinksHtml({ lang: code, placement: "bottom", utm: !moved }),
       `</main></div>`,
     ].join("\n");
     const entryHead = `${head}${movedHead(homeUrl)}${entryScript("")}`;
@@ -1116,6 +1133,7 @@ export function homeDigestHtml({ groups, description, total, updated }) {
     }),
     sectionHtml({ anchor: "blog", heading: SECTION_LABELS.blog, items: groups.blog, linkOf, moreHref: "post/" }),
     sectionHtml({ anchor: "faq", heading: "Q&A", items: groups.faq, linkOf, moreHref: "qna/" }),
+    listingLinksHtml({ lang: "ko", placement: "bottom" }),
     `<p><a href="https://www.xconda.ai/">XCONDA 스튜디오 열기</a></p>`,
     `</main></div>`,
   ]
@@ -1124,7 +1142,7 @@ export function homeDigestHtml({ groups, description, total, updated }) {
 }
 
 /** 섹션 인덱스 페이지 본문 (/post/ · /notice/ · /qna/ · /guide/) */
-export function sectionPageHtml({ page, items }) {
+export function sectionPageHtml({ page, items, lang = "ko", cta = true }) {
   const linkOf = (it) => relHref(routePathFor(it.type, it.slug), "../");
   return [
     `<div id="root"><main class="seo-article">`,
@@ -1137,6 +1155,8 @@ export function sectionPageHtml({ page, items }) {
     page.types.includes("guide")
       ? `<p class="seo-more"><a href="../user-guide.html">XCONDA 스튜디오 19개 툴 완전 사용자 가이드</a></p>`
       : "",
+    // 목록으로 바로 들어온 방문자도 제품 사이트로 갈 수 있게 합니다(글 페이지와 같은 링크 묶음).
+    cta ? listingLinksHtml({ lang, placement: "bottom" }) : "",
     `<p><a href="../">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -1401,7 +1421,18 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
     if (!seo.seoDescription) warnings.push(`[${title}] SEO 설명 대체: ${summary ? "Summary" : descriptionFallback ? "본문 첫 문단" : "사이트 기본 설명"}.`);
     if (!seo.ogImage) warnings.push(`[${title}] 공유 이미지 대체: ${coverRaw ? "커버·링크·본문 이미지" : "기본 이미지"}.`);
 
-    if (blocksToHtml(blocks, { alt: title }).match(/(?:notion\.so|prod-files-secure)/i)) warnings.push(`[${title}] 본문에 노션 파일 주소가 남아 있습니다 (첨부 복사 실패 또는 미설정).`);
+    // 이미지(`<img src>`)는 노션 공개 프록시(www.notion.so/image/…)로 바꿔 내보내는 것이 **정상 동작**입니다
+    // (signNotionImage). 그래서 이미지 주소는 경고 대상에서 빼고, 실제로 고쳐야 하는 것만 봅니다.
+    //   ① 다운로드·PDF 링크가 노션 주소인 경우 — 방문자에게 로그인 화면이 열립니다
+    //   ② 프록시로 감싸지 못한 원본 주소(attachment: · prod-files-secure · notion-static)가 본문 텍스트에 남은 경우
+    const bodyHtmlForAudit = blocksToHtml(blocks, { alt: title });
+    const withoutImages = bodyHtmlForAudit.replace(/<img\b[^>]*>/gi, "");
+    if (
+      /<a\b[^>]*href="[^"]*(?:notion\.(?:so|site)|prod-files-secure)/i.test(withoutImages) ||
+      /(?:attachment:|secure\.notion-static\.com|prod-files-secure|file\.notion\.so)/i.test(withoutImages)
+    ) {
+      warnings.push(`[${title}] 본문에 노션 원본 파일 주소가 남아 있습니다 (첨부 복사 실패 또는 미설정).`);
+    }
     const author = textOf(pickProp(row, AUTHOR_KEYS));
     // 수정일 — 노션 `수정일`(또는 동기화가 기록한 `__modified`)만 인정합니다.
     // 작성일과 같으면 dateModified 를 넣지 않습니다(내용 없는 신호를 만들지 않기 위해).

@@ -73,3 +73,24 @@ export function productLinks({ lang = "ko", tool = "", title = "", placement = "
   links.push({ kind: "pricing", label: l.pricing, href: wwwUrl("/pricing", placement, utm) });
   return { label: l.aria, links };
 }
+
+/**
+ * 글 창·글 본문이 아닌 **목록·홈 페이지**에 붙이는 제품 링크.
+ *
+ * 글 페이지에는 위 `productLinks()` 가 상단·하단 링크를 넣지만, 홈(`/`)과 섹션 목록
+ * (`/post/` · `/en/post/` …)에는 링크가 없어, 검색으로 목록에 들어온 방문자가 제품 사이트로
+ * 갈 길이 없었습니다(MHW 이의 제기 검토 2순위의 남은 구멍). 글과 같은 UTM 규칙(§6-1)을 씁니다.
+ *
+ * @param {{ lang?: string, placement?: "top"|"bottom", utm?: boolean }} input
+ * @returns {{ label: string, links: Array<{ kind: "start"|"pricing", label: string, href: string }> }}
+ */
+export function listingLinks({ lang = "ko", placement = "bottom", utm = true } = {}) {
+  const l = LABELS[lang] ?? LABELS.en;
+  return {
+    label: l.aria,
+    links: [
+      { kind: "start", label: l.start, href: wwwUrl(HOME_PATH[lang] ?? "/", placement, utm) },
+      { kind: "pricing", label: l.pricing, href: wwwUrl("/pricing", placement, utm) },
+    ],
+  };
+}
