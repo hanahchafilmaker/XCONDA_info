@@ -706,8 +706,12 @@ export const OFFICIAL_SAME_AS = [
  * cubeberry.ai 가 개선되면 이 노드에 `url` 을 추가하세요(@id 는 그대로).
  */
 export const RESELLER_ID = "https://www.cuberry.kr/#reseller-us";
-/** XCONDA 문의처 — 기능·사용법·크레딧 질문은 개발·운영사(한국 법인)가 답합니다. */
-export const SUPPORT_EMAIL = "cubeberry@cuberry.kr";
+/**
+ * XCONDA 문의처 — 대표 확정(2026-11-14: "info@cubeberry.ai 가 문의가 맞아").
+ * 개발·운영사는 한국 법인이지만, 문의 창구는 미국 법인 메일 하나로 통일합니다.
+ * 정적 페이지 하단 문구(content/i18n/{en,ja,zh}.json `ui.note`)와 앱 Q&A·푸터가 같은 주소입니다.
+ */
+export const SUPPORT_EMAIL = "info@cubeberry.ai";
 
 /**
  * 전 페이지 공통 명찰: 운영사(Organization) + 공인 리셀러(Organization) + 이 사이트(WebSite)

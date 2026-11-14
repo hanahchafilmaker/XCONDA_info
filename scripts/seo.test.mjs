@@ -22,6 +22,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   siteJsonLd,
+  SUPPORT_EMAIL,
   isEndedTitle,
   DEFAULT_SITE_URL,
   OG_LANG_DIR,
@@ -1283,7 +1284,7 @@ test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 �
     translations: {
       en: {
         ...EN_FIXTURE.en,
-        ui: { ...EN_FIXTURE.en.ui, note: "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): cubeberry@cuberry.kr" },
+        ui: { ...EN_FIXTURE.en.ui, note: "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): info@cubeberry.ai" },
         entries: {
           "qna/refund-policy": {
             title: "How do refunds work?",
@@ -1309,7 +1310,7 @@ test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 �
   assert.match(meta, /XCONDA Team$/);
   // 하단 문구 — "primary source" 표현 없음, 문의처는 mailto
   assert.doesNotMatch(en, /primary source/i);
-  assert.match(en, /<a href="mailto:cubeberry@cuberry\.kr">cubeberry@cuberry\.kr<\/a>/);
+  assert.match(en, /<a href="mailto:info@cubeberry\.ai">info@cubeberry\.ai<\/a>/);
   // 한국어 글에도 제품 링크가 붙는다
   assert.match(out.files.get("qna/refund-policy/index.html"), /data-cta="top"[^>]*><a href="https:\/\/www\.xconda\.ai\/ko\?utm_source=hub/);
 });
@@ -1333,7 +1334,7 @@ test("회사 명찰 — Cubeberry 표기, 한국 법인 = 개발·운영사, 미
   assert.equal(org["@id"], "https://www.cuberry.kr/#organization"); // 회사 번호는 cuberry.kr 유지
   assert.equal(org.name, "Cubeberry");
   assert.match(org.description, /Developer and operator of XCONDA/);
-  assert.equal(org.contactPoint.email, "cubeberry@cuberry.kr");
+  assert.equal(org.contactPoint.email, "info@cubeberry.ai"); // 대표 확정(11/14) — 문의 창구는 미국 법인 메일 하나
   assert.ok(org.sameAs.includes("https://www.xconda.ai"));
   assert.ok(org.sameAs.some((u) => u.includes("youtube.com")));
   assert.match(reseller.description, /Authorized reseller/);
@@ -1829,6 +1830,8 @@ test("글쓴이 영문 표기 — 확정 표기가 그대로 나오고, 표에 �
     "차하나 PD": "Cha Hana",
     "황보민혁 PD": "Hwangbo Min-hyeok",
   });
+  // 차하나 PD 만 하이픈 없이 `Cha Hana` — 대표 확인(11/14). Ha-na 로 "고치지" 않도록 고정합니다.
+  assert.equal(dict.authors["차하나 PD"], "Cha Hana");
   // 확정 표기는 로마자만 — 한글이 섞이면 영어 페이지에 그대로 나갑니다
   for (const [ko, en] of Object.entries(dict.authors)) {
     assert.ok(!/[가-힣]/.test(en), `${ko} → ${en} 에 한글이 있습니다`);
@@ -1855,6 +1858,29 @@ test("일·중 하단 문구 — 한국어 허브가 원문이라는 표현 없�
       assert.ok(!note.includes(word), `${lang}: "${word}" 표현이 남아 있습니다 — ${note}`);
     }
     assert.match(note, /Cubeberry Co\., Ltd\./, `${lang}: 운영사 이름이 없습니다`);
-    assert.match(note, /cubeberry@cuberry\.kr/, `${lang}: 문의처 메일이 없습니다`);
+    assert.match(note, /info@cubeberry\.ai/, `${lang}: 문의처 메일이 없습니다`);
   }
+});
+
+test("문의 메일은 한 곳에서만 정의한다 — 정적 하단 문구·앱 Q&A·푸터·구조화 데이터가 같은 주소", () => {
+  // 대표 확정(2026-11-14): 문의 창구는 info@cubeberry.ai 하나. 개발·운영사는 한국 법인 그대로입니다.
+  assert.equal(SUPPORT_EMAIL, "info@cubeberry.ai");
+  const [org] = siteJsonLd("https://hub.example.test/");
+  assert.equal(org.contactPoint.email, SUPPORT_EMAIL);
+
+  // 정적 페이지 하단 문구(영·일·중)도 같은 주소를 가리켜야 합니다.
+  for (const lang of ["en", "ja", "zh"]) {
+    const dict = JSON.parse(fs.readFileSync(path.join(here, "..", `content/i18n/${lang}.json`), "utf8"));
+    assert.equal(dict.ui.note.includes(SUPPORT_EMAIL), true, `${lang}: 하단 문구가 ${SUPPORT_EMAIL} 를 가리키지 않습니다`);
+    assert.equal(dict.ui.note.includes("cubeberry@cuberry.kr"), false, `${lang}: 옛 주소가 남아 있습니다`);
+  }
+
+  // 앱 화면(Q&A 섹션·푸터)도 같은 값이어야 합니다 — 소스를 직접 봅니다.
+  const qna = fs.readFileSync(path.join(here, "..", "src/components/Qna.tsx"), "utf8");
+  assert.match(qna, /const SUPPORT_EMAIL = "info@cubeberry\.ai"/, "앱 문의처가 바뀌었습니다");
+  assert.match(fs.readFileSync(path.join(here, "..", "src/components/Closing.tsx"), "utf8"), /import \{ SUPPORT_EMAIL \} from "\.\/Qna"/, "푸터는 Q&A 의 문의처를 그대로 씁니다");
+
+  // 미국 법인 노드는 문의처와 별개로 유지 — Stripe 판매사 표기용
+  const [, reseller] = siteJsonLd("https://hub.example.test/");
+  assert.equal(reseller.email, "info@cubeberry.ai");
 });
