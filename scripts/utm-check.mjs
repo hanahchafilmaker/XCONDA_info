@@ -29,14 +29,6 @@ export const ALLOWED_SOURCE = [
 /** utm_medium — GA4 기본 채널 그룹이 읽는 값. 임의 확장 금지. */
 export const ALLOWED_MEDIUM = ["social", "video", "community", "email", "paid"];
 
-/**
- * 자사 사이트 사이 이동(허브 글 → 제품 사이트) 전용 조합 — 규칙 문서 §6-1.
- * 외부 채널 목록(ALLOWED_SOURCE·ALLOWED_MEDIUM)에는 넣지 않습니다: 이 값은 허브 템플릿
- * (`src/content/cta.js`)이 자동으로 붙이는 값이고, 사람이 SNS 게시물에 쓰는 값이 아닙니다.
- */
-export const OWNED_SOURCE = "hub";
-export const OWNED_MEDIUM = "referral";
-
 /** utm_content 의 팀 접두어. */
 export const ALLOWED_TEAM = ["mhw", "cb"];
 
@@ -47,7 +39,6 @@ export const EXAMPLES = [
   "https://hub.xconda.ai/en/post/kbs-documentary-seongmul-xconda/?utm_source=instagram&utm_medium=social&utm_campaign=case_kbs_202611&utm_content=cb_post03",
   "https://www.xconda.ai/?utm_source=newsletter&utm_medium=email&utm_campaign=flexboard_202611&utm_content=cb_mail01",
   "https://www.xconda.ai/?utm_source=reddit&utm_medium=community&utm_campaign=flexboard_202611&utm_content=mhw_reddit01",
-  "https://www.xconda.ai/pricing?utm_source=hub&utm_medium=referral&utm_campaign=hub_cta_202611&utm_content=cb_bottom",
   "https://www.xconda.ai/?utm_source=instagram&utm_medium=paid&utm_campaign=flexboard_202611&utm_content=mhw_ad01&utm_term=ai_storyboard",
 ];
 
@@ -122,19 +113,12 @@ export function checkLink(input) {
   const campaign = values.utm_campaign;
   const content = values.utm_content;
 
-  const owned = source === OWNED_SOURCE && medium === OWNED_MEDIUM;
-  if (owned && host !== "xconda.ai") {
-    errors.push("`utm_source=hub` 는 허브 글에서 제품 사이트(www.xconda.ai)로 가는 링크에만 씁니다");
-  }
-  if (!owned && (source === OWNED_SOURCE || medium === OWNED_MEDIUM)) {
-    errors.push("`hub` 와 `referral` 은 함께만 씁니다 — `utm_source=hub&utm_medium=referral` (허브 → 제품 사이트 전용)");
-  }
-  if (!owned && source && !ALLOWED_SOURCE.includes(source)) {
+  if (source && !ALLOWED_SOURCE.includes(source)) {
     errors.push(
       `\`utm_source=${source}\` 는 허용값이 아닙니다 (${ALLOWED_SOURCE.join(", ")}). 새 채널은 규칙에 먼저 추가하세요`,
     );
   }
-  if (!owned && medium && !ALLOWED_MEDIUM.includes(medium)) {
+  if (medium && !ALLOWED_MEDIUM.includes(medium)) {
     errors.push(
       `\`utm_medium=${medium}\` 는 허용값이 아닙니다 (${ALLOWED_MEDIUM.join(", ")}). GA4 채널 그룹이 이 값을 읽습니다`,
     );

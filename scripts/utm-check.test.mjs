@@ -8,7 +8,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { ALLOWED_MEDIUM, ALLOWED_SOURCE, EXAMPLES, checkLink } from "./utm-check.mjs";
-import { productLinks, wwwUrl } from "../src/content/cta.js";
+import { productLinks } from "../src/content/cta.js";
 
 const build = (query) => `https://www.xconda.ai/?${query}`;
 
@@ -132,28 +132,22 @@ test("community 는 커스텀 채널 그룹 확인을 경고한다", () => {
   assert.ok(result.warnings.some((w) => w.includes("Community")));
 });
 
-test("허브 글의 제품 사이트 링크는 규칙을 통과한다 (§6-1)", () => {
+test("허브 글의 제품 사이트 링크에는 UTM 을 붙이지 않는다 (규칙에 없는 값을 만들지 않는다)", () => {
   for (const lang of ["ko", "en", "ja", "zh"]) {
-    for (const placement of ["top", "bottom"]) {
-      const { links } = productLinks({ lang, title: "FLEXBOARD 7단계", placement });
-      assert.deepEqual(links.map((l) => l.kind), ["tool", "start", "pricing"]);
-      for (const link of links) {
-        const result = checkLink(link.href);
-        assert.deepEqual(result.errors, [], `${link.href} → ${result.errors.join(" / ")}`);
-        assert.equal(new URL(link.href).hostname, "www.xconda.ai");
-      }
+    const { links } = productLinks({ lang, title: "FLEXBOARD 7단계" });
+    assert.deepEqual(links.map((l) => l.kind), ["tool", "start", "pricing"]);
+    for (const link of links) {
+      const url = new URL(link.href);
+      assert.equal(url.hostname, "www.xconda.ai");
+      assert.equal(url.search, "", `${link.href} 에 쿼리가 있습니다`);
     }
   }
-  assert.match(wwwUrl("/pricing", "top"), /utm_content=cb_top$/);
   // 관련 툴이 없으면 툴 링크를 만들지 않는다
   assert.deepEqual(productLinks({ lang: "en", title: "Refund policy" }).links.map((l) => l.kind), ["start", "pricing"]);
 });
 
-test("hub·referral 은 서로 짝으로만, 제품 사이트로 가는 링크에만 쓴다", () => {
-  const bad = [
-    build("utm_source=hub&utm_medium=social&utm_campaign=hub_cta_202611"),
-    build("utm_source=instagram&utm_medium=referral&utm_campaign=hub_cta_202611"),
-    "https://hub.xconda.ai/en/?utm_source=hub&utm_medium=referral&utm_campaign=hub_cta_202611",
-  ];
-  for (const url of bad) assert.ok(checkLink(url).errors.length > 0, `${url} 는 걸러져야 합니다`);
+test("hub·referral 은 규칙에 없는 값이라 오류다", () => {
+  for (const q of ["utm_source=hub&utm_medium=referral&utm_campaign=flexboard_202611", "utm_source=instagram&utm_medium=referral&utm_campaign=flexboard_202611"]) {
+    assert.ok(checkLink(build(q)).errors.length > 0, `${q} 는 걸러져야 합니다`);
+  }
 });

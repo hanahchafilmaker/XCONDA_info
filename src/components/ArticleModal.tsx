@@ -16,10 +16,10 @@ import { isEndedTitle } from "../content/seo";
 
 /**
  * 제품 사이트 링크(관련 툴 · 무료 시작 · 요금). 정적 페이지(scripts/build-seo.mjs)와 같은
- * 함수(src/content/cta.js)로 주소를 만들어 UTM 이 어긋나지 않게 합니다.
+ * 함수(src/content/cta.js)로 주소를 만듭니다. UTM 은 붙이지 않습니다(UTM 규칙 v1.0 — cta.js 머리말).
  */
 function ProductLinks({ lang, tool, title, placement }: { lang: string; tool?: string; title: string; placement: "top" | "bottom" }) {
-  const { label, links } = productLinks({ lang, tool, title, placement });
+  const { label, links } = productLinks({ lang, tool, title });
   return (
     <nav aria-label={label} data-cta={placement} className={cn("notranslate flex flex-wrap gap-2", placement === "top" ? "mt-5" : "mt-10")}>
       {links.map((link, i) => (

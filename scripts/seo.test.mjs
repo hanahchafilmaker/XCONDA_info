@@ -1298,10 +1298,11 @@ test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 �
   assert.match(en, /<h2>What you need<\/h2>/);
   assert.match(en, /<h2>How to ask<\/h2>/);
   assert.match(en, /<p class="notion-default">Email us\.<\/p>/);
-  // 글 위·아래 제품 링크 + UTM
+  // 글 위·아래 제품 링크 — UTM 없음(UTM 규칙 v1.0 에 허브 → 제품 사이트용 값이 없습니다)
   for (const placement of ["top", "bottom"]) {
-    assert.match(en, new RegExp(`data-cta="${placement}"[^>]*><a href="https://www\\.xconda\\.ai/\\?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_${placement}"`));
+    assert.match(en, new RegExp(`data-cta="${placement}"[^>]*><a href="https://www\\.xconda\\.ai/" data-cta-kind="start"`));
   }
+  assert.doesNotMatch(en, /www\.xconda\.ai[^"]*utm_/);
   // 한글 글쓴이를 그대로 내보내지 않는다 — 표기가 없으면 팀 이름
   const meta = en.match(/<p class="seo-meta">(.*?)<\/p>/)[1];
   assert.doesNotMatch(meta, /[가-힣]/);
@@ -1310,7 +1311,7 @@ test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 �
   assert.doesNotMatch(en, /primary source/i);
   assert.match(en, /<a href="mailto:cubeberry@cuberry\.kr">cubeberry@cuberry\.kr<\/a>/);
   // 한국어 글에도 제품 링크가 붙는다
-  assert.match(out.files.get("qna/refund-policy/index.html"), /data-cta="top"[^>]*><a href="https:\/\/www\.xconda\.ai\/ko\?utm_source=hub/);
+  assert.match(out.files.get("qna/refund-policy/index.html"), /data-cta="top"[^>]*><a href="https:\/\/www\.xconda\.ai\/ko" data-cta-kind="start"/);
 });
 
 test("번역 페이지 보조 함수 — 날짜 표기 · 소제목 승격 · 끝난 행사 판정", () => {
