@@ -200,7 +200,7 @@ MHW 영문 원문의 주장을 페이지 소스 기준으로 확인함.
 
 | 순위 | 반영한 것 | 고친 곳 | 남은 것 |
 |---|---|---|---|
-| 1 | 영어 글·영어 홈 하단 문구를 의견서 문구로 교체. 메일 주소는 바로 누를 수 있는 링크로 표시. **일본어·중국어도 같은 문구로 교체(11/14 대표 확정)** — "한국어 허브가 원문" 표현 삭제 | `content/i18n/{en,ja,zh}.json`(`ui.note`), `scripts/build-seo.mjs` | 없음 |
+| 1 | 영어 글·영어 홈 하단 문구를 의견서 문구로 교체. 메일 주소는 바로 누를 수 있는 링크로 표시. **일본어·중국어의 "한국어 허브가 원문" 표현도 삭제**(11/14 대표 확정) — 다만 문구는 영어와 달리 **한국 법인** 주소를 씀(아래 「문의 메일」) | `content/i18n/{en,ja,zh}.json`(`ui.note`), `scripts/build-seo.mjs` | 없음 |
 | 2 | 모든 글(한·영·일·중) 상단·하단에 「무료로 시작하기 · 요금 보기」 링크, FLEXBOARD·Turn 관련 글에는 「써 보기」 링크 추가. 정적 페이지와 앱의 글 창 양쪽에 적용. **+ 홈·모든 섹션 목록에도 같은 링크**(아래 「2순위 잔여 구멍」) | `src/content/cta.js`(신규), `scripts/build-seo.mjs`, `src/components/ArticleModal.tsx` | ① 블로킹 보드는 전용 주소가 없어 「써 보기」 링크 없음 ② 기능 소개 페이지(9순위)가 열리면 `cta.js`의 주소를 `/features/…`로 교체 ③ `/pricing`·`/ko` 주소가 실제로 열리는지 확인 ④ UTM은 아래 참고 |
 | 3 | 영어(일·중 포함) 글에 ① 도입 문단(요약) 복원 ② 목록 앞 한 줄·굵은 한 줄을 h2로 ③ 작성·수정일 표시 ④ 한글 글쓴이 대신 그 언어 표기(없으면 "XCONDA Team") ⑤ 끝난 행사 글을 관련 글에서 제외하고 그 글에는 종료 안내 ⑥ 설명 문구(meta description) 줄바꿈 제거 ⑦ "notice"처럼 날것으로 나오던 섹션 이름을 "XCONDA Notices" 등으로 | `scripts/build-seo.mjs`, `content/i18n/*.json` | **글쓴이 영문 표기 5명은 11/14 대표 확정으로 반영 완료**(아래). 남은 것: 한국어 원문이 번역 뒤에 바뀐 글이 있음(빌드 경고 "블록 구조가 원문과 다릅니다") — 번역 본문 갱신은 사람 검수 필요 |
 | 4 | 회사 이름 CUBEBERRY → Cubeberry, sameAs에 공식 SNS 추가, 한국 법인 = 개발·운영사 / 미국 법인 = 공인 리셀러 표기, 문의처(contactPoint) 추가. 회사 번호(@id)는 cuberry.kr 유지 | `src/content/seo.js` | cuberry.kr 쪽 수정은 그 사이트 저장소에서 해야 함 — 부록 B의 값을 그대로 쓰면 허브와 일치함 |
@@ -228,7 +228,7 @@ MHW 영문 원문의 주장을 페이지 소스 기준으로 확인함.
   - 구조화 데이터 — `Organization.contactPoint.email` (언어별)
   - 영어 글 본문 16건 — 메일과 **짝이 되는 전화번호**도 함께 바꿨습니다. 메일만 바꾸면 "미국 법인 메일 + 한국 법인 전화"가 한 줄에 붙습니다.
   - 예외 — `qna/company-business-info`(한국 사업자 등록 정보)와 `qna/contact-inquiry`(두 창구를 함께 안내)는 영어에서도 한국 법인 연락처가 나옵니다.
-- 일·중 하단 문구도 영어와 같은 내용으로 교체 — 日本語 `XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）まで：info@cubeberry.ai` · 中文 `有关 XCONDA 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）：info@cubeberry.ai`. "한국어 허브가 원문" 표현은 세 언어 모두에서 사라졌습니다.
+- 일·중 하단 문구도 "한국어 허브가 원문" 표현을 빼고 같은 형식으로 교체. **문의처는 한국 법인**입니다(일·중 = 한국 법인 확정) — 日本語 `XCONDAに関するお問い合わせは、開発・運営元の Cubeberry Co., Ltd.（韓国）まで：cubeberry@cuberry.kr` · 中文 `有关 XCONDA 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）：cubeberry@cuberry.kr`. "한국어 허브가 원문" 표현은 세 언어 모두에서 사라졌습니다.
 **푸터 법인 역할 표기(1순위 반영)**
 
 푸터 하단에 한 줄을 더했습니다. 두 법인의 역할을 화면에서 바로 구분할 수 있습니다.
@@ -236,7 +236,7 @@ MHW 영문 원문의 주장을 페이지 소스 기준으로 확인함.
 - 영어: `XCONDA developed and operated by Cubeberry Co., Ltd. (Korea) · Stripe payments sold and billed by Cubeberry Co., Ltd (Delaware, US)`
 - 고친 곳: `src/i18n/dict.ts`(`v.footer.entities`), `src/components/Closing.tsx`
 
-- 고친 곳: `content/i18n/{en,ja,zh}.json`, `src/content/seo.js`, `src/components/{Qna,Closing}.tsx`, `src/i18n/dict.ts`, `scripts/{build-seo.mjs,i18n-qc.mjs}`. 테스트: `scripts/seo.test.mjs` — 확정 표기 고정 · `Cha Hana` 하이픈 없음 고정 · 한글 이름이 번역 본문에 새지 않는지 · 일·중 문구에 "원문" 표현이 없는지 · **문의 메일이 네 위치에서 모두 같은 주소인지**.
+- 고친 곳: `content/i18n/{en,ja,zh}.json`, `src/content/seo.js`, `src/components/{Qna,Closing}.tsx`, `src/i18n/dict.ts`, `scripts/{build-seo.mjs,i18n-qc.mjs}`. 테스트: `scripts/seo.test.mjs` — 확정 표기 고정 · `Cha Hana` 하이픈 없음 고정 · 한글 이름이 번역 본문에 새지 않는지 · 일·중 문구에 "원문" 표현이 없는지 · **문의 메일이 언어별로 올바른 주소인지**(영어=미국 법인, 한·일·중=한국 법인).
 
 **2순위 잔여 구멍 — 목록·홈의 제품 링크 (11/14 추가 반영)**
 
