@@ -14,25 +14,17 @@ function NoticeRow({ n, onOpen }: { n: Entry; onOpen: () => void }) {
     <li>
       <button
         onClick={onOpen}
-        className="group flex w-full items-center gap-4 px-1 py-4 text-left transition-colors sm:px-2"
+        className="group flex w-full items-center gap-4 rounded-lg px-3 py-4 text-left transition-colors hover:bg-neutral-50"
       >
-        {n.cover && (
-          <SmartImage
-            src={n.cover}
-            fallbackSrc={n.coverFallback}
-            alt=""
-            className="h-14 w-20 shrink-0 rounded-lg object-cover sm:h-16 sm:w-24"
-          />
-        )}
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-2">
             {n.pinned && <IconPin className="h-3.5 w-3.5 shrink-0 text-volt-400" aria-label="pinned" />}
-            <span className="truncate text-[15px] font-medium text-neutral-950 transition-colors group-hover:text-black">
+            <span className="line-clamp-2 text-[14px] font-medium leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
               {n.title}
             </span>
             {isNew(n.date) && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-volt-400" aria-label="new" />}
           </span>
-          <span className="mt-1 flex items-center gap-2 text-[13px] text-neutral-500">
+          <span className="mt-1.5 flex items-center gap-2 text-[11px] text-neutral-500">
             <span className={isMaintenance(n.category) ? "text-rose-700" : undefined}>{categoryLabel(n.category, lang)}</span>
             <span aria-hidden>·</span>
             <span>{formatDate(n.date)}</span>
@@ -50,14 +42,14 @@ function Featured({ n, onOpen }: { n: Entry; onOpen: () => void }) {
   return (
     <button
       onClick={onOpen}
-      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-black/[0.08] bg-ink-900 p-6 text-left transition-all hover:border-black/15 hover:shadow-[0_12px_32px_rgba(0,0,0,.07)] sm:p-7"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 text-left transition-all hover:border-black/15 hover:shadow-[0_12px_32px_rgba(0,0,0,.07)] sm:p-7"
     >
       {n.cover && (
         <SmartImage
           src={n.cover}
           fallbackSrc={n.coverFallback}
           alt=""
-          className="-mx-6 -mt-6 mb-5 h-44 w-[calc(100%+3rem)] rounded-t-none object-cover sm:-mx-7 sm:-mt-7 sm:h-52 sm:w-[calc(100%+3.5rem)]"
+          className="-mx-6 -mt-6 mb-5 h-44 w-[calc(100%+3rem)] rounded-t-none object-cover sm:-mx-7 sm:-mt-7 sm:h-44 sm:w-[calc(100%+3.5rem)]"
         />
       )}
       <span className="flex items-center gap-2 text-[13px] text-neutral-500">
@@ -66,13 +58,12 @@ function Featured({ n, onOpen }: { n: Entry; onOpen: () => void }) {
       </span>
 
       <span className="mt-4 block text-[1.35rem] font-medium leading-snug tracking-[-0.02em] text-black">{n.title}</span>
-      <span className="mt-3 block text-[14.5px] leading-relaxed text-neutral-500">{n.summary}</span>
+      <span className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">{n.summary}</span>
 
       {points.length > 0 && (
-        <ul className="mt-5 space-y-2">
+        <ul className="mt-4 flex flex-wrap gap-2">
           {points.map((b) => (
-            <li key={b} className="flex gap-2.5 text-[14px] leading-relaxed text-neutral-700">
-              <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-zinc-500" />
+            <li key={b} className="rounded-md bg-neutral-100 px-2 py-1 text-[11px] leading-relaxed text-neutral-600">
               {b}
             </li>
           ))}
@@ -91,6 +82,7 @@ export default function Notices() {
   const { t, lang } = useLang();
   const { notices, openEntry } = useContent();
   const [cat, setCat] = useState<string>("전체");
+  const [showAll, setShowAll] = useState(false);
 
   const categories = useMemo(() => {
     const set = new Set(notices.map((n) => n.category));
@@ -105,34 +97,35 @@ export default function Notices() {
   );
 
   return (
-    <section id="notices" className="scroll-mt-20 py-20 sm:py-24">
+    <section id="notices" className="scroll-mt-20 py-14 sm:py-20">
       <div className="shell">
         <Reveal>
-          <SectionHeader title={t("nav.notices")} sub={t("v.notices.sub")} />
+          <SectionHeader eyebrow="01 / UPDATES" title={t("nav.notices")} sub={t("v.notices.sub")} />
         </Reveal>
 
         {!notices.length ? (
           <p className="mt-10 text-[14px] text-neutral-500">{t("v.notices.empty")}</p>
         ) : (
-          <div className="mt-10 grid gap-8 lg:grid-cols-[5fr_7fr] lg:gap-12">
+          <div className="mt-8 grid items-start gap-6 lg:grid-cols-[1fr_1.55fr] lg:gap-8">
             <Reveal>
               <Featured n={featured} onOpen={() => openEntry(featured)} />
             </Reveal>
 
-            <Reveal delay={80}>
+            <Reveal delay={80} className="rounded-2xl border border-neutral-200 bg-white p-3 sm:p-4">
               {categories.length > 2 && (
                 <Tabs
                   label={t("nav.notices")}
                   value={cat}
-                  onChange={setCat}
+                  onChange={(value) => { setCat(value); setShowAll(false); }}
                   items={categories.map((c) => ({ id: c, label: c === "전체" ? t("v.search.all") : categoryLabel(c, lang) }))}
                 />
               )}
               <ul className="mt-2 divide-y divide-black/[0.06]">
-                {list.map((n) => (
+                {(showAll ? list : list.slice(0, 5)).map((n) => (
                   <NoticeRow key={n.id} n={n} onOpen={() => openEntry(n)} />
                 ))}
               </ul>
+              {list.length > 5 && <button type="button" data-notices-more onClick={() => setShowAll((value) => !value)} className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-200 py-3 text-xs font-medium text-neutral-600 transition hover:bg-neutral-50">{showAll ? t("home.noticesLess") : `${t("home.noticesMore")} (${list.length - 5})`}<IconArrow className="size-3.5" /></button>}
               {list.length === 0 && <p className="py-10 text-center text-[14px] text-neutral-500">{t("v.notices.empty")}</p>}
             </Reveal>
           </div>

@@ -22,7 +22,7 @@ const LANG_ITEMS = [
 function LangToggle({ className, full }: { className?: string; full?: boolean }) {
   const { t, target, setTarget } = useLang();
   return (
-    <div className={cn("items-center rounded-full bg-black/[0.05] p-0.5", className)} role="group" aria-label={t("v.lang.toggleAria")}>
+    <div className={cn("items-center rounded-lg border border-neutral-200 bg-neutral-50 p-0.5", className)} role="group" aria-label={t("v.lang.toggleAria")}>
       {LANG_ITEMS.map((item) => (
         <button
           key={item.target}
@@ -30,9 +30,9 @@ function LangToggle({ className, full }: { className?: string; full?: boolean })
           aria-pressed={target === item.target}
           title={t(item.ariaKey)}
           className={cn(
-            "rounded-full px-2.5 py-1 text-[12px] font-medium uppercase transition-colors",
+            "rounded-md px-2 py-1.5 text-[11px] font-medium uppercase transition-colors",
             full && "flex-1 py-2",
-            target === item.target ? "bg-black/[0.12] text-black" : "text-neutral-500 hover:text-black",
+            target === item.target ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black",
           )}
         >
           {/* 언어 코드(KO/EN/JA/ZH)는 Google 번역기가 한글 단어(고→WHO, 인→IN, 안→AND)로
@@ -83,13 +83,13 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
     <>
       <header data-hub-header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 lg:inset-x-auto lg:left-1/2 lg:top-4 lg:w-[calc(100%-3rem)] lg:max-w-6xl lg:-translate-x-1/2 lg:rounded-lg lg:border lg:shadow-md",
-          scrolled || open ? "border-black/[0.06] bg-ink-950/85 backdrop-blur-xl" : "border-black/10 bg-white/90 backdrop-blur-md",
+          "fixed inset-x-0 top-0 z-50 border-b transition-shadow duration-300",
+          scrolled || open ? "border-neutral-200 bg-white/95 shadow-sm backdrop-blur-xl" : "border-neutral-200/80 bg-white/95 backdrop-blur-md",
         )}
       >
         <div className="shell flex h-16 items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-4">
-            <Logo href="#top" />
+            <div className="flex items-center gap-3"><Logo href="#top" /><span className="notranslate hidden border-l border-neutral-200 pl-3 text-[11px] font-medium tracking-widest text-neutral-500 min-[400px]:inline">HUB</span></div>
             <nav data-hub-desktop-nav className="hidden shrink-0 items-center gap-1 xl:flex" aria-label={t("nav.primary")}>
               {LINKS.map((l) => (
                 <button
@@ -97,8 +97,8 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
                   onClick={() => go(l.id)}
                   aria-current={active === l.id ? "true" : undefined}
                   className={cn(
-                    "whitespace-nowrap rounded-full px-3 py-1.5 text-[14px] font-medium transition-colors",
-                    active === l.id ? "text-black" : "text-neutral-500 hover:text-black",
+                    "whitespace-nowrap rounded-md px-3 py-2 text-[13px] font-medium transition-colors",
+                    active === l.id ? "bg-neutral-100 text-black" : "text-neutral-600 hover:bg-neutral-50 hover:text-black",
                   )}
                 >
                   {l.label[lang]}
@@ -111,7 +111,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
             <button
               onClick={() => { setOpen(false); onSearch(); }}
               aria-haspopup="dialog"
-              className="flex h-9 items-center gap-2 rounded-full px-2.5 text-neutral-500 transition-colors hover:bg-black/[0.06] hover:text-black"
+              className="flex h-10 items-center gap-2 rounded-lg px-2.5 text-neutral-500 transition-colors hover:bg-black/[0.06] hover:text-black"
             >
               <IconSearch className="h-[18px] w-[18px]" />
               <span className="sr-only xl:not-sr-only xl:text-[13px] xl:font-medium">{t("v.nav.search")}</span>
@@ -123,7 +123,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
               href={STUDIO_URL}
               target="_blank"
               rel="noreferrer"
-              className="hidden h-9 shrink-0 items-center whitespace-nowrap rounded-full bg-black px-4 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800 sm:inline-flex"
+              className="hidden h-10 shrink-0 items-center whitespace-nowrap rounded-lg bg-neutral-950 px-4 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800 sm:inline-flex"
             >
               {t("v.nav.open")}
             </a>
@@ -149,7 +149,7 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
         inert={!open}
         aria-hidden={!open}
         className={cn(
-          "fixed inset-x-0 top-16 z-40 border-b border-black/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 xl:hidden",
+          "fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-neutral-200 bg-white shadow-lg transition-all duration-200 xl:hidden",
           open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
         )}
       >

@@ -13,7 +13,7 @@ function CommandList({ className, ...props }: ComponentProps<typeof CommandPrimi
   return <CommandPrimitive.List data-slot="command-list" className={cn("min-h-0 max-h-[46dvh] scroll-py-2 overflow-x-hidden overflow-y-auto overscroll-contain p-2", className)} {...props} />;
 }
 function CommandItem({ className, ...props }: ComponentProps<typeof CommandPrimitive.Item>) {
-  return <CommandPrimitive.Item data-slot="command-item" className={cn("relative flex cursor-pointer select-none items-start gap-3 rounded-lg border border-transparent px-3 py-3 text-sm outline-none data-[selected=true]:border-volt-400/30 data-[selected=true]:bg-ink-880 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50", className)} {...props} />;
+  return <CommandPrimitive.Item data-slot="command-item" className={cn("relative flex cursor-pointer select-none items-start gap-3 rounded-lg border border-transparent px-3 py-3 text-sm outline-none data-[selected=true]:border-neutral-300 data-[selected=true]:bg-neutral-100 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50", className)} {...props} />;
 }
 
 export { Command, CommandInput, CommandList, CommandItem };

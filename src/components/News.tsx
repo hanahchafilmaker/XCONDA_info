@@ -42,12 +42,12 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
   const thumbSrc =
     item.cover ?? item.ogImage ?? (ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : undefined);
   const sourceHost = sourceHostOf(item.url);
-  // 이미지가 하나도 없으면 채널 아이콘 타일(그라데이션)로 채웁니다.
+  // 이미지가 하나도 없으면 중립색 채널 아이콘 타일로 채웁니다.
   const TileIcon = Icon ?? IconGlobe;
 
   return (
-    <article className="grid gap-2 py-7 sm:grid-cols-[160px_1fr] sm:gap-8">
-      <div className="flex flex-wrap items-center gap-2 text-[13px] text-neutral-500 sm:flex-col sm:items-start sm:gap-1.5 sm:pt-1">
+    <article className="grid gap-3 py-6">
+      <div className="flex flex-wrap items-center gap-2.5 text-[11px] text-neutral-500">
         <time>{formatDate(item.date)}</time>
         {channel ? (
           <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-neutral-500">
@@ -75,15 +75,15 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
       <button onClick={onOpen} className="group flex w-full min-w-0 gap-4 text-left sm:gap-5">
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-center gap-2">
-            <span className="text-[17px] font-medium leading-snug text-neutral-950 transition-colors group-hover:text-black">
+            <span className="text-[16px] font-semibold leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
               {item.title}
             </span>
             {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
             {ytId && <span className="sr-only">{t("v.news.play")}</span>}
           </span>
-          <span className="mt-2 block text-[14.5px] leading-relaxed text-neutral-500">{item.summary}</span>
+          <span className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-neutral-500">{item.summary}</span>
 
-          <span className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-neutral-500">
+          <span className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-neutral-500">
             {item.category && <span>{categoryLabel(item.category, lang)}</span>}
             {item.tags.slice(0, 3).map((tag) => (
               <span key={tag} className="rounded-full bg-black/[0.05] px-2 py-0.5">
@@ -103,14 +103,14 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
             </ul>
           )}
 
-          <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors group-hover:text-volt-400">
+          <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 transition-colors group-hover:text-volt-400">
             {t("v.news.readMore")}
             <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </span>
         </span>
 
         {/* 썸네일 — 이미지가 있으면 실물, 없으면 채널 아이콘 타일, 영상 링크면 재생 배지 */}
-        <span className="relative block aspect-[16/9] w-[104px] shrink-0 self-start overflow-hidden sm:w-36 lg:w-44">
+        <span className="relative block aspect-[4/3] w-[88px] shrink-0 self-start overflow-hidden rounded-lg sm:w-32">
           {thumbSrc ? (
             <SmartImage
               src={thumbSrc}
@@ -121,7 +121,7 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
           ) : (
             <span
               data-news-tile
-              className="grid h-full w-full place-items-center bg-gradient-to-br from-volt-400/18 via-volt-500/10 to-ink-800"
+              className="grid h-full w-full place-items-center bg-neutral-100"
             >
               <TileIcon className="h-7 w-7 text-black/30" aria-hidden />
             </span>
@@ -145,15 +145,15 @@ function ChannelCard({ channel }: { channel: (typeof CHANNELS)[number] }) {
   const { Icon } = channel;
   const body = (
     <>
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-black/[0.06] text-neutral-800">
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-neutral-100 text-neutral-800">
         <Icon className="h-4 w-4" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-center gap-2">
           <span className="truncate text-[14px] font-medium text-black">{channel.name}</span>
-          <span className="truncate font-mono text-[11.5px] text-neutral-500">{channel.handle}</span>
+
         </span>
-        <span className="mt-1 block text-[13px] leading-relaxed text-neutral-500">{t(channel.descKey)}</span>
+        <span className="mt-1 block text-xs leading-relaxed text-neutral-500">{t(channel.descKey)}</span>
       </span>
       {channel.href ? (
         <IconExternal className="h-4 w-4 shrink-0 text-neutral-500" />
@@ -165,7 +165,7 @@ function ChannelCard({ channel }: { channel: (typeof CHANNELS)[number] }) {
     </>
   );
   const cls =
-    "flex w-full items-center gap-3 rounded-none border border-black/[0.08] bg-ink-900 p-4 text-left transition-colors hover:border-black/20";
+    "flex w-full items-center gap-3 rounded-lg bg-white px-2 py-3 text-left transition-colors hover:bg-neutral-50";
 
   return channel.href ? (
     <a href={channel.href} target="_blank" rel="noopener noreferrer" className={cls}>
@@ -191,10 +191,11 @@ export default function News() {
   const visible = showAll ? list : list.slice(0, PAGE);
 
   return (
-    <section id="news" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
+    <section id="news" className="scroll-mt-20 border-t border-black/[0.06] py-14 sm:py-20">
       <div className="shell">
         <Reveal>
           <SectionHeader
+            eyebrow="02 / WHAT’S NEW"
             title={t("nav.news")}
             sub={t("v.news.sub")}
             action={
@@ -205,7 +206,7 @@ export default function News() {
           />
         </Reveal>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[7fr_5fr] lg:gap-12">
+        <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-10">
           {/* 소식 피드 */}
           <div className="min-w-0">
             {!news.length ? (
@@ -237,7 +238,7 @@ export default function News() {
                   <div className="mt-6 flex justify-center">
                     <button
                       onClick={() => setShowAll((v) => !v)}
-                      className="rounded-full border border-black/12 px-5 py-2 text-[14px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
+                      className="rounded-lg border border-neutral-300 bg-white px-5 py-3 text-[13px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
                     >
                       {showAll ? t("v.news.less") : `${t("v.news.more")} (${list.length - PAGE})`}
                     </button>
@@ -249,10 +250,10 @@ export default function News() {
 
           {/* 타 SNS 채널 */}
           <Reveal delay={120}>
-            <div className="lg:sticky lg:top-24">
+            <div className="rounded-2xl border border-neutral-200 bg-white p-5 lg:sticky lg:top-24">
               <h3 className="text-[15px] font-medium text-black">{t("v.news.channels")}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-500">{t("v.news.channelsSub")}</p>
-              <div className="mt-4 grid gap-3">
+              <div className="mt-4 grid divide-y divide-neutral-100">
                 {CHANNELS.filter((c) => c.id !== "notion").map((c) => (
                   <ChannelCard key={c.id} channel={c} />
                 ))}

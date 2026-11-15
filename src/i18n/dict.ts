@@ -249,6 +249,26 @@ export const DICT: Dict = {
   "v.lang.en": { ko: "English", en: "English" },
   "v.lang.toggleAria": { ko: "언어 변경", en: "Change language" },
 
+  /* Minimal resource hub — visible home-page copy. */
+  "home.title": { ko: "더 잘 만들기 위한,", en: "Make your next" },
+  "home.titleTail": { ko: "모든 가이드.", en: "idea happen." },
+  "home.description": { ko: "첫 장면부터 마지막 컷까지. XCONDA의 사용법과 새로운 소식, 제작에 필요한 답을 한곳에서 만나보세요.", en: "From your first scene to the final cut. Explore XCONDA guides, discover what’s new, and find the answers you need." },
+  "home.searchPlaceholder": { ko: "무엇을 만들고 싶으세요?", en: "What would you like to create?" },
+  "home.quickSearch": { ko: "빠른 검색", en: "Quick search" },
+  "home.startHere": { ko: "처음이라면 여기부터", en: "START HERE" },
+  "home.stepByStep": { ko: "단계별 가이드", en: "STEP BY STEP" },
+  "home.featuredTitle": { ko: "시나리오를 첫 스토리보드로", en: "Your script. Your first storyboard." },
+  "home.featuredDescription": { ko: "FlexBoard로 장면을 나누고, 나만의 이야기를 시작하세요.", en: "Break your story into scenes and start creating with FlexBoard." },
+  "home.explore": { ko: "필요한 정보부터 살펴보세요", en: "Find your next step" },
+  "home.noticesHint": { ko: "업데이트와 서비스 안내", en: "Updates & announcements" },
+  "home.newsHint": { ko: "지금 알아둘 AI 소식", en: "The latest in AI" },
+  "home.guidesHint": { ko: "도구별 단계별 사용법", en: "Learn each tool, step by step" },
+  "home.blogHint": { ko: "더 나은 제작을 위한 노트", en: "Ideas for better production" },
+  "home.faqHint": { ko: "자주 묻는 질문과 답변", en: "Answers to your questions" },
+  "home.noticesMore": { ko: "공지 더 보기", en: "More announcements" },
+  "home.noticesLess": { ko: "공지 접기", en: "Fewer announcements" },
+  "home.footerEyebrow": { ko: "이제, 직접 만들어볼 차례", en: "YOUR NEXT CHAPTER" },
+
   "v.hero.badge": { ko: "XCONDA허브", en: "XCONDA Hub" },
   "v.hero.lead": { ko: "아이디어가 있으면,", en: "Have an idea?" },
   "v.hero.accent": { ko: "나머지는 여기서.", en: "Find the rest here." },
@@ -344,8 +364,8 @@ export const DICT: Dict = {
   "v.faq.less": { ko: "접기", en: "Show less" },
 
   "v.cta.kicker": { ko: "시작하세요", en: "Start now" },
-  "v.cta.line1": { ko: "가이드는 읽는 게 아니라", en: "A guide is not read." },
-  "v.cta.line2": { ko: "따라 하는 것.", en: "It is followed." },
+  "v.cta.line1": { ko: "다음 장면은,", en: "Your next scene." },
+  "v.cta.line2": { ko: "직접 만들어보세요.", en: "Make it yours." },
   "v.cta.desc": {
     ko: "가이드를 옆에 두고, 지금 바로 첫 스토리보드를 만들어 보세요. 가입 즉시 크레딧이 지급됩니다.",
     en: "Keep a guide open and make your first storyboard right now. Credits land in your account as soon as you sign up.",

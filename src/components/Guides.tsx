@@ -35,20 +35,15 @@ export default function Guides() {
   };
 
   return (
-    <section id="guides" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
+    <section id="guides" className="scroll-mt-20 border-t border-black/[0.06] py-14 sm:py-20">
       <div className="shell">
         <Reveal>
-          <SectionHeader title={t("nav.tools")} sub={t("v.guides.sub")} />
-          <a
-            data-html-guide-index
-            href={`${hubBase()}${htmlGuideIndexPath(target)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="notranslate mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-700 underline underline-offset-4 transition-colors hover:text-black"
-          >
-            {htmlGuideLabels[target].all}
-            <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
-          </a>
+          <SectionHeader eyebrow="03 / TOOLKIT" title={t("nav.tools")} sub={t("v.guides.sub")} action={
+            <a data-html-guide-index href={`${hubBase()}${htmlGuideIndexPath(target)}`} target="_blank" rel="noopener noreferrer" className="notranslate inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-xs font-medium text-neutral-700 transition hover:border-neutral-400">
+              {htmlGuideLabels[target].all}<ExternalLink className="size-3.5" aria-hidden />
+            </a>
+          } />
+
         </Reveal>
 
         <Reveal delay={60} className="mt-8">
@@ -60,9 +55,9 @@ export default function Guides() {
           />
         </Reveal>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-6">
           {/* tool list (desktop) */}
-          <nav aria-label={t("nav.tools")} className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
+          <nav aria-label={t("nav.tools")} className="hidden max-h-[640px] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50 p-2 lg:sticky lg:top-24 lg:block lg:self-start">
             <ul className="space-y-0.5">
               {filtered.map((g) => (
                 <li key={g.slug}>
@@ -70,10 +65,10 @@ export default function Guides() {
                     onClick={() => setActiveSlug(g.slug)}
                     aria-current={active.slug === g.slug ? "true" : undefined}
                     className={cn(
-                      "w-full rounded-lg px-3 py-2 text-left text-[14px] font-medium transition-colors",
+                      "w-full rounded-lg px-3 py-3 text-left text-[13px] font-medium transition-colors",
                       active.slug === g.slug
-                        ? "bg-black/[0.07] text-black"
-                        : "text-neutral-500 hover:bg-black/[0.03] hover:text-black",
+                        ? "bg-white text-neutral-950 shadow-sm ring-1 ring-neutral-200"
+                        : "text-neutral-600 hover:bg-white hover:text-black",
                     )}
                   >
                     <span className="notranslate">{g.name}</span>
@@ -88,9 +83,10 @@ export default function Guides() {
             {filtered.map((g) => (
               <button
                 key={g.slug}
+                aria-current={active.slug === g.slug ? "true" : undefined}
                 onClick={() => setActiveSlug(g.slug)}
                 className={cn(
-                  "shrink-0 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors",
+                  "shrink-0 rounded-lg border px-3.5 py-1.5 text-[13px] font-medium transition-colors",
                   g.slug === active.slug ? "border-black bg-black text-white" : "border-black/10 text-neutral-500",
                 )}
               >
@@ -100,41 +96,36 @@ export default function Guides() {
           </div>
 
           {/* detail */}
-          <article key={active.slug} className="anim-fade min-w-0 rounded-none border border-black/[0.08] bg-ink-900">
-            <div className="p-6 sm:p-8">
-              <p className="text-[13px] font-medium text-neutral-500">{groupLabel(active.group, lang)}</p>
-              <h3 className="mt-2 text-[1.6rem] font-medium leading-tight tracking-[-0.03em] text-black sm:text-[1.9rem]">
-                <span className="notranslate">{active.name}</span>
-              </h3>
-              <p className="mt-2 text-[15px] font-medium text-volt-400">{active.tagline}</p>
-              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-neutral-500">{active.desc}</p>
-
-              {active.image && (
-                <div className="mt-6 overflow-hidden rounded-none">
-                  <SmartImage src={active.image} alt={active.name} className="aspect-[21/9] w-full object-cover" />
-                </div>
-              )}
+          <article key={active.slug} className="anim-fade min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
+            <div className="grid items-center gap-6 p-6 sm:p-8 xl:grid-cols-[1.1fr_1fr]">
+              <div>
+                <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{groupLabel(active.group, lang)}</p>
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-neutral-950"><span className="notranslate">{active.name}</span></h3>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-800">{active.tagline}</p>
+                <p className="mt-3 text-[13px] leading-relaxed text-neutral-600">{active.desc}</p>
+              </div>
+              {active.image && <div className="overflow-hidden rounded-xl bg-neutral-100"><SmartImage src={active.image} alt={active.name} className="aspect-[16/10] w-full object-cover" /></div>}
             </div>
 
-            <div className="border-t border-black/[0.06] p-6 sm:p-8">
+            <div className="border-t border-neutral-200 p-6 sm:p-8">
               <h4 className="text-[15px] font-medium text-black">{t("v.guides.howTo")}</h4>
-              <ol className="mt-4 space-y-4">
+              <ol className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-2">
                 {active.steps.map((s, i) => (
                   <li key={s} className="flex gap-4">
-                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-black/[0.07] text-[12px] font-medium text-neutral-700">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-neutral-100 text-[11px] font-medium text-neutral-700">
                       {i + 1}
                     </span>
-                    <p className="text-[15px] leading-relaxed text-neutral-700">{s}</p>
+                    <p className="text-[13px] leading-relaxed text-neutral-700">{s}</p>
                   </li>
                 ))}
               </ol>
 
               {active.tips && active.tips.length > 0 && (
-                <div className="mt-7 rounded-none bg-black/[0.03] p-5">
-                  <p className="text-[13px] font-medium text-volt-400">{t("v.guides.tip")}</p>
+                <div className="mt-7 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
+                  <p className="text-xs font-semibold text-neutral-800">{t("v.guides.tip")}</p>
                   <ul className="mt-2 space-y-1.5">
                     {active.tips.map((tip) => (
-                      <li key={tip} className="text-[14px] leading-relaxed text-neutral-700">
+                      <li key={tip} className="text-[13px] leading-relaxed text-neutral-600">
                         {tip}
                       </li>
                     ))}
@@ -147,7 +138,7 @@ export default function Guides() {
                   href={video}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 flex items-center justify-between gap-3 rounded-none bg-neutral-100 px-4 py-3 text-sm text-neutral-800 ring-1 ring-inset ring-black/[0.08] transition hover:bg-black/[0.06]"
+                  className="mt-5 flex items-center justify-between gap-3 rounded-lg bg-neutral-50 px-4 py-3 text-sm text-neutral-800 ring-1 ring-inset ring-black/[0.08] transition hover:bg-black/[0.06]"
                 >
                   <span>{pick("공식 영상 가이드 (Google Drive에서 열기)", "Official video guide (open in Google Drive)")}</span>
                   <ExternalLink className="h-4 w-4 shrink-0 text-neutral-500" aria-hidden />
@@ -164,7 +155,7 @@ export default function Guides() {
                     const i = filtered.findIndex((g) => g.slug === active.slug);
                     setActiveSlug(filtered[(i + 1) % filtered.length].slug);
                   }}
-                  className="ml-auto inline-flex items-center gap-1.5 px-2 text-[14px] font-medium text-neutral-500 transition-colors hover:text-black"
+                  className="ml-auto inline-flex items-center gap-1.5 px-2 py-2 text-xs font-medium text-neutral-500 transition-colors hover:text-black"
                 >
                   {t("v.guides.next")} <IconArrow className="h-4 w-4" />
                 </button>
