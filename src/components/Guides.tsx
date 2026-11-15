@@ -100,7 +100,7 @@ export default function Guides() {
             <div className="grid items-center gap-6 p-6 sm:p-8 xl:grid-cols-[1.1fr_1fr]">
               <div>
                 <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{groupLabel(active.group, lang)}</p>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-neutral-950"><span className="notranslate">{active.name}</span></h3>
+                <h3 className="mt-3 text-2xl font-bold tracking-tight text-neutral-950"><span className="notranslate">{active.name}</span></h3>
                 <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-800">{active.tagline}</p>
                 <p className="mt-3 text-[13px] leading-relaxed text-neutral-600">{active.desc}</p>
               </div>

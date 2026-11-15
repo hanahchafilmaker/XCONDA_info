@@ -33,7 +33,7 @@ function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; o
         aria-controls={answerId}
         className="group flex w-full items-center gap-4 py-5 text-left"
       >
-        <span className="min-w-0 flex-1 text-balance text-[15px] font-medium leading-relaxed text-neutral-950 group-hover:text-neutral-600">{f.title}</span>
+        <span className="min-w-0 flex-1 text-balance text-[15px] font-semibold leading-relaxed text-neutral-950 group-hover:text-neutral-600">{f.title}</span>
         <IconPlus
           className={cn("h-5 w-5 shrink-0 text-neutral-500 transition-transform duration-300", open && "rotate-45 text-black")}
         />

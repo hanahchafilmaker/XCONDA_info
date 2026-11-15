@@ -16,12 +16,12 @@ function BlogCard({ item, onOpen }: { item: Entry; onOpen: () => void }) {
         onClick={onOpen}
         className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_12px_24px_-16px_rgba(0,0,0,0.2)]"
       >
-        <span className="block aspect-[16/9] w-full overflow-hidden border-b border-neutral-100 bg-neutral-100">
+        <span data-card-cover className="block aspect-[1200/630] w-full shrink-0 overflow-hidden border-b border-neutral-100 bg-neutral-100">
           <SmartImage
             src={item.cover}
             fallbackSrc={item.coverFallback}
             alt={item.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="block h-full w-full object-contain"
           />
         </span>
 
@@ -33,7 +33,7 @@ function BlogCard({ item, onOpen }: { item: Entry; onOpen: () => void }) {
             {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
           </span>
 
-          <span className="mt-3 line-clamp-2 text-[17px] font-semibold leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
+          <span data-card-title className="mt-3 line-clamp-2 text-[17px] font-bold leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
             {item.title}
           </span>
           <span className="mt-3 line-clamp-2 text-[13px] leading-relaxed text-neutral-500">{item.summary}</span>
