@@ -43,7 +43,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
               <aside className="hidden border-r border-neutral-200 bg-[#f4f4f6] p-5 md:block">
                 <div className="mb-9 flex items-center gap-2 text-sm font-bold"><Sparkles className="h-6 w-6" /> XCONDA HUB</div>
                 <nav aria-label={t("nav.primary")} className="space-y-1">
-                  {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="flex items-center justify-between rounded-lg px-3 py-3 text-sm text-neutral-700 transition hover:bg-white"><span>{section.label}</span><span className="text-xs text-neutral-400">{section.entries.length}</span></a>)}
+                  {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="flex items-center justify-between rounded-lg px-3 py-3 text-sm text-neutral-700 transition hover:bg-white"><span>{section.label}</span><span className="text-xs text-neutral-500">{section.entries.length}</span></a>)}
                 </nav>
               </aside>
               <div className="flex min-w-0 flex-col items-center px-5 py-9 sm:px-10 sm:py-12">
@@ -51,8 +51,8 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
                 <h2 className="mt-3 text-center text-2xl font-medium tracking-tight sm:text-3xl">{t("v.hero.lead")}</h2>
                 <p className="mt-2 text-center text-sm text-neutral-500">{t("v.hero.desc")}</p>
                 <form className="mt-8 flex w-full max-w-xl items-center gap-3 rounded-xl border border-neutral-300 bg-white p-2 pl-4 shadow-sm focus-within:border-neutral-600" role="search" onSubmit={(event) => { event.preventDefault(); onSearch(String(new FormData(event.currentTarget).get("query") ?? "")); }}>
-                  <Search className="h-5 w-5 shrink-0 text-neutral-400" aria-hidden="true" />
-                  <input name="query" aria-label={t("v.search.placeholder")} placeholder={t("v.search.placeholder")} className="min-w-0 flex-1 bg-transparent py-2 text-sm text-neutral-900 outline-none placeholder:text-neutral-400" />
+                  <Search className="h-5 w-5 shrink-0 text-neutral-500" aria-hidden="true" />
+                  <input name="query" aria-label={t("v.search.placeholder")} placeholder={t("v.search.placeholder")} className="min-w-0 flex-1 bg-transparent py-2 text-sm text-neutral-900 outline-none placeholder:text-neutral-500" />
                   <button type="submit" aria-label={t("v.nav.search")} className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-black text-white transition hover:bg-neutral-700"><ArrowRight className="h-4 w-4" /></button>
                 </form>
                 <div className="mt-4 flex flex-wrap justify-center gap-2">
@@ -69,7 +69,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
           </div>
         </div>
         <nav data-hub-hero-nav aria-label={t("nav.primary")} className="mx-auto mt-16 flex max-w-4xl flex-wrap justify-center gap-x-8 gap-y-4 border-b border-neutral-200 pb-8">
-          {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="text-sm font-medium text-neutral-500 transition hover:text-black">{section.label} <span className="ml-1 text-xs text-neutral-400">{section.entries.length}</span></a>)}
+          {sections.map((section) => <a key={section.id} href={`#${section.id}`} className="text-sm font-medium text-neutral-500 transition hover:text-black">{section.label} <span className="ml-1 text-xs text-neutral-500">{section.entries.length}</span></a>)}
         </nav>
       </div>
     </section>

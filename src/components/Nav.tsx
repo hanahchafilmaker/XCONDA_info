@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { IconClose, IconMenu, IconSearch, Logo } from "./volt";
 import { STUDIO_URL } from "../content/tools";
@@ -49,6 +49,15 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOpen(false); menuRef.current?.focus(); }
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [open]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -100,7 +109,8 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
 
           <div className="flex shrink-0 items-center gap-2">
             <button
-              onClick={onSearch}
+              onClick={() => { setOpen(false); onSearch(); }}
+              aria-haspopup="dialog"
               className="flex h-9 items-center gap-2 rounded-full px-2.5 text-neutral-500 transition-colors hover:bg-black/[0.06] hover:text-black"
             >
               <IconSearch className="h-[18px] w-[18px]" />
@@ -120,7 +130,9 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
 
             <button
               onClick={() => setOpen((v) => !v)}
+              ref={menuRef}
               data-hub-menu-toggle
+              aria-controls="mobile-navigation"
               aria-label={t("v.nav.menu")}
               aria-expanded={open}
               className="grid h-9 w-9 place-items-center rounded-full text-neutral-700 transition-colors hover:bg-black/[0.06] hover:text-black xl:hidden"
@@ -133,6 +145,9 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
 
       {/* mobile drawer */}
       <div
+        id="mobile-navigation"
+        inert={!open}
+        aria-hidden={!open}
         className={cn(
           "fixed inset-x-0 top-16 z-40 border-b border-black/[0.06] bg-ink-950/95 backdrop-blur-xl transition-all duration-200 xl:hidden",
           open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",

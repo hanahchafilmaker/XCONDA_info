@@ -6,6 +6,8 @@ import { useLang, typeLabel } from "../i18n";
 import { formatDate, isPublicEndpoint, timeAgo } from "../notion";
 import { cachedSyncHealth, loadSyncHealth, type SyncHealth } from "../syncHealth";
 import { cn } from "../utils/cn";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
 
 /* ----------------------------- Badges ----------------------------- */
 
@@ -269,25 +271,28 @@ const isDriveUrl = (url: string) => {
 
 function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();
-  const [copied, setCopied] = useState(false);
+  const [copying, setCopying] = useState(false);
+  const copy = async () => {
+    setCopying(true);
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(text);
+      toast.success(t("common.copied"), { id: "copy-code" });
+    } catch {
+      toast.error(t("common.textCopyFailed"), { id: "copy-code" });
+    } finally {
+      setCopying(false);
+    }
+  };
   return (
-    <div className="relative overflow-hidden rounded-none bg-black/40 ring-1 ring-black/[0.08]">
+    <div className="relative overflow-hidden rounded-lg bg-ink-880 ring-1 ring-black/[0.08]">
       <div className="flex items-center justify-between border-b border-black/5 px-4 py-2 text-[11px] text-neutral-500">
         <span className="font-mono">{language ?? "code"}</span>
-        <button
-          type="button"
-          onClick={() => {
-            navigator.clipboard?.writeText(text).catch(() => {});
-            setCopied(true);
-            setTimeout(() => setCopied(false), 1500);
-          }}
-          className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-black/10 hover:text-black"
-        >
-          {copied ? <Check className="h-3 w-3 text-emerald-300" /> : <Copy className="h-3 w-3" />}
-          {copied ? t("common.copied") : t("common.copy")}
-        </button>
+        <Button variant="ghost" size="sm" data-code-copy onClick={copy} disabled={copying}>
+          <Copy className="h-3 w-3" aria-hidden /> {t("common.copy")}
+        </Button>
       </div>
-      <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-neutral-700">
+      <pre tabIndex={0} role="region" aria-label={t("common.codeBlock")} className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-neutral-700">
         <code>{text}</code>
       </pre>
     </div>

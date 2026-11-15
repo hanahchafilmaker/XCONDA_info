@@ -20,10 +20,13 @@
   --color-ink-800: #e8e4d9;
   --color-ink-700: #d8d2c4;
 
+  /* Muted copy must remain readable on ivory panels and selected rows. */
+  --color-neutral-500: #626262;
+
   /* XCONDA's signature yellow, paired with a darker ochre for readable text. */
   --color-volt-200: #fff0b8;
   --color-volt-300: #806000;
-  --color-volt-400: #946d00;
+  --color-volt-400: #806000;
   --color-volt-500: #f3c928;
   --color-volt-600: #715300;
 

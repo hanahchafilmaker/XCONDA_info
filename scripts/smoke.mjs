@@ -36,6 +36,7 @@ class IO {
   disconnect() {}
 }
 window.IntersectionObserver = IO;
+window.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} };
 window.matchMedia ??= () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
 window.scrollTo = () => {};
 Object.defineProperty(window.HTMLElement.prototype, "scrollIntoView", { value() {}, writable: true });
@@ -68,7 +69,7 @@ if (JSON.stringify(heroLinks) !== JSON.stringify(expectedHeroLinks) || heroLinks
 }
 click(qa('#top button').find((button) => button.textContent === 'FLEXBOARD'));
 await new Promise((resolve) => setTimeout(resolve, 150));
-const seededInput = q('.fixed input');
+const seededInput = q('[data-search-dialog] input');
 if (seededInput?.value !== 'FLEXBOARD') throw new Error('Hero keyword was not passed to search');
 window.document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 await new Promise((resolve) => setTimeout(resolve, 150));
@@ -78,12 +79,12 @@ const searchBtn = qa("header button").find((b) => /검색|Search/.test(b.textCon
 click(searchBtn);
 await new Promise((r) => setTimeout(r, 400));
 
-const overlay = q('div[role="dialog"], .fixed.inset-0.z-\\[95\\]');
+const overlay = q("[data-search-dialog]");
 const searchInput = overlay?.querySelector('input[type="text"], input:not([type])');
-const hitsIdle = overlay ? overlay.querySelectorAll("li button").length : 0;
+const hitsIdle = overlay ? overlay.querySelectorAll("[cmdk-item]").length : 0;
 
 // 2) type a term that actually exists in the data and confirm it narrows results
-const firstHitTitle = overlay?.querySelector("li button span span")?.textContent?.trim() ?? "";
+const firstHitTitle = overlay?.querySelector("[data-search-title]")?.textContent?.trim() ?? "";
 const term = firstHitTitle.slice(0, 4);
 if (searchInput && term) {
   const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
@@ -91,12 +92,12 @@ if (searchInput && term) {
   searchInput.dispatchEvent(new window.Event("input", { bubbles: true }));
 }
 await new Promise((r) => setTimeout(r, 400));
-const hitsFiltered = overlay ? overlay.querySelectorAll("li button").length : 0;
+const hitsFiltered = overlay ? overlay.querySelectorAll("[cmdk-item]").length : 0;
 
 // 3) close with Escape
 window.document.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
 await new Promise((r) => setTimeout(r, 300));
-const overlayClosed = !qa(".fixed.inset-0.z-\\[95\\]").length;
+const overlayClosed = !q("[data-search-dialog]");
 
 // 4) switch language to Korean and confirm copy changes
 const koBtn = qa("header button").find((b) => b.textContent?.trim().toLowerCase() === "ko");

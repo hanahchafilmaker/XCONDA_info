@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type SyntheticEvent } from "react";
-import { ArrowUpRight, BookOpen, CalendarDays, Link2, Check, Printer, X, Pin } from "lucide-react";
+import { ArrowUpRight, BookOpen, CalendarDays, Link2, Printer, X, Pin } from "lucide-react";
 import { useContent } from "../content/ContentContext";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
@@ -8,6 +8,8 @@ import { fetchBlocks, formatDate } from "../notion";
 import { Blocks, Byline, CategoryBadge, NewBadge, SmartImage, TypeLabel, youTubeEmbed } from "./common";
 import { isNew } from "../notion";
 import { cn } from "../utils/cn";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
 import { TOOLS } from "../content/tools";
 import { htmlGuideLabels, htmlGuidePath } from "../content/htmlGuides";
 import { hubAbsolute, hubBase, shareUrlFor } from "../seo";
@@ -55,7 +57,7 @@ export default function ArticleModal() {
   const { active, activeToolSlug, closeEntry, endpoint, entries, openEntry } = useContent();
   const [blocks, setBlocks] = useState<Block[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const [guideView, setGuideView] = useState<"illustrated" | "original">("illustrated");
   const [frameStatus, setFrameStatus] = useState<"loading" | "ready" | "error">("loading");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -133,15 +135,22 @@ export default function ArticleModal() {
     .filter((e) => e.id !== active.id && e.type === active.type && e.type !== "faq" && !isEndedTitle(e.title))
     .slice(0, 3);
 
-  const share = () => {
+  const share = async () => {
     // Tool-dialog links reopen the same illustrated guide and selected language;
     // ordinary article links continue to use their canonical article URL.
     const url = modalGuidePath && activeToolSlug
       ? `${hubAbsolute("")}?lang=${encodeURIComponent(target)}#post=${encodeURIComponent(`tool-${activeToolSlug}`)}`
       : shareUrlFor(active);
-    navigator.clipboard?.writeText(url).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
+    setSharing(true);
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(url);
+      toast.success(t("common.linkCopied"), { id: "share-link" });
+    } catch {
+      toast.error(t("common.copyFailed"), { id: "share-link" });
+    } finally {
+      setSharing(false);
+    }
   };
 
   const onFrameLoad = (event: SyntheticEvent<HTMLIFrameElement>) => {
@@ -242,16 +251,17 @@ export default function ArticleModal() {
                 <span className="hidden min-[480px]:inline">{labels.print}</span>
               </button>
             )}
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="sm"
               data-modal-share
               onClick={share}
-              aria-label={copied ? t("common.linkCopied") : t("common.share")}
-              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-2.5 py-1.5 text-xs font-medium text-neutral-500 transition hover:border-black/25 hover:text-black"
+              disabled={sharing}
+              aria-label={t("common.share")}
             >
-              {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Link2 className="h-3.5 w-3.5" />}
-              <span aria-live="polite" className={modalGuidePath ? "sr-only min-[480px]:not-sr-only" : undefined}>{copied ? t("common.linkCopied") : t("common.share")}</span>
-            </button>
+              <Link2 className="h-3.5 w-3.5" aria-hidden />
+              <span className={modalGuidePath ? "sr-only min-[480px]:not-sr-only" : undefined}>{t("common.share")}</span>
+            </Button>
             <button
               ref={closeRef}
               type="button"
