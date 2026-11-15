@@ -211,7 +211,7 @@ if (!interactions.hitsIdle) fail.push("search overlay returned no results");
 if (interactions.hitsFiltered > interactions.hitsIdle) fail.push("search filter did not narrow results");
 if (!interactions.overlayClosedOnEsc) fail.push("Escape did not close search overlay");
 if (!interactions.koreanActive) fail.push("language toggle did not switch to KO");
-if (JSON.stringify(result.langCodeTexts) !== JSON.stringify(["KO", "EN", "JA", "ZH"])) {
+if (JSON.stringify(result.langCodeTexts) !== JSON.stringify(["EN", "KO", "JA", "ZH"])) {
   fail.push(`language codes missing or not notranslate-protected: ${JSON.stringify(result.langCodeTexts)}`);
 }
 if (!/[가-힣]/.test(interactions.h1AfterKo ?? "")) fail.push("hero copy did not become Korean");

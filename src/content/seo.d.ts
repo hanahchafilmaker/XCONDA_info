@@ -21,6 +21,9 @@ export const langByCode: (code: string) => SiteLang | null;
 export function localizedUrl(siteUrl: string, code: string, path?: string): string;
 export const LOCALE_BASE_URLS: Record<string, string>;
 export function setLocaleBaseUrls(map?: Record<string, string> | null): Record<string, string>;
+/** 대표 언어(기본 언어) — 지금은 `"ko"`. 내년 영어 원문 발행 때 `"en"` 으로 한 줄 전환. */
+export const PRIMARY_LANG: string;
+export function setPrimaryLang(code: string): string;
 export function localeBaseUrl(code: string): string;
 export function hreflangAlternates(
   siteUrl: string,

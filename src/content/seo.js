@@ -233,9 +233,16 @@ export const SITE_META = {
  *   ⚠️ 번역이 **없는** 글에는 다른 언어 주소를 만들지 않습니다(같은 내용 중복 방지).
  *      번역은 `content/i18n/<언어>.json` 에 사람이 검수해 넣습니다.
  * ------------------------------------------------------------------------ */
+/*
+ * **배열 순서 = 화면의 언어 목록 순서**입니다(정적 페이지 `nav.seo-langs` · 앱 토글).
+ * 2026-11-15 대표 결정: 제품 사이트(xconda.ai)처럼 **영어를 기본(첫 번째), 한국어를 두 번째**로.
+ * ⚠️ 순서만 바꾼 것입니다. 콘텐츠 원문·대표 주소(canonical)·`x-default`(기준 언어)는 여전히
+ *    한국어(`prefix: ""`)이고, 번역본이 있는 글만 `/en/`·`/ja/`·`/zh/` 주소를 갖습니다.
+ *    대표 언어를 영어로 옮기는 절차(영어 원문 발행)는 `reports/language-policy-20261115.md` 참고.
+ */
 export const SITE_LANGS = [
-  { code: "ko", htmlLang: "ko", prefix: "", hreflang: "ko", ogLocale: "ko_KR", name: "한국어" },
   { code: "en", htmlLang: "en", prefix: "en/", hreflang: "en", ogLocale: "en_US", name: "English" },
+  { code: "ko", htmlLang: "ko", prefix: "", hreflang: "ko", ogLocale: "ko_KR", name: "한국어" },
   { code: "ja", htmlLang: "ja", prefix: "ja/", hreflang: "ja", ogLocale: "ja_JP", name: "日本語" },
   { code: "zh", htmlLang: "zh-Hans", prefix: "zh/", hreflang: "zh-Hans", ogLocale: "zh_CN", name: "中文" },
 ];
@@ -292,7 +299,30 @@ export function localizedUrl(siteUrl, code, path = "") {
 }
 
 /**
- * hreflang 목록 — 넘긴 언어들 + `x-default`(기준 언어 = 한국어).
+ * **대표 언어(기본 언어) 스위치** — 2026-11-15 대표 결정.
+ * -----------------------------------------------------------------------------
+ * 화면의 언어 목록은 영어가 먼저, 한국어가 두 번째입니다(`SITE_LANGS` 배열 순서,
+ * 제품 사이트 xconda.ai 와 같은 순서). 대표 언어(`x-default`)는 **콘텐츠 원문**을 따릅니다.
+ *
+ *   PRIMARY_LANG = "ko"   ← 지금. 허브 글은 계속 한국어로 먼저 씁니다(2026-11-15 결정).
+ *   PRIMARY_LANG = "en"   ← 내년 정식버전에서 영어 원문을 먼저 올리기 시작할 때 이 한 줄만.
+ *
+ * ⚠️ 영어 번역이 **없는** 글은 스위치를 켜도 계속 한국어를 `x-default` 로 씁니다
+ *    (없는 주소를 대표 주소로 선언하지 않기 위해서입니다). 그래서 스위치를 미리 켜 두어도
+ *    지금 색인·검색 결과가 흔들리지 않고, 영어 원문이 쌓이면서 자연스럽게 넘어갑니다.
+ *    검증: `scripts/seo.test.mjs` › 「대표 언어 스위치」
+ */
+export let PRIMARY_LANG = "ko";
+
+/** 테스트·빌드가 대표 언어를 바꿔 끼울 때 씁니다. 이전 값을 돌려줍니다(끝나면 되돌리세요). */
+export function setPrimaryLang(code) {
+  const previous = PRIMARY_LANG;
+  PRIMARY_LANG = langByCode(code) ? code : "ko";
+  return previous;
+}
+
+/**
+ * hreflang 목록 — 넘긴 언어들 + `x-default`(대표 언어, 없으면 한국어 원문).
  * 검색엔진은 서로를 가리키는 링크가 있어야 다국어 묶음으로 인식합니다.
  * @param {string} siteUrl
  * @param {string} path 사이트 안 경로
@@ -304,7 +334,9 @@ export function hreflangAlternates(siteUrl, path, codes = ["ko"]) {
     hreflang: langByCode(code).hreflang,
     href: localizedUrl(siteUrl, code, path),
   }));
-  out.push({ hreflang: "x-default", href: localizedUrl(siteUrl, "ko", path) });
+  // 대표 언어가 이 글에 실제로 있을 때만 그 언어를, 없으면 한국어 원문을 가리킵니다.
+  const xDefault = uniq.includes(PRIMARY_LANG) ? PRIMARY_LANG : "ko";
+  out.push({ hreflang: "x-default", href: localizedUrl(siteUrl, xDefault, path) });
   return out;
 }
 

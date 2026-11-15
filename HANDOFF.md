@@ -114,7 +114,7 @@ npm run build      # dist/dev.html 생성 → postbuild 가 루트 index.html �
 | 상세 모달 | 카드 클릭 | `src/components/ArticleModal.tsx` |
 | 글 주소 · 딥링크 | `/post/{slug}/` · `/qna/{slug}/` · `/guide/{slug}/` · `/notice/{slug}/` (공유 버튼이 이 주소를 복사). 예전 `#post=<페이지ID>` 링크는 주소가 있는 글이면 새 주소로 자동 이동 | `ContentContext` · `src/content/seo.js` |
 | 검색·공유 미리보기 | 글마다 `<title>`·설명·canonical·OG·트위터 태그가 **빌드된 HTML 에 미리 들어감**(JS 없이도 읽힘). 홈은 사이트 기본값 | `scripts/build-seo.mjs` · `src/seo.ts` |
-| 언어 전환 (KO/EN/JA/ZH) | 내비 4-토글 — KO·EN은 정제 사전, EN/JA/ZH는 Google 번역 위젯(`googtrans` 쿠키 + 리로드). 위젯은 EN/JA/ZH에서만 로드, 직접 고른 언어가 항상 최우선 | `src/i18n/` |
+| 언어 전환 (EN/KO/JA/ZH) | 내비 4-토글 — **영어가 첫 번째, 한국어가 두 번째**(2026-11-15 대표 결정). EN·KO은 정제 사전, EN/JA/ZH는 Google 번역 위젯(`googtrans` 쿠키 + 리로드). 위젯은 EN/JA/ZH에서만 로드, 직접 고른 언어가 항상 최우선 | `src/i18n/` · `src/components/Nav.tsx` · `src/content/seo.js` › `SITE_LANGS` |
 | 수동 동기화 | 상단 배지의 🔄 | `src/components/common.tsx` `SyncButton` |
 
 ---
@@ -270,7 +270,7 @@ XCONDA_info/
 | 섹션 목록 `/post/` · `/notice/` · `/qna/` · `/guide/` | `build-seo.mjs` › `sectionPageHtml` + `SECTION_PAGES`(`seo.js`) | 홈 → 목록 → 글 크롤 경로. 앱은 같은 주소로 들어오면 해당 섹션으로 스크롤합니다(`App.tsx`) |
 | JSON-LD | `seo.js` › `siteJsonLd` / `appJsonLd` / `listJsonLd` / `articleJsonLd` / `howToJsonLd` | 회사(Organization)와 제품(Brand · SoftwareApplication)을 분리. **가격 Offer 는 허브에 넣지 않습니다** — 가격이 적힌 www 페이지 몫입니다 |
 | `dateModified` · `article:modified_time` · 사이트맵 `lastmod` | `seo.js` › `modifiedDateOf` | 노션 `수정일` → 동기화가 기록한 `__modified`(last_edited_time) 순. **작성일과 같으면 넣지 않습니다** |
-| `hreflang` | `build-seo.mjs` · `src/seo.ts` | 모든 페이지 `ko` + `x-default` 자기 참조. 허브는 언어별 URL 이 없으므로 "기준 언어 = 한국어"를 명시하는 용도 |
+| `hreflang` | `build-seo.mjs` · `src/seo.ts` · `seo.js` › `hreflangAlternates` | 모든 페이지 `ko` + `x-default` 자기 참조. `x-default` 는 **대표 언어 스위치** `seo.js` › `PRIMARY_LANG`(현재 `"ko"`)을 따르고, 그 언어의 번역이 없는 글은 계속 한국어 원문을 가리킵니다 |
 | 크롤러 언어 고정 | `src/i18n/index.tsx` › `isCrawlerUA` | 봇 UA 에는 **항상 한국어 원문** + 번역 위젯 미로드. 사람은 예전처럼 자동 감지, `?lang=en` 으로 고정 가능 |
 | 공용 번들 `assets/app.js` · `assets/app.css` | `build-seo.mjs` › `externalizeAssets` | 글마다 500KB 를 복사하던 인라인 번들을 **한 벌**로 분리(2026-10-25 A2). 홈 592→68KB·글 553→30KB. 산출물은 `build-site.yml` 이 `assets` 로 커밋합니다 |
 | 공유 이미지(OG) 로컬 사본 `assets/img/og/posts/` | `scripts/localize-og-images.mjs` + `manifest.json` | 노션 프록시(`www.notion.so/image/...`)는 만료 위험. 동기화(`notion-sync.yml`)가 이미지를 내려받아 우리 도메인 주소를 씁니다. 우선순위: **로컬 사본 → OG 이미지 속성 → Cover → 기본 이미지**(2026-10-25 A3). 손으로 받으려면 `npm run og:localize` |
@@ -294,6 +294,8 @@ XCONDA_info/
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
 - 산출물(`www/dist/`, 커밋 안 함)은 **`www-artifact.yml` 이 아티팩트(`www-dist`, 30일)** 로 올립니다 — 배포할 파일을 잃지 않게. 받는 곳: Actions → www 기능 페이지 산출물 → Artifacts.
 - **`dev.html` 은 noindex**: 이 파일은 개발 진입점이면서 저장소 루트에 커밋되어 **`/dev.html` 로도 열립니다**. 검색에 개발 껍데기가 노출되지 않도록 `<!-- DEV-ONLY:START --> … <!-- DEV-ONLY:END -->` 안에 `noindex` 를 두고, 빌드(`applyHead`)가 **그 블록을 지웁니다**. 지우지 않으면 배포되는 `index.html` 이 noindex 를 물려받아 **홈페이지가 검색에서 빠집니다** — `seo.test.mjs` 가 회귀를 막습니다(2026-10-26).
+- **언어 목록 순서 = 영어 먼저, 한국어 두 번째**(2026-11-15 대표 결정). 화면 순서는 `src/content/seo.js` › `SITE_LANGS` 배열 순서 하나로 정해집니다(정적 페이지 `nav.seo-langs` · 앱 토글 `Nav.tsx` › `LANG_ITEMS`). 배열 순서를 바꾸면 **hreflang·canonical·주소 접두사는 그대로**이고 목록 표시 순서만 바뀝니다 — `seo.test.mjs` › 「언어 목록은 영어가 먼저」가 고정합니다. 회귀 방지는 `smoke.mjs`(`["EN","KO","JA","ZH"]`).
+- **대표 언어(기본 언어)는 아직 한국어입니다**(`seo.js` › `PRIMARY_LANG = "ko"`). 허브 글은 계속 한국어로 먼저 쓰기 때문입니다. 내년 정식버전에서 영어 원문을 먼저 올리기 시작하면 `PRIMARY_LANG` 을 `"en"` 으로 **한 줄** 바꾸고 빌드하면 됩니다 — 영어 번역이 없는 글은 자동으로 계속 한국어를 `x-default` 로 쓰므로 미리 켜 두어도 색인이 흔들리지 않습니다. 배경·체크리스트: `reports/language-policy-20261115.md`
 - **검수 진행률**: `npm run i18n:progress` — `content/i18n/<언어>.json` 의 `review` 표기를 세어 **95항목 × 3언어 = 285** 중 검수 완료/초안/번역 없음을 보여 주고, `reports/i18n-progress-<날짜>.md` 에 언어별 표 + 「기계 점검이 문제를 찾은 항목」(검수 우선순위)을 남깁니다. 완료로 인정하는 표기는 **`YYYY-MM-DD 검수 완료(검수자)`** 하나뿐이고, 항목별 표시가 없으면 파일 맨 위 `review`(현재는 초안)를 따릅니다. 원어민 검수가 끝난 항목부터 `entries[키].review` 를 바꾸고 이 명령을 다시 돌리면 진행률이 올라갑니다(2026-10-26 ①-4).
 - **검수 진행률은 CI 요약에도 나옵니다**: `build-site.yml` 의 「번역 검수 진행률 요약」 단계가 `npm run i18n:progress -- --summary >> "$GITHUB_STEP_SUMMARY"` 를 실행합니다(정보용 · `continue-on-error`). 노션 동기화로 **새 글이 들어왔는데 번역이 없으면** 실행 요약에 `번역이 없는 원문 N건` 과 주소·한국어 제목이 뜹니다 — `reports/i18n-progress-*.md` 에도 같은 표가 남습니다. `--summary` 는 파일을 쓰지 않습니다.
 - **Q&A 개별 글 공유 카드는 기본으로 만들지 않습니다**: 219편 × 4언어 = **876장(약 25~30MB)** 이라 저장소·전송 비용이 이득보다 큽니다(목록 카드가 언어별로 이미 있음). 필요하면 `npm run og:cards -- --include-qna` 로 켜고, 늘어난 용량을 감수할지 먼저 판단하세요.
@@ -535,6 +537,7 @@ npm run build
 | `DEFAULT_PAGE_ID` / `DEFAULT_DATABASE_ID` | `scripts/notion-snapshot.mjs` |
 | `DEFAULT_SITE_URL` (`https://hub.xconda.ai/`) · `SITE_META` (사이트 기본 제목·설명·OG 이미지) | `src/content/seo.js` · 기본 공유 이미지 `assets/img/og/xconda-hub-1200x630.png` |
 | `STUDIO_URL = "https://www.xconda.ai"` | `src/content/tools.ts` |
+| `PRIMARY_LANG = "ko"` (대표 언어 · `x-default`) — 영어 원문 발행을 시작하면 `"en"` 으로 | `src/content/seo.js` |
 | `NOTION_NEWS_URL` | `src/content/channels.tsx` |
 | 문의 메일 `SUPPORT_EMAIL = "info@cubeberry.ai"` (Q&A 섹션 · 푸터 노출) — 정적 페이지 하단 문구·구조화 데이터와 **같은 주소**여야 함(대표 확정 11/14) | `src/components/Qna.tsx`, `src/content/seo.js`, `content/i18n/{en,ja,zh}.json` `ui.note` |
 | 언어별 공식 SNS 계정 · 링크 | `src/content/socialAccounts.js` (뉴스·푸터·JSON-LD 공용), 아이콘은 `src/content/channels.tsx` |
