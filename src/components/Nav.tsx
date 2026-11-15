@@ -97,8 +97,8 @@ export default function Nav({ onSearch }: { onSearch: () => void }) {
                   onClick={() => go(l.id)}
                   aria-current={active === l.id ? "true" : undefined}
                   className={cn(
-                    "whitespace-nowrap rounded-md px-3 py-2 text-[13px] font-medium transition-colors",
-                    active === l.id ? "bg-neutral-100 text-black" : "text-neutral-600 hover:bg-neutral-50 hover:text-black",
+                    "whitespace-nowrap rounded-md px-3 py-2 text-[13px] font-semibold transition-colors",
+                    active === l.id ? "bg-neutral-100 text-black" : "text-neutral-800 hover:bg-neutral-50 hover:text-black",
                   )}
                 >
                   {l.label[lang]}

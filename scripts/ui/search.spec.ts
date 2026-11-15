@@ -175,8 +175,8 @@ test("@a11y English search labels and article share feedback", async ({ page }) 
 });
 
 
-test("minimal home: search form, five destinations and featured guide work", async ({ page }) => {
-  await expect(page.locator('#top[data-home-design="minimal"]')).toBeVisible();
+test("neutral editorial home: search form, five destinations and featured guide work", async ({ page }) => {
+  await expect(page.locator('#top[data-home-design="neutral-editorial"]')).toBeVisible();
   await expect(page.locator("#top h1")).toContainText("더 잘 만들기 위한");
   const destinations = await page.locator("[data-hub-hero-nav] a").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
   expect(destinations).toEqual(["#notices", "#news", "#guides", "#blog", "#faq"]);
@@ -212,7 +212,7 @@ test("compact notices expand and FAQ answers remain keyboard accessible", async 
   await expect(page.locator("#article-title")).toBeVisible();
 });
 
-test("@a11y minimal home stays inside mobile, tablet and desktop viewports", async ({ page }) => {
+test("@a11y neutral editorial home stays inside mobile, tablet and desktop viewports", async ({ page }) => {
   for (const width of [320, 390, 768, 1024, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
@@ -221,7 +221,7 @@ test("@a11y minimal home stays inside mobile, tablet and desktop viewports", asy
       expect(box!.x).toBeGreaterThanOrEqual(0);
       expect(box!.x + box!.width).toBeLessThanOrEqual(width + 1);
     }
-    if (width === 390 || width === 1440) await test.info().attach(`minimal-home-${width}`, { body: await page.screenshot(), contentType: "image/png" });
+    if (width === 390 || width === 1440) await test.info().attach(`neutral-home-${width}`, { body: await page.screenshot(), contentType: "image/png" });
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await audit(page);

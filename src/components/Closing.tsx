@@ -23,13 +23,13 @@ export default function Closing() {
       {/* CTA */}
       <section className="pb-14 sm:pb-20">
         <div className="shell">
-          <Reveal className="flex flex-col items-start justify-between gap-8 rounded-2xl bg-neutral-950 p-8 sm:flex-row sm:items-center sm:p-12">
+          <Reveal className="flex flex-col items-start justify-between gap-8 rounded-xl border border-neutral-200 bg-white p-8 shadow-sm sm:flex-row sm:items-center sm:p-12">
             <div>
-              <p className="mb-4 text-[11px] font-medium tracking-wider text-neutral-300">{t("home.footerEyebrow")}</p>
-              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white sm:text-[30px]">
+              <p className="mb-4 text-[11px] font-medium tracking-wider text-neutral-600">{t("home.footerEyebrow")}</p>
+              <h2 className="text-2xl font-bold tracking-[-0.03em] text-neutral-950 sm:text-[30px]">
                 {t("v.cta.line1")} {t("v.cta.line2")}
               </h2>
-              <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-300">{t("v.cta.desc")}</p>
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-600">{t("v.cta.desc")}</p>
             </div>
             <VoltButton href={STUDIO_URL} icon className="shrink-0 bg-volt-500 text-neutral-950 hover:bg-volt-200">
               {t("v.cta.start")}

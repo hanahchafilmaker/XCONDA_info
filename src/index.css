@@ -5,7 +5,7 @@
 
 /* ─────────────────────────────────────────────────────────────
    XCONDA허브 (XCONDA Hub) — design tokens
-   Monochrome on white · editorial hub
+   Neutral light surfaces · editorial hub
    ───────────────────────────────────────────────────────────── */
 
 @theme {
@@ -13,10 +13,10 @@
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
-  --color-ink-950: #ffffff;
+  --color-ink-950: #f4f3f0;
   --color-ink-900: #ffffff;
-  --color-ink-880: #f6f7f8;
-  --color-ink-850: #f0f1f3;
+  --color-ink-880: #efeeeb;
+  --color-ink-850: #eae9e6;
   --color-ink-800: #e5e7eb;
   --color-ink-700: #d1d5db;
 
@@ -126,7 +126,7 @@
 @utility shell {
   width: 100%;
   margin-inline: auto;
-  max-width: 76rem;
+  max-width: 80rem;
   padding-inline: 1.25rem;
   @media (min-width: 48rem) { padding-inline: 2.5rem; }
 }
@@ -188,9 +188,9 @@
 body { top: 0 !important; }
 
 /* Quiet, neutral surfaces; yellow is reserved for small brand accents. */
-#main > section:not(#top) { border-top: 1px solid #e8eaed; }
+#main > section:not(#top):not(#notices) { border-top: 1px solid #e1dfda; }
 #news, #blog { background: var(--color-ink-880); }
-#faq { background: #fff; }
+#faq { background: var(--color-ink-950); }
 body { letter-spacing: -.02em; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:not(:disabled), a { cursor: pointer; }
@@ -204,3 +204,17 @@ button:not(:disabled), a { cursor: pointer; }
 #top h1 { text-wrap: balance; }
 html:lang(ja), html:lang(zh-CN) { line-break: strict; }
 html:lang(ja) body, html:lang(zh-CN) body { word-break: normal; }
+
+/* One connected navigation surface, with responsive internal dividers. */
+.hub-destinations > a:nth-child(even) { border-left: 1px solid #e5e3df; }
+.hub-destinations > a:nth-child(n+3) { border-top: 1px solid #e5e3df; }
+.hub-destinations > a:last-child { grid-column: 1 / -1; }
+@media (min-width: 40rem) {
+  .hub-destinations > a:nth-child(n) { border: 0; grid-column: auto; }
+  .hub-destinations > a:not(:nth-child(3n+1)) { border-left: 1px solid #e5e3df; }
+  .hub-destinations > a:nth-child(n+4) { border-top: 1px solid #e5e3df; }
+}
+@media (min-width: 64rem) {
+  .hub-destinations > a:nth-child(n) { border: 0; }
+  .hub-destinations > a:not(:first-child) { border-left: 1px solid #e5e3df; }
+}

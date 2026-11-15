@@ -213,7 +213,7 @@ export default function News() {
             {!news.length ? (
               <p className="text-[14px] text-neutral-500">{t("v.news.empty")}</p>
             ) : (
-              <Reveal delay={60}>
+              <Reveal delay={60} className="rounded-xl border border-neutral-200 bg-white p-4 sm:p-6">
                 {categories.length > 2 && (
                   <Tabs
                     label={t("nav.news")}
