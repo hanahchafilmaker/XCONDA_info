@@ -204,11 +204,11 @@ export default function ArticleModal() {
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby={modalGuidePath ? "manual-modal-title" : "article-title"} className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center sm:p-6">
-      <button type="button" aria-label={t("common.close")} tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-ink-950/75 backdrop-blur-md" />
+      <button type="button" aria-label={t("common.close")} tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-neutral-950/35 backdrop-blur-sm" />
       <div
         ref={dialogRef}
         className={cn(
-          "anim-modal relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[28px] border border-black/10 bg-ink-900 shadow-[0_-20px_90px_-20px_rgba(0,0,0,0.9)] sm:rounded-[28px]",
+          "anim-modal relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-black/10 bg-ink-900 shadow-2xl sm:rounded-2xl",
           modalGuidePath ? "h-[94dvh] sm:h-[min(90dvh,900px)] sm:max-w-[980px]" : "sm:max-w-3xl",
         )}
       >

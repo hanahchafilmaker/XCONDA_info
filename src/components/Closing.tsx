@@ -21,16 +21,17 @@ export default function Closing() {
   return (
     <>
       {/* CTA */}
-      <section className="pb-20 sm:pb-24">
+      <section className="pb-14 sm:pb-20">
         <div className="shell">
-          <Reveal className="flex flex-col items-start justify-between gap-6 rounded-none border border-black/[0.08] bg-ink-900 p-8 sm:flex-row sm:items-center sm:p-10">
+          <Reveal className="flex flex-col items-start justify-between gap-8 rounded-2xl bg-neutral-950 p-8 sm:flex-row sm:items-center sm:p-12">
             <div>
-              <h2 className="text-[1.5rem] font-medium tracking-[-0.02em] text-black sm:text-[1.75rem]">
+              <p className="mb-4 text-[11px] font-medium tracking-wider text-neutral-300">{t("home.footerEyebrow")}</p>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white sm:text-[30px]">
                 {t("v.cta.line1")} {t("v.cta.line2")}
               </h2>
-              <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-neutral-500">{t("v.cta.desc")}</p>
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-300">{t("v.cta.desc")}</p>
             </div>
-            <VoltButton href={STUDIO_URL} icon className="shrink-0">
+            <VoltButton href={STUDIO_URL} icon className="shrink-0 bg-volt-500 text-neutral-950 hover:bg-volt-200">
               {t("v.cta.start")}
             </VoltButton>
           </Reveal>
@@ -38,7 +39,7 @@ export default function Closing() {
       </section>
 
       {/* footer */}
-      <footer className="border-t border-black/[0.06] py-12">
+      <footer className="border-t border-neutral-200 bg-neutral-50 py-12">
         <div className="shell">
           <div className="grid gap-10 sm:grid-cols-[2fr_1fr_1fr]">
             <div>

@@ -12,7 +12,7 @@ const DialogDescription = DialogPrimitive.Description;
 function DialogContent({ className, children, ...props }: ComponentProps<typeof DialogPrimitive.Content>) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="anim-fade fixed inset-0 z-[94] bg-black/45 backdrop-blur-sm" />
+      <DialogPrimitive.Overlay className="anim-fade fixed inset-0 z-[94] bg-neutral-950/35 backdrop-blur-sm" />
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn("fixed left-1/2 top-[max(1rem,8dvh)] z-[95] flex max-h-[84dvh] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 flex-col overflow-hidden rounded-2xl border border-black/10 bg-white text-neutral-950 shadow-2xl", className)}

@@ -173,3 +173,56 @@ test("@a11y English search labels and article share feedback", async ({ page }) 
   await expect(page.locator("[data-sonner-toast][data-type=error]")).toContainText("Could not copy the link");
   await audit(page, '[role="dialog"]');
 });
+
+
+test("minimal home: search form, five destinations and featured guide work", async ({ page }) => {
+  await expect(page.locator('#top[data-home-design="minimal"]')).toBeVisible();
+  await expect(page.locator("#top h1")).toContainText("더 잘 만들기 위한");
+  const destinations = await page.locator("[data-hub-hero-nav] a").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+  expect(destinations).toEqual(["#notices", "#news", "#guides", "#blog", "#faq"]);
+  await page.locator("#top input").fill("Turn");
+  await page.locator("#top form button").click();
+  await expect(input(page)).toHaveValue("Turn");
+  await page.keyboard.press("Escape");
+  const featured = page.locator("[data-featured-guide]");
+  await featured.click();
+  await expect(page.locator('iframe[data-html-guide="flexboard"]')).toBeVisible();
+  await page.locator("[data-modal-close]").click();
+  await expect(featured).toBeFocused();
+});
+
+test("compact notices expand and FAQ answers remain keyboard accessible", async ({ page }) => {
+  await expect(page.locator("#notices li button")).toHaveCount(5);
+  await page.locator("[data-notices-more]").click();
+  expect(await page.locator("#notices li button").count()).toBeGreaterThan(5);
+  await page.locator("[data-notices-more]").click();
+  await expect(page.locator("#notices li button")).toHaveCount(5);
+  const question = page.locator("#faq button[aria-expanded]").first();
+  const id = await question.getAttribute("aria-controls");
+  const answer = page.locator(`[id="${id}"]`);
+  await expect(question).toHaveAttribute("aria-expanded", "false");
+  await expect(answer).toHaveAttribute("inert", "");
+  await question.focus();
+  await question.press("Enter");
+  await expect(answer).not.toHaveAttribute("inert", "");
+  await expect(answer.locator("p")).toBeVisible();
+  await question.press("Tab");
+  await expect(answer.getByRole("button")).toBeFocused();
+  await answer.getByRole("button").click();
+  await expect(page.locator("#article-title")).toBeVisible();
+});
+
+test("@a11y minimal home stays inside mobile, tablet and desktop viewports", async ({ page }) => {
+  for (const width of [320, 390, 768, 1024, 1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    for (const element of await page.locator("#top form, [data-featured-guide], [data-hub-hero-nav] a, header button:visible, header a:visible").all()) {
+      const box = await element.boundingBox();
+      expect(box!.x).toBeGreaterThanOrEqual(0);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(width + 1);
+    }
+    if (width === 390 || width === 1440) await test.info().attach(`minimal-home-${width}`, { body: await page.screenshot(), contentType: "image/png" });
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await audit(page);
+});

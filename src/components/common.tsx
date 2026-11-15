@@ -189,11 +189,13 @@ export function SmartImage({
   fallbackSrc,
   alt = "",
   className,
+  loading = "lazy",
 }: {
   src?: string;
   fallbackSrc?: string;
   alt?: string;
   className?: string;
+  loading?: "lazy" | "eager";
 }) {
   // 0 = 첫 주소 · 1 = 폴백 주소 · 2 = 자리 표시자
   const [failure, setFailure] = useState<{ key: string; stage: number }>({ key: "", stage: 0 });
@@ -202,7 +204,7 @@ export function SmartImage({
   const active = stage === 0 ? src : stage === 1 ? fallbackSrc : undefined;
   if (!active) {
     return (
-      <div className={cn("grid place-items-center bg-gradient-to-br from-volt-400/18 via-volt-500/10 to-ink-800", className)}>
+      <div role={alt ? "img" : undefined} aria-label={alt || undefined} className={cn("grid place-items-center bg-neutral-100", className)}>
         <ImageOff className="h-6 w-6 text-black/30" aria-hidden />
       </div>
     );
@@ -211,7 +213,7 @@ export function SmartImage({
     <img
       src={active}
       alt={alt}
-      loading="lazy"
+      loading={loading}
       onError={() => setFailure({ key, stage: Math.min(2, stage + 1) })}
       className={className}
     />

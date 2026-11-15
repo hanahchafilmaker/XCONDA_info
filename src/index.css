@@ -13,12 +13,12 @@
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
-  --color-ink-950: #fbfaf7;
+  --color-ink-950: #ffffff;
   --color-ink-900: #ffffff;
-  --color-ink-880: #f5f2e9;
-  --color-ink-850: #f0ede4;
-  --color-ink-800: #e8e4d9;
-  --color-ink-700: #d8d2c4;
+  --color-ink-880: #f6f7f8;
+  --color-ink-850: #f0f1f3;
+  --color-ink-800: #e5e7eb;
+  --color-ink-700: #d1d5db;
 
   /* Muted copy must remain readable on ivory panels and selected rows. */
   --color-neutral-500: #626262;
@@ -96,7 +96,7 @@
   }
   body {
     background-color: var(--color-ink-950);
-    color: #24231f;
+    color: #202124;
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01";
     word-break: keep-all;
@@ -126,8 +126,8 @@
 @utility shell {
   width: 100%;
   margin-inline: auto;
-  max-width: 80rem;
-  padding-inline: 1.5rem;
+  max-width: 76rem;
+  padding-inline: 1.25rem;
   @media (min-width: 48rem) { padding-inline: 2.5rem; }
 }
 
@@ -187,13 +187,11 @@
 .skiptranslate > iframe { display: none !important; }
 body { top: 0 !important; }
 
-/* Editorial sections share a consistent rhythm and hairline separators. */
-#main > section:not(#top) { border-top: 1px solid rgb(0 0 0 / .08); }
-/* Subtle warm surfaces separate content groups without reducing text contrast. */
+/* Quiet, neutral surfaces; yellow is reserved for small brand accents. */
+#main > section:not(#top) { border-top: 1px solid #e8eaed; }
 #news, #blog { background: var(--color-ink-880); }
-#faq { background: linear-gradient(180deg, #fff9e5 0%, var(--color-ink-950) 100%); }
-body { letter-spacing: -.025em; }
-::selection { background: #000; color: #fff; }
+#faq { background: #fff; }
+body { letter-spacing: -.02em; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:not(:disabled), a { cursor: pointer; }
 
@@ -206,11 +204,3 @@ button:not(:disabled), a { cursor: pointer; }
 #top h1 { text-wrap: balance; }
 html:lang(ja), html:lang(zh-CN) { line-break: strict; }
 html:lang(ja) body, html:lang(zh-CN) body { word-break: normal; }
-
-/* Pixa-inspired hero: a quiet dot field and soft pastel glow. */
-.pixa-hero { background: #fcfcfc; }
-.pixa-dots {
-  background-image: radial-gradient(circle, rgba(112, 112, 120, .20) 2px, transparent 2.5px);
-  background-size: 46px 46px;
-  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-}

@@ -56,8 +56,9 @@ const qa = (s) => [...doc.querySelectorAll(s)];
 /* ---------- interaction phase ---------- */
 const click = (el) => el?.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
 
-// The editorial hero uses live counts and forwards keyword searches to the existing overlay.
-if (!/아이디어가 있으면|Have an idea/.test(q('#top h1')?.textContent ?? '')) throw new Error('Editorial hero missing');
+// The minimal resource hero uses live counts and forwards keyword searches to the existing overlay.
+if (!/더 잘 만들기 위한|Make your next/.test(q('#top h1')?.textContent ?? '')) throw new Error('Minimal resource hero missing');
+if (!q('#top [data-featured-guide]')) throw new Error('Featured guide shortcut missing');
 if (q('#top input')?.placeholder.includes('v.search.')) throw new Error('Untranslated hero placeholder');
 // Check the always-visible section navigation, not every hero link: the hero also
 // contains a CTA and a desktop-only preview sidebar with their own anchors.

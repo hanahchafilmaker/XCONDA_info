@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { cn } from "../utils/cn";
 import type { Entry } from "../content/types";
 import { useContent } from "../content/ContentContext";
@@ -22,28 +22,33 @@ function supportEmailFor(lang: string): string {
 
 function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; onOpen: () => void }) {
   const [open, setOpen] = useState(defaultOpen);
+  const answerId = useId();
   const { t } = useLang();
 
   return (
-    <div className="border-b border-black/[0.06]">
+    <div className="border-b border-neutral-200 last:border-b-0">
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center gap-4 py-5 text-left"
+        aria-controls={answerId}
+        className="group flex w-full items-center gap-4 py-5 text-left"
       >
-        <span className="min-w-0 flex-1 text-balance text-[16px] font-medium text-neutral-950">{f.title}</span>
+        <span className="min-w-0 flex-1 text-balance text-[15px] font-medium leading-relaxed text-neutral-950 group-hover:text-neutral-600">{f.title}</span>
         <IconPlus
           className={cn("h-5 w-5 shrink-0 text-neutral-500 transition-transform duration-300", open && "rotate-45 text-black")}
         />
       </button>
       <div
+        id={answerId}
+        inert={!open}
+        aria-hidden={!open}
         className="grid transition-[grid-template-rows] duration-300 ease-out"
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
           <div className="pb-6 pr-9">
             {/* 답변은 문단·목록이 여러 줄일 수 있어 줄바꿈을 그대로 살립니다. */}
-            <p className="whitespace-pre-line text-pretty text-[15px] leading-relaxed text-neutral-500">{f.summary}</p>
+            <p className="whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-600">{f.summary}</p>
             <button
               onClick={onOpen}
               className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors hover:text-volt-400"
@@ -69,10 +74,10 @@ export default function Qna() {
   const visible = showAll ? faqs : faqs.slice(0, PAGE);
 
   return (
-    <section id="faq" className="scroll-mt-20 border-t border-black/[0.06] py-20 sm:py-24">
+    <section id="faq" className="scroll-mt-20 border-t border-black/[0.06] py-14 sm:py-20">
       <div className="shell grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-16">
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
-          <SectionHeader title={t("v.faq.lead")} sub={t("v.faq.sub")} />
+          <SectionHeader eyebrow="05 / HELP CENTER" title={t("v.faq.lead")} sub={t("v.faq.sub")} />
           <a
             href={`mailto:${supportEmail}`}
             className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-medium text-volt-400 hover:text-volt-300"
@@ -81,21 +86,21 @@ export default function Qna() {
           </a>
         </Reveal>
 
-        <Reveal delay={60} className="border-t border-black/[0.06]">
+        <Reveal delay={60} className="rounded-2xl border border-neutral-200 bg-white px-6 pb-3">
           {faqs.length > 0 && (
             <p className="pt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
               {faqs.length} {t("v.faq.count")}
             </p>
           )}
           {faqs.length === 0 && <p className="py-6 text-[14px] text-neutral-500">{t("v.faq.empty")}</p>}
-          {visible.map((f, i) => (
-            <QnaItem key={f.id} f={f} defaultOpen={i === 0} onOpen={() => openEntry(f)} />
+          {visible.map((f) => (
+            <QnaItem key={f.id} f={f} defaultOpen={false} onOpen={() => openEntry(f)} />
           ))}
           {faqs.length > PAGE && (
             <div className="flex justify-center py-2">
               <button
                 onClick={() => setShowAll((v) => !v)}
-                className="rounded-full border border-black/12 px-5 py-2 text-[14px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
+                className="rounded-lg border border-neutral-300 px-5 py-3 text-[13px] font-medium text-neutral-700 transition-colors hover:border-black/25 hover:text-black"
               >
                 {showAll ? t("v.faq.less") : `${t("v.faq.more")} (${faqs.length - PAGE})`}
               </button>

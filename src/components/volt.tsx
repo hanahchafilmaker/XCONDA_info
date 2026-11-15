@@ -228,11 +228,11 @@ export function SectionHeader({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
-        {eyebrow && <p className="text-[13px] font-medium text-volt-400">{eyebrow}</p>}
-        <h2 className="mt-2 text-[32px] font-medium leading-tight tracking-[-0.03em] text-black sm:text-[44px]">
+        {eyebrow && <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.14em] text-neutral-500">{eyebrow}</p>}
+        <h2 className="text-[26px] font-semibold leading-tight tracking-[-0.04em] text-neutral-950 sm:text-[32px]">
           {title}
         </h2>
-        {sub && <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-neutral-500">{sub}</p>}
+        {sub && <p className="mt-3 max-w-xl text-sm leading-relaxed text-neutral-600">{sub}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </div>
@@ -257,7 +257,7 @@ export function Tabs<T extends string>({
   label?: string;
 }) {
   return (
-    <div role="tablist" aria-label={label} className="flex gap-1 overflow-x-auto">
+    <div role="tablist" aria-label={label} className="flex gap-1 overflow-x-auto pb-1">
       {items.map((it) => (
         <button
           key={it.id}
@@ -265,8 +265,8 @@ export function Tabs<T extends string>({
           aria-selected={value === it.id}
           onClick={() => onChange(it.id)}
           className={cn(
-            "shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
-            value === it.id ? "bg-black text-white" : "text-neutral-500 hover:bg-black/[0.06] hover:text-black",
+            "shrink-0 rounded-lg px-3.5 py-2 text-[12px] font-medium transition-colors",
+            value === it.id ? "bg-neutral-950 text-white" : "text-neutral-600 hover:bg-neutral-100 hover:text-black",
           )}
         >
           {it.label}
@@ -358,7 +358,7 @@ export function VoltButton({
   icon?: boolean;
 }) {
   const cls = cn(
-    "group inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-[14px] font-medium text-white transition-colors hover:bg-neutral-800 active:scale-[0.98]",
+    "group inline-flex items-center justify-center gap-2 rounded-lg bg-neutral-950 px-5 py-3 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800 active:scale-[0.98]",
     className,
   );
   const inner = (
@@ -392,7 +392,7 @@ export function GhostButton({
   "aria-haspopup"?: "dialog";
 }) {
   const cls = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full border border-black/12 px-5 py-2.5 text-[14px] font-medium text-neutral-800 transition-colors hover:border-black/25 hover:bg-black/[0.04] hover:text-black active:scale-[0.98]",
+    "inline-flex items-center justify-center gap-2 rounded-lg border border-neutral-300 px-5 py-3 text-[13px] font-medium text-neutral-800 transition-colors hover:border-black/25 hover:bg-black/[0.04] hover:text-black active:scale-[0.98]",
     className,
   );
   return href ? (

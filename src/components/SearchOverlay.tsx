@@ -11,7 +11,7 @@ import { Command, CommandInput, CommandItem, CommandList } from "./ui/command";
 type Kind = "notice" | "news" | "guide" | "blog" | "faq";
 type Hit = { id: string; kind: Kind; title: string; sub: string; meta: string; entry: Entry };
 const PAGE = 24;
-const KIND_TONE: Record<Kind, string> = { notice: "volt", news: "green", guide: "blue", blog: "amber", faq: "violet" };
+const KIND_TONE: Record<Kind, string> = { notice: "zinc", news: "zinc", guide: "zinc", blog: "zinc", faq: "zinc" };
 const normalize = (value: string) => value.normalize("NFKC").toLocaleLowerCase().trim();
 const toHit = (e: Entry, kind: Kind): Hit => ({ id: e.id, kind, title: e.title, sub: e.summary, meta: `${formatDate(e.date)} · ${e.category}`, entry: e });
 
@@ -90,8 +90,8 @@ export default function SearchOverlay({ open, onClose, initialQuery = "" }: { op
             if (event.key === "Enter" && (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)) event.stopPropagation();
           }}
         >
-          <div className="mx-4 mb-3 flex items-center gap-3 rounded-xl border border-black/15 px-3 focus-within:border-volt-400 focus-within:ring-2 focus-within:ring-volt-400/20">
-            <IconSearch className="size-5 shrink-0 text-volt-400" />
+          <div className="mx-4 mb-3 flex items-center gap-3 rounded-xl border border-black/15 px-3 focus-within:border-neutral-700 focus-within:ring-2 focus-within:ring-neutral-200">
+            <IconSearch className="size-5 shrink-0 text-neutral-600" />
             <CommandInput ref={inputRef} value={q} onValueChange={(value) => { setQ(value); setLimit(PAGE); }}
               placeholder={t("v.search.placeholder")} aria-label={t("v.nav.search")} autoComplete="off" spellCheck={false} />
             {q && <Button variant="ghost" size="icon" onClick={() => { setQ(""); setLimit(PAGE); inputRef.current?.focus(); }} aria-label={t("v.search.clear")}><IconClose className="size-4" /></Button>}
