@@ -249,17 +249,18 @@ export const DICT: Dict = {
   "v.lang.en": { ko: "English", en: "English" },
   "v.lang.toggleAria": { ko: "언어 변경", en: "Change language" },
 
-  /* Minimal resource hub — visible home-page copy. */
+  /* Neutral editorial resource hub — visible home-page copy. */
   "home.title": { ko: "더 잘 만들기 위한,", en: "Make your next" },
   "home.titleTail": { ko: "모든 가이드.", en: "idea happen." },
   "home.description": { ko: "첫 장면부터 마지막 컷까지. XCONDA의 사용법과 새로운 소식, 제작에 필요한 답을 한곳에서 만나보세요.", en: "From your first scene to the final cut. Explore XCONDA guides, discover what’s new, and find the answers you need." },
-  "home.searchPlaceholder": { ko: "무엇을 만들고 싶으세요?", en: "What would you like to create?" },
+  "home.searchPlaceholder": { ko: "어떤 작업을 시작하시나요?", en: "What would you like to create?" },
   "home.quickSearch": { ko: "빠른 검색", en: "Quick search" },
-  "home.startHere": { ko: "처음이라면 여기부터", en: "START HERE" },
+  "home.startHere": { ko: "시작 가이드", en: "START HERE" },
   "home.stepByStep": { ko: "단계별 가이드", en: "STEP BY STEP" },
   "home.featuredTitle": { ko: "시나리오를 첫 스토리보드로", en: "Your script. Your first storyboard." },
   "home.featuredDescription": { ko: "FlexBoard로 장면을 나누고, 나만의 이야기를 시작하세요.", en: "Break your story into scenes and start creating with FlexBoard." },
   "home.explore": { ko: "필요한 정보부터 살펴보세요", en: "Find your next step" },
+  "home.updatesTitle": { ko: "새로운 소식", en: "Latest updates" },
   "home.noticesHint": { ko: "업데이트와 서비스 안내", en: "Updates & announcements" },
   "home.newsHint": { ko: "지금 알아둘 AI 소식", en: "The latest in AI" },
   "home.guidesHint": { ko: "도구별 단계별 사용법", en: "Learn each tool, step by step" },

@@ -74,3 +74,44 @@ test("failed notice covers keep their full-width media area", async ({ page }) =
   const box = (await cover.boundingBox())!;
   expect(box.width / box.height).toBeCloseTo(1200 / 630, 2);
 });
+
+test("neutral editorial surfaces match the approved light design without yellow backgrounds", async ({ page }) => {
+  await expect(page.locator('#top[data-home-design="neutral-editorial"]')).toBeVisible();
+  await expect(page.locator("#top")).toHaveCSS("background-color", "rgb(244, 243, 240)");
+  await expect(page.locator("#top")).toHaveCSS("background-image", "none");
+  for (const selector of ["[data-hub-hero-nav]", "[data-featured-guide]", "[data-featured-notice]"]) {
+    await expect(page.locator(selector)).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  }
+  await expect(page.locator("#top form button")).toHaveCSS("color", "oklch(0.145 0 0)");
+  const cover = page.locator("[data-featured-guide] img");
+  await expect(cover).toHaveCSS("object-fit", "contain");
+  await page.locator("[data-featured-guide]").hover();
+  await expect(cover).toHaveCSS("transform", "none");
+  // A single connected, equal-width navigation band on desktop.
+  const links = await page.locator("[data-hub-hero-nav] a").all();
+  const first = (await links[0].boundingBox())!;
+  await expect(links[0]).toHaveCSS("border-left-width", "0px");
+  for (const link of links.slice(1)) await expect(link).toHaveCSS("border-left-width", "1px");
+  for (const link of links) {
+    const box = (await link.boundingBox())!;
+    expect(box.y).toBeCloseTo(first.y, 0);
+    expect(box.width).toBeCloseTo(first.width, 0);
+  }
+});
+
+test("neutral homepage retains readable responsive layouts in all four locales", async ({ page }) => {
+  for (const locale of ["ko", "en", "ja", "zh-CN"]) {
+    await page.evaluate((lang) => localStorage.setItem("xconda-lang", lang), locale);
+    await page.reload();
+    await expect(page.locator("[data-featured-notice]")).toBeVisible();
+    for (const width of [320, 768, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      for (const el of await page.locator("#top h1, #top form, [data-hub-hero-nav] a, [data-featured-notice], #notices [role=tablist]").all()) {
+        const box = (await el.boundingBox())!;
+        expect(box.x).toBeGreaterThanOrEqual(0);
+        expect(box.x + box.width).toBeLessThanOrEqual(width + 1);
+      }
+    }
+  }
+});
