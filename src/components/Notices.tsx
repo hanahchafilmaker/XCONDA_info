@@ -19,7 +19,7 @@ function NoticeRow({ n, onOpen }: { n: Entry; onOpen: () => void }) {
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-2">
             {n.pinned && <IconPin className="h-3.5 w-3.5 shrink-0 text-volt-400" aria-label="pinned" />}
-            <span className="line-clamp-2 text-[14px] font-medium leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
+            <span className="line-clamp-2 text-[14px] font-bold leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
               {n.title}
             </span>
             {isNew(n.date) && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-volt-400" aria-label="new" />}
@@ -41,38 +41,43 @@ function Featured({ n, onOpen }: { n: Entry; onOpen: () => void }) {
   const points = (n.changes?.map((c) => c.text) ?? n.tags).slice(0, 3);
   return (
     <button
+      data-featured-notice
       onClick={onOpen}
-      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 text-left transition-all hover:border-black/15 hover:shadow-[0_12px_32px_rgba(0,0,0,.07)] sm:p-7"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left transition-all hover:border-black/15 hover:shadow-[0_12px_32px_rgba(0,0,0,.07)]"
     >
       {n.cover && (
-        <SmartImage
-          src={n.cover}
-          fallbackSrc={n.coverFallback}
-          alt=""
-          className="-mx-6 -mt-6 mb-5 h-44 w-[calc(100%+3rem)] rounded-t-none object-cover sm:-mx-7 sm:-mt-7 sm:h-44 sm:w-[calc(100%+3.5rem)]"
-        />
+        <span data-card-cover className="block aspect-[1200/630] w-full shrink-0 overflow-hidden bg-neutral-100">
+          <SmartImage
+            src={n.cover}
+            fallbackSrc={n.coverFallback}
+            alt=""
+            className="block h-full w-full object-contain"
+          />
+        </span>
       )}
-      <span className="flex items-center gap-2 text-[13px] text-neutral-500">
-        <Pill tone="volt">{t("v.notices.important")}</Pill>
-        {formatDate(n.date)}
-      </span>
+      <span className="flex w-full flex-1 flex-col p-6 sm:p-7">
+        <span className="flex items-center gap-2 text-[13px] text-neutral-500">
+          <Pill tone="volt">{t("v.notices.important")}</Pill>
+          {formatDate(n.date)}
+        </span>
 
-      <span className="mt-4 block text-[1.35rem] font-medium leading-snug tracking-[-0.02em] text-black">{n.title}</span>
-      <span className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">{n.summary}</span>
+        <span data-card-title className="mt-4 block text-[22px] font-bold leading-[1.45] tracking-[-0.025em] text-neutral-950 sm:text-2xl">{n.title}</span>
+        <span className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">{n.summary}</span>
 
-      {points.length > 0 && (
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {points.map((b) => (
-            <li key={b} className="rounded-md bg-neutral-100 px-2 py-1 text-[11px] leading-relaxed text-neutral-600">
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
+        {points.length > 0 && (
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {points.map((b) => (
+              <li key={b} className="rounded-md bg-neutral-100 px-2 py-1 text-[11px] leading-relaxed text-neutral-600">
+                {b}
+              </li>
+            ))}
+          </ul>
+        )}
 
-      <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[14px] font-medium text-volt-400">
-        {t("v.notices.detail")}
-        <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[14px] font-medium text-volt-400">
+          {t("v.notices.detail")}
+          <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </span>
       </span>
     </button>
   );

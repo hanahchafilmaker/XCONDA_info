@@ -7,6 +7,7 @@ import {
   type SVGProps,
 } from "react";
 import { cn } from "../utils/cn";
+import { hubBase } from "../seo";
 
 /* ───────────────────────── icons ───────────────────────── */
 
@@ -156,11 +157,11 @@ export function LogoMark({ className, title }: { className?: string; title?: str
   );
 }
 
-/** 헤더·푸터 로고 락업: 마크 + "Xconda" 워드마크 */
+/** Operator-supplied official wordmark, kept unmodified on its original dark background. */
 export function Logo({ className, href = "#top" }: { className?: string; href?: string }) {
   return (
     <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex shrink-0 items-center whitespace-nowrap", className)}>
-      <img src="/assets/img/logo/xconda-wordmark.png" alt="XCONDA" className="h-[22px] w-auto object-contain" />
+      <img data-official-wordmark src={`${hubBase()}assets/img/logo/xconda-wordmark-official.png`} alt="XCONDA" width={179} height={60} className="h-12 w-auto shrink-0 object-contain" />
     </a>
   );
 }
@@ -229,7 +230,7 @@ export function SectionHeader({
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {eyebrow && <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.14em] text-neutral-500">{eyebrow}</p>}
-        <h2 className="text-[26px] font-semibold leading-tight tracking-[-0.04em] text-neutral-950 sm:text-[32px]">
+        <h2 className="text-[26px] font-bold leading-tight tracking-[-0.04em] text-neutral-950 sm:text-[32px]">
           {title}
         </h2>
         {sub && <p className="mt-3 max-w-xl text-sm leading-relaxed text-neutral-600">{sub}</p>}

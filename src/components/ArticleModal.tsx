@@ -317,9 +317,8 @@ export default function ArticleModal() {
               );
             }
             return active.cover ? (
-              <div className="relative aspect-[21/9] w-full overflow-hidden">
-                <SmartImage src={active.cover} fallbackSrc={active.coverFallback} className="h-full w-full object-cover" />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink-900/90 to-transparent" />
+              <div data-article-cover className="relative aspect-[1200/630] w-full overflow-hidden bg-neutral-100">
+                <SmartImage src={active.cover} fallbackSrc={active.coverFallback} alt={active.title} className="block h-full w-full object-contain" />
               </div>
             ) : null;
           })()}
@@ -342,7 +341,7 @@ export default function ArticleModal() {
             <h2
               id="article-title"
               className={cn(
-                "mt-3 text-balance text-2xl font-medium leading-snug tracking-[-0.03em] text-black sm:text-[2rem]",
+                "mt-3 text-balance text-2xl font-bold leading-snug tracking-[-0.03em] text-black sm:text-[2rem]",
                 /* 툴 가이드는 제목이 제품명이므로 번역 대상에서 제외 */
                 active.id.startsWith("tool-") && "notranslate"
               )}

@@ -25,7 +25,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
               <span className="size-2 rounded-sm bg-volt-500" aria-hidden />
               <span className="notranslate">XCONDA RESOURCE HUB</span>
             </p>
-            <h1 className="mt-6 text-[36px] font-semibold leading-[1.23] tracking-[-0.055em] text-neutral-950 sm:text-[52px] lg:text-[54px]">
+            <h1 className="mt-6 text-[36px] font-bold leading-[1.23] tracking-[-0.055em] text-neutral-950 sm:text-[52px] lg:text-[54px]">
               {t("home.title")}<br /><span className="text-neutral-500">{t("home.titleTail")}</span>
             </h1>
             <p className="mt-5 max-w-md text-[15px] leading-[1.8] text-neutral-600 sm:text-base">{t("home.description")}</p>
@@ -50,7 +50,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
             </span>
             <span className="block p-6">
               <span className="flex items-center justify-between text-[11px] font-medium uppercase tracking-wider text-neutral-500"><span className="notranslate">FLEXBOARD GUIDE</span><span>{t("home.stepByStep")}</span></span>
-              <span className="mt-3 flex items-center justify-between gap-4"><span className="text-xl font-semibold tracking-tight text-neutral-950">{t("home.featuredTitle")}</span><ArrowUpRight className="size-5 shrink-0 text-neutral-600 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden /></span>
+              <span className="mt-3 flex items-center justify-between gap-4"><span className="text-xl font-bold tracking-tight text-neutral-950">{t("home.featuredTitle")}</span><ArrowUpRight className="size-5 shrink-0 text-neutral-600 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden /></span>
               <span className="mt-2 block text-sm leading-relaxed text-neutral-600">{t("home.featuredDescription")}</span>
             </span>
           </button>

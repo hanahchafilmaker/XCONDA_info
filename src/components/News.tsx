@@ -75,7 +75,7 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
       <button onClick={onOpen} className="group flex w-full min-w-0 gap-4 text-left sm:gap-5">
         <span className="min-w-0 flex-1">
           <span className="flex flex-wrap items-center gap-2">
-            <span className="text-[16px] font-semibold leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
+            <span data-card-title className="text-[16px] font-bold leading-relaxed text-neutral-950 transition-colors group-hover:text-black">
               {item.title}
             </span>
             {isNew(item.date) && <Pill tone="volt">NEW</Pill>}
@@ -110,13 +110,13 @@ function NewsItem({ item, onOpen }: { item: Entry; onOpen: () => void }) {
         </span>
 
         {/* 썸네일 — 이미지가 있으면 실물, 없으면 채널 아이콘 타일, 영상 링크면 재생 배지 */}
-        <span className="relative block aspect-[4/3] w-[88px] shrink-0 self-start overflow-hidden rounded-lg sm:w-32">
+        <span data-card-cover className="relative block aspect-[1200/630] w-[88px] shrink-0 self-start overflow-hidden rounded-lg bg-neutral-100 sm:w-32">
           {thumbSrc ? (
             <SmartImage
               src={thumbSrc}
               fallbackSrc={item.coverFallback}
               alt={item.title}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              className="block h-full w-full object-contain"
             />
           ) : (
             <span
