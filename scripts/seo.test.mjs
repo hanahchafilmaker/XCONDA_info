@@ -33,6 +33,9 @@ import {
   OG_LOCAL_DIR,
   hreflangAlternates,
   langFromPathname,
+  SITE_LANGS,
+  PRIMARY_LANG,
+  setPrimaryLang,
   localOgImageUrl,
   localizedOgImageUrl,
   localizedUrl,
@@ -967,6 +970,31 @@ test("언어별 주소·hreflang — 기준 언어는 접두사 없이, 나머�
   assert.equal(langFromPathname("/english/"), "ko"); // /en/ 접두사만 인정
 });
 
+test("언어 목록은 영어가 먼저, 한국어가 두 번째다 (2026-11-15 대표 결정)", () => {
+  assert.deepEqual(SITE_LANGS.map((l) => l.code), ["en", "ko", "ja", "zh"]);
+  // 한국어는 계속 접두사 없는 원문 주소를 씁니다(순서만 바뀌었습니다).
+  assert.equal(SITE_LANGS.find((l) => l.code === "ko").prefix, "");
+});
+
+test("대표 언어 스위치 — 기본은 한국어 원문, 켜면 번역이 있는 글만 영어가 x-default", () => {
+  const site = "https://hub.example.test/";
+  assert.equal(PRIMARY_LANG, "ko", "지금은 한국어 원문이 대표 언어여야 합니다");
+  // 영어 번역이 있어도 스위치가 꺼져 있으면 x-default 는 한국어 원문
+  const off = hreflangAlternates(site, "qna/a/", ["en"]);
+  assert.equal(off.at(-1).hreflang, "x-default");
+  assert.equal(off.at(-1).href, `${site}qna/a/`);
+  const previous = setPrimaryLang("en");
+  try {
+    // 영어 번역이 있는 글 → 영어가 대표 주소
+    assert.equal(hreflangAlternates(site, "qna/a/", ["en"]).at(-1).href, `${site}en/qna/a/`);
+    // 영어 번역이 없는 글 → 계속 한국어 원문(없는 주소를 대표로 선언하지 않음)
+    assert.equal(hreflangAlternates(site, "qna/b/", []).at(-1).href, `${site}qna/b/`);
+  } finally {
+    setPrimaryLang(previous);
+  }
+  assert.equal(PRIMARY_LANG, "ko");
+});
+
 test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 으로 서로를 가리킨다", () => {
   const out = renderSeoSite({
     rows: fixtureRows,
@@ -985,6 +1013,10 @@ test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 
   assert.match(en, /How do refunds work\?/);
   // 앱 번들은 영어 페이지에 넣지 않습니다(React 가 정적 번역문을 지우고 한국어 화면을 그리는 것 방지)
   assert.doesNotMatch(en, /assets\/app\.js/);
+  // 정적 언어 전환 목록도 영어가 먼저, 한국어가 두 번째입니다(2026-11-15 대표 결정).
+  const langNav = en.match(/<nav class="seo-langs"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? "";
+  assert.ok(langNav.includes("English") && langNav.includes("한국어"), langNav);
+  assert.ok(langNav.indexOf("English") < langNav.indexOf("한국어"), `언어 순서가 영어→한국어가 아닙니다: ${langNav}`);
   // 영어 홈 · 섹션 목록
   assert.ok(out.files.get("en/index.html"));
   assert.ok(out.files.get("en/qna/index.html"));

@@ -12,9 +12,14 @@ const LINKS = [
   { id: "faq", label: { ko: "Q&A", en: "Q&A" } },
 ];
 
+/**
+ * 언어 토글 순서 — **영어가 기본(첫 번째), 한국어가 두 번째**입니다.
+ * (2026-11-15 대표 결정: 제품 사이트 xconda.ai 처럼 영어를 기준으로 두고 한국어를 다음에)
+ * 화면 순서만 바꾼 것이고, 콘텐츠 원문은 계속 한국어입니다(`src/content/seo.js` › SITE_LANGS 주석 참고).
+ */
 const LANG_ITEMS = [
-  { target: "ko", code: "KO", ariaKey: "lang.korean" },
   { target: "en", code: "EN", ariaKey: "lang.english" },
+  { target: "ko", code: "KO", ariaKey: "lang.korean" },
   { target: "ja", code: "JA", ariaKey: "lang.japanese" },
   { target: "zh-CN", code: "ZH", ariaKey: "lang.chinese" },
 ] as const;
