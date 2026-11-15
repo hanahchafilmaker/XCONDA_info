@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Play } from "lucide-react";
 import type { Entry } from "../content/types";
-import { CHANNELS, IconGlobe } from "../content/channels";
+import { CHANNELS, IconGlobe, newsChannelsFor } from "../content/channels";
 import { channelFromUrl } from "../content/classify";
 import { useContent } from "../content/ContentContext";
 import { formatDate, isNew } from "../notion";
@@ -153,6 +153,7 @@ function ChannelCard({ channel }: { channel: (typeof CHANNELS)[number] }) {
           <span className="truncate text-[14px] font-medium text-black">{channel.name}</span>
 
         </span>
+        <span className="notranslate mt-0.5 block truncate text-[11px] text-neutral-500">{channel.handle}</span>
         <span className="mt-1 block text-xs leading-relaxed text-neutral-500">{t(channel.descKey)}</span>
       </span>
       {channel.href ? (
@@ -168,7 +169,7 @@ function ChannelCard({ channel }: { channel: (typeof CHANNELS)[number] }) {
     "flex w-full items-center gap-3 rounded-lg bg-white px-2 py-3 text-left transition-colors hover:bg-neutral-50";
 
   return channel.href ? (
-    <a href={channel.href} target="_blank" rel="noopener noreferrer" className={cls}>
+    <a data-channel-card={channel.id} href={channel.href} target="_blank" rel="noopener noreferrer" className={cls}>
       {body}
     </a>
   ) : (
@@ -254,7 +255,7 @@ export default function News() {
               <h3 className="text-[15px] font-medium text-black">{t("v.news.channels")}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-500">{t("v.news.channelsSub")}</p>
               <div className="mt-4 grid divide-y divide-neutral-100">
-                {CHANNELS.filter((c) => c.id !== "notion").map((c) => (
+                {newsChannelsFor(lang).map((c) => (
                   <ChannelCard key={c.id} channel={c} />
                 ))}
               </div>

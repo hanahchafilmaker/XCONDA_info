@@ -537,7 +537,7 @@ npm run build
 | `STUDIO_URL = "https://www.xconda.ai"` | `src/content/tools.ts` |
 | `NOTION_NEWS_URL` | `src/content/channels.tsx` |
 | 문의 메일 `SUPPORT_EMAIL = "info@cubeberry.ai"` (Q&A 섹션 · 푸터 노출) — 정적 페이지 하단 문구·구조화 데이터와 **같은 주소**여야 함(대표 확정 11/14) | `src/components/Qna.tsx`, `src/content/seo.js`, `content/i18n/{en,ja,zh}.json` `ui.note` |
-| SNS 채널 카드 링크(`href: ""` = 준비 중) | `src/content/channels.tsx` |
+| 언어별 공식 SNS 계정 · 링크 | `src/content/socialAccounts.js` (뉴스·푸터·JSON-LD 공용), 아이콘은 `src/content/channels.tsx` |
 
 ---
 
@@ -753,7 +753,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 ### 18.4 확인해야 할 미기재 사항 (인계자에게 물어볼 것)
 
 - [ ] 제품/콘텐츠 의사결정자 연락처(공지 내용·툴 매뉴얼 승인권자)
-- [x] XCONDA 스튜디오 공식 SNS 채널 주소 — ✅ 확정 (2026-10-22): X(`@Xconda_official`) · Threads(`@xconda_official`) · YouTube(`@xconda_korea`) · Instagram(`@xconda_ai`) · 네이버 블로그(`dramajustice`). LinkedIn은 운영하지 않기로 해 채널 삭제
+- [x] XCONDA 공식 SNS 계정 — 2026-11-15 갱신: EN은 Instagram·Threads·YouTube의 `xconda_official` 및 영어 Facebook, KO는 `xconda_korea` 및 한국 Facebook·X. JA/ZH는 기존 언어/문의처 정책과 같이 한국 계정으로 연결합니다. 정확한 이름·URL은 `src/content/socialAccounts.js`에서 관리합니다. 목록에 없는 네이버 블로그는 공개 채널 바로가기에서 제외하되 과거 뉴스의 채널 분류는 유지합니다.
 - [ ] Google Drive 영상 공유 폴더 접근 권한
 - [ ] 커스텀 도메인 `hub.xconda.ai` 연결 확인 — ✅ Pages 커스텀 도메인 등록(2026-10-12) · ☐ DNS CNAME · ☐ HTTPS 강제 · ☐ 도메인 인증(권장) → 「10.3 배포」
 - [ ] `xconda.ai` DNS(AWS Route 53) 관리 담당자 — 허브 레코드 변경 · 인증서 문제 시 연락처

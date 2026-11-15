@@ -157,6 +157,7 @@ export const CHANNEL_NAMES = {
   threads: "Threads",
   youtube: "YouTube",
   instagram: "Instagram",
+  facebook: "Facebook",
   naver: "Naver Blog",
   notion: "Notion",
 };
@@ -171,6 +172,8 @@ const SNS_HOSTS = {
   "youtube.com": "youtube",
   "youtu.be": "youtube",
   "instagram.com": "instagram",
+  "facebook.com": "facebook",
+  "fb.com": "facebook",
   "blog.naver.com": "naver",
   "notion.so": "notion",
   "notion.site": "notion",
@@ -180,6 +183,7 @@ const SNS_HOSTS = {
 const NEWS_CATEGORY_KEYS = new Set([
   ...Object.keys(CHANNEL_NAMES),
   "twitter",
+  "페이스북",
   "naverblog", // Category 'Naver Blog' (정규화하면 공백이 사라집니다)
   "네이버",
   "네이버블로그",
