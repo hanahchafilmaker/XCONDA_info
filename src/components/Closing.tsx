@@ -1,5 +1,5 @@
 import { STUDIO_URL, TOOLS } from "../content/tools";
-import { CHANNELS } from "../content/channels";
+import { socialChannelsFor } from "../content/channels";
 import { useLang } from "../i18n";
 import { Logo, Reveal, VoltButton } from "./volt";
 import { supportEmailFor } from "./Qna";
@@ -9,7 +9,7 @@ const socialColors: Record<string, string> = {
   threads: "text-black",
   youtube: "text-[#ff0000]",
   instagram: "text-[#c13584]",
-  naver: "text-[#03c75a]",
+  facebook: "text-[#0866ff]",
 };
 
 export default function Closing() {
@@ -55,15 +55,16 @@ export default function Closing() {
                     </linearGradient>
                   </defs>
                 </svg>
-                {CHANNELS.filter((c) => c.href && c.id !== "web" && c.id !== "notion").map((c) => {
+                {socialChannelsFor(lang).map((c) => {
                   const Icon = c.Icon;
                   return (
                     <a
                       key={c.id}
+                      data-social-channel={c.id}
                       href={c.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={c.name}
+                      aria-label={`${c.name} (${c.handle})`}
                       title={`${c.name} (${c.handle})`}
                       className={`grid h-8 w-8 place-items-center rounded-full border border-black/10 bg-white transition-colors hover:border-black/25 hover:bg-black/[0.04] ${socialColors[c.id] ?? "text-neutral-700"}`}
                     >

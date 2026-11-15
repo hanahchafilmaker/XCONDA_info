@@ -28,6 +28,8 @@
  * ⚠️ 이 파일을 고치면 빌드 스크립트와 앱이 동시에 바뀝니다. 수정 후 `npm run test:unit` 을 실행하세요.
  * ========================================================================== */
 
+import { OFFICIAL_SOCIAL_URLS } from "./socialAccounts.js";
+
 /** 사이트 이름 (페이지 제목 접미사 · og:site_name) */
 export const SITE_NAME = "XCONDA허브";
 
@@ -689,16 +691,8 @@ export const BRAND_NAME = "Xconda";
 /** 제품(SoftwareApplication)의 전역 식별자 — www 에서 같은 @id 를 쓰면 하나로 합쳐집니다. */
 export const APP_ID = "https://www.xconda.ai/#app";
 
-/**
- * 공식 채널 (Organization sameAs) — `src/content/channels.tsx` 의 CHANNELS 와 같은
- * 값을 유지하세요. 이 파일은 빌드 스크립트도 쓰므로 tsx 를 import 할 수 없어 값을 둡니다.
- */
-export const OFFICIAL_SAME_AS = [
-  "https://x.com/Xconda_official",
-  "https://www.youtube.com/@xconda_korea",
-  "https://www.instagram.com/xconda_ai/",
-  "https://blog.naver.com/dramajustice",
-];
+/** Confirmed English/Korean social profiles, shared with the UI. */
+export const OFFICIAL_SAME_AS = OFFICIAL_SOCIAL_URLS;
 
 /**
  * 미국 법인(공인 리셀러)의 식별자. cubeberry.ai 는 정보가 갱신되기 전이라 공식 회사 주소로

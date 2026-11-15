@@ -1,14 +1,10 @@
-/* =============================================================================
- * XCONDA허브 · 뉴스 섹션에 노출되는 외부(SNS) 채널 정보
- * -----------------------------------------------------------------------------
- * ▸ "뉴스(타 SNS 정보)" 섹션 오른쪽의 채널 카드로 표시됩니다.
- * ▸ href 가 비어 있으면("") 카드가 "링크 준비 중" 상태로 노출됩니다.
- *   공식 계정 주소가 확정되면 이 파일의 href 값만 채워 넣으세요.
- *   Notion DB의 `Link`(URL) 속성에 주소를 넣은 뉴스 글도 동일하게 연동됩니다.
- * ========================================================================== */
+/** Channel icons/labels. Official locale-specific URLs live in socialAccounts.js.
+ * Historical channel metadata is retained for classifying existing news only.
+ */
 
 import type { ComponentType, SVGProps } from "react";
 import { STUDIO_URL } from "./tools";
+import { socialAccountsFor, type SocialId } from "./socialAccounts";
 
 /** 게시된 Notion 페이지 — 뉴스/공지 원본 DB */
 export const NOTION_NEWS_URL =
@@ -46,6 +42,13 @@ export const IconInstagram = (p: IconProps) => (
   </svg>
 );
 
+/** Facebook */
+export const IconFacebook = (p: IconProps) => (
+  <svg {...brand(p)}>
+    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.026 4.388 11.021 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.026 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073Z" />
+  </svg>
+);
+
 /** Naver (네이버 블로그) */
 export const IconNaver = (p: IconProps) => (
   <svg {...brand(p)}>
@@ -78,61 +81,32 @@ export type Channel = {
   Icon: ComponentType<IconProps>;
 };
 
+const SOCIAL_META: Record<SocialId, Pick<Channel, "name" | "descKey" | "Icon">> = {
+  instagram: { name: "Instagram", descKey: "v.news.ch.instagram", Icon: IconInstagram },
+  threads: { name: "Threads", descKey: "v.news.ch.threads", Icon: IconThreads },
+  youtube: { name: "YouTube", descKey: "v.news.ch.youtube", Icon: IconYouTube },
+  facebook: { name: "Facebook", descKey: "v.news.ch.facebook", Icon: IconFacebook },
+  x: { name: "X", descKey: "v.news.ch.x", Icon: IconX },
+};
+
+export function socialChannelsFor(language: string): Channel[] {
+  return socialAccountsFor(language).map((account) => ({ ...account, ...SOCIAL_META[account.id] }));
+}
+
+const WEB_CHANNEL: Channel = {
+  id: "web", name: "xconda.ai", handle: "Official", href: STUDIO_URL,
+  descKey: "v.news.ch.web", Icon: IconGlobe,
+};
+
+/** Only the approved social accounts and the product site are public shortcuts. */
+export function newsChannelsFor(language: string): Channel[] {
+  return [...socialChannelsFor(language), WEB_CHANNEL];
+}
+
+/** Classification metadata, not the list of public account shortcuts. */
 export const CHANNELS: Channel[] = [
-  {
-    id: "x",
-    name: "X",
-    handle: "@Xconda_official",
-    href: "https://x.com/Xconda_official",
-    descKey: "v.news.ch.x",
-    Icon: IconX,
-  },
-  {
-    id: "threads",
-    name: "Threads",
-    handle: "@xconda_official",
-    href: "https://www.threads.com/@xconda_official",
-    descKey: "v.news.ch.threads",
-    Icon: IconThreads,
-  },
-  {
-    id: "youtube",
-    name: "YouTube",
-    handle: "@xconda_korea",
-    href: "https://www.youtube.com/@xconda_korea",
-    descKey: "v.news.ch.youtube",
-    Icon: IconYouTube,
-  },
-  {
-    id: "instagram",
-    name: "Instagram",
-    handle: "@xconda_ai",
-    href: "https://www.instagram.com/xconda_ai/",
-    descKey: "v.news.ch.instagram",
-    Icon: IconInstagram,
-  },
-  {
-    id: "naver",
-    name: "Naver Blog",
-    handle: "dramajustice",
-    href: "https://blog.naver.com/dramajustice",
-    descKey: "v.news.ch.naver",
-    Icon: IconNaver,
-  },
-  {
-    id: "notion",
-    name: "Notion",
-    handle: "XCONDA_NEWs",
-    href: NOTION_NEWS_URL,
-    descKey: "v.news.ch.notion",
-    Icon: IconNotion,
-  },
-  {
-    id: "web",
-    name: "xconda.ai",
-    handle: "Official",
-    href: STUDIO_URL,
-    descKey: "v.news.ch.web",
-    Icon: IconGlobe,
-  },
+  ...socialChannelsFor("ko"),
+  { id: "naver", name: "Naver Blog", handle: "", href: "", descKey: "v.news.ch.naver", Icon: IconNaver },
+  { id: "notion", name: "Notion", handle: "XCONDA_NEWs", href: NOTION_NEWS_URL, descKey: "v.news.ch.notion", Icon: IconNotion },
+  WEB_CHANNEL,
 ];
