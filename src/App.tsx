@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Notices from "./components/Notices";
@@ -9,6 +9,7 @@ import Qna from "./components/Qna";
 import Closing from "./components/Closing";
 import SearchOverlay from "./components/SearchOverlay";
 import ArticleModal from "./components/ArticleModal";
+import { Toaster } from "./components/ui/sonner";
 import { ContentProvider } from "./content/ContentContext";
 import { useLang } from "./i18n";
 import { sectionPageFromPathname } from "./content/seo";
@@ -17,6 +18,11 @@ export default function App() {
   const { t } = useLang();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const openSearch = useCallback((query = "") => {
+    setSearchQuery(query);
+    setSearchOpen(true);
+  }, []);
 
   /**
    * 섹션 목록 주소(`/post/` · `/notice/` · `/qna/` · `/guide/`)로 들어온 경우.
@@ -35,24 +41,26 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const tag = document.activeElement?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      const focused = document.activeElement;
+      if (e.defaultPrevented || e.isComposing || e.repeat || e.altKey) return;
+      if (focused?.closest("input, textarea, select, [contenteditable]:not([contenteditable=false]), [role=dialog]")) return;
+      if (document.querySelector("[role=dialog]")) return;
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setSearchOpen(true);
+        openSearch();
       }
-      if (e.key === "/") {
+      if (e.key === "/" && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
-        setSearchOpen(true);
+        openSearch();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [openSearch]);
 
   return (
     <ContentProvider>
-      <div className="relative min-h-screen overflow-x-hidden bg-ink-950">
+      <div inert={searchOpen} className="relative min-h-screen overflow-x-hidden bg-ink-950">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-volt-400 focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-ink-950"
@@ -60,10 +68,10 @@ export default function App() {
           {t("a11y.skip")}
         </a>
 
-        <Nav onSearch={() => setSearchOpen(true)} />
+        <Nav onSearch={() => openSearch()} />
 
         <main id="main">
-          <Hero onSearch={(query = "") => { setSearchQuery(query); setSearchOpen(true); }} />
+          <Hero onSearch={openSearch} />
           {/* 섹션 순서: 공지사항 → 뉴스(타 SNS 정보) → 툴 사용법 → 블로그 → Q&A */}
           <Notices />
           <News />
@@ -76,6 +84,7 @@ export default function App() {
 
         <SearchOverlay initialQuery={searchQuery} open={searchOpen} onClose={() => setSearchOpen(false)} />
         <ArticleModal />
+        <Toaster />
       </div>
     </ContentProvider>
   );

@@ -25,6 +25,21 @@ npm run build        # dist/dev.html → index.html + 글별 페이지 · sitema
 - Node **22.x**(22.18 이상 권장), npm 10.x. 의존성은 `npm ci` 만 사용합니다.
 - 루트 `index.html` 은 **빌드 결과물**입니다. 소스를 고쳐도 반영되지 않으니 개발은 항상 `dev.html` 로 합니다.
 
+## UI 컴포넌트 · 접근성 검사
+
+- `src/components/ui/`: shadcn/ui에서 가져와 기존 XCONDA 테마에 맞춘 Button · Dialog · Command · Sonner 래퍼. 원본 MIT 고지는 같은 폴더의 `LICENSE.shadcn.md`에 있습니다.
+- 통합검색은 cmdk로 키보드 탐색을 제공하며, 콘텐츠 검색·정렬은 `SearchOverlay.tsx`에서 처리합니다. React/Vite 앱이므로 Next.js나 서버는 필요하지 않습니다.
+- 새 UI를 추가할 때 `components.json`의 경로를 사용하되, CLI의 `--overwrite`로 기존 커스텀 스타일을 덮어쓰지 마세요.
+- PR에서 `.github/workflows/ui-checks.yml`이 UI 상호작용·axe-core 검사를 실행합니다. 상세 범위와 제한은 [UI 개선 검증 기록](./reports/ui-ux-2026-11-15.md)을 참고하세요.
+
+```bash
+npx playwright install --with-deps chromium  # 브라우저 최초 설치
+npm run test:ui                             # 검색·공유·모바일·접근성 전체
+npm run test:a11y                           # axe-core 검사만
+```
+
+외부 번역·이미지·분석 서비스 요청은 브라우저 테스트에서 차단합니다. `CHROMIUM_EXECUTABLE_PATH`를 지정하면 기존 Chromium을 사용할 수 있습니다. 테스트 결과와 실패 trace는 `.playwright-results/`에 저장되며 Git에서 제외합니다.
+
 ## 문서
 
 | 문서 | 대상 | 내용 |

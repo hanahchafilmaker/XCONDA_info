@@ -1,0 +1,42 @@
+name: UI · 접근성 검사
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "dev.html"
+      - "scripts/ui/**"
+      - "playwright.config.ts"
+      - "package*.json"
+      - "vite.config.ts"
+      - ".github/workflows/ui-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:ui
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ui-test-results
+          path: .playwright-results/
+          include-hidden-files: true
+          retention-days: 7

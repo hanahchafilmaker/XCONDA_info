@@ -279,9 +279,13 @@ export function Tabs<T extends string>({
 /* ───────────────────────── badges / chips ───────────────────────── */
 
 const toneMap: Record<string, string> = {
-  volt: "bg-volt-400/12 text-volt-300",
+  volt: "bg-volt-400/12 text-volt-600",
   zinc: "bg-black/[0.06] text-neutral-500",
   red: "bg-rose-400/10 text-rose-700",
+  green: "bg-emerald-50 text-emerald-800",
+  blue: "bg-blue-50 text-blue-800",
+  amber: "bg-amber-50 text-amber-800",
+  violet: "bg-violet-50 text-violet-800",
 };
 
 export function Pill({

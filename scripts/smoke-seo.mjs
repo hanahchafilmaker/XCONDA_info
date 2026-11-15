@@ -148,7 +148,7 @@ const checkTrue = (name, actual) => results.push({ name, ok: !!actual, actual, e
   check("오류 없음", problems.length, 0);
 
   // 4) 공유 버튼 → 글 주소 복사
-  const shareBtn = doc.querySelector('[role="dialog"] button span[aria-live="polite"]')?.closest("button");
+  const shareBtn = doc.querySelector('[role="dialog"] [data-modal-share]');
   shareBtn?.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
   await wait(50);
   check("공유 버튼 → 글 주소가 클립보드에 복사된다", copied[0], `http://localhost${BASE}post/deepseek-official-harness/`);
