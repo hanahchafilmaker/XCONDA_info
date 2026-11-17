@@ -212,6 +212,25 @@ export function externalizeAssets(template, siteUrl = DEFAULT_SITE_URL) {
   return { template: html, js, css };
 }
 
+/**
+ * 앱 번들(`assets/app.js` · `assets/app.css` · preload) 참조를 **사이트 절대 주소**로 바꿉니다.
+ * -----------------------------------------------------------------------------
+ * `/hub/*` 프록시는 경로를 `hub.xconda.ai/en/*` 로 넘기는데 `en/assets/` 는 가벼운 이미지만
+ * 담은 사본이라 `/hub/assets/app.js` 는 404 가 됩니다. 그 404 는 제품 사이트의 catch-all 로
+ * 떨어져 **200 + 앱 셸 HTML** 이 오고, 브라우저는 모듈 스크립트로 HTML 을 실행하지 못합니다.
+ * 그러면 영어 허브는 JS 없이 **빈 화면**이 됩니다(2026-11-17 방지).
+ *
+ * 페이지 주소 깊이와 무관하게 같은 번들을 쓰도록 사이트 기준 절대 주소를 씁니다.
+ * 이미 절대 주소인 참조는 건드리지 않으므로 여러 번 실행해도 결과가 같습니다(멱등).
+ */
+export function absoluteAssetRefs(html, siteUrl = DEFAULT_SITE_URL) {
+  const base = absoluteUrl(siteUrl, "");
+  return String(html).replace(
+    /(\s(?:src|href)=")(?:\.?\/)?(assets\/app\.(?:js|css))"/g,
+    (whole, prefix, rel) => `${prefix}${base}${rel}"`
+  );
+}
+
 /** 언어별 번역 파일 위치 — 사람이 검수한 번역만 여기에 둡니다. */
 export const I18N_DIR = "content/i18n";
 
@@ -628,7 +647,9 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
   const paths = {};
   /** 언어 → 번역 본문(blocks)이 있는 페이지 수 */
   const bodyCount = {};
-  const base = staticOnlyTemplate(template);
+  // 언어 폴더는 프록시(`/hub/*` → `hub.xconda.ai/en/*`) 아래에서 열립니다. 그 폴더에는
+  // 앱 번들 사본이 없으므로 참조를 원본 도메인 절대 주소로 풀어 둡니다(absoluteAssetRefs).
+  const base = absoluteAssetRefs(staticOnlyTemplate(template), site);
   // 한국어 원문 주소를 찾기 위한 색인 — `qna/slug` → 페이지 기록
   const byKey = new Map(pageRecords.map((p) => [`${ROUTE_PREFIX[p.type] ?? p.type}/${p.slug}`, p]));
 
@@ -1954,6 +1975,15 @@ function staleRedirectTarget(files, siteUrl, code, section) {
  * 그건 OG 카드·본문 커버라 프록시가 `/hub/assets/*` 를 원본으로 넘겨 주는 편이 맞습니다.
  * (제품팀에 요청할 항목: `reports/en-hub-proxy-assets-request-20261117.md`)
  *
+ * + **스냅샷 파일 자체**도 함께 복사합니다 (2026-11-17 추가).
+ *   앱은 스냅샷을 `hubBaseFromPathname(location.pathname) + notion-content.json` 으로
+ *   찾습니다(`src/notionSnapshot.ts`). 그래서 `/hub/` 아래에서는
+ *   `/hub/notion-content.json` → 프록시가 `hub.xconda.ai/en/notion-content.json` 을 봅니다.
+ *   그 파일이 없으면 404 가 제품 사이트 catch-all 로 떨어져 **200 + 앱 셸 HTML** 이 오고,
+ *   `.json()` 파싱이 실패해 스냅샷이 null 이 됩니다. 그러면 앱은 무료 공개 프록시
+ *   (notion-api.splitbee.io)로 폴백하는데, `/table` 8초 + `/page` 8초 타임아웃을 기다린
+ *   뒤에야 "Notion 연결 오류 · 캐시 표시" 로 화면이 채워집니다 — 영어 허브가 유독 느리던 원인.
+ *
  * @returns {string[]} 복사한 사본의 저장소 기준 상대 경로
  */
 export function mirrorLocalizedAssets(result, root) {
@@ -1975,9 +2005,23 @@ export function mirrorLocalizedAssets(result, root) {
       fs.cpSync(from, to, { recursive: true });
       copied.push(`${prefix}${group}`);
     }
+    // 스냅샷 사본 — 프록시가 `/hub/notion-content.json` 을 이 폴더에서 찾습니다.
+    const snapshotFrom = path.join(root, LOCALIZED_SNAPSHOT_FILE);
+    const snapshotTo = path.join(root, prefix, LOCALIZED_SNAPSHOT_FILE);
+    if (fs.existsSync(snapshotFrom)) {
+      fs.mkdirSync(path.dirname(snapshotTo), { recursive: true });
+      fs.copyFileSync(snapshotFrom, snapshotTo);
+      copied.push(`${prefix}${LOCALIZED_SNAPSHOT_FILE}`);
+    } else {
+      // 원본이 없으면 낡은 사본을 지웁니다 (지운 스냅샷이 계속 배포되지 않도록).
+      fs.rmSync(snapshotTo, { force: true });
+    }
   }
   return copied.sort();
 }
+
+/** 언어 폴더로 함께 복사하는 스냅샷 파일 이름 (앱이 같은 폴더에서 찾는 이름과 같아야 합니다). */
+export const LOCALIZED_SNAPSHOT_FILE = "notion-content.json";
 
 /** 언어 폴더로 사본을 두는 가벼운 자산 묶음 (위 mirrorLocalizedAssets 설명 참고). */
 export const LOCALIZED_ASSET_GROUPS = ["assets/img/logo", "assets/img/tools"];

@@ -77,6 +77,8 @@ import {
   writeSite,
   mirrorLocalizedAssets,
   LOCALIZED_ASSET_GROUPS,
+  LOCALIZED_SNAPSHOT_FILE,
+  absoluteAssetRefs,
   bodyImagesOf,
   bodyMediaOf,
   flattenBlocks,
@@ -1739,6 +1741,43 @@ test("공개 주소 스위치가 켜진 언어 폴더에만 가벼운 자산 사
   assert.deepEqual(staleLocalizedPages(root, new Map([["en/index.html", "x"]])), []);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+test("공개 주소 스위치가 켜진 언어 폴더에 스냅샷 사본도 생긴다", () => {
+  const root = tempSite();
+  // 원본 스냅샷이 없으면 사본을 만들지 않습니다 (그리고 낡은 사본은 지웁니다).
+  fs.mkdirSync(path.join(root, "en"), { recursive: true });
+  fs.writeFileSync(path.join(root, "en", LOCALIZED_SNAPSHOT_FILE), '{"stale":true}', "utf8");
+  assert.deepEqual(mirrorLocalizedAssets({}, root), []);
+  assert.equal(fs.existsSync(path.join(root, "en", LOCALIZED_SNAPSHOT_FILE)), false, "원본이 없으면 낡은 사본은 지워야 합니다");
+
+  // 원본이 있으면 켜진 언어 폴더로 그대로 복사됩니다 — 프록시가 /hub/notion-content.json 을 여기서 찾습니다.
+  const snapshot = JSON.stringify({ generatedAt: "2026-11-17T00:00:00.000Z", source: { pageId: "abc" }, rows: [], pages: {} });
+  fs.writeFileSync(path.join(root, LOCALIZED_SNAPSHOT_FILE), snapshot, "utf8");
+  const copied = mirrorLocalizedAssets({}, root);
+  assert.ok(copied.includes(`en/${LOCALIZED_SNAPSHOT_FILE}`), `스냅샷 사본이 복사 목록에 없습니다: ${copied.join(", ")}`);
+  assert.equal(fs.readFileSync(path.join(root, "en", LOCALIZED_SNAPSHOT_FILE), "utf8"), snapshot);
+  // 스위치가 꺼진 언어 폴더로는 복사하지 않습니다.
+  assert.equal(fs.existsSync(path.join(root, "ja", LOCALIZED_SNAPSHOT_FILE)), false);
+  assert.equal(fs.existsSync(path.join(root, "zh", LOCALIZED_SNAPSHOT_FILE)), false);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test("언어 폴더 템플릿은 앱 번들을 원본 도메인 절대 주소로 부른다", () => {
+  // 프록시는 /hub/assets/* 를 넘겨주지 않습니다(404 → 제품 사이트 catch-all 이 200 HTML 을 반환).
+  // 앱 번들까지 그 404 를 타면 스크립트가 실행되지 않아 화면이 아예 비므로, 절대 주소여야 합니다.
+  const relative = '<script type="module" crossorigin src="/assets/app.js"></script>\n<link rel="stylesheet" href="/assets/app.css" />';
+  const out = absoluteAssetRefs(relative, "https://hub.xconda.ai/");
+  assert.match(out, /src="https:\/\/hub\.xconda\.ai\/assets\/app\.js"/);
+  assert.match(out, /href="https:\/\/hub\.xconda\.ai\/assets\/app\.css"/);
+  // 이미 절대 주소면 건드리지 않습니다 (멱등 — 여러 번 돌려도 같아야 함).
+  assert.equal(absoluteAssetRefs(out, "https://hub.xconda.ai/"), out);
+  // 다른 호스트의 상대 경로도 같은 사이트 기준으로 풉니다.
+  assert.match(
+    absoluteAssetRefs('<link rel="preload" href="/assets/app.js" as="script" />', "https://example.test/base/"),
+    /href="https:\/\/example\.test\/base\/assets\/app\.js"/
+  );
+});
+
 
 test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 한국어 홈으로 보낸다", () => withSwitchOff(() => {
   const root = tempSite();

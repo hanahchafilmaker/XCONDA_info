@@ -46,6 +46,19 @@ export const SNAPSHOT_STALE_MS = 7 * 24 * 60 * 60 * 1000;
 let pending: Promise<NotionSnapshot | null> | null = null;
 let cached: { at: number; value: NotionSnapshot | null } | null = null;
 
+/**
+ * 스냅샷 파일이 **이 배포본에 아예 없는지** (-1 판정 전).
+ * -----------------------------------------------------------------------------
+ * 프록시(`/hub/*` → `hub.xconda.ai/en/*`) 아래에서 스냅샷 파일이 빠져 있으면 서버는 404 대신
+ * 제품 사이트 catch-all 의 **200 + 앱 셸 HTML** 을 돌려줍니다. 그때마다 공개 프록시
+ * (notion-api.splitbee.io)로 폴백하는데, `/table` 8초 + `/page` 8초 타임아웃을 기다린 뒤에야
+ * 실패합니다 — 영어 허브가 16초 넘게 비어 있던 원인.
+ * 파일이 없다는 사실은 배포 단위로 고정이므로, 이 방문 동안은 같은 요청을 반복하지 않고
+ * 폴백 대기 시간도 줄입니다.
+ */
+let missing = false;
+let missingAt = 0;
+
 const undash = (id: unknown): string => String(id ?? "").replace(/-/g, "").toLowerCase();
 
 function snapshotUrl(force = false): string {
@@ -68,7 +81,26 @@ function isSnapshot(value: unknown): value is NotionSnapshot {
   );
 }
 
-/** 스냅샷을 읽습니다. 없거나 오류면 null (호출부에서 공개 API 경로로 진행) */
+/**
+ * 이 배포본에 스냅샷 파일이 아예 없을 가능성이 큰가.
+ * 파일이 없으면 `loadSnapshot()` 이 네트워크를 다시 치지 않고 즉시 null 을 돌려주고,
+ * 호출부(notionPublic)는 공개 프록시 폴백의 타임아웃을 8초 → 2.5초로 줄입니다 (2026-11-17).
+ */
+export function snapshotUnavailable(): boolean {
+  return missing;
+}
+
+/** 한 번 "없음"으로 판정된 뒤 재확인하기까지의 시간 (재배포로 파일이 생길 수 있으므로) */
+const MISSING_RECHECK_MS = 10 * 60_000;
+
+/**
+ * 스냅샷을 읽습니다. 없거나 오류면 null (호출부에서 공개 API 경로로 진행)
+ *
+ * `cache: "no-store"` 를 쓰지 않습니다 — 스냅샷은 1.9MB 라서 매 폴링마다 캐시를
+ * 비우면 모바일에서 다운로드가 반복됩니다. 대신 아래 두 가지로 최신성을 지킵니다.
+ *   1) HTTP 조건부 요청(ETag·Last-Modified) → 내용이 그대로면 304 로 끝나 본문이 없습니다.
+ *   2) 강제 갱신(`force`)일 때만 주소에 `?t=` 를 붙여 캐시를 건너뜁니다.
+ */
 export function loadSnapshot(force = false): Promise<NotionSnapshot | null> {
   if (force) {
     cached = null;
@@ -76,16 +108,33 @@ export function loadSnapshot(force = false): Promise<NotionSnapshot | null> {
   } else if (cached && Date.now() - cached.at < TTL_MS) {
     return Promise.resolve(cached.value);
   }
+  // 파일이 없다고 이미 판정된 배포본이면 네트워크를 다시 치지 않습니다(16초 폴백 방지).
+  if (!force && missing && Date.now() - missingAt < MISSING_RECHECK_MS) return Promise.resolve(null);
   if (!force && pending) return pending;
 
   pending = (async () => {
     try {
-      const res = await fetch(snapshotUrl(force), { cache: "no-store", headers: { Accept: "application/json" } });
-      if (!res.ok) return null;
-      const data: unknown = await res.json();
-      return isSnapshot(data) ? data : null;
+      const res = await fetch(snapshotUrl(force), {
+        cache: "default",
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) {
+        missing = true;
+        missingAt = Date.now();
+        return null;
+      }
+      const data: unknown = await res.json().catch(() => null);
+      if (!isSnapshot(data)) {
+        // 200 이지만 JSON 이 아님 = 프록시 catch-all 이 앱 셸 HTML 을 준 경우.
+        // 이 배포본에는 스냅샷 파일이 없다는 뜻이므로 같은 판정을 내립니다.
+        missing = true;
+        missingAt = Date.now();
+        return null;
+      }
+      missing = false;
+      return data;
     } catch {
-      return null; // 파일 없음 · 오프라인 · 파싱 실패 → 조용히 무시
+      return null; // 오프라인 · 일시 오류 → 판정을 바꾸지 않고 조용히 무시
     }
   })().then((value) => {
     cached = { at: Date.now(), value };
