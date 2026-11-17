@@ -78,6 +78,28 @@ for (const rel of ["", "qna/"]) {
   }
 }
 
+// 자산 프록시 — 이미지·CSS 자리에 HTML(앱 셸)이 오지 않는가 (2026-11-17 로고 깨짐)
+//   프록시가 `/hub/*` → `hub.xconda.ai/en/*` 인데 en/ 폴더에는 원래 assets/ 가 없습니다.
+//   그래서 원본 404 가 사이트 catch-all 로 떨어져 **200 + HTML** 이 이미지 자리에 들어갑니다.
+//   허브 쪽에서 가벼운 자산만 en/ 에 복사해 두었지만, 본문 커버·OG 카드는 프록시 예외가 있어야 합니다.
+const ASSETS = [
+  ["assets/img/logo/xconda-wordmark-official.png", /^image\//],
+  ["assets/img/tools/tool-flexboard.jpg", /^image\//],
+  ["assets/img/og/lang/en-home.png", /^image\//],
+  ["assets/app.css", /^text\/css/],
+];
+for (const [rel, expect] of ASSETS) {
+  const url = `${base}${rel}`;
+  try {
+    const res = await get(url);
+    const type = (res.headers.get("content-type") ?? "").split(";")[0].trim();
+    const ok = res.status === 200 && expect.test(type);
+    report(ok, url, ok ? type : `${res.status} · content-type: ${type || "?"} (${expect.source} 이어야 합니다)`);
+  } catch (error) {
+    report(false, url, String(error?.cause?.code ?? error?.message ?? error));
+  }
+}
+
 // 사이트맵 (스위치를 켠 뒤에만 생깁니다 — 켜기 전에는 404 가 정상)
 try {
   const res = await get(`${base}sitemap.xml`);

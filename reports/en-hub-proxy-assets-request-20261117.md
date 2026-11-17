@@ -2,15 +2,18 @@
 
 - 대상: `www.xconda.ai` 프록시 담당 개발자
 - 근거: 영어 허브가 `www.xconda.ai/hub/` 로 이전 완료(2026-11-17). 이후 실측에서 나온 문제 2건
+- 급함: **1번은 이미지가 계속 깨진 채 노출됩니다.** 2번은 링크 동선 문제입니다.
 - 이전 배경·조건: `reports/en-hub-subdirectory-handoff-20261114.md`
+- 갱신: 2026-11-17 — 영어 홈을 앱 화면으로 되돌린 PR #146 반영(자산 요청 범위가 좁아짐)
 
 ---
 
-## 1. `/hub/assets/*` 가 HTML 을 돌려줍니다 (로고 깨짐의 원인)
+## 1. `/hub/assets/*` 가 HTML 을 돌려줍니다 (썸네일·OG 카드 깨짐의 원인)
 
 ### 증상
 
-영어 허브 화면에서 **로고·도구 이미지가 깨집니다**. CSS 는 정상입니다(인라인).
+영어 허브 화면에서 **도구 썸네일·블로그 커버·공유 카드(OG) 이미지가 깨집니다**.
+글자가 있는 레이아웃·로고는 정상입니다.
 
 ### 원인 (실측)
 
@@ -18,14 +21,22 @@
 | --- | --- | --- |
 | `/hub/assets/img/logo/xconda-wordmark-official.png` | `image/png` | **HTML (앱 셸)** |
 | `/hub/assets/img/tools/tool-flexboard.jpg` | `image/jpeg` | **HTML (앱 셸)** |
-| `/hub/assets/app.css` | `text/css` | **HTML (앱 셸)** |
 | `/hub/assets/img/og/xconda-hub-1200x630.png` | `image/png` | **HTML (앱 셸)** |
 
 프록시 규칙이 `/hub/*` → `hub.xconda.ai/en/*` 인데, **`en/` 폴더는 정적 영어 문서 폴더라
-`assets/` 가 없습니다.** 그래서 원본이 404 를 내고, 그 404 가 사이트의 catch-all 로 떨어져
+`assets/` 가 원래 없습니다.** 그래서 원본이 404 를 내고, 그 404 가 사이트의 catch-all 로 떨어져
 **200 + 앱 셸 HTML** 이 이미지 자리에 들어갑니다.
 
 `<img>` 가 HTML 을 받으면 브라우저는 그림이 아니라 깨진 아이콘을 그립니다.
+
+> **2026-11-17 갱신 — 하이브리드 적용(PR #146) 후 달라진 점**
+>
+> - 영어 홈(`/hub/`)이 **앱 화면**으로 바뀌었습니다. 그래서 위 증상이 "로고"에서
+>   **"본문 썸네일·OG 카드"** 로 좁혀졌습니다. 로고는 아래 복사본으로 살아납니다.
+> - **`/hub/assets/app.css` 는 이제 요청되지 않습니다.** 앱은 `app.js`·`app.css` 를
+>   `https://hub.xconda.ai/assets/…` **절대 주소**로 불러옵니다(프록시를 거치지 않음).
+> - 앱 안의 이미지 경로는 `hubBase()` 기준이라 `/hub/en/` 에서는 `/hub/en/assets/…` 로 갑니다.
+>   아래 `en/assets/` 복사본이 이 요청을 받아 냅니다.
 
 ### 요청
 
@@ -51,6 +62,8 @@ https://www.xconda.ai/hub/assets/…     → https://hub.xconda.ai/assets/…
 **복사하지 않은 것**: `assets/img/og/`(약 20MB), `assets/img/covers/`(약 15MB).
 OG 공유 카드와 본문 커버는 위 프록시 수정이 있어야 정상 표시됩니다. 35MB 를 저장소에
 중복 배포하는 건 피했습니다.
+
+즉 **프록시를 고치지 않아도 로고·홈 도구 이미지는 정상**, **고쳐야 OG 카드·커버가 정상**입니다.
 
 ---
 
@@ -94,14 +107,22 @@ OG 공유 카드와 본문 커버는 위 프록시 수정이 있어야 정상 �
 
 ## 4. 확인 방법
 
-프록시 수정 후 아래가 **이미지 응답**이어야 합니다.
+프록시 수정 후 아래가 **이미지 응답**이어야 합니다. (핵심은 `content-type` 입니다 —
+HTML 이 200 으로 와도 브라우저는 그림을 그리지 못합니다.)
 
 ```
+curl -I https://www.xconda.ai/hub/assets/img/og/xconda-hub-1200x630.png
+# 기대: 200, content-type: image/png   (지금은 text/html)
+
 curl -I https://www.xconda.ai/hub/assets/img/logo/xconda-wordmark-official.png
 # 기대: 200, content-type: image/png
-
-curl -I https://www.xconda.ai/hub/assets/app.css
-# 기대: 200, content-type: text/css
 ```
 
-허브 저장소에서: `npm run proxy:check`
+허브 저장소에서 한 번에:
+
+```
+npm run proxy:check
+```
+
+이 스크립트는 주소 응답·제목 일치·끝 슬래시·**자산 content-type**·사이트맵·robots 를 함께 봅니다.
+(2026-11-17 에 자산 점검을 추가했습니다.)
