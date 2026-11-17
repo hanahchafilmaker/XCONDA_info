@@ -536,6 +536,38 @@ export function parseRoute(pathname) {
  */
 export const HUB_MANUALS_BASE_URL = "https://hub.xconda.ai/";
 
+/** 이 저장소에 함께 배포되는 자산 폴더 — 프록시 아래에서는 원본 도메인에만 있습니다. */
+const LOCAL_ASSET_PREFIXES = ["assets/", "./assets/", "/assets/"];
+
+/**
+ * 사이트 자산(`assets/...`) 주소를 **원본 도메인 절대 주소**로 풀어 줍니다.
+ * -----------------------------------------------------------------------------
+ * 영어 허브는 `www.xconda.ai/hub/` 프록시로도 열립니다. 그런데 프록시는
+ * `/hub/*` → `hub.xconda.ai/en/*` 로 보내고, **`/hub/assets/*` 는 넘겨주지 않습니다**
+ * (2026-11-17 확인 — 404 가 제품 사이트 catch-all 로 떨어져 이미지 자리에 앱 셸 HTML 이 옵니다).
+ * 그래서 앱이 사이트 상대 주소로 두면 `/hub/assets/img/covers/...png` 이 되어 깨집니다.
+ * 커버 40장·도구 이미지가 이 경로였습니다(2026-11-17 이미지 깨짐의 남은 원인).
+ *
+ * `assets/` 로 시작하는 **같은 저장소 자산만** 원본 주소로 바꿉니다.
+ *   · 이미 절대 주소(http·https·data·blob)는 그대로 — 노션·미디어 서버 이미지
+ *   · `manuals/` 처럼 다른 정적 경로도 그대로(별도 규칙: HUB_MANUALS_BASE_URL)
+ * @param {string | undefined} src 원본 이미지 주소(상대·절대 모두 가능)
+ * @param {string} [base] 그 사이트의 원본 기준 주소(기본 `https://hub.xconda.ai/`)
+ * @returns {string | undefined}
+ */
+export function hubAssetUrl(src, base = HUB_MANUALS_BASE_URL) {
+  if (!src) return src;
+  const value = String(src).trim();
+  if (!value) return src;
+  if (/^(?:[a-z]+:)?\/\//i.test(value) || value.startsWith("data:") || value.startsWith("blob:") || value.startsWith("#")) {
+    return src;
+  }
+  if (!LOCAL_ASSET_PREFIXES.some((prefix) => value.startsWith(prefix))) return src;
+  const rel = value.replace(/^\.?\//, "");
+  const root = base.endsWith("/") ? base : `${base}/`;
+  return new URL(rel, root).href;
+}
+
 /**
  * 허브가 놓인 기본 경로(항상 / 로 끝남). 글 주소에서 `post/abc/` 같은 부분을 떼어 냅니다.
  *   "/XCONDA_info/post/abc/" → "/XCONDA_info/"   "/XCONDA_info/dev.html" → "/XCONDA_info/"

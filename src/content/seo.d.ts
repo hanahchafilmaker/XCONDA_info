@@ -80,6 +80,7 @@ export function routePrefixFor(type: string | null | undefined): string | null;
 export function routePathFor(type: string, slug: string): string | null;
 export function parseRoute(pathname: string): { prefix: string; slug: string } | null;
 export const HUB_MANUALS_BASE_URL: string;
+export function hubAssetUrl(src: string | undefined, base?: string): string | undefined;
 export function hubBaseFromPathname(pathname: string): string;
 export function absoluteUrl(siteUrl: string, relativePath?: string): string;
 export function summarize(raw: unknown, max?: number): string;

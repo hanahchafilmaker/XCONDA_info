@@ -5,6 +5,7 @@ import { localizeEntry, localizeTool } from "../i18n/content";
 import { TOOL_EN } from "./tools.en";
 import { getToolGuide } from "./toolGuides";
 import { getToolVideo } from "./toolVideos";
+import { hubAssetUrl } from "../seo";
 
 export const STUDIO_URL = "https://www.xconda.ai";
 const IMG = `${STUDIO_URL}/assets/img/land`;
@@ -346,7 +347,8 @@ export function toolToEntry(tool: Tool, lang: Lang = "ko"): Entry {
     category: tool.group,
     date: new Date().toISOString(),
     tags: [tool.name],
-    cover: tool.image,
+    // 프록시(/hub/) 아래에서도 열리도록 같은 저장소 자산은 원본 도메인 절대 주소로
+    cover: hubAssetUrl(tool.image),
     url: tool.href,
     tool: tool.name,
     blocks: toolBlocks(tool, "ko"),

@@ -58,6 +58,7 @@ import {
   seoEligibility,
   seoFieldsOf,
   siteMetaFor,
+  hubAssetUrl,
   summarize,
 } from "../src/content/seo.js";
 import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
@@ -1663,6 +1664,34 @@ test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보
  *   /hub/* → hub.xconda.ai/en/* 프록시에서 이미지가 404 → catch-all 앱 셸(HTML)로 떨어져
  *   로고가 깨지던 문제. 스위치가 켜진 언어 폴더에 가벼운 자산만 복사해 둡니다.
  * ------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------
+ * 사이트 자산의 절대 주소 해석 (2026-11-17)
+ *   프록시는 /hub/* → hub.xconda.ai/en/* 로 보내지만 /hub/assets/* 는 넘겨주지 않습니다.
+ *   그래서 앱이 사이트 상대 주소로 둔 커버·도구 이미지가 깨졌습니다(이미지 자리에 앱 셸 HTML).
+ * ------------------------------------------------------------------------------------------ */
+test("같은 저장소 자산(assets/)만 원본 도메인 절대 주소로 바뀐다", () => {
+  // 프록시 아래에서 깨지던 주소들 → 원본 도메인
+  assert.equal(hubAssetUrl("assets/img/covers/a.png"), "https://hub.xconda.ai/assets/img/covers/a.png");
+  assert.equal(hubAssetUrl("./assets/img/tools/t.jpg"), "https://hub.xconda.ai/assets/img/tools/t.jpg");
+  assert.equal(hubAssetUrl("/assets/img/og/x.png"), "https://hub.xconda.ai/assets/img/og/x.png");
+  // 이미 절대 주소인 것은 손대지 않는다 (노션·미디어 서버·데이터 URI)
+  for (const url of [
+    "https://media.toolgov.com/media/land/flow-01.gif",
+    "https://www.notion.so/image/abc",
+    "data:image/png;base64,AAAA",
+    "blob:https://www.xconda.ai/1234",
+  ]) {
+    assert.equal(hubAssetUrl(url), url);
+  }
+  // assets/ 가 아닌 사이트 경로도 그대로 (매뉴얼은 HUB_MANUALS_BASE_URL 규칙을 따로 씁니다)
+  assert.equal(hubAssetUrl("manuals/en/index.html"), "manuals/en/index.html");
+  assert.equal(hubAssetUrl(""), "");
+  assert.equal(hubAssetUrl(undefined), undefined);
+  // 기준 주소를 바꾸면 따라간다
+  assert.equal(hubAssetUrl("assets/a.png", "https://example.test/"), "https://example.test/assets/a.png");
+  assert.equal(hubAssetUrl("assets/a.png", "https://example.test"), "https://example.test/assets/a.png");
+});
+
 test("공개 주소 스위치가 켜진 언어 폴더에만 가벼운 자산 사본이 생긴다", () => {
   const root = tempSite();
   const put = (rel) => {
