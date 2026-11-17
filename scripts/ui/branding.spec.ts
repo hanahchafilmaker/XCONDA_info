@@ -1,11 +1,52 @@
 import { test, expect } from "@playwright/test";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import fs, { readFileSync } from "node:fs";
+import path from "node:path";
+
+const MIME: Record<string, string> = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".svg": "image/svg+xml",
+  ".gif": "image/gif",
+  ".css": "text/css",
+  ".js": "text/javascript",
+  ".json": "application/json",
+};
 
 const wordmark = new URL("../../assets/img/logo/xconda-wordmark-official.png", import.meta.url);
 
+/**
+ * 이 저장소 자산은 **원본 도메인 절대 주소**로도 요청됩니다.
+ * 앱은 `/hub/`(제품 사이트 프록시) 아래에서 로컬 커버를 `https://hub.xconda.ai/assets/…`
+ * 로 부릅니다 — 프록시가 `/hub/assets/*` 를 넘겨주지 않기 때문입니다(2026-11-17).
+ * 테스트는 외부 요청을 막아 두므로, 그 자산 요청만 로컬 파일로 응답해 실제 배포와 같게 만듭니다.
+ * (노션·미디어 서버처럼 진짜 외부인 주소는 계속 차단 — 그게 실패 경로를 검증합니다)
+ */
+const HUB_ORIGIN = "https://hub.xconda.ai/";
+const ROOT = new URL("../../", import.meta.url).pathname;
+const LOCAL_ASSET = /^assets\/(img|app\.(?:js|css)|i18n-paths\.json)/;
+
 test.beforeEach(async ({ page }) => {
-  await page.route("**/*", (route) => ["127.0.0.1", "localhost"].includes(new URL(route.request().url()).hostname) ? route.continue() : route.abort());
+  await page.route("**/*", (route) => {
+    const url = new URL(route.request().url());
+    if (["127.0.0.1", "localhost"].includes(url.hostname)) return route.continue();
+    if (url.origin === HUB_ORIGIN.slice(0, -1)) {
+      const rel = url.pathname.replace(/^\/+/, "");
+      if (LOCAL_ASSET.test(rel)) {
+        const file = path.join(ROOT, rel);
+        if (fs.existsSync(file)) {
+          return route.fulfill({
+            status: 200,
+            contentType: MIME[path.extname(file)] ?? "application/octet-stream",
+            body: fs.readFileSync(file),
+          });
+        }
+      }
+    }
+    return route.abort();
+  });
   await page.addInitScript(() => localStorage.setItem("xconda-lang", "ko"));
   await page.goto("/dev.html");
   await expect(page.locator("[data-featured-notice]")).toBeVisible();
@@ -16,6 +57,8 @@ test("featured notice cover fills the card without cropping at every breakpoint"
   const image = card.locator("img");
   await card.scrollIntoViewIfNeeded();
   await expect(image).toHaveAttribute("src", /assets\/img\/covers\//);
+  // 프록시(/hub/) 아래에서는 원본 도메인 절대 주소로 옵니다 — 파일 경로는 같습니다.
+  await expect(image).toHaveAttribute("src", /^(?:https:\/\/hub\.xconda\.ai\/)?\.?\/?assets\/img\/covers\//);
   await expect.poll(() => image.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
   for (const width of [320, 390, 467, 768, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -66,6 +109,7 @@ test("header and footer use the exact supplied wordmark, including subpath deplo
 
 test("failed notice covers keep their full-width media area", async ({ page }) => {
   await page.route("**/assets/img/covers/**", (route) => route.abort());
+  await page.route("https://hub.xconda.ai/assets/img/covers/**", (route) => route.abort());
   await page.reload();
   const cover = page.locator("[data-featured-notice] [data-card-cover]");
   await cover.scrollIntoViewIfNeeded();

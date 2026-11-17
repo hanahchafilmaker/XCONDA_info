@@ -536,6 +536,60 @@ export function parseRoute(pathname) {
  */
 export const HUB_MANUALS_BASE_URL = "https://hub.xconda.ai/";
 
+/** 이 저장소에 함께 배포되는 자산 폴더 — 프록시 아래에서는 원본 도메인에만 있습니다. */
+const LOCAL_ASSET_PREFIXES = ["assets/", "./assets/", "/assets/"];
+
+/**
+ * 이 앱이 **제품 사이트 프록시 아래**(`www.xconda.ai/hub/`)에서 돌고 있는지.
+ * -----------------------------------------------------------------------------
+ * 프록시는 `/hub/*` → `hub.xconda.ai/en/*` 로 보내지만 **`/hub/assets/*` 는 넘겨주지
+ * 않습니다**(2026-11-17 확인 — 404 가 제품 사이트 catch-all 로 떨어져 이미지 자리에
+ * 앱 셸 HTML 이 옵니다). 그래서 그 아래에서만 같은 저장소 자산을 원본 도메인 절대
+ * 주소로 풀어야 합니다.
+ *
+ * 원본(`hub.xconda.ai/…`)과 GitHub Pages 프로젝트 경로(`/XCONDA_info/…`)에서는
+ * **상대 주소가 정상 동작**하므로 손대지 않습니다 — 불필요하게 외부 도메인을 부르지
+ * 않고, 로컬 개발·UI 테스트(외부 요청 차단)도 그대로 돌아갑니다.
+ *
+ * @param {string} [pathname] 확인할 경로(기본: 브라우저 현재 경로)
+ */
+export function isProxiedLocalePath(pathname) {
+  const p = String(pathname ?? (typeof window !== "undefined" ? window.location?.pathname : "") ?? "");
+  const segments = p.split("/").filter(Boolean);
+  if (segments[0] !== "hub") return false;
+  // /hub/ · /hub/qna/… 는 영어(기본), /hub/en/… 처럼 언어가 붙는 경우도 함께 봅니다.
+  // 앱은 글 주소에서도 열리므로 섹션 이름도 같은 사이트로 봅니다.
+  if (segments.length === 1) return true;
+  return ["en", "post", "notice", "qna", "guide"].includes(segments[1]);
+}
+
+/**
+ * 사이트 자산(`assets/...`) 주소를 **원본 도메인 절대 주소**로 풀어 줍니다.
+ * -----------------------------------------------------------------------------
+ * 위 `isProxiedLocalePath` 가 참일 때만 바꿉니다(프록시는 `/hub/*` 만 넘겨줌).
+ *
+ * `assets/` 로 시작하는 **같은 저장소 자산만** 대상입니다.
+ *   · 이미 절대 주소(http·https·data·blob)는 그대로 — 노션·미디어 서버 이미지
+ *   · `manuals/` 처럼 다른 정적 경로도 그대로(별도 규칙: HUB_MANUALS_BASE_URL)
+ * @param {string | undefined} src 원본 이미지 주소(상대·절대 모두 가능)
+ * @param {string} [base] 그 사이트의 원본 기준 주소(기본 `https://hub.xconda.ai/`)
+ * @param {string} [pathname] 판단에 쓸 경로(기본: 브라우저 현재 경로)
+ * @returns {string | undefined}
+ */
+export function hubAssetUrl(src, base = HUB_MANUALS_BASE_URL, pathname) {
+  if (!src) return src;
+  const value = String(src).trim();
+  if (!value) return src;
+  if (!isProxiedLocalePath(pathname)) return src;
+  if (/^(?:[a-z]+:)?\/\//i.test(value) || value.startsWith("data:") || value.startsWith("blob:") || value.startsWith("#")) {
+    return src;
+  }
+  if (!LOCAL_ASSET_PREFIXES.some((prefix) => value.startsWith(prefix))) return src;
+  const rel = value.replace(/^\.?\//, "");
+  const root = base.endsWith("/") ? base : `${base}/`;
+  return new URL(rel, root).href;
+}
+
 /**
  * 허브가 놓인 기본 경로(항상 / 로 끝남). 글 주소에서 `post/abc/` 같은 부분을 떼어 냅니다.
  *   "/XCONDA_info/post/abc/" → "/XCONDA_info/"   "/XCONDA_info/dev.html" → "/XCONDA_info/"
