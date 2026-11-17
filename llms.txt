@@ -50,6 +50,7 @@
 - [FLUX 3 Image 공개, 부분만 바꾸는 정밀 편집](https://hub.xconda.ai/post/flux-3-image-release/): 🚨 블랙 포레스트 랩스가 FLUX 3 Image를 공개했습니다. 가장 눈에 띄는 건 원하는 부분만 바꾸고 나머지 이미지는 그대로 유지하는 정밀 편집입니다. 여러 번 수정하거나 한 번에 여러 요소를 바꾸는 작업도 지원합니다. 바운딩 박스로 사람·사물의 위치를 직접…
 - [Opus 5.5 공개 후 GitHub 영상·애니메이션 쏠림](https://hub.xconda.ai/post/opus-5-5-github-trending/): Claude Opus 5.5 공개 일주일 만에 GitHub 인기 레포의 대부분이 영상·애니메이션 쪽으로 쏠렸습니다. 43가지 영화 스타일을 코드만으로 구현한 Lemo-Opuscar와 98년 치 작품상 수상작을 6분 25초에 담은 'OPUSCAR 98'이 대표 사례로…
 - [Skillry, AI 영상 결과물과 프롬프트 함께 공개](https://hub.xconda.ai/post/skillry-ai-video-prompt-reference/): 고퀄 3D·모션그래픽 결과물과 실제 사용 프롬프트를 원본과 나란히 비교해 볼 수 있는 레퍼런스 사이트 Skillry가 X에서 화제가 되고 있습니다.
+- [알리바바 Wan 3.0, AI 영상 순위 1위](https://hub.xconda.ai/post/alibaba-wan-3-0-tops-ai-video-leaderboard/): 알리바바 Wan 3.0이 Artificial Analysis 텍스트→영상 순위에서 1175 Elo로 1위에 올랐습니다. 이미지→영상 부문은 시댄스 2.5(1161 Elo)가 1위입니다.
 
 ## 블로그
 
