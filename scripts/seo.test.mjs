@@ -59,6 +59,7 @@ import {
   seoFieldsOf,
   siteMetaFor,
   hubAssetUrl,
+  isProxiedLocalePath,
   summarize,
 } from "../src/content/seo.js";
 import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
@@ -1669,11 +1670,25 @@ test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보
  *   프록시는 /hub/* → hub.xconda.ai/en/* 로 보내지만 /hub/assets/* 는 넘겨주지 않습니다.
  *   그래서 앱이 사이트 상대 주소로 둔 커버·도구 이미지가 깨졌습니다(이미지 자리에 앱 셸 HTML).
  * ------------------------------------------------------------------------------------------ */
-test("같은 저장소 자산(assets/)만 원본 도메인 절대 주소로 바뀐다", () => {
-  // 프록시 아래에서 깨지던 주소들 → 원본 도메인
-  assert.equal(hubAssetUrl("assets/img/covers/a.png"), "https://hub.xconda.ai/assets/img/covers/a.png");
-  assert.equal(hubAssetUrl("./assets/img/tools/t.jpg"), "https://hub.xconda.ai/assets/img/tools/t.jpg");
-  assert.equal(hubAssetUrl("/assets/img/og/x.png"), "https://hub.xconda.ai/assets/img/og/x.png");
+test("프록시(/hub/) 아래에서만 같은 저장소 자산이 원본 도메인 절대 주소가 된다", () => {
+  // 프록시 판정 — /hub/ 아래(영어 기본)만 해당. 원본 도메인·Pages 프로젝트 경로·개발 서버는 제외.
+  for (const p of ["/hub/", "/hub", "/hub/qna/", "/hub/qna/commercial-use/", "/hub/en/qna/"]) {
+    assert.equal(isProxiedLocalePath(p), true, p);
+  }
+  for (const p of ["/", "/dev.html", "/XCONDA_info/", "/XCONDA_info/qna/x/", "/en/", "/qna/x/", "/hubx/", "/hub/ja/x/"]) {
+    assert.equal(isProxiedLocalePath(p), false, p);
+  }
+
+  const B = "https://hub.xconda.ai/";
+  const onProxy = "/hub/qna/commercial-use/";
+  // 프록시 아래: 커버·도구 이미지가 원본 도메인으로 (이미지 자리에 앱 셸 HTML 이 들어오던 문제)
+  assert.equal(hubAssetUrl("assets/img/covers/a.png", B, onProxy), "https://hub.xconda.ai/assets/img/covers/a.png");
+  assert.equal(hubAssetUrl("./assets/img/tools/t.jpg", B, onProxy), "https://hub.xconda.ai/assets/img/tools/t.jpg");
+  assert.equal(hubAssetUrl("/assets/img/og/x.png", B, onProxy), "https://hub.xconda.ai/assets/img/og/x.png");
+  // 프록시가 아니면 상대 주소 그대로 — 원본·Pages·개발 서버는 이게 정상이고, 외부 요청을 만들지 않습니다
+  for (const p of ["/", "/XCONDA_info/", "/dev.html"]) {
+    assert.equal(hubAssetUrl("assets/img/covers/a.png", B, p), "assets/img/covers/a.png", p);
+  }
   // 이미 절대 주소인 것은 손대지 않는다 (노션·미디어 서버·데이터 URI)
   for (const url of [
     "https://media.toolgov.com/media/land/flow-01.gif",
@@ -1681,15 +1696,15 @@ test("같은 저장소 자산(assets/)만 원본 도메인 절대 주소로 바�
     "data:image/png;base64,AAAA",
     "blob:https://www.xconda.ai/1234",
   ]) {
-    assert.equal(hubAssetUrl(url), url);
+    assert.equal(hubAssetUrl(url, B, onProxy), url);
   }
   // assets/ 가 아닌 사이트 경로도 그대로 (매뉴얼은 HUB_MANUALS_BASE_URL 규칙을 따로 씁니다)
-  assert.equal(hubAssetUrl("manuals/en/index.html"), "manuals/en/index.html");
-  assert.equal(hubAssetUrl(""), "");
-  assert.equal(hubAssetUrl(undefined), undefined);
+  assert.equal(hubAssetUrl("manuals/en/index.html", B, onProxy), "manuals/en/index.html");
+  assert.equal(hubAssetUrl("", B, onProxy), "");
+  assert.equal(hubAssetUrl(undefined, B, onProxy), undefined);
   // 기준 주소를 바꾸면 따라간다
-  assert.equal(hubAssetUrl("assets/a.png", "https://example.test/"), "https://example.test/assets/a.png");
-  assert.equal(hubAssetUrl("assets/a.png", "https://example.test"), "https://example.test/assets/a.png");
+  assert.equal(hubAssetUrl("assets/a.png", "https://example.test/", onProxy), "https://example.test/assets/a.png");
+  assert.equal(hubAssetUrl("assets/a.png", "https://example.test", onProxy), "https://example.test/assets/a.png");
 });
 
 test("공개 주소 스위치가 켜진 언어 폴더에만 가벼운 자산 사본이 생긴다", () => {
