@@ -57,13 +57,29 @@ https://www.xconda.ai/hub/assets/…     → https://hub.xconda.ai/assets/…
 
 - `en/assets/img/logo/` — 워드마크·파비콘 (약 44KB)
 - `en/assets/img/tools/` — 홈 첫 화면 도구 이미지 (약 684KB)
-- 합계 12개 파일·728KB
+- `en/notion-content.json` — 콘텐츠 스냅샷 (약 1.9MB, 2026-11-17 추가)
+- 합계 13개 파일 · 약 2.6MB
 
 **복사하지 않은 것**: `assets/img/og/`(약 20MB), `assets/img/covers/`(약 15MB).
 OG 공유 카드와 본문 커버는 위 프록시 수정이 있어야 정상 표시됩니다. 35MB 를 저장소에
 중복 배포하는 건 피했습니다.
 
-즉 **프록시를 고치지 않아도 로고·홈 도구 이미지는 정상**, **고쳐야 OG 카드·커버가 정상**입니다.
+### 스냅샷도 함께 복사한 이유 (2026-11-17)
+
+앱은 스냅샷을 **자기 주소 기준**으로 찾습니다(`src/notionSnapshot.ts`). 그래서 `/hub/` 에서는
+`/hub/notion-content.json` 을 부르고, 프록시가 그걸 `hub.xconda.ai/en/notion-content.json` 으로
+넘깁니다. 그 파일이 없으면 404 가 catch-all 로 떨어져 **200 + 앱 셸 HTML** 이 오고, JSON 파싱이
+실패해 앱이 무료 공개 프록시(`notion-api.splitbee.io`)로 폴백합니다. 그 폴백은 `/table` 8초 +
+`/page` 8초 = **최대 16초**를 기다린 뒤에야 "Notion 연결 오류 · 캐시 표시" 로 끝납니다.
+영어 허브가 유독 느리던 직접적인 원인이었습니다.
+
+같은 이유로 **앱 번들 참조도 절대 주소**로 바꿨습니다. `/hub/assets/app.js` 는 `en/` 에 사본이
+없어 404 → HTML 이 오는데, 모듈 스크립트로 HTML 은 실행되지 않으므로 화면이 비어 버립니다.
+이제 언어 페이지는 `https://hub.xconda.ai/assets/app.js` 를 직접 부릅니다.
+
+정리하면:
+- **프록시를 고치지 않아도** 로고·홈 도구 이미지·**콘텐츠 전체**가 정상입니다.
+- **고쳐야** OG 공유 카드·본문 커버가 정상입니다.
 
 ---
 

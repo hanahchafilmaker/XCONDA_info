@@ -28,6 +28,7 @@ import {
   snapshotIsStale,
   snapshotMatches,
   snapshotPageMap,
+  snapshotUnavailable,
   type NotionSnapshot,
 } from "./notionSnapshot";
 
@@ -56,6 +57,13 @@ function isRecord(value: unknown): value is R {
 /** 공개 프록시가 응답하지 않을 때 무한정 기다리지 않도록 타임아웃을 겁니다. */
 const LIVE_TIMEOUT_MS = 8000;
 
+/**
+ * 스냅샷 파일이 없는 배포본에서 쓰는 짧은 타임아웃.
+ * /table + /page 두 번 시도하므로 총 대기 시간은 약 2배입니다. 실시간 조회가 성공할
+ * 가능성은 남기되, 실패했을 때 화면이 오래 비어 있지 않도록 줄입니다(2026-11-17).
+ */
+const FAST_FALLBACK_TIMEOUT_MS = 2500;
+
 function withTimeout(signal?: AbortSignal, ms = LIVE_TIMEOUT_MS): AbortSignal | undefined {
   try {
     const timeout = AbortSignal.timeout(ms);
@@ -65,8 +73,8 @@ function withTimeout(signal?: AbortSignal, ms = LIVE_TIMEOUT_MS): AbortSignal | 
   }
 }
 
-async function fetchJson(url: string, signal?: AbortSignal): Promise<unknown> {
-  const res = await fetch(url, { signal: withTimeout(signal), headers: { Accept: "application/json" } });
+async function fetchJson(url: string, signal?: AbortSignal, ms = LIVE_TIMEOUT_MS): Promise<unknown> {
+  const res = await fetch(url, { signal: withTimeout(signal, ms), headers: { Accept: "application/json" } });
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     const message = isRecord(data) && typeof data.error === "string" ? `: ${data.error}` : "";
@@ -303,11 +311,11 @@ function rowsToEntries(data: R[], snapshot?: NotionSnapshot | null): Entry[] {
 }
 
 /** 무료 공개 프록시(splitbee)에서 표 데이터를 읽습니다. `/table` → `/page` 순서로 시도 */
-async function fetchLiveRows(pageId: string, signal?: AbortSignal): Promise<R[]> {
+async function fetchLiveRows(pageId: string, signal?: AbortSignal, ms = LIVE_TIMEOUT_MS): Promise<R[]> {
   const failures: string[] = [];
 
   try {
-    const table = await fetchJson(`${API}/table/${pageId}`, signal);
+    const table = await fetchJson(`${API}/table/${pageId}`, signal, ms);
     if (Array.isArray(table)) return table.filter(isRecord);
     failures.push("table: 응답에 데이터베이스 행이 없습니다");
   } catch (error) {
@@ -318,7 +326,7 @@ async function fetchLiveRows(pageId: string, signal?: AbortSignal): Promise<R[]>
 
   try {
     // `/table` 장애 시, 같은 서비스의 `/page` 응답(레거시 레코드맵)에서 표를 찾습니다.
-    const page = await fetchJson(`${API}/page/${pageId}`, signal);
+    const page = await fetchJson(`${API}/page/${pageId}`, signal, ms);
     const rows = rowsFromPageRecordMap(page);
     if (rows) return rows;
     failures.push("page: 페이지 안에서 표(데이터베이스)를 찾지 못했습니다");
@@ -365,6 +373,10 @@ export async function fetchPublicEntries(
   manual = false
 ): Promise<Entry[]> {
   const snapshot = await matchingSnapshot(pageId, force);
+  // 이 배포본에 스냅샷 파일이 없다고 판정됐으면 공개 프록시 폴백의 **타임아웃을 줄입니다**.
+  // 기본값은 /table 8초 + /page 8초(=16초)라 그동안 화면이 비어 있습니다. 실시간 조회
+  // 자체는 남겨 두되(스냅샷 없이도 도는 배포본이 있으므로) 기다리는 시간만 줄입니다.
+  const liveTimeout = !force && !manual && snapshotUnavailable() ? FAST_FALLBACK_TIMEOUT_MS : LIVE_TIMEOUT_MS;
 
   // 신선한 스냅샷이 있으면 외부 호출 없이 즉시 응답 (가장 빠르고 조용한 경로)
   // 단, 사용자가 "지금 동기화"를 직접 눌렀다면 공개 프록시에서 실시간 데이터를
@@ -377,7 +389,7 @@ export async function fetchPublicEntries(
 
   let liveRows: R[];
   try {
-    liveRows = await fetchLiveRows(pageId, signal);
+    liveRows = await fetchLiveRows(pageId, signal, liveTimeout);
   } catch (error) {
     if (signal?.aborted) throw error;
     if (snapshot) {

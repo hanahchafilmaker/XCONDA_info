@@ -7,7 +7,14 @@ import { localizeEntry, useLang } from "../i18n";
 import { parseRoute, routePathFor, routePrefixFor } from "./seo";
 import { applyArticleMeta, applySiteMeta, hubBase } from "../seo";
 
-const POLL_MS = 3 * 60 * 1000;
+/**
+ * 자동 폴링 주기.
+ * 스냅샷은 Actions 가 **콘텐츠가 바뀔 때만** 커밋하고(1시간 하트비트 제거, 2026-11-10),
+ * GitHub schedule 자체가 2~8시간 간격으로 돕니다. 즉 3분마다 다시 읽어도 새로 받을 내용이
+ * 거의 없고, 그때마다 스냅샷(1.9MB)을 다시 확인하는 비용만 늘어납니다.
+ * 탭이 다시 보일 때의 재확인(30초 임계)은 그대로 두어, 오래 열어 둔 화면도 새 소식을 받습니다.
+ */
+const POLL_MS = 10 * 60 * 1000;
 
 type Status = "loading" | "ready" | "syncing" | "error";
 

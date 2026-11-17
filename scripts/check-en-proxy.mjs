@@ -86,8 +86,27 @@ const ASSETS = [
   ["assets/img/logo/xconda-wordmark-official.png", /^image\//],
   ["assets/img/tools/tool-flexboard.jpg", /^image\//],
   ["assets/img/og/lang/en-home.png", /^image\//],
+  // 앱 번들은 프록시를 거치지 않고 원본 도메인 절대 주소로 부릅니다(그래야 404 → HTML 을 피함).
+  // 여기서는 "프록시로도 받아지긴 하는지"를 보는 참고 항목입니다.
   ["assets/app.css", /^text\/css/],
 ];
+
+// 스냅샷 — 이게 HTML 로 오면 앱이 스냅샷을 못 읽어 공개 프록시 폴백(최대 16초)을 탑니다.
+// 영어 허브가 느리던 직접 원인이므로 프록시 점검의 필수 항목으로 둡니다.
+try {
+  const res = await get(`${base}notion-content.json`);
+  const type = (res.headers.get("content-type") ?? "").split(";")[0].trim();
+  let ok = res.status === 200 && /^application\/json/.test(type);
+  let detail = ok ? type : `${res.status} · content-type: ${type || "?"} (application/json 이어야 합니다)`;
+  if (ok) {
+    const data = await res.json().catch(() => null);
+    ok = Boolean(data && Array.isArray(data.rows));
+    if (!ok) detail = "JSON 이지만 스냅샷 형태가 아닙니다(rows 없음)";
+  }
+  report(ok, `${base}notion-content.json`, detail);
+} catch (error) {
+  report(false, `${base}notion-content.json`, String(error?.cause?.code ?? error?.message ?? error));
+}
 for (const [rel, expect] of ASSETS) {
   const url = `${base}${rel}`;
   try {

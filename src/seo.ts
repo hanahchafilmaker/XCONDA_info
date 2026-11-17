@@ -9,6 +9,7 @@
 
 import {
   DEFAULT_OG_IMAGE_PATH,
+  hubAssetUrl,
   hubBaseFromPathname,
   localizedUrl,
   resolveArticleMeta,
@@ -103,7 +104,9 @@ function applyHead(v: HeadValues) {
   const base = hubAbsolute("");
   const path = v.url.startsWith(base) ? v.url.slice(base.length) : null;
   if (path !== null && typeof fetch === "function") {
-    fetch(`${base}assets/i18n-paths.json`)
+    // 프록시(`/hub/*`) 아래에서는 `/hub/assets/*` 가 404 → 앱 셸 HTML 이라 JSON 이 아닙니다.
+    // 같은 저장소 자산은 원본 도메인 절대 주소로 읽습니다(hubAssetUrl 과 같은 규칙).
+    fetch(hubAssetUrl("assets/i18n-paths.json") ?? `${base}assets/i18n-paths.json`)
       .then((response) => response.ok ? response.json() : {})
       .then((paths: Record<string, string[]>) => {
         // 이전 요청이 늦게 도착해 현재 페이지를 덮어쓰지 않도록 합니다.
