@@ -63,6 +63,21 @@ try {
   report(false, "끝 슬래시 없는 주소", String(error?.message ?? error));
 }
 
+// 홈·목록이 허브 앱으로 튕기지 않는가 (2026-11-17 회귀)
+//   영어 홈·목록에 `data-hub-entry`(= `/?lang=en` 으로 보내는 스크립트)가 남아 있으면,
+//   주소창이 `www.xconda.ai/?lang=en` — 즉 **제품 사이트 첫 화면**으로 바뀝니다.
+//   스위치(LOCALE_BASE_URLS.en)를 켜면 그 스크립트가 빠지므로, 이 검사가 그 상태를 지킵니다.
+for (const rel of ["", "qna/"]) {
+  try {
+    const res = await get(`${base}${rel}`);
+    if (res.status !== 200) continue; // 위 검사에서 이미 실패로 기록됨
+    const html = await res.text();
+    report(!/data-hub-entry/.test(html), `${base}${rel} 허브 앱 이동 없음`, "data-hub-entry 가 남아 있어 제품 사이트 첫 화면(/?lang=en)으로 튕깁니다 — 스위치를 켜고 빌드했는지 확인");
+  } catch (error) {
+    report(false, `${base}${rel} hub-entry`, String(error?.message ?? error));
+  }
+}
+
 // 사이트맵 (스위치를 켠 뒤에만 생깁니다 — 켜기 전에는 404 가 정상)
 try {
   const res = await get(`${base}sitemap.xml`);
@@ -70,6 +85,24 @@ try {
   else console.log(`ℹ️  ${base}sitemap.xml — ${res.status} (스위치를 켜기 전이면 정상)`);
 } catch (error) {
   report(false, `${base}sitemap.xml`, String(error?.message ?? error));
+}
+
+// robots.txt — /hub/ 을 막지 않았는가 (제품 사이트 담당자에게 요청한 항목)
+try {
+  const origin = new URL(base).origin;
+  const res = await get(`${origin}/robots.txt`);
+  if (res.status === 200) {
+    const txt = await res.text();
+    const blocked = txt
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => /^(dis)?allow:\s*\/hub/i.test(line));
+    report(!blocked.some((line) => /^disallow/i.test(line)), `${origin}/robots.txt — /hub/ 차단 없음`, blocked.join(", "));
+  } else {
+    console.log(`ℹ️  ${origin}/robots.txt — ${res.status}`);
+  }
+} catch (error) {
+  report(false, "robots.txt", String(error?.message ?? error));
 }
 
 console.log(failed ? `\n❌ ${failed}건 실패 — 스위치를 켜지 마세요.` : "\n✅ 프록시 준비됨 — 스위치를 켜도 됩니다.");

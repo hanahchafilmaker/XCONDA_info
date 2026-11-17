@@ -265,7 +265,7 @@ export const langByCode = (code) => SITE_LANGS.find((l) => l.code === code) ?? n
  *    없는 주소로 넘어갑니다. 순서와 프록시 조건: reports/en-hub-subdirectory-handoff-20261114.md
  * 켜고 끄는 방법: 아래 값 한 줄만 바꿔 커밋 → 빌드가 나머지를 다시 만듭니다.
  */
-export const LOCALE_BASE_URLS = { en: "" };
+export const LOCALE_BASE_URLS = { en: "https://www.xconda.ai/hub/" };
 
 let activeLocaleBases = { ...LOCALE_BASE_URLS };
 
@@ -524,6 +524,17 @@ export function parseRoute(pathname) {
   }
   return { prefix: m[1], slug };
 }
+
+/**
+ * 허브 앱이 스스로를 가리키는 **원본 주소**(끝 `/`). 매뉴얼 폴더(`manuals/…`)처럼
+ * 사이트 안에서만 있는 파일은 이 주소로 엽니다.
+ *
+ * 왜 필요한가: 영어 페이지는 `www.xconda.ai/hub/` 프록시로도 열립니다. GitHub Pages 는
+ * `/hub/` 아래에서 **언어 폴더(`en/`)만** 프록시되도록 맞춰져 있어, 앱이 `manuals/en/…` 같은
+ * 상대 주소를 `/hub/manuals/…` 로 열면 404 가 납니다(2026-11-17 확인). 그래서 앱 안의
+ * 매뉴얼 링크는 페이지 위치와 무관하게 항상 이 원본 주소로 엽니다.
+ */
+export const HUB_MANUALS_BASE_URL = "https://hub.xconda.ai/";
 
 /**
  * 허브가 놓인 기본 경로(항상 / 로 끝남). 글 주소에서 `post/abc/` 같은 부분을 떼어 냅니다.

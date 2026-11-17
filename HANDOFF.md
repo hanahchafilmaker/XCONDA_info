@@ -622,7 +622,7 @@ npm run build
 | **섹션 추가** | ① `src/content/types.ts` `EntryType` ② `classify.js`(`TYPE_ALIASES`·`SECTION_LABELS`) ③ `ContentContext`(그룹·정렬) ④ `App.tsx`(배치) ⑤ `Nav.tsx` `LINKS` ⑥ `SearchOverlay.tsx` `Kind` ⑦ `dict.ts`(`nav.*`, `section.*`) ⑧ 테스트 |
 | **노션 속성 추가** | ① `src/content/fields.js`(별칭 키) 또는 `classify.js`(분류 관련) ② `src/notion.ts` `mapPage` ③ `scripts/notion-snapshot.mjs`(행 추출 · 요약) ④ `src/content/types.ts` `Entry` ⑤ 테스트 + `NOTION_SETUP.md` 표 갱신 |
 | **분류 규칙 변경** | `src/content/classify.js` **한 곳만** → `npm run test:unit` (사이트·스크립트 동시 반영) |
-| **영어 허브를 `www.xconda.ai/hub/` 로 옮기기(켜기/끄기)** | `src/content/seo.js` `LOCALE_BASE_URLS.en` 한 줄 → `npm run build`. **제품 사이트 프록시가 먼저** 열려 있어야 함(`npm run proxy:check` 로 확인). 조건·순서: `reports/en-hub-subdirectory-handoff-20261114.md` |
+| **영어 허브를 `www.xconda.ai/hub/` 로 옮기기(켜기/끄기)** | `src/content/seo.js` `LOCALE_BASE_URLS.en` 한 줄 → `npm run build`. **제품 사이트 프록시가 먼저** 열려 있어야 함(`npm run proxy:check` 로 확인). **2026-11-17 켬** (`"https://www.xconda.ai/hub/"`). 되돌리려면 `""` 로 바꿔 다시 빌드·배포(스위치를 끄면 영어 주소는 즉시 `hub.xconda.ai/en/` 로 돌아감). 조건·순서: `reports/en-hub-subdirectory-handoff-20261114.md` |
 | **디자인 토큰/색 변경** | `src/index.css` `@theme` |
 | **디버그: 노션 없이 보기** | `?notion=off` (샘플 모드) |
 | **디버그: 다른 노션 페이지로 보기** | `?notion=<페이지 URL 또는 32자리 ID>` |
@@ -680,6 +680,9 @@ npm run build
 | Google Drive 영상이 안 열림 | Drive 공유 설정 / CSP | 새 창 열기 링크로 동작하므로 Drive 공유 권한 확인. YouTube·직접 제공 파일은 인페이지 재생 |
 | KO를 눌렀는데 리로드 후 영어(또는 일·중)로 돌아감 | 2026-10-11 이전 빌드의 버그(브라우저 언어가 en/ja/zh면 `<head>` 스크립트가 `googtrans` 쿠키를 다시 쓰고 앱이 쿠키를 저장값보다 먼저 믿음) — 수정 완료 | 배포된 `index.html`이 최신인지 확인(옛 파일엔 `translate_a/element.js` `<script>` 태그가 HTML에 직접 있음). 개발자도구에서 `localStorage['xconda-lang']`(직접 고른 언어)·`googtrans` 쿠키 확인. 회귀 확인은 `npm run test:smoke`(`smoke-lang.mjs`) |
 | 한국(구글/크롬) 계정인데 일본어로 열림 | 웹사이트는 구글 계정 언어를 읽을 수 없음 — 사이트가 보는 건 직접 고른 언어(`xconda-lang`)와 브라우저 선호 목록뿐. 예전 코드는 `navigator.language`(UI 언어) 하나만 봐서 UI ja + 선호 ko 인 경우를 놓쳤고, KO 감지 시에도 직접 고르기 전엔 크롬 자체 번역 잠금이 안 걸려 내장 번역이 일본어로 바꿀 수 있었음 (수정 완료) | 크롬 `chrome://settings/languages`에서 한국어 최우선인지 + 상단 토글이 KO인지 확인. 그래도 일본어면 KO 한 번 클릭(직접 선택으로 저장·잠금). 회귀 확인은 `smoke-lang.mjs` 케이스 8 |
+| `www.xconda.ai/hub/` 로 들어갔는데 **제품 사이트 첫 화면**(`/?lang=en`)이 뜸 | 영어 홈·목록에 허브 앱 이동 스크립트(`data-hub-entry`)가 남아 있음 = `LOCALE_BASE_URLS.en` 스위치가 꺼진 빌드 | `src/content/seo.js` 의 스위치가 `"https://www.xconda.ai/hub/"` 인지 확인 → `npm run build` → 배포. 확인: `npm run proxy:check` 의 "허브 앱 이동 없음" |
+| `www.xconda.ai/hub/manuals/…` 가 404 | 매뉴얼 폴더는 프록시(`/hub/*`)에 포함되지 않음 (GitHub Pages 쪽 라우트는 언어 폴더만 넘김) | 정상입니다. 앱의 "전체 화면 가이드" 링크는 원본 주소(`hub.xconda.ai/manuals/…`)로 엽니다. 새 링크를 만들 때도 `HUB_MANUALS_BASE_URL`(`src/content/seo.js`)을 쓰세요 |
+| `www.xconda.ai/hub/sitemap.xml` 이 404 · `hub.xconda.ai/en/sitemap.xml` 도 404 | 영어 사이트맵은 스위치를 켠 빌드에서만 생김(`en/sitemap.xml`) | 스위치를 켜고 빌드·배포했는지 확인. 배포 후 `https://www.xconda.ai/hub/sitemap.xml` 이 열리면 Search Console(`xconda.ai` 속성)에 제출 |
 | EN/JA/ZH 전환했는데 일부가 한국어로 남음 | ① Google 번역 미적용(쿠키/리로드) ② `notranslate`로 고의 제외(브랜드명) ③ 지연 로딩 영역의 번역 지연 | ① 쿠키·재방문 확인 ② `notranslate` 의도 확인 ③ 재로딩. `googtrans` 쿠키값은 `/ko/<언어>` |
 
 ---

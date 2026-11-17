@@ -39,7 +39,9 @@ import {
   localOgImageUrl,
   localizedOgImageUrl,
   localizedUrl,
+  localeBaseUrl,
   LOCALE_BASE_URLS,
+  setLocaleBaseUrls,
   ogLangManifestKey,
   ogManifestKey,
   relatedArticles,
@@ -80,6 +82,24 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(here, "..");
 const TEMPLATE = fs.readFileSync(path.join(here, "../index.html"), "utf8");
 const SITE = "https://example.test/XCONDA_info/";
+
+/**
+ * 공개 주소 스위치(LOCALE_BASE_URLS)를 끈 상태에서 검사합니다.
+ *
+ * 2026-11-17 에 영어 허브의 공개 주소가 `https://www.xconda.ai/hub/` 로 켜졌습니다
+ * (`src/content/seo.js`). 스위치가 켜지면 영어 페이지의 canonical·hreflang·사이트맵·
+ * 언어 전환 주소가 전부 제품 사이트 주소가 되므로, 아래의 **구조** 검사(페이지 내용·
+ * 링크 모양·사이트맵 규칙)는 스위치를 끈 상태에서 해야 예전과 같은 것을 봅니다.
+ * 스위치가 켜진 상태의 동작은 아래 「공개 주소 스위치」 테스트가 따로 검사합니다.
+ */
+const withSwitchOff = (fn, map = { en: "" }) => {
+  const previous = setLocaleBaseUrls(map);
+  try {
+    return fn();
+  } finally {
+    setLocaleBaseUrls(previous);
+  }
+};
 
 /* ------------------------------ 1) Slug · 주소 ------------------------------ */
 
@@ -910,7 +930,7 @@ test("모든 글 페이지는 관련 글 링크를 1개 이상 갖고, 자기 �
   assert.ok(checked >= 3, `검사한 글 페이지가 너무 적습니다: ${checked}`);
 });
 
-test("llms.txt — 사이트 요약 · 섹션 · 대표 글 링크를 절대 주소로 담는다", () => {
+test("llms.txt — 사이트 요약 · 섹션 · 대표 글 링크를 절대 주소로 담는다", () => withSwitchOff(() => {
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
   const txt = out.files.get("llms.txt");
   assert.ok(txt, "llms.txt 가 생성되지 않았습니다");
@@ -938,7 +958,7 @@ test("llms.txt — 사이트 요약 · 섹션 · 대표 글 링크를 절대 주
   // 같은 입력이면 같은 파일(멱등)
   const again = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {} });
   assert.equal(again.files.get("llms.txt"), txt);
-});
+}));
 
 /* ---------------------------------------------------------------------------
  * 언어별 주소 — 2026-10-25 B
@@ -956,7 +976,7 @@ const EN_FIXTURE = {
   },
 };
 
-test("언어별 주소·hreflang — 기준 언어는 접두사 없이, 나머지는 /en/ 처럼 붙는다", () => {
+test("언어별 주소·hreflang — 기준 언어는 접두사 없이, 나머지는 /en/ 처럼 붙는다", () => withSwitchOff(() => {
   assert.equal(localizedUrl("https://hub.example.test/", "ko", "qna/a/"), "https://hub.example.test/qna/a/");
   assert.equal(localizedUrl("https://hub.example.test/", "en", "qna/a/"), "https://hub.example.test/en/qna/a/");
   assert.equal(localizedUrl("https://hub.example.test/", "zh", ""), "https://hub.example.test/zh/");
@@ -968,7 +988,7 @@ test("언어별 주소·hreflang — 기준 언어는 접두사 없이, 나머�
   assert.equal(langFromPathname("/en/qna/a/"), "en");
   assert.equal(langFromPathname("/qna/a/"), "ko");
   assert.equal(langFromPathname("/english/"), "ko"); // /en/ 접두사만 인정
-});
+}));
 
 test("언어 목록은 영어가 먼저, 한국어가 두 번째다 (2026-11-15 대표 결정)", () => {
   assert.deepEqual(SITE_LANGS.map((l) => l.code), ["en", "ko", "ja", "zh"]);
@@ -976,7 +996,7 @@ test("언어 목록은 영어가 먼저, 한국어가 두 번째다 (2026-11-15 
   assert.equal(SITE_LANGS.find((l) => l.code === "ko").prefix, "");
 });
 
-test("대표 언어 스위치 — 기본은 한국어 원문, 켜면 번역이 있는 글만 영어가 x-default", () => {
+test("대표 언어 스위치 — 기본은 한국어 원문, 켜면 번역이 있는 글만 영어가 x-default", () => withSwitchOff(() => {
   const site = "https://hub.example.test/";
   assert.equal(PRIMARY_LANG, "ko", "지금은 한국어 원문이 대표 언어여야 합니다");
   // 영어 번역이 있어도 스위치가 꺼져 있으면 x-default 는 한국어 원문
@@ -993,9 +1013,9 @@ test("대표 언어 스위치 — 기본은 한국어 원문, 켜면 번역이 �
     setPrimaryLang(previous);
   }
   assert.equal(PRIMARY_LANG, "ko");
-});
+}));
 
-test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 으로 서로를 가리킨다", () => {
+test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 으로 서로를 가리킨다", () => withSwitchOff(() => {
   const out = renderSeoSite({
     rows: fixtureRows,
     pages: pagesFixture,
@@ -1027,7 +1047,7 @@ test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 
   assert.equal([...out.files.keys()].filter((f) => f.startsWith("en/") && f.includes("deepseek")).length, 0);
   // 번역 Q&A 는 사이트맵에서 뺍니다(얇은 페이지가 크롤 예산을 잡아먹지 않게) — 페이지는 그대로 있습니다.
   assert.doesNotMatch(out.files.get("sitemap.xml"), /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\//);
-});
+}));
 
 test("번역 파일에 원문이 없는 글이 있으면 경고만 남기고 건너뛴다", () => {
   const out = renderSeoSite({
@@ -1309,7 +1329,7 @@ test("번역 본문이 있어도 요약(도입·답변)을 싣고, 본문 첫 �
   assert.equal(articleOf(same).split("Ask within 7 days").length - 1, 1);
 });
 
-test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 문구 (MHW 검토 1~3순위)", () => {
+test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 문구 (MHW 검토 1~3순위)", () => withSwitchOff(() => {
   const out = renderSeoSite({
     rows: fixtureRows,
     pages: pagesFixture,
@@ -1348,7 +1368,7 @@ test("번역 페이지 — 날짜·글쓴이·소제목·제품 링크·문의 �
   assert.match(en, /<a href="mailto:info@cubeberry\.ai">info@cubeberry\.ai<\/a>/);
   // 한국어 글에도 제품 링크가 붙는다
   assert.match(out.files.get("qna/refund-policy/index.html"), /data-cta="top"[^>]*><a href="https:\/\/www\.xconda\.ai\/ko\?utm_source=hub/);
-});
+}));
 
 test("번역 페이지 보조 함수 — 날짜 표기 · 소제목 승격 · 끝난 행사 판정", () => {
   assert.equal(localizedDate("en", "2026-10-07"), "October 7, 2026");
@@ -1520,7 +1540,7 @@ test("번역 페이지는 흰색 editorial 스타일을 독립적으로 사용�
 });
 
 
-test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허브로 연결된다", () => {
+test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허브로 연결된다", () => withSwitchOff(() => {
   const translations = Object.fromEntries(["en", "ja", "zh"].map(code => [code, { ...EN_FIXTURE.en, lang: code }]));
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations });
   for (const code of ["en", "ja", "zh"]) {
@@ -1543,7 +1563,7 @@ test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허�
     }
     assert.doesNotMatch(out.files.get(`${code}/qna/refund-policy/index.html`), /data-hub-entry/);
   }
-});
+}));
 
 
 test("Q&A 편집용 제목과 앞 구분선을 숨기고 공개 출처는 유지하며 내부 섹션은 제거한다", () => {
@@ -1605,7 +1625,7 @@ test("빌드 결과에 없는 언어 폴더 페이지만 낡은 페이지로 잡
   fs.rmSync(root, { recursive: true, force: true });
 });
 
-test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보내는 안내 페이지로 바꾼다", () => {
+test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보내는 안내 페이지로 바꾼다", () => withSwitchOff(() => {
   const root = tempSite();
   const write = (rel, body = "x") => {
     fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
@@ -1633,9 +1653,9 @@ test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보
   assert.match(stub, /name="robots" content="noindex"/);
   assert.match(stub, /<html lang="en">/);
   fs.rmSync(root, { recursive: true, force: true });
-});
+}));
 
-test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 한국어 홈으로 보낸다", () => {
+test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 한국어 홈으로 보낸다", () => withSwitchOff(() => {
   const root = tempSite();
   const enOnlyHome = new Map([["en/index.html", "home"]]);
   fs.mkdirSync(path.join(root, "en/post/gone"), { recursive: true });
@@ -1655,7 +1675,7 @@ test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 �
     /url=https:\/\/example\.test\/"/,
   );
   fs.rmSync(root, { recursive: true, force: true });
-});
+}));
 
 
 /* ------------- 9) 크롤 예산 — 번역 Q&A 사이트맵 제외 · 한국어 글 → 번역본 링크 ------------- */
@@ -1690,7 +1710,7 @@ const BILINGUAL_FIXTURE = {
   },
 };
 
-test("번역 Q&A 는 페이지를 만들되 사이트맵에는 넣지 않고, 번역 글은 사이트맵에 남긴다", () => {
+test("번역 Q&A 는 페이지를 만들되 사이트맵에는 넣지 않고, 번역 글은 사이트맵에 남긴다", () => withSwitchOff(() => {
   const out = renderSeoSite({
     rows: fixtureRows,
     pages: pagesFixture,
@@ -1705,9 +1725,9 @@ test("번역 Q&A 는 페이지를 만들되 사이트맵에는 넣지 않고, �
   assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/en\/post\/deepseek-official-harness\/<\/loc>/);
   // 한국어 Q&A 주소는 사이트맵에 남습니다(원문은 색인 대상).
   assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/qna\/refund-policy\/<\/loc>/);
-});
+}));
 
-test("한국어 글에는 번역본으로 가는 실제 링크가 붙고, Q&A 에는 붙지 않는다", () => {
+test("한국어 글에는 번역본으로 가는 실제 링크가 붙고, Q&A 에는 붙지 않는다", () => withSwitchOff(() => {
   const out = renderSeoSite({
     rows: fixtureRows,
     pages: pagesFixture,
@@ -1725,19 +1745,27 @@ test("한국어 글에는 번역본으로 가는 실제 링크가 붙고, Q&A �
   assert.doesNotMatch(koPost, /hreflang="ja"/);
   // Q&A 는 번역이 있어도 링크를 달지 않습니다(사이트맵 제외 정책과 같은 이유).
   assert.doesNotMatch(out.files.get("qna/refund-policy/index.html"), /class="seo-langs"/);
-});
+}));
 
 /* ------------------------------------------------------------------------------------------
  * 영어 허브를 제품 사이트 하위 폴더로 — 공개 주소 스위치 (2026-11-14 · MHW 검토 B안)
  * ------------------------------------------------------------------------------------------ */
-test("공개 주소 스위치 — 꺼져 있으면(기본) 영어 주소는 지금처럼 허브의 /en/ 이다", () => {
-  assert.equal(LOCALE_BASE_URLS.en, "", "프록시가 열리기 전에는 스위치를 켠 채 커밋하지 않습니다");
+test("공개 주소 스위치 — 켜져 있다: 영어 주소는 www.xconda.ai/hub/ (2026-11-17 프록시 확인 후)", () => {
+  // 켠 근거: www.xconda.ai/hub/ 가 200 으로 열리고, /hub → /hub/ 301 · 글 주소도 301 ·
+  // 응답에 x-robots-tag(noindex) 가 없음을 확인했습니다. 재확인: npm run proxy:check
+  assert.equal(LOCALE_BASE_URLS.en, "https://www.xconda.ai/hub/");
+  assert.equal(localeBaseUrl("en"), "https://www.xconda.ai/hub/");
+  assert.equal(localizedUrl(SITE, "en", "qna/a/"), "https://www.xconda.ai/hub/qna/a/");
+});
+
+test("공개 주소 스위치 — 끄면 영어 주소는 다시 허브의 /en/ 이다 (되돌리기 경로)", () => withSwitchOff(() => {
+  assert.equal(localeBaseUrl("en"), "");
   assert.equal(localizedUrl("https://hub.example.test/", "en", "qna/a/"), "https://hub.example.test/en/qna/a/");
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE });
   assert.ok(!out.files.has("en/sitemap.xml"));
   assert.doesNotMatch(out.files.get("en/qna/refund-policy/index.html"), /data-hub-moved/);
   assert.match(out.files.get("en/index.html"), /data-hub-entry/);
-});
+}));
 
 test("공개 주소 스위치 — 켜면 영어 페이지가 www.xconda.ai/hub/ 아래로 선언된다", () => {
   const BASE = "https://www.xconda.ai/hub/";
@@ -1772,8 +1800,8 @@ test("공개 주소 스위치 — 켜면 영어 페이지가 www.xconda.ai/hub/ 
   // 프록시 아래에서 깨지는 상대 자산 주소가 없어야 한다 (이동 링크 ../ 와 같은 폴더 ./ 만 허용)
   const rel = [...en.matchAll(/(?:href|src)="([^"]+)"/g)].map((m) => m[1]).filter((u) => !/^(https?:|data:|mailto:|#|\.\.?\/)/.test(u));
   assert.deepEqual(rel, []);
-  // 스위치는 그 빌드에만 적용되고 되돌아온다
-  assert.equal(localizedUrl(SITE, "en", ""), `${SITE}en/`);
+  // localeBases 는 그 빌드에만 적용되고, 끝나면 커밋된 값(켜짐)으로 되돌아온다
+  assert.equal(localizedUrl(SITE, "en", ""), "https://www.xconda.ai/hub/");
 });
 
 test("공개 주소 스위치 — 영어 주소는 허브 사이트맵에서 빠지고 en/sitemap.xml 로 간다", () => {

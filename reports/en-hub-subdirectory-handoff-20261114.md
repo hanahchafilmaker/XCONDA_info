@@ -7,7 +7,9 @@
 
 ## 1. 한 줄 요약
 
-`www.xconda.ai/hub/*` 요청을 `hub.xconda.ai/en/*` 로 **리버스 프록시**해 주시면, 허브 쪽은 스위치 한 줄만 켜면 됩니다. 허브 쪽 준비는 끝났고 스위치는 꺼진 채 배포돼 있어 지금은 아무것도 달라지지 않습니다.
+`www.xconda.ai/hub/*` 요청을 `hub.xconda.ai/en/*` 로 **리버스 프록시**해 주시면, 허브 쪽은 스위치 한 줄만 켜면 됩니다. 허브 쪽 준비는 끝났습니다.
+
+> **2026-11-17 완료.** 프록시가 열린 것을 확인하고 스위치를 켰습니다. 확인 결과·켜진 결과·되돌리는 방법은 **5. 진행 기록**을 보세요.
 
 ## 2. 제품 사이트 쪽에서 해 주실 일
 
@@ -118,3 +120,53 @@ export const LOCALE_BASE_URLS = { en: "https://www.xconda.ai/hub/" };    // 켬
 5. 2~4주 뒤 Search Console 에서 `hub.xconda.ai/en/` 색인이 `www.xconda.ai/hub/` 로 넘어갔는지 확인
 
 **프록시보다 스위치를 먼저 켜면 안 됩니다.** 영어 방문자가 없는 주소로 보내집니다. 문제가 생기면 스위치를 `""` 로 되돌려 다시 배포하면 됩니다.
+
+---
+
+## 5. 진행 기록
+
+### 5-1. 2026-11-17 — 프록시 확인 · 스위치 켬
+
+- **배포 완료**: 제품 사이트 프록시가 열렸습니다. 아래는 실제 응답 헤더로 확인한 결과입니다.
+
+| 확인 항목 (요청 2-1 조건) | 결과 |
+| --- | --- |
+| `www.xconda.ai/hub/` → 200 (리다이렉트 아님) | ✅ `200`, `content-type: text/html; charset=utf-8` |
+| `/hub` → `/hub/` 301 | ✅ `301`, `location: /hub/` |
+| 글 주소 `/hub/qna/commercial-use` → `/hub/qna/commercial-use/` 301 | ✅ `301` |
+| 끝 슬래시 301 의 `Location` 이 `hub.xconda.ai/en/…` 로 새지 않음 | ✅ `Location` 이 `/hub/…` 상대 주소 |
+| Host 헤더 → `hub.xconda.ai` (404 가 안 남) | ✅ 허브 페이지가 그대로 200 |
+| `x-robots-tag: noindex` 없음 | ✅ 헤더에 없음 |
+| 로그인 미들웨어에 안 걸림 | ✅ 비로그인 요청이 200 |
+| 캐시 짧게 | ✅ `cache-control: public, max-age=300, s-maxage=600` (5~10분) |
+| 응답 본문 무가공 | ✅ 원본과 제목·본문 동일 |
+| 사이트맵 `/hub/sitemap.xml` | ⏳ 스위치를 켜고 배포한 뒤 열립니다 (`en/sitemap.xml` → 프록시) |
+
+- **주소 확정 (요청 2-2)**: `https://xconda.ai/hub/` 는 `302 → https://www.xconda.ai/hub/…` 로 넘어갑니다.
+  실제로 200 을 주는 쪽은 **`https://www.xconda.ai/hub/`** 이므로 스위치에 이 주소를 넣었습니다.
+
+- **스위치 켬**: `src/content/seo.js` › `LOCALE_BASE_URLS = { en: "https://www.xconda.ai/hub/" }` → `npm run build`.
+  켜진 결과(빌드 산출물에서 확인):
+
+| 항목 | 켠 뒤 |
+| --- | --- |
+| 영어 페이지 canonical · og:url | `https://www.xconda.ai/hub/…` |
+| 모든 언어 페이지의 `hreflang="en"` | `https://www.xconda.ai/hub/…` |
+| 허브 사이트맵(`hub.xconda.ai/sitemap.xml`)의 영어 주소 | 빠짐 (`/en/` 0건) → `en/sitemap.xml`(22개) 로 분리 |
+| `llms.txt` 영어 허브 주소 | `https://www.xconda.ai/hub/` |
+| 영어 홈·목록의 허브 앱 이동 스크립트(`data-hub-entry`) | 없어짐 → 주소창이 `/hub/` 에 그대로 머무름 |
+| 예전 주소 `hub.xconda.ai/en/…` 방문자 | 같은 글의 새 주소로 이동(쿼리·해시 유지) |
+| 검사 | `npm run test:unit` 289개 · `npm run test:smoke` 전부 통과 |
+
+- **함께 고친 것**: 앱의 "전체 화면 가이드" 버튼이 `manuals/…` 를 **페이지 기준 상대 주소**로 열어
+  `/hub/manuals/en/index.html` 이 404 였습니다. 매뉴얼 폴더는 프록시 범위(`en/` 만) 밖이라
+  이 링크만 원본 주소(`HUB_MANUALS_BASE_URL`)로 엽니다. 개별 툴 가이드 모달은 처음부터
+  `hub.xconda.ai` 절대 주소라 정상이었습니다.
+
+- **개발자에게 남은 일 (요청 2-4)**
+  1. `robots.txt` 에 `Sitemap: https://www.xconda.ai/hub/sitemap.xml` 한 줄 (`/hub/` Disallow 없음 — 현재 차단 없음 확인)
+  2. Search Console `xconda.ai` 속성에 위 사이트맵 제출
+  3. GA4 — 영어 허브가 제품 사이트 도메인에서 열립니다. 허브 측정 ID 와 같은 속성인지 확인
+
+- **되돌리기**: `LOCALE_BASE_URLS` 를 `{ en: "" }` 로 바꿔 다시 빌드·배포하면 영어 주소가
+  즉시 `hub.xconda.ai/en/` 로 돌아갑니다(파일 위치는 그대로라 되돌리기가 안전합니다).
