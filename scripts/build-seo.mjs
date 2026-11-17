@@ -822,8 +822,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
           ? [
               `<nav class="seo-related" aria-label="More">`,
               `<h2>${escapeHtml(ui.related ?? uiDefaults.related)}</h2>`,
-              `<ul>`,
-              ...siblings.map((x) => `<li><a href="../../${escapeHtml(x.prefix)}/${escapeHtml(x.record.slug)}/">${escapeHtml(x.tr.title ?? x.record.title)}</a></li>`),
+              `<ul class="seo-cards">`,
+              ...siblings.map((x) => `<li class="seo-card"><a href="../../${escapeHtml(x.prefix)}/${escapeHtml(x.record.slug)}/">${escapeHtml(x.tr.title ?? x.record.title)}</a></li>`),
               `</ul>`,
               `</nav>`,
             ].join("")
@@ -867,8 +867,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         langSwitcher(path, ["ko", ...langCodes]),
         `<h1>${escapeHtml(title)}</h1>`,
         `<p>${escapeHtml(description)}</p>`,
-        `<ul>`,
-        ...list.map((it) => `<li><a href="./${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+        `<ul class="seo-cards">`,
+        ...list.map((it) => `<li class="seo-card"><a href="./${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
         `</ul>`,
         `<p><a href="${escapeHtml(localizedUrl(site, "ko", path))}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
         // 목록으로 바로 들어온 방문자용 제품 링크. 영어가 제품 사이트 아래로 옮겨지면(moved) 같은 사이트 이동이라 UTM 을 뺍니다.
@@ -905,10 +905,12 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         const sec = t.sections?.[prefix] ?? {};
         const list = items.filter((i) => i.prefix === prefix);
         return [
-          `<h2><a href="./${escapeHtml(prefix)}/">${escapeHtml(sec.title ?? prefix)}</a></h2>`,
-          `<ul>`,
-          ...list.map((it) => `<li><a href="./${escapeHtml(prefix)}/${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+          `<section class="seo-card-section">`,
+          `<h2 class="seo-card-heading"><a href="./${escapeHtml(prefix)}/">${escapeHtml(sec.title ?? prefix)}</a></h2>`,
+          `<ul class="seo-cards">`,
+          ...list.map((it) => `<li class="seo-card"><a href="./${escapeHtml(prefix)}/${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
           `</ul>`,
+          `</section>`,
         ].join("\n");
       }),
       ui.note ? `<p class="seo-note">${noteHtml(ui.note)}</p>` : "",
@@ -1250,7 +1252,7 @@ function blocksToText(blocks) {
 }
 
 /** 정적 페이지가 로드되기 전에만 보이는 최소 스타일 (앱이 뜨면 #root 와 함께 사라집니다) */
-const STATIC_STYLE = `<style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-cta{display:flex;flex-wrap:wrap;gap:8px 10px;margin:20px 0}.seo-article .seo-cta a{display:inline-block;padding:8px 16px;border:1px solid #171717;border-radius:999px;font-size:14px;line-height:1.4;text-decoration:none}.seo-article .seo-cta a:first-child{background:#000;color:#fff}.seo-ended{border:1px solid #d4d4d4;padding:10px 14px;font-size:14px;color:#525252}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}</style>`;
+const STATIC_STYLE = `<style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-cta{display:flex;flex-wrap:wrap;gap:8px 10px;margin:20px 0}.seo-article .seo-cta a{display:inline-block;padding:8px 16px;border:1px solid #171717;border-radius:999px;font-size:14px;line-height:1.4;text-decoration:none}.seo-article .seo-cta a:first-child{background:#000;color:#fff}.seo-ended{border:1px solid #d4d4d4;padding:10px 14px;font-size:14px;color:#525252}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}.seo-article .seo-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;margin:18px 0 8px;padding:0;list-style:none}.seo-article .seo-card{display:flex;margin:0;min-width:0}.seo-article .seo-card>a{display:flex;align-items:flex-start;width:100%;padding:18px 20px;border:1px solid #e5e5e5;border-radius:14px;background:#fafafa;color:#171717;font-size:16px;line-height:1.5;text-decoration:none;transition:background .15s ease,border-color .15s ease,transform .15s ease}.seo-article .seo-card>a::after{content:">";margin-left:auto;padding-left:12px;color:#a3a3a3;font-size:15px;line-height:1.5}.seo-article .seo-card>a:hover{background:#fff;border-color:#171717;transform:translateY(-1px);opacity:1}.seo-article .seo-card-section{margin-top:44px}.seo-article .seo-card-heading{margin:0 0 4px}.seo-article .seo-card-heading>a{text-decoration:none}.seo-article .seo-card-heading>a:hover{opacity:.6}.seo-article.seo-home{max-width:1180px}@media (prefers-reduced-motion:reduce){.seo-article .seo-card>a{transition:none}.seo-article .seo-card>a:hover{transform:none}}@media print{.seo-article .seo-cards{gap:6px}.seo-article .seo-card>a{border-color:#d4d4d4;background:#fff}}</style>`;
 
 /* ------------------------------ 언어별 공유 카드 ------------------------------ */
 
