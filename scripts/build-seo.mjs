@@ -86,26 +86,41 @@ export const GENERATED_DIRS = ["post", "notice", "qna", "guide"];
 export const LOCALE_PREFIXES = SITE_LANGS.map((l) => l.prefix).filter(Boolean);
 
 /**
- * 사이트맵에서 **빼는** 번역 섹션 — 지금은 Q&A 하나입니다.
+ * 사이트맵에서 **빼는** 번역 섹션 — 언어별로 다릅니다. (2026-11-17 정책 변경)
  *
- * 번역 Q&A 는 `74 × 3언어 = 222개`로 사이트맵 407개의 55%를 차지하는데, 내용은
- * "질문 한 줄 + 답변 두세 줄"짜리 얇은 페이지입니다. 신생 도메인에서 이런 대량·얇은
- * 페이지는 Google 크롤 예산을 잡아먹고, 2026-11-10 Search Console 기준
- * **"발견됨 - 현재 색인이 생성되지 않음 324건"** 의 주된 공급원이었습니다.
+ * 배경: 2026-10-26 에는 `["qna"]` 하나로 **모든 언어**의 Q&A 를 뺐습니다. 근거는
+ * "질문 한 줄 + 답변 두세 줄"짜리 얇은 페이지가 크롤 예산을 잡아먹는다는 것이었고,
+ * 2026-11-10 Search Console 의 **"발견됨 - 현재 색인이 생성되지 않음 324건"** 이
+ * 그 근거로 적혀 있었습니다.
  *
- * 페이지 자체는 그대로 둡니다(앱 화면 · hreflang · 내부 링크로 도달 가능).
- * **사이트맵에서만** 빼서 크롤 예산을 한국어 페이지와 번역 글·공지·가이드에 모읍니다.
- * 원어민 검수가 끝난 번역부터 이 목록에서 빼면 됩니다.
+ * 그런데 2026-11-17 에 실제 영어 Q&A 73개를 재 보니 전제가 달라져 있었습니다:
+ *   · 본문 평균 **151단어**(최소 106단어) — 100단어 미만 0건. 얇지 않습니다.
+ *     (한국어 원문보다 길고, 도입 문단·출처·문의처가 모두 실려 있습니다)
+ *   · `FAQPage` 구조화 데이터 · hreflang 9개 · 언어 전환 링크 · 관련 글 완비
+ *   · 미해결 1건(답변 없이 출처만 보이던 문제)은 2026-11-14 MHW 검토 3순위에서 수정됨
+ * 또한 영어 허브가 `www.xconda.ai/hub/` 로 옮겨져 **영어가 제품 사이트의 주 언어**가
+ * 됐으므로, 영어 Q&A 는 크롤 예산을 아낄 대상이 아니라 **색인이 필요한 자산**입니다.
+ *
+ * 그래서 영어만 목록에서 빼고(**사이트맵에 포함**), 검수·품질 확인이 안 된 일본어·중국어는
+ * 계속 뺍니다. ja·zh 를 넣으려면 `ja: ["qna"], zh: ["qna"]` 에서 지우면 됩니다.
+ *
+ * 페이지 자체는 어느 언어든 그대로 만듭니다(앱 화면 · hreflang · 내부 링크로 도달 가능).
+ * 언어 코드가 없으면 빈 배열 = 그 언어는 아무 섹션도 빼지 않습니다.
  */
-export const SITEMAP_SKIP_LOCALIZED_SECTIONS = ["qna"];
+export const SITEMAP_SKIP_LOCALIZED_SECTIONS = { en: [], ja: ["qna"], zh: ["qna"] };
 
-/** 언어별 주소 중 사이트맵에서 뺄 주소인가 (`/en/qna/…` · `/en/qna/`) */
-export function skipInSitemap(loc, site = DEFAULT_SITE_URL) {
-  const base = site.endsWith("/") ? site : `${site}/`;
+/**
+ * 언어별 주소 중 사이트맵에서 뺄 주소인가 (`/ja/qna/…` · `/ja/qna/`).
+ * `siteUrl` 은 사이트 주소(끝 `/` 허용), `code` 는 언어 코드(ko·en·ja·zh).
+ */
+export function skipInSitemap(loc, siteUrl = DEFAULT_SITE_URL, code = "") {
+  const base = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
   if (!loc.startsWith(base)) return false;
   const [lang, section] = loc.slice(base.length).split("/");
   if (!LOCALE_PREFIXES.includes(`${lang}/`)) return false;
-  return SITEMAP_SKIP_LOCALIZED_SECTIONS.includes(section);
+  // 호출 쪽이 언어 코드를 넘기면 그 값을, 아니면 주소에서 읽은 값을 씁니다.
+  const langCode = code || lang;
+  return (SITEMAP_SKIP_LOCALIZED_SECTIONS[langCode] ?? []).includes(section);
 }
 
 /**
@@ -1714,8 +1729,9 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
   // 사이트맵은 자기 호스트의 주소만 실을 수 있기 때문입니다.
   const movedSitemaps = new Map();
   for (const u of localized.urls) {
-    // 번역 Q&A 같이 사이트맵에서 빼기로 한 섹션은 넘깁니다(페이지는 그대로 만듭니다).
-    if (skipInSitemap(u.loc, site) || SITEMAP_SKIP_LOCALIZED_SECTIONS.includes(u.section)) continue;
+    // 사이트맵에서 빼기로 한 언어·섹션(지금은 ja·zh 의 Q&A)은 넘깁니다(페이지는 그대로 만듭니다).
+    // 영어 Q&A 는 2026-11-17 부터 포함합니다 — 근거는 SITEMAP_SKIP_LOCALIZED_SECTIONS 주석.
+    if (skipInSitemap(u.loc, site, u.code)) continue;
     const entry = { loc: u.loc, ...(u.lastmod ? { lastmod: u.lastmod } : {}) };
     if (localeBaseUrl(u.code)) {
       if (!movedSitemaps.has(u.code)) movedSitemaps.set(u.code, []);

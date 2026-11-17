@@ -69,6 +69,7 @@ import {
   localizedBlockProblems,
   mergeLocalizedBlocks,
   skipInSitemap,
+  SITEMAP_SKIP_LOCALIZED_SECTIONS,
   staleLocalizedPages,
   writeSite,
   bodyImagesOf,
@@ -1045,8 +1046,8 @@ test("번역이 있으면 /en/ 페이지가 만들어지고, ko 쪽과 hreflang 
   assert.match(ko, /hreflang="en" href="https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/"/);
   // 번역이 없는 글에는 영어 주소를 만들지 않습니다(중복 방지)
   assert.equal([...out.files.keys()].filter((f) => f.startsWith("en/") && f.includes("deepseek")).length, 0);
-  // 번역 Q&A 는 사이트맵에서 뺍니다(얇은 페이지가 크롤 예산을 잡아먹지 않게) — 페이지는 그대로 있습니다.
-  assert.doesNotMatch(out.files.get("sitemap.xml"), /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\//);
+  // 영어 Q&A 는 2026-11-17 부터 사이트맵에 포함합니다 — 페이지도 그대로 있습니다.
+  assert.match(out.files.get("sitemap.xml"), /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/<\/loc>/);
 }));
 
 test("번역 파일에 원문이 없는 글이 있으면 경고만 남기고 건너뛴다", () => {
@@ -1686,17 +1687,35 @@ test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 �
  * → 번역 Q&A 는 **사이트맵에서만** 빼고(페이지는 유지), 한국어 글에서는 번역본으로
  *    실제 <a> 링크를 걸어 발견 경로를 남깁니다.
  */
-test("사이트맵에서 빼는 번역 주소는 Q&A 뿐이다", () => {
+/**
+ * 2026-11-17 정책 변경 — 영어 Q&A 를 사이트맵에 포함합니다.
+ *   영어 허브가 www.xconda.ai/hub/ 로 옮겨져 영어가 제품 사이트의 주 언어가 됐고,
+ *   영어 Q&A 73개는 평균 151단어(최소 106단어)로 얇지 않으며 FAQPage·hreflang·내부 링크가
+ *   모두 갖춰져 있습니다. 검수·품질 확인이 안 된 일본어·중국어 Q&A 는 계속 뺍니다.
+ */
+test("사이트맵에서 빼는 번역 주소는 일본어·중국어 Q&A 뿐이다 (영어는 포함)", () => {
   const s = "https://hub.example.test/";
-  assert.equal(skipInSitemap("https://hub.example.test/en/qna/", s), true);
-  assert.equal(skipInSitemap("https://hub.example.test/en/qna/refund/", s), true);
+  // 영어 Q&A — 2026-11-17 부터 포함
+  assert.equal(skipInSitemap("https://hub.example.test/en/qna/", s), false);
+  assert.equal(skipInSitemap("https://hub.example.test/en/qna/refund/", s), false);
+  // 일본어·중국어 Q&A — 계속 제외
   assert.equal(skipInSitemap("https://hub.example.test/ja/qna/refund/", s), true);
+  assert.equal(skipInSitemap("https://hub.example.test/ja/qna/", s), true);
   assert.equal(skipInSitemap("https://hub.example.test/zh/qna/", s), true);
+  assert.equal(skipInSitemap("https://hub.example.test/zh/qna/refund/", s), true);
   // 번역 글·공지·가이드·홈과 한국어 주소는 그대로 둡니다.
-  assert.equal(skipInSitemap("https://hub.example.test/en/post/a/", s), false);
-  assert.equal(skipInSitemap("https://hub.example.test/en/", s), false);
+  for (const loc of ["en/post/a/", "en/notice/a/", "en/guide/a/", "en/"]) {
+    assert.equal(skipInSitemap(`https://hub.example.test/${loc}`, s), false, loc);
+  }
   assert.equal(skipInSitemap("https://hub.example.test/qna/refund/", s), false);
   assert.equal(skipInSitemap("https://hub.example.test/qna/", s), false);
+  // 호출 쪽이 언어 코드를 넘겨도 같은 판정입니다(주소에서 읽은 값과 일치).
+  assert.equal(skipInSitemap("https://hub.example.test/en/qna/refund/", s, "en"), false);
+  assert.equal(skipInSitemap("https://hub.example.test/ja/qna/refund/", s, "ja"), true);
+  // 정책 값 자체 — 영어는 빈 배열(아무 섹션도 빼지 않음)
+  assert.deepEqual(SITEMAP_SKIP_LOCALIZED_SECTIONS.en, []);
+  assert.deepEqual(SITEMAP_SKIP_LOCALIZED_SECTIONS.ja, ["qna"]);
+  assert.deepEqual(SITEMAP_SKIP_LOCALIZED_SECTIONS.zh, ["qna"]);
 });
 
 const BILINGUAL_FIXTURE = {
@@ -1710,7 +1729,7 @@ const BILINGUAL_FIXTURE = {
   },
 };
 
-test("번역 Q&A 는 페이지를 만들되 사이트맵에는 넣지 않고, 번역 글은 사이트맵에 남긴다", () => withSwitchOff(() => {
+test("영어 Q&A 는 사이트맵에 포함하고, 페이지도 그대로 만든다 (2026-11-17 정책 변경)", () => withSwitchOff(() => {
   const out = renderSeoSite({
     rows: fixtureRows,
     pages: pagesFixture,
@@ -1721,9 +1740,12 @@ test("번역 Q&A 는 페이지를 만들되 사이트맵에는 넣지 않고, �
   });
   const sitemap = out.files.get("sitemap.xml");
   assert.ok(out.files.get("en/qna/refund-policy/index.html"), "번역 Q&A 페이지는 그대로 있어야 합니다");
-  assert.doesNotMatch(sitemap, /\/en\/qna\//);
+  // 영어 Q&A — 포함
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\/refund-policy\/<\/loc>/);
+  // 영어 목록 주소도 포함
+  assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/en\/qna\/<\/loc>/);
   assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/en\/post\/deepseek-official-harness\/<\/loc>/);
-  // 한국어 Q&A 주소는 사이트맵에 남습니다(원문은 색인 대상).
+  // 한국어 Q&A 주소도 그대로(원문은 색인 대상).
   assert.match(sitemap, /<loc>https:\/\/example\.test\/XCONDA_info\/qna\/refund-policy\/<\/loc>/);
 }));
 
@@ -1820,8 +1842,8 @@ test("공개 주소 스위치 — 영어 주소는 허브 사이트맵에서 빠
   assert.match(enMap, /<loc>https:\/\/www\.xconda\.ai\/hub\/<\/loc>/);
   const locs = [...enMap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   assert.ok(locs.every((l) => l.startsWith("https://www.xconda.ai/hub/")));
-  // 번역 Q&A 는 지금처럼 사이트맵에서 뺀다
-  assert.ok(!locs.some((l) => l.includes("/qna/")));
+  // 영어 Q&A 는 2026-11-17 부터 포함한다 (일본어·중국어 Q&A 는 계속 제외 — 위 정책 테스트).
+  assert.ok(locs.some((l) => l.includes("/qna/")), "영어 Q&A 주소가 en/sitemap.xml 에 없습니다");
 });
 
 /* ------------------------------------------------------------------------------------------
