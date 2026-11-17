@@ -19,7 +19,7 @@ import {
 import type { Entry } from "./content/types";
 
 /** 자산 절대 주소 해석은 순수 로직이라 `content/seo.js` 에 두고 여기서 다시 내보냅니다(테스트용). */
-export { hubAssetUrl } from "./content/seo";
+export { hubAssetUrl, pathLanguage } from "./content/seo";
 
 /** 허브가 놓인 기본 경로 (예: "/XCONDA_info/"). 글 주소 부분은 떼어 냅니다. */
 export function hubBase(): string {

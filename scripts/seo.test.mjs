@@ -33,6 +33,7 @@ import {
   OG_LOCAL_DIR,
   hreflangAlternates,
   langFromPathname,
+  pathLanguage,
   SITE_LANGS,
   PRIMARY_LANG,
   setPrimaryLang,
@@ -1534,7 +1535,7 @@ test("여러 언어 번역이 있으면 hreflang 이 서로를 모두 가리킨�
 
 test("번역 페이지는 흰색 editorial 스타일을 독립적으로 사용한다", () => {
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE });
-  for (const file of ["en/index.html", "en/qna/index.html", "en/qna/refund-policy/index.html"]) {
+  for (const file of ["en/qna/index.html", "en/qna/refund-policy/index.html"]) {
     const html = out.files.get(file);
     assert.ok(html, file);
     assert.match(html, /html\{background:#fff;color:#000/);
@@ -1542,10 +1543,15 @@ test("번역 페이지는 흰색 editorial 스타일을 독립적으로 사용�
     assert.doesNotMatch(html, /assets\/app\.(?:css|js)/);
     assert.match(html, /class="seo-langs"/);
   }
+  // 홈만 앱 화면으로 띄웁니다(2026-11-17 하이브리드) — 정적 목록은 그대로 남아 무JS 에서도 읽힙니다.
+  const home = out.files.get("en/index.html");
+  assert.match(home, /html\{background:#fff;color:#000/, "홈에도 정적 스타일은 남습니다(무JS 대비)");
+  assert.match(home, /assets\/app\.(?:css|js)/, "홈은 앱 화면이어야 합니다");
+  assert.match(home, /class="seo-langs"/);
 });
 
 
-test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허브로 연결된다", () => withSwitchOff(() => {
+test("언어 홈·목록 직접 방문은 같은 출처의 인터랙티브 허브로 연결된다 (원본 주소일 때)", () => withSwitchOff(() => {
   const translations = Object.fromEntries(["en", "ja", "zh"].map(code => [code, { ...EN_FIXTURE.en, lang: code }]));
   const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations });
   for (const code of ["en", "ja", "zh"]) {
@@ -1866,6 +1872,41 @@ test("공개 주소 스위치 — 끄면 영어 주소는 다시 허브의 /en/ 
   assert.doesNotMatch(out.files.get("en/qna/refund-policy/index.html"), /data-hub-moved/);
   assert.match(out.files.get("en/index.html"), /data-hub-entry/);
 }));
+
+test("pathLanguage — 번역 홈 주소에서만 앱이 그 언어로 시작한다", () => {
+  assert.equal(pathLanguage("/en/"), "en");
+  assert.equal(pathLanguage("/en"), "en");
+  assert.equal(pathLanguage("/hub/en/"), "en", "Worker 프록시 접두사(/hub)를 건너뜁니다");
+  assert.equal(pathLanguage("/XCONDA_info/en/"), "en", "GitHub Pages 미리보기");
+  assert.equal(pathLanguage("/ja/"), "ja");
+  assert.equal(pathLanguage("/zh/"), "zh-CN", "앱의 목표 언어 표기로 맞춥니다");
+  // 번역 홈이 아닌 주소는 언어를 주장하지 않습니다(KO 가 기본, 저장값·브라우저 언어를 그대로 씁니다).
+  for (const p of ["/", "/hub/", "/hub/qna/commercial-use/", "/XCONDA_info/", "/dev.html", "/hub/notice/en/"]) {
+    assert.equal(pathLanguage(p), null, p);
+  }
+});
+
+test("하이브리드 — www 프록시 아래에서는 홈만 앱 화면이고 글·목록은 정적 문서로 남는다", () => {
+  const out = renderSeoSite({ rows: fixtureRows, pages: pagesFixture, template: TEMPLATE, siteUrl: SITE, ogManifest: {}, translations: EN_FIXTURE });
+
+  // ① 홈 = 앱 셸. 앱 스크립트·스타일이 붙고, 자동 리다이렉트(data-hub-entry)는 없습니다.
+  const home = out.files.get("en/index.html");
+  assert.ok(home, "en/index.html 이 없습니다");
+  assert.match(home, /assets\/app\.js/, "홈은 앱 스크립트를 불러와야 합니다");
+  assert.match(home, /assets\/app\.css/, "홈은 앱 스타일을 써야 합니다");
+  assert.doesNotMatch(home, /data-hub-entry/, "홈은 스스로 앱이므로 리다이렉트가 없어야 합니다");
+  // 무JS·크롤러용 정적 목록은 그대로 남습니다.
+  assert.match(home, /How do refunds work/);
+  assert.match(home, /<html lang="en"/);
+
+  // ② 글·목록 = 정적 문서. 앱 번들을 싣지 않습니다.
+  for (const file of ["en/qna/index.html", "en/qna/refund-policy/index.html", "en/post/index.html"]) {
+    const html = out.files.get(file);
+    if (!html) continue;
+    assert.ok(!/assets\/app\.js/.test(html), `${file}: 글 페이지에 앱 번들이 들어가면 안 됩니다`);
+    assert.match(html, /class="seo-langs"/, `${file}: 언어 전환 링크는 남아야 합니다`);
+  }
+});
 
 test("공개 주소 스위치 — 켜면 영어 페이지가 www.xconda.ai/hub/ 아래로 선언된다", () => {
   const BASE = "https://www.xconda.ai/hub/";

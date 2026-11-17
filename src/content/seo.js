@@ -591,6 +591,29 @@ export function hubAssetUrl(src, base = HUB_MANUALS_BASE_URL, pathname) {
 }
 
 /**
+ * 주소 첫 조각이 언어 코드인가 — 정적으로 만든 **번역 홈**(`/en/`, `/ja/`, `/zh/`)을
+ * 그 언어로 띄우기 위한 판정입니다.
+ *
+ *   "/en/"              → "en"
+ *   "/hub/en/"          → "en"     (Worker 프록시가 붙이는 접두사는 무시)
+ *   "/XCONDA_info/en/"  → "en"     (GitHub Pages 미리보기)
+ *   "/zh/"              → "zh-CN"  (앱의 목표 언어 표기)
+ *   "/", "/hub/", "/hub/qna/en/" → null
+ *
+ * 앱 언어를 **저장하지 않습니다** — 주소가 언어를 말해 주는 동안만 적용됩니다.
+ */
+const PATH_LANG_ALIASES = { en: "en", ja: "ja", zh: "zh-CN", "zh-CN": "zh-CN", "zh-Hans": "zh-CN" };
+
+export function pathLanguage(pathname) {
+  const parts = String(pathname ?? "/").split("/").filter(Boolean);
+  // 앞쪽 접두사(hub · 저장소 이름)는 건너뜁니다 — 첫 '언어처럼 생긴' 조각만 봅니다.
+  for (const part of parts.slice(0, 2)) {
+    if (PATH_LANG_ALIASES[part]) return PATH_LANG_ALIASES[part];
+  }
+  return null;
+}
+
+/**
  * 허브가 놓인 기본 경로(항상 / 로 끝남). 글 주소에서 `post/abc/` 같은 부분을 떼어 냅니다.
  *   "/XCONDA_info/post/abc/" → "/XCONDA_info/"   "/XCONDA_info/dev.html" → "/XCONDA_info/"
  */

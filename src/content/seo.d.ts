@@ -83,6 +83,8 @@ export const HUB_MANUALS_BASE_URL: string;
 export function isProxiedLocalePath(pathname?: string): boolean;
 export function hubAssetUrl(src: string | undefined, base?: string, pathname?: string): string | undefined;
 export function hubBaseFromPathname(pathname: string): string;
+/** 주소가 가리키는 번역 언어(`/en/` · `/hub/zh/`) — 없으면 null */
+export function pathLanguage(pathname: string): "en" | "ja" | "zh-CN" | null;
 export function absoluteUrl(siteUrl: string, relativePath?: string): string;
 export function summarize(raw: unknown, max?: number): string;
 
