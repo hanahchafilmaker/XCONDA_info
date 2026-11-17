@@ -70,7 +70,9 @@ for (const { target, folder } of cases) {
   const buttons = [...doc.querySelectorAll("#guides nav ul li button")];
   expect(buttons.length === slugs.length, `${target}: tool list mismatch (${buttons.length})`);
   const index = q("#guides [data-html-guide-index]");
-  expect(index?.getAttribute("href") === `/XCONDA_info/manuals/${folder}/index.html`, `${target}: incorrect index link`);
+  // 매뉴얼 폴더는 프록시(/hub/) 아래에 없으므로, 앱에서는 **원본 주소**(hub.xconda.ai)로 엽니다.
+  // (영어 페이지가 www.xconda.ai/hub/ 로도 열리는데, /hub/manuals/… 는 404 입니다 — 2026-11-17)
+  expect(index?.getAttribute("href") === `https://hub.xconda.ai/manuals/${folder}/index.html`, `${target}: incorrect index link`);
   expect(index?.getAttribute("target") === "_blank" && /noopener/.test(index.rel), `${target}: index must open safely`);
 
   for (let i = 0; i < slugs.length; i++) {

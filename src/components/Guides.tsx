@@ -6,7 +6,7 @@ import { getToolVideo } from "../content/toolVideos";
 import { htmlGuideIndexPath, htmlGuideLabels } from "../content/htmlGuides";
 import { useContent } from "../content/ContentContext";
 import { groupLabel, localizeTool, useLang } from "../i18n";
-import { hubBase } from "../seo";
+import { HUB_MANUALS_BASE_URL } from "../content/seo";
 import { SmartImage } from "./common";
 import { GhostButton, IconArrow, Reveal, SectionHeader, Tabs, VoltButton } from "./volt";
 
@@ -39,7 +39,7 @@ export default function Guides() {
       <div className="shell">
         <Reveal>
           <SectionHeader eyebrow="03 / TOOLKIT" title={t("nav.tools")} sub={t("v.guides.sub")} action={
-            <a data-html-guide-index href={`${hubBase()}${htmlGuideIndexPath(target)}`} target="_blank" rel="noopener noreferrer" className="notranslate inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-xs font-medium text-neutral-700 transition hover:border-neutral-400">
+            <a data-html-guide-index href={`${HUB_MANUALS_BASE_URL}${htmlGuideIndexPath(target)}`} target="_blank" rel="noopener noreferrer" className="notranslate inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-xs font-medium text-neutral-700 transition hover:border-neutral-400">
               {htmlGuideLabels[target].all}<ExternalLink className="size-3.5" aria-hidden />
             </a>
           } />
