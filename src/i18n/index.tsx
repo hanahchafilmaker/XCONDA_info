@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { hubBaseFromPathname, localeBaseUrl } from "../content/seo";
+import { hubBaseFromPathname, localeBaseUrl, pathLanguage } from "../content/seo";
 import { setCurrentLang, translate, type Lang } from "./dict";
 import { applyGoogtransCookie, isTarget, loadTranslateWidget, readGoogtransTarget, type Target } from "./google";
 
@@ -132,6 +132,24 @@ function urlTarget(): Target | null {
   }
 }
 
+/**
+ * 정적으로 생성된 **번역 홈**에서 시작할 때 그 언어를 그대로 씁니다.
+ *
+ * `https://www.xconda.ai/hub/` 는 `hub.xconda.ai/en/` 의 영어 홈을 그대로 보여 줍니다.
+ * 이때 앱이 브라우저 언어(예: 한국어)만 보고 시작하면, 영어 주소로 들어온 방문자가
+ * 영어 문서를 한 번도 못 보고 한국어 앱을 보게 됩니다.
+ *
+ * **저장하지 않습니다** — 주소가 언어를 말해 주는 동안만 적용되고, `xconda-lang` 은
+ * 사용자가 내비게이션에서 직접 고를 때만 바뀝니다(2026-11-17 하이브리드).
+ */
+function pathTarget(): Target | null {
+  try {
+    return pathLanguage(window.location.pathname);
+  } catch {
+    return null;
+  }
+}
+
 export function detectInitialTarget(): Target {
   if (typeof window === "undefined") return "ko";
   // ① 크롤러 — 항상 한국어 원문 (위 isCrawlerUA 설명)
@@ -139,6 +157,9 @@ export function detectInitialTarget(): Target {
   // ② 주소로 명시한 언어
   const fromUrl = urlTarget();
   if (fromUrl) return fromUrl;
+  // ③ 정적 번역 홈(/en/ …)의 언어 — 저장하지 않는 임시 적용
+  const fromPath = pathTarget();
+  if (fromPath) return fromPath;
   const saved = readSavedTarget();
   if (saved) return saved;
   if (saved === undefined) {

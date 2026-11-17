@@ -478,12 +478,19 @@ export function bodyMediaOf(blocks = []) {
  * 영어·일본어·중국어 페이지는 번역문 정적 HTML 만 서빙합니다. 앱을 함께 싣으면
  * React 가 정적 본문을 지우고 한국어 화면을 그려서, /en/ 주소에 한국어가 뜹니다.
  */
-export function staticOnlyTemplate(template) {
-  return template
-    // Static translations carry their own complete styles; do not inherit React/Tailwind resets.
-    .replace(/\s*<link\b[^>]*href="[^"]*assets\/app\.css"[^>]*>/g, "")
-    .replace(/\s*<script type="module"[^>]*src="[^"]*assets\/app\.js"[^>]*><\/script>/g, "")
-    .replace(/\s*<script type="module" crossorigin>[\s\S]*?<\/script>/g, "");
+export function staticOnlyTemplate(template, { keepApp = false } = {}) {
+  const html = template;
+  // Static translations carry their own complete styles; do not inherit React/Tailwind resets.
+  // keepApp: 그 언어의 **홈**은 앱 화면으로 띄웁니다(2026-11-17 하이브리드). 그러면 앱 번들이
+  // 인라인 스타일을 덮어써야 하므로 앱 CSS·JS 를 남깁니다(글 페이지는 계속 문서형).
+  // keepApp 이면 앱 스크립트·스타일을 둘 다 남깁니다(홈 = 앱 화면).
+  const stripped = keepApp
+    ? html
+    : html
+        .replace(/\s*<link\b[^>]*href="[^"]*assets\/app\.css"[^>]*>/g, "")
+        .replace(/\s*<script type="module"[^>]*src="[^"]*assets\/app\.js"[^>]*><\/script>/g, "")
+        .replace(/\s*<script type="module" crossorigin>[\s\S]*?<\/script>/g, "");
+  return stripped;
 }
 
 /** `<html lang="ko">` → 원하는 언어 코드로 (없으면 그대로) */
@@ -613,7 +620,7 @@ export function localizedHubEntry(site, code, anchor = "") {
  * @param {{ site: string, translations: Record<string, object>, template: string,
  *           pageRecords: object[], defaultImageUrl: string }} input
  */
-export function localizedPages({ site, translations = {}, template, pageRecords = [], defaultImageUrl, ogLangManifest = {} }) {
+export function localizedPages({ site, translations = {}, template, pageRecords = [], defaultImageUrl, ogLangManifest = {}, localeBases }) {
   const files = new Map();
   const urls = [];
   const missing = [];
@@ -667,10 +674,15 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
     const ui = t.ui ?? {};
     const uiDefaults = LOCALIZED_UI_DEFAULTS[code] ?? LOCALIZED_UI_DEFAULTS.en;
     // 이 언어의 공개 주소가 다른 사이트 아래(예: www.xconda.ai/hub/)인가 — 스위치: LOCALE_BASE_URLS
-    const moved = Boolean(localeBaseUrl(code));
+    // localeBases 를 넘기면 그 값을 쓰고(테스트가 스위치를 되돌린 뒤에도 일관), 없으면 현재 스위치.
+    const moved = localeBases ? Boolean(localeBases[code]) : Boolean(localeBaseUrl(code));
     // 옮겨진 언어: 예전 주소 방문자를 새 주소로 보내고, 허브 앱으로 넘기는 스크립트는 넣지 않습니다
     // (프록시 아래에서 앱 주소 `/?lang=en` 은 제품 사이트 첫 화면이 되기 때문). 제품 링크의 UTM 도 뺍니다.
     const movedHead = (pageUrl) => (moved ? `\n    ${movedHostScript(site, pageUrl)}` : "");
+    // 하이브리드(2026-11-17): 프록시로 옮겨진 언어의 **홈**은 앱 화면으로 띄웁니다.
+    // 정적 목록은 #root 안에 그대로 남겨 두어 JS 가 없어도 색인·읽기가 됩니다(앱이 덮어씀).
+    // 글 페이지(/en/qna/…)는 계속 정적 문서입니다 — 프록시 밖·JS 없는 방문자도 읽을 수 있게.
+    const appHome = moved;
     const entryScript = (anchor) => (moved ? "" : `\n${localizedHubEntry(site, code, anchor)}`);
     currentLangCode = code;
     const homeTitle = t.site?.title ?? lang.name;
@@ -918,8 +930,12 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       listingLinksHtml({ lang: code, placement: "bottom", utm: !moved }),
       `</main></div>`,
     ].join("\n");
-    const entryHead = `${head}${movedHead(homeUrl)}${entryScript("")}`;
-    files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(base, entryHead), body), lang.htmlLang));
+    // 앱 스크립트·CSS 를 남긴 템플릿을 씁니다(홈만). 목록·글은 아래 base(문서형) 그대로.
+    const homeTemplate = appHome ? staticOnlyTemplate(template, { keepApp: true }) : base;
+    // 프록시(moved)면 홈 자체가 앱 → 진입 스크립트 없음(언어 저장 부작용도 없음).
+    // 원본 주소(hub.xconda.ai/en/)면 예전처럼 같은 출처의 앱 루트로 넘깁니다.
+    const entryHead = appHome ? `${head}${movedHead(homeUrl)}` : `${head}${movedHead(homeUrl)}${entryScript("")}`;
+    files.set(`${lang.prefix}index.html`, applyHtmlLang(injectRoot(applyHead(homeTemplate, entryHead), body), lang.htmlLang));
     // 앱의 언어 전환기가 홈에서도 그 언어 주소로 보낼 수 있게 빈 경로를 넣어 둡니다.
     (paths[code] ??= []).unshift("");
     urls.push({ loc: homeUrl, code, section: "" });
@@ -1295,6 +1311,12 @@ export function renderSeoSite({ localeBases, ...input } = {}) {
 }
 
 function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl = DEFAULT_SITE_URL, ogManifest: ogManifestInput, ogLangManifest: ogLangManifestInput, translations: translationsInput } = {}) {
+  // 이 빌드에 적용 중인 공개 주소 스위치를 **값으로** 붙잡습니다.
+  // (renderSeoSite 가 localeBases 를 적용한 채 여기로 들어오므로, 아래 localizedPages 까지 전달해야
+  //  홈을 앱으로 띄울지 판단이 어긋나지 않습니다 — 2026-11-17)
+  const appliedBases = Object.fromEntries(
+    SITE_LANGS.map((l) => l.code).map((code) => [code, localeBaseUrl(code)]).filter(([, v]) => Boolean(v)),
+  );
   let template = inputTemplate;
   const site = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
   // 인라인 번들 → 공용 자산(assets/app.js · app.css). 이미 분리된 템플릿이면 그대로 둡니다.
@@ -1722,6 +1744,7 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
     pageRecords,
     defaultImageUrl,
     ogLangManifest,
+    localeBases: appliedBases,
   });
   for (const [file, html] of localized.files) files.set(file, html);
   for (const msg of localized.missing) warnings.push(msg);
