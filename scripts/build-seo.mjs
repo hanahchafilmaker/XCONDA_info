@@ -1890,6 +1890,8 @@ export function staleLocalizedPages(root, files) {
       }
       for (const e of entries) {
         const rel = `${relBase}${e.name}`;
+        // 자산 사본(mirrorLocalizedAssets)은 페이지가 아니므로 낡은 번역 페이지 검사에서 뺍니다.
+        if (e.isDirectory() && e.name === "assets") continue;
         if (e.isDirectory()) walk(path.join(abs, e.name), `${rel}/`);
         else if (e.name === "index.html" && !files.has(rel)) stale.push(rel);
       }
@@ -1913,12 +1915,58 @@ function staleRedirectTarget(files, siteUrl, code, section) {
  *   (파일을 지우면 이미 색인된 주소가 곧바로 404 가 되므로, 기존 `REDIRECTS` 와 같은 방식)
  * @returns {string[]} 리디렉션으로 바꾼 낡은 번역 페이지
  */
+/**
+ * 프록시 아래 언어 폴더(`en/`)로 **자산 사본**을 옮깁니다 — 2026-11-17.
+ * -----------------------------------------------------------------------------
+ * 제품 사이트 프록시는 `/hub/*` → `hub.xconda.ai/en/*` 로 보냅니다. 그런데 정적 영어
+ * 페이지는 CSS 를 인라인으로 품고 있어도 **이미지**는 `assets/img/...` 를 상대 주소로
+ * 부릅니다. `en/` 폴더에는 원래 `assets/` 가 없어서 `/hub/assets/img/...` 요청이 404 가
+ * 되고, 그 404 가 제품 사이트의 catch-all(앱 셸, 200 HTML)로 떨어져 **이미지 자리에
+ * HTML 이 들어갑니다** — 로고가 깨져 보이던 원인입니다.
+ *
+ * 그래서 스위치가 켜진 언어에 한해, 화면에 바로 쓰이는 가벼운 자산만 복사합니다.
+ *   · `assets/img/logo/`  워드마크·파비콘 (약 44KB)
+ *   · `assets/img/tools/` 홈 첫 화면 도구 이미지 (약 684KB)
+ * 무거운 `assets/img/og/`(20MB)·`assets/img/covers/`(15MB)는 복사하지 않습니다 —
+ * 그건 OG 카드·본문 커버라 프록시가 `/hub/assets/*` 를 원본으로 넘겨 주는 편이 맞습니다.
+ * (제품팀에 요청할 항목: `reports/en-hub-proxy-assets-request-20261117.md`)
+ *
+ * @returns {string[]} 복사한 사본의 저장소 기준 상대 경로
+ */
+export function mirrorLocalizedAssets(result, root) {
+  const enabled = new Set();
+  for (const code of SITE_LANGS.map((l) => l.code)) {
+    // 지금 이 빌드에 적용 중인 스위치 값(테스트가 바꿔 끼운 값 포함)을 그대로 따릅니다.
+    if (!localeBaseUrl(code)) continue;
+    const lang = langByCode(code);
+    if (lang?.prefix) enabled.add(lang.prefix);
+  }
+  const copied = [];
+  for (const prefix of enabled) {
+    for (const group of LOCALIZED_ASSET_GROUPS) {
+      const from = path.join(root, group);
+      const to = path.join(root, prefix, group);
+      if (!fs.existsSync(from)) continue;
+      fs.rmSync(to, { recursive: true, force: true });
+      fs.mkdirSync(path.dirname(to), { recursive: true });
+      fs.cpSync(from, to, { recursive: true });
+      copied.push(`${prefix}${group}`);
+    }
+  }
+  return copied.sort();
+}
+
+/** 언어 폴더로 사본을 두는 가벼운 자산 묶음 (위 mirrorLocalizedAssets 설명 참고). */
+export const LOCALIZED_ASSET_GROUPS = ["assets/img/logo", "assets/img/tools"];
+
 export function writeSite(result, root) {
   for (const dir of GENERATED_DIRS) fs.rmSync(path.join(root, dir), { recursive: true, force: true });
   // 언어 폴더의 사이트맵은 공개 주소 스위치가 켜진 언어에만 있습니다 — 스위치를 끄면 지웁니다.
   for (const prefix of LOCALE_PREFIXES) {
     if (!result.files?.has(`${prefix}sitemap.xml`)) fs.rmSync(path.join(root, prefix, "sitemap.xml"), { force: true });
   }
+  // 공개 주소 스위치가 켜진 언어 폴더에는 자산 사본도 둡니다(아래 localizedAssetCopies 설명).
+  mirrorLocalizedAssets(result, root);
 
   const stale = staleLocalizedPages(root, result.files ?? new Map());
   for (const rel of stale) {

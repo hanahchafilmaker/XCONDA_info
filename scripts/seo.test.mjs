@@ -72,6 +72,8 @@ import {
   SITEMAP_SKIP_LOCALIZED_SECTIONS,
   staleLocalizedPages,
   writeSite,
+  mirrorLocalizedAssets,
+  LOCALIZED_ASSET_GROUPS,
   bodyImagesOf,
   bodyMediaOf,
   flattenBlocks,
@@ -1655,6 +1657,38 @@ test("낡은 번역 페이지는 지우지 않고 같은 언어 목록으로 보
   assert.match(stub, /<html lang="en">/);
   fs.rmSync(root, { recursive: true, force: true });
 }));
+
+/* ------------------------------------------------------------------------------------------
+ * 프록시 아래 언어 폴더의 자산 사본 (2026-11-17)
+ *   /hub/* → hub.xconda.ai/en/* 프록시에서 이미지가 404 → catch-all 앱 셸(HTML)로 떨어져
+ *   로고가 깨지던 문제. 스위치가 켜진 언어 폴더에 가벼운 자산만 복사해 둡니다.
+ * ------------------------------------------------------------------------------------------ */
+test("공개 주소 스위치가 켜진 언어 폴더에만 가벼운 자산 사본이 생긴다", () => {
+  const root = tempSite();
+  const put = (rel) => {
+    fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+    fs.writeFileSync(path.join(root, rel), "x", "utf8");
+  };
+  for (const group of LOCALIZED_ASSET_GROUPS) {
+    put(`${group}/sample.txt`);
+  }
+  put("assets/img/covers/big.jpg"); // 무거운 자산은 복사 대상이 아님
+
+  const copied = mirrorLocalizedAssets({}, root); // 커밋된 스위치 값(en 켜짐)을 따름
+  assert.deepEqual(copied, ["en/assets/img/logo", "en/assets/img/tools"]);
+  for (const group of LOCALIZED_ASSET_GROUPS) {
+    assert.ok(fs.existsSync(path.join(root, "en", group, "sample.txt")), `en/${group} 사본이 없습니다`);
+  }
+  // og·covers 는 복사하지 않습니다 (프록시가 원본을 넘겨 주는 몫)
+  assert.equal(fs.existsSync(path.join(root, "en/assets/img/covers")), false);
+  // 일본어·중국어는 스위치가 꺼져 있어 사본을 만들지 않습니다
+  assert.equal(fs.existsSync(path.join(root, "ja/assets")), false);
+  assert.equal(fs.existsSync(path.join(root, "zh/assets")), false);
+
+  // 자산 폴더는 "낡은 번역 페이지" 검사에서 빠져야 합니다 (index.html 이 없어도 리디렉션 금지)
+  assert.deepEqual(staleLocalizedPages(root, new Map([["en/index.html", "x"]])), []);
+  fs.rmSync(root, { recursive: true, force: true });
+});
 
 test("섹션 목록이 없으면 같은 언어 홈으로, 그것도 없으면 한국어 홈으로 보낸다", () => withSwitchOff(() => {
   const root = tempSite();
