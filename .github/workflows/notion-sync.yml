@@ -80,12 +80,15 @@ jobs:
 
       - name: Notion 스냅샷 생성
         id: snapshot
+        # 실패해도 다음 스텝이 실행 요약·경고를 남기도록 합니다(마지막 스텝이 결론을 실패로 되돌림).
+        continue-on-error: true
         env:
           NOTION_PAGE_ID: ${{ vars.NOTION_PAGE_ID }}
           NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID }}
           # 허브 Q&A 표(XCONDA 허브 Q&A) — 비워 두면 스크립트의 기본값을 씁니다.
           NOTION_FAQ_PAGE_ID: ${{ vars.NOTION_FAQ_PAGE_ID }}
           NOTION_FAQ_DATABASE_ID: ${{ vars.NOTION_FAQ_DATABASE_ID }}
+          NOTION_FAQ_DATA_SOURCE_ID: ${{ vars.NOTION_FAQ_DATA_SOURCE_ID }}
           # 글이 직전 스냅샷보다 30% 넘게 줄거나 섹션이 통째로 비면 게시를 중단합니다.
           # (2026-10-29 사고: 노션에서 공지·뉴스·가이드·블로그가 한 번에 사라진 상태가 그대로 게시됨)
           # 의도된 대량 삭제라면 Actions → Run workflow 에서 allow_shrink 를 체크합니다.
@@ -99,7 +102,6 @@ jobs:
         # (2026-11-08 05:13Z 이후 44시간 동안 매 실행이 이 단계에서 실패했는데, continue-on-error
         #  때문에 실행이 초록불로 보여 아무도 알아채지 못했습니다. 이제 출력을 파일로 남기고
         #  마지막 스텝이 실행을 빨간불로 되돌립니다.)
-        continue-on-error: true
         run: |
           set -o pipefail
           # --heartbeat-min 0 = 하트비트로는 파일을 쓰지 않음(콘텐츠가 바뀔 때만 커밋·배포).

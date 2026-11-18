@@ -256,21 +256,6 @@ export function youTubeEmbed(url: string): string | null {
   return id ? `https://www.youtube.com/embed/${id}` : null;
 }
 
-/**
- * Google Drive controls its own `frame-ancestors` policy. It can block an otherwise
- * valid `/preview` URL depending on the file's sharing/access state, and that policy
- * cannot be overridden by this site. Keep Drive URLs as links rather than iframes.
- */
-const isDriveUrl = (url: string) => {
-  try {
-    const parsed = new URL(url);
-    const host = parsed.hostname.toLowerCase();
-    return (parsed.protocol === "https:" || parsed.protocol === "http:") && (host === "drive.google.com" || host.endsWith(".drive.google.com"));
-  } catch {
-    return false;
-  }
-};
-
 function CodeBlock({ text, language }: { text: string; language?: string }) {
   const { t } = useLang();
   const [copying, setCopying] = useState(false);
@@ -309,7 +294,6 @@ function CodeBlock({ text, language }: { text: string; language?: string }) {
  * - 이미지 alt = 노션 캡션(측션). 캡션이 비면 `alt`(보통 글 제목)를 씁니다.
  */
 export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) {
-  const { pick } = useLang();
   return (
     <div className="space-y-4 text-[15px] leading-[1.8] text-neutral-700">
       {blocks.map((b, i) => {
@@ -383,30 +367,12 @@ export function Blocks({ blocks, alt = "" }: { blocks: Block[]; alt?: string }) 
             );
           case "video": {
             const yt = youTubeEmbed(b.src);
-            /* Google Drive controls its own CSP; do not iframe it, even on /preview URLs. */
-            if (!yt && isDriveUrl(b.src)) {
-              return (
-                <a
-                  key={i}
-                  href={b.src}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 rounded-none bg-black/[0.03] px-4 py-3 text-sm text-neutral-800 ring-1 ring-inset ring-black/[0.08] transition hover:bg-black/[0.06]"
-                >
-                  <span className="truncate">
-                    {b.caption ? `${b.caption} — ` : ""}
-                    {pick("Google Drive 링크 (새 창에서 열기)", "Google Drive link (opens in a new tab)")}
-                  </span>
-                  <ExternalLink className="h-4 w-4 shrink-0 text-neutral-500" />
-                </a>
-              );
-            }
             return (
               <figure key={i} className="overflow-hidden rounded-none ring-1 ring-black/10">
                 {yt ? (
                   <iframe src={yt} title={b.caption ?? "video"} className="aspect-video w-full" allow="autoplay; encrypted-media" allowFullScreen loading="lazy" />
                 ) : (
-                  <video src={b.src} controls playsInline className="aspect-video w-full bg-black" />
+                  <video src={b.src} controls playsInline preload="metadata" className="aspect-video w-full bg-black" />
                 )}
                 {b.caption && <figcaption className="px-4 py-2 text-xs text-neutral-500">{b.caption}</figcaption>}
               </figure>

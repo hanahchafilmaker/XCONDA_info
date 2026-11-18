@@ -6,7 +6,7 @@
     "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변)."
   ],
   "lang": "ja",
-  "updated": "2026-11-14",
+  "updated": "2026-11-18",
   "site": {
     "title": "XCONDA ハブ — Q&A・ガイド・お知らせ",
     "description": "XCONDA についての日本語での回答。料金と返金、プライバシーと決済、FLEXBOARD・Turn・Blocking Board の使い方まで。Cubeberry 提供。"
@@ -5016,6 +5016,70 @@
         {
           "type": "p",
           "text": "出典：XCONDA Hub ブログ：制作ワークフローの紹介"
+        }
+      ]
+    },
+    "qna/blocking-board-getting-started": {
+      "title": "ブロッキングボードはどのように始めますか？",
+      "summary": "まずトップビュー、次に文字コンテ、続いてシーン作成、最後に書き出しの順です。最初の配置から書き出しまで、ブロッキングボードの流れは4段階です。"
+    },
+    "qna/blocking-board-ambiguous-details": {
+      "title": "ブロッキングボードで曖昧な部分はどう扱われますか？",
+      "summary": "ブロッキングボードは曖昧な情報を推測しません。ポップアップで確認し、視線より移動を優先するため、画面上の動きと進行方向が明確に残ります。"
+    },
+    "qna/blocking-board-space-json-size": {
+      "title": "ブロッキングボードの空間サイズが違う場合は？",
+      "summary": "空間JSONに記載されたサイズが優先されます。カタログのサイズは、そのJSONに値がない場合だけ使うため、保存された寸法がそのまま反映されます。"
+    },
+    "qna/workspace-overview": {
+      "title": "XCONDAワークスペースとは何ですか？",
+      "summary": "XCONDAワークスペースは11/17午後にベータ公開された新しいチーム空間です。組織、プロジェクト、共有予算を管理し、設定用のガイドNo.25も用意されています。"
+    },
+    "qna/workspace-organization-count": {
+      "title": "購読プランには組織がいくつ含まれますか？",
+      "summary": "すべての購読プランに組織が1つ含まれます。Lite、Plus、Pro、Studio、Maxのどれでも同じで、アップグレードしてもこの組織数は変わりません。"
+    },
+    "qna/workspace-member-limit": {
+      "title": "ワークスペースの構成員はプランごとに何名までですか？",
+      "summary": "ワークスペースの構成員数は、Liteは1名、Plusは3名、Proは5名、Studioは10名、Maxは20名で、本人を含みます。共同作業する人数に合わせてプランを選んでください。"
+    },
+    "qna/workspace-organization-credits-separate-request": {
+      "title": "組織クレジットは購読クレジットから自動的に移りますか？",
+      "summary": "いいえ。組織クレジットは購読クレジットから自動的に移るわけではありません。別途申請が必要で、購読残高が自動的に共有予算へ変わることはありません。"
+    },
+    "qna/workspace-enterprise-unlimited": {
+      "title": "組織と構成員を無制限に使うにはどうしますか？",
+      "summary": "組織と構成員を無制限に使う場合は、エンタープライズ向けの別途申請経路を利用します。通常プランの上限はそのままで、専用の相談として扱われます。"
+    },
+    "qna/credits-are-tokens-not-points": {
+      "title": "XCONDAクレジットは点数ですか？",
+      "summary": "いいえ。XCONDAクレジットはサービス内で使うトークンであり、点数ではありません。ツールやモデルの実行時に消費され、生成前に必要量が表示されます。ランキングや評価点ではありません。"
+    },
+    "qna/seedance-draft-1080p-window-14-days": {
+      "title": "Seedance 2.5 の Draft はどのくらい保存されますか？",
+      "summary": "14日間とは、Seedance 2.5 の Draft を 1080p に変換できる期間です。この期間を過ぎても、Draft 動画そのものは結果物として残り、自動的に消えることはありません。",
+      "blocks": [
+        {
+          "type": "h2",
+          "text": "出典"
+        },
+        {
+          "type": "p",
+          "text": "出典：XCONDAニュース「Seedance 2.5 Draft Mode アップデート：初案の保存期間を最大14日間に延長」（2026-11-02）"
+        }
+      ]
+    },
+    "qna/seedance-completed-video-no-expiry": {
+      "title": "完成動画は14日後に削除されますか？",
+      "summary": "いいえ。完成動画に有効期限はなく、14日後に削除されることはありません。14日間という基準は、Seedance 2.5 の Draft を 1080p に変換できる期間だけを指します。",
+      "blocks": [
+        {
+          "type": "h2",
+          "text": "出典"
+        },
+        {
+          "type": "p",
+          "text": "出典：XCONDAニュース「Seedance 2.5 Draft Mode アップデート：初案の保存期間を最大14日間に延長」（2026-11-02）"
         }
       ]
     }

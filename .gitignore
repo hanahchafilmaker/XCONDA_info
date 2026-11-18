@@ -1,6 +1,8 @@
 node_modules/
 dist/
 dist-test/
+# 원본 Drive 다운로드: sanitize 후 제거하며 커밋하지 않습니다.
+/google_drive/
 env
 .env
 .env.local

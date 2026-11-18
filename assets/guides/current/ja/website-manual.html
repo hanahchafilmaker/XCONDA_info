@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XCONDA Webサイト取扱説明書</title>
+<meta name="description" content="XCONDA Webサイト取扱説明書 — 画像作成、Video Generator、アセットライブラリ、全機能をまとめた詳細ガイド。">
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans JP','Yu Gothic',Meiryo,system-ui,sans-serif;color:var(--ink);line-height:1.85;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.15em;color:#9fb0cc}header h1{font-size:44px;margin:20px 0 12px;line-height:1.35}header p{color:#c6d0e2;max-width:860px}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}h3{font-size:20px;margin:32px 0 4px}h4{font-size:17px;margin:24px 0 4px}p{margin:8px 0}ul,ol{margin:8px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.7;vertical-align:top}th{background:#f2f3f6}
+pre{background:#f2f3f6;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all}code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}.check li:before{content:'☐';position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}.toc a{color:var(--navy);text-decoration:none}footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}.language-nav{font-size:13px;margin-top:20px}.language-nav a,.language-nav strong{display:inline-block;margin-right:16px;color:#fff}.table-scroll{overflow-x:auto}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{header{background:#fff;color:var(--ink);padding:24px 0}header p,header .brand{color:var(--slate)}.language-nav{display:none}main{padding:20px 0}h2,h3{break-after:avoid}tr{break-inside:avoid}.table-scroll{overflow:visible}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="website-manual" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/website-manual.html" hreflang="ko" lang="ko">KO</a><a href="../en/website-manual.html" hreflang="en" lang="en">EN</a><a href="../ja/website-manual.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/website-manual.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<header><div class="brand">XCONDA / 2026 · Webサイト取扱説明書（文章版・詳細ガイド）</div>
+<h1>XCONDA Webサイト取扱説明書</h1>
+<p>演出してから、生成する。Webサイトの始め方から、画像作成、Video Generator、アセットライブラリ、キャラクター・編集・アングル・オーディオツールまで、XCONDA Webサイトの全機能をまとめた取扱説明書です。プロンプト作成詳細ガイドと同じ文章形式で改めて構成しています。</p>
+<nav class="language-nav" aria-label="ドキュメントの言語">한국어English<strong aria-current="page">日本語</strong>简体中文</nav></header>
+<main>
+<div class="toc"><strong>目次</strong><ol>
+<li><a href="#c1">XCONDA Webサイトとは</a></li>
+<li><a href="#c2">はじめに — 無料で始め、クレジットで制作する</a></li>
+<li><a href="#c3">アセットライブラリ — 作成したものを保存し、次の作業で再利用する</a></li>
+<li><a href="#c4">画像作成 — FlexBoardの詳細な作業フロー</a></li>
+<li><a href="#c5">画像ツール一覧 — 目的に応じて選ぶ</a></li>
+<li><a href="#c6">Turn — 写真1枚から360°のバーチャルセットを作る</a></li>
+<li><a href="#c7">Video Generator — テキストと画像から動画を生成する</a></li>
+<li><a href="#c8">キャラクター・編集・アングル・オーディオツール — 作成したものを仕上げる</a></li>
+<li><a href="#c9">Blocking Board — 動画生成前に動線をリハーサルする</a></li>
+<li><a href="#c10">まとめ — 生成前のチェックリスト</a></li>
+</ol></div>
+<h2 id="c1">1. XCONDA Webサイトとは</h2>
+<p>CUBEBERRYが運営する、AI動画・画像制作プラットフォームです。複数の生成AIモデルを一つの場所で利用でき、シナリオからストーリーボード、動画生成までつながる制作ツールも提供します。核心となる原則は一つです。</p>
+<p><strong>Direct first, then generate — 演出してから、生成する。</strong></p>
+<p>なぜ演出が先なのでしょうか。動画AIはカットを作るたびに、初めから描き直します。前のカットを記憶していません。そのため、空間・人物・構図を先に固定しないと、カットごとに人物や場所が変わってしまいます。XCONDAは、この問題を演出の段階で解決します。空間はTurn、人物と構図はFlexBoard、動線はBlocking Boardで先に決め、その後に生成します。</p>
+<p>XCONDAはCUBEBERRYが自ら開発・運営するプラットフォームです。CUBEBERRYはこれらのツールを使い、地上波テレビで放送される作品や、KOCCAコンテンツラボのAI Webドラマを制作しています。本説明書の流れは、実際の制作現場で使う順番と同じです。</p>
+<div class="note">Webサイトはクレジット制です。作業ごとに所定のクレジットが消費され、クレジットパッケージを購入してチャージできます。対応言語はEnglish・한국어・日本語・简体中文です。</div>
+<h2 id="c2">2. はじめに — 無料で始め、クレジットで制作する</h2>
+<h3>2-1. Start freeで始める</h3>
+<p>Webサイトの最初の画面で、開始するオプションを選びます。ウェルカムクレジットが付与されます。Blocking Boardは無料ベータ版として提供され、カードを登録せずに利用できます。</p>
+<h3>2-2. クレジットパッケージを購入する</h3>
+<p>クレジットが不足したら、パッケージを購入してチャージします。一度決済すれば、すぐに制作を始められます。以下の表を基準としてください。</p>
+<div class="table-scroll"><table><tbody><tr><th>パッケージ</th><th>価格</th><th>クレジット</th></tr>
+<tr><td>Starter Pack V1</td><td>$6.90</td><td>2,020</td></tr>
+<tr><td>Starter Pack V2</td><td>$20.90</td><td>6,200</td></tr>
+<tr><td>Pro Pack V1</td><td>$34.90</td><td>10,500</td></tr>
+<tr><td>Pro Pack V2</td><td>$67.90</td><td>21,500</td></tr>
+<tr><td>Master Pack</td><td>$369.90</td><td>114,000</td></tr></tbody></table></div>
+<p style="color:var(--slate);font-size:13px">Webサイトの価格表に基づきます（2026-11-03確認）。価格はサイトの方針により変更される場合があります。</p>
+<h3>2-3. 困ったらHubを見る</h3>
+<p>XCONDA Hub（hub.xconda.ai）には、お知らせ、ツールの使い方、ブログ、Q&amp;Aがまとまっています。FlexBoardの画面別ガイドもHubにあります。</p>
+<div class="note">クレジットを節約する習慣：全体を最初から作り直さず、気に入らないカットだけを選んで作り直します。生成前に、カットの順番、リファレンス、ショットの長さを確認しましょう。</div>
+<h2 id="c3">3. アセットライブラリ — 作成したものを保存し、次の作業で再利用する</h2>
+<p>XCONDAで作成したアセットはライブラリに保存され、次の作業で再利用できます。Turnで作ったセットもライブラリに保存されます。キャラクターや背景のリファレンス、キー画像、ストーリーボードプロジェクト、生成済みの画像や動画もアセットです。アセットが蓄積されるほど、次の作業が速くなり、一貫性も高まります。</p>
+<h3>3-1. キャラクターシート — 人物の顔のリファレンス</h3>
+<p>人物ごとに顔画像をキャラクターシートとして用意します。このシートが、カットをまたいで同じ人物を維持する基準です。シナリオにキャラクター名を記載し、AIが顔と衣装のリファレンスを結び付けられるようにします。キャラクターシート作成の詳しいルールは、プロンプト作成詳細ガイドを参照してください。</p>
+<h3>3-2. 背景シート — 場所・空間のリファレンス</h3>
+<p>場所ごとに背景画像を背景シートとして用意します。Turnで作成した4面の背景シート（正面・左・右・背面）もこれに含まれます。背景シートは、カットをまたいで同じ空間を維持する基準です。</p>
+<h3>3-3. Turnセット — 360°のバーチャルセット</h3>
+<p>Turnで作った360°のバーチャルセットは、ライブラリに保存して次の作業で再利用します。同じ空間を再び作る必要はありません。</p>
+<h3>3-4. キー画像 — カットの基準となる画像</h3>
+<p>Turnから出力したキー画像や、FlexBoardで確定したカット画像は、次の段階である動画生成の基準になります。人物がいない空間だけの画像（Freeze Frame）は動画生成の背景リファレンスとして使い、人物を加えたキー画像はストーリーボードのカットとして使います。</p>
+<h3>3-5. プロジェクト — ストーリーボード・シーンプロジェクト</h3>
+<p>FlexBoardのストーリーボードプロジェクトとBlocking Boardのシーンプロジェクトもアセットです。プロジェクトを開いてカットを修正し、再生成し、エクスポートできます。</p>
+<p><strong>最も重要な原則：人物と場所が決まっていなければ、次の段階のリファレンスは作れません。</strong> アセットライブラリは、この原則を守るための保存場所です。新しい作業を始めるときは、ライブラリにキャラクターシートと背景シートがあるかを最初に確認してください。</p>
+<h2 id="c4">4. 画像作成 — FlexBoardの詳細な作業フロー</h2>
+<p>画像はFlexBoardで作成します。シナリオをカット別の指示文に分け、カットごとに画像を生成して、構図と人物を事前に確認します。6～36カットのストーリーボードを作成でき、画像の生成にはGPT Image 2を使います。気に入らないカットだけを選んで修正することがポイントです。</p>
+<h3>4-1. ステップ01 · 開始 — Flex Boardを選択し、新規プロジェクトを作成</h3>
+<p>ストーリーボードカテゴリでFlex Boardを選びます。ワークスペースでNew Projectから新しいプロジェクトを作成し、プロジェクト選択パネルを開きます。サンプルから始めて流れを覚えることもできます。</p>
+<h3>4-2. ステップ02 · リファレンス — キャラクター・背景のリファレンスを固定</h3>
+<p>キャラクターと背景のリファレンス画像を決めます。これらのリファレンスが、カットをまたいで人物と空間を維持する基準です。リファレンスがなければ、カットごとに人物が変わります。</p>
+<h3>4-3. ステップ03 · テキストカット — カット別の文章を作成し、テキストをプレビュー</h3>
+<p>シナリオをカットに分け、カットごとに指示文を書きます。テキストプレビューで、カットカード、説明、効果音を先に確認します。文章の段階でカットの順番と構図を確定することが、クレジットの節約につながります。テキストプレビューは無料で、生成に進む前の確認段階です。</p>
+<h3>4-4. ステップ04 · 画像生成 — グリッドでカットごとに照合</h3>
+<p>画像を生成したら、グリッド内の各画像を説明と照らし合わせます。カットごとに構図・人物・背景が合っているか確認します。</p>
+<h3>4-5. ステップ05 · カット別修正 — 合わないカットだけ作り直す</h3>
+<p>気に入らないカットだけを選び、プロンプトを修正して再生成します。カットの作り直しは20クレジットからです。同じ場面を保ったままアングルやカメラの動きだけを変えたい場合は、画像をドラッグして目的のカットに置き換えます。</p>
+<h3>4-6. ステップ06 · 確定 — 最終カットとカメラ設定を確認</h3>
+<p>最終カットを確認し、カメラ設定（ショットの長さ、ショットサイズ、カメラアングル、カメラの動き）が意図に合っているか確認します。その後、動画生成の段階に進みます。</p>
+<div class="note">動画に送る前の確認順序：カットグリッドの画像 → シーンの説明 → キャラクタートークン → 欠けているカットがないか。この4点を確認してから動画に送りましょう。</div>
+<h2 id="c5">5. 画像ツール一覧 — 目的に応じて選ぶ</h2>
+<p>FlexBoard以外にも画像を作成するツールがあります。目的に応じて選んでください。以下の表が全体の一覧です。すべてのツールに共通する原則は、リファレンスを固定し、カットごとに確認し、合わないものだけを修正することです。</p>
+<div class="table-scroll"><table><tbody><tr><th>ツール</th><th>できること</th><th>使う場面</th></tr>
+<tr><td>Flex Board</td><td>シナリオを6～36カットのストーリーボードに変換し、カットごとの文章と画像を作成。</td><td>本編のストーリーボードや、カット別の演出が必要なとき。</td></tr>
+<tr><td>Directors Cut</td><td>アートスタイルを選んでシナリオを入力すると、AIが9カットのストーリーボードを生成。カットごとにプロンプトを個別調整可能。</td><td>9カットの構成をすばやく作りたいとき。</td></tr>
+<tr><td>Art Director Pro</td><td>キャラクターとシーンをカットごとに一貫して維持する、9カットのストーリーボードを作成。</td><td>人物・衣装・状態の一貫性が重要なとき。</td></tr>
+<tr><td>SceneSnap</td><td>リファレンス写真1枚をアップロードすると、AIが6キーフレームの映画風ストーリーボードを生成。</td><td>写真から始めるとき。</td></tr>
+<tr><td>YouTube Ref</td><td>YouTubeリンクを貼り付けると動画のスタイルを分析し、キャラクターを組み込んだ9シーンのストーリーボードを生成。</td><td>参考動画のスタイルを取り入れるとき。</td></tr>
+<tr><td>Director's Sequence</td><td>キーフレーム1枚とあらすじを入力すると、AIが連続した物語の8シーンを生成。</td><td>一つのシーンから続く物語を作るとき。</td></tr>
+<tr><td>Image Generator</td><td>テキストプロンプトから高解像度で写真のような画像を生成。映画、エディトリアル、商品写真など多彩なスタイルに対応。</td><td>単一の画像が必要なとき。</td></tr></tbody></table></div>
+<div class="note">一貫性エンジン：背景の一貫性はTurn（AI VirtualSet）、キャラクターの一貫性はArt Director Proが担います。Art Director Proでは4つのAIエージェントが順番に検証・修正・反映を行い、衣装・表情・負傷状態をカット間で引き継ぎます。1フレームを変更すると、残りのフレームにも自動的に反映されます。</div>
+<h2 id="c6">6. Turn — 写真1枚から360°のバーチャルセットを作る</h2>
+<p>Turnは、写真1枚またはテキストの説明から360°のバーチャルセットを作るツールです。先に空間を作り、その中でカメラを動かしてアングルを選ぶため、カットが変わってもドア・窓・家具の位置が維持されます。背景の一貫性に関する課題を解決するのがTurnです。</p>
+<h3>6-1. ステップ01 · 空間分析 — 写真1枚から360°空間を生成</h3>
+<p>室内写真1枚を入力するか、テキストで説明すると、360°の空間が生成されます。</p>
+<h3>6-2. ステップ02 · 3Dプレビュー — 回転してアングルを探し、サイズを調整</h3>
+<p>3Dプレビューで空間を見回し、希望するアングルを探します。部屋のサイズと天井の高さをすぐに調整でき、サイズ変更のために追加生成を行う必要はありません。</p>
+<h3>6-3. ステップ03 · 壁の編集 — 小道具の追加、壁紙の変更</h3>
+<p>壁ごとに小道具を追加し、壁紙を変更します。マスクツールで変更したい領域を指定し、プロンプトを入力すると新しい小道具が作成されます。プロンプトを空にすると、指定した内容は自動的に削除されます。</p>
+<h3>6-4. ステップ04 · キー画像 — 人物・衣装・映画風スタイルを固定し、2Kキー画像を出力</h3>
+<p>固定したフレームにキャラクター、衣装、映画風スタイルを加え、1K/2Kのキー画像を出力します。このキー画像が、ストーリーボードのカットや動画生成の基準になります。</p>
+<h3>6-5. 活用法A · 背景シート — 4面の背景シートを作る</h3>
+<p>背景シートの1面、つまり正面画像をTurnに入力し、左・右・背面を作って4面を1セットにまとめます。このセットが動画生成の背景リファレンスになります。</p>
+<h3>6-6. 活用法B · カット画像 — セット内でカット画像を直接作成</h3>
+<p>360°のバーチャルセットを作り、その中に人物と小道具を配置します。次に、希望するアングルへ回転させ、カット画像を直接生成します。この画像を、そのままストーリーボードのカットとして使います。</p>
+<div class="note">Turnで作ったセットはライブラリに保存し、次の作業で再利用します。同じ空間を再び作る必要はありません。</div>
+<h2 id="c7">7. Video Generator — テキストと画像から動画を生成する</h2>
+<p>Video Generatorは、テキストプロンプトのみ、または開始・終了フレームを基準として動画を作成します。FlexBoardで作ったストーリーボード画像とカット指示文を、そのままつないで生成できます。送信前に、カットの順番、リファレンス、ショットの長さを必ず確認してください。</p>
+<h3>7-1. ステップ01 · モデル選択 — 目的に合うモデルを選ぶ</h3>
+<p>長さ、解像度、オーディオ対応、開始・終了フレーム対応を見て選びます。以下の表を基準としてください。Seedance 2.5は1回につき最大30秒、最大1080pの動画を生成できます。</p>
+<div class="table-scroll"><table><tbody><tr><th>モデル</th><th>最大長</th><th>解像度</th><th>オーディオ</th><th>開始・終了フレーム</th></tr>
+<tr><td>Seedance 2.5 T2V</td><td>30秒</td><td>1080p</td><td>対応</td><td>対応</td></tr>
+<tr><td>Seedance 2.0 T2V</td><td>15秒</td><td>4K</td><td>対応</td><td>対応</td></tr>
+<tr><td>Seedance 2.0 Fast T2V</td><td>15秒</td><td>720p</td><td>対応</td><td>対応</td></tr>
+<tr><td>Seedance 2.0 MINI T2V</td><td>15秒</td><td>720p</td><td>対応</td><td>対応</td></tr>
+<tr><td>Veo 3.1 T2V</td><td>8秒</td><td>—</td><td>対応</td><td>対応</td></tr>
+<tr><td>Veo 3.1 Fast T2V</td><td>8秒</td><td>1080p</td><td>対応</td><td>対応</td></tr>
+<tr><td>Gemini Omni Flash T2V</td><td>10秒</td><td>720p</td><td>ネイティブ</td><td>—</td></tr>
+<tr><td>Kling 3.0 Pro T2V</td><td>15秒</td><td>—</td><td>対応</td><td>マルチショットプロンプト</td></tr>
+<tr><td>Kling 3.0 4K T2V</td><td>15秒</td><td>4K</td><td>対応</td><td>対応</td></tr>
+<tr><td>Kling OMNI T2V</td><td>15秒</td><td>—</td><td>対応</td><td>対応</td></tr>
+<tr><td>Grok Imagine Video T2V</td><td>15秒</td><td>720p</td><td>ネイティブ</td><td>—</td></tr>
+<tr><td>Vidu Q3 T2V</td><td>16秒</td><td>1080p</td><td>対応</td><td>最大4件の同時生成</td></tr></tbody></table></div>
+<p style="color:var(--slate);font-size:13px">Webサイトの動画ページに基づきます（2026-11-03確認）。仕様はモデルのアップデートにより変更される場合があります。</p>
+<h3>7-2. ステップ02 · 入力 — プロンプトまたは開始・終了フレーム</h3>
+<p>テキストだけで生成するか、FlexBoard画像などの開始・終了フレームを入力して場面を固定します。ストーリーボードで確定した画像を使うと、人物と空間を維持できます。</p>
+<h3>7-3. ステップ03 · オプション — 比率・解像度・長さ・高画質</h3>
+<p>オプションで、アスペクト比、解像度、長さ、高画質を設定します。高画質オプションを有効にすると品質が向上します。</p>
+<h3>7-4. ステップ04 · 生成・確認 — カットごとに確認し、合わなければストーリーボードへ戻る</h3>
+<p>生成された動画をカットごとに確認します。人物や空間が変わってしまった場合は、ストーリーボードの段階に戻り、リファレンスを固定して再生成します。演出してから生成することが、一貫性を守る方法です。</p>
+<h2 id="c8">8. キャラクター・編集・アングル・オーディオツール — 作成したものを仕上げる</h2>
+<p>画像や動画を作成した後に仕上げるためのツールです。顔、表情、衣装、画質、アングル、色調などを調整できます。ストーリーボード、キャラクター、編集、アングル、オーディオの各ツールを合わせると、Webサイトには16を超えるツールがあります。</p>
+<div class="table-scroll"><table><tbody><tr><th>ツール</th><th>できること</th><th>使う場面</th></tr>
+<tr><td>Face Swap</td><td>写真と動画の顔をAIで精密に置き換え、照明・肌色・表情の整合性を維持。</td><td>人物の顔を変更する必要があるとき。</td></tr>
+<tr><td>Expression Transformer</td><td>人物の表情を変換。</td><td>同じ人物で異なる表情が必要なとき。</td></tr>
+<tr><td>ClothSwap</td><td>着せ替えたい領域をマスクで塗り、参考衣装画像をアップロードすると衣装を置換。照明・体型・場面の文脈を維持。</td><td>衣装だけを変更したいとき。</td></tr>
+<tr><td>AI Upscaler</td><td>画質を最大4倍まで品質を損なわずに向上。</td><td>解像度が不足しているとき。</td></tr>
+<tr><td>Auto Angle Generator</td><td>アングルを自動生成。</td><td>同じ場面で別のアングルが必要なとき。</td></tr>
+<tr><td>SpinAngle</td><td>アングルの回転に関するコンテンツを生成。</td><td>回転するアングルのシーケンスが必要なとき。</td></tr>
+<tr><td>CineGrade AI</td><td>通常の写真を映画のような画像へ変換。フィルムグレードの色調、被写界深度、シネマティックなルックを一つのプロンプトで適用。</td><td>色調やルックを統一したいとき。</td></tr></tbody></table></div>
+<p>これらは単独でも使えますが、本編の作業フローでは、ストーリーボードと動画生成の後の仕上げ段階で使います。衣装を変更した後は、Art Director Proのキャラクター一貫性チェックを再度行うと安心です。</p>
+<h2 id="c9">9. Blocking Board — 動画生成前に動線をリハーサルする</h2>
+<p>Blocking Boardは、動画を生成する前に、人物・空間・カメラが互いに衝突しないかを確認するデジタルリハーサルツールです。Webサイトで無料ベータ版として利用でき、カードは不要です。シナリオを貼り付けると、俳優・空間・動線・カメラの草案が作成されます。</p>
+<h3>9-1. ステップ01 · 1-Click — シナリオを貼り付けて草案を生成</h3>
+<p>シナリオを貼り付けると、俳優、空間、動線、カメラの草案が作成されます。</p>
+<h3>9-2. ステップ02 · 2D平面図 — 配置と動線を調整</h3>
+<p>2D平面図で、俳優とカメラの位置、移動経路を調整します。</p>
+<h3>9-3. ステップ03 · 3Dプレビュー — 3Dステージで再生して確認</h3>
+<p>3Dステージでシーンを再生し、人物とカメラの動きを確認します。</p>
+<h3>9-4. ステップ04 · 演出チェック — 衝突・視線を検査</h3>
+<p>演出チェックで衝突と視線を検査します。問題が見つかったら平面図に戻り、配置や動線を修正します。</p>
+<h3>9-5. ステップ05 · エクスポート — ショットブックPDFなどを出力</h3>
+<p>確認済みのシーンは、Seedance用の英語プロンプト、ショットリスト、平面図とフレームのPNG、ショットブックPDFとしてエクスポートできます。シーンを再生し、プレビズ動画（WebM）として出力することもできます。</p>
+<div class="note">複数の人物が交差する複雑な動きのシーンでは、Blocking Boardで人物の位置と移動経路を先に決めることを推奨します。リハーサルせずに生成すると、衝突や動線の誤りを後から修正しなければなりません。詳しい使い方は、別のBlocking Boardガイド（全13章）を参照してください。</div>
+<h2 id="c10">10. まとめ — 生成前のチェックリスト</h2>
+<p>Webサイトを使ううえで重要なのは順番です。演出してから、生成します。ストーリーボードで構図と人物を確定し、Blocking Boardで動線を確認してから、Video Generatorで生成すると、作り直しの回数を減らせます。</p>
+<ul class="check">
+<li>キャラクターシートと背景シートはライブラリにあるか</li>
+<li>カットの順番とカット別の指示文は確定しているか</li>
+<li>カットグリッドの画像、シーンの説明、キャラクタートークンを照合したか</li>
+<li>欠けているカットはないか</li>
+<li>ショットの長さ・ショットサイズ・カメラアングル・カメラの動きは意図に合っているか</li>
+<li>Turnセットが必要な場合、ライブラリから再利用したか</li>
+<li>動画に送る前に、最終カットとカメラ設定を確認したか</li>
+</ul>
+<div class="note">本説明書は、XCONDA Webサイトの公開ページ、Hubガイド、CUBEBERRYの制作記事を基に、2026-11-03に作成されました。価格・モデル仕様・クレジットポリシーはサイトの更新により変わる場合があるため、決済・生成前にサイト画面で再確認してください。ヘルプはhub.xconda.aiで確認できます。プロンプト作成の詳しいルールは、プロンプト作成詳細ガイドを参照してください。</div>
+</main>
+<footer>XCONDA Webサイト取扱説明書（文章版・詳細ガイド） · 原典作成日 2026-11-03 · 日本語版更新日 2026-11-03 · 原文の注記：既存のスライド形式ガイド（20番）はそのまま保存。</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

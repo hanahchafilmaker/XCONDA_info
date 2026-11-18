@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport"><title>Blocking Board — User Guide</title><meta content="Blocking Board user guide in the Turn video guide format" name="description"><style>
+
+
+:root {
+  --midnight: #1D2A4D;
+  --midnight-deep: #141E3A;
+  --offwhite: #FFFFFF;
+  --offwhite-warm: #F8F8F8;
+  --slate: #4A4A4A;
+  --slate-light: #8A8A8A;
+  --hairline: rgba(29, 42, 77, 0.15);
+  --hairline-light: rgba(29, 42, 77, 0.08);
+  --kor: 'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--kor);
+  background: var(--offwhite);
+  color: var(--midnight);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.75;
+  font-weight: 400;
+  word-break: keep-all;
+  font-size: 16px;
+}
+::selection { background: var(--midnight); color: var(--offwhite); }
+
+.slide {
+  min-height: 100vh;
+  padding: 80px;
+  position: relative;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+}
+.slide-meta {
+  position: absolute;
+  top: 32px; left: 80px; right: 80px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--slate); font-weight: 500; z-index: 5;
+}
+.slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+.slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+.footer-meta {
+  margin-top: auto; padding-top: 32px;
+  border-top: 1px solid var(--hairline);
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light);
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--midnight); font-weight: 500;
+}
+.section-header {
+  display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+}
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em;
+}
+.section-title-block .eyebrow { margin-bottom: 14px; }
+.section-title {
+  font-family: var(--kor); font-weight: 700; font-size: 42px;
+  line-height: 1.25; color: var(--midnight); letter-spacing: -0.035em;
+}
+.section-lede {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: var(--slate); margin-top: 18px; line-height: 1.75;
+  max-width: 720px; letter-spacing: -0.015em;
+}
+
+
+.cover {
+  background: var(--midnight); color: var(--offwhite);
+  padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.cover-left {
+  padding: 80px; display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid rgba(240,239,234,0.15);
+}
+.cover-right {
+  background: var(--offwhite); padding: 80px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.cover-right::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+  background-size: 4px 4px; pointer-events: none;
+}
+.cover-meta-top {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6);
+}
+.cover-title-en {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(70px, 10vw, 150px); line-height: 0.85;
+  letter-spacing: -0.02em; color: var(--offwhite);
+}
+.cover-title-kor {
+  font-family: var(--kor); font-weight: 600; font-size: 28px;
+  color: rgba(240,239,234,0.95); letter-spacing: -0.04em; margin-top: 24px; line-height: 1.3;
+}
+.cover-subtitle {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: rgba(240,239,234,0.75); margin-top: 24px; max-width: 460px;
+  line-height: 1.75; letter-spacing: -0.015em;
+}
+.cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-bottom-meta div {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8;
+}
+.cover-tag {
+  border-top: 1px solid var(--hairline); padding-top: 24px;
+  font-family: var(--kor); font-weight: 500; font-size: 14px;
+  color: var(--midnight); line-height: 1.85; letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+}
+.cover-tag .label {
+  display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--slate); margin-bottom: 8px; text-transform: uppercase;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
+.two-col.even { grid-template-columns: 1fr 1fr; }
+
+.step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+.step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.step-number {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--midnight); margin-bottom: 10px; display: inline-block;
+}
+.step-body {
+  font-family: var(--kor); font-size: 15.5px; color: var(--slate);
+  line-height: 1.85; letter-spacing: -0.015em;
+}
+.step-body strong { font-weight: 600; color: var(--midnight); }
+
+.image-plate { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.image-plate figure { width: 100%; }
+.image-plate img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--hairline); background: #101425;
+}
+.image-plate figcaption {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light); margin-top: 10px;
+}
+
+
+.flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 34px; }
+.flow .fchip {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  border: 1px solid var(--midnight); padding: 8px 14px; color: var(--midnight);
+  background: var(--offwhite-warm);
+}
+.flow .fchip.dark { background: var(--midnight); color: var(--offwhite); }
+.flow .arr { font-family: var(--mono); color: var(--slate-light); font-size: 12px; }
+
+
+.k {
+  font-family: var(--mono); font-size: 0.86em; letter-spacing: 0.02em;
+  background: var(--midnight); color: var(--offwhite);
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
+.k.light { background: var(--offwhite-warm); color: var(--midnight); border: 1px solid var(--hairline); }
+
+
+.dict-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+  background: var(--hairline); border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline); margin-top: 40px;
+}
+.dict-item { background: var(--offwhite); padding: 26px 26px; display: flex; flex-direction: column; gap: 10px; min-height: 150px; }
+.dict-item .term { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--midnight); }
+.dict-item .kor { font-family: var(--kor); font-size: 15px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+.dict-item .desc { font-family: var(--kor); font-size: 13.5px; color: var(--slate); line-height: 1.7; letter-spacing: -0.01em; margin-top: auto; }
+.dict-item .tagline { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate-light); }
+
+
+.summary-list { display: grid; gap: 24px; margin-top: 40px; }
+.summary-item { padding: 28px 32px; background: var(--offwhite-warm); border-left: 3px solid var(--midnight); }
+.summary-item h4 { font-family: var(--kor); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.025em; }
+.summary-item p { font-family: var(--kor); font-size: 14.5px; color: var(--slate); line-height: 1.8; letter-spacing: -0.015em; }
+
+
+.stage-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+.stage-cell { background: var(--offwhite); padding: 22px 20px; }
+.stage-cell .no { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--midnight); }
+.stage-cell .nm { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--midnight); margin-top: 8px; }
+.stage-cell .ds { font-family: var(--kor); font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.65; }
+.stage-cell.dim { background: var(--offwhite-warm); }
+
+@media (max-width: 1100px) {
+  body { font-size: 15px; }
+  .slide { padding: 60px 32px; }
+  .slide-meta { left: 32px; right: 32px; }
+  .two-col, .two-col.even { grid-template-columns: 1fr; gap: 40px; }
+  .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+  .section-num { font-size: 72px; }
+  .section-title { font-size: 30px; }
+  .dict-grid { grid-template-columns: 1fr; }
+  .cover { grid-template-columns: 1fr; }
+  .cover-left, .cover-right { padding: 50px 32px; }
+  .cover-title-en { font-size: 64px; }
+  .cover-title-kor { font-size: 22px; }
+  .stage-row { grid-template-columns: 1fr 1fr; }
+}
+
+
+
+.cover-title-en{font-size:clamp(68px,8.2vw,116px)}
+.stage-row.five{grid-template-columns:repeat(5,1fr)}
+.stage-row.three{grid-template-columns:repeat(3,1fr)}
+.stage-row.five .stage-cell{padding:20px 16px}
+.stage-row.five .nm{word-break:break-word}
+.code-panel{background:var(--midnight-deep);color:#f2f4f7;padding:30px 34px;font:13px/2.15 var(--mono);border:1px solid var(--midnight)}
+.code-panel .prompt{color:#b9cbd5}.code-panel .comment{color:#9eabc1}.code-panel .address{color:#fff}
+.sub-note{border-top:1px solid var(--hairline);padding-top:20px;margin-top:24px;color:var(--slate);font-size:14px;line-height:1.8}
+.image-plate img{cursor:zoom-in}
+.image-plate figure{margin:0}
+.image-plate figcaption{letter-spacing:.05em;text-transform:none}
+.flow.tight{margin-top:22px}
+.dict-grid.compact{margin-top:0}.dict-grid.compact .dict-item{min-height:128px;padding:20px 22px}
+.summary-list.compact{margin-top:0;gap:16px}
+.summary-list.compact .summary-item{padding:22px 26px}
+.two-col.aligned{align-items:center}
+.small-caps{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--slate-light)}
+.image-plate .figure-stack{display:grid;gap:22px;width:100%}
+
+.zoom[hidden]{display:none}.zoom{position:fixed;z-index:1000;inset:0;background:rgba(9,16,31,.94);display:flex;align-items:center;justify-content:center;padding:56px 20px 20px}
+.zoom img{max-width:100%;max-height:100%;object-fit:contain}.zoom button{position:absolute;top:18px;right:22px;background:white;color:var(--midnight);border:0;padding:9px 14px;font:600 13px var(--kor);cursor:pointer}
+@media(max-width:1100px){.stage-row.five{grid-template-columns:repeat(2,1fr)}.stage-row.three{grid-template-columns:1fr}.cover-title-en{font-size:clamp(61px,12vw,96px)}}
+@media(max-width:600px){.cover-title-en{font-size:clamp(58px,15vw,80px)}.stage-row.five{grid-template-columns:1fr}.slide{padding:66px 24px 42px}.slide-meta{left:24px;right:24px}.cover-left,.cover-right{padding:64px 24px}.section-header{margin-bottom:28px}.section-num{font-size:68px}.section-title{font-size:29px}.flow{gap:7px}}
+@media print{@page{size:A4 landscape;margin:0}.slide{break-after:page;page-break-after:always;min-height:100vh;padding:48px 64px}.cover{min-height:100vh}.cover-left,.cover-right{padding:60px}.slide-meta{left:64px;right:64px}.zoom{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="blocking-board" data-current-guide-lang="en" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="Current user guides navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/blocking-board.html" hreflang="ko" lang="ko">KO</a><a href="../en/blocking-board.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/blocking-board.html" hreflang="ja" lang="ja">JA</a><a href="../zh/blocking-board.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav><main><section class="slide cover" id="cover"><div class="cover-left">
+<div class="cover-meta-top"><span>Xconda / 2026</span><span>Product User Guide</span></div>
+<div><div class="cover-title-en">BLOCKING<br>BOARD</div><div class="cover-title-kor">Blocking Board — User Guide</div><div class="cover-subtitle">A local web app guide that turns a script into stage movement, reviews actors, space, cameras, and timing, then passes the result on as a video prompt and shotbook.</div></div>
+<div class="cover-bottom-meta"><div><div>User Guide</div><div>Based on real app screens</div></div><div style="text-align:right"><div>13 chapters</div><div>2026</div></div></div>
+</div><div class="cover-right"><div class="cover-meta-top" style="color:var(--slate)"><span>Contents</span><span>13 chapters</span></div><div></div>
+<div class="cover-tag"><span class="label">— Guide contents —</span>Blocking Board introduction · Installation · Workflow · Home screen · Prompt and 1-Click · Space, actors, and routes · Cameras · Cuts and timeline · Direction check · Save and export · Photo Blocking and previz · Integration and shortcuts · Summary</div></div></section><section class="slide" id="chapter-01">
+<div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>Introduction</span></div><div class="right"><span>P. 001</span></div></div>
+<div class="section-header"><div class="section-num">01</div><div class="section-title-block"><div class="eyebrow">— Overview · Tool introduction —</div><h2 class="section-title">What Blocking Board solves</h2><p class="section-lede">A digital rehearsal tool that checks whether actors, space, and cameras collide before generating video.</p></div></div>
+<div class="stage-row three"><div class="stage-cell"><div class="no">1</div><div class="nm">PLAN / Floor plan</div><div class="ds">Organize positions, routes, and props.</div></div><div class="stage-cell"><div class="no">2</div><div class="nm">PREVIEW / 3D</div><div class="ds">Play the scene to check height, eyelines, and collisions.</div></div><div class="stage-cell"><div class="no">3</div><div class="nm">OUTPUT / Cuts</div><div class="ds">Carry the result into the timeline and prompts.</div></div></div><div class="two-col" style="margin-top:48px"><div><div class="step-block"><div class="step-number">— Note 01 · Core concept —</div><p class="step-body">Before generating a video, Blocking Board makes it  <strong> possible to check whether the actors, space, and cameras collide</strong> — a digital rehearsal tool.</p></div><div class="step-block"><div class="step-number">— Note 02 · Order —</div><p class="step-body">Set positions and routes on the floor plan, review height and eyelines on the 3D stage, and carry the result into cuts, the timeline, and prompts.</p></div></div><div><div class="summary-item"><h4>“Review and adjust visually before you shoot”</h4><p>What matters more than auto-generation itself is <strong>creating an intermediate state that can be reviewed</strong>.</p></div><div class="flow tight"><span class="fchip">Script</span><span class="arr">→</span><span class="fchip">Floor plan</span><span class="arr">→</span><span class="fchip">3D stage</span><span class="arr">→</span><span class="fchip dark">Cuts / Output</span></div></div></div>
+<div class="footer-meta"><span>001 — Introduction</span><span>Overview</span></div>
+</section><section class="slide" id="chapter-02">
+<div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Installation</span></div><div class="right"><span>P. 002</span></div></div>
+<div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Installation · Local web app —</div><h2 class="section-title">Run the app and prepare your workspace</h2><p class="section-lede">Blocking Board is a local web app. All you need to start is a project folder and a browser.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Step 01 · Install dependencies —</div><p class="step-body">Run the following from the repository root  <span class="k">npm ci</span>.</p></div><div class="step-block"><div class="step-number">— Step 02 · Build —</div><p class="step-body"><span class="k">npm run build</span> — Build the app bundle. —</p></div><div class="step-block"><div class="step-number">— Step 03 · Local server —</div><p class="step-body"><span class="k">node tools/static-server.js 8010</span> and  <strong>local server address</strong> open it in your browser.</p></div></div><div><div class="code-panel"><div class="comment"># Run from the repository root</div><div><span class="prompt">$</span> npm ci</div><div><span class="prompt">$</span> npm run build</div><div><span class="prompt">$</span> node tools/static-server.js 8010</div><br><div class="comment"># Open in your browser</div><div class="address">local server address</div></div><p class="sub-note">Use a local HTTP server instead of double-clicking the file to open it.</p></div></div>
+<div class="footer-meta"><span>002 — Installation</span><span>Getting started</span></div>
+</section><section class="slide" id="chapter-03">
+<div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Workflow</span></div><div class="right"><span>P. 003</span></div></div>
+<div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Workflow · 5 steps —</div><h2 class="section-title">Five steps from start to finish</h2><p class="section-lede">Create and review a scene in this order. You can go back to an earlier step at any time to revise.</p></div></div>
+<div class="stage-row five"><div class="stage-cell"><div class="no">1</div><div class="nm">SCENE</div><div class="ds">Script and prompt input</div></div><div class="stage-cell"><div class="no">2</div><div class="nm">SPACE</div><div class="ds">Floor plan and prop placement</div></div><div class="stage-cell"><div class="no">3</div><div class="nm">PATH</div><div class="ds">Actor and route placement</div></div><div class="stage-cell"><div class="no">4</div><div class="nm">PREVIEW</div><div class="ds">Preview and review in 3D</div></div><div class="stage-cell"><div class="no">5</div><div class="nm">EXPORT</div><div class="ds">Prompt · Video · Shotbook</div></div></div><div class="two-col" style="margin-top:42px"><div><div class="step-block"><div class="step-number">— Step 01 · Scene —</div><p class="step-body">Enter a script and prompt to create a draft. Refine the space and props, then set each actor’s starting point and route.</p></div><div class="step-block"><div class="step-number">— Step 02 · Review —</div><p class="step-body">Play the scene on the 3D stage to check for collisions and eyeline problems. If you find a problem,  <strong>go back to the staging step and fix it.</strong>.</p></div><div class="step-block"><div class="step-number">— Step 03 · Export —</div><p class="step-body">When the review is done, export the cuts, timeline, video prompt, and shotbook.</p></div></div><div class="image-plate"><figure><img alt="Selecting an actor’s movement on the 3D stage" loading="lazy" src="../screens/b6ac1de292013532254c7eee551fe6a8e04d1eda434e25bae179d6b532f8e0e6.png" tabindex="0"><figcaption>Selecting an actor’s movement on the 3D stage · Real app screen</figcaption></figure></div></div>
+<div class="footer-meta"><span>003 — Workflow</span><span>Workflow</span></div>
+</section><section class="slide" id="chapter-04">
+<div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Home screen</span></div><div class="right"><span>P. 004</span></div></div>
+<div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Home · Screen layout —</div><h2 class="section-title">Home screen and top bar</h2><p class="section-lede">Create a scene on the input screen, and manage work modes and file actions from the top bar.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Note 01 · Scene input —</div><p class="step-body">Paste a script or scene direction into the input field at the center of the home screen, and use <span class="k">1-Click</span> to create a stage draft.</p></div><div class="step-block"><div class="step-number">— Note 02 · Space setup —</div><p class="step-body">Load a space JSON, or  <strong>Start with empty space</strong>If the set is not ready yet, you can adjust the space later.</p></div><div class="step-block"><div class="step-number">— Note 03 · Top bar —</div><p class="step-body"><strong>File</strong> manages new scenes, loading, saving, and exporting. <span class="k light">Floor Plan</span> / <span class="k light">Stage</span> to switch views. CUT mode lets you play the cuts in order.</p></div><div class="step-block"><div class="step-number">— Note 04 · Tool display —</div><p class="step-body">Open Photo Path and the direction plan, and switch the displayed tool set as follows  <strong>Tools: Simple / Full</strong>.</p></div></div><div class="image-plate"><figure><img alt="Actual home screen showing the scene prompt and space settings" loading="lazy" src="../screens/c4c0cecd5c0a6b81b0fd016274ed300f178a4cd70a5a09abe0cadc1825e773f2.png" tabindex="0"><figcaption>Actual home screen showing the scene prompt and space settings · Real app screen</figcaption></figure></div></div>
+<div class="footer-meta"><span>004 — Home screen</span><span>Home screen</span></div>
+</section><section class="slide" id="chapter-05">
+<div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Prompt</span></div><div class="right"><span>P. 005</span></div></div>
+<div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Input · 1-Click —</div><h2 class="section-title">Structure the script and generate a draft with 1-Click</h2><p class="section-lede">Turn natural language into stage data. The clearer the fields, the more stable the result.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Step 01 · Input —</div><p class="step-body">Pick a sample to check the input format, or paste a script. Describe actions with verbs, and distinguish held poses from movement.</p></div><div class="step-block"><div class="step-number">— Step 02 · Space —</div><p class="step-body">Choose the space setup. If nothing is specified, the scene starts in an empty space.</p></div><div class="step-block"><div class="step-number">— Step 03 · 1-Click —</div><p class="step-body"><span class="k">1-Click</span> to create a draft layout of actors, space, routes, and cameras. Check the report for omissions and warnings.</p></div><div class="step-block"><div class="step-number">— Caution —</div><p class="step-body">Running it again replaces the current scene with the new analysis result. <strong>Save first.</strong></p></div></div><div><div class="eyebrow" style="margin-bottom:20px">— Input fields —</div><div class="dict-grid compact"><div class="dict-item"><div class="term">Scene / Title</div><div class="kor">Space and project name</div><div class="desc">Specify where the scene takes place and set the project name.</div></div><div class="dict-item"><div class="term">Actors / Props</div><div class="kor">Subjects in the scene</div><div class="desc">Clearly specify names, body types, and interaction targets.</div></div><div class="dict-item"><div class="term">Camera</div><div class="kor">Count · Shot · Movement</div><div class="desc">Specify the number of cameras, shot sizes, and movements.</div></div><div class="dict-item"><div class="term">Time · Action</div><div class="kor">Time-based actions</div><div class="desc">Use the “0–3s: Character — Action” format.</div></div></div></div></div>
+<div class="footer-meta"><span>005 — Prompt</span><span>Prompt and 1-Click</span></div>
+</section><section class="slide" id="chapter-06">
+<div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Space and routes</span></div><div class="right"><span>P. 006</span></div></div>
+<div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Staging · Space / Actors / Routes —</div><h2 class="section-title">Place the space, then place the actors and routes</h2><p class="section-lede">Auto-placement is only a starting point. Refine the space, place the actors, then draw routes on the floor plan.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Step 01 · Space —</div><p class="step-body">From the left panel,  <span class="k">Add Object</span>select it and pick a category to place walls, doors, windows, and furniture on the floor plan.</p></div><div class="step-block"><div class="step-number">— Step 02 · Actors —</div><p class="step-body">Place the actors and specify their names, body types, starting positions, and directions.</p></div><div class="step-block"><div class="step-number">— Step 03 · Routes —</div><p class="step-body">Click waypoints on the floor plan to draw a route. <span class="k light">Enter</span> to confirm,  <span class="k light">Esc</span> to cancel.</p></div><div class="step-block"><div class="step-number">— Step 04 · Fine adjustments —</div><p class="step-body">In the 3D tools,  <span class="k light">E</span>  to move ·  <span class="k light">R</span>  to rotate ·  <span class="k light">T</span>  to resize. <strong>One floor-plan grid cell = 1 m</strong> — Use this as the scale reference. —</p></div></div><div class="image-plate"><figure><img alt="Actor placement, routes, and camera preview on the floor plan" loading="lazy" src="../screens/9add0027bdf38d8d92116448e6dfc85a66aa11339428973735a3e954d6b703bc.png" tabindex="0"><figcaption>Actor placement, routes, and camera preview on the floor plan · Real app screen</figcaption></figure></div></div>
+<div class="footer-meta"><span>006 — Space and routes</span><span>Space and routes</span></div>
+</section><section class="slide" id="chapter-07">
+<div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Cameras</span></div><div class="right"><span>P. 007</span></div></div>
+<div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Cameras · Multicam —</div><h2 class="section-title">Design the cameras and shot sizes</h2><p class="section-lede">Define each camera’s role, and set its shot size, angle of view, tracking target, and movement.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Note 01 · Camera management —</div><p class="step-body">From the camera panel,  <strong>CAM1~4</strong>manage them. For each camera, set the shot size, angle of view (FOV), tracking target, and movement.</p></div><div class="step-block"><div class="step-number">— Note 02 · Shot sizes —</div><p class="step-body"><strong>WIDE</strong> frames the actor’s full body,  <strong>MEDIUM</strong> handles dialogue,  <strong>CLOSE</strong> catches reactions,  <strong>OTS</strong> is used for over-the-shoulder views.</p></div><div class="step-block"><div class="step-number">— Note 03 · Panel settings —</div><p class="step-body">Check the lens and FOV, tracking target, camera movement, angle, and height Z (m).</p></div><div class="step-block"><div class="step-number">— Tip —</div><p class="step-body">Before worrying about lens numbers,  <strong>first decide what that shot needs to show.</strong>.</p></div></div><div class="image-plate"><figure><img alt="Camera panel for lens, subject, movement, angle, and height" loading="lazy" src="../screens/0b46ae01a4d5552f2863d37f197be66b2afbbd024a98aa3602410f1430c229b0.png" tabindex="0"><figcaption>Camera settings panel for lens, subject, movement, angle, and height · Real app screen</figcaption></figure></div></div>
+<div class="footer-meta"><span>007 — Cameras</span><span>Cameras</span></div>
+</section><section class="slide" id="chapter-08">
+<div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Cuts and timing</span></div><div class="right"><span>P. 008</span></div></div>
+<div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Time · Cuts and dialogue —</div><h2 class="section-title">Place cuts and dialogue on the timeline</h2><p class="section-lede">A cut is the unit of story time. Place them so actor movements and dialogue do not overlap awkwardly.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Step 01 · Cuts —</div><p class="step-body">Add cuts to the master timeline and set their lengths and cameras. Check for gaps between cuts and continuity warnings.</p></div><div class="step-block"><div class="step-number">— Step 02 · Dialogue —</div><p class="step-body">Dialogue is managed on a separate track. <strong>Check who speaks when, </strong> and align the dialogue with the action segments.</p></div><div class="step-block"><div class="step-number">— Step 03 · Playback —</div><p class="step-body">Use the bottom timeline’s play, pause, and scrub. Check poses at specific frames and review collisions across the full movement.</p></div><div class="step-block"><div class="step-number">— Note · FPS and curves —</div><p class="step-body">FPS adjusts the speed of the final video, and curves adjust changes in movement speed.</p></div></div><div class="image-plate"><figure><img alt="Playback bar and camera preview on the 3D stage" loading="lazy" src="../screens/6eeb4732a379820e73604321f8bc0380528330416ce1a23495e1c619443e2aa1.png" tabindex="0"><figcaption>Playback bar and camera preview on the 3D stage · Real app screen</figcaption></figure></div></div>
+<div class="footer-meta"><span>008 — Cuts and timing</span><span>Timeline</span></div>
+</section><section class="slide" id="chapter-09">
+<div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Direction check</span></div><div class="right"><span>P. 009</span></div></div>
+<div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Check · Direction QA —</div><h2 class="section-title">Review the direction check before playback</h2><p class="section-lede">Check the results and fix eyeline, 180-degree axis, collision, and route problems.</p></div></div>
+<div class="stage-row three"><div class="stage-cell"><div class="no">✓</div><div class="nm">Pass</div><div class="ds">No problems under the current conditions</div></div><div class="stage-cell"><div class="no">✕</div><div class="nm">Issue found</div><div class="ds">Eyeline, axis, or collision problems must be fixed</div></div><div class="stage-cell"><div class="no">·</div><div class="nm">Info</div><div class="ds">An item shown for reference without a verdict</div></div></div><div class="two-col" style="margin-top:48px"><div><div class="step-block"><div class="step-number">— Check 01 · Eyeline —</div><p class="step-body">Check whether each camera’s view cone points at its target actor.</p></div><div class="step-block"><div class="step-number">— Check 02 · Axis —</div><p class="step-body">Mind the action line between actor and camera, the so-called  <strong>180-degree axis.</strong>.</p></div></div><div><div class="step-block"><div class="step-number">— Check 03 · Collision —</div><p class="step-body">Check whether actors overlap or pass through walls, and whether any route is unreachable.</p></div><div class="step-block"><div class="step-number">— Fix —</div><p class="step-body">If the direction check shows a warning, go back to staging or route setup, fix it, and play again.</p></div></div></div>
+<div class="footer-meta"><span>009 — Direction check</span><span>Direction check</span></div>
+</section><section class="slide" id="chapter-10">
+<div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Save and export</span></div><div class="right"><span>P. 010</span></div></div>
+<div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Files · Save and export —</div><h2 class="section-title">Save your work and export it</h2><p class="section-lede">Save the project state as JSON, and share the reviewed scene in the format that fits its purpose.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Save · JSON project file —</div><p class="step-body">Save the board state, input prompt, space, actors, cameras, and timeline as a single JSON project file.</p></div><div class="step-block"><div class="step-number">— Export · Four deliverables —</div><p class="step-body">Export the reviewed scene as an English prompt, shot list, PNG, and shotbook PDF.</p></div><div class="step-block"><div class="step-number">— Tip · Backup —</div><p class="step-body">Save before making an important layout change. A space JSON can be reused for the set and initial placement.</p></div></div><div><div class="eyebrow" style="margin-bottom:20px">— Export formats —</div><div class="dict-grid compact"><div class="dict-item"><div class="term">English prompt</div><div class="kor">Text for Seedance</div><div class="desc">Organize the reviewed scene’s space and actions into an English prompt.</div></div><div class="dict-item"><div class="term">Shot list</div><div class="kor">Cut summary</div><div class="desc">Summarize cuts, timing, cameras, and actions at a glance.</div></div><div class="dict-item"><div class="term">PNG</div><div class="kor">Floor plan / Frame images</div><div class="desc">Save the floor plan and selected frames as images.</div></div><div class="dict-item"><div class="term">Shotbook PDF</div><div class="kor">Shoot / review document</div><div class="desc">A document for sharing the cut structure with the team and reviewing it.</div></div></div></div></div>
+<div class="footer-meta"><span>010 — Save and export</span><span>Save and export</span></div>
+</section><section class="slide" id="chapter-11">
+<div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Previz and Photo Path</span></div><div class="right"><span>P. 011</span></div></div>
+<div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Advanced · Photo Path —</div><h2 class="section-title">Previz and advanced tools</h2><p class="section-lede">Align to a real location with Photo Path, and compare alternative direction plans side by side.</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— Step 01 · Previz —</div><p class="step-body">Play the scene and export a previz video (WebM). Use it to align timing and framing with the team before final generation.</p></div><div class="step-block"><div class="step-number">— Step 02 · Photo Path —</div><p class="step-body">Load a photo of the real location, align 4 floor reference points, then mark actor positions and routes.</p></div><div class="step-block"><div class="step-number">— Step 03 · Direction plan A/B —</div><p class="step-body">Saving a direction plan preserves the original even if you change the camera or routes. Before trying something new, name the original plan and note its purpose.</p></div><div class="step-block"><div class="step-number">— Note —</div><p class="step-body">A previz video is <strong>not a final deliverable</strong> , but an intermediate result for agreeing on blocking and cuts.</p></div></div><div class="image-plate"><figure><img alt="Placing actors and editing routes on a photo" loading="lazy" src="../screens/2a9a2488fce367c5b12e25eba15f8dac74842a5aab2cd0c44b00571cde4f00ae.png" tabindex="0"><figcaption>Placing actors and editing routes on a photo · Real app screen</figcaption></figure></div></div>
+<div class="footer-meta"><span>011 — Previz and Photo Path</span><span>Previz and advanced</span></div>
+</section><section class="slide" id="chapter-12">
+<div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Integration and shortcuts</span></div><div class="right"><span>P. 012</span></div></div>
+<div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Reference · Pipeline and keys —</div><h2 class="section-title">Connect to external tools and learn the shortcuts</h2><p class="section-lede">Convert the reviewed board into data packages for video generation and motion execution.</p></div></div>
+<div class="two-col"><div><div class="eyebrow" style="margin-bottom:20px">— Data integration —</div><div class="dict-grid compact"><div class="dict-item"><div class="term">Seedance</div><div class="kor">English scene prompt</div><div class="desc">Pass space and actions as a generation prompt.</div></div><div class="dict-item"><div class="term">Video IR</div><div class="kor">Cuts and timing</div><div class="desc">Structure the cut placement and timing.</div></div><div class="dict-item"><div class="term">Motion IR</div><div class="kor">Per-actor motion plan</div><div class="desc">Organize each actor’s movement plan as data.</div></div><div class="dict-item"><div class="term">UniMate</div><div class="kor">Motion execution package</div><div class="desc">Deliver the package needed for motion execution.</div></div></div></div><div><div class="step-block"><div class="step-number">— Key · Q —</div><p class="step-body"><span class="k light">Q</span> Rotate the view.</p></div><div class="step-block"><div class="step-number">— Keys · E / R / T —</div><p class="step-body"><span class="k light">E</span>  to move ·  <span class="k light">R</span>  to rotate ·  <span class="k light">T</span> Resize.</p></div><div class="step-block"><div class="step-number">— Keys · A / F —</div><p class="step-body"><span class="k light">A</span> Show the full scene ·  <span class="k light">F</span> Focus on the selection.</p></div></div></div>
+<div class="footer-meta"><span>012 — Integration and shortcuts</span><span>Pipeline and keys</span></div>
+</section><section class="slide" id="chapter-13">
+<div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>Summary</span></div><div class="right"><span>P. 013</span></div></div>
+<div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Summary · Wrap-up —</div><h2 class="section-title">Good blocking gives the next person in line confidence</h2><p class="section-lede">A summary of the process for reviewing a scene, from script to export.</p></div></div>
+<div class="summary-list compact"><div class="summary-item"><h4>Order of a scene</h4><p>Script → Space → Actors → Cameras → Timing → Check → Export. If a problem comes up, go back to an earlier step and fix it.</p></div><div class="summary-item"><h4>When entering a scene</h4><p>Write events and actions as time segments, and use consistent names for actors, props, and cameras.</p></div><div class="summary-item"><h4>When reviewing</h4><p>Plan routes on the floor plan and play the scene in 3D. Resolve eyeline, collision, and continuity warnings.</p></div><div class="summary-item"><h4>When handing off</h4><p>After review, export the English prompt, shot list, PNG, and shotbook PDF. Compose the final input in the order “Scene / Title / Actors / Props / Cameras / Time · Action.”</p></div></div>
+<div class="footer-meta"><span>013 — Summary</span><span>Summary</span></div>
+</section></main><div aria-label="Enlarge screenshot" aria-modal="true" class="zoom" hidden="" role="dialog"><button type="button">Close ×</button></div><script src="../embed.js" defer=""></script><script src="../zoom.js" defer=""></script></body></html>

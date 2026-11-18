@@ -462,7 +462,7 @@ function main() {
     // 점검 이력은 사람이 적는 메모 파일에서 가져옵니다(없으면 생략).
     const notesFile = path.join(ROOT, "content/i18n/qc-notes.md");
     const notes = fs.existsSync(notesFile) ? fs.readFileSync(notesFile, "utf8") : "";
-    fs.writeFileSync(file, `${reportMarkdown(results, { date, dicts, notes })}\n`);
+    fs.writeFileSync(file, reportMarkdown(results, { date, dicts, notes }));
     console.log(`\n리포트: ${path.relative(ROOT, file)}`);
   }
   if (errorCount) {

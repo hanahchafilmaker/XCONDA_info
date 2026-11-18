@@ -186,9 +186,18 @@ test("neutral editorial home: search form, five destinations and featured guide 
   await page.keyboard.press("Escape");
   const featured = page.locator("[data-featured-guide]");
   await featured.click();
-  // 2026-11-18 현재판 Drive 문서는 CSP 때문에 iframe 대신 새 탭 링크로 엽니다.
-  await expect(page.locator('a[data-html-guide="flexboard"]')).toBeVisible();
-  await expect(page.locator('iframe[data-html-guide="flexboard"]')).toHaveCount(0);
+  // 2026-11-18 현재판은 같은 출처 정적 자산이라 모달 안에서 바로 읽고 재생합니다.
+  const dialog = page.locator('[role="dialog"][aria-modal="true"]');
+  await expect(dialog.locator('iframe[data-html-guide="flexboard"]')).toHaveAttribute(
+    "src",
+    /\/assets\/guides\/current\/ko\/flexboard\.html\?embedded=1$/,
+  );
+  await expect(dialog.locator('video[data-tool-video="flexboard"]')).toHaveAttribute(
+    "src",
+    /\/assets\/guides\/current\/video\/19_ko\.mp4$/,
+  );
+  await expect(dialog.locator('a[data-html-guide="flexboard"]')).toHaveCount(0);
+  await expect(dialog.locator("[data-guide-view]")).toHaveCount(0);
   await page.locator("[data-modal-close]").click();
   await expect(featured).toBeFocused();
 });

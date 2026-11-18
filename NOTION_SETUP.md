@@ -285,7 +285,7 @@ crons = ["*/10 * * * *"]
 
 > 사이트는 메인 표(`XCONDA_NEWs`)와 **허브 Q&A 표**(아래 「허브 Q&A 표」) **두 표만** 읽습니다.
 > 그 밖의 표에 글을 추가하면 사이트에 나타나지 않으니, 한 표로 합치거나
-> 저장소 **Settings → Variables** 의 `NOTION_DATABASE_ID`(메인) · `NOTION_FAQ_DATABASE_ID`(허브 Q&A) 로 대상을 바꾸세요.
+> 저장소 **Settings → Variables** 의 `NOTION_DATABASE_ID`(메인) · `NOTION_FAQ_DATABASE_ID`(허브 Q&A 공개 뷰) · `NOTION_FAQ_DATA_SOURCE_ID`(허브 Q&A 데이터 소스) 로 대상을 바꾸세요. Q&A 뷰 ID와 데이터 소스 ID는 서로 다릅니다 — `HANDOFF.md` 11.1 참고.
 
 ### 🙋 허브 Q&A 표 (고객 지원 Q&A)
 
@@ -313,23 +313,18 @@ crons = ["*/10 * * * *"]
 > 내부 메모가 있다면 꼭 `내부 근거` 제목 아래로 옮기고, 동기화 요약의 ⚠️ 경고를 확인하세요.
 > ⚠️ 이 표에 `게시` 라는 이름의 열을 새로 만들지 마세요 — 메인 표의 `Published`(공개) 규칙과 겹칩니다. `허브 게시` 를 쓰세요.
 
-### 🎬 구글 드라이브 영상 링크 (CSP 오류 주의)
+### 🎬 현재 가이드 문서·영상 (같은 출처 자산)
 
-Google Drive가 응답에 설정하는 `Content-Security-Policy: frame-ancestors` 는 사이트에서 변경하거나 우회할 수 없습니다.
-계정, 공유 설정, 요청 경로 등에 따라 `/preview` 파일 링크도 브라우저에서 임베드가 차단될 수 있습니다.
-차단되면 다음과 같은 콘솔 메시지가 표시됩니다.
+2026-11-18 현재판 HTML 96개와 MP4 65편은 `assets/guides/current/` 에 sanitize해 보관합니다.
+앱과 상세 모달은 이 파일들을 같은 출처 `<iframe>`·`<video>`로 페이지 안에서 열고, 정적 안내 페이지도 같은 출처 자산으로 연결합니다.
+외부 Drive `/view`·`/preview` 링크, 외부 스크립트·폰트, 원본 다운로드 폴더는 사이트나 커밋에 넣지 않습니다.
 
-```
-Framing '<URL>' violates the following Content Security Policy directive: "frame-ancestors <URL>".
-The request has been blocked.
-```
+과거에는 Drive 응답의 `Content-Security-Policy: frame-ancestors` 때문에 영상 임베드가 차단되어 새 창 링크를 썼지만,
+지금은 파일을 이 사이트가 직접 제공하므로 해당 CSP 문제가 없습니다. 새로 추가·갱신할 때도
+`node scripts/import-current-guides.mjs <raw-dir> assets/guides/current` 로 같은 출처 자산을 재생성하세요.
 
-이 사이트는 Google Drive 영상을 iframe에 넣지 않고 **Google Drive에서 새 창으로 열기** 링크로 표시합니다.
-따라서 외부 CSP에 의해 반복되는 프레이밍 오류가 발생하지 않습니다. 영상 파일은 Drive에서 열어 시청하며,
-YouTube 영상과 직접 제공되는 영상 파일은 기존처럼 페이지 안에서 재생됩니다.
-
-참고: CSP 오류가 다른 외부 서비스 URL에서 발생한다면 해당 서비스가 프레이밍을 차단하는 것입니다.
-브라우저 콘솔에 표시된 실제 요청 URL과 페이지 위치를 확인해야 정확히 구분할 수 있습니다.
+참고: 다른 외부 서비스 URL에서 CSP 프레이밍 오류가 발생한다면 그 서비스가 임베드를 차단하는 것입니다.
+이 저장소의 현재 가이드 자산은 같은 출처이므로 그 경우와 구분해서 확인하세요.
 
 ---
 

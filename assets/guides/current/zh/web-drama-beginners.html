@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 网络剧制作入门</title>
+<meta name="description" content="AI 网络剧制作入门 — 从剧本到完成一集，详解 XCONDA 制作流程。">
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans SC','Microsoft YaHei','PingFang SC',system-ui,sans-serif;color:var(--ink);line-height:1.85;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.15em;color:#9fb0cc}header h1{font-size:44px;margin:20px 0 12px;line-height:1.35}header p{color:#c6d0e2;max-width:860px}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}h3{font-size:20px;margin:32px 0 4px}h4{font-size:17px;margin:24px 0 4px}p{margin:8px 0}ul,ol{margin:8px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.7;vertical-align:top}th{background:#f2f3f6}
+pre{background:#f2f3f6;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all}code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}.check li:before{content:'☐';position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}.toc a{color:var(--navy);text-decoration:none}footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}.language-nav{font-size:13px;margin-top:20px}.language-nav a,.language-nav strong{display:inline-block;margin-right:16px;color:#fff}.table-scroll{overflow-x:auto}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{header{background:#fff;color:var(--ink);padding:24px 0}header p,header .brand{color:var(--slate)}.language-nav{display:none}main{padding:20px 0}h2,h3{break-after:avoid}tr{break-inside:avoid}.table-scroll{overflow:visible}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="web-drama-beginners" data-current-guide-lang="zh" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="当前用户指南 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/web-drama-beginners.html" hreflang="ko" lang="ko">KO</a><a href="../en/web-drama-beginners.html" hreflang="en" lang="en">EN</a><a href="../ja/web-drama-beginners.html" hreflang="ja" lang="ja">JA</a><a href="../zh/web-drama-beginners.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+<header><div class="brand">XCONDA / 2026 · AI 网络剧制作入门（详细文档版）</div>
+<h1>AI 网络剧制作入门</h1>
+<p>通过一条连贯的流程，从剧本制作到完成一集。不是分别创建图像和视频，而是依次衔接 FlexBoard、Blocking Board 和 Video Generator，完成一集作品。本指南采用与提示词编写详细指南相同的文档形式重新整理。</p>
+<nav class="language-nav" aria-label="文档语言">한국어English日本語<strong aria-current="page">简体中文</strong></nav></header>
+<main>
+<div class="toc"><strong>目录</strong><ol>
+<li><a href="#c1">制作一集意味着什么 — 从剧本到成片</a></li>
+<li><a href="#c2">策划与剧本 — 确定一集的基础</a></li>
+<li><a href="#c3">准备参考素材 — 用图像固定人物与地点</a></li>
+<li><a href="#c4">文本故事板 — 在文字阶段确定镜头</a></li>
+<li><a href="#c5">故事板图像 — 逐镜头进行视觉检查</a></li>
+<li><a href="#c6">Blocking Board 排练 — 生成视频前检查动线</a></li>
+<li><a href="#c7">视频生成 — 使用提示词技能制作镜头视频</a></li>
+<li><a href="#c8">声音与剪辑 — 完成一集作品</a></li>
+<li><a href="#c9">成片检查清单 — 交付前再核对一次</a></li>
+<li><a href="#c10">总结 — 单集制作的核心要点</a></li>
+</ol></div>
+<h2 id="c1">1. 制作一集意味着什么 — 从剧本到成片</h2>
+<p>制作一集网络剧，就是将从剧本到成片的整个过程连接成一条完整流程。CUBEBERRY 的 AI 视频制作可以归纳为七个阶段：从剧本开始，在 XCONDA 中制作视频，添加声音，最后通过剪辑完成。本说明书将这七个阶段具体应用到单集制作中。</p>
+<div class="table-scroll"><table><tbody><tr><th>阶段</th><th>内容</th><th>主要工具</th></tr>
+<tr><td>01 准备</td><td>确定剧本</td><td>剧本</td></tr>
+<tr><td>02 准备</td><td>准备参考图像</td><td>FlexBoard 技能、GPT Image、Turn</td></tr>
+<tr><td>03 准备</td><td>文本故事板</td><td>FlexBoard</td></tr>
+<tr><td>04 准备</td><td>故事板／调度</td><td>FlexBoard、Turn、Blocking Board</td></tr>
+<tr><td>05 视频</td><td>视频生成</td><td>Video Generator（Seedance 等）</td></tr>
+<tr><td>06 后期</td><td>声音</td><td>声音工具</td></tr>
+<tr><td>07 后期</td><td>剪辑与完成</td><td>Premiere Pro</td></tr></tbody></table></div>
+<div class="note">这一流程已经过实际制作验证。CUBEBERRY 使用 XCONDA 的 Turn、FlexBoard 和 Blocking Board 管理空间、角色与动线，制作了四部 KOCCA 内容实验室 AI 网络剧（2026 年，由四支在职导演团队参与）。每集的镜头数量和时长，应根据该集的策划确定。</div>
+<h2 id="c2">2. 策划与剧本 — 确定一集的基础</h2>
+<p>单集制作从策划与剧本开始。确定这一集的故事、登场人物和地点，再拆分镜头结构。如果在这一阶段没有确定人物与地点，就无法创建下一阶段所需的参考素材。</p>
+<h3>2-1. 策划 — 确定故事、人物与地点</h3>
+<p>确定这一集的剧情、登场人物和主要地点。为每个人物确定姓名、外貌和服装。为每个地点确定空间特征，包括门、窗和家具的布局。</p>
+<h3>2-2. 剧本 — 编写剧本并拆分镜头</h3>
+<p>编写剧本并将其拆分为镜头。为每个镜头确定谁在哪里做什么，以及摄像机位于何处。镜头数量根据策划确定。FlexBoard 可以创建 6 至 36 个镜头的故事板。</p>
+<h3>2-3. 状态记录表 — 记录镜头之间需要延续的状态</h3>
+<p>逐镜头记录人物的服装、表情和受伤状态，手中持有的道具、周围道具，背景中门、窗和家具的位置，以及登场人物数量。这份记录表将成为后续保持镜头一致性的基准。视频 AI 不会记住上一个镜头，因此需要由人在每个阶段重新明确这些信息。</p>
+<div class="note">在剧本中写入角色名称，让 AI 将面部与服装参考关联起来。如果没有名称，AI 就无法区分人物。</div>
+<h2 id="c3">3. 准备参考素材 — 用图像固定人物与地点</h2>
+<p>剧本确定后，准备人物与地点的参考图像。为每个人物创建面部图像（角色表），为每个地点创建背景图像（背景表）。这些参考将成为后续所有阶段的基准。</p>
+<h3>3-1. 角色表 — 每个人物的面部图像</h3>
+<p>为每个人物创建面部图像。使用 GPT Image 和 FlexBoard 技能准备面部参考，同时确定服装、表情和受伤状态。角色表是让不同镜头保持同一人物的基准。创建角色表的详细规则，包括中性灰色背景、避免全身镜头中双腿显短的五条规则，以及确认问题，请参阅提示词编写详细指南。</p>
+<h3>3-2. 背景表 — 每个地点的背景图像</h3>
+<p>为每个地点创建背景图像。使用 Turn 创建的四面背景表（正面、左侧、右侧、背面）也属于这一类。背景表是让不同镜头保持同一空间的基准。</p>
+<h3>3-3. 使用 Turn — 按需创建空间与镜头图像</h3>
+<p>使用 Turn 创建 360° 虚拟场景，再据此制作背景表，或者直接在场景中输出镜头图像。详细的 Turn 流程请参阅网站使用说明书中的 Turn 章节。</p>
+<div class="warn"><strong>原则：如果人物和地点尚未确定，就无法创建下一阶段所需的参考素材。</strong> 如果跳过参考素材准备直接生成，人物与地点就可能随着镜头变化。将参考图像保存到素材库，在整集以及后续剧集中复用。</div>
+<h2 id="c4">4. 文本故事板 — 在文字阶段确定镜头</h2>
+<p>参考素材准备好后，在 FlexBoard 中创建文本故事板。将剧本拆分为逐镜头指令，为每个镜头编写文本和音效。在文字阶段确定镜头顺序与构图，可以节省点数。</p>
+<h3>4-1. 进入 — 选择 Flex Board，新建项目</h3>
+<p>在故事板类别中选择 Flex Board，然后在工作区通过 New Project 新建项目。</p>
+<h3>4-2. 关联参考 — 加入角色与背景参考</h3>
+<p>将准备好的角色表和背景表关联到项目。这些参考可以让不同镜头保持人物与空间一致。</p>
+<h3>4-3. 逐镜头文本 — 编写镜头指令与音效</h3>
+<p>将剧本拆分成镜头，并为每个镜头编写指令。在文本预览中检查镜头卡片、描述和音效。</p>
+<h3>4-4. 确定 — 在文字阶段确定镜头顺序与构图</h3>
+<p>在文本阶段确定镜头顺序和构图。在图像生成前修改文字不会消耗点数。充分完善文本后，再进入图像阶段。</p>
+<div class="note">检查顺序：镜头卡片 → 镜头描述 → 音效 → 镜头顺序。完成这四项检查后，再进入图像生成。</div>
+<h2 id="c5">5. 故事板图像 — 逐镜头进行视觉检查</h2>
+<p>文本故事板确定后，生成图像。为每个镜头创建图像，检查构图、人物和背景是否正确，只修改不满意的镜头。一致性由两个引擎负责：Turn 保持背景一致，Art Director Pro 保持角色一致。</p>
+<h3>5-1. 图像生成 — 在网格中逐镜头核对</h3>
+<p>生成图像后，将网格中的每张图像与对应描述进行核对。检查每个镜头的构图、人物和背景是否正确。</p>
+<h3>5-2. 逐镜头修改 — 只重做不合适的镜头</h3>
+<p>只选择不满意的镜头，修改提示词后重新生成。重新生成镜头从 20 点起。如果希望保留同一场景，只改变角度或摄像机运动，可以拖动图像来替换目标镜头。</p>
+<h3>5-3. 单镜头修改更节省时 — 先修正关键图像</h3>
+<p>如果某个镜头不符合要求，与其只修改提示词并反复生成，不如先修正该场景的一张关键图像再重新输入，这样通常消耗的点数更少。</p>
+<div class="note">一致性引擎：Turn（AI VirtualSet）负责背景一致性。由于是在根据一张照片创建的 360° 场景中移动摄像机选择角度，门、窗和家具的位置可以在不同镜头间保持不变。Art Director Pro 负责角色一致性。四个 AI 智能体依次进行验证、修正与同步，让服装、表情和受伤状态在镜头间延续。修改一个画面，其余画面会自动随之更新。</div>
+<h2 id="c6">6. Blocking Board 排练 — 生成视频前检查动线</h2>
+<p>故事板图像确定后，对运动复杂的场景使用 Blocking Board 进行排练。在平面图中放置演员与摄像机，再通过 3D 播放，检查人物、空间和摄像机是否发生碰撞，以及视线是否匹配。如果未经排练直接生成，之后就需要修正碰撞和动线错误。</p>
+<h3>6-1. 1-Click — 粘贴剧本生成初稿</h3>
+<p>粘贴剧本后，即可生成演员、空间、动线和摄像机的初稿。</p>
+<h3>6-2. 2D 平面图 — 调整布局与动线</h3>
+<p>在 2D 平面图中调整演员与摄像机的位置，以及移动路径。</p>
+<h3>6-3. 3D 预览 — 在 3D 舞台中播放检查</h3>
+<p>在 3D 舞台中播放场景，检查人物与摄像机的运动。</p>
+<h3>6-4. 设计检查 — 检查碰撞与视线并修正问题</h3>
+<p>在设计检查中检测碰撞和视线问题。发现问题后，请返回平面图修改布局或动线。对于多名人物交叉移动的场景，建议在这一阶段提前确定位置与移动路径。</p>
+<h3>6-5. 导出 — 提示词、镜头清单与镜头手册</h3>
+<p>检查完成的场景可以导出为供 Seedance 使用的英文提示词、镜头清单、平面图与画面 PNG，以及镜头手册 PDF。也可以播放场景并导出预演视频（WebM）。</p>
+<div class="note">Blocking Board 在网站上提供免费测试版，无需绑定银行卡。详细使用方法请参阅独立的 Blocking Board 指南（13 章）。</div>
+<h2 id="c7">7. 视频生成 — 使用提示词技能制作镜头视频</h2>
+<p>故事板与排练确定后，使用 Video Generator 生成镜头视频。关键在于提示词。将状态记录表的内容直接写入提示词，并以关键图像为基准进行生成。Seedance 提示词最多支持 30,000 个字符，因此无需担心长度限制。</p>
+<h3>7-1. 提示词技能 — 根据关键图像生成提示词</h3>
+<p>XCONDA 提示词技能根据关键图像创建供 Seedance 使用的提示词。它采用四导演体系与十模块结构，并支持并排查看韩文和英文进行编辑。请用韩文输入状态记录表中的内容，再检查英文句子的翻译是否正确。提示词编写的详细规则请参阅提示词编写详细指南。</p>
+<h3>7-2. 模型与选项 — 选择模型、画面比例、分辨率、时长与高画质</h3>
+<p>使用 Seedance 2.5，单次最多可生成 30 秒、最高 1080p 的视频。在选项中设置画面比例、分辨率、时长和高画质。完整的模型规格表请参阅网站使用说明书中的 Video Generator 章节。</p>
+<h3>7-3. 逐镜头生成与检查 — 检查一致性</h3>
+<p>逐镜头生成，并检查人物、空间和状态是否正确延续。如果某个镜头不符合要求，请先修正该场景的关键图像，再重新生成。</p>
+<div class="note">保持镜头一致性的五个步骤：① 用 Turn 固定空间；② 用 FlexBoard 固定人物与构图；③ 通过参考素材和提示词传递需要延续的状态；④ 将状态记录表直接写入提示词；⑤ 发送前再检查一次。遵循这一顺序，可以减少人物和地点在镜头之间发生变化的问题。</div>
+<h2 id="c8">8. 声音与剪辑 — 完成一集作品</h2>
+<p>镜头视频完成后，添加声音并进行剪辑，完成一集作品。CUBEBERRY 的制作流程是：在 XCONDA 中制作视频，添加声音，最后在 Premiere Pro 中完成剪辑。</p>
+<h3>8-1. 声音 — 添加音乐与音效</h3>
+<p>为每个镜头添加音乐和音效。以文本故事板阶段确定的音效为基准进行匹配。</p>
+<h3>8-2. 剪辑 — 将镜头连接成一集</h3>
+<p>将生成的镜头视频按顺序连接，剪辑成一集作品，并在 Premiere Pro 中完成最终处理。</p>
+<h3>8-3. 完善工具 — 按需使用网站工具</h3>
+<p>需要换脸时使用 Face Swap，更换服装时使用 ClothSwap，转换表情时使用 Expression Transformer，增强画质时使用 AI Upscaler（最高 4 倍），统一色调时使用 CineGrade AI。完成这些调整后，请再次检查角色一致性。</p>
+<p>如果在剪辑与收尾阶段收到修改要求，就重复由剪辑师修改、再重新生成相关内容的循环，直到结果令人满意。</p>
+<h2 id="c9">9. 成片检查清单 — 交付前再核对一次</h2>
+<p>完成一集作品前，请检查以下项目。这份清单反映了 CUBEBERRY 实际制作现场使用的检查项目。如果任何一项不符合要求，请从对应镜头开始修正。</p>
+<ul class="check">
+<li>每个镜头中的登场人物数量是否正确？</li>
+<li>服装的颜色、纽扣和袖子在不同镜头间是否一致？</li>
+<li>人物手持道具和周围道具是否保持不变？</li>
+<li>背景中窗户、门和家具的位置在不同镜头间是否一致？</li>
+<li>人物的表情和受伤状态是否正确延续？</li>
+<li>镜头顺序、镜头时长和摄像机运动是否符合创作意图？</li>
+<li>是否缺少镜头？</li>
+<li>状态记录表的内容是否已直接写入提示词？</li>
+<li>是否已将关键图像与生成视频进行核对？</li>
+<li>声音（音乐和音效）是否与镜头匹配？</li>
+<li>剪辑后的视频是否连贯地构成一集？</li>
+<li>Turn 场景、角色表和背景表是否已保存到素材库，以便下一集复用？</li>
+</ul>
+<div class="note">如果某个镜头不符合要求，与其只修改提示词并反复生成，不如先修正该场景的一张关键图像再重新输入，这样通常消耗的点数更少。运动复杂的场景请在 Blocking Board 中重新检查。</div>
+<h2 id="c10">10. 总结 — 单集制作的核心要点</h2>
+<p>制作一集网络剧的关键在于顺序：剧本 → 参考素材 → 文本故事板 → 故事板／调度 → 视频生成 → 声音 → 剪辑。遵循这一顺序，可以减少人物与地点在镜头之间发生变化的问题，并节省点数。</p>
+<h3>10-1. 核心原则 — 不要依赖 AI 记住前文</h3>
+<p>视频 AI 不会记住上一个镜头。需要由人使用 Turn 固定空间，使用 FlexBoard 固定人物与构图，并通过参考素材和提示词固定需要延续的状态。</p>
+<h3>10-2. 素材 — 将创作成果保存到素材库</h3>
+<p>将角色表、背景表、Turn 场景、关键图像和故事板项目保存到素材库，在下一集中复用。素材积累得越多，下一集的制作就越快。</p>
+<h3>10-3. 下一集 — 使用第一集的素材开始第二集</h3>
+<p>制作下一集时，直接加载第一集的角色表、背景表和 Turn 场景。由于人物和地点已经固定，新一集可以专注于剧本与镜头结构。</p>
+<div class="note">本说明书依据 XCONDA 网站公开页面、Hub 指南及 CUBEBERRY 制作文章，于 2026-11-03 编写。价格、模型规格和点数政策可能会随网站更新而变化，请在付款或生成前再次核对网站页面。网站全部功能请参阅网站使用说明书（详细文档版）。</div>
+</main>
+<footer>AI 网络剧制作入门（详细文档版） · 原文编写于 2026-11-03 · 简体中文版更新于 2026-11-03 · 原文注记：现有幻灯片式指南（第 21 号）保持不变。</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="ko"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>25 Workspace Guide KO — XCONDA 워크스페이스 가이드</title>
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--ink);line-height:1.8;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}
+header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.2em;color:#9fb0cc}
+header h1{font-size:44px;margin:20px 0 12px;line-height:1.25}
+header p{color:#c6d0e2;max-width:860px}
+header a{color:#fff}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}
+h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}
+h3{font-size:20px;margin:32px 0 4px}
+p{margin:8px 0}ul,ol{margin:8px 0}li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.6;vertical-align:top}
+th{background:#f2f3f6}
+code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}
+.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}
+.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}
+.check li:before{content:"\2610";position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}
+.toc a{color:var(--navy);text-decoration:none}
+.toc li{margin:6px 0}
+footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}
+.fig{margin:24px 0}.fig img{width:100%;height:auto;display:block;border:1px solid var(--hair);border-radius:8px}.fig figcaption{font-size:13px;color:var(--slate);margin-top:8px;line-height:1.6}
+.word{background:#fff8d6;border:1px solid #ecd67a;padding:14px 18px;margin:16px 0}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{body{background:#fff}h2{break-after:avoid}tr{break-inside:avoid}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="workspace" data-current-guide-lang="ko" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="현재 사용자 가이드 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/workspace.html" hreflang="ko" lang="ko" aria-current="page">KO</a><a href="../en/workspace.html" hreflang="en" lang="en">EN</a><a href="../ja/workspace.html" hreflang="ja" lang="ja">JA</a><a href="../zh/workspace.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<header><div class="brand">XCONDA / TEXT GUIDE · 25 · WORKSPACE</div><h1>XCONDA 워크스페이스 가이드</h1><p>팀이 함께 일할 때 쓰는 공간을 안내합니다. 일, 팀원, 크레딧을 한곳에서 볼 수 있습니다. 문장은 짧게 썼습니다. 한 문장에 한 가지만 담았습니다. 화면에 나오는 영어 이름은 그대로 적었습니다.</p><p>기준 페이지: xconda.ai/workspace (워크스페이스 상담 페이지, 한국어) · 기준 화면: 2026-11-17에 본 워크스페이스 베타 화면</p></header>
+<main>
+<div class="note"><b>먼저 읽어 주세요.</b> 이 가이드는 상담 페이지와 실제 화면을 보고 만들었습니다. 화면에 없는 가격은 쓰지 않았습니다. 사진은 실제 화면입니다. 남에게 보이면 안 되는 것만 검은 박스로 가렸습니다. 무엇을 가렸는지는 사진 아래에 적었습니다.</div>
+<div class="word"><b>어려운 말, 쉽게 바꿔 읽기</b><ul>
+<li><b>워크스페이스</b> = 팀이 함께 쓰는 방</li>
+<li><b>프로젝트</b> = 일 한 묶음</li>
+<li><b>멤버</b> = 함께 일하는 팀원</li>
+<li><b>크레딧</b> = 엑스콘다에서 쓰는 토큰. 쓸 때마다 줄어듭니다.</li>
+<li><b>조직 지갑</b> = 회사 전체 크레딧을 넣어 두는 큰 지갑</li>
+<li><b>예산</b> = 일마다 나눠 준 크레딧 양</li>
+<li><b>관리자</b> = 방이나 일을 맡아서 정할 수 있는 사람</li>
+<li><b>Reuse</b> = 이미 만든 것을 다시 써서 이어 만들기</li>
+<li><b>베타 (Beta)</b> = 아직 시험 중인 단계. 다 만든 것이 아닙니다.</li>
+</ul></div>
+<div class="toc"><b>목차</b><ol>
+<li><a href="#c1">워크스페이스란</a></li>
+<li><a href="#c2">시작하기 — 먼저 상담을 신청합니다</a></li>
+<li><a href="#c3">들어가기 — 고르기, 참여하기, 만들기</a></li>
+<li><a href="#c4">관리 화면 한눈에 보기</a></li>
+<li><a href="#c5">Projects — 프로젝트 보기와 만들기</a></li>
+<li><a href="#c6">Members — 팀원과 역할</a></li>
+<li><a href="#c7">Usage &amp; budget — 얼마나 썼는지 보기</a></li>
+<li><a href="#c8">Operation logs — 누가 무엇을 했는지 보기</a></li>
+<li><a href="#c9">Settings — 기본 설정 바꾸기</a></li>
+<li><a href="#c10">결과물 나누기와 Reuse</a></li>
+<li><a href="#c11">자주 묻는 질문</a></li>
+<li><a href="#c12">마지막 점검표</a></li>
+</ol></div>
+
+<h2 id="c1">1. 워크스페이스란</h2>
+<p>워크스페이스는 팀이 함께 쓰는 방입니다.</p>
+<p>혼자 쓸 때와 다릅니다. 팀의 일, 팀원, 크레딧을 한곳에서 볼 수 있습니다.</p>
+<p>상담 페이지에도 이렇게 적혀 있습니다. <b>팀 프로젝트·팀원·크레딧을 한 곳에서 관리</b>.</p>
+<p>처음 화면에는 이렇게 나옵니다. <code>Choose a workspace to manage projects, members and budget.</code></p>
+<p>뜻은 이렇습니다. “일, 팀원, 예산을 볼 방을 고르세요.”</p>
+<table><thead><tr><th>페이지에 나온 말</th><th>쉬운 뜻</th></tr></thead><tbody>
+<tr><td>팀 프로젝트 생성·공유</td><td>팀 일을 만듭니다. 만든 것은 팀원과 나눠 봅니다.</td></tr>
+<tr><td>프로젝트 진행도 확인</td><td>일이 얼마나 됐는지 한눈에 봅니다.</td></tr>
+<tr><td>팀원 자유 조정</td><td>팀원을 넣거나 뺄 수 있습니다. 언제든 바꿀 수 있습니다.</td></tr>
+<tr><td>팀원별 크레딧 지급</td><td>크레딧을 나눠 줍니다. 누가 얼마나 썼는지도 쉽게 봅니다.</td></tr>
+</tbody></table>
+<table><thead><tr><th>할 수 있는 것</th><th>쉬운 설명</th></tr></thead><tbody>
+<tr><td>팀 프로젝트 만들기 · 팀원 부르기</td><td>일 묶음을 만듭니다. 그리고 팀원을 부릅니다. 방에 부르는 것과 일에 넣는 것은 다릅니다. 따로 합니다. 6장을 보세요.</td></tr>
+<tr><td>프로젝트 예산 나누기</td><td>큰 지갑에 있는 크레딧을 일마다 나눕니다. 만들기는 나눠 받은 양 안에서만 됩니다. 예산을 나눠도 크레딧이 새로 생기지 않습니다. 5장과 7장을 보세요.</td></tr>
+<tr><td>얼마나 썼는지 보기</td><td><code>Usage &amp; budget</code> 화면에서 봅니다. 크레딧이 어디서 왔는지 볼 수 있습니다. 어느 일로 갔는지도 볼 수 있습니다.</td></tr>
+<tr><td>기록 보기 · 설정 바꾸기</td><td><code>Operation logs</code>에서 중요한 일의 기록을 봅니다. <code>Settings</code>에서 회사 이름, 언어, 시간, 로고, 기본 색을 바꿉니다.</td></tr>
+<tr><td>결과물 나누기 · Reuse</td><td>만든 결과물을 볼 수 있습니다. 내려받을 수도 있습니다. 사진에서 Reuse를 누르면 이어서 만들 수 있습니다. 단, Reuse는 같은 일 안에서만 됩니다. 다른 일로 가져갈 수 없습니다. 밖에 링크로 열 수도 없습니다. Beta 1에서는 안 됩니다. 10장을 보세요.</td></tr>
+</tbody></table>
+<div class="note">이런 팀에 잘 맞습니다. 여러 사람이 같은 결과물을 봐야 하는 팀입니다. 일마다 쓸 돈을 나눠야 하는 회사입니다. 누가 얼마나 썼는지 아는 담당자가 있는 회사입니다. 화면 아래에는 <code>Project data is isolated by access policy.</code>라고 나옵니다. 뜻은 이렇습니다. “일마다 볼 수 있는 사람이 정해져 있습니다. 아무나 다 볼 수 없습니다.”</div>
+<figure class="fig"><img src="../screens/539f96506a2ed1060785d6867b8012b11c01c87204d5f9ed36881309c4b0c750.png" alt="XCONDA 상단 메뉴 화면" loading="lazy"><figcaption>위쪽 메뉴입니다. <code>Workspace</code>를 누르면 방으로 갑니다. · 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다. 남에게 보이면 안 되기 때문입니다.</figcaption></figure>
+
+<h2 id="c2">2. 시작하기 — 먼저 상담을 신청합니다</h2>
+<p>바로 가입해서 쓰는 것이 아닙니다. 먼저 상담을 신청합니다.</p>
+<p>상담 페이지에서 글을 써서 보냅니다. 그러면 답 메일이 옵니다. 영업일 기준 2일 안에 옵니다.</p>
+<p>영업일은 회사가 일하는 날입니다. 주말은 세지 않습니다.</p>
+<p>페이지 제목은 <b>워크스페이스 도입 상담</b>입니다. 보내는 버튼은 <b>상담 신청</b>입니다.</p>
+<figure class="fig"><img src="../screens/42f669c654172cef40a8c3af754a26638961831426c6bd28b519bd9461fa6c2f.png" alt="워크스페이스 도입 상담 한국어 페이지" loading="lazy"><figcaption>상담 페이지입니다. 왼쪽은 설명입니다. 오른쪽은 신청서입니다. 빈 신청서라 가린 것이 없습니다.</figcaption></figure>
+<div class="note">작은 팀은 다릅니다. 페이지 아래에 이렇게 적혀 있습니다. <b>소규모 팀은 Pricing에서 바로 이용 가능</b>. 작은 팀은 상담을 기다리지 않아도 됩니다. 먼저 Pricing 페이지를 보세요. 돈이나 계정에 대해 물을 것이 있으면 <b>고객센터</b>에 물어보세요.</div>
+<h3>2-1. 신청하기 전에 준비하기</h3>
+<ul>
+<li>회사 이름을 준비하세요.</li>
+<li>담당자 이름을 준비하세요.</li>
+<li>업무 이메일을 준비하세요. 답은 업무 이메일로 옵니다. 꼭 볼 수 있는 이메일을 쓰세요.</li>
+<li>몇 명이 쓸지 정하세요. 이 칸은 꼭 채워야 합니다.</li>
+<li>언제부터 쓰고 싶은지 정해 두세요. 없어도 신청할 수 있습니다.</li>
+<li>묻고 싶은 것을 적어 두세요. 왜 쓰는지 적으면 좋습니다. 어떤 일을 하는지 적으면 좋습니다. 무엇이 필요한지 적으면 좋습니다. 이 칸은 비워도 됩니다.</li>
+<li>개인정보를 쓰는 데 동의해야 합니다. 동의에 표시하지 않으면 보낼 수 없습니다.</li>
+</ul>
+<h3>2-2. 신청서에 쓰는 것</h3>
+<table><thead><tr><th>칸 이름</th><th>꼭 써야 하나요?</th><th>어떻게 쓰나요?</th></tr></thead><tbody>
+<tr><td>회사명</td><td>필수 *</td><td>직접 씁니다. 칸에는 <code>회사명 입력</code>이라고 나옵니다.</td></tr>
+<tr><td>담당자 이름</td><td>필수 *</td><td>직접 씁니다. 칸에는 <code>이름 입력</code>이라고 나옵니다.</td></tr>
+<tr><td>업무 이메일</td><td>필수 *</td><td>직접 씁니다. 예: <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5638373b331635393b2637382f7835393b">[email&nbsp;protected]</a></code>. 답이 여기로 옵니다. 틀리게 쓰지 않았는지 꼭 보세요.</td></tr>
+<tr><td>연락처</td><td>선택</td><td>직접 씁니다. 예: <code>010-0000-0000</code>. 비워도 됩니다.</td></tr>
+<tr><td>예상 사용 인원</td><td>필수 *</td><td>목록에서 고릅니다. 칸에는 <code>선택</code>이라고 나옵니다. 신청 화면에서 직접 보세요.</td></tr>
+<tr><td>희망 도입 시기</td><td>선택</td><td>목록에서 고릅니다. 쓰고 싶은 때를 고르면 됩니다.</td></tr>
+<tr><td>문의 내용</td><td>선택</td><td>직접 씁니다. 칸에는 <code>사용 목적, 주요 작업 유형, 필요 기능 등</code>이라고 나옵니다.</td></tr>
+</tbody></table>
+<h3>2-3. 개인정보 동의 — 꼭 표시해야 합니다</h3>
+<p>신청서 아래에 <b>[필수] 개인정보 수집·이용 동의</b>가 있습니다. 읽고 표시하세요.</p>
+<table><thead><tr><th>구분</th><th>페이지에 나온 말</th></tr></thead><tbody>
+<tr><td>무엇을 가져가나요?</td><td>회사명, 담당자 이름, 업무 이메일, 연락처</td></tr>
+<tr><td>왜 쓰나요?</td><td>워크스페이스 도입 상담 및 회신. 즉, 상담하고 답을 보내기 위해 씁니다.</td></tr>
+<tr><td>얼마나 두나요?</td><td>개인정보는 상담이 끝난 뒤 1년 뒤에 삭제합니다.</td></tr>
+</tbody></table>
+<h3>2-4. 보낸 뒤에 할 일</h3>
+<ol>
+<li><b>상담 신청</b> 버튼을 누릅니다.</li>
+<li>기다리세요. 영업일 기준 2일 안에 답 메일이 옵니다.</li>
+<li>메일이 안 오면 먼저 스팸함을 보세요. 그다음, 이메일을 맞게 썼는지 보세요.</li>
+<li>돈이나 계정에 대해 물을 것이 있으면 고객센터에 물어보세요.</li>
+</ol>
+<div class="warn">신청서를 보냈다고 바로 쓸 수 있는 것은 아닙니다. 가격과 쓰는 방법은 답 메일에서 확인합니다. 이 안내에는 페이지에 없는 가격을 쓰지 않았습니다.</div>
+
+<h2 id="c3">3. 들어가기 — 고르기, 참여하기, 만들기</h2>
+<p>로그인하세요. 그리고 <code>xconda.ai/workspace</code>로 가세요. <code>Your workspaces</code> 화면이 열립니다.</p>
+<p>뜻은 “내 워크스페이스”입니다. 내가 들어간 방 목록입니다.</p>
+<h3>3-1. 목록에서 열기</h3>
+<ul>
+<li>방 하나가 카드 하나로 나옵니다.</li>
+<li>카드에는 방 이름이 나옵니다. 내 역할도 나옵니다. 프로젝트 수도 나옵니다.</li>
+<li>예: <code>Administrator</code>는 관리자입니다. <code>0 projects</code>는 프로젝트 0개입니다.</li>
+<li>카드의 <code>Open</code> 버튼을 누르세요. 그 방의 관리 화면으로 들어갑니다. 처음에는 <code>Projects</code> 화면이 열립니다.</li>
+<li>오른쪽 위에는 버튼 2개가 있습니다. <code>Join workspace</code>와 <code>Create workspace</code>입니다.</li>
+</ul>
+<figure class="fig"><img src="../screens/ddc56503c3b2bbd3803c9dae369655f6fa88b039c6bb9e6f0fdaf69c0d529ba2.png" alt="Your workspaces 워크스페이스 목록 화면" loading="lazy"><figcaption><code>Your workspaces</code> 화면입니다. 방 카드가 보입니다. <code>Open</code> 버튼도 보입니다. <code>Join workspace</code>와 <code>Create workspace</code> 버튼도 보입니다. · 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+<h3>3-2. 새 방 만들기 — <code>Create workspace</code></h3>
+<ol>
+<li><code>Create workspace</code> 버튼을 누릅니다. <code>Create a workspace</code> 칸이 열립니다.</li>
+<li>거기에는 <code>You become its first administrator.</code>라고 나옵니다. 뜻은 “만든 사람이 첫 관리자가 됩니다”입니다.</li>
+<li><code>Organization name</code>에 회사 이름을 씁니다.</li>
+<li><code>Create</code> 버튼을 누릅니다. 방이 만들어집니다.</li>
+<li>만든 기록은 <code>Operation logs</code>에 남습니다. <code>Organization created</code>라고 나옵니다. 8장을 보세요.</li>
+</ol>
+<figure class="fig"><img src="../screens/c6f7d588a05c2ad6dd3290104080ecdb6a4117f5fc7474e943c154fe7b46abd1.png" alt="Create a workspace 입력 영역 화면" loading="lazy"><figcaption><code>Create a workspace</code> 화면입니다. <code>Organization name</code>을 씁니다. 그리고 <code>Create</code>를 누릅니다. · 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+<h3>3-3. 이미 있는 방에 들어가기 — <code>Join workspace</code></h3>
+<p><code>Join workspace</code> 버튼이 있습니다. 이미 있는 방에 들어갈 때 누릅니다. 팀원을 부르는 방법은 6장을 보세요.</p>
+
+<h2 id="c4">4. 관리 화면 한눈에 보기</h2>
+<p>방을 열면 왼쪽에 메뉴가 항상 나옵니다. 이름은 <code>Organization console</code>입니다. 회사 관리 메뉴라고 보면 됩니다.</p>
+<p>맨 위에는 지금 들어간 방 이름이 나옵니다.</p>
+<table><thead><tr><th>메뉴 (화면 이름)</th><th>주소</th><th>쉬운 설명</th></tr></thead><tbody>
+<tr><td><code>Projects</code></td><td><code>/workspace/projects</code></td><td>일 목록을 봅니다. 일 상태도 봅니다. 나눈 예산도 봅니다. 누가 볼 수 있는지도 봅니다. 5장입니다.</td></tr>
+<tr><td><code>Members</code></td><td><code>/workspace/members</code></td><td>팀원을 부릅니다. 역할을 정합니다. 6장입니다.</td></tr>
+<tr><td><code>Usage &amp; budget</code></td><td><code>/workspace/usage</code></td><td>크레딧이 어디서 왔는지 봅니다. 어디로 갔는지도 봅니다. 7장입니다.</td></tr>
+<tr><td><code>Operation logs</code></td><td><code>/workspace/logs</code></td><td>중요한 일을 누가 했는지 봅니다. 막힌 요청도 봅니다. 예산 바꾼 것도 봅니다. 8장입니다.</td></tr>
+<tr><td><code>Settings</code></td><td><code>/workspace/settings</code></td><td>방 이름, 언어, 시간, 로고, 기본 색을 정합니다. 9장입니다.</td></tr>
+<tr><td><code>Billing &amp; documents</code> <code>BETA</code></td><td>—</td><td>아직 못 누릅니다. 꺼져 있습니다. 청구서와 돈 내는 방법은 Beta 2에서 나옵니다. 9장을 보세요.</td></tr>
+</tbody></table>
+<p>왼쪽 아래에는 <code>Project data is isolated by access policy.</code>라고 항상 나옵니다. 뜻은 이렇습니다. “일마다 볼 수 있는 사람이 정해져 있습니다.”</p>
+<p>방에 들어왔다고 모든 일을 볼 수 있는 것은 아닙니다. 일마다 따로 넣어 줘야 합니다. 6장을 보세요.</p>
+<div class="note">이 화면은 베타입니다. 아직 시험 중입니다. 그래서 Beta 1에서 되는 것과 Beta 2에서 될 것이 나뉘어 나옵니다. 예를 들어 카드로 돈 내기는 Beta 1에서는 안 됩니다. 청구서도 Beta 1에서는 안 됩니다.</div>
+
+<h2 id="c5">5. Projects — 프로젝트 보기와 만들기</h2>
+<p><code>Projects</code> 화면에는 이렇게 나옵니다. <code>See project health, shared budgets and access in one place.</code></p>
+<p>뜻은 이렇습니다. “일의 상태, 나눈 예산, 누가 볼 수 있는지를 한곳에서 보세요.”</p>
+<h3>5-1. 위에 있는 카드 5개</h3>
+<table><thead><tr><th>카드 (화면 이름)</th><th>쉬운 뜻</th></tr></thead><tbody>
+<tr><td><code>Active</code></td><td>지금 하고 있는 일 수입니다.</td></tr>
+<tr><td><code>Idle candidates</code></td><td>한번 봐야 할 일 수입니다. 아래에 <code>review suggested</code>라고 나옵니다.</td></tr>
+<tr><td><code>Archived</code></td><td>끝나서 넣어 둔 일 수입니다. <code>read only</code>라고 나옵니다. 볼 수만 있습니다. 바꿀 수는 없습니다.</td></tr>
+<tr><td><code>Organization wallet</code></td><td>큰 지갑에 남은 크레딧입니다. 단위는 <code>Cr</code>입니다. <code>issued by XCONDA, unallocated</code>라고 나옵니다. 뜻은 이렇습니다. “XCONDA가 넣어 줬습니다. 아직 어느 일에도 안 나눴습니다.”</td></tr>
+<tr><td><code>Total members</code></td><td>팀원 전체 수입니다. 아래에는 <code>workspace seats</code>라고 나옵니다.</td></tr>
+</tbody></table>
+<h3>5-2. 가장 중요한 규칙 — 큰 지갑에서 일로 나누기</h3>
+<div class="note"><b><code>Organization wallet to project budget</code></b><br>화면에 이렇게 나옵니다. <code>XCONDA issues credits to the organization wallet after contract or payment confirmation. Manage budget only allocates or returns credits already held in that wallet; it never buys or creates credits.</code><br>쉽게 말하면 이렇습니다. 계약이 끝납니다. 또는 돈을 낸 것이 확인됩니다. 그러면 XCONDA가 큰 지갑에 크레딧을 넣어 줍니다. 예산 나누기는 그 지갑에 이미 있는 것만 움직입니다. 일로 보내거나 다시 가져올 뿐입니다. 크레딧을 사지 않습니다. 새로 만들지도 않습니다.</div>
+<figure class="fig"><img src="../screens/dece8bfb2c391353e13e67309a067167093a5326566c0790839329a6d8c2dad9.png" alt="Projects 프로젝트 목록 화면" loading="lazy"><figcaption><code>Projects</code> 화면입니다. 위에 카드 5개가 보입니다. 큰 지갑 안내도 보입니다. · 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+<h3>5-3. 일 찾기</h3>
+<ul>
+<li>검색 칸 <code>Search project or client</code>에 일 이름을 쓰세요. 고객 이름을 써도 됩니다.</li>
+<li><code>All statuses</code>를 누르세요. 상태별로 골라 볼 수 있습니다. 오른쪽에 전체 일 수가 나옵니다.</li>
+<li>일이 하나도 없으면 <code>No projects yet</code>라고 나옵니다. 아래에는 <code>Create a project to allocate budget and invite members.</code>라고 나옵니다. 뜻은 이렇습니다. “일을 만들면 예산을 나누고 팀원을 부를 수 있습니다.”</li>
+<li>오른쪽 위에 버튼 2개가 있습니다. <code>Request credits</code>는 크레딧을 더 달라고 할 때 누릅니다. <code>+ New project</code>는 새 일을 만들 때 누릅니다.</li>
+</ul>
+<h3>5-4. 새 일 만들기 — <code>+ New project</code> → <code>Create project</code></h3>
+<p><code>+ New project</code>를 누르면 <code>Create project</code> 창이 열립니다. 거기에는 <code>Allocate existing organization-wallet credits and assign workspace members.</code>라고 나옵니다. 뜻은 이렇습니다. “큰 지갑에 있는 크레딧을 나누세요. 그리고 팀원을 이 일에 넣으세요.”</p>
+<table><thead><tr><th>칸 (화면 이름)</th><th>무엇을 쓰나요?</th></tr></thead><tbody>
+<tr><td><code>Project name</code></td><td>일 이름입니다. 예로 <code>e.g. Global Brand Film</code>이 나옵니다.</td></tr>
+<tr><td><code>Client</code></td><td>고객 이름입니다. 예로 <code>e.g. Northstar Pictures</code>가 나옵니다.</td></tr>
+<tr><td><code>Initial budget</code></td><td>처음에 나눠 줄 크레딧 양입니다. 큰 지갑에 있는 만큼만 나눌 수 있습니다.</td></tr>
+<tr><td><code>Members and project roles</code></td><td>이 일에 넣을 팀원입니다. <code>Search existing members</code>에서 찾습니다. 이미 방에 있는 팀원 중에서 찾습니다. 만든 사람은 <code>Project admin (you)</code>로 나옵니다. 뜻은 “내가 이 일의 관리자”입니다.</td></tr>
+</tbody></table>
+<ul>
+<li>창 아래에는 <code>Organization wallet available: ○○ Cr · Project creation does not issue new credits.</code>라고 나옵니다. 뜻은 이렇습니다. “큰 지갑에 ○○ Cr이 있습니다. 일을 만들어도 새 크레딧은 안 생깁니다.”</li>
+<li>그만두려면 <code>Cancel</code>을 누르세요. 만들려면 <code>Create project</code>를 누르세요.</li>
+</ul>
+<figure class="fig"><img src="../screens/d34b3549cb235fe9fd12d6c2ef017c88b551751f87a9af7b43e74dfe07779920.png" alt="Create project 프로젝트 만들기 창" loading="lazy"><figcaption><code>Create project</code> 창입니다. <code>Project name</code>, <code>Client</code>, <code>Initial budget</code>, <code>Members and project roles</code> 칸이 보입니다. · 팀원 이메일과 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+
+<h2 id="c6">6. Members — 팀원과 역할</h2>
+<p><code>Members</code> 화면에는 이렇게 나옵니다. <code>Workspace invitation and project assignment are managed separately.</code></p>
+<p>뜻은 이렇습니다. “방에 부르는 것과 일에 넣는 것은 따로 합니다.” 방에 들어왔다고 모든 일에 자동으로 들어가는 것은 아닙니다.</p>
+<h3>6-1. 역할은 두 가지로 나뉩니다</h3>
+<div class="note"><b><code>Two separate role scopes</code></b><br><code>Workspace: organization admin or member. Project: project admin or project member. Server-side policy remains the source of truth.</code><br>쉽게 말하면 이렇습니다. 역할은 두 층으로 나뉩니다. 첫째는 방에서의 역할입니다. 관리자이거나 팀원입니다. 둘째는 일에서의 역할입니다. 그 일의 관리자이거나 그 일의 팀원입니다. 마지막으로 정하는 것은 서버의 규칙입니다.</div>
+<table><thead><tr><th>어디의 역할인가요?</th><th>역할 (화면 이름)</th><th>어디서 정하나요?</th></tr></thead><tbody>
+<tr><td>방 (워크스페이스)</td><td><code>Organization admin</code> / 팀원</td><td><code>Members</code> 화면의 <code>Role</code> 칸에서 정합니다.</td></tr>
+<tr><td>일 (프로젝트)</td><td><code>Project admin</code> / <code>Project member</code></td><td>일을 만들 때 정합니다. <code>Members and project roles</code>에서 정합니다.</td></tr>
+</tbody></table>
+<p><code>Settings</code> 화면에도 같은 말이 나옵니다. Beta 1에는 역할을 정하는 따로 화면이 없습니다. 그래도 방과 일의 경계는 모든 요청에서 지켜집니다.</p>
+<div class="warn">꼭 알아 두세요. 맡아서 정하는 권한과 직접 만드는 권한은 다릅니다.<br>방 관리자는 방 안의 모든 일을 볼 수 있습니다. 예산을 나누거나 다시 가져올 수 있습니다. 팀원을 관리할 수 있습니다. 일을 넣어 두거나 다시 꺼낼 수 있습니다.<br>하지만 남이 만든 일에서 직접 만들려면 그 일의 역할이 따로 있어야 합니다. Reuse를 할 때도 마찬가지입니다.<br>반대로, 일을 새로 만든 사람은 그 일의 관리자가 됩니다. 일을 만드는 창에 <code>Project admin (you)</code>라고 나오는 것이 그 뜻입니다.</div>
+<h3>6-2. 팀원 목록에서 볼 수 있는 것</h3>
+<table><thead><tr><th>칸 (화면 이름)</th><th>쉬운 뜻</th></tr></thead><tbody>
+<tr><td><code>Member</code></td><td>팀원 이름과 이메일입니다.</td></tr>
+<tr><td><code>Role</code></td><td>방에서의 역할입니다. 예시 화면에는 <code>Organization admin</code>으로 나옵니다.</td></tr>
+<tr><td><code>Workspace status</code></td><td>지금 방에서 활동 중인지 봅니다. 예: <code>Active</code>는 활동 중입니다.</td></tr>
+<tr><td><code>Assigned projects</code></td><td>넣어 준 일입니다. 없으면 <code>Not assigned</code>라고 나옵니다. 뜻은 “아직 넣은 일이 없습니다”입니다.</td></tr>
+<tr><td><code>Monthly usage</code></td><td>이번 달에 쓴 크레딧입니다. 단위는 <code>Cr</code>입니다.</td></tr>
+<tr><td><code>Access control</code></td><td>들어올 수 있는지 정하는 칸입니다. 예시 화면에는 <code>Active</code>로 나옵니다.</td></tr>
+</tbody></table>
+<figure class="fig"><img src="../screens/3d449c90ab8b9610501fb271b034130d404051277716da15b24edd2ff309d864.png" alt="Members 멤버 화면" loading="lazy"><figcaption><code>Members</code> 화면입니다. 팀원 표가 보입니다. 역할 안내도 보입니다. · 팀원 이메일과 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+<h3>6-3. 팀원 부르기 — <code>Invite member</code></h3>
+<ul>
+<li><code>Members</code> 화면 오른쪽 위의 <code>Invite member</code> 버튼을 누르세요.</li>
+<li>상담 페이지에는 이메일로 부른다고 나옵니다.</li>
+<li>부를 때는 두 가지를 먼저 정하세요. 업무 이메일이 맞는지 보세요. 그리고 부른 뒤 어느 일에 넣을지 정하세요. 방에 부르는 것과 일에 넣는 것은 다릅니다.</li>
+</ul>
+
+<h2 id="c7">7. Usage &amp; budget — 얼마나 썼는지 보기</h2>
+<p><code>Usage &amp; budget</code> 화면에는 이렇게 나옵니다. <code>Trace where organization credits came from and how they move into project budgets.</code></p>
+<p>뜻은 이렇습니다. “크레딧이 어디서 왔는지 보세요. 어느 일로 갔는지도 보세요.” 오른쪽 위 버튼은 <code>Request credit</code>입니다.</p>
+<h3>7-1. 남은 양을 직접 고칠 수 없습니다</h3>
+<div class="note"><b><code>No balance editing</code></b><br><code>The organization wallet changes only through XCONDA issuance, project allocation, return or reversal transactions. Card checkout and billing documents are not part of Workspace Beta 1.</code><br>쉽게 말하면 이렇습니다. 큰 지갑의 양은 손으로 고칠 수 없습니다. 바뀔 때는 정해진 때뿐입니다. XCONDA가 넣어 줄 때 바뀝니다. 일로 나눌 때 바뀝니다. 다시 가져올 때 바뀝니다. 잘못된 것을 되돌릴 때 바뀝니다. 카드로 돈 내기는 Beta 1에서는 안 됩니다. 청구서도 Beta 1에서는 안 됩니다.</div>
+<h3>7-2. 위에 있는 카드 4개</h3>
+<table><thead><tr><th>카드 (화면 이름)</th><th>쉬운 뜻</th></tr></thead><tbody>
+<tr><td><code>Organization wallet</code></td><td>큰 지갑에 남은 크레딧입니다. <code>XCONDA-issued, available to allocate</code>라고 나옵니다. 뜻은 이렇습니다. “XCONDA가 넣어 줬습니다. 일로 나눌 수 있습니다.”</td></tr>
+<tr><td><code>Allocated budgets</code></td><td>일들에 나눠 준 크레딧을 모두 더한 것입니다. 지금 하고 있는 일 기준입니다.</td></tr>
+<tr><td><code>Processing amount</code></td><td>지금 만들고 있어서 잠시 잡혀 있는 크레딧입니다. 화면에는 <code>generation holds</code>라고 나옵니다.</td></tr>
+<tr><td><code>Total usage</code></td><td>지금까지 쓴 크레딧을 모두 더한 것입니다. 모든 일 기준입니다.</td></tr>
+</tbody></table>
+<h3>7-3. 그래프, 신호, 더 달라는 요청</h3>
+<ul>
+<li><b><code>Credit usage</code> — 얼마나 썼는지 그래프.</b> 쓴 양이 어떻게 변했는지 봅니다. <code>7D</code>는 7일입니다. <code>30D</code>는 30일입니다. 버튼으로 바꿉니다.</li>
+<li><b><code>Budget signals</code> — 예산 신호.</b> 일마다 예산이 괜찮은지 알려 주는 곳입니다. 아직 일이 시작 안 됐으면 <code>Credit movements appear here once work begins.</code>라고 나옵니다. 뜻은 이렇습니다. “일이 시작되면 크레딧 움직임이 여기에 나옵니다.”</li>
+<li><b><code>Project budget requests</code> — 더 달라는 요청 목록.</b> 일에서 예산을 더 달라고 하면 여기에 쌓입니다. 없으면 <code>No project has asked for more budget.</code>라고 나옵니다. 뜻은 “더 달라고 한 일이 없습니다”입니다.</li>
+<li><b>예산이 모자라면.</b> 프로젝트 예산이 모자라면 더 달라고 할 수 있습니다. 큐브베리 관리자가 크레딧을 지급합니다.</li>
+</ul>
+<div class="note">팁 하나. 전체 합만 보지 마세요. 일마다 나눠서 보세요. 끝난 일에서 얼마를 썼는지 적어 두세요. 다음 일에서 처음에 얼마를 나눌지 정할 때 도움이 됩니다.</div>
+<figure class="fig"><img src="../screens/d6ff998156cf2e9e11e92d56a3927ef0cf3f338203bf3756957a07457f80b69c.png" alt="Usage and budget 사용량과 예산 화면" loading="lazy"><figcaption><code>Usage &amp; budget</code> 화면입니다. 카드 4개가 보입니다. <code>Credit usage</code>, <code>Budget signals</code>, <code>Project budget requests</code>도 보입니다. · 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+
+<h2 id="c8">8. Operation logs — 누가 무엇을 했는지 보기</h2>
+<p><code>Operation logs</code> 화면에는 이렇게 나옵니다. <code>Review sensitive actions, blocked requests and budget changes.</code></p>
+<p>뜻은 이렇습니다. “중요한 일, 막힌 요청, 예산 바꾼 것을 보세요.” 나중에 확인할 수 있게 적어 두는 기록입니다.</p>
+<ul>
+<li>검색 칸은 <code>Search actor, action or target</code>입니다. 한 사람, 한 일, 대상을 넣어 찾습니다.</li>
+<li>기록은 표로 나옵니다. 칸은 5개입니다. <code>Time</code>은 시간입니다. <code>Actor</code>는 한 사람입니다. <code>Action</code>은 한 일입니다. <code>Target</code>은 대상입니다. <code>Result</code>는 결과입니다.</li>
+<li>예시 화면에는 방을 만든 기록이 있습니다. 한 일은 <code>Organization created</code>입니다. 결과는 <code>Success</code>입니다. Success는 잘 됐다는 뜻입니다. 시간에는 날짜와 시각이 함께 나옵니다.</li>
+<li>오른쪽 위의 <code>PDF export, Beta 2</code> 버튼은 아직 못 누릅니다. PDF로 내려받기는 Beta 1에서는 안 됩니다.</li>
+</ul>
+<figure class="fig"><img src="../screens/9329004b9277140cf63019026d79def93159f2400af78b84296ac2888e998622.png" alt="Operation logs 운영 기록 화면" loading="lazy"><figcaption><code>Operation logs</code> 화면입니다. <code>Time</code>, <code>Actor</code>, <code>Action</code>, <code>Target</code>, <code>Result</code> 표가 보입니다. · 한 사람의 아이디, 대상 아이디, 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+
+<h2 id="c9">9. Settings — 기본 설정 바꾸기</h2>
+<p><code>Settings</code> 화면에는 이렇게 나옵니다. <code>Workspace identity settings. Billing and documents remain in Beta 2.</code></p>
+<p>뜻은 이렇습니다. “방의 기본 정보를 정하는 곳입니다. 청구와 문서는 Beta 2에 있습니다.”</p>
+<h3>9-1. 방 정보 — <code>Workspace profile</code></h3>
+<table><thead><tr><th>칸 (화면 이름)</th><th>쉬운 설명</th></tr></thead><tbody>
+<tr><td><code>Organization name</code></td><td>회사 이름입니다. 방 목록과 관리 화면에 이 이름이 나옵니다.</td></tr>
+<tr><td><code>Default language</code></td><td>기본 언어입니다. 예시 화면에는 <code>English</code>가 골라져 있습니다.</td></tr>
+<tr><td><code>Time zone</code></td><td>시간 기준입니다. 예시 화면에는 <code>Asia/Seoul</code>이 골라져 있습니다. 꼭 알아 두세요. 이건 그냥 화면에 보이는 형식이 아닙니다. 한 달 합을 어디서 끊을지 정하는 기준입니다. 화면에도 <code>This is the monthly aggregation boundary, not a display preference. Changing it moves every monthly total.</code>라고 나옵니다. 바꾸면 모든 달 합이 함께 바뀝니다.</td></tr>
+<tr><td><code>Logo</code></td><td>회사 로고입니다. <code>PNG or SVG, up to 512 KB</code>. PNG나 SVG 파일만 됩니다. 크기는 512KB까지만 됩니다. <code>Choose file</code>로 파일을 고르세요. 고른 파일은 저장을 눌러야 적용됩니다.</td></tr>
+<tr><td><code>Base color</code></td><td>기본 색입니다. 색 번호를 씁니다. 예시 화면의 색은 그 회사의 예시일 뿐입니다. 내 회사 색을 쓰면 됩니다.</td></tr>
+</tbody></table>
+<p>바꿨으면 <code>Save settings</code> 버튼을 꼭 누르세요. 눌러야 저장됩니다.</p>
+<h3>9-2. 오른쪽 안내 상자 3개</h3>
+<table><thead><tr><th>상자 (화면 이름)</th><th>쉬운 뜻</th></tr></thead><tbody>
+<tr><td><code>Brand Kit boundary</code></td><td>회사 로고와 기본 색은 여기에 둡니다. 참고 사진, 캐릭터, 캠페인 느낌은 각 일의 Brand Kit에 둡니다. 섞지 마세요.</td></tr>
+<tr><td><code>Permission engine</code></td><td>Beta 1에는 역할을 정하는 따로 화면이 없습니다. 그래도 방과 일의 경계는 모든 요청에서 지켜집니다. 6장을 보세요.</td></tr>
+<tr><td><code>Billing &amp; documents · BETA 2</code></td><td>청구서, 돈 내는 방법, 문서 내려받기는 Beta 2에서 나옵니다. 지금은 안 됩니다.</td></tr>
+</tbody></table>
+<figure class="fig"><img src="../screens/a2a08b93de9b5544fd1f0264a7d2df2b4c433e750eed62b77513b9d30a97daa8.png" alt="Settings 워크스페이스 설정 화면" loading="lazy"><figcaption><code>Settings</code> 화면입니다. <code>Workspace profile</code>이 보입니다. 오른쪽 안내 상자 3개도 보입니다. · 위쪽 개인 크레딧 숫자는 검은 박스로 가렸습니다.</figcaption></figure>
+
+<h2 id="c10">10. 결과물 나누기와 Reuse</h2>
+<p>상담 페이지에는 이렇게 나옵니다. 만든 결과물을 볼 수 있습니다. 내려받을 수도 있습니다. 사진에서 Reuse를 하면 이어서 만들 수 있습니다.</p>
+<ul>
+<li><b>누가 볼 수 있나요?</b> 결과물은 그 일 안에 있습니다. 그 일을 볼 수 있는 사람만 봅니다. 화면에도 <code>Project data is isolated by access policy.</code>라고 나옵니다.</li>
+<li><b>Reuse는 같은 일 안에서만 됩니다.</b> 다른 일의 결과물을 가져와서 Reuse할 수 없습니다. 링크로 밖에 열 수도 없습니다. Beta 1에서는 안 됩니다.</li>
+<li><b>만들려면 그 일의 역할이 필요합니다.</b> 방 관리자라도 그 일의 역할이 없으면 만들 수 없습니다. 남이 만든 일에서는 Reuse도 할 수 없습니다. 6장을 보세요.</li>
+</ul>
+
+<h2 id="c11">11. 자주 묻는 질문</h2>
+<h3>Q. 바로 가입해서 쓸 수 있나요?</h3>
+<p>아니요. 먼저 상담을 신청합니다. 2장을 보세요. 신청서를 보내면 답 메일이 옵니다. 영업일 기준 2일 안에 옵니다. 쓴 뒤에는 <code>Your workspaces</code> 화면에서 방을 열 수 있습니다. <code>Create workspace</code>로 새 방도 만들 수 있습니다. 3장을 보세요.</p>
+<h3>Q. 신청서에 꼭 써야 하는 것은 무엇인가요?</h3>
+<p>4가지입니다. 회사명, 담당자 이름, 업무 이메일, 예상 사용 인원입니다. 개인정보 동의에도 꼭 표시해야 합니다. 연락처는 비워도 됩니다. 희망 도입 시기도 비워도 됩니다. 문의 내용도 비워도 됩니다. 2장을 보세요.</p>
+<h3>Q. 방을 만들면 누가 관리자가 되나요?</h3>
+<p>만든 사람이 첫 관리자가 됩니다. 화면에도 <code>You become its first administrator.</code>라고 나옵니다.</p>
+<h3>Q. 방 관리자는 모든 일에서 바로 만들 수 있나요?</h3>
+<p>아니요. 방 관리자는 모든 일을 볼 수 있습니다. 예산과 팀원도 관리할 수 있습니다. 하지만 남이 만든 일에서 만들려면 그 일의 역할이 따로 있어야 합니다. Reuse를 할 때도 마찬가지입니다. 내가 만든 일에서는 자동으로 그 일의 관리자가 됩니다. 6장을 보세요.</p>
+<h3>Q. 팀원을 부르면 모든 일을 볼 수 있나요?</h3>
+<p>아니요. 방에 부르는 것과 일에 넣는 것은 다릅니다. 화면에도 <code>Workspace invitation and project assignment are managed separately.</code>라고 나옵니다. 일에 안 넣어 준 사람은 그 일을 볼 수 없습니다. 목록에는 <code>Not assigned</code>라고 나옵니다.</p>
+<h3>Q. 크레딧은 어디서 오나요? 누가 넣어 주나요?</h3>
+<p>계약이 끝납니다. 또는 돈을 낸 것이 확인됩니다. 그러면 XCONDA가 큰 지갑에 넣어 줍니다. 관리 화면에서는 이미 있는 것만 나눌 수 있습니다. 다시 가져올 수도 있습니다. 크레딧을 살 수는 없습니다. 새로 만들 수도 없습니다. 일을 새로 만들어도 새 크레딧은 안 생깁니다.</p>
+<h3>Q. 프로젝트 예산이 모자라면 어떻게 하나요?</h3>
+<p>더 달라고 할 수 있습니다. 큐브베리 관리자가 크레딧을 지급합니다. 7장을 보세요.</p>
+<h3>Q. 남은 양을 직접 고치거나 카드로 낼 수 있나요?</h3>
+<p>Beta 1에서는 안 됩니다. 큰 지갑은 정해진 때만 바뀝니다. 넣어 줄 때 바뀝니다. 나눌 때 바뀝니다. 가져올 때 바뀝니다. 되돌릴 때 바뀝니다. 화면에도 <code>No balance editing</code>이라고 나옵니다. 카드로 내기는 Beta 1에 없습니다. 청구서도 Beta 1에 없습니다. 청구서와 돈 내는 방법은 Beta 2에서 나옵니다.</p>
+<h3>Q. 다른 일의 사진을 Reuse할 수 있나요?</h3>
+<p>아니요. Beta 1에서는 같은 일 안에서만 됩니다. 다른 일로 가져갈 수 없습니다. 밖에 열 수도 없습니다.</p>
+<h3>Q. 기록을 PDF로 내려받을 수 있나요?</h3>
+<p>아직 안 됩니다. <code>Operation logs</code> 화면 버튼에 <code>PDF export, Beta 2</code>라고 나옵니다.</p>
+
+<h2 id="c12">12. 마지막 점검표</h2>
+<p>순서가 중요합니다. 먼저 상담을 신청하세요. 그다음 방과 일을 정하세요. 그다음 팀원을 부르고 일에 넣으세요.</p>
+<ul class="check">
+<li>회사명, 담당자, 업무 이메일을 맞게 써서 상담을 신청했나요?</li>
+<li>예상 사용 인원을 실제로 쓸 사람 수로 골랐나요?</li>
+<li>개인정보 동의를 읽고 표시했나요? 무엇을 가져가는지 봤나요? 왜 쓰는지도 봤나요?</li>
+<li>방을 만들었나요? 첫 관리자가 누구인지 정했나요? (<code>Create workspace</code> → <code>Organization name</code>)</li>
+<li>일을 어떻게 나눌지 정했나요? 일이나 고객별로 나누면 됩니다.</li>
+<li>일마다 처음에 얼마를 나눌지 정했나요? 큰 지갑에 있는 만큼만 나눌 수 있습니다. (<code>Initial budget</code>)</li>
+<li>부를 팀원의 업무 이메일을 확인했나요? 방에 부르는 것과 별개로, 어느 일에 넣을지도 정했나요?</li>
+<li>방 관리자가 남의 일에서 일해야 하나요? 그렇다면 그 일의 역할도 함께 줬나요?</li>
+<li><code>Settings</code>에서 회사 이름, 기본 언어, 시간 기준, 로고, 기본 색을 정했나요? <code>Save settings</code>를 눌렀나요? 시간 기준은 달 합을 정합니다.</li>
+<li><code>Usage &amp; budget</code>와 <code>Operation logs</code>를 누가, 얼마나 자주 볼지 정했나요?</li>
+<li>Beta 1에서 안 되는 것을 회사 안내에서 뺐나요? 카드 내기, 청구서, PDF 내려받기, 다른 일로 Reuse, 밖에 열기는 안 됩니다.</li>
+</ul>
+<div class="note">이 안내는 상담 페이지(https://www.xconda.ai/workspace)와 2026-11-17에 본 실제 화면을 보고 만들었습니다. 가격과 화면은 바뀔 수 있습니다. 쓰기 전에는 상담 답을 다시 보세요. 돈 내기 전에는 사이트 화면을 다시 보세요. 돈이나 계정에 대해 물을 것이 있으면 상담 페이지의 고객센터에 물어보세요.</div>
+</main>
+<footer>XCONDA 워크스페이스 가이드 · 25_Workspace_Guide_KO.html · 2026-11-17 개정 · 기준: 워크스페이스 상담 페이지 + 베타 실제 화면</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>初心者のためのAI Webドラマ制作ガイド</title>
+<meta name="description" content="初心者のためのAI Webドラマ制作ガイド — シナリオから完成した1話まで、XCONDA制作フローの詳細版。">
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans JP','Yu Gothic',Meiryo,system-ui,sans-serif;color:var(--ink);line-height:1.85;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.15em;color:#9fb0cc}header h1{font-size:44px;margin:20px 0 12px;line-height:1.35}header p{color:#c6d0e2;max-width:860px}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}h3{font-size:20px;margin:32px 0 4px}h4{font-size:17px;margin:24px 0 4px}p{margin:8px 0}ul,ol{margin:8px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.7;vertical-align:top}th{background:#f2f3f6}
+pre{background:#f2f3f6;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all}code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}.check li:before{content:'☐';position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}.toc a{color:var(--navy);text-decoration:none}footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}.language-nav{font-size:13px;margin-top:20px}.language-nav a,.language-nav strong{display:inline-block;margin-right:16px;color:#fff}.table-scroll{overflow-x:auto}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{header{background:#fff;color:var(--ink);padding:24px 0}header p,header .brand{color:var(--slate)}.language-nav{display:none}main{padding:20px 0}h2,h3{break-after:avoid}tr{break-inside:avoid}.table-scroll{overflow:visible}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="web-drama-beginners" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/web-drama-beginners.html" hreflang="ko" lang="ko">KO</a><a href="../en/web-drama-beginners.html" hreflang="en" lang="en">EN</a><a href="../ja/web-drama-beginners.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/web-drama-beginners.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<header><div class="brand">XCONDA / 2026 · 初心者のためのAI Webドラマ制作ガイド（文章版・詳細ガイド）</div>
+<h1>初心者のためのAI Webドラマ制作ガイド</h1>
+<p>シナリオから完成した1話までを、一つの流れで制作する方法です。画像と動画を別々に作るのではなく、FlexBoard、Blocking Board、Video Generatorを順番につないで1話を仕上げます。プロンプト作成詳細ガイドと同じ文章形式で改めて構成しています。</p>
+<nav class="language-nav" aria-label="ドキュメントの言語">한국어English<strong aria-current="page">日本語</strong>简体中文</nav></header>
+<main>
+<div class="toc"><strong>目次</strong><ol>
+<li><a href="#c1">1話の制作とは — シナリオから完成まで</a></li>
+<li><a href="#c2">企画・シナリオ — 1話の土台を決める</a></li>
+<li><a href="#c3">リファレンスの準備 — 人物と場所を画像で固定する</a></li>
+<li><a href="#c4">テキストストーリーボード — 文章の段階でカットを確定する</a></li>
+<li><a href="#c5">ストーリーボード画像 — カットごとに画像で確認する</a></li>
+<li><a href="#c6">Blocking Boardリハーサル — 動画生成前に動線を検討する</a></li>
+<li><a href="#c7">動画生成 — プロンプトスキルでカット動画を作る</a></li>
+<li><a href="#c8">サウンド・編集 — 1話として仕上げる</a></li>
+<li><a href="#c9">1話完成チェックリスト — 納品前にもう一度確認する</a></li>
+<li><a href="#c10">まとめ — 1話制作の重要ポイント</a></li>
+</ol></div>
+<h2 id="c1">1. 1話の制作とは — シナリオから完成まで</h2>
+<p>Webドラマ1話の制作とは、シナリオから完成した1話までを一つの流れとしてつなぐ作業です。CUBEBERRYのAI動画制作は、シナリオから始め、XCONDAで動画を作り、サウンドを加え、編集で仕上げる7段階に整理できます。本説明書では、その7段階を1話の制作に沿って解説します。</p>
+<div class="table-scroll"><table><tbody><tr><th>段階</th><th>内容</th><th>主なツール</th></tr>
+<tr><td>01 準備</td><td>シナリオの確定</td><td>シナリオ</td></tr>
+<tr><td>02 準備</td><td>リファレンス画像の準備</td><td>FlexBoardスキル、GPT Image、Turn</td></tr>
+<tr><td>03 準備</td><td>テキストストーリーボード</td><td>FlexBoard</td></tr>
+<tr><td>04 準備</td><td>ストーリーボード／ブロッキング</td><td>FlexBoard、Turn、Blocking Board</td></tr>
+<tr><td>05 動画</td><td>動画生成</td><td>Video Generator（Seedanceなど）</td></tr>
+<tr><td>06 後半</td><td>サウンド</td><td>サウンドツール</td></tr>
+<tr><td>07 後半</td><td>編集・仕上げ</td><td>Premiere Pro</td></tr></tbody></table></div>
+<div class="note">このフローは、すでに実際の制作で検証された方法です。CUBEBERRYはXCONDAのTurn・FlexBoard・Blocking Boardで空間・キャラクター・動線を管理し、KOCCAコンテンツラボのAI Webドラマ4作品（2026年、現役監督4チーム）を制作しました。1話のカット数と尺は、各話の企画に応じて決めます。</div>
+<h2 id="c2">2. 企画・シナリオ — 1話の土台を決める</h2>
+<p>1話の制作は、企画とシナリオから始まります。1話の物語、登場人物、場所を決め、カット構成に分けます。この段階で人物と場所が決まっていなければ、次の段階で使うリファレンスは作れません。</p>
+<h3>2-1. 企画 — 1話の物語・人物・場所を決める</h3>
+<p>1話のあらすじ、登場人物、主な場所を決めます。人物ごとに名前、外見、衣装を決めます。場所ごとに、ドア・窓・家具の配置など、空間の特徴を決めます。</p>
+<h3>2-2. シナリオ — シナリオを書き、カットに分ける</h3>
+<p>シナリオを書き、カットに分けます。カットごとに、誰が、どこで、何をするのか、カメラがどこにあるのかを決めます。カット数は企画に応じて決めます。FlexBoardでは6～36カットのストーリーボードを作成できます。</p>
+<h3>2-3. 状態管理表 — カット間で引き継ぐ状態を記録する</h3>
+<p>人物の衣装・表情・負傷状態、手に持っている小道具、周囲の小道具、背景のドア・窓・家具の位置、登場人物の人数をカットごとに記録します。この管理表が、後でカットの一貫性を守る基準になります。動画AIは前のカットを記憶していないため、人が段階ごとに改めて指示する必要があります。</p>
+<div class="note">シナリオにキャラクター名を記載し、AIが顔と衣装のリファレンスを結び付けられるようにします。名前がなければ、AIは人物を区別できません。</div>
+<h2 id="c3">3. リファレンスの準備 — 人物と場所を画像で固定する</h2>
+<p>シナリオが決まったら、人物と場所のリファレンス画像を準備します。人物ごとに顔画像（キャラクターシート）、場所ごとに背景画像（背景シート）を作成します。このリファレンスが、以後のすべての段階の基準になります。</p>
+<h3>3-1. キャラクターシート — 人物ごとの顔画像</h3>
+<p>人物ごとに顔画像を作成します。GPT ImageとFlexBoardスキルで顔のリファレンスを準備します。衣装・表情・負傷状態も同時に決めます。このシートが、カットをまたいで同じ人物を維持する基準です。シート作成の詳しいルール（ニュートラルな灰色の背景、全身ショットで脚が短く見えるのを防ぐ5つのルール、確認用の質問）は、プロンプト作成詳細ガイドを参照してください。</p>
+<h3>3-2. 背景シート — 場所ごとの背景画像</h3>
+<p>場所ごとに背景画像を作成します。Turnで作成した4面の背景シート（正面・左・右・背面）もこれに含まれます。背景シートは、カットをまたいで同じ空間を維持する基準です。</p>
+<h3>3-3. Turnの活用 — 必要に応じて空間・カット画像を作る</h3>
+<p>Turnで360°のバーチャルセットを作って背景シートを作成したり、セット内から直接カット画像を出力したりできます。Turnの詳しい作業フローは、Webサイト取扱説明書のTurnの章を参照してください。</p>
+<div class="warn"><strong>原則：人物と場所が決まっていなければ、次の段階のリファレンスは作れません。</strong> リファレンスの準備を省略してすぐに生成すると、カットごとに人物や場所が変わります。リファレンス画像はアセットライブラリに保存し、1話を通して、さらに次の話でも再利用します。</div>
+<h2 id="c4">4. テキストストーリーボード — 文章の段階でカットを確定する</h2>
+<p>リファレンスの準備ができたら、FlexBoardでテキストストーリーボードを作成します。シナリオをカット別の指示文に分け、カットごとの文章と効果音を書きます。文章の段階でカットの順番と構図を確定することが、クレジットの節約につながります。</p>
+<h3>4-1. 開始 — Flex Boardを選択し、新規プロジェクトを作成</h3>
+<p>ストーリーボードカテゴリでFlex Boardを選び、ワークスペースのNew Projectから新しいプロジェクトを作成します。</p>
+<h3>4-2. リファレンスの接続 — キャラクター・背景のリファレンスを追加</h3>
+<p>準備したキャラクターシートと背景シートをプロジェクトに接続します。これらのリファレンスが、カットをまたいで人物と空間を維持します。</p>
+<h3>4-3. カット別の文章 — カットごとの指示文・効果音を書く</h3>
+<p>シナリオをカットに分け、カットごとに指示文を書きます。テキストプレビューでカットカード、説明、効果音を確認します。</p>
+<h3>4-4. 確定 — 文章の段階でカット順・構図を確定</h3>
+<p>テキストの段階でカットの順番と構図を確定します。画像生成の前に文章を修正しても、クレジットは消費されません。文章を十分に練ってから画像の段階に進みます。</p>
+<div class="note">確認順序：カットカード → カットの説明 → 効果音 → カットの順番。この4点を確認してから画像生成に進みましょう。</div>
+<h2 id="c5">5. ストーリーボード画像 — カットごとに画像で確認する</h2>
+<p>テキストストーリーボードが確定したら、画像を生成します。カットごとに画像を作り、構図・人物・背景が合っているか確認します。気に入らないカットだけを選んで修正します。一貫性は二つのエンジンが担います。背景はTurn、キャラクターはArt Director Proが守ります。</p>
+<h3>5-1. 画像生成 — グリッドでカットごとに照合</h3>
+<p>画像を生成したら、グリッド内の各画像を説明と照らし合わせます。カットごとに構図・人物・背景が合っているか確認します。</p>
+<h3>5-2. カット別修正 — 合わないカットだけ作り直す</h3>
+<p>気に入らないカットだけを選び、プロンプトを修正して再生成します。カットの作り直しは20クレジットからです。同じ場面を保ったままアングルやカメラの動きだけを変えたい場合は、画像をドラッグして目的のカットに置き換えます。</p>
+<h3>5-3. 単一カットの修正が安い場合 — キー画像から直す</h3>
+<p>合わないカットがある場合、プロンプトだけを変更して何度も生成するより、その場面のキー画像を1枚修正して再入力する方が、クレジットを少なく抑えられます。</p>
+<div class="note">一貫性エンジン：Turn（AI VirtualSet）は背景の一貫性を担います。写真1枚から作った360°セットの中でカメラを動かしてアングルを選ぶため、ドア・窓・家具の位置がカット間で維持されます。Art Director Proはキャラクターの一貫性を担います。4つのAIエージェントが順番に検証・修正・反映を行い、衣装・表情・負傷状態をカット間で引き継ぎます。1フレームを変更すると、残りのフレームにも自動的に反映されます。</div>
+<h2 id="c6">6. Blocking Boardリハーサル — 動画生成前に動線を検討する</h2>
+<p>ストーリーボード画像が確定したら、複雑な動きのある場面はBlocking Boardでリハーサルします。平面図に俳優とカメラを配置し、3Dで再生して、人物・空間・カメラが衝突しないか、視線が合っているかを確認します。リハーサルせずに生成すると、衝突や動線の誤りを後から修正しなければなりません。</p>
+<h3>6-1. 1-Click — シナリオを貼り付けて草案を生成</h3>
+<p>シナリオを貼り付けると、俳優、空間、動線、カメラの草案が作成されます。</p>
+<h3>6-2. 2D平面図 — 配置と動線を調整</h3>
+<p>2D平面図で、俳優とカメラの位置、移動経路を調整します。</p>
+<h3>6-3. 3Dプレビュー — 3Dステージで再生して確認</h3>
+<p>3Dステージでシーンを再生し、人物とカメラの動きを確認します。</p>
+<h3>6-4. 演出チェック — 衝突・視線を検査し、問題を修正</h3>
+<p>演出チェックで衝突と視線を検査します。問題が見つかったら平面図に戻り、配置や動線を修正します。複数の人物が交差するシーンでは、この段階で位置と移動経路を先に決めることを推奨します。</p>
+<h3>6-5. エクスポート — プロンプト・ショットリスト・ショットブック</h3>
+<p>確認済みのシーンは、Seedance用の英語プロンプト、ショットリスト、平面図とフレームのPNG、ショットブックPDFとしてエクスポートできます。シーンを再生し、プレビズ動画（WebM）として出力することもできます。</p>
+<div class="note">Blocking BoardはWebサイトで無料ベータ版として利用でき、カードは不要です。詳しい使い方は、別のBlocking Boardガイド（全13章）を参照してください。</div>
+<h2 id="c7">7. 動画生成 — プロンプトスキルでカット動画を作る</h2>
+<p>ストーリーボードとリハーサルが確定したら、Video Generatorでカット動画を生成します。重要なのはプロンプトです。状態管理表の内容をそのままプロンプトに移し、キー画像を基準として生成します。Seedanceのプロンプトは最大30,000文字まで入力できるため、長さを心配する必要はありません。</p>
+<h3>7-1. プロンプトスキル — キー画像を基準にプロンプトを生成</h3>
+<p>XCONDAのプロンプトスキルは、キー画像を基準としてSeedance用のプロンプトを作成します。4監督の仕組みと10ブロック構成で整理されており、韓国語と英語を並べて見ながら編集できます。状態管理表の内容を韓国語で入力し、英文が正しく翻訳されているか確認してください。プロンプト作成の詳しいルールは、プロンプト作成詳細ガイドを参照してください。</p>
+<h3>7-2. モデル・オプション — モデル、比率、解像度、長さ、高画質を選択</h3>
+<p>Seedance 2.5では、1回につき最大30秒、最大1080pの動画を生成できます。オプションでアスペクト比、解像度、長さ、高画質を設定します。全モデルの仕様表は、Webサイト取扱説明書のVideo Generatorの章を参照してください。</p>
+<h3>7-3. カット別の生成・確認 — カットごとに生成し、一貫性を確認</h3>
+<p>カットごとに生成し、人物・空間・状態が引き継がれているか確認します。合わないカットがある場合は、その場面のキー画像から修正して再生成します。</p>
+<div class="note">カットの一貫性を守る5段階：① 空間はTurnで固定する ② 人物・構図はFlexBoardで固定する ③ 引き継ぐ状態はリファレンスとプロンプトで伝える ④ 状態管理表をそのままプロンプトに移す ⑤ 送信前にもう一度確認する。この順番を守ると、カットごとに人物や場所が変わる問題を減らせます。</div>
+<h2 id="c8">8. サウンド・編集 — 1話として仕上げる</h2>
+<p>カット動画が完成したら、サウンドを加え、編集して1話に仕上げます。CUBEBERRYの制作フローは、XCONDAで動画を作り、サウンドを加え、Premiere Proで編集して仕上げる順番です。</p>
+<h3>8-1. サウンド — 音楽・効果音を加える</h3>
+<p>カットごとに音楽と効果音を加えます。テキストストーリーボードの段階で決めた効果音を基準に合わせます。</p>
+<h3>8-2. 編集 — カットをつないで1話にする</h3>
+<p>生成したカット動画を順番につなぎ、1話として編集します。Premiere Proで仕上げます。</p>
+<h3>8-3. 仕上げツール — 必要に応じてWebサイトのツールを使う</h3>
+<p>顔の置き換えにはFace Swap、衣装の交換にはClothSwap、表情の変換にはExpression Transformer、画質の向上にはAI Upscaler（最大4倍）、色調の統一にはCineGrade AIを使います。仕上げた後は、キャラクターの一貫性をもう一度確認します。</p>
+<p>編集・仕上げの段階で修正依頼が出た場合は、編集者が修正し、必要な部分を再生成するサイクルを繰り返します。満足できる結果になるまで、このサイクルを続けます。</p>
+<h2 id="c9">9. 1話完成チェックリスト — 納品前にもう一度確認する</h2>
+<p>1話を完成させる前に、以下の項目を確認します。このチェックリストは、CUBEBERRYの実際の制作現場で使われている確認項目です。少しでも合わなければ、該当するカットから修正します。</p>
+<ul class="check">
+<li>すべてのカットで登場人物の人数が合っているか</li>
+<li>衣装の色・ボタン・袖がカット間で同じか</li>
+<li>手に持っている小道具や周囲の小道具が変わっていないか</li>
+<li>背景の窓・ドア・家具の位置がカット間で同じか</li>
+<li>人物の表情・負傷状態が引き継がれているか</li>
+<li>カットの順番、ショットの長さ、カメラの動きが意図に合っているか</li>
+<li>欠けているカットはないか</li>
+<li>状態管理表の内容がそのままプロンプトに移されているか</li>
+<li>キー画像と生成動画を照合したか</li>
+<li>サウンド（音楽・効果音）がカットに合っているか</li>
+<li>編集した動画が1話としてつながっているか</li>
+<li>Turnセット・キャラクターシート・背景シートがライブラリに保存されているか（次の話で再利用）</li>
+</ul>
+<div class="note">合わないカットがある場合、プロンプトだけを変更して何度も生成するより、その場面のキー画像を1枚修正して再入力する方が、クレジットを少なく抑えられます。複雑な動きのあるシーンは、Blocking Boardで再確認します。</div>
+<h2 id="c10">10. まとめ — 1話制作の重要ポイント</h2>
+<p>Webドラマ1話の制作で重要なのは順番です。シナリオ → リファレンス → テキストストーリーボード → ストーリーボード／ブロッキング → 動画生成 → サウンド →編集。この順番を守ると、カットごとに人物や場所が変わる問題を減らし、クレジットを節約できます。</p>
+<h3>10-1. 基本原則 — 記憶をAIに任せない</h3>
+<p>動画AIは前のカットを記憶していません。空間はTurn、人物・構図はFlexBoardで固定し、引き継ぐ状態はリファレンスとプロンプトを使って、人が直接固定します。</p>
+<h3>10-2. アセット — 作成したものはライブラリに保存する</h3>
+<p>キャラクターシート、背景シート、Turnセット、キー画像、ストーリーボードプロジェクトをライブラリに保存し、次の話で再利用します。アセットが蓄積されるほど、次の話の制作が速くなります。</p>
+<h3>10-3. 次の話 — 1話目のアセットで2話目を始める</h3>
+<p>次の話は、1話目のキャラクターシート・背景シート・Turnセットをそのまま読み込んで始めます。人物と場所がすでに固定されているため、新しい話ではシナリオとカット構成に集中できます。</p>
+<div class="note">本説明書は、XCONDA Webサイトの公開ページ、Hubガイド、CUBEBERRYの制作記事を基に、2026-11-03に作成されました。価格・モデル仕様・クレジットポリシーはサイトの更新により変わる場合があるため、決済・生成前にサイト画面で再確認してください。Webサイトの全機能については、Webサイト取扱説明書（文章版・詳細ガイド）を参照してください。</div>
+</main>
+<footer>初心者のためのAI Webドラマ制作ガイド（文章版・詳細ガイド） · 原典作成日 2026-11-03 · 日本語版更新日 2026-11-03 · 原文の注記：既存のスライド形式ガイド（21番）はそのまま保存。</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

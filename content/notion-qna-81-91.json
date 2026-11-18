@@ -1,0 +1,376 @@
+{
+  "_readme": [
+    "Read-only Notion connector snapshot for the 11 short Q&A pages No 81-91 created on 2026-11-18.",
+    "This is a source fixture, not a generated site artifact. Run scripts/apply-notion-qna-connector.mjs and scripts/apply-qna-translations.mjs to regenerate the snapshot and translation drafts."
+  ],
+  "databaseId": "15d208576a644c499959ace667de40a2",
+  "dataSourceId": "d04aa2a0-accb-4c5a-972b-2a2e17de21e6",
+  "viewId": "2d3c8b526b4845999e2014f1db5eab93",
+  "pages": [
+    {
+      "id": "41c2ebc0-17ad-8191-a4e2-e7b8b5ff2a3b",
+      "no": 81,
+      "title": "블로킹보드는 어떻게 시작해요?",
+      "slug": "blocking-board-getting-started",
+      "seoDescription": "블로킹보드는 탑뷰, 글콘티, 장면 만들기, 내보내기 4단계로 시작합니다.",
+      "category": "블로킹 보드",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:06:00.000Z",
+      "lastEditedTime": "2026-11-18T08:06:00.000Z",
+      "answer": "탑뷰 → 글콘티 → 장면 만들기 → 내보내기, 4단계예요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "How do I start with the Blocking Board?",
+          "summary": "Start with Top View, then the text storyboard, create the scenes, and finally export. The Blocking Board workflow has 4 stages from the first layout to delivery."
+        },
+        "ja": {
+          "title": "ブロッキングボードはどのように始めますか？",
+          "summary": "まずトップビュー、次に文字コンテ、続いてシーン作成、最後に書き出しの順です。最初の配置から書き出しまで、ブロッキングボードの流れは4段階です。"
+        },
+        "zh": {
+          "title": "如何开始使用分镜板？",
+          "summary": "先做顶视图，再写文字分镜，接着创建场景，最后导出。分镜板从布局到导出共有 4 个步骤，适合按顺序完成一次镜头预演。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-8143-8623-cd5aa43f6a11",
+      "no": 82,
+      "title": "블로킹보드에서 애매한 부분은 어떻게 돼요?",
+      "slug": "blocking-board-ambiguous-details",
+      "seoDescription": "블로킹보드는 애매한 정보를 추측하지 않고 팝업으로 확인하며, 이동을 시선보다 우선합니다.",
+      "category": "블로킹 보드",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:06:00.000Z",
+      "lastEditedTime": "2026-11-18T08:06:00.000Z",
+      "answer": "추측하지 않고 팝업으로 물어봐요. 이동이 시선보다 우선이에요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "How does the Blocking Board handle ambiguous details?",
+          "summary": "The Blocking Board does not guess ambiguous details. It asks in a popup and prioritizes character movement over eyelines when the two conflict, so the scene direction stays explicit."
+        },
+        "ja": {
+          "title": "ブロッキングボードで曖昧な部分はどう扱われますか？",
+          "summary": "ブロッキングボードは曖昧な情報を推測しません。ポップアップで確認し、視線より移動を優先するため、画面上の動きと進行方向が明確に残ります。"
+        },
+        "zh": {
+          "title": "分镜板如何处理模糊信息？",
+          "summary": "分镜板不会猜测模糊信息，而是通过弹窗确认；当移动与视线冲突时优先处理移动，让画面方向保持明确，不会自行补写细节。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-81a0-96b1-ddf6d93b57a0",
+      "no": 83,
+      "title": "블로킹보드에서 공간이 틀리게 나오면요?",
+      "slug": "blocking-board-space-json-size",
+      "seoDescription": "블로킹보드 공간 크기는 공간 JSON 값이 우선하며, 카탈로그는 크기가 없을 때만 사용합니다.",
+      "category": "블로킹 보드",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:06:00.000Z",
+      "lastEditedTime": "2026-11-18T08:06:00.000Z",
+      "answer": "공간 JSON에 적힌 크기가 이겨요. 카탈로그는 크기가 없을 때만 써요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "Why does the Blocking Board show the wrong space size?",
+          "summary": "The space size stored in the space JSON takes priority in the Blocking Board. The catalog value is used only when no size is present in that JSON, so the saved dimensions win."
+        },
+        "ja": {
+          "title": "ブロッキングボードの空間サイズが違う場合は？",
+          "summary": "空間JSONに記載されたサイズが優先されます。カタログのサイズは、そのJSONに値がない場合だけ使うため、保存された寸法がそのまま反映されます。"
+        },
+        "zh": {
+          "title": "分镜板的空间尺寸不对怎么办？",
+          "summary": "空间 JSON 中记录的尺寸优先。目录里的尺寸只在该 JSON 没有数值时使用，因此已保存的尺寸会生效，而不是显示目录的默认大小。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-8118-a2da-fbdbefee1d4e",
+      "no": 84,
+      "title": "워크스페이스는 뭐예요?",
+      "slug": "workspace-overview",
+      "seoDescription": "XCONDA 워크스페이스는 11월 17일 오후 베타로 열린 팀 공간으로 조직, 프로젝트, 공유 예산을 관리합니다. 가이드 No.25도 제공됩니다.",
+      "category": "가입·요금·크레딧",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:07:00.000Z",
+      "lastEditedTime": "2026-11-18T08:07:00.000Z",
+      "answer": "새로 생긴 팀 공간이에요. 11/17 오후 베타로 열렸고, 조직·프로젝트·공유 예산을 관리해요. 가이드 No.25가 있어요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "What is the XCONDA Workspace and which guide covers it?",
+          "summary": "The XCONDA Workspace is a new team area that opened in beta on the afternoon of 11/17. It manages organizations, projects and shared budgets, and guide No.25 is available for setup."
+        },
+        "ja": {
+          "title": "XCONDAワークスペースとは何ですか？",
+          "summary": "XCONDAワークスペースは11/17午後にベータ公開された新しいチーム空間です。組織、プロジェクト、共有予算を管理し、設定用のガイドNo.25も用意されています。"
+        },
+        "zh": {
+          "title": "什么是 XCONDA 工作区？",
+          "summary": "XCONDA 工作区是 11/17 下午开启测试的新团队空间，可管理组织、项目与共享预算，并提供指南 No.25 帮助完成初始设置。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-814d-bece-daaa5c7ce8f5",
+      "no": 85,
+      "title": "구독하면 조직이 몇 개예요?",
+      "slug": "workspace-organization-count",
+      "seoDescription": "모든 구독 플랜에서 조직 1개가 제공됩니다.",
+      "category": "가입·요금·크레딧",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:07:00.000Z",
+      "lastEditedTime": "2026-11-18T08:07:00.000Z",
+      "answer": "전 플랜에 조직 1개예요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "How many organizations are included with a subscription?",
+          "summary": "Every subscription plan includes 1 organization. The count is the same across Lite, Plus, Pro, Studio and Max, so upgrading changes other limits but not this organization allowance."
+        },
+        "ja": {
+          "title": "購読プランには組織がいくつ含まれますか？",
+          "summary": "すべての購読プランに組織が1つ含まれます。Lite、Plus、Pro、Studio、Maxのどれでも同じで、アップグレードしてもこの組織数は変わりません。"
+        },
+        "zh": {
+          "title": "订阅套餐包含多少个组织？",
+          "summary": "所有订阅套餐都包含 1 个组织。Lite、Plus、Pro、Studio、Max 均相同，升级会改变其他额度，但不会改变这个组织数量。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-81ae-8783-cea2b5af51ff",
+      "no": 86,
+      "title": "구성원은 몇 명까지예요?",
+      "slug": "workspace-member-limit",
+      "seoDescription": "워크스페이스 구성원 수는 Lite 1명, Plus 3명, Pro 5명, Studio 10명, Max 20명이며 본인을 포함합니다.",
+      "category": "가입·요금·크레딧",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:07:00.000Z",
+      "lastEditedTime": "2026-11-18T08:07:00.000Z",
+      "answer": "Lite 1 · Plus 3 · Pro 5 · Studio 10 · Max 20명, 본인 포함이에요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "How many members can a Workspace include by plan?",
+          "summary": "Workspace member limits are Lite 1, Plus 3, Pro 5, Studio 10 and Max 20, including the account owner. Choose a plan based on how many people need to collaborate."
+        },
+        "ja": {
+          "title": "ワークスペースの構成員はプランごとに何名までですか？",
+          "summary": "ワークスペースの構成員数は、Liteは1名、Plusは3名、Proは5名、Studioは10名、Maxは20名で、本人を含みます。共同作業する人数に合わせてプランを選んでください。"
+        },
+        "zh": {
+          "title": "各套餐的工作区成员上限是多少？",
+          "summary": "工作区成员上限为 Lite 1 人、Plus 3 人、Pro 5 人、Studio 10 人、Max 20 人，均包含本人。请按需要协作的人数选择套餐。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-81d1-af6a-f096fa8f121d",
+      "no": 87,
+      "title": "조직 크레딧은 구독 크레딧에서 자동으로 가요?",
+      "slug": "workspace-organization-credits-separate-request",
+      "seoDescription": "조직 크레딧은 구독 크레딧에서 자동으로 전환되지 않으며 별도 신청이 필요합니다.",
+      "category": "가입·요금·크레딧",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:08:00.000Z",
+      "lastEditedTime": "2026-11-18T08:08:00.000Z",
+      "answer": "아니요. 별도 신청이에요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "Do organization credits come automatically from subscription credits?",
+          "summary": "No, organization credits are not taken automatically from subscription credits. They require a separate request, so the subscription balance is not converted into a shared organization budget by itself."
+        },
+        "ja": {
+          "title": "組織クレジットは購読クレジットから自動的に移りますか？",
+          "summary": "いいえ。組織クレジットは購読クレジットから自動的に移るわけではありません。別途申請が必要で、購読残高が自動的に共有予算へ変わることはありません。"
+        },
+        "zh": {
+          "title": "组织额度会自动从订阅额度转入吗？",
+          "summary": "不是。组织额度不会从订阅额度自动转入，需要单独申请；订阅余额也不会自行变成共享组织预算，因此请通过专用流程提出需求。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-81a5-a8c2-e7c168df926f",
+      "no": 88,
+      "title": "무제한으로 쓰고 싶으면요?",
+      "slug": "workspace-enterprise-unlimited",
+      "seoDescription": "조직과 구성원을 무제한으로 사용하려면 엔터프라이즈 별도 신청 경로를 이용합니다.",
+      "category": "가입·요금·크레딧",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:08:00.000Z",
+      "lastEditedTime": "2026-11-18T08:08:00.000Z",
+      "answer": "엔터프라이즈를 위해 따로 신청하는 경로가 있어요. 그쪽은 조직·구성원 무제한이에요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "How can I get unlimited organizations and members?",
+          "summary": "For unlimited organizations and members, use the separate enterprise request path. The standard plans keep their published limits, while the enterprise route is handled as a dedicated request."
+        },
+        "ja": {
+          "title": "組織と構成員を無制限に使うにはどうしますか？",
+          "summary": "組織と構成員を無制限に使う場合は、エンタープライズ向けの別途申請経路を利用します。通常プランの上限はそのままで、専用の相談として扱われます。"
+        },
+        "zh": {
+          "title": "如何获得不限数量的组织和成员？",
+          "summary": "如需无限使用组织与成员，请走企业版的单独申请流程。标准套餐仍按公布上限执行，企业版需求会作为专门申请处理，不会自动放开额度。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-817c-8401-f0ac447ef4cf",
+      "no": 89,
+      "title": "크레딧은 점수예요?",
+      "slug": "credits-are-tokens-not-points",
+      "seoDescription": "XCONDA 크레딧은 점수가 아니라 서비스에서 사용하는 토큰입니다.",
+      "category": "가입·요금·크레딧",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:08:00.000Z",
+      "lastEditedTime": "2026-11-18T08:08:00.000Z",
+      "answer": "아니요. Xconda에서 쓰는 토큰이에요.",
+      "source": null,
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "Are XCONDA credits points or service tokens?",
+          "summary": "No. XCONDA credits are service tokens used inside the platform, not score points. They are spent when a tool or model runs and the cost is shown before generation, so they are not a loyalty or ranking score."
+        },
+        "ja": {
+          "title": "XCONDAクレジットは点数ですか？",
+          "summary": "いいえ。XCONDAクレジットはサービス内で使うトークンであり、点数ではありません。ツールやモデルの実行時に消費され、生成前に必要量が表示されます。ランキングや評価点ではありません。"
+        },
+        "zh": {
+          "title": "XCONDA 额度是积分吗？",
+          "summary": "不是。XCONDA 额度是平台内使用的服务令牌，而不是积分或分数。运行工具或模型时会消耗，生成前会显示所需数量，因此它不是等级分或评价分。"
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-81cd-b383-cc311c902c7a",
+      "no": 90,
+      "title": "Draft는 얼마나 보관돼요?",
+      "slug": "seedance-draft-1080p-window-14-days",
+      "seoDescription": "Seedance 2.5 Draft(초안) 영상은 14일 안에 1080p로 전환할 수 있습니다. 기한이 지나도 초안 영상은 결과물로 남습니다.",
+      "category": "시댄스 영상 생성",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:08:00.000Z",
+      "lastEditedTime": "2026-11-18T08:08:00.000Z",
+      "answer": "14일이에요. 이 기한은 1080p로 바꿀 수 있는 시간이고, 초안 영상 자체는 결과물로 남아요.",
+      "source": "출처: XCONDA 뉴스 「Seedance 2.5 Draft Mode 업데이트: 초안 보관 기간 최대 14일로 연장」(2026-11-02)",
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "How long is a Seedance 2.5 Draft retained?",
+          "summary": "The 14-day window is the time allowed to convert a Seedance 2.5 Draft to 1080p. After that window, the draft video itself remains available as a completed result and is not removed.",
+          "blocks": [
+            { "type": "h2", "text": "Source" },
+            { "type": "p", "text": "Source: XCONDA News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)" }
+          ]
+        },
+        "ja": {
+          "title": "Seedance 2.5 の Draft はどのくらい保存されますか？",
+          "summary": "14日間とは、Seedance 2.5 の Draft を 1080p に変換できる期間です。この期間を過ぎても、Draft 動画そのものは結果物として残り、自動的に消えることはありません。",
+          "blocks": [
+            { "type": "h2", "text": "出典" },
+            { "type": "p", "text": "出典：XCONDAニュース「Seedance 2.5 Draft Mode アップデート：初案の保存期間を最大14日間に延長」（2026-11-02）" }
+          ]
+        },
+        "zh": {
+          "title": "Seedance 2.5 的 Draft 会保留多久？",
+          "summary": "14 天是 Seedance 2.5 的 Draft 转换为 1080p 的可用期限。期限结束后，Draft 视频本身仍会作为结果保留，不会自动删除，转换按钮只是不再开放。",
+          "blocks": [
+            { "type": "h2", "text": "来源" },
+            { "type": "p", "text": "来源：XCONDA 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "41c2ebc0-17ad-8165-a387-cf3143397152",
+      "no": 91,
+      "title": "완성 영상은 14일 뒤 삭제돼요?",
+      "slug": "seedance-completed-video-no-expiry",
+      "seoDescription": "완성 영상은 14일 뒤에 삭제되지 않고 기한 없이 저장됩니다. 14일은 Draft 초안의 1080p 전환 가능 기간입니다.",
+      "category": "시댄스 영상 생성",
+      "priority": 2,
+      "status": "초안 완료",
+      "publish": "게시",
+      "needsCheck": false,
+      "createdTime": "2026-11-18T08:08:00.000Z",
+      "lastEditedTime": "2026-11-18T08:08:00.000Z",
+      "answer": "아니요. 기한 없이 저장돼요. 14일 기준은 Draft 초안을 1080p로 전환할 수 있는 기간이에요.",
+      "source": "출처: XCONDA 뉴스 「Seedance 2.5 Draft Mode 업데이트: 초안 보관 기간 최대 14일로 연장」(2026-11-02)",
+      "internalNote": "요청: 큐브베리원 (2026-11-17 오후 9:03)",
+      "translations": {
+        "en": {
+          "title": "Are completed videos deleted after 14 days?",
+          "summary": "No. Completed videos are stored without an expiry date and are not deleted after 14 days. That 14-day period applies only to converting a Seedance 2.5 Draft into 1080p.",
+          "blocks": [
+            { "type": "h2", "text": "Source" },
+            { "type": "p", "text": "Source: XCONDA News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)" }
+          ]
+        },
+        "ja": {
+          "title": "完成動画は14日後に削除されますか？",
+          "summary": "いいえ。完成動画に有効期限はなく、14日後に削除されることはありません。14日間という基準は、Seedance 2.5 の Draft を 1080p に変換できる期間だけを指します。",
+          "blocks": [
+            { "type": "h2", "text": "出典" },
+            { "type": "p", "text": "出典：XCONDAニュース「Seedance 2.5 Draft Mode アップデート：初案の保存期間を最大14日間に延長」（2026-11-02）" }
+          ]
+        },
+        "zh": {
+          "title": "完成视频会在 14 天后删除吗？",
+          "summary": "不会。完成视频没有到期日，也不会在 14 天后被删除。这个 14 天期限只适用于将 Seedance 2.5 的 Draft 转换为 1080p，和已完成视频的保存无关。",
+          "blocks": [
+            { "type": "h2", "text": "来源" },
+            { "type": "p", "text": "来源：XCONDA 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）" }
+          ]
+        }
+      }
+    }
+  ]
+}

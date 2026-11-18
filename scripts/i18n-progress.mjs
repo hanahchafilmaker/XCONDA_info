@@ -6,7 +6,7 @@
  *   npm run i18n:progress -- --quiet # 파일만 갱신
  *
  * 왜 필요한가 — `npm run i18n:qc` 는 **문제가 있는 항목**을 알려 주지만, 원어민 검수를
- * 맡길 때 필요한 "285항목(95 × 3언어) 중 몇 개가 끝났나" 는 어디에도 없었습니다.
+ * 맡길 때 필요한 "원문 전체(현재 스냅샷 × 3언어) 중 몇 개가 끝났나" 는 어디에도 없었습니다.
  * 이 스크립트는 `content/i18n/<언어>.json` 의 `review` 표시를 세어 진행률을 만들고,
  * 기계 점검(QC)의 오류·경고를 **항목별로 붙여** 검수자가 어디부터 볼지 알려 줍니다.
  *
@@ -126,8 +126,9 @@ const bar = (percent, width = 20) => {
  */
 export function summaryMarkdown(byLang, { date, overall: all } = {}) {
   const lines = [`### 번역 검수 진행률 — ${date}`, ""];
+  const perLang = Math.max(0, ...Object.values(byLang).map((p) => p.total));
   lines.push(
-    `전체 **${all?.total ?? 0}항목**(95 × ${all?.languages ?? 0}언어) · 검수 완료 **${all?.reviewed ?? 0}** (${all?.percent ?? 0}%) · 초안 ${all?.draft ?? 0} · 번역 없음 ${all?.missing ?? 0}`,
+    `전체 **${all?.total ?? 0}항목**(${perLang} × ${all?.languages ?? 0}언어) · 검수 완료 **${all?.reviewed ?? 0}** (${all?.percent ?? 0}%) · 초안 ${all?.draft ?? 0} · 번역 없음 ${all?.missing ?? 0}`,
     "",
     "| 언어 | 완료 / 항목 | 진행률 | QC 오류 | QC 경고 |",
     "|---|---|---|---|---|",
@@ -248,7 +249,7 @@ function main() {
   const dir = path.join(ROOT, "reports");
   fs.mkdirSync(dir, { recursive: true });
   const file = path.join(dir, `i18n-progress-${date.replace(/-/g, "")}.md`);
-  fs.writeFileSync(file, `${progressMarkdown(byLang, { date, overall: all })}\n`);
+  fs.writeFileSync(file, progressMarkdown(byLang, { date, overall: all }));
   if (!args.includes("--quiet")) console.log(`\n리포트: ${path.relative(ROOT, file)}`);
 }
 

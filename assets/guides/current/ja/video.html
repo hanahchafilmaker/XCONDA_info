@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generator (Seedance 2.5) — ユーザーガイド</title>
+
+
+
+<style>
+
+  :root { --body-font: 'Pretendard', sans-serif; }
+  body { word-break: keep-all; letter-spacing: -0.015em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: auto; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 780px; }
+  .section-lede .ui, .content-table .ui, .sub-block .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; font-family: 'JetBrains Mono', var(--body-font), monospace; }
+  .section-lede strong, .sub-block strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+
+
+  .figure-block { margin-bottom: 32px; max-width: 900px; width: 100%; }
+  .figure-placeholder {
+    width: 100%;
+    min-height: 360px;
+    background: var(--offwhite-warm);
+    border: 1px dashed var(--hairline);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    color: var(--slate-light);
+    font-family: 'JetBrains Mono', var(--body-font), monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .figure-img[src=""] { display: none; }
+
+
+  .content-table { width: 100%; max-width: 900px; border-collapse: collapse; margin-bottom: 32px; font-size: 14.5px; }
+  .content-table th, .content-table td { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 14px 18px; text-align: left; vertical-align: top; line-height: 1.65; }
+  .content-table th { background: var(--offwhite-warm); font-weight: 600; color: var(--midnight); font-family: 'JetBrains Mono', var(--body-font), sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; width: 190px; }
+  .content-table td { color: var(--slate); }
+  .content-table td strong { color: var(--midnight); font-weight: 600; }
+
+  .sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 900px; margin-bottom: 32px; }
+  .sub-block { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 24px 28px; border-radius: 2px; }
+  .sub-block h3 { font-size: 17px; font-weight: 700; color: var(--midnight); margin-bottom: 12px; letter-spacing: -0.02em; }
+  .sub-block p, .sub-block ol, .sub-block ul { font-size: 14.5px; color: var(--slate); line-height: 1.75; }
+  .sub-block ol, .sub-block ul { padding-left: 18px; }
+  .sub-block li { margin-bottom: 6px; }
+
+  .prompt-card { max-width: 900px; border: 1px solid var(--hairline); margin-bottom: 16px; border-radius: 2px; overflow: hidden; }
+  .prompt-card-header { background: var(--offwhite-warm); padding: 10px 20px; border-bottom: 1px solid var(--hairline); font-family: 'JetBrains Mono', var(--body-font), monospace; font-size: 12px; font-weight: 600; color: var(--midnight); letter-spacing: 0.05em; }
+  .prompt-card-body { padding: 16px 20px; }
+  .prompt-en { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--midnight); line-height: 1.65; margin-bottom: 8px; }
+  .prompt-kr { font-size: 13.5px; color: var(--slate); line-height: 1.65; border-top: 1px dashed var(--hairline); padding-top: 8px; }
+
+  .note-box { margin-top: 8px; margin-bottom: 32px; max-width: 900px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover, .sub-grid { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head>
+<body data-current-guide-slug="video" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/video.html" hreflang="ko" lang="ko">KO</a><a href="../en/video.html" hreflang="en" lang="en">EN</a><a href="../ja/video.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/video.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>ユーザーガイド</span></div>
+    <div>
+      <div class="cover-title-en">VIDEO<br>GEN<br>ERATOR</div>
+      <div class="cover-subtitle">Seedance 2.5をベースに、テキスト・画像・映像・オーディオのリファレンスから高画質な映像を作成するワークフローのガイドです。リファレンス生成、既存映像の編集、映像の延長、開始・終了フレームの制御、Draftの下書き機能を1つの画面で扱います。</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div><div>ユーザーガイド</div><div>Seedance 2.5</div></div>
+      <div style="text-align:right"><div>12 章</div><div>2026</div></div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目次</span><span>12 章</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— ガイド構成 —</span>
+      01. 上部 Video メニューから入る · 02. カテゴリと Seedance 2.5 の選択 · 03. Models と Generation mode の選択 · 04. Input Assets と Reference の管理 · 05. リファレンスの追加と @Image タグの付与 · 06. Prompt の作成と @ 呼び出し · 07. Options の詳細設定（画面比・解像度・長さ） · 08. Draft モードの設定とプロンプト例 · 09. Generate の実行とクレジット確認 · 10. 生成確認ポップアップ（OK） · 11. 生成キューとバックグラウンド実行 · 12. 生成進捗の確認と結果の管理
+    </div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>上部 Video メニューから入る</span></div><div class="right"><span>P. 001</span></div></div>
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Entry · メニューから入る —</div>
+      <h2 class="section-title">上部 Video メニューから入る</h2>
+      <p class="section-lede">メイン画面上部のナビゲーションバー（<span class="ui">Image</span> · <span class="ui">Video</span> · <span class="ui">Studio</span> · <span class="ui">Guide</span> · <span class="ui">Hub</span> · <span class="ui">Pricing</span>）で黄色いボックスで示された <span class="ui">Video</span> メニューをクリックします。右上では、現在保有しているクレジットとアカウントのプロフィールアイコンを確認できます。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/a0ac64bb7f6a83c5bb5f83224e26e5978c05905ab50422781e5b979666f4f548.jpg" alt="Chapter 01 - 上部 Video メニューから入る (1.jpg)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text">上部メニューの <span class="ui">Video</span>をクリックすると、Xcondaが提供するすべてのAI動画生成モデルの一覧画面にすぐに移動します。作業画面の内部では、左側の縦サイドバーの2番目のフィルム形アイコンからも開くことができます。</div>
+  </div>
+  <div class="footer-meta"><span>001 — 上部 Video メニューから入る</span><span>VIDEO-ENTRY</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>カテゴリと Seedance 2.5 の選択</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Category &amp; Engine · モデル選択 —</div>
+      <h2 class="section-title">カテゴリと Seedance 2.5 の選択</h2>
+      <p class="section-lede">左側の <span class="ui">CATEGORY</span>で <span class="ui">Video</span>が選択されている状態を確認し、右側のモデルカード一覧で黄色いボックスで強調された最初の <span class="ui">Seedance 2.5 T2V</span> カードをクリックします。各カードの下部には、最大生成時間、最大解像度、オーディオ生成の対応可否など、主な仕様がまとめられています。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/908759c8517630e55220d7b82e061c3fe0a9e8e09dabf6d5eb958b4f12b3495b.jpg" alt="Chapter 02 - Seedance 2.5 T2V の選択 (2.jpg)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>系列</th><th>Xconda対応ビデオモデル</th><th>主な特徴の概要</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Seedance</strong></td><td><strong>Seedance 2.5</strong> · Seedance 2.0 · Seedance 2.0 Fast · Seedance 2.0 Mini</td><td>Seedance 2.5を基準に最大30秒、最大1080p、オーディオ生成および開始・終了フレームに対応</td></tr>
+      <tr><td><strong>Google</strong></td><td>Veo 3.1 · Veo 3.1 Fast · Gemini Omni Flash</td><td>最大8〜10秒、オーディオ生成（Native audio）および開始・終了フレームに対応</td></tr>
+      <tr><td><strong>Kling</strong></td><td>Kling 3.0 Pro · Kling 3.0 4K · Kling OMNI</td><td>最大15秒、オーディオ生成に対応、Pro/OMNIのマルチショットプロンプトおよび4K解像度に対応</td></tr>
+      <tr><td><strong>Grok / Vidu</strong></td><td>Grok Imagine Video · Grok Imagine Video 1.5 · Vidu Q3</td><td>各エンジン独自のスタイルとモーション解釈に対応するビデオ生成モデル</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text">モデルごとにサポートされる最大解像度、映像の長さ、詳細機能が異なります。本ガイドは、最大30秒の長さとマルチモーダルリファレンスに対応する <strong>Seedance 2.5</strong>を基準に説明します。</div>
+  </div>
+  <div class="footer-meta"><span>002 — カテゴリと Seedance 2.5 の選択</span><span>MODEL-CARDS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Models と生成モードの選択</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generation Mode · 生成モード —</div>
+      <h2 class="section-title">Models と生成モードの選択</h2>
+      <p class="section-lede">Video Generatorの作業画面上部の <span class="ui">Models</span> ドロップダウンに <strong>Seedance 2.5</strong>が選択されているか確認します。その下の <span class="ui">Mode</span> の横の矢印をクリックすると、 <strong>Generation mode</strong> の一覧が開き、制作目的に合わせて4つのモードの中から1つを選択します。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/ce63e37ce3908345d0255f73e49ae9c2f01f9fbc4507aca24c3c56480e65a13b.png" alt="Chapter 03 - Models と Generation mode の選択 (3.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>生成モード</th><th>主な機能</th><th>おすすめの使用場面</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Ref-to-video</strong></td><td>リファレンス（画像・映像・オーディオ）とプロンプトで新しい映像を生成します。リファレンスなしでプロンプトのみを入力すると、テキストのみで映像を生成します</td><td>新しいシーンを最初から作るとき（基本モード）</td></tr>
+      <tr><td><strong>Video edit</strong></td><td>既存の映像を読み込み、維持する要素は残して、変更したい部分のみを修正します</td><td>生成した映像の天気、背景、雰囲気など一部の要素だけを変えたいとき</td></tr>
+      <tr><td><strong>Video extend</strong></td><td>既存の映像の最後のシーンから自然につながる次の区間を生成します（繰り返し延長可能）</td><td>30秒より長いシーンや、途切れのない連続動作（追跡・ダンス・カメラ移動）が必要なとき</td></tr>
+      <tr><td><strong>First/last frame</strong></td><td>開始画像と終了画像を指定し、2つのシーンの間の動きを生成します</td><td>シーンの最初の姿と最後の姿が明確に決まっているとき</td></tr>
+    </tbody>
+  </table>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>テキストのみで作る（Text-to-Video）</h3>
+      <p>別のText to videoモードは分かれていません。基本モードである <span class="ui">Ref-to-video</span> の状態でリファレンスを入れずにプロンプトのみを入力すると、テキストのみで映像が生成されます。テキストのみで生成する場合は、有効化されたリファレンスの送信数（<span class="ui">Sending: Reference N</span>）が <strong>0</strong>であるか確認してください。</p>
+    </div>
+    <div class="sub-block">
+      <h3>Video extend の活用ヒント</h3>
+      <p>伸ばしたい元の映像が長い場合は、最後の <strong>8〜10秒分だけを切り取って入れること</strong>は、リファレンスの容量管理に効率的です。プロンプトには最初のシーンを改めて説明せず、 <strong>その次に起こる動作とカメラの動き</strong>だけを記述してください。何度も延長を繰り返して人物や背景がずれ始めたら、最後に自然だったシーンを画像として抽出し、 <span class="ui">First/last frame</span> モードで続けると安定します。</p>
+    </div>
+  </div>
+  <div class="footer-meta"><span>003 — Models と生成モードの選択</span><span>GENERATION-MODE</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Input Assets と Reference の管理</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Input Assets · リファレンスパネル —</div>
+      <h2 class="section-title">Input Assets と Reference の管理パネル</h2>
+      <p class="section-lede">Input Assets エリアの右側の <span class="ui">Manage &gt;</span>をクリックすると、画面の右側に管理パネルが開きます。上部のタブ3つ（<span class="ui">Reference</span> · <span class="ui">Asset Library</span> · <span class="ui">Options</span>）で資料と設定を管理します。Seedance 2.5は一度に <strong>画像最大30枚・映像最大10本・オーディオ最大10本</strong>までリファレンスに対応します。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/b5af1db034cb89f3798da1c92ed402e750a758a4e4c958df75a8f6a4548563e7.png" alt="Chapter 04 - Reference 管理パネル (4.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>管理パネルタブ</th><th>役割と特徴</th><th>主な用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Reference</strong></td><td>現在の作業でのみ一度だけ使用するメディアファイルをアップロードします（共有の Asset Library には登録されません）</td><td>今回のカット生成でのみ参考にするコンテ、構図、サンプル映像およびオーディオの添付</td></tr>
+      <tr><td><strong>Asset Library</strong></td><td>アカウントの Library にあらかじめ登録しておき、複数のプロジェクトで繰り返し再利用するアセット保管庫（Saved assets）</td><td>固定の主人公キャラクターシート、メインロケーションの背景、重要な小道具の呼び出し</td></tr>
+      <tr><td><strong>Options</strong></td><td>Draftモード、画面比（Ratio）、解像度（Resolution）、長さ（Duration）、High Qualityの設定</td><td>映像の出力規格と品質オプションの調整</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text"><span class="ui">Reference</span> タブの下部には <span class="ui">IMAGE</span>, <span class="ui">VIDEO</span>, <span class="ui">AUDIO</span> カテゴリがそれぞれ分かれています。希望するメディアエリアの <span class="ui">+ Add</span> ボックスをクリックして、PCからファイルをアップロードします。</div>
+  </div>
+  <div class="footer-meta"><span>004 — Input Assets と Reference の管理パネル</span><span>REFERENCE-PANEL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>リファレンスの追加とタグの付与</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Active Reference · アセット選択 —</div>
+      <h2 class="section-title">リファレンスの追加と @Image タグの付与</h2>
+      <p class="section-lede"><span class="ui">+ Add</span>を押して画像をアップロードすると、サムネイルの右上に <strong>黄色いチェック表示</strong>が有効になり、下部に <span class="ui">@Image1</span>のような固有の呼び出し名が自動的に付きます。チェックされたファイルだけが、実際の生成時にモデルに送信されます。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/e0a76d30b5655982c55ca86781b724c8c7f00ea5da2606691b72374b6abe5bfa.png" alt="Chapter 05 - リファレンス画像のアップロードと @Image1 の付与 (5.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>Reference タブから直接使う</h3>
+      <ol>
+        <li>希望するメディアエリア（IMAGE / VIDEO / AUDIO）で <span class="ui">+ Add</span>をクリックしてファイルをアップロードします。</li>
+        <li>今回の生成に使用するファイルに黄色いチェックが入っているか確認します。</li>
+        <li>チェックされた順序で <span class="ui">@Image1</span>, <span class="ui">@Image2</span>, <span class="ui">@Video1</span> などのタグ名が付与されます。</li>
+      </ol>
+    </div>
+    <div class="sub-block">
+      <h3>Asset Library から読み込んで使う</h3>
+      <ol>
+        <li>よく使う資料は、画面右上のプロフィールアイコン → <span class="ui">Library</span> → <span class="ui">Uploads</span> タブの <span class="ui">+ Add asset</span>で事前に登録しておきます。</li>
+        <li>Video Generatorの <span class="ui">Asset Library</span> タブで使用する資料をクリックして選択（<span class="ui">N selected</span>）します。</li>
+        <li>下部の <span class="ui">Use selected assets</span>を押すと、現在の作業のリファレンスとしてすぐに追加されます。</li>
+      </ol>
+    </div>
+  </div>
+  <div class="note-box">
+    <div class="label">— ヒント —</div>
+    <div class="text">リファレンスは、むやみに多く入れるよりも、重要な資料だけを選んで入れるのがおすすめです。資料を一度に多すぎると、各リファレンスの影響力が分散するため、 <strong>人物の顔画像は1人につき1枚</strong>だけを入れるのが最も安定します。</div>
+  </div>
+  <div class="footer-meta"><span>005 — リファレンスの追加と @Image タグの付与</span><span>ACTIVE-ASSETS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>プロンプトの作成と @ 呼び出し</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Prompt &amp; @Tag · シーン説明 —</div>
+      <h2 class="section-title">プロンプトの作成と @ タグの呼び出し</h2>
+      <p class="section-lede"><span class="ui">Prompt</span> 入力欄に、生成する映像のシーンを記述します。最大 <strong>30,000文字</strong>まで入力でき、右下にリアルタイムの文字数（<span class="ui">0 / 30000</span>）が表示されます。入力欄の下部には、現在適用されているオプションの要約チップ（<span class="ui">Draft on | 1:1 | 480p | 25s | High Quality on</span>）が表示され、右側の設定アイコンを押すと Options パネルが開きます。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/1f2b062207e1aac9fe1253a06e39bf4a5360775f32d667b6cb8e4db643f345bd.png" alt="Chapter 06 - Prompt 入力欄と要約チップ (6.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>@ 入力でリファレンスを指定する</h3>
+      <p>プロンプトの入力中に <span class="ui">@</span>を入力すると、Input Assets に登録された資料の一覧が表示され、クリックすると <span class="ui">@Image1</span>, <span class="ui">@Video1</span> のようなタグが文中に挿入されます。リファレンスはアップロードだけしてプロンプトで呼ばなければ、モデルはどこに反映すればよいか分からないため、 <strong>人物や背景が最初に登場する文には必ず <span class="ui">@</span>タグを付けて役割を指定</strong>してください。</p>
+    </div>
+    <div class="sub-block">
+      <h3>除外する要素の書き方（Negative Prompt の代替）</h3>
+      <p>Seedance 2.5には別の Negative Prompt 入力欄がありません。望まない要素がある場合は、「〜なし」という否定語の代わりに <strong>画面に現れるべき肯定的な状態</strong>で書き換えて記述します。<br><br>· <strong>作成例：</strong> 「カメラの揺れなし」→ <em>「カメラは最初の位置に固定されている（Locked-off shot）」</em></p>
+    </div>
+  </div>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text">プロンプト入力欄が空の場合、下部の <span class="ui">Generate</span> ボタンがグレーで無効化され、クリックできません。</div>
+  </div>
+  <div class="footer-meta"><span>006 — プロンプトの作成と @ タグの呼び出し</span><span>PROMPT-INPUT</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Options — 画面比・解像度・長さの設定</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Options · 出力フォーマット設定 —</div>
+      <h2 class="section-title">Options — 画面比・解像度・長さの設定</h2>
+      <p class="section-lede">右側の管理パネルの <span class="ui">Options</span> タブで、映像の画面比（<span class="ui">Ratio</span>）、解像度（<span class="ui">Resolution</span>）、長さ（<span class="ui">Duration</span>）、高品質モード（<span class="ui">High Quality</span>）を設定します。本編の映像をすぐに生成する場合は、上部の Draft ボタンを <span class="ui">Draft off</span>のままにして、希望する解像度を直接選択します。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/ae713aeee31bdd927ca20e53ebbd3a9a421b72a208f18d283c3e7c1e517422a3.png" alt="Chapter 07 - Options タブ設定画面 (7.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>オプション項目</th><th>対応する選択肢（Seedance 2.5 基準）</th><th>設定ガイド</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Draft</strong></td><td>Draft off / Draft on</td><td>本編の解像度（720p・1080p）ですぐに生成する場合は <strong>Draft off</strong>、480pの下書きテストの場合は <strong>Draft on</strong></td></tr>
+      <tr><td><strong>Ratio（画面比）</strong></td><td>16:9 · 9:16 · 1:1 · 4:3 · 3:4 · 21:9</td><td>YouTubeの横向きは <strong>16:9</strong>、ショート・リールは <strong>9:16</strong>、正方形フィードは <strong>1:1</strong>、シネマティックワイドは <strong>21:9</strong></td></tr>
+      <tr><td><strong>Resolution（解像度）</strong></td><td>480p · 720p · 1080p</td><td>解像度が高いほど鮮明になり、消費クレジットが増えます（Draft on の場合は480pに固定）</td></tr>
+      <tr><td><strong>Duration（長さ）</strong></td><td>4s ~ 30s スライダー</td><td>下部のスライダーバーを左右にドラッグして、4秒から最大30秒まで秒単位で設定します</td></tr>
+      <tr><td><strong>High Quality</strong></td><td>High Quality on / off</td><td>有効化（黄色いボタン）すると、レンダリング品質が向上し、クレジットが追加で反映されます</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text"><span class="ui">First/last frame</span> モードを使用する場合、画面比は開始画像の比率に従い、 <span class="ui">Video edit</span> モードでは、元の映像の画面比と長さを基準に動作します。</div>
+  </div>
+  <div class="footer-meta"><span>007 — Options - 画面比・解像度・長さの設定</span><span>OPTIONS-TAB</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Draft モードとプロンプト例</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Draft Mode &amp; Examples · 下書きとプロンプト —</div>
+      <h2 class="section-title">Draft モードの設定と実践プロンプト例</h2>
+      <p class="section-lede">Options タブ上部のボタンをクリックして黄色い <span class="ui">Draft on</span> の状態にすると、下部の <span class="ui">Resolution</span>が自動的に <strong>480pの単一ボタンに固定</strong>されます。少ないクレジットと速い速度で480pの下書きをまず何度も試した後、気に入った結果だけを選んで結果カードから <strong>1080p最終版</strong>に変換できます。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/6b33fd309881aa5971efae7f9c09e03ad88bd48eb17cb1d2da7e7336cd3c2ff1.png" alt="Chapter 08 - Draft on 有効化画面 (8.png)" class="figure-img" loading="lazy">
+
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">01. テキストのみで作る（Ref-to-video、リファレンスなし）</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">A woman walks alone down a rain-soaked alley at night, neon signs reflecting on the wet pavement. She stops in front of a glass door, hesitates, then pushes it open — warm golden light spills out into the alley. The camera follows her from behind at shoulder height.</div>
+      <div class="prompt-kr"><strong>訳：</strong> 夜、雨にすっかり濡れた路地を一人の女性がひとりで歩く。濡れた路面にネオンサインが映る。彼女はガラスドアの前で立ち止まり、しばらくためらってからドアを押して開ける — 温かい金色の光が路地にあふれ出る。カメラは肩の高さから彼女の後ろを追いかける。</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">02. リファレンスの組み合わせで作る（Ref-to-video）</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">@Image1 sits in the back seat of a taxi at night, city lights sliding across the window. She turns toward @Image2 and speaks quietly. Locked-off medium shot from the front seat, cool streetlight from the left.</div>
+      <div class="prompt-kr"><strong>訳：</strong> 夜、@Image1がタクシーの後部座席に座っており、窓の外を街の明かりが滑るように過ぎていく。彼女は@Image2の方へ体を向けて静かに話す。前部座席から撮った固定ミディアムショット、左から差し込む冷たい街灯の光。</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">03. 既存の映像の一部を修正する（Video edit — 維持する要素と変える要素を一緒に明記）</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">Keep @Video1 exactly as it is — same people, same movement, same camera. Change only the weather: light snow falls throughout the shot.</div>
+      <div class="prompt-kr"><strong>訳：</strong> @Video1をそのまま維持する — 同じ人物、同じ動き、同じカメラ。天気だけを変える：ショット全体にわたって軽い雪が降る。</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">04. 映像を続けて伸ばす（Video extend）&amp; 05. 開始・終了フレームをつなぐ（First/last frame）</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">[Video extend] Continue @Video1 from its last frame. The woman steps through the glass door into a warm, crowded bar and looks around the room. The camera keeps following her from behind at shoulder height, with the same lighting and mood.<br><br>[First/last frame] The woman walks slowly from the alley entrance toward the glass door as the rain keeps falling. Neon reflections ripple across the wet pavement with each step. Smooth, continuous camera movement following her, realistic night lighting.</div>
+      <div class="prompt-kr"><strong>訳：</strong> （延長）@Video1の最後のシーンから続き、女性がガラスドアを通って温かく混み合ったバーの中に入り、部屋を見回し、カメラは同じ照明と雰囲気で後ろを追いかける。/（開始・終了フレーム）路地の入口の開始画像からガラスドア前の終了画像まで、雨の降る夜の街のネオンの反射と滑らかなカメラフォローでつなげる。</div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="label">— 注意 —</div>
+    <div class="text">解像度はプロンプトのテキストでは変更されません。 <span class="ui">Draft on</span>をオンにした状態でプロンプトに「1080pで作ってください」と書いても、結果は480pの下書きとして生成されるため、1080pの最終版は必ず生成完了後に結果カードからリクエストしてください。</div>
+  </div>
+  <div class="footer-meta"><span>008 — Draft モードの設定とプロンプト例</span><span>DRAFT-AND-PROMPTS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Generate の実行とクレジット確認</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate · 生成ボタンをクリック —</div>
+      <h2 class="section-title">Generate の実行とクレジット確認</h2>
+      <p class="section-lede">プロンプトの入力が完了すると（例： <span class="ui">7526 / 30000</span>）下部の <span class="ui">Generate</span> ボタンが黄色く有効化されます。左上の要約チップ（<span class="ui">Draft on | 1:1 | 480p | 25s | High Quality on</span>）とボタンの右側に表示される消費クレジット（例： <span class="ui">725 credits</span>）を確認した後、黄色い <span class="ui">Generate</span> ボタンをクリックします。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/6d137f07c6124951a46471c1812d4c83a33847735af2331c8638461e1ad154a2.png" alt="Chapter 09 - 黄色い Generate ボタンの有効化とクレジット表示 (9.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text">消費クレジットは固定値ではなく、選択した生成モード、映像の長さ（秒）、解像度、Draftの有無、High Qualityの設定に応じて自動的に計算され、ボタンの横にリアルタイムで表示されます。</div>
+  </div>
+  <div class="footer-meta"><span>009 — Generate の実行とクレジット確認</span><span>GENERATE-BUTTON</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>生成確認ポップアップ（OK）</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Confirmation Modal · 生成の最終確認 —</div>
+      <h2 class="section-title">生成確認ポップアップ（OK）</h2>
+      <p class="section-lede"><span class="ui">Generate</span> ボタンをクリックすると、画面に <em>"Would you like to generate a video?"</em>（映像を生成しますか？）確認モーダルが表示されます。左側の黄色い <span class="ui">OK</span> ボタンをクリックすると、すぐにサーバーへ生成リクエストが送信され、設定を改めて修正する場合は右側の <span class="ui">Cancel</span>をクリックします。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/4af80996a6cc90492eec70ece3cdf993286f45a302047ecb798fc5360bb9fc79.png" alt="Chapter 10 - Would you like to generate a video ポップアップ (10.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— 注意 —</div>
+    <div class="text"><span class="ui">OK</span>をクリックして生成が開始された後は、作業の取り消しができないため、クリックする前にリファレンス（<span class="ui">@</span>タグ）と画面比・長さのオプションを最終確認するのがおすすめです。</div>
+  </div>
+  <div class="footer-meta"><span>010 — 生成確認ポップアップ（OK）</span><span>CONFIRM-MODAL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>生成キューとバックグラウンド実行</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Queue &amp; Background · バックグラウンド処理 —</div>
+      <h2 class="section-title">生成キューとバックグラウンド実行</h2>
+      <p class="section-lede">生成リクエストが受け付けられると、結果エリアに <em>"Your video is starting soon / Starting shortly"</em> 状態の案内が表示されます。<br><br>案内文： <em>"You can leave this page. Your accepted request will keep running on the server."</em> （このページを離れても、受け付けられたリクエストはサーバーで引き続き実行されます。）下部には <span class="ui">Continue in background</span> の表示とともに、生成が開始されて取り消しができないという案内（<em>"Generation has started — cancel is no longer available."</em>）が表示されます。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/4e0da51c79eac861b08dfd4cf149a51aceb9c76663ab6c304e85fb99328cd876.png" alt="Chapter 11 - Your video is starting soon および Continue in background (11.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— ヒント —</div>
+    <div class="text">映像がレンダリングされている間、現在のウィンドウを開いたままにしておく必要はありません。他のメニューに移動したり、新しいプロンプト作業を並行したりしても、サーバーのバックグラウンドで安全に映像生成が完了します。</div>
+  </div>
+  <div class="footer-meta"><span>011 — 生成キューとバックグラウンド実行</span><span>BACKGROUND-QUEUE</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>生成進捗の確認と結果の管理</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Progress &amp; Results · 進捗と結果の保存 —</div>
+      <h2 class="section-title">生成進捗の確認と結果の管理</h2>
+      <p class="section-lede">レンダリングが本格的に進むと、結果カードの左上に現在の生成規格バッジ（例：黄色い <span class="ui">DRAFT · 480p</span>）が表示され、下部に <em>"Generating video"</em> の文言とともにリアルタイムの進捗率パーセント（例： <span class="ui">~12%</span>）および黄色いプログレスバーが表示されます。生成が100%完了したら、右側の結果一覧で映像を再生・ダウンロードしたり、1080pの最終版をリクエストしたりできます。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/5daa108673cf4945c50963e334d89194ee87db4ef06e8d3329e873332a5c99b4.png" alt="Chapter 12 - DRAFT 480p バッジと Generating video 進捗表示 (12.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>結果完了後の機能</th><th>動作と活用方法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>メタ情報の確認</strong></td><td>各結果物の横の情報パネルで、生成日時（<strong>Date</strong>）、解像度（<strong>Resolution</strong>）、画面比（<strong>Aspect Ratio</strong>）、長さ（<strong>Duration</strong>）、使用モデル（<strong>Model</strong>）を確認します。</td></tr>
+      <tr><td><strong>プレビューと全画面</strong></td><td>再生ボタンをクリックすると、カード内でプレビューが再生され、映像画面をクリックすると全画面に拡大されます。</td></tr>
+      <tr><td><strong>1080p最終版のリクエスト（Draft）</strong></td><td><span class="ui">DRAFT · 480p</span>で生成した下書きが気に入ったら、その結果カードから <strong>1080p最終版への変換</strong>をリクエストして、高画質の本編を完成させます。</td></tr>
+      <tr><td><strong>ダウンロード・共有・削除</strong></td><td>映像の上にマウスを置いて、ダウンロード（Save）アイコンでPCに保存したり、共有アイコンで外部に共有したり、ゴミ箱アイコンで不要なカットを削除して作業スペースを整理します。</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— メモ —</div>
+    <div class="text">生成された結果物は右側の一覧に引き続き蓄積され、上部のプロフィールメニューの <span class="ui">Library</span> &gt; <span class="ui">Generations</span> タブでもまとめて確認し、管理できます。</div>
+  </div>
+  <div class="footer-meta"><span>012 — 生成進捗の確認と結果の管理</span><span>PROGRESS-AND-RESULTS</span></div>
+</section>
+
+
+<script src="../embed.js" defer=""></script></body></html>

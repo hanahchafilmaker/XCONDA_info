@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Turn — 動画ベースのユーザーガイド</title>
+<style>
+
+
+:root {
+  --midnight: #1D2A4D;
+  --midnight-deep: #141E3A;
+  --offwhite: #FFFFFF;
+  --offwhite-warm: #F8F8F8;
+  --slate: #4A4A4A;
+  --slate-light: #8A8A8A;
+  --hairline: rgba(29, 42, 77, 0.15);
+  --hairline-light: rgba(29, 42, 77, 0.08);
+  --kor: 'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--kor);
+  background: var(--offwhite);
+  color: var(--midnight);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.75;
+  font-weight: 400;
+  word-break: keep-all;
+  font-size: 16px;
+}
+::selection { background: var(--midnight); color: var(--offwhite); }
+
+.slide {
+  min-height: 100vh;
+  padding: 80px;
+  position: relative;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+}
+.slide-meta {
+  position: absolute;
+  top: 32px; left: 80px; right: 80px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--slate); font-weight: 500; z-index: 5;
+}
+.slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+.slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+.footer-meta {
+  margin-top: auto; padding-top: 32px;
+  border-top: 1px solid var(--hairline);
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light);
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--midnight); font-weight: 500;
+}
+.section-header {
+  display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+}
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em;
+}
+.section-title-block .eyebrow { margin-bottom: 14px; }
+.section-title {
+  font-family: var(--kor); font-weight: 700; font-size: 42px;
+  line-height: 1.25; color: var(--midnight); letter-spacing: -0.035em;
+}
+.section-lede {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: var(--slate); margin-top: 18px; line-height: 1.75;
+  max-width: 720px; letter-spacing: -0.015em;
+}
+
+
+.cover {
+  background: var(--midnight); color: var(--offwhite);
+  padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.cover-left {
+  padding: 80px; display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid rgba(240,239,234,0.15);
+}
+.cover-right {
+  background: var(--offwhite); padding: 80px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.cover-right::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+  background-size: 4px 4px; pointer-events: none;
+}
+.cover-meta-top {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6);
+}
+.cover-title-en {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(70px, 10vw, 150px); line-height: 0.85;
+  letter-spacing: -0.02em; color: var(--offwhite);
+}
+.cover-title-kor {
+  font-family: var(--kor); font-weight: 600; font-size: 28px;
+  color: rgba(240,239,234,0.95); letter-spacing: -0.04em; margin-top: 24px; line-height: 1.3;
+}
+.cover-subtitle {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: rgba(240,239,234,0.75); margin-top: 24px; max-width: 460px;
+  line-height: 1.75; letter-spacing: -0.015em;
+}
+.cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-bottom-meta div {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8;
+}
+.cover-tag {
+  border-top: 1px solid var(--hairline); padding-top: 24px;
+  font-family: var(--kor); font-weight: 500; font-size: 14px;
+  color: var(--midnight); line-height: 1.85; letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+}
+.cover-tag .label {
+  display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--slate); margin-bottom: 8px; text-transform: uppercase;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
+.two-col.even { grid-template-columns: 1fr 1fr; }
+
+.step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+.step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.step-number {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--midnight); margin-bottom: 10px; display: inline-block;
+}
+.step-body {
+  font-family: var(--kor); font-size: 15.5px; color: var(--slate);
+  line-height: 1.85; letter-spacing: -0.015em;
+}
+.step-body strong { font-weight: 600; color: var(--midnight); }
+
+.image-plate { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.image-plate figure { width: 100%; }
+.image-plate img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--hairline); background: #101425;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  max-width: 100%;
+  object-fit: contain;
+
+}
+.image-plate img.enlarged-fix {
+  width: 100%; max-width: 100%; height: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+.image-plate figcaption {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light); margin-top: 10px;
+}
+
+
+.flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 34px; }
+.flow .fchip {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  border: 1px solid var(--midnight); padding: 8px 14px; color: var(--midnight);
+  background: var(--offwhite-warm);
+}
+.flow .fchip.dark { background: var(--midnight); color: var(--offwhite); }
+.flow .arr { font-family: var(--mono); color: var(--slate-light); font-size: 12px; }
+
+
+.k {
+  font-family: var(--mono); font-size: 0.86em; letter-spacing: 0.02em;
+  background: var(--midnight); color: var(--offwhite);
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
+.k.light { background: var(--offwhite-warm); color: var(--midnight); border: 1px solid var(--hairline); }
+
+
+.dict-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+  background: var(--hairline); border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline); margin-top: 40px;
+}
+.dict-item { background: var(--offwhite); padding: 26px 26px; display: flex; flex-direction: column; gap: 10px; min-height: 150px; }
+.dict-item .term { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--midnight); }
+.dict-item .kor { font-family: var(--kor); font-size: 15px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+.dict-item .desc { font-family: var(--kor); font-size: 13.5px; color: var(--slate); line-height: 1.7; letter-spacing: -0.01em; margin-top: auto; }
+.dict-item .tagline { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate-light); }
+
+
+.summary-list { display: grid; gap: 24px; margin-top: 40px; }
+.summary-item { padding: 28px 32px; background: var(--offwhite-warm); border-left: 3px solid var(--midnight); }
+.summary-item h4 { font-family: var(--kor); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.025em; }
+.summary-item p { font-family: var(--kor); font-size: 14.5px; color: var(--slate); line-height: 1.8; letter-spacing: -0.015em; }
+
+
+.stage-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+.stage-cell { background: var(--offwhite); padding: 22px 20px; }
+.stage-cell .no { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--midnight); }
+.stage-cell .nm { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--midnight); margin-top: 8px; }
+.stage-cell .ds { font-family: var(--kor); font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.65; }
+.stage-cell.dim { background: var(--offwhite-warm); }
+
+@media (max-width: 1100px) {
+  body { font-size: 15px; }
+  .slide { padding: 60px 32px; }
+  .slide-meta { left: 32px; right: 32px; }
+  .two-col, .two-col.even { grid-template-columns: 1fr; gap: 40px; }
+  .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+  .section-num { font-size: 72px; }
+  .section-title { font-size: 30px; }
+  .dict-grid { grid-template-columns: 1fr; }
+  .cover { grid-template-columns: 1fr; }
+  .cover-left, .cover-right { padding: 50px 32px; }
+  .cover-title-en { font-size: 64px; }
+  .cover-title-kor { font-size: 22px; }
+  .stage-row { grid-template-columns: 1fr 1fr; }
+}
+
+</style>
+<style>
+.image-plate .fix-badge {
+  display:inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: #1D2A4D;
+  color: #fff;
+  padding: 4px 8px;
+  margin-top: 6px;
+}
+.image-plate figure { position: relative; }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head>
+<body data-current-guide-slug="turn-video" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/turn-video.html" hreflang="ko" lang="ko">KO</a><a href="../en/turn-video.html" hreflang="en" lang="en">EN</a><a href="../ja/turn-video.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/turn-video.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<section class="slide cover">
+<div class="cover-left">
+<div class="cover-meta-top"><span>Xconda / 2026</span><span>動画ベースのユーザーガイド</span></div>
+<div>
+<div class="cover-title-en">TURN</div>
+<div class="cover-title-kor">Turn — 動画ベースのユーザーガイド</div>
+<div class="cover-subtitle">4 本のデモ動画（About Turn、Adjusting Room Size、Editing Objects、Creating a Key Image）に出てくる画面とボタン名に沿って、空間とキー画像を作る手順を解説します。</div>
+</div>
+<div class="cover-bottom-meta">
+<div><div>ユーザーガイド</div><div>デモ動画から</div></div>
+<div style="text-align:right"><div>11 チャプター</div><div>2026</div></div>
+</div>
+</div>
+<div class="cover-right">
+<div class="cover-meta-top" style="color: var(--slate)"><span>目次</span><span>11 チャプター</span></div>
+<div></div>
+<div class="cover-tag">
+<span class="label">— ガイド内容 —</span>       ワークフロー概要 · ホーム画面 · ステップ 1: 空間を作る · 部屋レイアウトの確認 · 部屋サイズとカメラ · 3D プレビュー · 壁の編集 · オブジェクトと壁紙の差し替え · ステップ 3: キー画像 · ボタン用語集 · コツとよくあるミス · まとめ     </div>
+</div>
+</section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>ワークフロー概要</span></div><div class="right"><span>P. 001</span></div></div><div class="section-header"><div class="section-num">01</div><div class="section-title-block"><div class="eyebrow">— 概要 · エンドツーエンドの流れ —</div><h2 class="section-title">ワークフローの全体像</h2><p class="section-lede">上部の 4 つのステージを順番に進めます: 1. PRE-PRODUCTION → 2. LOCATION_SCOUTING → 3. CAMERA_TEST → 4. MASTER_STILL。</p></div></div>
+<div class="stage-row">
+<div class="stage-cell"><div class="no">1</div><div class="nm">PRE-PRODUCTION</div><div class="ds">参照画像または文章から 360° 空間を作成します。(動画 4)</div></div>
+<div class="stage-cell"><div class="no">2</div><div class="nm">LOCATION_SCOUTING</div><div class="ds">3D Preview で視点を回転させ、部屋のサイズや壁を調整します。(動画 1、2、4)</div></div>
+<div class="stage-cell"><div class="no">3</div><div class="nm">CAMERA_TEST</div><div class="ds">Freeze Frame に被写体とスタイルを加えてキー画像を作成します。(動画 3)</div></div>
+<div class="stage-cell dim"><div class="no">4</div><div class="nm">MASTER_STILL</div><div class="ds">最終マスタースチルのステージです。このステージはデモ動画には登場しません。</div></div>
+</div>
+<div class="two-col" style="margin-top:50px">
+<div>
+<div class="step-block"><div class="step-number">— ステップ 01 —</div><p class="step-body">動画で示される一連の流れは次のとおりです: <strong>画像を 1 枚アップロード → <span class="k">Analyze Space</span> → <span class="k">Confirm Room Layout</span> (壁の範囲を指定) → 360° 空間を生成 → 3D Preview を開く → (必要なら) 部屋のサイズ調整 / 壁の編集 → <span class="k">FREEZE FRAME</span>  → Step 3 で演出を追加 → キー画像を作成</strong>.</p></div>
+<div class="step-block"><div class="step-number">— ステップ 02 —</div><p class="step-body">上部のステージタブは進行に合わせて解放されます。動画の冒頭では  <strong>1. PRE-PRODUCTION</strong> だけが有効で、空間が生成されると  <strong>2. LOCATION_SCOUTING</strong> が有効になります。Freeze Frame の後は  <strong>3. CAMERA_TEST</strong> が有効になります。</p></div>
+</div>
+<div>
+<div class="flow">
+<span class="fchip">FRONT 画像をアップロード</span><span class="arr">→</span>
+<span class="fchip">Analyze Space</span><span class="arr">→</span>
+<span class="fchip">Confirm Room Layout</span><span class="arr">→</span>
+<span class="fchip dark">360° 空間</span><span class="arr">→</span>
+<span class="fchip">3D Preview / Wall Edit</span><span class="arr">→</span>
+<span class="fchip">FREEZE FRAME</span><span class="arr">→</span>
+<span class="fchip dark">キー画像</span>
+</div>
+<div class="step-block"><div class="step-number">— メモ —</div><p class="step-body">デモのナレーションより — ①「Turn は 1 枚の画像から仮想スタジオのセットを作ります。」②「部屋が大きすぎる場合は幅と奥行きを小さくします。天井を高くすることもできます。」③「Wall Edit では、オブジェクトを自由に追加・削除できます。」④「構図を決めてプロンプトを書き、被写体と衣装の写真を加えるとキー画像が完成します。」</p></div>
+</div>
+</div>
+<div class="footer-meta"><span>001 — ワークフロー</span><span>流れ</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>ホーム画面</span></div><div class="right"><span>P. 002</span></div></div><div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— ホーム · 画面構成 —</div><h2 class="section-title">ホーム画面と共通ヘッダー</h2><p class="section-lede">作業はすべて 1. PRE-PRODUCTION のホーム画面から始まります。ヘッダーはどのステージでも共通です。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— メモ 01 —</div><p class="step-body"><strong>上部ステージバー</strong> — 左側に TURN ロゴ、右側に 4 つのステージタブがあります。アクティブなステージは白で強調されます。</p></div>
+<div class="step-block"><div class="step-number">— メモ 02 —</div><p class="step-body"><strong>モデル選択（REPLICATE）</strong> — <span class="k">Nano Banana Pro</span>（紫 = 選択中）/ <span class="k light">GPT Image 2.5</span> 2 つのエンジンを切り替えて使えます。</p></div>
+<div class="step-block"><div class="step-number">— メモ 03 —</div><p class="step-body"><strong>右側のユーティリティボタン</strong> — <span class="k light">Undo Face Edit</span> <span class="k light">Save</span> <span class="k light">Projects</span> <span class="k light">History</span> <span class="k light">API Connected</span>（緑のドット = 接続中）。</p></div>
+<div class="step-block"><div class="step-number">— メモ 04 —</div><p class="step-body"><strong>ステータス行</strong> — 左側には “Project is automatically saved to your PC.” と表示されます。右側には “LOCAL STUDIO · Generation model: Nano Banana Pro.” と出ます。生成中は “Waiting to save...” が表示されます。</p></div>
+<div class="step-block"><div class="step-number">— メモ 05 —</div><p class="step-body"><strong>入力エリア</strong> — FRONT / LEFT / RIGHT / BACK の 4 つの方向スロット、  <span class="k light">Describe the space you want to create...</span>  入力欄、そして紫色の  <span class="k">Create Space from Description</span>  ボタンがあります。画像をアップロードすると、ボタンは  <span class="k">Analyze Space</span>.</p></div>
+</div>
+<div class="image-plate"><figure><img alt="ステップ 1 のホーム画面 — 4 つの方向スロットと説明入力欄" src="../screens/c3b8498734cea4421e39cd4ee15b635b9767950c1edf8fe3dbef564fee214e96.jpg" loading="lazy"><figcaption>ステップ 1 のホーム画面 — 4 つの方向スロットと説明入力欄</figcaption></figure></div>
+</div>
+<div class="footer-meta"><span>002 — ホーム画面</span><span>ホーム</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>ステップ 1: 空間を作る</span></div><div class="right"><span>P. 003</span></div></div><div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— ステップ 1 · 空間ビルド —</div><h2 class="section-title">1 枚の画像から 360° 空間を作る</h2><p class="section-lede">韓屋（ハノク）の写真 1 枚と「Analyze Space」の 1 クリックで、自由に回転できる 3D 空間が作られます。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— ステップ 01 · 画像をアップロード —</div><p class="step-body">FRONT スロットに韓屋の写真をアップロードします。アップロード後、右側の大きなボタンは  <span class="k">Create Space from Description</span> から  <span class="k">Analyze Space</span>に変わります。左上には「Auto-saved at 9:34 AM」のような保存表示が出ます。</p></div>
+<div class="step-block"><div class="step-number">— ステップ 02 · 空間を解析 —</div><p class="step-body"><span class="k">Analyze Space</span> を選択すると  <strong>“Confirm Room Layout”</strong>  ダイアログが開きます。推定値は 4 つです: <span class="k light">Room Width (m) 8</span> <span class="k light">Room Depth (m) 6</span> <span class="k light">Ceiling Height (m) 3.5</span> <span class="k light">Camera Height (m) 1.2</span>注意: “These are not exact measurements taken from a single photo. Please review the estimated dimensions and wall area.”</p></div>
+<div class="step-block"><div class="step-number">— ステップ 03 · 壁の範囲を指定 —</div><p class="step-body">“Drag the four corners to select only the wall.” 画像上の 4 つの紫のポイントをドラッグして  <strong>床と壁の境界</strong> に合わせます（ナレーション:「Select Space を押して、このようにポイントを床と壁の境界まで上げます。」）。右側の  <strong>“Unwrapped Front Wall Result”</strong> が、選択が正しいかをその場で確認させてくれます。</p></div>
+<div class="step-block"><div class="step-number">— ステップ 04 · 統合プロンプト —</div><p class="step-body">チェックボックスをオンにします:  <span class="k light">Unwarp the selected front-wall area and use it as a generation reference</span>。続いて「Space Design · Expand from One Reference」ブロックで <span class="k light">Common Wall Finish</span>, <span class="k light">Common Molding &amp; Wood Finish</span>  プロンプトを確認し、生成を開始します。</p></div>
+<div class="step-block"><div class="step-number">— 結果 —</div><p class="step-body">生成が完了すると、自由に回転できる仮想 3D 空間が作られ、2. LOCATION_SCOUTING タブが開きます。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="FRONT スロットにアップロードした韓屋の画像 — ボタンが「Analyze Space」に変化" src="../screens/26be60ad06dcf7f0c3ae9b3b175f8c37c2aa2a55567598fb342856aa228f2072.jpg" loading="lazy"><figcaption>FRONT スロットにアップロードした韓屋の画像 — ボタンが「Analyze Space」に変化</figcaption></figure>
+<figure><img alt="Confirm Room Layout ダイアログ — 4 つの寸法、壁範囲のハンドル、展開結果" src="../screens/6bb9dcab0c948d44ca2fb8bc2c1747fcbd48eba3007646b604c81060a59ab3db.jpg" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;" loading="lazy"><figcaption>Confirm Room Layout ダイアログ — 4 つの寸法、壁範囲のハンドル、展開結果</figcaption><div class="fix-badge">✓ 高解像度のダイアログに差し替え — 文字、木材、屏風がより鮮明</div></figure>
+<figure><img alt="4 つのコーナーハンドルで床と壁の境界を合わせる" src="../screens/3e5a4202430ae1ae0b798cf149165e8d98163c19dc7986f2d3d35f0baf245147.jpg" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;" loading="lazy"><figcaption>4 つのコーナーハンドルで床と壁の境界を合わせる</figcaption><div class="fix-badge">✓ 高解像度のクローズアップに差し替え — 720×646 → 2100×1884（UnsharpMask + 4K AI アップスケーリング）</div></figure>
+</div>
+</div>
+<div class="footer-meta"><span>003 — ステップ 1: 空間を作る</span><span>スペースビルド</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>部屋サイズ調整</span></div><div class="right"><span>P. 004</span></div></div><div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 部屋サイズ · カメラ —</div><h2 class="section-title">部屋サイズとカメラを調整</h2><p class="section-lede">空間を再生成せずに、部屋の幅・奥行き・天井高をその場で調整します。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 開く —</div><p class="step-body">緑色の  <span class="k">Room Size · Camera</span>  ボタンを選択すると  <strong>“Room Size &amp; Camera”</strong>  ダイアログが開きます。ここでも同じ 4 つの項目（部屋の幅、奥行き、天井高、カメラ高）を設定できます。</p></div>
+<div class="step-block"><div class="step-number">— 小さくする —</div><p class="step-body">ナレーションのとおり、「部屋が大きすぎる場合」は <strong>Room Width 8→4, Room Depth 6→4</strong> が縮小の入力例です。ダイアログには次の説明があります:「天井の梁と間接照明は、写真の上部要素を延長して推測されます。床は座るのに適した木の床と仮定されます。家具のような要素はすべて壁に統合された構造として設計されます。」</p></div>
+<div class="step-block"><div class="step-number">— 天井を高くする —</div><p class="step-body"><strong>天井高</strong>  を上げると、同じ部屋のまま天井が高くなります。ナレーションのとおり、「天井を高くすることもできます」。</p></div>
+<div class="step-block"><div class="step-number">— 適用 —</div><p class="step-body">紫色の  <span class="k">Apply Room Size · No Additional Generation</span>  ボタンを押すと、設定が適用されます。  <strong> 新しい画像は生成されず、 </strong>  既存の表面画像を使って新しい比率だけが反映されます（近くの注記:「Uses existing surface images」）。右側の  <span class="k light">Close</span> でキャンセルできます。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="Room Size &amp; Camera — 幅と奥行きを縮小（8×6 → 4×4）" src="../screens/140fb31b96763912aedc2bf6d9736cc4580f7a086e500a401db55129e4981964.jpg" loading="lazy"><figcaption>Room Size &amp; Camera — 幅と奥行きを縮小（8×6 → 4×4）</figcaption></figure>
+<figure><img alt="適用後 — 同じ小道具のまま、よりコンパクトな部屋" src="../screens/dcb07e193d0eaed7b10cbff92c2c204772295154a5cbd463fdc22c3bc39422a7.jpg" loading="lazy"><figcaption>適用後 — 同じ小道具のまま、よりコンパクトな部屋</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>004 — 部屋サイズ調整</span><span>部屋サイズ</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>3D プレビュー</span></div><div class="right"><span>P. 005</span></div></div><div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— ステップ 2 · プレビュー —</div><h2 class="section-title">3D プレビューで確認する</h2><p class="section-lede">生成された空間を自由に回転して構図を確認し、Freeze Frame で固定します。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 視点を回転 —</div><p class="step-body">画面をクリックして  <strong>ドラッグ</strong> すると、カメラが 360° 回転します。ELEVATION（水平角度）と FOV の値が左下にリアルタイムで表示されます。</p></div>
+<div class="step-block"><div class="step-number">— ズーム —</div><p class="step-body">下部の  <span class="k light">FIELD OF VIEW (ZOOM)</span>  スライダーで画角を調整します（動画では 105° から 82° に変化します）。</p></div>
+<div class="step-block"><div class="step-number">— 左上の 4 つのボタン —</div><p class="step-body"><span class="k">3D PREVIEW</span> （現在の表示）· <span class="k light">Wall Edit</span> · <span class="k">Restyle Space from Reference · v2</span> · <span class="k">Room Size · Camera</span>.</p></div>
+<div class="step-block"><div class="step-number">— FREEZE FRAME —</div><p class="step-body">気に入った構図が見つかったら、紫色の  <span class="k">FREEZE FRAME</span>  を押して、現在の視点を Step 3 の参照フレームとして固定します。横の円形矢印ボタンで視点をリセットできます。</p></div>
+</div>
+<div class="image-plate"><figure><img alt="3D Preview — ドラッグで回転して構図を確認" src="../screens/df14b38694ec18376761df860adb416dce1be01771fd7cf4631a869e4fe4bbca.jpg" loading="lazy"><figcaption>3D Preview — ドラッグで回転して構図を確認</figcaption></figure></div>
+</div>
+<div class="footer-meta"><span>005 — 3D プレビュー</span><span>プレビュー</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>壁の編集</span></div><div class="right"><span>P. 006</span></div></div><div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— ステップ 2 · 壁の編集 —</div><h2 class="section-title">壁の編集: 方向ごとにオブジェクトを変更</h2><p class="section-lede">6 つの方向カードで参照画像とブラシを組み合わせ、欲しいオブジェクトを追加・削除します。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 開始 —</div><p class="step-body">左上で  <span class="k light">Wall Edit</span> を選択すると、6 つの方向カード（<strong>LEFT / FRONT / RIGHT / BACK / UP (ZENITH) / DOWN</strong>) が並んで表示されます。ナレーション:「Wall Edit を選択すると、ここでオブジェクトを自由に追加・削除できます。」</p></div>
+<div class="step-block"><div class="step-number">— FACE REFERENCE —</div><p class="step-body">各カードには  <span class="k light">+ Add Reference Image</span> （DRAG &amp; DROP）エリアがあります。画像を追加すると、  <span class="k">REF LINKED</span>  バッジ、  <span class="k">ACTIVE</span>  ラベルと「Applied directly to INPAINT and REGEN」という注記、そして  <span class="k light">Apply As Is</span> / <span class="k light">Change</span> / <span class="k light">CLEAR</span> の操作が表示されます。</p></div>
+<div class="step-block"><div class="step-number">— ブラシ —</div><p class="step-body">画像の上をドラッグして  <strong>赤いマスク</strong>を塗ります。サイズは  <span class="k light">BRUSH 40PX</span>  スライダーで調整します。</p></div>
+<div class="step-block"><div class="step-number">— アクションボタン —</div><p class="step-body">各カードの下部に 4 つのボタンが並びます:  <span class="k">INPAINT (REF)</span> （紫 = マスクした範囲を編集）· <span class="k">REGEN (REF)</span> （オレンジ = 面全体を再生成）· <span class="k light">CLEAR</span> （マスクをクリア）· <span class="k">REPLACE</span> （緑 = 差し替え）。その下の  <span class="k light">Reference instructions or requested changes (optional)…</span>  に入力すると、指示を添えて送信できます。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="Wall Edit — LEFT / FRONT カードと FACE REFERENCE エリア" src="../screens/15ee3275de17df1a4080ab3650b2e650d3512a2471149745cfae45d1295e58fe.jpg" loading="lazy"><figcaption>Wall Edit — LEFT / FRONT カードと FACE REFERENCE エリア</figcaption></figure>
+<figure><img alt="LEFT カードに青い花の参照を接続 + BRUSH 40PX でマスクを塗布" src="../screens/f7fb0568dac623cfb3cf8de18210d0a0a34a2738764134da525dfc87210da089.jpg" loading="lazy"><figcaption>LEFT カードに青い花の参照を接続 + BRUSH 40PX でマスクを塗布</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>006 — 壁の編集</span><span>壁の編集</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>オブジェクトと壁紙</span></div><div class="right"><span>P. 007</span></div></div><div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 編集例 —</div><h2 class="section-title">オブジェクトを追加し、壁紙を差し替える</h2><p class="section-lede">参照画像 1 枚で小道具の配置を導くことも、壁紙全体を差し替えることもできます。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 例 1 · オブジェクトを置く —</div><p class="step-body">LEFT カードに  <strong>青いアジサイ</strong>の参照を追加し、マスクを塗って編集を実行します。3D Preview の棚に花瓶が現れます —「用意した参照画像を本棚に置いてみましょうか。棚の上にきれいに収まっているのが分かります。」</p></div>
+<div class="step-block"><div class="step-number">— 例 2 · 壁紙を差し替える —</div><p class="step-body">BACK カードに  <strong>ひまわり柄の壁紙の参照</strong>を追加し、「モールディングを削除して、壁紙だけをひまわり柄に変えてください」のような指示を入力して実行します。ナレーション:「壁紙がすべてひまわりに変わったのが分かります。」視点を回転させ、3D 空間全体で同じ壁が一貫して適用されているか確認しましょう。</p></div>
+<div class="step-block"><div class="step-number">— 主な違い —</div><p class="step-body"><strong>INPAINT</strong>  は塗った範囲だけを編集します（オブジェクトの追加・削除・差し替え）。 <strong>REGEN</strong>  はその方向の画像全体を再生成し、 <strong>REPLACE</strong>  は選択した範囲を参照画像で置き換え、 <strong>CLEAR</strong> はマスクだけをクリアします。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="編集後 — 棚に青い花瓶が追加された状態" src="../screens/56b831b0a372eca65b53a3f6117dc101316bf386ccfe5cd7732504a141eff5fb.jpg" loading="lazy"><figcaption>編集後 — 棚に青い花瓶が追加された状態</figcaption></figure>
+<figure><img alt="BACK の壁をひまわり柄の壁紙に差し替え、3D 空間全体に反映" src="../screens/89688b2b9ed7535b6360f3382fb6ae6f21e91bdd9bbb3665bdf95b78e03bff5e.jpg" loading="lazy"><figcaption>BACK の壁をひまわり柄の壁紙に差し替え、3D 空間全体に反映</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>007 — オブジェクトと壁紙</span><span>編集例</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>ステップ 3: キー画像</span></div><div class="right"><span>P. 008</span></div></div><div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— ステップ 3 · キー画像 —</div><h2 class="section-title">カメラテスト: キー画像を作成</h2><p class="section-lede">構図のプロンプト、被写体の写真、衣装の写真、シネマスタイルを組み合わせてキー画像を作ります。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 開始 —</div><p class="step-body">ステップ 2 で  <span class="k">FREEZE FRAME</span> を選択すると 3. CAMERA_TEST が開き、選んだ構図が中央に表示されます。</p></div>
+<div class="step-block"><div class="step-number">— 演出 —</div><p class="step-body"><span class="k light">PRODUCTION: SUBJECT &amp; CASTING </span>  ここに被写体の動作と感情を入力します。動画の例:「女性が悲しげな表情で陶器の器を抱えている。」</p></div>
+<div class="step-block"><div class="step-number">— CINEMA STYLE —</div><p class="step-body">8 つのスタイル — <span class="k light">Normal</span> <span class="k">Hollywood </span> （既定で選択） <span class="k light">Korean</span> <span class="k light">Japanese</span> <span class="k light">Chinese</span> <span class="k light">Noir</span> <span class="k light">Neon-Punk</span> <span class="k light">Anime Style</span>.</p></div>
+<div class="step-block"><div class="step-number">— Cast —</div><p class="step-body"><span class="k light">FACE ID CALIBRATION を使い </span>(LIKENESS PRIORITY: MAX, <span class="k">UPLOAD</span>) で被写体の写真をアップロードし、  <span class="k light">OUTFIT REFERENCE </span>(<span class="k light">ADD IMAGE</span>) で衣装の写真を追加します。ナレーション:「被写体の写真と衣装の写真を加えるとキー画像が完成します。」</p></div>
+<div class="step-block"><div class="step-number">— 生成と保存 —</div><p class="step-body">右側に 3 つのボタンがあります:  <span class="k light">DOWNLOAD FREEZE FRAME </span> （参照フレームを保存）· <span class="k">GENERATE_STILL_1K </span> （白）· <span class="k">GENERATE_STILL_2K (HQ) </span> （紺）。2K の結果が動画用の最終キー画像です。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="3. CAMERA_TEST — Freeze Frame とプロダクションパネル" src="../screens/5894923bbcf2f09dcab311d10c3bf9fab75d4bd948acd2fe1206febdd787eb68.jpg" loading="lazy"><figcaption>3. CAMERA_TEST — Freeze Frame とプロダクションパネル</figcaption></figure>
+<figure><img alt="最終キー画像 — ひまわり色の光の中で陶器の器を抱える被写体" src="../screens/5379d2fe30878b04eb9df642847b8fc6f49b64be02b4e0058905488220fd9d94.jpg" loading="lazy"><figcaption>最終キー画像 — ひまわり色の光の中で陶器の器を抱える被写体</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>008 — ステップ 3: キー画像</span><span>キー画像</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>ボタン用語集</span></div><div class="right"><span>P. 009</span></div></div><div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 用語集 · UI 用語 —</div><h2 class="section-title">ボタンとフィールドの用語集</h2><p class="section-lede">混同しやすい UI 用語を、画面に表示されるラベルでまとめたリファレンスです。</p></div></div><p class="step-body" style="max-width:720px">ここに挙げたボタンとフィールド名は、4 本のデモ動画で確認したものです。英語のラベルは画面の表示どおりに記載し、括弧内で機能を説明しています。</p><div class="dict-grid"><div class="dict-item"><div class="term">Create Space from Description</div><div class="kor">説明から作成</div><div class="desc">画像なしで Description から 360° 空間を作る、ホーム画面の紫色のボタン。</div></div><div class="dict-item"><div class="term">Analyze Space</div><div class="kor">画像アップロード後のボタン</div><div class="desc">参照画像をアップロードすると、ホームのボタンがこのラベルに変わります。選択すると「Confirm Room Layout」が開きます。</div></div><div class="dict-item"><div class="term">Confirm Room Layout</div><div class="kor">生成前のダイアログ</div><div class="desc">推定された部屋の幅、奥行き、天井高、カメラ高、そして壁の範囲（4 つの角をドラッグして調整）を確認するダイアログ。</div></div><div class="dict-item"><div class="term">Unwrapped Front Wall Result</div><div class="kor">壁選択のプレビュー</div><div class="desc">選択した壁の範囲を平らに展開したプレビュー。選択が正しいかの確認に使います。</div></div><div class="dict-item"><div class="term">Generate the Desired View</div><div class="kor">生成（推定）</div><div class="desc">Confirm Room Layout 下部の生成ボタンに使われていると思われる文言。動画ではカーソルがこの位置へ移動します。</div></div><div class="dict-item"><div class="term">Restyle Space from Reference · v2</div><div class="kor">スペースのリスタイル</div><div class="desc">既存の参照をもとに空間のスタイルを変える、ステップ 2 のボタン。</div></div><div class="dict-item"><div class="term">Room Size · Camera</div><div class="kor">部屋サイズのダイアログ</div><div class="desc">部屋の幅、奥行き、天井高、カメラ高をメートル単位で変更するダイアログ。変更は「Apply Room Size · No Additional Generation」で適用されます。</div></div><div class="dict-item"><div class="term">FIELD OF VIEW (ZOOM)</div><div class="kor">画角スライダー</div><div class="desc">3D Preview 下部のズームスライダー。動画では 105° と 82° の値が登場します。</div></div><div class="dict-item"><div class="term">FREEZE FRAME</div><div class="kor">視点を固定</div><div class="desc">現在のカメラ構図を参照フレームとしてステップ 3 に送る、紫色のボタン。</div></div><div class="dict-item"><div class="term">Wall Edit</div><div class="kor">方向別の編集モード</div><div class="desc">LEFT / FRONT / RIGHT / BACK / UP / DOWN の 6 つの方向カードでオブジェクトを追加・削除するモード。</div></div><div class="dict-item"><div class="term">FACE REFERENCE</div><div class="kor">方向ごとの参照</div><div class="desc">各カードに紐づく参照画像です。INPAINT と REGEN に直接適用され、Apply As Is、Change、CLEAR で管理します。</div></div><div class="dict-item"><div class="term">BRUSH 40PX</div><div class="kor">ブラシサイズ</div><div class="desc">カード上に表示されるマスク用ブラシのサイズスライダー。単位はピクセルです。</div></div><div class="dict-item"><div class="term">INPAINT (REF)</div><div class="kor">範囲指定の編集</div><div class="desc">参照画像や指示をもとに、赤いマスク範囲だけを編集します。オブジェクトの追加・削除に使います。</div></div><div class="dict-item"><div class="term">REGEN (REF)</div><div class="kor">面全体の再生成</div><div class="desc">その方向の画像全体を再生成するため、通常はより大きな変更になります。</div></div><div class="dict-item"><div class="term">REPLACE</div><div class="kor">差し替え</div><div class="desc">範囲を参照画像で置き換える緑色のボタン。</div></div><div class="dict-item"><div class="term">Replace with… / Reference Instructions…</div><div class="kor">指示入力欄</div><div class="desc">何を変えるかを書く欄です。空欄のままなら参照画像がそのまま適用されます。</div></div><div class="dict-item"><div class="term">PRODUCTION: SUBJECT &amp; CASTING </div><div class="kor">演出プロンプト</div><div class="desc">被写体の動作、感情、構図をステップ 3 で韓国語で書く欄。</div></div><div class="dict-item"><div class="term">CINEMA STYLE</div><div class="kor">8 つのシネマスタイル</div><div class="desc">Normal · Hollywood · Korean · Japanese · Chinese · Noir · Neon-Punk · Anime Style。</div></div><div class="dict-item"><div class="term">FACE ID CALIBRATION </div><div class="kor">顔の同一性の参照</div><div class="desc">LIKENESS PRIORITY: MAX。被写体の写真をアップロードして顔の同一性を保ちます。</div></div><div class="dict-item"><div class="term">OUTFIT REFERENCE </div><div class="kor">衣装の参照</div><div class="desc">衣装の写真を追加して服装を指定します。動画では韓服とジャージを組み合わせたスタイリングです。</div></div><div class="dict-item"><div class="term">GENERATE_STILL_1K / 2K (HQ)</div><div class="kor">スチル生成</div><div class="desc">キー画像の生成ボタン。1K は速く、2K（HQ）は高画質です。</div></div><div class="dict-item"><div class="term">DOWNLOAD FREEZE FRAME </div><div class="kor">参照フレームを保存</div><div class="desc">演出を加える前に構図をダウンロードするボタン。</div></div></div><div class="footer-meta"><span>009 — ボタン用語集</span><span>用語集</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>コツ</span></div><div class="right"><span>P. 010</span></div></div><div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— コツ · よくあるミスを避ける —</div><h2 class="section-title">よくあるミスとコツ</h2><p class="section-lede">デモ動画で示された 6 つの実践的なコツです。</p></div></div>
+<div class="two-col even">
+<div>
+<div class="step-block"><div class="step-number">— コツ 01 —</div><p class="step-body">画像をアップロードすると、ホームのボタンは  <strong>“Create Space from Description” → “Analyze Space”</strong>に変わります。このラベルの変化は正常です。そのまま選択して「Confirm Room Layout」に進みましょう。</p></div>
+<div class="step-block"><div class="step-number">— コツ 02 —</div><p class="step-body">きれいな展開図を得るには、  <strong>4 つの角すべてを床と壁の境界に合わせます</strong>。天井の梁が入りすぎる場合は、ポイントを下げてください。</p></div>
+<div class="step-block"><div class="step-number">— コツ 03 —</div><p class="step-body">部屋のサイズを変えても小道具はそのまま残ります。 <strong>'Apply Room Size · No Additional Generation'</strong> は再生成せずに比率だけを適用するので、クレジットを気にせず値を試せます。</p></div>
+</div>
+<div>
+<div class="step-block"><div class="step-number">— コツ 04 —</div><p class="step-body">ブラシは、変えたいオブジェクトより  <strong>少し大きめ</strong>  にしてからマスクを塗ります。サイズは  <span class="k light">BRUSH 40PX</span>  スライダーで調整します。塗る範囲を間違えたら  <span class="k light">CLEAR</span> でクリアします。</p></div>
+<div class="step-block"><div class="step-number">— コツ 05 —</div><p class="step-body">オブジェクトの配置には  <strong>INPAINT</strong>を、壁紙のような面全体の差し替えには  <strong>参照画像をリンクして指示を添える方法</strong>を使い、結果が不自然なら  <strong>REGEN</strong>を使います。道具ごとに役割が違うので、目的に合わせて選びましょう。</p></div>
+<div class="step-block"><div class="step-number">— コツ 06 —</div><p class="step-body">キー画像はこの順番で作ります:  <strong>構図（プロンプト）→ 被写体の写真 → 衣装の写真</strong>。FACE ID と OUTFIT を併用すると、顔と衣装の両方を保てます。</p></div>
+</div>
+</div>
+<div class="footer-meta"><span>010 — コツ</span><span>コツ</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>まとめ</span></div><div class="right"><span>P. 011</span></div></div><div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— まとめ · 総括 —</div><h2 class="section-title">最終まとめ</h2><p class="section-lede">4 本のデモ動画で確認できた Turn のすべて。</p></div></div>
+<div class="summary-list">
+<div class="summary-item"><h4>Turn とは</h4><p>Turn は、1 枚の画像または説明から、自由に回転できる 360° の 3D 仮想スタジオセットを作るローカルのシネマティックワークスペースです。屋内の壁はパース補正され、屋外のシーンは風景・空・地面のキューブマップに拡張されます。</p></div>
+<div class="summary-item"><h4>動画で確認できた主要な流れ</h4><p>① FRONT 画像をアップロード → Analyze Space → Confirm Room Layout（寸法を確認し、4 つの角をドラッグ）→ 360° 空間を生成。② 3D Preview で回転・ズームしながら、必要に応じて部屋サイズやカメラを調整し、壁を編集（参照画像、ブラシ、INPAINT / REGEN / REPLACE）。③ FREEZE FRAME → ステップ 3 で演出、CINEMA STYLE、被写体・衣装の写真を追加 → GENERATE_STILL → キー画像。</p></div>
+<div class="summary-item"><h4>出力の理解</h4><p>Freeze Frame = 演出を加える前の参照構図のキャプチャ（DOWNLOAD FREEZE FRAME）。Final Still = 被写体、スタイル、ライティングを適用した最終画像（GENERATE_STILL_1K / 2K HQ）。用途が異なるため、ダウンロードボタンも別々になっています。</p></div>
+<div class="summary-item"><h4>注意</h4><p>このガイドは 4 本のデモ動画（About Turn 18 秒 · Adjusting Room Size 10 秒 · Editing Objects 27 秒 · Creating a Key Image 7 秒）の画面とナレーションに基づいています。「Generate the Desired View」を含む一部のラベルは、動画の解像度の都合で推測したものです。</p></div>
+</div>
+<div class="footer-meta"><span>011 — まとめ</span><span>まとめ</span></div></section>
+
+
+<script src="../embed.js" defer=""></script></body></html>

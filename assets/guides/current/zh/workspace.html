@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>XCONDA 工作区指南</title>
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;color:var(--ink);line-height:1.8;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}
+header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.2em;color:#9fb0cc}
+header h1{font-size:44px;margin:20px 0 12px;line-height:1.25}
+header p{color:#c6d0e2;max-width:860px}
+header a{color:#fff}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}
+h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}
+h3{font-size:20px;margin:32px 0 4px}
+p{margin:8px 0}ul,ol{margin:8px 0}li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.6;vertical-align:top}
+th{background:#f2f3f6}
+code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}
+.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}
+.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}
+.check li:before{content:"\2610";position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}
+.toc a{color:var(--navy);text-decoration:none}
+.toc li{margin:6px 0}
+footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}
+.fig{margin:24px 0}.fig img{width:100%;height:auto;display:block;border:1px solid var(--hair);border-radius:8px}.fig figcaption{font-size:13px;color:var(--slate);margin-top:8px;line-height:1.6}
+.word{background:#fff8d6;border:1px solid #ecd67a;padding:14px 18px;margin:16px 0}
+.dl{display:inline-block;margin-top:18px;background:var(--gold);color:#141821;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:700;min-height:44px}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}table{font-size:13px}}
+@media print{body{background:#fff}h2{break-after:avoid}tr{break-inside:avoid}.dl{display:none}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="workspace" data-current-guide-lang="zh" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="当前用户指南 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/workspace.html" hreflang="ko" lang="ko">KO</a><a href="../en/workspace.html" hreflang="en" lang="en">EN</a><a href="../ja/workspace.html" hreflang="ja" lang="ja">JA</a><a href="../zh/workspace.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+<header><div class="brand">XCONDA / TEXT GUIDE · 25 · WORKSPACE</div><h1>XCONDA 工作区指南</h1><p>这里介绍团队一起工作时用的空间。可以把工作、成员和积分放在一处看。句子写得很短。一句话只说一件事。屏幕上的英文名称，照原样写。</p><p>参考页面： xconda.ai/workspace（工作区咨询页面，韩语） · 参考画面：2026-11-17 看到的工作区测试版画面</p><a class="dl" href="index.html" download="25_Workspace_Guide_ZH.html">下载本指南（.html）</a></header>
+<main>
+<div class="note"><b>请先读这里。</b> 这份指南是看着咨询页面和真实画面写的。画面上没有的价格，这里不写。照片都是真实画面。不能给别人看的地方，只用黑框遮住了。遮住了什么，写在照片下面。</div>
+<div class="word"><b>难的词，换成好懂的说法</b><ul>
+<li><b>工作区（Workspace）</b> = 团队一起用的房间</li>
+<li><b>项目（Project）</b> = 一整件工作</li>
+<li><b>成员（Member）</b> = 一起工作的同事</li>
+<li><b>积分（Credit）</b> = 在 Xconda 中使用的代币。用一次，就少一点。</li>
+<li><b>组织钱包</b> = 放全公司积分的大钱包</li>
+<li><b>预算</b> = 分给每件工作的积分数量</li>
+<li><b>管理员</b> = 可以管理房间或工作、可以做决定的人</li>
+<li><b>Reuse</b> = 用已经做好的东西，接着往下做</li>
+<li><b>测试版（Beta）</b> = 还在试用的阶段。还没有全部做好。</li>
+</ul></div>
+<div class="toc"><b>目录</b><ol>
+<li><a href="#c1">什么是工作区</a></li>
+<li><a href="#c2">开始使用 — 先申请咨询</a></li>
+<li><a href="#c3">进入房间 — 选择、加入、新建</a></li>
+<li><a href="#c4">管理画面，一眼看清</a></li>
+<li><a href="#c5">Projects — 查看和新建项目</a></li>
+<li><a href="#c6">Members — 成员和角色</a></li>
+<li><a href="#c7">Usage &amp; budget — 查看用了多少</a></li>
+<li><a href="#c8">Operation logs — 查看谁做了什么</a></li>
+<li><a href="#c9">Settings — 修改基本设置</a></li>
+<li><a href="#c10">分享成果和 Reuse</a></li>
+<li><a href="#c11">常见问题</a></li>
+<li><a href="#c12">最后检查表</a></li>
+</ol></div>
+
+<h2 id="c1">1. 什么是工作区</h2>
+<p>工作区是团队一起用的房间。</p>
+<p>它和一个人用的时候不一样。团队的工作、成员和积分，可以放在一处看。</p>
+<p>咨询页面上也是这样写的。<b>在一处管理团队项目、成员和积分</b>。</p>
+<p>第一个画面上是这样写的。<code>Choose a workspace to manage projects, members and budget.</code></p>
+<p>意思是：“请选择一个房间，在里面看工作、成员和预算。”</p>
+<table><thead><tr><th>页面上的说法</th><th>好懂的意思</th></tr></thead><tbody>
+<tr><td>创建和分享团队项目</td><td>做团队的工作。做好的东西，和成员一起看。</td></tr>
+<tr><td>查看项目进度</td><td>一眼看清工作做到哪一步了。</td></tr>
+<tr><td>自由调整成员</td><td>可以加成员，也可以去掉成员。随时都能改。</td></tr>
+<tr><td>按成员发放积分</td><td>把积分分给大家。谁用了多少，也能轻松看到。</td></tr>
+</tbody></table>
+<table><thead><tr><th>可以做的事</th><th>好懂的说明</th></tr></thead><tbody>
+<tr><td>新建团队项目 · 邀请成员</td><td>新建一整件工作。再邀请成员进来。邀请进房间，和加进工作，是两件事。要分开做。请看第 6 章。</td></tr>
+<tr><td>分配项目预算</td><td>把大钱包里的积分，分给每件工作。只能在分到的数量里面做东西。分预算，不会多出新的积分。请看第 5 章和第 7 章。</td></tr>
+<tr><td>查看用了多少</td><td>在 <code>Usage &amp; budget</code> 画面看。可以看积分从哪里来。也可以看积分去了哪件工作。</td></tr>
+<tr><td>看记录 · 改设置</td><td>在 <code>Operation logs</code> 看重要事情的记录。在 <code>Settings</code> 改公司名字、语言、时间、标志和默认颜色。</td></tr>
+<tr><td>分享成果 · Reuse</td><td>可以看做好的成果。也可以下载下来。在照片上点 Reuse，可以接着往下做。但 Reuse 只能在同一件工作里面用。不能拿到别的工作里。不能用链接在外面打开。在 Beta 1 里不行。请看第 10 章。</td></tr>
+</tbody></table>
+<div class="note">这样的团队很适合用。很多人要看同一份成果的团队。要按工作分开花钱的公司。有专人要知道谁用了多少的公司。画面下方有这样一句话：<code>Project data is isolated by access policy.</code> 意思是：“每件工作能看的人是定好的。不是谁都能看。”</div>
+<figure class="fig"><img src="../screens/539f96506a2ed1060785d6867b8012b11c01c87204d5f9ed36881309c4b0c750.png" alt="XCONDA 顶部菜单画面" loading="lazy"><figcaption>这是顶部的菜单。点 <code>Workspace</code>，就去房间。· 顶部的个人积分数字，用黑框遮住了。因为不能给别人看。</figcaption></figure>
+
+<h2 id="c2">2. 开始使用 — 先申请咨询</h2>
+<p>不是注册后马上就能用。要先申请咨询。</p>
+<p>在咨询页面写好内容，再发出去。然后会收到回复邮件。在 2 个工作日以内到。</p>
+<p>工作日是公司上班的日子。周末不算。</p>
+<p>页面的标题是<b>Workspace Consultation</b>。发送的按钮是<b>Request consultation</b>。</p>
+<figure class="fig"><img src="../screens/c518b96ccca5819b988c04eae0b7af7f018ffb6f8ff3dc2e4ce7462b9c900314.png" alt="工作区 引入 咨询韩语页面" loading="lazy"><figcaption>这是咨询页面。左边是说明。右边是申请表。申请表是空的，所以没有遮住任何地方。</figcaption></figure>
+<div class="note">小团队不一样。页面下方是这样写的。<b>小团队可以在 Pricing 直接使用</b>。小团队不用等咨询。先看 Pricing 页面。关于钱或账号有问题，请问<b>客服中心</b>。</div>
+<h3>2-1. 申请前先准备</h3>
+<ul>
+<li>准备好公司名字。</li>
+<li>准备好负责人名字。</li>
+<li>准备好工作邮箱。回复会发到工作邮箱。请写一个你一定能看的邮箱。</li>
+<li>先想好会有几个人用。这一格一定要填。</li>
+<li>先想好想从什么时候开始用。没有想好，也能申请。</li>
+<li>把想问的事先写下来。写上为什么要用，很好。写上做什么工作，很好。写上需要什么，也很好。这一格可以空着。</li>
+<li>要同意使用个人信息。不同意，就发不出去。</li>
+</ul>
+<h3>2-2. 申请表要写什么</h3>
+<table><thead><tr><th>格子的名字</th><th>一定要写吗？</th><th>怎么写？</th></tr></thead><tbody>
+<tr><td>公司名</td><td>必填 *</td><td>自己写。格子里写着 <code>회사명 입력</code>。</td></tr>
+<tr><td>负责人名字</td><td>必填 *</td><td>自己写。格子里写着 <code>이름 입력</code>。</td></tr>
+<tr><td>工作邮箱</td><td>必填 *</td><td>自己写。例如：<code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="90fef1fdf5d0f3fffde0f1fee9bef3fffd">[email&nbsp;protected]</a></code>。回复会发到这里。请仔细看，有没有写错。</td></tr>
+<tr><td>联系方式</td><td>可选</td><td>自己写。例如：<code>010-0000-0000</code>。可以空着。</td></tr>
+<tr><td>预计使用人数</td><td>必填 *</td><td>从列表里选。格子里写着 <code>선택</code>。请在申请画面里直接看。</td></tr>
+<tr><td>希望开始使用的时间</td><td>可选</td><td>从列表里选。选你想开始用的时间就可以。</td></tr>
+<tr><td>咨询内容</td><td>可选</td><td>自己写。格子里写着 <code>사용 목적, 주요 작업 유형, 필요 기능 등</code>。</td></tr>
+</tbody></table>
+<h3>2-3. 个人信息同意 — 一定要勾选</h3>
+<p>申请表下面有 <b>[必填] 个人信息收集和使用同意</b>。请读完，再勾选。</p>
+<table><thead><tr><th>项目</th><th>页面上的说法</th></tr></thead><tbody>
+<tr><td>会收集什么？</td><td>公司名、负责人名字、工作邮箱、联系方式</td></tr>
+<tr><td>为什么用？</td><td>为了工作区 引入 咨询和回复。就是说，为了咨询和发回复才用。</td></tr>
+<tr><td>会保存多久？</td><td>个人信息在咨询结束后 1 年后删除。</td></tr>
+</tbody></table>
+<h3>2-4. 发出后要做的事</h3>
+<ol>
+<li>点 <b>Request consultation</b> 按钮。</li>
+<li>请等一等。在 2 个工作日以内，会收到回复邮件。</li>
+<li>如果邮件没到，先看垃圾邮件箱。再看邮箱有没有写对。</li>
+<li>关于钱或账号有问题，请问客服中心。</li>
+</ol>
+<div class="warn">发了申请表，不等于马上就能用。价格和使用方法，要在回复邮件里确认。这份指南里，没有写页面上没有的价格。</div>
+
+<h2 id="c3">3. 进入房间 — 选择、加入、新建</h2>
+<p>请先登录。再去 <code>xconda.ai/workspace</code>。会打开 <code>Your workspaces</code> 画面。</p>
+<p>意思是“我的工作区”。是我加入的房间列表。</p>
+<h3>3-1. 从列表打开</h3>
+<ul>
+<li>一个房间，是一张卡片。</li>
+<li>卡片上有房间名字。也有我的角色。还有项目数量。</li>
+<li>例如：<code>Administrator</code> 是管理员。<code>0 projects</code> 是 0 个项目。</li>
+<li>点卡片上的 <code>Open</code> 按钮。就进入那个房间的管理画面。先打开的是 <code>Projects</code> 画面。</li>
+<li>右上角有 2 个按钮。是 <code>Join workspace</code> 和 <code>Create workspace</code>。</li>
+</ul>
+<figure class="fig"><img src="../screens/ddc56503c3b2bbd3803c9dae369655f6fa88b039c6bb9e6f0fdaf69c0d529ba2.png" alt="Your workspaces 工作区列表画面" loading="lazy"><figcaption>这是 <code>Your workspaces</code> 画面。可以看到房间卡片。也可以看到 <code>Open</code> 按钮。还可以看到 <code>Join workspace</code> 和 <code>Create workspace</code> 按钮。· 顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+<h3>3-2. 新建房间 — <code>Create workspace</code></h3>
+<ol>
+<li>点 <code>Create workspace</code> 按钮。会打开 <code>Create a workspace</code> 格子。</li>
+<li>那里写着 <code>You become its first administrator.</code> 意思是“建房间的人，就是第一个管理员”。</li>
+<li>在 <code>Organization name</code> 写公司名字。</li>
+<li>点 <code>Create</code> 按钮。房间就建好了。</li>
+<li>新建的记录会留在 <code>Operation logs</code> 里。会写 <code>Organization created</code>。请看第 8 章。</li>
+</ol>
+<figure class="fig"><img src="../screens/c6f7d588a05c2ad6dd3290104080ecdb6a4117f5fc7474e943c154fe7b46abd1.png" alt="Create a workspace 输入区域画面" loading="lazy"><figcaption>这是 <code>Create a workspace</code> 画面。写 <code>Organization name</code>。再点 <code>Create</code>。· 顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+<h3>3-3. 进入已有的房间 — <code>Join workspace</code></h3>
+<p>有 <code>Join workspace</code> 按钮。进入已有的房间时点它。邀请成员的方法，请看第 6 章。</p>
+
+<h2 id="c4">4. 管理画面，一眼看清</h2>
+<p>打开房间后，左边一直有菜单。名字是 <code>Organization console</code>。可以把它看成公司管理菜单。</p>
+<p>最上面是现在进入的房间名字。</p>
+<table><thead><tr><th>菜单（画面上的名字）</th><th>地址</th><th>好懂的说明</th></tr></thead><tbody>
+<tr><td><code>Projects</code></td><td><code>/workspace/projects</code></td><td>看工作列表。也看工作状态。也看分到的预算。也看谁能看。是第 5 章。</td></tr>
+<tr><td><code>Members</code></td><td><code>/workspace/members</code></td><td>邀请成员。定角色。是第 6 章。</td></tr>
+<tr><td><code>Usage &amp; budget</code></td><td><code>/workspace/usage</code></td><td>看积分从哪里来。也看积分去了哪里。是第 7 章。</td></tr>
+<tr><td><code>Operation logs</code></td><td><code>/workspace/logs</code></td><td>看重要的事是谁做的。也看被拦住的请求。也看改预算的事。是第 8 章。</td></tr>
+<tr><td><code>Settings</code></td><td><code>/workspace/settings</code></td><td>定房间名字、语言、时间、标志和默认颜色。是第 9 章。</td></tr>
+<tr><td><code>Billing &amp; documents</code> <code>BETA</code></td><td>—</td><td>现在还点不了。是关着的。账单和付钱的方法，在 Beta 2 里出。请看第 9 章。</td></tr>
+</tbody></table>
+<p>左下方一直有这样一句话：<code>Project data is isolated by access policy.</code> 意思是：“每件工作能看的人是定好的。”</p>
+<p>进了房间，不等于能看所有工作。每件工作要另外加人进去。请看第 6 章。</p>
+<div class="note">这个画面是测试版。还在试用。所以分成了 Beta 1 能做的，和 Beta 2 才能做的。例如，用卡付钱，在 Beta 1 里不行。账单在 Beta 1 里也不行。</div>
+
+<h2 id="c5">5. Projects — 查看和新建项目</h2>
+<p><code>Projects</code> 画面上是这样写的。<code>See project health, shared budgets and access in one place.</code></p>
+<p>意思是：“在一处看工作的状态、分到的预算，还有谁能看。”</p>
+<h3>5-1. 上面的 5 张卡片</h3>
+<table><thead><tr><th>卡片（画面上的名字）</th><th>好懂的意思</th></tr></thead><tbody>
+<tr><td><code>Active</code></td><td>现在正在做的工作数量。</td></tr>
+<tr><td><code>Idle candidates</code></td><td>要看一看的工作数量。下面写着 <code>review suggested</code>。</td></tr>
+<tr><td><code>Archived</code></td><td>做完后收起来的工作数量。写着 <code>read only</code>。只能看。不能改。</td></tr>
+<tr><td><code>Organization wallet</code></td><td>大钱包里剩下的积分。单位是 <code>Cr</code>。写着 <code>issued by XCONDA, unallocated</code>。意思是：“是 XCONDA 放进来的。还没有分给任何工作。”</td></tr>
+<tr><td><code>Total members</code></td><td>全部成员的数量。下面写着 <code>workspace seats</code>。</td></tr>
+</tbody></table>
+<h3>5-2. 最重要的规则 — 从大钱包分到工作里</h3>
+<div class="note"><b><code>Organization wallet to project budget</code></b><br>画面上是这样写的。<code>XCONDA issues credits to the organization wallet after contract or payment confirmation. Manage budget only allocates or returns credits already held in that wallet; it never buys or creates credits.</code><br>说得简单一点，是这样。合同签完了。或者付钱的事确认了。然后 XCONDA 把积分放进大钱包。分预算，只是动那个钱包里已经有的积分。只是发给工作，或是拿回来。不会买积分。也不会新做积分。</div>
+<figure class="fig"><img src="../screens/dece8bfb2c391353e13e67309a067167093a5326566c0790839329a6d8c2dad9.png" alt="Projects 项目列表画面" loading="lazy"><figcaption>这是 <code>Projects</code> 画面。上面可以看到 5 张卡片。也可以看到大钱包的说明。· 顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+<h3>5-3. 找工作</h3>
+<ul>
+<li>在搜索格 <code>Search project or client</code> 写工作名字。写客户名字也可以。</li>
+<li>点 <code>All statuses</code>。可以按状态来选着看。右边有全部工作的数量。</li>
+<li>如果一件工作都没有，会写 <code>No projects yet</code>。下面会写 <code>Create a project to allocate budget and invite members.</code> 意思是：“新建一件工作，就可以分预算，也可以邀请成员。”</li>
+<li>右上角有 2 个按钮。<code>Request credits</code> 是想多要一点积分时点的。<code>+ New project</code> 是新建工作时点的。</li>
+</ul>
+<h3>5-4. 新建工作 — <code>+ New project</code> → <code>Create project</code></h3>
+<p>点 <code>+ New project</code>，会打开 <code>Create project</code> 窗口。那里写着 <code>Allocate existing organization-wallet credits and assign workspace members.</code> 意思是：“把大钱包里的积分分出来。再把成员加进这件工作。”</p>
+<table><thead><tr><th>格子（画面上的名字）</th><th>要写什么？</th></tr></thead><tbody>
+<tr><td><code>Project name</code></td><td>工作的名字。例如会写 <code>e.g. Global Brand Film</code>。</td></tr>
+<tr><td><code>Client</code></td><td>客户的名字。例如会写 <code>e.g. Northstar Pictures</code>。</td></tr>
+<tr><td><code>Initial budget</code></td><td>一开始要分出去的积分数量。只能分大钱包里有的数量。</td></tr>
+<tr><td><code>Members and project roles</code></td><td>要加进这件工作的成员。在 <code>Search existing members</code> 里找。从已经在房间里的成员中找。建工作的人，会显示为 <code>Project admin (you)</code>。意思是“我就是这件工作的管理员”。</td></tr>
+</tbody></table>
+<ul>
+<li>窗口下面写着 <code>Organization wallet available: ○○ Cr · Project creation does not issue new credits.</code> 意思是：“大钱包里有 ○○ Cr。新建工作，也不会多出新的积分。”</li>
+<li>不想建了，点 <code>Cancel</code>。要建，点 <code>Create project</code>。</li>
+</ul>
+<figure class="fig"><img src="../screens/d34b3549cb235fe9fd12d6c2ef017c88b551751f87a9af7b43e74dfe07779920.png" alt="Create project 新建项目窗口" loading="lazy"><figcaption>这是 <code>Create project</code> 窗口。可以看到 <code>Project name</code>、<code>Client</code>、<code>Initial budget</code>、<code>Members and project roles</code> 格子。· 成员的邮箱和顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+
+<h2 id="c6">6. Members — 成员和角色</h2>
+<p><code>Members</code> 画面上是这样写的。<code>Workspace invitation and project assignment are managed separately.</code></p>
+<p>意思是：“邀请进房间，和加进工作，要分开做。”进了房间，不等于自动进每一件工作。</p>
+<h3>6-1. 角色分成两种</h3>
+<div class="note"><b><code>Two separate role scopes</code></b><br><code>Workspace: organization admin or member. Project: project admin or project member. Server-side policy remains the source of truth.</code><br>说得简单一点，是这样。角色分成两层。第一层是房间里的角色。是管理员，或是成员。第二层是工作里的角色。是那件工作的管理员，或是那件工作的成员。最后定下来的，是服务器的规则。</div>
+<table><thead><tr><th>是哪里的角色？</th><th>角色（画面上的名字）</th><th>在哪里定？</th></tr></thead><tbody>
+<tr><td>房间（工作区）</td><td><code>Organization admin</code> / 成员</td><td>在 <code>Members</code> 画面的 <code>Role</code> 格子里定。</td></tr>
+<tr><td>工作（项目）</td><td><code>Project admin</code> / <code>Project member</code></td><td>新建工作时定。在 <code>Members and project roles</code> 里定。</td></tr>
+</tbody></table>
+<p><code>Settings</code> 画面里也有同样的话。在 Beta 1 里，没有单独定角色的画面。但房间和工作的界限，在每一次请求里都会守住。</p>
+<div class="warn">请一定记住。管理的权力，和亲手做东西的权力，不一样。<br>房间管理员可以看房间里的所有工作。可以分预算，也可以拿回来。可以管理成员。可以把工作收起来，也可以再拿出来。<br>但要在别人建的工作里亲手做东西，就要有那件工作的角色，另外定。做 Reuse 时也一样。<br>反过来，自己新建工作的人，就是那件工作的管理员。新建工作的窗口里写着 <code>Project admin (you)</code>，就是这个意思。</div>
+<h3>6-2. 在成员列表里能看到什么</h3>
+<table><thead><tr><th>格子（画面上的名字）</th><th>好懂的意思</th></tr></thead><tbody>
+<tr><td><code>Member</code></td><td>成员的名字和邮箱。</td></tr>
+<tr><td><code>Role</code></td><td>在房间里的角色。示例画面里写着 <code>Organization admin</code>。</td></tr>
+<tr><td><code>Workspace status</code></td><td>看现在在房间里是不是活动中。例如：<code>Active</code> 是活动中。</td></tr>
+<tr><td><code>Assigned projects</code></td><td>加进去的工作。如果没有，会写 <code>Not assigned</code>。意思是“还没有加进任何工作”。</td></tr>
+<tr><td><code>Monthly usage</code></td><td>这个月用的积分。单位是 <code>Cr</code>。</td></tr>
+<tr><td><code>Access control</code></td><td>定能不能进来的格子。示例画面里写着 <code>Active</code>。</td></tr>
+</tbody></table>
+<figure class="fig"><img src="../screens/3d449c90ab8b9610501fb271b034130d404051277716da15b24edd2ff309d864.png" alt="Members 成员画面" loading="lazy"><figcaption>这是 <code>Members</code> 画面。可以看到成员表。也可以看到角色说明。· 成员的邮箱和顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+<h3>6-3. 邀请成员 — <code>Invite member</code></h3>
+<ul>
+<li>点 <code>Members</code> 画面右上角的 <code>Invite member</code> 按钮。</li>
+<li>咨询页面上写着，用邮箱邀请。</li>
+<li>邀请时，先定好两件事。看工作邮箱对不对。再定邀请后要加进哪件工作。邀请进房间，和加进工作，是两件事。</li>
+</ul>
+
+<h2 id="c7">7. Usage &amp; budget — 查看用了多少</h2>
+<p><code>Usage &amp; budget</code> 画面上是这样写的。<code>Trace where organization credits came from and how they move into project budgets.</code></p>
+<p>意思是：“看积分从哪里来。也看积分去了哪件工作。”右上角的按钮是 <code>Request credit</code>。</p>
+<h3>7-1. 剩下的数量，不能自己改</h3>
+<div class="note"><b><code>No balance editing</code></b><br><code>The organization wallet changes only through XCONDA issuance, project allocation, return or reversal transactions. Card checkout and billing documents are not part of Workspace Beta 1.</code><br>说得简单一点，是这样。大钱包的数量，不能用手改。只有在定好的时候才会变。XCONDA 放进来时变。分给工作时变。拿回来时变。把错的改回来时变。用卡付钱，在 Beta 1 里不行。账单在 Beta 1 里也不行。</div>
+<h3>7-2. 上面的 4 张卡片</h3>
+<table><thead><tr><th>卡片（画面上的名字）</th><th>好懂的意思</th></tr></thead><tbody>
+<tr><td><code>Organization wallet</code></td><td>大钱包里剩下的积分。写着 <code>XCONDA-issued, available to allocate</code>。意思是：“是 XCONDA 放进来的。可以分给工作。”</td></tr>
+<tr><td><code>Allocated budgets</code></td><td>分给各件工作的积分，全部加起来的数。按现在正在做的工作算。</td></tr>
+<tr><td><code>Processing amount</code></td><td>正在做东西，先占住的积分。画面上写着 <code>generation holds</code>。</td></tr>
+<tr><td><code>Total usage</code></td><td>到现在为止用的积分，全部加起来的数。按所有工作算。</td></tr>
+</tbody></table>
+<h3>7-3. 图表、信号、多要一点的请求</h3>
+<ul>
+<li><b><code>Credit usage</code> — 用了多少的图表。</b> 看用的数量是怎么变的。<code>7D</code> 是 7 天。<code>30D</code> 是 30 天。点按钮来换。</li>
+<li><b><code>Budget signals</code> — 预算信号。</b> 这里告诉你，每件工作的预算够不够。如果工作还没有开始，会写 <code>Credit movements appear here once work begins.</code> 意思是：“工作开始后，积分的变化会出现在这里。”</li>
+<li><b><code>Project budget requests</code> — 多要一点的请求列表。</b> 工作里想多要一点预算，就会堆在这里。如果没有，会写 <code>No project has asked for more budget.</code> 意思是“没有工作多要预算”。</li>
+<li><b>如果预算不够。</b> 如果项目预算不够，可以申请追加。由 CubeBerry 管理员发放积分。</li>
+</ul>
+<div class="note">一个小建议。不要只看总数。要按每件工作分开看。把做完的工作用了多少记下来。下次定一件新工作一开始分多少时，会有帮助。</div>
+<figure class="fig"><img src="../screens/d6ff998156cf2e9e11e92d56a3927ef0cf3f338203bf3756957a07457f80b69c.png" alt="Usage and budget 用量和预算画面" loading="lazy"><figcaption>这是 <code>Usage &amp; budget</code> 画面。可以看到 4 张卡片。也可以看到 <code>Credit usage</code>、<code>Budget signals</code>、<code>Project budget requests</code>。· 顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+
+<h2 id="c8">8. Operation logs — 查看谁做了什么</h2>
+<p><code>Operation logs</code> 画面上是这样写的。<code>Review sensitive actions, blocked requests and budget changes.</code></p>
+<p>意思是：“看重要的事、被拦住的请求，还有改预算的事。”这是记下来、以后能查的记录。</p>
+<ul>
+<li>搜索格是 <code>Search actor, action or target</code>。填一个人、一件事、一个对象来找。</li>
+<li>记录用表格显示。有 5 格。<code>Time</code> 是时间。<code>Actor</code> 是做事的人。<code>Action</code> 是做的事。<code>Target</code> 是对象。<code>Result</code> 是结果。</li>
+<li>示例画面里有建房间的记录。做的事是 <code>Organization created</code>。结果是 <code>Success</code>。Success 是做成了的意思。时间里有日期，也有时刻。</li>
+<li>右上角的 <code>PDF export, Beta 2</code> 按钮，现在还点不了。下载 PDF，在 Beta 1 里不行。</li>
+</ul>
+<figure class="fig"><img src="../screens/9329004b9277140cf63019026d79def93159f2400af78b84296ac2888e998622.png" alt="Operation logs 操作记录画面" loading="lazy"><figcaption>这是 <code>Operation logs</code> 画面。可以看到 <code>Time</code>、<code>Actor</code>、<code>Action</code>、<code>Target</code>、<code>Result</code> 表格。· 做事的人的编号、对象的编号，还有顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+
+<h2 id="c9">9. Settings — 修改基本设置</h2>
+<p><code>Settings</code> 画面上是这样写的。<code>Workspace identity settings. Billing and documents remain in Beta 2.</code></p>
+<p>意思是：“这里定房间的基本信息。账单和文件在 Beta 2 里。”</p>
+<h3>9-1. 房间信息 — <code>Workspace profile</code></h3>
+<table><thead><tr><th>格子（画面上的名字）</th><th>好懂的说明</th></tr></thead><tbody>
+<tr><td><code>Organization name</code></td><td>公司名字。房间列表和管理画面里，显示的就是这个名字。</td></tr>
+<tr><td><code>Default language</code></td><td>默认语言。示例画面里选的是 <code>English</code>。</td></tr>
+<tr><td><code>Time zone</code></td><td>时间的标准。示例画面里选的是 <code>Asia/Seoul</code>。请一定记住。这不只是画面上怎么显示。它定的是每个月的总数从哪里算起。画面上也写着 <code>This is the monthly aggregation boundary, not a display preference. Changing it moves every monthly total.</code> 一改，每个月的总数都会一起变。</td></tr>
+<tr><td><code>Logo</code></td><td>公司标志。<code>PNG or SVG, up to 512 KB</code>。只能用 PNG 或 SVG 文件。大小只能到 512 KB。用 <code>Choose file</code> 选文件。选好的文件，要点了保存才算数。</td></tr>
+<tr><td><code>Base color</code></td><td>默认颜色。写颜色编号。示例画面里的颜色，只是那家公司的例子。用你自己公司的颜色就可以。</td></tr>
+</tbody></table>
+<p>改完后，一定要按 <code>Save settings</code> 按钮。按了，才会保存。</p>
+<h3>9-2. 右边的 3 个说明框</h3>
+<table><thead><tr><th>框（画面上的名字）</th><th>好懂的意思</th></tr></thead><tbody>
+<tr><td><code>Brand Kit boundary</code></td><td>公司标志和默认颜色，放在这里。参考照片、角色、活动的感觉，放在每件工作的 Brand Kit 里。不要混在一起。</td></tr>
+<tr><td><code>Permission engine</code></td><td>在 Beta 1 里，没有单独定角色的画面。但房间和工作的界限，在每一次请求里都会守住。请看第 6 章。</td></tr>
+<tr><td><code>Billing &amp; documents · BETA 2</code></td><td>账单、付钱的方法、下载文件，在 Beta 2 里出。现在还不行。</td></tr>
+</tbody></table>
+<figure class="fig"><img src="../screens/a2a08b93de9b5544fd1f0264a7d2df2b4c433e750eed62b77513b9d30a97daa8.png" alt="Settings 工作区设置画面" loading="lazy"><figcaption>这是 <code>Settings</code> 画面。可以看到 <code>Workspace profile</code>。也可以看到右边的 3 个说明框。· 顶部的个人积分数字，用黑框遮住了。</figcaption></figure>
+
+<h2 id="c10">10. 分享成果和 Reuse</h2>
+<p>咨询页面上是这样写的。可以看做好的成果。也可以下载下来。在照片上做 Reuse，可以接着往下做。</p>
+<ul>
+<li><b>谁能看？</b> 成果在那件工作里面。只有能看那件工作的人才能看。画面上也写着 <code>Project data is isolated by access policy.</code></li>
+<li><b>Reuse 只能在同一件工作里面用。</b> 不能拿别的工作的成果来 Reuse。不能用链接在外面打开。在 Beta 1 里不行。</li>
+<li><b>要做东西，要有那件工作的角色。</b> 就算是房间管理员，没有那件工作的角色，也不能做。在别人建的工作里，也不能做 Reuse。请看第 6 章。</li>
+</ul>
+
+<h2 id="c11">11. 常见问题</h2>
+<h3>Q. 能马上注册就用吗？</h3>
+<p>不能。要先申请咨询。请看第 2 章。发了申请表，会收到回复邮件。在 2 个工作日以内到。写完后，可以在 <code>Your workspaces</code> 画面打开房间。也可以用 <code>Create workspace</code> 新建房间。请看第 3 章。</p>
+<h3>Q. 申请表里一定要写的是什么？</h3>
+<p>是 4 样。公司名、负责人名字、工作邮箱、预计使用人数。个人信息同意，也一定要勾选。联系方式可以空着。希望开始使用的时间也可以空着。咨询内容也可以空着。请看第 2 章。</p>
+<h3>Q. 建了房间，谁是管理员？</h3>
+<p>建房间的人，就是第一个管理员。画面上也写着 <code>You become its first administrator.</code></p>
+<h3>Q. 房间管理员，能在所有工作里马上做东西吗？</h3>
+<p>不能。房间管理员可以看所有工作。也可以管理预算和成员。但要在别人建的工作里做东西，就要有那件工作的角色，另外定。做 Reuse 时也一样。在我自己建的工作里，会自动成为那件工作的管理员。请看第 6 章。</p>
+<h3>Q. 邀请了成员，就能看所有工作吗？</h3>
+<p>不能。邀请进房间，和加进工作，是两件事。画面上也写着 <code>Workspace invitation and project assignment are managed separately.</code> 没有加进工作的人，看不到那件工作。列表里会写 <code>Not assigned</code>。</p>
+<h3>Q. 积分从哪里来？谁放进来？</h3>
+<p>合同签完了。或者付钱的事确认了。然后 XCONDA 把积分放进大钱包。在管理画面里，只能分已经有的。也可以拿回来。不能买积分。也不能新做积分。新建一件工作，也不会多出新的积分。</p>
+<h3>Q. 项目预算不够，怎么办？</h3>
+<p>可以申请追加。由 CubeBerry 管理员发放积分。请看第 7 章。</p>
+<h3>Q. 能自己改剩下的数量吗？能用卡付钱吗？</h3>
+<p>在 Beta 1 里不行。大钱包只在定好的时候变。放进来时变。分出去时变。拿回来时变。改回来时变。画面上也写着 <code>No balance editing</code>。用卡付钱，在 Beta 1 里没有。账单在 Beta 1 里也没有。账单和付钱的方法，在 Beta 2 里出。</p>
+<h3>Q. 能 Reuse 别的工作的照片吗？</h3>
+<p>不能。在 Beta 1 里，只能在同一件工作里面用。不能拿到别的工作里。不能在外面打开。</p>
+<h3>Q. 能把记录下载成 PDF 吗？</h3>
+<p>现在还不行。<code>Operation logs</code> 画面的按钮上写着 <code>PDF export, Beta 2</code>。</p>
+
+<h2 id="c12">12. 最后检查表</h2>
+<p>顺序很重要。先申请咨询。再定房间和工作。再邀请成员，再加进工作。</p>
+<ul class="check">
+<li>公司名、负责人、工作邮箱，都写对了，再申请咨询了吗？</li>
+<li>预计使用人数，选的是真的会用的人数吗？</li>
+<li>读了个人信息同意，再勾选了吗？看了会收集什么吗？看了为什么用吗？</li>
+<li>建好房间了吗？定了第一个管理员是谁吗？（<code>Create workspace</code> → <code>Organization name</code>）</li>
+<li>定了工作要怎么分吗？按工作分，或按客户分，都可以。</li>
+<li>定了每件工作一开始分多少吗？只能分大钱包里有的数量。（<code>Initial budget</code>）</li>
+<li>确认了要邀请的成员的工作邮箱吗？除了邀请进房间，还定了要加进哪件工作吗？</li>
+<li>房间管理员要在别人的工作里做事吗？如果是，也一起给了那件工作的角色吗？</li>
+<li>在 <code>Settings</code> 里，定了公司名字、默认语言、时间标准、标志和默认颜色吗？按了 <code>Save settings</code> 吗？时间标准，定的是每个月的总数。</li>
+<li>定了谁看 <code>Usage &amp; budget</code> 和 <code>Operation logs</code> 吗？定了多久看一次吗？</li>
+<li>把 Beta 1 里不能做的事，从公司说明里去掉了吗？用卡付钱、账单、下载 PDF、拿到别的工作 Reuse、在外面打开，都不行。</li>
+</ul>
+<div class="note">这份指南是看着咨询页面（https://www.xconda.ai/workspace）和 2026-11-17 看到的真实画面写的。价格和画面可能会变。用之前，请再看一遍咨询的回复。付钱之前，请再看一遍网站画面。关于钱或账号有问题，请问咨询页面的客服中心。</div>
+</main>
+<footer>XCONDA 工作区指南 · 25_Workspace_Guide_ZH.html · 2026-11-17 修订 · 参考：工作区咨询页面 + 测试版真实画面</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

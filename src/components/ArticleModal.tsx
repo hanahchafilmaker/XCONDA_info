@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, BookOpen, CalendarDays, Link2, X, Pin } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Link2, X, Pin } from "lucide-react";
 import { useContent } from "../content/ContentContext";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
@@ -10,8 +10,8 @@ import { isNew } from "../notion";
 import { cn } from "../utils/cn";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
-import { TOOLS } from "../content/tools";
 import { htmlGuideLabels, htmlGuideUrl } from "../content/htmlGuides";
+import { getToolVideo } from "../content/toolVideos";
 import { hubAbsolute, shareUrlFor } from "../seo";
 import { productLinks } from "../content/cta";
 import { isEndedTitle } from "../content/seo";
@@ -59,11 +59,11 @@ export default function ArticleModal() {
   const [blocks, setBlocks] = useState<Block[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [sharing, setSharing] = useState(false);
-  const [guideView, setGuideView] = useState<"illustrated" | "original">("illustrated");
   const scrollRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const modalGuideUrl = activeToolSlug ? htmlGuideUrl(activeToolSlug, target) : undefined;
+  const modalVideoUrl = activeToolSlug ? getToolVideo(activeToolSlug, target) : undefined;
   const focusKey = activeToolSlug ?? active?.id;
   const labels = htmlGuideLabels[target];
 
@@ -79,10 +79,6 @@ export default function ArticleModal() {
         .finally(() => setLoading(false));
     }
   }, [active, endpoint]);
-
-  useEffect(() => {
-    setGuideView("illustrated");
-  }, [activeToolSlug, target]);
 
   useEffect(() => {
     if (!focusKey) return;
@@ -117,11 +113,6 @@ export default function ArticleModal() {
   }, [focusKey, closeEntry]);
 
   if (!active) return null;
-
-  const guideTool = active.type === "guide"
-    ? TOOLS.find((tool) => active.id === `tool-${tool.slug}` || (active.tool && active.tool.toLowerCase() === tool.name.toLowerCase()))
-    : undefined;
-  const guideUrl = guideTool ? htmlGuideUrl(guideTool.slug, target) : undefined;
 
   const related = entries
     // 끝난 행사 글(제목에 「종료」)은 추천하지 않습니다 — 정적 페이지의 관련 글과 같은 기준.
@@ -169,18 +160,6 @@ export default function ArticleModal() {
             {active.version && <span className="font-mono text-xs text-neutral-500">{active.version}</span>}
           </div>
           <div className="ml-auto flex items-center gap-1">
-            {modalGuideUrl && (
-              <button
-                type="button"
-                data-guide-view={guideView === "illustrated" ? "original" : "illustrated"}
-                aria-controls={guideView === "illustrated" ? "original-guide" : "illustrated-guide"}
-                onClick={() => setGuideView(guideView === "illustrated" ? "original" : "illustrated")}
-                className="notranslate inline-flex items-center gap-1.5 rounded-full bg-black/[0.04] px-2.5 py-1.5 text-xs font-medium text-neutral-700 transition hover:bg-black/[0.08]"
-              >
-                <BookOpen className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                {guideView === "illustrated" ? labels.original : labels.illustrated}
-              </button>
-            )}
             <Button
               variant="outline"
               size="sm"
@@ -205,34 +184,41 @@ export default function ArticleModal() {
           </div>
         </div>
 
-        {/* Drive는 자체 CSP로 iframe 삽입을 막습니다 → 현재판 문서는 새 탭 링크로 엽니다. */}
-        {modalGuideUrl && (
-          <div id="illustrated-guide" hidden={guideView !== "illustrated"} className="relative min-h-0 flex-1 overflow-y-auto bg-white px-5 py-8 sm:px-10">
-            <div className="mx-auto max-w-2xl rounded-2xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                XCONDA / CURRENT GUIDE · {DRIVE_GUIDE_UPDATED}
-              </p>
-              <h3 className="mt-3 text-xl font-bold tracking-tight text-neutral-950 notranslate">{guideTool?.name ?? active.title}</h3>
-              <p className="mt-3 text-[13px] leading-relaxed text-neutral-600">
-                {labels.read}. Google Drive에서 HTML 미리보기가 제한되면 파일을 다운로드한 뒤 브라우저로 열어 주세요.
-              </p>
-              <a
-                data-html-guide={activeToolSlug}
-                href={modalGuideUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-black"
-              >
-                {labels.read}
-                <ArrowUpRight className="h-4 w-4" aria-hidden />
-              </a>
-              <p className="mt-4 text-xs text-neutral-500">이전 버전 정적 사본 링크는 제거했습니다.</p>
-            </div>
-          </div>
-        )}
+        <div id="original-guide" ref={scrollRef} className="min-h-0 overflow-y-auto overscroll-contain">
+          {modalGuideUrl && (
+            <section data-current-guide className="border-b border-black/[0.06] bg-neutral-50 px-4 py-6 sm:px-7">
+              <div className="mx-auto max-w-4xl">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                  XCONDA / CURRENT GUIDE · {DRIVE_GUIDE_UPDATED} · {labels.illustrated}
+                </p>
+                <h3 className="mt-2 text-xl font-bold tracking-tight text-neutral-950 notranslate">{active.title}</h3>
+                {modalVideoUrl && (
+                  <video
+                    data-tool-video={activeToolSlug}
+                    src={modalVideoUrl}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label={`${active.title} 공식 영상 가이드`}
+                    className="mt-5 aspect-video w-full rounded-xl bg-black"
+                  />
+                )}
+                <div className="mt-5 overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                  <iframe
+                    key={modalGuideUrl}
+                    data-html-guide={activeToolSlug}
+                    src={modalGuideUrl}
+                    title={`${active.title} — ${labels.illustrated}`}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="block h-[min(70dvh,900px)] min-h-[520px] w-full border-0 bg-white"
+                  />
+                </div>
+              </div>
+            </section>
+          )}
 
-        <div id="original-guide" ref={scrollRef} hidden={!!modalGuideUrl && guideView === "illustrated"} className="min-h-0 overflow-y-auto overscroll-contain">
-          {(() => {
+          {!modalGuideUrl && (() => {
             // Link 가 YouTube 영상이면 상단 커버 자리에 바로 재생할 수 있게 끼워 넣습니다.
             const ytEmbed = active.url ? youTubeEmbed(active.url) : null;
             if (ytEmbed) {
@@ -282,19 +268,6 @@ export default function ArticleModal() {
             </h2>
             {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-neutral-500">{active.summary}</p>}
             <ProductLinks lang={String(target).slice(0, 2)} tool={active.tool} title={active.title} placement="top" />
-
-            {guideUrl && !modalGuideUrl && (
-              <a
-                data-html-guide={guideTool?.slug}
-                href={guideUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="notranslate mt-6 inline-flex items-center gap-2 rounded-none bg-amber-50 px-4 py-3 text-sm font-medium text-neutral-900 ring-1 ring-inset ring-amber-200 transition hover:bg-amber-100"
-              >
-                {htmlGuideLabels[target].read}
-                <ArrowUpRight className="h-4 w-4" aria-hidden />
-              </a>
-            )}
 
             {active.changes && active.changes.length > 0 && (
               <ul className="mt-6 space-y-2 rounded-none bg-black/[0.03] p-4 border border-black/[0.07]">

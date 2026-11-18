@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XCONDA Website User Manual</title>
+<meta name="description" content="XCONDA Website User Manual — image creation, Video Generator, Asset Library, and a complete guide to the platform’s features.">
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);line-height:1.75;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.2em;color:#9fb0cc}header h1{font-size:44px;margin:20px 0 12px;line-height:1.25}header p{color:#c6d0e2;max-width:860px}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}h3{font-size:20px;margin:32px 0 4px}h4{font-size:17px;margin:24px 0 4px}p{margin:8px 0}ul,ol{margin:8px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.6;vertical-align:top}th{background:#f2f3f6}
+pre{background:#f2f3f6;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all}code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}.check li:before{content:'☐';position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}.toc a{color:var(--navy);text-decoration:none}footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}.language-nav{font-size:13px;margin-top:20px}.language-nav a,.language-nav strong{display:inline-block;margin-right:16px;color:#fff}.table-scroll{overflow-x:auto}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{header{background:#fff;color:var(--ink);padding:24px 0}header p,header .brand{color:var(--slate)}.language-nav{display:none}main{padding:20px 0}h2,h3{break-after:avoid}tr{break-inside:avoid}.table-scroll{overflow:visible}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="website-manual" data-current-guide-lang="en" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="Current user guides navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/website-manual.html" hreflang="ko" lang="ko">KO</a><a href="../en/website-manual.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/website-manual.html" hreflang="ja" lang="ja">JA</a><a href="../zh/website-manual.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<header><div class="brand">XCONDA / 2026 · WEBSITE USER MANUAL (DETAILED TEXT EDITION)</div>
+<h1>XCONDA Website User Manual</h1>
+<p>Direct first, then generate. From getting started on the website to image creation, Video Generator, Asset Library, and character, editing, angle, and audio tools, this manual brings together all the features of the XCONDA website. It has been rewritten in the same detailed text format as the Prompt Writing Guide.</p>
+<nav class="language-nav" aria-label="Document language">한국어<strong aria-current="page">English</strong>日本語简体中文</nav></header>
+<main>
+<div class="toc"><strong>Contents</strong><ol>
+<li><a href="#c1">What is the XCONDA website?</a></li>
+<li><a href="#c2">Getting started — start free, then create with credits</a></li>
+<li><a href="#c3">Asset Library — save what you create and reuse it</a></li>
+<li><a href="#c4">Creating images — the detailed FlexBoard workflow</a></li>
+<li><a href="#c5">Image tools — choose the right tool for the job</a></li>
+<li><a href="#c6">Turn — create a 360° virtual set from one photo</a></li>
+<li><a href="#c7">Video Generator — create video from text and images</a></li>
+<li><a href="#c8">Character, editing, angle, and audio tools — refine your work</a></li>
+<li><a href="#c9">Blocking Board — rehearse movement before generating video</a></li>
+<li><a href="#c10">Final checks — a checklist before generation</a></li>
+</ol></div>
+<h2 id="c1">1. What is the XCONDA website?</h2>
+<p>XCONDA is an AI video and image production platform operated by CUBEBERRY. It brings multiple generative AI models together and provides a connected set of production tools, from a script to a storyboard and then to video generation. Its central principle is simple.</p>
+<p><strong>Direct first, then generate — plan the direction before generating the content.</strong></p>
+<p>Why start with direction? Video AI redraws each cut from scratch. It does not remember the previous cut. Unless you establish the space, characters, and composition first, the people and locations can change from cut to cut. XCONDA addresses this problem at the directing stage: establish the space with Turn, the characters and composition with FlexBoard, and the movement paths with Blocking Board before you generate.</p>
+<p>XCONDA is developed and operated by CUBEBERRY itself. CUBEBERRY uses these tools to produce work broadcast on terrestrial television and KOCCA Content Lab AI web dramas. This manual follows the same order used in actual production.</p>
+<div class="note">The website uses a credit-based system. Each operation deducts a specified number of credits, and you can purchase credit packages to top up your balance. Supported languages are English, Korean, Japanese, and Simplified Chinese.</div>
+<h2 id="c2">2. Getting started — start free, then create with credits</h2>
+<h3>2-1. Begin with Start free</h3>
+<p>Select the start option on the website’s home screen. You will receive welcome credits. Blocking Board is available as a free beta, with no card required.</p>
+<h3>2-2. Purchase a credit package</h3>
+<p>If you run out of credits, purchase a package to top up your balance. Once payment is complete, you can start creating immediately. The following table is the reference.</p>
+<div class="table-scroll"><table><tbody><tr><th>Package</th><th>Price</th><th>Credits</th></tr>
+<tr><td>Starter Pack V1</td><td>$6.90</td><td>2,020</td></tr>
+<tr><td>Starter Pack V2</td><td>$20.90</td><td>6,200</td></tr>
+<tr><td>Pro Pack V1</td><td>$34.90</td><td>10,500</td></tr>
+<tr><td>Pro Pack V2</td><td>$67.90</td><td>21,500</td></tr>
+<tr><td>Master Pack</td><td>$369.90</td><td>114,000</td></tr></tbody></table></div>
+<p style="color:var(--slate);font-size:13px">Based on the website’s pricing table, checked on 2026-11-03. Prices may change in accordance with the website’s policies.</p>
+<h3>2-3. Check the Hub when you need help</h3>
+<p>The XCONDA Hub at hub.xconda.ai contains announcements, tool instructions, blog posts, and Q&amp;A. Screen-by-screen FlexBoard guides are also available on the Hub.</p>
+<div class="note">A habit that saves credits: instead of regenerating everything, select only the cuts you are unhappy with and recreate those. Before generating, check the cut order, references, and shot duration.</div>
+<h2 id="c3">3. Asset Library — save what you create and reuse it</h2>
+<p>Assets created in XCONDA are stored in the library and reused in later work. Sets created in Turn are saved there as well. Character and background references, key images, storyboard projects, and generated images and videos are all assets. As your library grows, future work becomes faster and more consistent.</p>
+<h3>3-1. Character sheets — facial references for each character</h3>
+<p>Prepare a facial image as a character sheet for each character. This sheet is the reference that keeps the same character recognizable across cuts. Include character names in the script so the AI can connect the appropriate face and costume references. For detailed rules on creating character sheets, see the Prompt Writing Guide.</p>
+<h3>3-2. Background sheets — references for locations and spaces</h3>
+<p>Prepare a background image as a background sheet for each location. This includes four-sided background sheets created with Turn: front, left, right, and rear. The background sheet is the reference that keeps the same space consistent across cuts.</p>
+<h3>3-3. Turn sets — 360° virtual sets</h3>
+<p>Save the 360° virtual sets created in Turn to the library and reuse them in future work. There is no need to recreate the same space.</p>
+<h3>3-4. Key images — reference images for cuts</h3>
+<p>Key images extracted in Turn and cut images finalized in FlexBoard become the references for the next stage: video generation. An empty-space image (Freeze Frame) serves as a background reference for video generation, while a key image containing characters is used as a storyboard cut.</p>
+<h3>3-5. Projects — storyboard and scene projects</h3>
+<p>FlexBoard storyboard projects and Blocking Board scene projects are also assets. Open a project to revise cuts, generate again, and export the results.</p>
+<p><strong>The most important principle: until the characters and locations are established, you cannot create the references needed for the next stage.</strong> The Asset Library is the repository that supports this principle. Before starting new work, first check whether the library contains the required character and background sheets.</p>
+<h2 id="c4">4. Creating images — the detailed FlexBoard workflow</h2>
+<p>Create images with FlexBoard. Break the script into instructions for individual cuts, then generate an image for each cut to check its composition and characters in advance. You can create storyboards of 6 to 36 cuts and generate images with GPT Image 2. The key is to revise only the cuts that do not meet your needs.</p>
+<h3>4-1. Step 01 · Enter — select Flex Board and create a new project</h3>
+<p>Select Flex Board in the Storyboard category. In the workspace, use New Project to create a project and open the project selection panel. You can also start with a sample to learn the workflow.</p>
+<h3>4-2. Step 02 · References — establish character and background references</h3>
+<p>Choose the character and background reference images. These references keep the characters and space consistent across cuts. Without references, the characters may change from cut to cut.</p>
+<h3>4-3. Step 03 · Text cuts — write each cut and preview the text</h3>
+<p>Divide the script into cuts and write instructions for each one. In the text preview, first check the cut cards, descriptions, and sound effects. Finalizing the cut order and composition at the text stage saves credits. The text preview is free and serves as the checkpoint before generation.</p>
+<h3>4-4. Step 04 · Image generation — compare each image in the grid</h3>
+<p>After generating images, compare each image in the grid with its description. Check whether the composition, characters, and background are correct for each cut.</p>
+<h3>4-5. Step 05 · Revise individual cuts — regenerate only what does not work</h3>
+<p>Select only the cuts you are unhappy with, revise their prompts, and generate again. Recreating a cut starts at 20 credits. To keep the same scene while changing only the angle or camera movement, drag an image to replace the intended cut.</p>
+<h3>4-6. Step 06 · Finalize — check the final cuts and camera settings</h3>
+<p>Review the final cuts and check that the camera settings—shot duration, shot size, camera angle, and camera movement—match your intention. Then move on to video generation.</p>
+<div class="note">Check in this order before sending to video: cut-grid images → scene descriptions → character tokens → whether any cuts are missing. Complete all four checks before sending.</div>
+<h2 id="c5">5. Image tools — choose the right tool for the job</h2>
+<p>There are other image-creation tools besides FlexBoard. Choose according to your purpose. The table below lists them all. Every tool follows the same principle: establish the references, check each cut, and revise only what does not work.</p>
+<div class="table-scroll"><table><tbody><tr><th>Tool</th><th>What it does</th><th>When to use it</th></tr>
+<tr><td>Flex Board</td><td>Turns a script into a 6–36-cut storyboard with text and images for each cut.</td><td>For an episode storyboard and cut-by-cut direction.</td></tr>
+<tr><td>Directors Cut</td><td>Choose an art style and enter a script; the AI generates a 9-cut storyboard, with individual prompt adjustment for each cut.</td><td>When you need a 9-cut arrangement quickly.</td></tr>
+<tr><td>Art Director Pro</td><td>Creates a 9-cut storyboard that keeps characters and scenes consistent across cuts.</td><td>When character, costume, and state consistency matter.</td></tr>
+<tr><td>SceneSnap</td><td>Upload one reference photo; the AI generates a cinematic storyboard with 6 keyframes.</td><td>When starting from a photograph.</td></tr>
+<tr><td>YouTube Ref</td><td>Paste a YouTube link; the tool analyzes the video’s style and generates a 9-scene storyboard incorporating your characters.</td><td>When drawing on the style of a reference video.</td></tr>
+<tr><td>Director's Sequence</td><td>Provide one keyframe and a synopsis; the AI generates 8 consecutive story scenes.</td><td>When developing a continuing story from one scene.</td></tr>
+<tr><td>Image Generator</td><td>Generates high-resolution, photorealistic images from text prompts in styles including cinematic, editorial, and product photography.</td><td>When you need a single image.</td></tr></tbody></table></div>
+<div class="note">Consistency engines: Turn (AI VirtualSet) handles background consistency, while Art Director Pro handles character consistency. In Art Director Pro, four AI agents validate, revise, and propagate changes in sequence, carrying costumes, expressions, and injury states across cuts. Change one frame and the others automatically follow.</div>
+<h2 id="c6">6. Turn — create a 360° virtual set from one photo</h2>
+<p>Turn creates a 360° virtual set from one photograph or a text description. Because it builds the space first and then lets you move the camera inside it to choose an angle, doors, windows, and furniture remain in the same positions when the cut changes. Turn is the solution to background consistency.</p>
+<h3>6-1. Step 01 · Analyze the space — generate a 360° space from one photo</h3>
+<p>Provide one interior photograph or describe the space in text to generate a 360° environment.</p>
+<h3>6-2. Step 02 · 3D preview — rotate to find an angle and adjust dimensions</h3>
+<p>Look around the space in the 3D preview to find the angle you want. You can adjust the room size and ceiling height immediately; resizing does not require additional generation.</p>
+<h3>6-3. Step 03 · Edit walls — add props and replace wallpaper</h3>
+<p>Add props and change the wallpaper on each wall. Use the mask tool to specify the area to change, then enter a prompt to create a new prop. Leave the prompt empty to remove the selected content automatically.</p>
+<h3>6-4. Step 04 · Key images — establish characters, costumes, and cinematic style for 2K images</h3>
+<p>Add characters, costumes, and a cinematic style to the established frame and extract 1K/2K key images. These key images become references for storyboard cuts or video generation.</p>
+<h3>6-5. Use case A · Background sheets — create a four-sided background sheet</h3>
+<p>Put one side of a background sheet—the front image—into Turn, generate the left, right, and rear views, and group the four views into one set. This set becomes the background reference for video generation.</p>
+<h3>6-6. Use case B · Cut images — create cuts directly inside the set</h3>
+<p>Create a 360° virtual set, place characters and props inside it, then rotate to the desired angle and generate a cut image directly. Use that image as a storyboard cut.</p>
+<div class="note">Save sets created in Turn to the library and reuse them in later work. There is no need to recreate the same space.</div>
+<h2 id="c7">7. Video Generator — create video from text and images</h2>
+<p>Video Generator creates videos from text prompts alone or from start and end frames. You can directly connect the storyboard images and cut instructions created in FlexBoard. Before sending, you must check the cut order, references, and shot duration.</p>
+<h3>7-1. Step 01 · Model selection — choose a model for your purpose</h3>
+<p>Choose according to duration, resolution, audio support, and start/end-frame support. Use the table below as a reference. Seedance 2.5 can generate up to 30 seconds at up to 1080p in one run.</p>
+<div class="table-scroll"><table><tbody><tr><th>Model</th><th>Maximum duration</th><th>Resolution</th><th>Audio</th><th>Start/end frames</th></tr>
+<tr><td>Seedance 2.5 T2V</td><td>30 seconds</td><td>1080p</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Seedance 2.0 T2V</td><td>15 seconds</td><td>4K</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Seedance 2.0 Fast T2V</td><td>15 seconds</td><td>720p</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Seedance 2.0 MINI T2V</td><td>15 seconds</td><td>720p</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Veo 3.1 T2V</td><td>8 seconds</td><td>—</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Veo 3.1 Fast T2V</td><td>8 seconds</td><td>1080p</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Gemini Omni Flash T2V</td><td>10 seconds</td><td>720p</td><td>Native</td><td>—</td></tr>
+<tr><td>Kling 3.0 Pro T2V</td><td>15 seconds</td><td>—</td><td>Supported</td><td>Multi-shot prompt</td></tr>
+<tr><td>Kling 3.0 4K T2V</td><td>15 seconds</td><td>4K</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Kling OMNI T2V</td><td>15 seconds</td><td>—</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Grok Imagine Video T2V</td><td>15 seconds</td><td>720p</td><td>Native</td><td>—</td></tr>
+<tr><td>Vidu Q3 T2V</td><td>16 seconds</td><td>1080p</td><td>Supported</td><td>Up to 4 simultaneous generations</td></tr></tbody></table></div>
+<p style="color:var(--slate);font-size:13px">Based on the website’s video page, checked on 2026-11-03. Specifications may change as models are updated.</p>
+<h3>7-2. Step 02 · Input — a prompt or start/end frames</h3>
+<p>Generate from text alone, or provide start/end frames, such as FlexBoard images, to establish the scene. Using images finalized in the storyboard helps preserve the characters and space.</p>
+<h3>7-3. Step 03 · Options — aspect ratio, resolution, duration, and high quality</h3>
+<p>Set the aspect ratio, resolution, duration, and high-quality option. Enabling the high-quality option improves quality.</p>
+<h3>7-4. Step 04 · Generate and review — check each cut and return to the storyboard if needed</h3>
+<p>Review the generated video cut by cut. If the characters or space have changed, return to the storyboard stage, establish the references, and generate again. Directing before generating is how you preserve consistency.</p>
+<h2 id="c8">8. Character, editing, angle, and audio tools — refine your work</h2>
+<p>These tools refine images and videos after they have been created. Change a face, expression, or costume; improve image quality; change an angle; or apply a color grade. Together with the storyboard, character, editing, angle, and audio tools, the website offers more than 16 tools.</p>
+<div class="table-scroll"><table><tbody><tr><th>Tool</th><th>What it does</th><th>When to use it</th></tr>
+<tr><td>Face Swap</td><td>Replaces faces in photos and videos with AI precision while matching lighting, skin tone, and expression.</td><td>When a character’s face needs to be changed.</td></tr>
+<tr><td>Expression Transformer</td><td>Changes a character’s expression.</td><td>When you need the same character with a different expression.</td></tr>
+<tr><td>ClothSwap</td><td>Mask the area to be changed and upload a reference clothing image to replace the outfit while preserving lighting, body shape, and scene context.</td><td>When only the costume needs to change.</td></tr>
+<tr><td>AI Upscaler</td><td>Upscales image resolution by up to 4× without loss of quality.</td><td>When the resolution is insufficient.</td></tr>
+<tr><td>Auto Angle Generator</td><td>Automatically generates angles.</td><td>When you need the same scene from a different angle.</td></tr>
+<tr><td>SpinAngle</td><td>Generates rotating-angle content.</td><td>When you need a rotating-angle sequence.</td></tr>
+<tr><td>CineGrade AI</td><td>Transforms ordinary photos into cinematic images, applying film-grade color, depth of field, and a cinematic look with a single prompt.</td><td>When unifying color and visual style.</td></tr></tbody></table></div>
+<p>These tools can be used on their own, but within the main episode workflow they are used for refinement after storyboarding and video generation. After changing a costume, it is advisable to run the character-consistency check in Art Director Pro again.</p>
+<h2 id="c9">9. Blocking Board — rehearse movement before generating video</h2>
+<p>Blocking Board is a digital rehearsal tool for checking whether characters, the space, and the camera will collide before video generation. It is available as a free beta on the website, with no card required. Paste in a script to create a draft of the actors, space, movement paths, and cameras.</p>
+<h3>9-1. Step 01 · 1-Click — paste a script to create a draft</h3>
+<p>Paste in a script to generate a draft of the actors, space, movement paths, and cameras.</p>
+<h3>9-2. Step 02 · 2D floor plan — adjust placement and movement paths</h3>
+<p>Adjust actor and camera positions and their movement paths in the 2D floor plan.</p>
+<h3>9-3. Step 03 · 3D preview — play back the scene on a 3D stage</h3>
+<p>Play the scene on the 3D stage and review character and camera movement.</p>
+<h3>9-4. Step 04 · Direction checks — inspect collisions and eyelines</h3>
+<p>Check for collisions and eyeline issues in the direction review. If a problem appears, return to the floor plan and correct the placement or movement paths.</p>
+<h3>9-5. Step 05 · Export — export a shot book PDF and other deliverables</h3>
+<p>Reviewed scenes can be exported as English prompts for Seedance, a shot list, floor plans and frame PNGs, and a shot book PDF. You can also play back the scene and export a previsualization video in WebM format.</p>
+<div class="note">For complex scenes in which multiple characters cross paths, it is recommended that you establish positions and movement routes in Blocking Board first. If you generate without rehearsing, you will have to correct collisions and movement errors later. For detailed instructions, see the separate 13-chapter Blocking Board guide.</div>
+<h2 id="c10">10. Final checks — a checklist before generation</h2>
+<p>The key to using the website is the order of operations. Direct first, then generate. Establish the composition and characters in the storyboard, review movement in Blocking Board, and then generate with Video Generator to reduce the number of regenerations.</p>
+<ul class="check">
+<li>Are the character sheets and background sheets in the library?</li>
+<li>Have the cut order and instructions for each cut been finalized?</li>
+<li>Have you compared the cut-grid images, scene descriptions, and character tokens?</li>
+<li>Are any cuts missing?</li>
+<li>Do the shot duration, shot size, camera angle, and camera movement match your intention?</li>
+<li>If a Turn set is needed, have you reused one from the library?</li>
+<li>Have you checked the final cuts and camera settings before sending to video?</li>
+</ul>
+<div class="note">This manual was prepared on 2026-11-03 using the public XCONDA website, Hub guides, and CUBEBERRY production articles. Prices, model specifications, and credit policies may change with website updates; check the website again before payment or generation. Help is available at hub.xconda.ai. For detailed prompt-writing rules, see the Prompt Writing Guide.</div>
+</main>
+<footer>XCONDA Website User Manual (Detailed Text Edition) · Source prepared 2026-11-03 · English translation updated 2026-11-03 · Original source note: the existing slide-style guide (No. 20) is preserved unchanged.</footer>
+
+<script src="../embed.js" defer=""></script></body></html>
