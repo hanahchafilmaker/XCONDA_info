@@ -6,9 +6,67 @@
   "en": {
     "qna/hub-languages": [
       "length-long"
+    ],
+    "qna/blocking-board-getting-started": [
+      "length-long"
+    ],
+    "qna/blocking-board-ambiguous-details": [
+      "length-long"
+    ],
+    "qna/blocking-board-space-json-size": [
+      "length-long"
+    ],
+    "qna/workspace-overview": [
+      "length-long"
+    ],
+    "qna/workspace-organization-count": [
+      "length-long"
+    ],
+    "qna/workspace-member-limit": [
+      "length-long"
+    ],
+    "qna/workspace-organization-credits-separate-request": [
+      "length-long"
+    ],
+    "qna/workspace-enterprise-unlimited": [
+      "length-long"
+    ],
+    "qna/credits-are-tokens-not-points": [
+      "length-long"
+    ],
+    "qna/seedance-draft-1080p-window-14-days": [
+      "length-long"
+    ],
+    "qna/seedance-completed-video-no-expiry": [
+      "length-long"
     ]
   },
   "_notes": {
-    "qna/hub-languages": "한국어 원문에는 없는 '언어별 주소(/en/·/ja/·/zh/)' 안내를 영어 답변에 의도적으로 덧붙였습니다(검색 유입용)."
+    "qna/hub-languages": "한국어 원문에는 없는 '언어별 주소(/en/·/ja/·/zh/)' 안내를 영어 답변에 의도적으로 덧붙였습니다(검색 유입용).",
+    "en:qna-81-91": "en 승인된 한국어 답변이 매우 짧아, 정적 번역 페이지의 최소 본문 길이(40자)를 맞추고 문맥·용어를 보충한 의도된 length-long 경고입니다. 숫자·정책·브랜드 표기는 원문과 일치합니다.",
+    "ja:qna-81-91": "ja 승인된 한국어 답변이 매우 짧아, 정적 번역 페이지의 최소 본문 길이(40자)를 맞추고 문맥·용어를 보충한 의도된 length-long 경고입니다. 숫자·정책·브랜드 표기는 원문과 일치합니다.",
+    "zh:qna-81-91": "zh 승인된 한국어 답변이 매우 짧아, 정적 번역 페이지의 최소 본문 길이(40자)를 맞추고 문맥·용어를 보충한 의도된 length-long 경고입니다. 숫자·정책·브랜드 표기는 원문과 일치합니다."
+  },
+  "ja": {
+    "qna/workspace-organization-count": [
+      "length-long"
+    ],
+    "qna/workspace-organization-credits-separate-request": [
+      "length-long"
+    ],
+    "qna/credits-are-tokens-not-points": [
+      "length-long"
+    ]
+  },
+  "zh": {
+    "qna/workspace-organization-count": [
+      "length-long"
+    ],
+    "qna/workspace-organization-credits-separate-request": [
+      "length-long"
+    ],
+    "qna/credits-are-tokens-not-points": [
+      "length-long"
+    ]
   }
 }

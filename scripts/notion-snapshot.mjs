@@ -42,7 +42,10 @@ const DEFAULT_DATABASE_ID = "3b54d2ea0d5e4ab5b33cff12de807517";
  * (GitHub 저장소 Settings → Variables 의 `NOTION_FAQ_PAGE_ID` / `NOTION_FAQ_DATABASE_ID` 로 바꿀 수 있습니다)
  */
 const DEFAULT_FAQ_PAGE_ID = "15d208576a644c499959ace667de40a2";
+/** Public-page collection view ID (`?v=…`); separate from the API data-source ID below. */
 const DEFAULT_FAQ_DATABASE_ID = "2d3c8b526b4845999e2014f1db5eab93";
+/** Notion API 2025-09 data source ID for the same XCONDA 허브 Q&A database. */
+export const DEFAULT_FAQ_DATA_SOURCE_ID = "d04aa2a0-accb-4c5a-972b-2a2e17de21e6";
 
 /** 섹션 표시 순서 (사이트와 동일: 공지사항 → 뉴스 → 툴 사용법 → 블로그 → Q&A) */
 const SECTION_ORDER = ["notice", "news", "guide", "blog", "faq"];
@@ -451,11 +454,15 @@ function cachedQnaRow(previous, id, modified) {
  *     `내부 근거` 는 제외)은 `src/content/hubQna.js` 한 곳에서 관리합니다 — 사이트도 같은 함수를 씁니다.
  *   ▸ 이 표를 읽지 못해도 메인 동기화는 계속됩니다(경고만 남기고 넘어갑니다).
  */
-export async function loadHubQna({ pageId, databaseId, previous } = {}) {
+export async function loadHubQna({ pageId, databaseId, dataSourceId, previous } = {}) {
   const page = extractId(firstFilled(pageId, process.env.NOTION_FAQ_PAGE_ID, DEFAULT_FAQ_PAGE_ID));
+  // `databaseId` is the public/private collection *view* ID (`?v=`). The API's
+  // 2025-09 data-source ID is a different ID and must not be used as the view.
   const viewId = extractId(firstFilled(databaseId, process.env.NOTION_FAQ_DATABASE_ID, DEFAULT_FAQ_DATABASE_ID));
+  const sourceId = extractId(firstFilled(dataSourceId, process.env.NOTION_FAQ_DATA_SOURCE_ID, DEFAULT_FAQ_DATA_SOURCE_ID));
   const report = {
     skipped: null,
+    dataSourceId: sourceId ? dashed(sourceId) : null,
     rowCount: 0,
     reused: 0, // 본문을 다시 읽지 않고 이전 스냅샷에서 재사용한 문항 수
     kept: 0, // 읽기 실패로 이전 스냅샷의 답변을 그대로 쓴 문항 수
@@ -471,7 +478,7 @@ export async function loadHubQna({ pageId, databaseId, previous } = {}) {
   const result = { rows: [], pages: {}, report };
 
   if (!page && !viewId) {
-    report.skipped = "표 ID 가 없습니다 (NOTION_FAQ_PAGE_ID / NOTION_FAQ_DATABASE_ID)";
+    report.skipped = "표 ID 가 없습니다 (NOTION_FAQ_PAGE_ID / NOTION_FAQ_DATABASE_ID / NOTION_FAQ_DATA_SOURCE_ID)";
     return result;
   }
 
@@ -486,15 +493,20 @@ export async function loadHubQna({ pageId, databaseId, previous } = {}) {
 
   let views = findCollectionViews(blocks);
   let view = pickCollectionView(views, viewId);
-  if (!view && viewId) {
+  // 데이터 소스 ID만으로 들어온 커넥터/공식 API 호출도 같은 표를 찾을 수 있게 합니다.
+  if (!view) view = views.find((v) => undashed(v.collectionId) === undashed(sourceId));
+  if (!view && (viewId || sourceId)) {
     // 데이터베이스 페이지 대신 뷰(블록) ID 만 준 경우 — 블록을 직접 읽어 봅니다.
-    try {
-      const dbBlocks = await loadBlockMap(viewId);
-      const dbViews = findCollectionViews(dbBlocks);
-      if (dbViews.length) views = dbViews;
-      view = pickCollectionView(dbViews, viewId);
-    } catch (error) {
-      report.notes.push(`표 블록을 직접 읽지 못했습니다 — ${error?.message ?? error}`);
+    for (const candidateId of [viewId, sourceId].filter(Boolean)) {
+      try {
+        const dbBlocks = await loadBlockMap(candidateId);
+        const dbViews = findCollectionViews(dbBlocks);
+        if (dbViews.length) views = dbViews;
+        view = pickCollectionView(dbViews, candidateId) ?? dbViews.find((v) => undashed(v.collectionId) === undashed(sourceId));
+        if (view) break;
+      } catch (error) {
+        report.notes.push(`표 블록을 직접 읽지 못했습니다 — ${error?.message ?? error}`);
+      }
     }
   }
   if (!view) {
@@ -644,9 +656,10 @@ export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
   // 허브 Q&A 표(별도 표) — 메인 표 선택에서 빼 둡니다. (아래에서 따로 읽습니다)
   const faqPage = extractId(firstFilled(process.env.NOTION_FAQ_PAGE_ID, DEFAULT_FAQ_PAGE_ID));
   const faqView = extractId(firstFilled(process.env.NOTION_FAQ_DATABASE_ID, DEFAULT_FAQ_DATABASE_ID));
+  const faqDataSource = extractId(firstFilled(process.env.NOTION_FAQ_DATA_SOURCE_ID, DEFAULT_FAQ_DATA_SOURCE_ID));
   const belongsToFaq = (v) => {
-    const ids = [v.blockId, ...(v.viewIds ?? [])].map(undashed);
-    return [faqPage, faqView].filter(Boolean).some((id) => ids.includes(undashed(id)));
+    const ids = [v.blockId, v.collectionId, ...(v.viewIds ?? [])].map(undashed);
+    return [faqPage, faqView, faqDataSource].filter(Boolean).some((id) => ids.includes(undashed(id)));
   };
   const mainViews = (all) => {
     const filtered = all.filter((v) => !belongsToFaq(v));
@@ -775,7 +788,7 @@ export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
   /* ------------------------------ 허브 Q&A 표 병합 ------------------------------ */
   // 고객 지원 Q&A(질문 1건 = 페이지 1개, 답변은 페이지 본문의 `답변` 섹션)를 같은 스냅샷에 합칩니다.
   // 노출 판단(상태 · 허브 게시)과 본문 필터(내부 근거 제외)는 src/content/hubQna.js 한 곳에서 관리합니다.
-  const qna = await loadHubQna({ pageId: faqPage, databaseId: faqView, previous });
+  const qna = await loadHubQna({ pageId: faqPage, databaseId: faqView, dataSourceId: faqDataSource, previous });
   rows.push(...qna.rows);
   Object.assign(pages, qna.pages);
   if (qna.report.skipped) console.warn(`⚠️ [Notion Sync 경고] 허브 Q&A: ${qna.report.skipped}`);
@@ -796,6 +809,7 @@ export async function buildSnapshot({ pageId, databaseId, previous } = {}) {
       faqPageId: faqPage ? dashed(faqPage) : null,
       faqViewId: qna.report.viewBlockId ?? (faqView ? dashed(faqView) : null),
       faqCollectionId: qna.report.collectionId ?? null,
+      faqDataSourceId: qna.report.dataSourceId ?? null,
     },
     rows,
     pages,
@@ -1312,7 +1326,7 @@ if (isMain) {
         "1. 노션 페이지 공유 → **웹에 게시(Publish)** 상태인지",
         "2. 페이지 안에 표(데이터베이스)가 있고, `Published` 체크된 행이 있는지",
         "3. 저장소 Settings → Variables 의 `NOTION_PAGE_ID` / `NOTION_DATABASE_ID` 가 맞는지",
-        "4. 허브 Q&A 표(`NOTION_FAQ_PAGE_ID` / `NOTION_FAQ_DATABASE_ID`)도 같은 조건인지",
+        "4. 허브 Q&A 표(`NOTION_FAQ_PAGE_ID` / `NOTION_FAQ_DATABASE_ID` / `NOTION_FAQ_DATA_SOURCE_ID`)도 같은 조건인지 — 뷰 ID와 데이터 소스 ID는 서로 다릅니다",
         "5. 그래도 실패하면 NOTION_SETUP.md 의 「동기화가 안 될 때 확인 순서」",
       ].join("\n");
       if (!(await appendSyncSummary(help))) console.error(help);

@@ -1,5 +1,6 @@
 import type { Block, Entry, Tool } from "./types";
 import type { Lang } from "../i18n/dict";
+import type { Target } from "../i18n/google";
 import { translate } from "../i18n/dict";
 import { localizeEntry, localizeTool } from "../i18n/content";
 import { TOOL_EN } from "./tools.en";
@@ -310,7 +311,7 @@ export const TOOLS: Tool[] = BASE_TOOLS.map((tool) => ({
 
 export const TOOL_GROUPS = ["전체", "핵심 스튜디오", "스토리보드", "카메라 · 앵글", "이미지 편집", "생성 · 보정"] as const;
 
-function toolBlocks(tool: Tool, lang: Lang): Block[] {
+function toolBlocks(tool: Tool, lang: Lang, target: Target): Block[] {
   const manual = getToolGuide(tool.slug, lang);
   const blocks: Block[] = manual
     ? [...manual]
@@ -325,7 +326,7 @@ function toolBlocks(tool: Tool, lang: Lang): Block[] {
   }
 
   /* 공식 영상 가이드가 있으면 맨 위에 임베드합니다. */
-  const video = getToolVideo(tool.slug, lang);
+  const video = getToolVideo(tool.slug, target);
   if (video) {
     blocks.unshift({
       type: "video",
@@ -337,7 +338,7 @@ function toolBlocks(tool: Tool, lang: Lang): Block[] {
 }
 
 /** 툴 → 모달에서 보여줄 양언어 가이드 Entry로 변환 */
-export function toolToEntry(tool: Tool, lang: Lang = "ko"): Entry {
+export function toolToEntry(tool: Tool, lang: Lang = "ko", target: Target = lang): Entry {
   const english = localizeTool(tool, "en");
   const entry: Entry = {
     id: `tool-${tool.slug}`,
@@ -351,12 +352,12 @@ export function toolToEntry(tool: Tool, lang: Lang = "ko"): Entry {
     cover: hubAssetUrl(tool.image),
     url: tool.href,
     tool: tool.name,
-    blocks: toolBlocks(tool, "ko"),
+    blocks: toolBlocks(tool, "ko", target),
     translations: {
       en: {
         title: `${tool.name} guide`,
         summary: english.tagline,
-        blocks: toolBlocks(english, "en"),
+        blocks: toolBlocks(english, "en", target),
       },
     },
   };

@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Turn — 基于视频的用户指南</title>
+<style>
+
+
+:root {
+  --midnight: #1D2A4D;
+  --midnight-deep: #141E3A;
+  --offwhite: #FFFFFF;
+  --offwhite-warm: #F8F8F8;
+  --slate: #4A4A4A;
+  --slate-light: #8A8A8A;
+  --hairline: rgba(29, 42, 77, 0.15);
+  --hairline-light: rgba(29, 42, 77, 0.08);
+  --kor: 'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--kor);
+  background: var(--offwhite);
+  color: var(--midnight);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.75;
+  font-weight: 400;
+  word-break: keep-all;
+  font-size: 16px;
+}
+::selection { background: var(--midnight); color: var(--offwhite); }
+
+.slide {
+  min-height: 100vh;
+  padding: 80px;
+  position: relative;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+}
+.slide-meta {
+  position: absolute;
+  top: 32px; left: 80px; right: 80px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--slate); font-weight: 500; z-index: 5;
+}
+.slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+.slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+.footer-meta {
+  margin-top: auto; padding-top: 32px;
+  border-top: 1px solid var(--hairline);
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light);
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--midnight); font-weight: 500;
+}
+.section-header {
+  display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+}
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em;
+}
+.section-title-block .eyebrow { margin-bottom: 14px; }
+.section-title {
+  font-family: var(--kor); font-weight: 700; font-size: 42px;
+  line-height: 1.25; color: var(--midnight); letter-spacing: -0.035em;
+}
+.section-lede {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: var(--slate); margin-top: 18px; line-height: 1.75;
+  max-width: 720px; letter-spacing: -0.015em;
+}
+
+
+.cover {
+  background: var(--midnight); color: var(--offwhite);
+  padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.cover-left {
+  padding: 80px; display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid rgba(240,239,234,0.15);
+}
+.cover-right {
+  background: var(--offwhite); padding: 80px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.cover-right::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+  background-size: 4px 4px; pointer-events: none;
+}
+.cover-meta-top {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6);
+}
+.cover-title-en {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(70px, 10vw, 150px); line-height: 0.85;
+  letter-spacing: -0.02em; color: var(--offwhite);
+}
+.cover-title-kor {
+  font-family: var(--kor); font-weight: 600; font-size: 28px;
+  color: rgba(240,239,234,0.95); letter-spacing: -0.04em; margin-top: 24px; line-height: 1.3;
+}
+.cover-subtitle {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: rgba(240,239,234,0.75); margin-top: 24px; max-width: 460px;
+  line-height: 1.75; letter-spacing: -0.015em;
+}
+.cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-bottom-meta div {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8;
+}
+.cover-tag {
+  border-top: 1px solid var(--hairline); padding-top: 24px;
+  font-family: var(--kor); font-weight: 500; font-size: 14px;
+  color: var(--midnight); line-height: 1.85; letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+}
+.cover-tag .label {
+  display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--slate); margin-bottom: 8px; text-transform: uppercase;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
+.two-col.even { grid-template-columns: 1fr 1fr; }
+
+.step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+.step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.step-number {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--midnight); margin-bottom: 10px; display: inline-block;
+}
+.step-body {
+  font-family: var(--kor); font-size: 15.5px; color: var(--slate);
+  line-height: 1.85; letter-spacing: -0.015em;
+}
+.step-body strong { font-weight: 600; color: var(--midnight); }
+
+.image-plate { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.image-plate figure { width: 100%; }
+.image-plate img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--hairline); background: #101425;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  max-width: 100%;
+  object-fit: contain;
+
+}
+.image-plate img.enlarged-fix {
+  width: 100%; max-width: 100%; height: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+.image-plate figcaption {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light); margin-top: 10px;
+}
+
+
+.flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 34px; }
+.flow .fchip {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  border: 1px solid var(--midnight); padding: 8px 14px; color: var(--midnight);
+  background: var(--offwhite-warm);
+}
+.flow .fchip.dark { background: var(--midnight); color: var(--offwhite); }
+.flow .arr { font-family: var(--mono); color: var(--slate-light); font-size: 12px; }
+
+
+.k {
+  font-family: var(--mono); font-size: 0.86em; letter-spacing: 0.02em;
+  background: var(--midnight); color: var(--offwhite);
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
+.k.light { background: var(--offwhite-warm); color: var(--midnight); border: 1px solid var(--hairline); }
+
+
+.dict-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+  background: var(--hairline); border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline); margin-top: 40px;
+}
+.dict-item { background: var(--offwhite); padding: 26px 26px; display: flex; flex-direction: column; gap: 10px; min-height: 150px; }
+.dict-item .term { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--midnight); }
+.dict-item .kor { font-family: var(--kor); font-size: 15px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+.dict-item .desc { font-family: var(--kor); font-size: 13.5px; color: var(--slate); line-height: 1.7; letter-spacing: -0.01em; margin-top: auto; }
+.dict-item .tagline { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate-light); }
+
+
+.summary-list { display: grid; gap: 24px; margin-top: 40px; }
+.summary-item { padding: 28px 32px; background: var(--offwhite-warm); border-left: 3px solid var(--midnight); }
+.summary-item h4 { font-family: var(--kor); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.025em; }
+.summary-item p { font-family: var(--kor); font-size: 14.5px; color: var(--slate); line-height: 1.8; letter-spacing: -0.015em; }
+
+
+.stage-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+.stage-cell { background: var(--offwhite); padding: 22px 20px; }
+.stage-cell .no { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--midnight); }
+.stage-cell .nm { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--midnight); margin-top: 8px; }
+.stage-cell .ds { font-family: var(--kor); font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.65; }
+.stage-cell.dim { background: var(--offwhite-warm); }
+
+@media (max-width: 1100px) {
+  body { font-size: 15px; }
+  .slide { padding: 60px 32px; }
+  .slide-meta { left: 32px; right: 32px; }
+  .two-col, .two-col.even { grid-template-columns: 1fr; gap: 40px; }
+  .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+  .section-num { font-size: 72px; }
+  .section-title { font-size: 30px; }
+  .dict-grid { grid-template-columns: 1fr; }
+  .cover { grid-template-columns: 1fr; }
+  .cover-left, .cover-right { padding: 50px 32px; }
+  .cover-title-en { font-size: 64px; }
+  .cover-title-kor { font-size: 22px; }
+  .stage-row { grid-template-columns: 1fr 1fr; }
+}
+
+</style>
+<style>
+.image-plate .fix-badge {
+  display:inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: #1D2A4D;
+  color: #fff;
+  padding: 4px 8px;
+  margin-top: 6px;
+}
+.image-plate figure { position: relative; }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head>
+<body data-current-guide-slug="turn-video" data-current-guide-lang="zh" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="当前用户指南 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/turn-video.html" hreflang="ko" lang="ko">KO</a><a href="../en/turn-video.html" hreflang="en" lang="en">EN</a><a href="../ja/turn-video.html" hreflang="ja" lang="ja">JA</a><a href="../zh/turn-video.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+<section class="slide cover">
+<div class="cover-left">
+<div class="cover-meta-top"><span>Xconda / 2026</span><span>基于视频的用户指南</span></div>
+<div>
+<div class="cover-title-en">TURN</div>
+<div class="cover-title-kor">Turn — 基于视频的用户指南</div>
+<div class="cover-subtitle">依照四段演示视频（About Turn、Adjusting Room Size、Editing Objects、Creating a Key Image）中出现的界面与按钮名称，讲解创建空间与关键图像的步骤。</div>
+</div>
+<div class="cover-bottom-meta">
+<div><div>用户指南</div><div>来自演示视频</div></div>
+<div style="text-align:right"><div>11 个章节</div><div>2026</div></div>
+</div>
+</div>
+<div class="cover-right">
+<div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>11 个章节</span></div>
+<div></div>
+<div class="cover-tag">
+<span class="label">— 指南内容 —</span>       工作流程概览 · 首页界面 · 步骤 1：搭建空间 · 确认房间布局 · 房间尺寸与相机 · 3D 预览 · 墙面编辑 · 替换物件与壁纸 · 步骤 3：关键图像 · 按钮词汇表 · 技巧与常见错误 · 总结     </div>
+</div>
+</section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>工作流程概览</span></div><div class="right"><span>P. 001</span></div></div><div class="section-header"><div class="section-num">01</div><div class="section-title-block"><div class="eyebrow">— 概览 · 端到端流程 —</div><h2 class="section-title">工作流程一览</h2><p class="section-lede">按顺序走完顶部的四个阶段：1. PRE-PRODUCTION → 2. LOCATION_SCOUTING → 3. CAMERA_TEST → 4. MASTER_STILL。</p></div></div>
+<div class="stage-row">
+<div class="stage-cell"><div class="no">1</div><div class="nm">PRE-PRODUCTION</div><div class="ds">从参考图或文字描述创建 360° 空间。（视频 4）</div></div>
+<div class="stage-cell"><div class="no">2</div><div class="nm">LOCATION_SCOUTING</div><div class="ds">在 3D Preview 中旋转视角，调整房间尺寸或墙面。（视频 1、2、4）</div></div>
+<div class="stage-cell"><div class="no">3</div><div class="nm">CAMERA_TEST</div><div class="ds">在 Freeze Frame 中加入主体与风格，生成关键图像。（视频 3）</div></div>
+<div class="stage-cell dim"><div class="no">4</div><div class="nm">MASTER_STILL</div><div class="ds">最终母版静帧阶段。演示视频中没有展示该阶段。</div></div>
+</div>
+<div class="two-col" style="margin-top:50px">
+<div>
+<div class="step-block"><div class="step-number">— 步骤 01 —</div><p class="step-body">视频中展示的完整顺序如下： <strong>上传一张图像 → <span class="k">Analyze Space</span> → <span class="k">Confirm Room Layout</span> （标注墙面范围）→ 生成 360° 空间 → 打开 3D Preview →（如需）调整房间尺寸 / 编辑墙面 → <span class="k">FREEZE FRAME</span>  → 在 Step 3 中添加方向 → 生成关键图像</strong>.</p></div>
+<div class="step-block"><div class="step-number">— 步骤 02 —</div><p class="step-body">顶部的阶段标签会随进度逐步解锁。视频开始时只有  <strong>1. PRE-PRODUCTION</strong> 处于激活状态；空间生成后，  <strong>2. LOCATION_SCOUTING</strong> 变为激活。经过 Freeze Frame 后，  <strong>3. CAMERA_TEST</strong> 变为激活。</p></div>
+</div>
+<div>
+<div class="flow">
+<span class="fchip">上传 FRONT 图像</span><span class="arr">→</span>
+<span class="fchip">Analyze Space</span><span class="arr">→</span>
+<span class="fchip">Confirm Room Layout</span><span class="arr">→</span>
+<span class="fchip dark">360° 空间</span><span class="arr">→</span>
+<span class="fchip">3D Preview / Wall Edit</span><span class="arr">→</span>
+<span class="fchip">FREEZE FRAME</span><span class="arr">→</span>
+<span class="fchip dark">关键图像</span>
+</div>
+<div class="step-block"><div class="step-number">— 说明 —</div><p class="step-body">依据演示旁白 — ①“Turn 用一张图像创建虚拟摄影棚布景。”②“如果房间太大，就减小宽度和进深；也可以把天花板调高。”③“在 Wall Edit 中可以自由添加或移除物件。”④“设定构图、写好提示词，再加上主体与服装照片，就能完成关键图像。”</p></div>
+</div>
+</div>
+<div class="footer-meta"><span>001 — 工作流程</span><span>流程</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>首页界面</span></div><div class="right"><span>P. 002</span></div></div><div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 主页 · 界面构成 —</div><h2 class="section-title">首页界面与共用页头</h2><p class="section-lede">所有工作都从 1. PRE-PRODUCTION 首页开始。页头在每个阶段都保持一致。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 说明 01 —</div><p class="step-body"><strong>顶部阶段条</strong> — 左侧是 TURN 标志，右侧是四个阶段标签。当前激活的阶段以白色高亮。</p></div>
+<div class="step-block"><div class="step-number">— 说明 02 —</div><p class="step-body"><strong>模型选择（REPLICATE）</strong> — <span class="k">Nano Banana Pro</span>（紫色 = 已选中）/ <span class="k light">GPT Image 2.5</span> 两个引擎可以随时切换。</p></div>
+<div class="step-block"><div class="step-number">— 说明 03 —</div><p class="step-body"><strong>右侧的实用按钮</strong> — <span class="k light">Undo Face Edit</span> <span class="k light">Save</span> <span class="k light">Projects</span> <span class="k light">History</span> <span class="k light">API Connected</span>（绿点 = 已连接）。</p></div>
+<div class="step-block"><div class="step-number">— 说明 04 —</div><p class="step-body"><strong>状态行</strong> — 左侧显示 “Project is automatically saved to your PC.”，右侧显示 “LOCAL STUDIO · Generation model: Nano Banana Pro.”。生成过程中会出现 “Waiting to save...”。</p></div>
+<div class="step-block"><div class="step-number">— 说明 05 —</div><p class="step-body"><strong>输入区</strong> — FRONT / LEFT / RIGHT / BACK 四个方向槽位、  <span class="k light">Describe the space you want to create...</span>  输入框，以及紫色的  <span class="k">Create Space from Description</span>  按钮。上传图像后，按钮会变为  <span class="k">Analyze Space</span>.</p></div>
+</div>
+<div class="image-plate"><figure><img alt="步骤 1 首页界面 — 四个方向槽位与描述输入框" src="../screens/c3b8498734cea4421e39cd4ee15b635b9767950c1edf8fe3dbef564fee214e96.jpg" loading="lazy"><figcaption>步骤 1 首页界面 — 四个方向槽位与描述输入框</figcaption></figure></div>
+</div>
+<div class="footer-meta"><span>002 — 首页界面</span><span>首页</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>步骤 1：搭建空间</span></div><div class="right"><span>P. 003</span></div></div><div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 步骤 1 · 空间搭建 —</div><h2 class="section-title">用一张图像创建 360° 空间</h2><p class="section-lede">一张韩屋照片加上一次点击 “Analyze Space”，就能生成可自由旋转的 3D 空间。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 步骤 01 · 上传图像 —</div><p class="step-body">在 FRONT 槽位上传韩屋照片。上传后，右侧的大按钮会由  <span class="k">Create Space from Description</span> 变为  <span class="k">Analyze Space</span>。左上角会出现保存提示，例如 “Auto-saved at 9:34 AM”。</p></div>
+<div class="step-block"><div class="step-number">— 步骤 02 · 解析空间 —</div><p class="step-body"><span class="k">Analyze Space</span> 会打开  <strong>“Confirm Room Layout”</strong>  对话框，其中包含四项估算值： <span class="k light">Room Width (m) 8</span> <span class="k light">Room Depth (m) 6</span> <span class="k light">Ceiling Height (m) 3.5</span> <span class="k light">Camera Height (m) 1.2</span>注意：“These are not exact measurements taken from a single photo. Please review the estimated dimensions and wall area.”</p></div>
+<div class="step-block"><div class="step-number">— 步骤 03 · 标注墙面范围 —</div><p class="step-body">“Drag the four corners to select only the wall.” 拖动图像上的四个紫色控制点，使其与  <strong>地面与墙面的交界线</strong> 对齐（旁白：“Select Space，然后像这样把控制点移到地面与墙面的交界处。”）。右侧的  <strong>“Unwrapped Front Wall Result”</strong> 会立即确认选区是否正确。</p></div>
+<div class="step-block"><div class="step-number">— 步骤 04 · 组合提示词 —</div><p class="step-body">勾选：  <span class="k light">Unwarp the selected front-wall area and use it as a generation reference</span>。然后检查 “Space Design · Expand from One Reference” 区块中的 <span class="k light">Common Wall Finish</span>, <span class="k light">Common Molding &amp; Wood Finish</span>  提示词，再开始生成。</p></div>
+<div class="step-block"><div class="step-number">— 结果 —</div><p class="step-body">生成完成后，会得到一个可自由旋转的虚拟 3D 空间，并打开 2. LOCATION_SCOUTING 标签。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="上传到 FRONT 槽位的韩屋图像 — 按钮变为 “Analyze Space”" src="../screens/26be60ad06dcf7f0c3ae9b3b175f8c37c2aa2a55567598fb342856aa228f2072.jpg" loading="lazy"><figcaption>上传到 FRONT 槽位的韩屋图像 — 按钮变为 “Analyze Space”</figcaption></figure>
+<figure><img alt="Confirm Room Layout 对话框 — 四项尺寸、墙面控制点与展开结果" src="../screens/6bb9dcab0c948d44ca2fb8bc2c1747fcbd48eba3007646b604c81060a59ab3db.jpg" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;" loading="lazy"><figcaption>Confirm Room Layout 对话框 — 四项尺寸、墙面控制点与展开结果</figcaption><div class="fix-badge">✓ 已替换为高分辨率对话框 — 文字、木纹与屏风更清晰</div></figure>
+<figure><img alt="用四个角控制点对准地面与墙面的交界线" src="../screens/3e5a4202430ae1ae0b798cf149165e8d98163c19dc7986f2d3d35f0baf245147.jpg" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;" loading="lazy"><figcaption>用四个角控制点对准地面与墙面的交界线</figcaption><div class="fix-badge">✓ 已替换为高分辨率特写 — 720×646 → 2100×1884（UnsharpMask + 4K AI 放大）</div></figure>
+</div>
+</div>
+<div class="footer-meta"><span>003 — 步骤 1：搭建空间</span><span>空间搭建</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>房间尺寸调整</span></div><div class="right"><span>P. 004</span></div></div><div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 房间尺寸 · 相机 —</div><h2 class="section-title">调整房间尺寸与相机</h2><p class="section-lede">无需重新生成空间，即可就地调整房间宽度、进深与天花板高度。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 打开 —</div><p class="step-body">选择绿色的  <span class="k">Room Size · Camera</span>  按钮，即可打开  <strong>“Room Size &amp; Camera”</strong>  对话框。这里同样提供四个字段（房间宽度、进深、天花板高度与相机高度）。</p></div>
+<div class="step-block"><div class="step-number">— 缩小房间 —</div><p class="step-body">正如旁白所说，“如果房间太大”， <strong>Room Width 8→4, Room Depth 6→4</strong> 就是输入的缩小示例值。对话框说明：“天花板横梁与间接照明是通过延伸照片上部元素推断的。地面假定为适合席坐的木地板。所有类家具元素都设计为与墙面整合的结构。”</p></div>
+<div class="step-block"><div class="step-number">— 抬高天花板 —</div><p class="step-body"><strong>天花板高度</strong>  可以在保持同一房间的前提下抬高天花板。正如旁白所说，“也可以把天花板调高”。</p></div>
+<div class="step-block"><div class="step-number">— 应用 —</div><p class="step-body">紫色的  <span class="k">Apply Room Size · No Additional Generation</span>  按钮会应用这些设置，  <strong> 不会生成新图像， </strong>  而是使用现有的表面图像，仅反映新的比例（旁边的注记：“Uses existing surface images”）。在右侧选择  <span class="k light">Close</span> 即可取消。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="Room Size &amp; Camera — 缩小宽度与进深（8×6 → 4×4）" src="../screens/140fb31b96763912aedc2bf6d9736cc4580f7a086e500a401db55129e4981964.jpg" loading="lazy"><figcaption>Room Size &amp; Camera — 缩小宽度与进深（8×6 → 4×4）</figcaption></figure>
+<figure><img alt="应用之后 — 道具不变，房间更加紧凑" src="../screens/dcb07e193d0eaed7b10cbff92c2c204772295154a5cbd463fdc22c3bc39422a7.jpg" loading="lazy"><figcaption>应用之后 — 道具不变，房间更加紧凑</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>004 — 房间尺寸调整</span><span>房间尺寸</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>3D 预览</span></div><div class="right"><span>P. 005</span></div></div><div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 步骤 2 · 预览 —</div><h2 class="section-title">在 3D 预览中查看</h2><p class="section-lede">自由旋转生成的空间以检查构图，然后用 Freeze Frame 锁定。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 旋转视角 —</div><p class="step-body">点击并  <strong>拖动</strong> 屏幕即可让相机旋转 360°。ELEVATION（水平角度）与 FOV 数值会在左下角实时显示。</p></div>
+<div class="step-block"><div class="step-number">— 缩放 —</div><p class="step-body">使用底部的  <span class="k light">FIELD OF VIEW (ZOOM)</span>  滑块调整视角范围（视频中由 105° 变为 82°）。</p></div>
+<div class="step-block"><div class="step-number">— 左上角的四个按钮 —</div><p class="step-body"><span class="k">3D PREVIEW</span> （当前视图）· <span class="k light">Wall Edit</span> · <span class="k">Restyle Space from Reference · v2</span> · <span class="k">Room Size · Camera</span>.</p></div>
+<div class="step-block"><div class="step-number">— FREEZE FRAME —</div><p class="step-body">找到喜欢的构图后，按下紫色的  <span class="k">FREEZE FRAME</span>  ，即可把当前视角锁定为步骤 3 的参考帧。旁边的圆形箭头按钮可以重置视角。</p></div>
+</div>
+<div class="image-plate"><figure><img alt="3D Preview — 拖动旋转以检查构图" src="../screens/df14b38694ec18376761df860adb416dce1be01771fd7cf4631a869e4fe4bbca.jpg" loading="lazy"><figcaption>3D Preview — 拖动旋转以检查构图</figcaption></figure></div>
+</div>
+<div class="footer-meta"><span>005 — 3D 预览</span><span>预览</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>墙面编辑</span></div><div class="right"><span>P. 006</span></div></div><div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 步骤 2 · 墙面编辑 —</div><h2 class="section-title">墙面编辑：按方向修改物件</h2><p class="section-lede">在六张方向卡片上组合参考图与画笔，添加或移除想要的物件。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 进入 —</div><p class="step-body">在左上角选择  <span class="k light">Wall Edit</span> 后，会并排显示六张方向卡片（<strong>LEFT / FRONT / RIGHT / BACK / UP (ZENITH) / DOWN</strong>）。旁白说：“选择 Wall Edit，就可以在这里自由添加或移除任何物件。”</p></div>
+<div class="step-block"><div class="step-number">— FACE REFERENCE —</div><p class="step-body">每张卡片都有  <span class="k light">+ Add Reference Image</span> （DRAG &amp; DROP）区域。添加图像后，会出现  <span class="k">REF LINKED</span>  徽章、  <span class="k">ACTIVE</span>  标签与“Applied directly to INPAINT and REGEN”的注记，以及  <span class="k light">Apply As Is</span> / <span class="k light">Change</span> / <span class="k light">CLEAR</span> 这些控件。</p></div>
+<div class="step-block"><div class="step-number">— 画笔 —</div><p class="step-body">在图像上拖动即可涂抹  <strong>红色蒙版</strong>。用  <span class="k light">BRUSH 40PX</span>  滑块调整其大小。</p></div>
+<div class="step-block"><div class="step-number">— 操作按钮 —</div><p class="step-body">每张卡片底部有四个按钮：  <span class="k">INPAINT (REF)</span> （紫色 = 编辑蒙版区域）· <span class="k">REGEN (REF)</span> （橙色 = 重新生成整个面）· <span class="k light">CLEAR</span> （清除蒙版）· <span class="k">REPLACE</span> （绿色 = 替换）。下方的  <span class="k light">Reference instructions or requested changes (optional)…</span>  可以输入随操作一起发送的指令。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="Wall Edit — LEFT / FRONT 卡片与 FACE REFERENCE 区域" src="../screens/15ee3275de17df1a4080ab3650b2e650d3512a2471149745cfae45d1295e58fe.jpg" loading="lazy"><figcaption>Wall Edit — LEFT / FRONT 卡片与 FACE REFERENCE 区域</figcaption></figure>
+<figure><img alt="为 LEFT 卡片连接蓝色花朵参考图 + 用 BRUSH 40PX 涂抹蒙版" src="../screens/f7fb0568dac623cfb3cf8de18210d0a0a34a2738764134da525dfc87210da089.jpg" loading="lazy"><figcaption>为 LEFT 卡片连接蓝色花朵参考图 + 用 BRUSH 40PX 涂抹蒙版</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>006 — 墙面编辑</span><span>墙面编辑</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>物件与壁纸</span></div><div class="right"><span>P. 007</span></div></div><div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 编辑示例 —</div><h2 class="section-title">添加物件并替换壁纸</h2><p class="section-lede">一张参考图既能引导道具摆放，也能替换整面壁纸。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 示例 1 · 放置物件 —</div><p class="step-body">在 LEFT 卡片上添加  <strong>蓝色绣球花</strong>的参考图，然后涂抹蒙版并执行编辑。3D Preview 的架子上会出现花瓶 —“把准备好的参考图放到书架上看看？可以看到它很自然地摆在架子上。”</p></div>
+<div class="step-block"><div class="step-number">— 示例 2 · 替换壁纸 —</div><p class="step-body">在 BACK 卡片上添加  <strong>向日葵壁纸参考图</strong>，输入类似“移除线脚，只把壁纸换成向日葵壁纸”的指令并执行。旁白说：“可以看到所有壁纸都变成了向日葵。”旋转视角，确认整面墙在整个 3D 空间中保持一致。</p></div>
+<div class="step-block"><div class="step-number">— 关键区别 —</div><p class="step-body"><strong>INPAINT</strong>  只编辑涂抹的区域（添加、移除或替换物件）， <strong>REGEN</strong>  则重新生成该方向的整张图像， <strong>REPLACE</strong>  用参考图替换选中的区域， <strong>CLEAR</strong> 只清除蒙版。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="编辑之后 — 架子上多了一个蓝色花瓶" src="../screens/56b831b0a372eca65b53a3f6117dc101316bf386ccfe5cd7732504a141eff5fb.jpg" loading="lazy"><figcaption>编辑之后 — 架子上多了一个蓝色花瓶</figcaption></figure>
+<figure><img alt="BACK 墙面替换为向日葵壁纸，并在整个 3D 空间中体现" src="../screens/89688b2b9ed7535b6360f3382fb6ae6f21e91bdd9bbb3665bdf95b78e03bff5e.jpg" loading="lazy"><figcaption>BACK 墙面替换为向日葵壁纸，并在整个 3D 空间中体现</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>007 — 物件与壁纸</span><span>编辑示例</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>步骤 3：关键图像</span></div><div class="right"><span>P. 008</span></div></div><div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 步骤 3 · 关键图像 —</div><h2 class="section-title">相机测试：创建关键图像</h2><p class="section-lede">把构图提示词、主体照片、服装照片与电影风格组合起来，生成关键图像。</p></div></div>
+<div class="two-col">
+<div>
+<div class="step-block"><div class="step-number">— 进入 —</div><p class="step-body">在步骤 2 中选择  <span class="k">FREEZE FRAME</span> 就会打开 3. CAMERA_TEST，选定的构图会显示在中央。</p></div>
+<div class="step-block"><div class="step-number">— 方向 —</div><p class="step-body"><span class="k light">PRODUCTION: SUBJECT &amp; CASTING </span>  在这里输入主体的动作与情绪。视频示例：“一位女性带着悲伤的表情捧着一件陶瓷器皿。”</p></div>
+<div class="step-block"><div class="step-number">— CINEMA STYLE —</div><p class="step-body">八种风格 — <span class="k light">Normal</span> <span class="k">Hollywood </span> （默认选中） <span class="k light">Korean</span> <span class="k light">Japanese</span> <span class="k light">Chinese</span> <span class="k light">Noir</span> <span class="k light">Neon-Punk</span> <span class="k light">Anime Style</span>.</p></div>
+<div class="step-block"><div class="step-number">— Cast —</div><p class="step-body"><span class="k light">使用 FACE ID CALIBRATION </span>(LIKENESS PRIORITY: MAX, <span class="k">UPLOAD</span>）上传主体照片，再用  <span class="k light">OUTFIT REFERENCE </span>(<span class="k light">ADD IMAGE</span>）添加服装照片。旁白说：“加上主体照片和服装照片，就完成了关键图像。”</p></div>
+<div class="step-block"><div class="step-number">— 生成与保存 —</div><p class="step-body">右侧有三个按钮：  <span class="k light">DOWNLOAD FREEZE FRAME </span> （保存参考帧）· <span class="k">GENERATE_STILL_1K </span> （白色）· <span class="k">GENERATE_STILL_2K (HQ) </span> （深蓝）。2K 的结果就是用于视频的最终关键图像。</p></div>
+</div>
+<div class="image-plate">
+<figure><img alt="3. CAMERA_TEST — Freeze Frame 与制作面板" src="../screens/5894923bbcf2f09dcab311d10c3bf9fab75d4bd948acd2fe1206febdd787eb68.jpg" loading="lazy"><figcaption>3. CAMERA_TEST — Freeze Frame 与制作面板</figcaption></figure>
+<figure><img alt="最终关键图像 — 主体在向日葵色调的光线中捧着陶瓷器皿" src="../screens/5379d2fe30878b04eb9df642847b8fc6f49b64be02b4e0058905488220fd9d94.jpg" loading="lazy"><figcaption>最终关键图像 — 主体在向日葵色调的光线中捧着陶瓷器皿</figcaption></figure>
+</div>
+</div>
+<div class="footer-meta"><span>008 — 步骤 3：关键图像</span><span>关键图像</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>按钮词汇表</span></div><div class="right"><span>P. 009</span></div></div><div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 词汇表 · 界面术语 —</div><h2 class="section-title">按钮与字段词汇表</h2><p class="section-lede">针对容易混淆的界面术语，按界面上显示的标签整理的参考表。</p></div></div><p class="step-body" style="max-width:720px">这些按钮与字段名称均已在四段演示视频中确认。英文标签按屏幕显示原样保留，括号内说明其功能。</p><div class="dict-grid"><div class="dict-item"><div class="term">Create Space from Description</div><div class="kor">从描述创建</div><div class="desc">首页界面上用于在没有图像的情况下，根据 Description 创建 360° 空间的紫色按钮。</div></div><div class="dict-item"><div class="term">Analyze Space</div><div class="kor">上传图像后的按钮</div><div class="desc">上传参考图后，首页按钮会变为该标签。选择它会打开 “Confirm Room Layout”。</div></div><div class="dict-item"><div class="term">Confirm Room Layout</div><div class="kor">生成前的对话框</div><div class="desc">用于检查估算的房间宽度、进深、天花板高度、相机高度与墙面范围（拖动四个角调整）的对话框。</div></div><div class="dict-item"><div class="term">Unwrapped Front Wall Result</div><div class="kor">墙面选区预览</div><div class="desc">把选中的墙面范围展开成平面的预览，用于确认选区是否正确。</div></div><div class="dict-item"><div class="term">Generate the Desired View</div><div class="kor">生成（推测）</div><div class="desc">推测为 Confirm Room Layout 底部生成按钮的措辞；视频中光标会移到该位置。</div></div><div class="dict-item"><div class="term">Restyle Space from Reference · v2</div><div class="kor">空间换风格</div><div class="desc">步骤 2 中，基于现有参考图为空间重新设定风格的按钮。</div></div><div class="dict-item"><div class="term">Room Size · Camera</div><div class="kor">房间尺寸对话框</div><div class="desc">以米为单位修改房间宽度、进深、天花板高度与相机高度的对话框。修改通过 “Apply Room Size · No Additional Generation” 应用。</div></div><div class="dict-item"><div class="term">FIELD OF VIEW (ZOOM)</div><div class="kor">视角滑块</div><div class="desc">3D Preview 底部的缩放滑块。视频中出现过 105° 与 82° 两个数值。</div></div><div class="dict-item"><div class="term">FREEZE FRAME</div><div class="kor">锁定视角</div><div class="desc">把当前相机构图作为参考帧发送到步骤 3 的紫色按钮。</div></div><div class="dict-item"><div class="term">Wall Edit</div><div class="kor">按方向编辑模式</div><div class="desc">使用 LEFT / FRONT / RIGHT / BACK / UP / DOWN 六张方向卡片添加或移除物件的模式。</div></div><div class="dict-item"><div class="term">FACE REFERENCE</div><div class="kor">方向参考图</div><div class="desc">与每张卡片关联的参考图，会直接应用于 INPAINT 与 REGEN，并通过 Apply As Is、Change 或 CLEAR 管理。</div></div><div class="dict-item"><div class="term">BRUSH 40PX</div><div class="kor">画笔大小</div><div class="desc">蒙版画笔大小的滑块，显示在卡片之上，单位为像素。</div></div><div class="dict-item"><div class="term">INPAINT (REF)</div><div class="kor">定向编辑</div><div class="desc">依据参考图或指令，只编辑红色蒙版区域，用于添加或移除物件。</div></div><div class="dict-item"><div class="term">REGEN (REF)</div><div class="kor">重新生成整个面</div><div class="desc">重新生成该方向的整张图像，通常改动幅度更大。</div></div><div class="dict-item"><div class="term">REPLACE</div><div class="kor">替换</div><div class="desc">用参考图替换区域的绿色按钮。</div></div><div class="dict-item"><div class="term">Replace with… / Reference Instructions…</div><div class="kor">指令输入框</div><div class="desc">用于描述要改什么的字段。留空时参考图会按原样应用。</div></div><div class="dict-item"><div class="term">PRODUCTION: SUBJECT &amp; CASTING </div><div class="kor">方向提示词</div><div class="desc">步骤 3 中用韩语描述主体动作、情绪与构图的字段。</div></div><div class="dict-item"><div class="term">CINEMA STYLE</div><div class="kor">八种电影风格</div><div class="desc">Normal · Hollywood · Korean · Japanese · Chinese · Noir · Neon-Punk · Anime Style。</div></div><div class="dict-item"><div class="term">FACE ID CALIBRATION </div><div class="kor">面部身份参考</div><div class="desc">LIKENESS PRIORITY: MAX。上传主体照片以保持面部身份一致。</div></div><div class="dict-item"><div class="term">OUTFIT REFERENCE </div><div class="kor">服装参考</div><div class="desc">添加服装照片以指定服装。视频中的造型是韩服搭配运动外套。</div></div><div class="dict-item"><div class="term">GENERATE_STILL_1K / 2K (HQ)</div><div class="kor">生成静帧</div><div class="desc">关键图像生成按钮：1K 更快，2K（HQ）画质更高。</div></div><div class="dict-item"><div class="term">DOWNLOAD FREEZE FRAME </div><div class="kor">保存参考帧</div><div class="desc">在添加方向之前下载构图的按钮。</div></div></div><div class="footer-meta"><span>009 — 按钮词汇表</span><span>词汇表</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>技巧</span></div><div class="right"><span>P. 010</span></div></div><div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 技巧 · 避免常见错误 —</div><h2 class="section-title">常见错误与技巧</h2><p class="section-lede">演示视频中给出的六条实用技巧。</p></div></div>
+<div class="two-col even">
+<div>
+<div class="step-block"><div class="step-number">— 技巧 01 —</div><p class="step-body">上传图像后，首页按钮会由  <strong>“Create Space from Description” → “Analyze Space”</strong>。该标签变化属于正常现象，直接选择它进入 “Confirm Room Layout” 即可。</p></div>
+<div class="step-block"><div class="step-number">— 技巧 02 —</div><p class="step-body">要得到干净的墙面展开图，请  <strong>四个角全部对准地面与墙面的交界线</strong>。如果包含过多天花板横梁，就把控制点往下移。</p></div>
+<div class="step-block"><div class="step-number">— 技巧 03 —</div><p class="step-body">改变房间尺寸时，道具会保持在原位。 <strong>'Apply Room Size · No Additional Generation'</strong> 只应用比例而不重新生成，因此可以放心试不同数值，不必担心积分。</p></div>
+</div>
+<div>
+<div class="step-block"><div class="step-number">— 技巧 04 —</div><p class="step-body">画笔要比想修改的物件  <strong>稍大一些</strong>  ，然后再涂抹蒙版。用  <span class="k light">BRUSH 40PX</span>  滑块调整大小。如果涂错区域，选择  <span class="k light">CLEAR</span> 清除即可。</p></div>
+<div class="step-block"><div class="step-number">— 技巧 05 —</div><p class="step-body">放置物件用  <strong>INPAINT</strong>；替换壁纸这类整个面用  <strong>关联参考图并附上指令</strong>；结果不理想时用  <strong>REGEN</strong>。每种工具用途不同，请按目的选择。</p></div>
+<div class="step-block"><div class="step-number">— 技巧 06 —</div><p class="step-body">关键图像按这个顺序制作：  <strong>构图（提示词）→ 主体照片 → 服装照片</strong>。同时使用 FACE ID 与 OUTFIT，可以同时保留面部与服装。</p></div>
+</div>
+</div>
+<div class="footer-meta"><span>010 — 技巧</span><span>技巧</span></div></section><section class="slide"><div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>总结</span></div><div class="right"><span>P. 011</span></div></div><div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 总结 · 收尾 —</div><h2 class="section-title">最终总结</h2><p class="section-lede">四段演示视频中确认的 Turn 全部内容。</p></div></div>
+<div class="summary-list">
+<div class="summary-item"><h4>Turn 是什么</h4><p>Turn 是一个本地电影感工作空间，可以从一张图像或一段描述创建可自由旋转的 360° 3D 虚拟摄影棚布景。室内墙面会做透视校正；室外场景会扩展为包含景物、天空与地面的立方体贴图。</p></div>
+<div class="summary-item"><h4>视频中确认的主要流程</h4><p>① 上传 FRONT 图像 → Analyze Space → Confirm Room Layout（检查尺寸并拖动四个角）→ 生成 360° 空间。② 在 3D Preview 中旋转与缩放；按需调整房间尺寸或相机，并编辑墙面（参考图、画笔、INPAINT / REGEN / REPLACE）。③ FREEZE FRAME → 在步骤 3 中加入方向、CINEMA STYLE 与主体/服装照片 → GENERATE_STILL → 关键图像。</p></div>
+<div class="summary-item"><h4>理解输出结果</h4><p>Freeze Frame = 添加方向之前的参考构图截图（DOWNLOAD FREEZE FRAME）。Final Still = 应用了主体、风格与光线后的最终图像（GENERATE_STILL_1K / 2K HQ）。两者用途不同，因此有各自的下载按钮。</p></div>
+<div class="summary-item"><h4>注意</h4><p>本指南依据四段演示视频（About Turn 18 秒 · Adjusting Room Size 10 秒 · Editing Objects 27 秒 · Creating a Key Image 7 秒）的画面与旁白编写。由于视频分辨率所限，包括 “Generate the Desired View” 在内的部分标签为推测。</p></div>
+</div>
+<div class="footer-meta"><span>011 — 总结</span><span>总结</span></div></section>
+
+
+<script src="../embed.js" defer=""></script></body></html>

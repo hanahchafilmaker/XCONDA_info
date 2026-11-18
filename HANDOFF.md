@@ -280,19 +280,19 @@ XCONDA_info/
 | `llms.txt` | `seo.js` › `llmsTxt` | AI 도우미용 요약 + 섹션/대표 글 링크(절대 주소, 요약 160자). 사이트맵과 같은 목록에서 만들어 서로 어긋나지 않습니다(2026-10-25 A6). 번역 언어가 있으면 `<언어> hub` 항목(`/en/`·`/ja/`·`/zh/`)이 자동으로 붙습니다 |
 | www 기능 페이지 산출물 | `scripts/www/build-feature-pages.mjs` (`npm run www:build`) | `www/feature-pages.json` → `www/dist/` 정적 HTML(20×2언어 + 목록 2). canonical·hreflang·JSON-LD·내부 링크를 스스로 검사합니다. 산출물은 커밋하지 않습니다(`www/dist/` 는 .gitignore) |
 | 번역 본문(`blocks`) | `build-seo.mjs` › `localizedBlockProblems` · `mergeLocalizedBlocks` · `bodyImagesOf` | `content/i18n/<언어>.json` 의 `entries[키].blocks` 에 **p · h2 · h3 · ul · ol · quote · table · callout · code · todo 10종**을 씁니다(번역가가 다루는 최소 형식). 본문 이미지는 번역하지 않고 **한국어 원문 위치**(앞에 있던 글 블록 수)에 자동으로 들어갑니다. 형식이 틀리면 그 글의 본문만 빼고 빌드 경고를 남깁니다 |
-| 언어별 주소 `/en/` · `/ja/` · `/zh/` | `build-seo.mjs` › `localizedPages` + `content/i18n/<언어>.json` | **사람이 검수한 번역이 있는 글만** 정적 페이지를 만듭니다(없으면 한국어만). 번역 페이지에는 앱 번들을 넣지 않고(`staticOnlyTemplate`) ko ↔ 번역을 hreflang 으로 서로 연결합니다. 2026-10-25 기준 **Q&A 73건 × 3언어(영어·일본어·중국어) 전체**, 즉 `/en/`·`/ja/`·`/zh/` 각 75페이지(홈+목록+73). 번역은 모두 `review: "AI 1차 번역(초안)"` 상태라 원어민 검수가 남아 있습니다. 새 번역은 json 에 추가하고 `npm run build` — 언어 파일만 늘리면 페이지·사이트맵·hreflang 이 함께 늘어납니다 |
+| 언어별 주소 `/en/` · `/ja/` · `/zh/` | `build-seo.mjs` › `localizedPages` + `content/i18n/<언어>.json` | **번역 사전에 항목이 있는 글만** 정적 페이지를 만듭니다(검수 전 초안 포함, 없으면 한국어만). 번역 페이지에는 앱 번들을 넣지 않고(`staticOnlyTemplate`) ko ↔ 번역을 hreflang 으로 서로 연결합니다. 2026-10-25 기준 Q&A 73건 × 3언어였고, **2026-11-18 현재는 Q&A 84건 × 3언어**입니다(언어별 홈+목록+84). 번역은 모두 `review: "AI 1차 번역(초안)"` 상태라 원어민 검수가 남아 있습니다. 새 번역은 json 에 추가하고 `npm run build` — 언어 파일만 늘리면 페이지·사이트맵·hreflang 이 함께 늘어납니다 |
 | `assets/i18n-paths.json` | `build-seo.mjs` › `localizedPages` | 앱의 언어 전환기가 "이 경로에 번역 주소가 있나" 확인하는 목록. 있으면 `/en/…` 으로 이동, 없으면 기존 Google 번역 위젯으로 폴백(`src/i18n/index.tsx` › `localizedHrefFor`) |
 | `user-guide.html` · `admin-guide.html` | 정적 HTML (저장소 루트) | `user-guide.html` = 공개 가이드 → canonical + 사이트맵(`EXTRA_INDEX_PAGES`). `admin-guide.html` = 내부 운영 매뉴얼 → `noindex, nofollow`, 사이트맵 제외(2026-10-25 A4). 분리해 둔 `admin-guide-fields.html` · `admin-guide-simple.html` · `admin-guide-sns.html` 도 같은 정책(2026-11-10 — 이 셋에 `noindex` 가 빠져 있었음. `seo.test.mjs` 가 네 파일을 모두 검사) |
 
 ⚠️ 함께 지킬 것
 - 사이트맵 네임스페이스는 **`http://www.sitemaps.org/schemas/sitemap/0.9`**(복수형)입니다. `seo.test.mjs` 가 고정합니다.
 - `dateModified` 는 **다음 Notion 동기화부터** 실제 수정일이 채워집니다(이전 스냅샷에는 `last_edited_time` 이 없음).
-- 언어별 URL 은 **Q&A 73건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
+- 언어별 URL 은 **Q&A 84건 + 블로그·뉴스·공지 본문 번역분**(ko/en/ja/zh)에 있습니다. 본문 번역은 `content/i18n/<언어>.json` 의 `entries` 에 `blocks` 를 넣으면 `/en/…` 주소가 새로 만들어집니다(2026-10-26 ①-1).
 - **번역 Q&A 는 언어별로 다르게 사이트맵에 넣습니다**(2026-11-17 정책 변경). `build-seo.mjs` › `SITEMAP_SKIP_LOCALIZED_SECTIONS` 는 **언어 → 빼는 섹션 배열**입니다(현재 `{ en: [], ja: ["qna"], zh: ["qna"] }`). 적힌 섹션은 **페이지는 그대로 만들되 사이트맵에만 넣지 않습니다.**
-  - **영어 Q&A 73개는 포함합니다.** 영어 허브가 `www.xconda.ai/hub/` 로 옮겨져 영어가 제품 사이트의 주 언어가 됐고, 실측해 보니 영어 Q&A는 평균 **151단어**(최소 106단어, 100단어 미만 0건)로 얇지 않으며 `FAQPage`·hreflang 9개·언어 전환·관련 글이 모두 갖춰져 있었습니다. 2026-10-26 정책의 근거였던 "얇은 페이지" 전제가 더 이상 사실이 아니었습니다. → `en/sitemap.xml` 22 → **96개**(= 홈·목록 4 + 글 18 + Q&A 74).
-  - **일본어·중국어 Q&A 73개씩은 계속 뺍니다.** 검수 상태가 `review` 표기 기준 **0%**(전체 초안, 2026-10-25 AI 1차 번역)라 품질 확인 전 대량 색인은 피합니다(`npm run i18n:progress`). 넣으려면 그 언어 배열을 비우면 됩니다.
+  - **영어 Q&A 84개는 포함합니다.** 영어 허브가 `www.xconda.ai/hub/` 로 옮겨져 영어가 제품 사이트의 주 언어가 됐고, 당시 73개를 실측해 보니 영어 Q&A는 평균 **151단어**(최소 106단어, 100단어 미만 0건)로 얇지 않으며 `FAQPage`·hreflang 9개·언어 전환·관련 글이 모두 갖춰져 있었습니다. 2026-10-26 정책의 근거였던 "얇은 페이지" 전제가 더 이상 사실이 아니었습니다. → `en/sitemap.xml` 22 → **96개**(= 홈·목록 4 + 글 18 + Q&A 74).
+  - **일본어·중국어 Q&A 84개씩은 계속 뺍니다.** 검수 상태가 `review` 표기 기준 **0%**(전체 초안, 2026-10-25 AI 1차 번역)라 품질 확인 전 대량 색인은 피합니다(`npm run i18n:progress`). 넣으려면 그 언어 배열을 비우면 됩니다.
   - 한국어 Q&A 원문은 언어와 무관하게 계속 포함합니다. `seo.test.mjs` 가 세 언어의 판정을 모두 고정합니다.
-  - ⚠️ 2026-11-10 의 "발견됨 - 색인 생성 안 됨 324건"은 **이 변경 전 수치**입니다. 영어 Q&A 73개를 넣은 뒤 Search Console 에서 2~4주 관찰하고, 색인율이 낮으면 `en: ["qna"]` 로 되돌리면 됩니다(한 줄, 데이터 손실 없음).
+  - ⚠️ 2026-11-10 의 "발견됨 - 색인 생성 안 됨 324건"은 **이 변경 전 수치**입니다. 영어 Q&A(당시 73개)를 넣은 뒤 Search Console 에서 2~4주 관찰하고, 색인율이 낮으면 `en: ["qna"]` 로 되돌리면 됩니다(한 줄, 데이터 손실 없음).
 - **한국어 글 → 번역본 링크**(2026-11-10). `<head>` 의 hreflang 은 크롤러의 **발견 경로가 아니고** 앱의 언어 토글은 JS 로만 동작합니다. 그래서 `articleBodyHtml` 이 `languages` 를 받아 글 상단에 `<a hreflang="en|ja|zh">` 링크를 싣습니다(현재 18개 글). Q&A 에는 달지 않습니다 — 위 사이트맵 정책과 같은 이유(얇은 번역 페이지로 크롤 예산이 몰리는 것 방지).
 - **원문이 사라진 번역 페이지는 빌드가 정리합니다**(2026-11-10). 노션에서 글을 내리면 한국어 폴더(`post/` 등)는 통째로 다시 만들어지지만 `en/`·`ja/`·`zh/` 는 이번 빌드에 없는 파일이 그대로 남아, 사라진 한국어 주소를 hreflang·canonical 로 가리켰습니다(Search Console 색인 오류의 원인). 이제 `writeSite`(`build-seo.mjs` › `staleLocalizedPages`)가 그런 페이지를 **같은 언어 목록으로 보내는 `noindex` 안내 페이지**로 바꿉니다 — 이미 색인된 주소가 곧바로 404 가 되지 않게, `REDIRECTS` 와 같은 방식입니다. 빌드 로그에 `낡은 번역 페이지 N개 → 목록으로 리디렉션` 으로 나옵니다. 같은 언어의 목록·홈이 없으면 한국어 홈으로 보냅니다.
 - www 기능 페이지 원고는 `npm run www:check`(형식·길이·허브 링크) 로 검사합니다. `build-site.yml` 이 main 빌드 때 `www:check` + `www:build` 를 함께 돌립니다.
@@ -300,7 +300,7 @@ XCONDA_info/
 - **`dev.html` 은 noindex**: 이 파일은 개발 진입점이면서 저장소 루트에 커밋되어 **`/dev.html` 로도 열립니다**. 검색에 개발 껍데기가 노출되지 않도록 `<!-- DEV-ONLY:START --> … <!-- DEV-ONLY:END -->` 안에 `noindex` 를 두고, 빌드(`applyHead`)가 **그 블록을 지웁니다**. 지우지 않으면 배포되는 `index.html` 이 noindex 를 물려받아 **홈페이지가 검색에서 빠집니다** — `seo.test.mjs` 가 회귀를 막습니다(2026-10-26).
 - **언어 목록 순서 = 영어 먼저, 한국어 두 번째**(2026-11-15 대표 결정). 화면 순서는 `src/content/seo.js` › `SITE_LANGS` 배열 순서 하나로 정해집니다(정적 페이지 `nav.seo-langs` · 앱 토글 `Nav.tsx` › `LANG_ITEMS`). 배열 순서를 바꾸면 **hreflang·canonical·주소 접두사는 그대로**이고 목록 표시 순서만 바뀝니다 — `seo.test.mjs` › 「언어 목록은 영어가 먼저」가 고정합니다. 회귀 방지는 `smoke.mjs`(`["EN","KO","JA","ZH"]`).
 - **대표 언어(기본 언어)는 아직 한국어입니다**(`seo.js` › `PRIMARY_LANG = "ko"`). 허브 글은 계속 한국어로 먼저 쓰기 때문입니다. 내년 정식버전에서 영어 원문을 먼저 올리기 시작하면 `PRIMARY_LANG` 을 `"en"` 으로 **한 줄** 바꾸고 빌드하면 됩니다 — 영어 번역이 없는 글은 자동으로 계속 한국어를 `x-default` 로 쓰므로 미리 켜 두어도 색인이 흔들리지 않습니다. 배경·체크리스트: `reports/language-policy-20261115.md`
-- **검수 진행률**: `npm run i18n:progress` — `content/i18n/<언어>.json` 의 `review` 표기를 세어 **95항목 × 3언어 = 285** 중 검수 완료/초안/번역 없음을 보여 주고, `reports/i18n-progress-<날짜>.md` 에 언어별 표 + 「기계 점검이 문제를 찾은 항목」(검수 우선순위)을 남깁니다. 완료로 인정하는 표기는 **`YYYY-MM-DD 검수 완료(검수자)`** 하나뿐이고, 항목별 표시가 없으면 파일 맨 위 `review`(현재는 초안)를 따릅니다. 원어민 검수가 끝난 항목부터 `entries[키].review` 를 바꾸고 이 명령을 다시 돌리면 진행률이 올라갑니다(2026-10-26 ①-4).
+- **검수 진행률**: `npm run i18n:progress` — `content/i18n/<언어>.json` 의 `review` 표기를 세어 **현재 스냅샷 원문 수 × 3언어** 중 검수 완료/초안/번역 없음을 보여 주고, `reports/i18n-progress-<날짜>.md` 에 언어별 표 + 「기계 점검이 문제를 찾은 항목」(검수 우선순위)을 남깁니다. 완료로 인정하는 표기는 **`YYYY-MM-DD 검수 완료(검수자)`** 하나뿐이고, 항목별 표시가 없으면 파일 맨 위 `review`(현재는 초안)를 따릅니다. 원어민 검수가 끝난 항목부터 `entries[키].review` 를 바꾸고 이 명령을 다시 돌리면 진행률이 올라갑니다(2026-10-26 ①-4).
 - **검수 진행률은 CI 요약에도 나옵니다**: `build-site.yml` 의 「번역 검수 진행률 요약」 단계가 `npm run i18n:progress -- --summary >> "$GITHUB_STEP_SUMMARY"` 를 실행합니다(정보용 · `continue-on-error`). 노션 동기화로 **새 글이 들어왔는데 번역이 없으면** 실행 요약에 `번역이 없는 원문 N건` 과 주소·한국어 제목이 뜹니다 — `reports/i18n-progress-*.md` 에도 같은 표가 남습니다. `--summary` 는 파일을 쓰지 않습니다.
 - **Q&A 개별 글 공유 카드는 기본으로 만들지 않습니다**: 219편 × 4언어 = **876장(약 25~30MB)** 이라 저장소·전송 비용이 이득보다 큽니다(목록 카드가 언어별로 이미 있음). 필요하면 `npm run og:cards -- --include-qna` 로 켜고, 늘어난 용량을 감수할지 먼저 판단하세요.
 - **번역 품질 점검**: `npm run i18n:qc` — 연락처·주소 불일치(오류), 숫자 누락·통화 표기·미번역 영어·제목 중복·길이 비율·브랜드 표기(경고)를 봅니다. `-- --write` 로 `reports/i18n-qc-<날짜>.md` 갱신. 의도된 차이는 `content/i18n/qc-allow.json` 에 근거와 함께 적습니다.
@@ -310,7 +310,7 @@ XCONDA_info/
 - 노션 커버·OG 이미지는 동기화 때 `assets/img/og/posts/` 로 복사됩니다. 네트워크 실패는 경고만 남기고 빌드를 막지 않지만, 그때는 그 글만 노션 주소를 그대로 씁니다.
 - **언어별 공유 카드**는 `npm run og:cards` 로만 만듭니다(빌드 경로 아님). 다시 만들려면 `python3 -m pip install Pillow` 가 필요하고, CJK 폰트는 처음 한 번 npm(`@expo-google-fonts/noto-sans-*`)에서 `node_modules/.cache/og-fonts/` 로 받습니다(저장소에 넣지 않음). 폰트가 없으면 스크립트는 조용히 건너뛰고 **커밋된 카드를 그대로** 씁니다 — 그래서 새 글·번역을 넣은 뒤에는 카드도 한 번 돌려 주세요. Q&A 개별 글은 카드를 만들지 않습니다(219편 × 4언어 — 목록 카드로 대신).
 - **번역은 기계번역을 넣지 않습니다.** `content/i18n/<언어>.json` 의 `entries` 키는 `qna/contact-inquiry` 처럼 `주소/슬러그` 이고, 원문 글이 없으면 빌드가 경고하고 그 주소를 만들지 않습니다. 블로그·가이드는 본문 번역이 없어 아직 번역 주소가 없습니다(노션 `Title EN`/본문 번역이 생기면 같은 방식으로 확장).
-- **번역 검수 절차(2026-10-25 현재 3개 언어 모두 초안)**: `en`·`ja`·`zh` 각 73건은 AI 1차 번역이며 `review` 필드에 그 사실이 적혀 있습니다. 원어민이 검수한 항목부터 `review` 를 `YYYY-MM-DD 검수 완료(검수자)` 로 바꿔 주세요. 검수 중 발견한 수정은 `entries` 의 `title`/`summary` 를 직접 고치면 되고, `npm run test:unit` 이 **키 1:1·빈 번역·한글 잔존(20% 초과)·Q&A 누락·제목 끝 "답변"** 을 자동으로 잡습니다.
+- **번역 검수 절차(2026-10-25 현재 3개 언어 모두 초안)**: `en`·`ja`·`zh` 각 84건은 AI 1차 번역이며 `review` 필드에 그 사실이 적혀 있습니다. 원어민이 검수한 항목부터 `review` 를 `YYYY-MM-DD 검수 완료(검수자)` 로 바꿔 주세요. 검수 중 발견한 수정은 `entries` 의 `title`/`summary` 를 직접 고치면 되고, `npm run test:unit` 이 **키 1:1·빈 번역·한글 잔존(20% 초과)·Q&A 누락·제목 끝 "답변"** 을 자동으로 잡습니다.
 - 언어를 더 늘리려면 `content/i18n/<코드>.json` 만 추가하면 됩니다(`seo.js` 의 `SITE_LANGS` 에 코드가 있어야 함). 페이지·사이트맵·hreflang·`llms.txt` 항목·`assets/i18n-paths.json` 이 같은 빌드에서 함께 만들어집니다.
 - **본문 번역은 `blocks` 로 넣습니다** — Q&A 는 `summary` 가 곧 답변이지만 블로그·가이드·공지는 본문이 있어야 번역 주소를 만들 가치가 있습니다. 형식: `{"type":"p","text":"…"}`, `{"type":"h2"|"h3","text":"…"}`, `{"type":"ul"|"ol","items":["…"]}`, `{"type":"quote","text":"…"}`, `{"type":"callout","icon":"📌","text":"…"}`, `{"type":"table","rows":[["칸","칸"],…]}`, `{"type":"code","text":"…"}`, `{"type":"todo","items":["…"]}`, `{"type":"callout","icon":"📌","text":"…"}`. 강조는 `**굵게**`, 줄바꿈은 그대로(렌더 시 `<br>`). 빈 문단·빈 인용은 넣지 않습니다. 이미지·영상·첨부 블록은 넣지 마세요(2단 배치는 펼친 뒤 원문 위치를 따라 자동 삽입). 이모지·링크·해시태그만 있는 블록(빈 인용, `🔗 xconda.ai`, 이미지 전용 콜아웃)은 번역하지 않고 뺍니다 — 빌드가 `needsTranslation()` 으로 같은 기준으로 세어 **블록 수가 원문과 다르면 경고**합니다. Q&A 의 「게시용 출처」 블록은 `/tmp/w/qna_sources.py` 로 정책명만 바꿔 채웁니다. `npm run i18n:qc` 가 형식 오류·한글 잔존(20% 이상)을 잡습니다.
 - 번역 페이지에는 **앱 번들이 들어가지 않습니다**. 넣으면 React 가 정적 번역문을 지우고 한국어 화면을 그려서 `/en/` 주소에 한국어가 뜹니다.
@@ -508,11 +508,16 @@ npm run build
 |---|---|---|
 | `NOTION_PAGE_ID` | `3e72ebc0…c6dd` (XCONDA_NEWs) | 스냅샷 대상 공개 페이지 (메인 표) |
 | `NOTION_DATABASE_ID` | `3b54d2ea…7517` | 페이지 안 표(데이터베이스)가 여러 개일 때 지정 |
-| `NOTION_FAQ_PAGE_ID` | `15d20857…40a2` (XCONDA 허브 Q&A) | 허브 Q&A 표가 든 공개 페이지 (규칙: `src/content/hubQna.js`) |
-| `NOTION_FAQ_DATABASE_ID` | `2d3c8b52…eab9` | 허브 Q&A 표(뷰) ID — 메인 표와 별개로 읽음 |
+| `NOTION_FAQ_PAGE_ID` | `15d20857…40a2` (XCONDA 허브 Q&A) | 허브 Q&A **데이터베이스 페이지** ID (규칙: `src/content/hubQna.js`) |
+| `NOTION_FAQ_DATABASE_ID` | `2d3c8b52…eab9` | 허브 Q&A 공개 페이지의 **컬렉션 뷰 ID**(`?v=…`) — 비공개 스냅샷 API가 표를 고를 때 씀 |
+| `NOTION_FAQ_DATA_SOURCE_ID` | `d04aa2a0…21e6` | Notion API 2025-09 **데이터 소스 ID** — 커넥터·공식 API와 `content/notion-qna-81-91.json` 기준. 뷰 ID와 다름 |
 | `SITE_URL` (선택) | 미설정 → 기본값 `https://hub.xconda.ai/` | 허브 정식 주소(끝 `/` 포함). canonical · og:url · sitemap 에 쓰임. 도메인이 기본값과 같은 `hub.xconda.ai` 로 확정·등록됐으므로 **등록하지 않아도 됨** — 주소를 바꿀 때만 등록 (`build-site` · `notion-sync` 두 워크플로가 읽음) |
 
+> ⚠️ Q&A ID 3종은 서로 다른 객체입니다. `2d3c…`(뷰)를 커넥터 `data_source_id` 자리에 넣거나 `d04aa…`(데이터 소스)를 `NOTION_FAQ_DATABASE_ID`(뷰) 자리에 넣으면 조회가 실패합니다. 코드 기본값은 `scripts/notion-snapshot.mjs`, 커넥터용 정확한 값은 `content/notion-qna-81-91.json` 에 있습니다.
+
 > **Secrets는 없습니다.** Notion 토큰을 쓰는 방식(Worker)을 쓰지 않으므로 저장소에 비밀을 둘 필요가 없습니다.
+
+**2026-11-18 Q&A No 81–91** — 워크스페이스·블로킹보드·크레딧·Seedance 2.5 Draft 정책 문항 11건의 read-only 커넥터 스냅샷을 `content/notion-qna-81-91.json` 에 보관합니다. 재생성 순서는 `node scripts/apply-notion-qna-connector.mjs` → `node scripts/apply-qna-translations.mjs` → `node scripts/apply-qna-qc-allow.mjs` → `npm run build` / `node scripts/build-seo.mjs` 입니다. 첫 스크립트는 저장소의 `loadHubQna()` 발행·본문 분리 규칙을 그대로 사용하고, 두 번째는 en/ja/zh 각 106항목으로 맞추되 새 항목에 검수 완료 표기를 넣지 않습니다. 짧은 한국어 답변에서 불가피한 `length-long` 경고만 `qc-allow.json` 에 근거와 함께 허용합니다. **14일은 Draft 초안을 1080p로 전환할 수 있는 기간이고, 초안은 결과물로 남으며 완성 영상은 기한 없이 저장된다**는 승인 정책을 번역에서도 바꾸지 마세요.
 
 ### 11.2 로컬 `.env` (`.gitignore` 처리됨)
 
@@ -621,7 +626,9 @@ npm run build
 | **UI 문구 추가/수정** | `src/i18n/dict.ts` (ko·en 동시) → `t("키")` 사용 |
 | **새 툴 카드 추가** | `src/content/tools.ts`(`BASE_TOOLS`) + `src/content/tools.en.ts`(`TOOL_EN`), 커버 이미지는 `assets/img/tools/`(상대경로) |
 | **툴 상세 매뉴얼 추가** | `src/content/toolGuides.ts` (`TOOL_GUIDES[slug] = { ko: Block[], en: Block[] }`) |
-| **툴 공식 영상 연결** | `src/content/toolVideos.ts` (Google Drive 파일 ID → `drive(id)`) |
+| **툴 공식 영상·현재 HTML 연결** | `src/content/driveGuides.json` 카탈로그와 `src/content/toolVideos.ts`·`htmlGuides.ts` → `src/content/siteAssets.ts` 의 같은 출처 경로. Drive 링크를 만들지 않음 |
+| **현재 가이드 자산 재생성** | 원본 다운로드 후 `node scripts/import-current-guides.mjs <raw-dir> assets/guides/current`; 원본 폴더는 커밋하지 않음 |
+| **Q&A No 81–91 스냅샷·번역 재생성** | `node scripts/apply-notion-qna-connector.mjs` → `node scripts/apply-qna-translations.mjs` → `node scripts/apply-qna-qc-allow.mjs` → `npm run build` |
 | **툴 사용법 섹션에 노션 글 반영** | 노션에 `Type=가이드`, `Tool` = 툴 이름(`tools.ts`의 `name`과 대소문자 무시 비교) 으로 글 작성 |
 | **섹션 추가** | ① `src/content/types.ts` `EntryType` ② `classify.js`(`TYPE_ALIASES`·`SECTION_LABELS`) ③ `ContentContext`(그룹·정렬) ④ `App.tsx`(배치) ⑤ `Nav.tsx` `LINKS` ⑥ `SearchOverlay.tsx` `Kind` ⑦ `dict.ts`(`nav.*`, `section.*`) ⑧ 테스트 |
 | **노션 속성 추가** | ① `src/content/fields.js`(별칭 키) 또는 `classify.js`(분류 관련) ② `src/notion.ts` `mapPage` ③ `scripts/notion-snapshot.mjs`(행 추출 · 요약) ④ `src/content/types.ts` `Entry` ⑤ 테스트 + `NOTION_SETUP.md` 표 갱신 |
@@ -640,9 +647,9 @@ npm run build
 |---|---|---|
 | 1 | **GitHub `schedule`이 정시 실행을 보장하지 않음** (실측 2~8시간 간격) | 외부 스케줄러 → `workflow_dispatch` 5~10분 호출로 우회 중. 스케줄러/토큰 만료 시 수 시간 지연으로 **되돌아감** |
 | 2 | **무료 공개 프록시 `notion-api.splitbee.io`의 `/table` 경로가 500** | 서버 스냅샷 방식으로 전환 완료. 프록시는 보조 수단(8초 타임아웃)으로만 사용 |
-| 3 | **Google Drive 영상의 CSP 차단** (`frame-ancestors`) — 서버에서 우회 불가 | iframe 미사용, **새 창으로 열기** 링크로 처리 (`toolVideos.ts` + 모달) |
+| 3 | ~~**Google Drive 영상의 CSP 차단** (`frame-ancestors`) — 서버에서 우회 불가~~ | **2026-11-18 해결**: 현재판 HTML 96개·MP4 65편을 `assets/guides/current/` 로 sanitize해 같은 출처에서 제공합니다. 앱·모달은 `<iframe>`/`<video>`로 페이지 안에서 열고, Drive `/view`·`/preview` 링크는 쓰지 않습니다 |
 | 4 | `scripts/notion-snapshot.mjs`가 **Notion 비공개 API**(`www.notion.so/api/v3`)에 의존 | 공식 지원 API가 아님 → 노션이 바꾸면 동기화가 깨질 수 있는 **단일 취약점**. 증상: 스냅샷 실패, Summary에 HTTP 오류 |
-| 5 | 표(데이터베이스)를 **2개까지만** 읽음 (메인 표 + 허브 Q&A 표) | 그 밖의 표는 무시됨 → `NOTION_DATABASE_ID` · `NOTION_FAQ_DATABASE_ID`로 지정하거나 표를 합치기 |
+| 5 | 표(데이터베이스)를 **2개까지만** 읽음 (메인 표 + 허브 Q&A 표) | 그 밖의 표는 무시됨 → `NOTION_DATABASE_ID` · `NOTION_FAQ_DATABASE_ID`(뷰) · `NOTION_FAQ_DATA_SOURCE_ID`(데이터 소스)로 지정하거나 표를 합치기 |
 | 6 | 노션에 직접 업로드한 이미지의 서명 URL은 약 1시간 후 만료 | 만료되지 않는 notion.so 프록시 주소로 변환(`fields.js` `signNotionImage`) + `coverFallback`. 장기 노출 커버는 외부 URL 권장 |
 | 7 | ~~`redesign-xconda-website-ui/` 미사용 프로토타입~~ | **2026-10-26 ①-6 에서 삭제** — `src/` 가 같은 화면의 정본이라 중복. 필요하면 `git log --all -- redesign-xconda-website-ui` 로 되살립니다 |
 | 8 | 저장소 첫 화면(`README.md`)은 요약만 | 상세는 본 문서(`HANDOFF.md`), 운영은 `NOTION_SETUP.md`. README 의 링크·명령은 `scripts/docs.test.mjs` 가 실제 파일·`package.json` 과 대조합니다 |
@@ -681,7 +688,7 @@ npm run build
 | 사이트가 안 열림 — "서버를 찾을 수 없음" (`github.io` 주소도 `hub.xconda.ai` 로 넘어간 뒤 실패) | `hub.xconda.ai` DNS 레코드가 없거나 잘못됨 (Pages 커스텀 도메인은 등록돼 있음) | Route 53 에 CNAME `hub` → `hanahchafilmaker.github.io` 가 있는지 확인(`dig +short CNAME hub.xconda.ai`). 저장소 Settings → Pages 의 DNS check 가 성공인지 확인 — 「10.3 배포」 |
 | 브라우저에 "안전하지 않음" · Settings → Pages 의 **Enforce HTTPS** 가 비활성 | DNS 연결 직후라 인증서 발급 전 | 보통 1시간 이내 자동 발급 후 체크. 1시간이 넘도록 그대로면 커스텀 도메인을 Remove → 다시 Save 해 재발급 |
 | 사이트가 다시 `github.io` 주소로 열림 · Settings → Pages 의 도메인 칸이 비어 있음 | 루트 `CNAME` 파일이 지워지거나 바뀜 | Settings → Pages 에서 `hub.xconda.ai` 다시 저장 (또는 `CNAME` 파일을 `hub.xconda.ai` 한 줄로 복구) |
-| Google Drive 영상이 안 열림 | Drive 공유 설정 / CSP | 새 창 열기 링크로 동작하므로 Drive 공유 권한 확인. YouTube·직접 제공 파일은 인페이지 재생 |
+| 현재 가이드 문서·영상이 안 열림 | 같은 출처 자산 경로 또는 sanitize 산출물 누락 | `assets/guides/current/manifest.json` 과 `src/content/siteAssets.ts` 의 경로를 확인하고 `node scripts/import-current-guides.mjs <downloaded-raw-dir> assets/guides/current` 로 재생성. 외부 Drive 링크는 더 이상 사용하지 않음 |
 | KO를 눌렀는데 리로드 후 영어(또는 일·중)로 돌아감 | 2026-10-11 이전 빌드의 버그(브라우저 언어가 en/ja/zh면 `<head>` 스크립트가 `googtrans` 쿠키를 다시 쓰고 앱이 쿠키를 저장값보다 먼저 믿음) — 수정 완료 | 배포된 `index.html`이 최신인지 확인(옛 파일엔 `translate_a/element.js` `<script>` 태그가 HTML에 직접 있음). 개발자도구에서 `localStorage['xconda-lang']`(직접 고른 언어)·`googtrans` 쿠키 확인. 회귀 확인은 `npm run test:smoke`(`smoke-lang.mjs`) |
 | 한국(구글/크롬) 계정인데 일본어로 열림 | 웹사이트는 구글 계정 언어를 읽을 수 없음 — 사이트가 보는 건 직접 고른 언어(`xconda-lang`)와 브라우저 선호 목록뿐. 예전 코드는 `navigator.language`(UI 언어) 하나만 봐서 UI ja + 선호 ko 인 경우를 놓쳤고, KO 감지 시에도 직접 고르기 전엔 크롬 자체 번역 잠금이 안 걸려 내장 번역이 일본어로 바꿀 수 있었음 (수정 완료) | 크롬 `chrome://settings/languages`에서 한국어 최우선인지 + 상단 토글이 KO인지 확인. 그래도 일본어면 KO 한 번 클릭(직접 선택으로 저장·잠금). 회귀 확인은 `smoke-lang.mjs` 케이스 8 |
 | `www.xconda.ai/hub/` 로 들어갔는데 **제품 사이트 첫 화면**(`/?lang=en`)이 뜸 | 영어 홈·목록에 허브 앱 이동 스크립트(`data-hub-entry`)가 남아 있음 = `LOCALE_BASE_URLS.en` 스위치가 꺼진 빌드 | `src/content/seo.js` 의 스위치가 `"https://www.xconda.ai/hub/"` 인지 확인 → `npm run build` → 배포. 확인: `npm run proxy:check` 의 "허브 앱 이동 없음" |
@@ -764,7 +771,7 @@ git checkout <정상 커밋> -- index.html notion-content.json
 
 - [ ] 제품/콘텐츠 의사결정자 연락처(공지 내용·툴 매뉴얼 승인권자)
 - [x] XCONDA 공식 SNS 계정 — 2026-11-15 갱신: EN은 Instagram·Threads·YouTube의 `xconda_official` 및 영어 Facebook, KO는 `xconda_korea` 및 한국 Facebook·X. JA/ZH는 기존 언어/문의처 정책과 같이 한국 계정으로 연결합니다. 정확한 이름·URL은 `src/content/socialAccounts.js`에서 관리합니다. 목록에 없는 네이버 블로그는 공개 채널 바로가기에서 제외하되 과거 뉴스의 채널 분류는 유지합니다.
-- [ ] Google Drive 영상 공유 폴더 접근 권한
+- [ ] 현재 가이드 자산 재생성이 필요할 때만 원본 Drive 다운로드 권한 확인(커밋에는 원본 폴더를 넣지 않음)
 - [ ] 커스텀 도메인 `hub.xconda.ai` 연결 확인 — ✅ Pages 커스텀 도메인 등록(2026-10-12) · ☐ DNS CNAME · ☐ HTTPS 강제 · ☐ 도메인 인증(권장) → 「10.3 배포」
 - [ ] `xconda.ai` DNS(AWS Route 53) 관리 담당자 — 허브 레코드 변경 · 인증서 문제 시 연락처
 
@@ -782,9 +789,9 @@ git checkout <정상 커밋> -- index.html notion-content.json
 | 중간 | `notion-content.json` 히스토리 비대화 → Pages를 **Actions 배포**로 전환 검토 | 저장소 용량 · 산출물 커밋 노이즈 제거 |
 | — | ~~스모크 테스트를 CI에 연결~~ (2026-10-25 완료) | `build-site.yml` 이 게시 전에 `test:smoke` 를 실행 |
 | 낮음 | 툴 상세 매뉴얼(`toolGuides.ts`)을 노션으로 이관 검토 | 운영자가 직접 수정 가능해짐(단, Notion 이미 19개 툴 구조와 중복 관리 이슈) |
-| 완료 | **①-4 검수 진행률 도구** — `npm run i18n:progress`(285항목 진행률 + 검수 우선순위 리포트) | 원어민에게 "무엇이 남았는지" 를 숫자로 전달 |
+| 완료 | **①-4 검수 진행률 도구** — `npm run i18n:progress`(현재 원문 수 × 3언어 진행률 + 검수 우선순위 리포트) | 원어민에게 "무엇이 남았는지" 를 숫자로 전달 |
 | 완료 | **①-5 언어별 공유 카드** — 언어 홈 · 목록 · 커버 없는 글 44장(ko·en·ja·zh 각 11장) | 공유 미리보기에 그 언어의 제목이 나옵니다. `npm run og:cards` |
-| 완료 | **①-1 본문 번역** — 본문이 있는 글 **20편 전부** + Q&A 73건(en·ja·zh) | 표·콜아웃·체크리스트까지 번역, Q&A 는 「게시용 출처」 블록 포함 |
+| 완료 | **①-1 본문 번역** — 본문이 있는 글 **20편 전부** + 당시 Q&A 73건(en·ja·zh) | 표·콜아웃·체크리스트까지 번역, Q&A 는 「게시용 출처」 블록 포함 |
 
 ---
 

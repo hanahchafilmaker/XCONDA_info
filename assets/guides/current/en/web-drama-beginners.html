@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Web Drama Production for Beginners</title>
+<meta name="description" content="AI Web Drama Production for Beginners — from script to a finished episode, with the detailed XCONDA production workflow.">
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);line-height:1.75;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.2em;color:#9fb0cc}header h1{font-size:44px;margin:20px 0 12px;line-height:1.25}header p{color:#c6d0e2;max-width:860px}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}h3{font-size:20px;margin:32px 0 4px}h4{font-size:17px;margin:24px 0 4px}p{margin:8px 0}ul,ol{margin:8px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.6;vertical-align:top}th{background:#f2f3f6}
+pre{background:#f2f3f6;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all}code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}.check li:before{content:'☐';position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}.toc a{color:var(--navy);text-decoration:none}footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}.language-nav{font-size:13px;margin-top:20px}.language-nav a,.language-nav strong{display:inline-block;margin-right:16px;color:#fff}.table-scroll{overflow-x:auto}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{header{background:#fff;color:var(--ink);padding:24px 0}header p,header .brand{color:var(--slate)}.language-nav{display:none}main{padding:20px 0}h2,h3{break-after:avoid}tr{break-inside:avoid}.table-scroll{overflow:visible}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="web-drama-beginners" data-current-guide-lang="en" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="Current user guides navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/web-drama-beginners.html" hreflang="ko" lang="ko">KO</a><a href="../en/web-drama-beginners.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/web-drama-beginners.html" hreflang="ja" lang="ja">JA</a><a href="../zh/web-drama-beginners.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<header><div class="brand">XCONDA / 2026 · AI WEB DRAMA PRODUCTION FOR BEGINNERS (DETAILED TEXT EDITION)</div>
+<h1>AI Web Drama Production for Beginners</h1>
+<p>A single workflow from script to finished episode. Rather than creating images and videos separately, connect FlexBoard, Blocking Board, and Video Generator in order to complete an episode. This guide has been rewritten in the same detailed text format as the Prompt Writing Guide.</p>
+<nav class="language-nav" aria-label="Document language">한국어<strong aria-current="page">English</strong>日本語简体中文</nav></header>
+<main>
+<div class="toc"><strong>Contents</strong><ol>
+<li><a href="#c1">What goes into an episode — from script to finished production</a></li>
+<li><a href="#c2">Planning and script — establish the episode’s foundation</a></li>
+<li><a href="#c3">Prepare references — establish characters and locations as images</a></li>
+<li><a href="#c4">Text storyboard — finalize cuts at the writing stage</a></li>
+<li><a href="#c5">Storyboard images — check every cut visually</a></li>
+<li><a href="#c6">Blocking Board rehearsal — review movement before video generation</a></li>
+<li><a href="#c7">Video generation — create cut videos with the prompt skill</a></li>
+<li><a href="#c8">Sound and editing — finish the episode</a></li>
+<li><a href="#c9">Episode completion checklist — check again before delivery</a></li>
+<li><a href="#c10">Summary — the essentials of producing an episode</a></li>
+</ol></div>
+<h2 id="c1">1. What goes into an episode — from script to finished production</h2>
+<p>Producing an episode of a web drama means connecting everything from the script to the finished episode into one workflow. CUBEBERRY’s AI video production process can be summarized in seven stages: start with a script, create video in XCONDA, add sound, and finish with editing. This guide explains those seven stages as a practical episode-production workflow.</p>
+<div class="table-scroll"><table><tbody><tr><th>Stage</th><th>Task</th><th>Main tools</th></tr>
+<tr><td>01 Preparation</td><td>Finalize the script</td><td>Script</td></tr>
+<tr><td>02 Preparation</td><td>Prepare reference images</td><td>FlexBoard skill, GPT Image, Turn</td></tr>
+<tr><td>03 Preparation</td><td>Text storyboard</td><td>FlexBoard</td></tr>
+<tr><td>04 Preparation</td><td>Storyboard / blocking</td><td>FlexBoard, Turn, Blocking Board</td></tr>
+<tr><td>05 Video</td><td>Video generation</td><td>Video Generator (Seedance, etc.)</td></tr>
+<tr><td>06 Post-production</td><td>Sound</td><td>Sound tools</td></tr>
+<tr><td>07 Post-production</td><td>Editing and finishing</td><td>Premiere Pro</td></tr></tbody></table></div>
+<div class="note">This workflow has already been tested in production. Using XCONDA’s Turn, FlexBoard, and Blocking Board to manage spaces, characters, and movement paths, CUBEBERRY produced four KOCCA Content Lab AI web dramas (2026, with four teams of working directors). The number of cuts and the running time of an episode are determined by the plan for that episode.</div>
+<h2 id="c2">2. Planning and script — establish the episode’s foundation</h2>
+<p>Episode production begins with planning and the script. Decide the story, characters, and locations, then break the episode into cuts. If the characters and locations are not established at this stage, you cannot create the references needed for the next stage.</p>
+<h3>2-1. Planning — define the story, characters, and locations</h3>
+<p>Define the episode’s plot, characters, and main locations. Give each character a name, appearance, and costume. For each location, define the characteristics of the space, including the placement of doors, windows, and furniture.</p>
+<h3>2-2. Script — write the script and divide it into cuts</h3>
+<p>Write the script and break it into cuts. For each cut, decide who is doing what, where they are, and where the camera is positioned. The number of cuts depends on the production plan. FlexBoard can create storyboards containing 6 to 36 cuts.</p>
+<h3>2-3. Continuity ledger — record the states that must carry across cuts</h3>
+<p>For each cut, record the characters’ costumes, expressions, and injury states; props held in their hands; surrounding props; the positions of doors, windows, and furniture in the background; and the number of characters present. This ledger becomes the reference for maintaining continuity in later cuts. Video AI does not remember the previous cut, so a person must specify these details again at each stage.</p>
+<div class="note">Include character names in the script so the AI can connect the face and costume references. Without names, the AI cannot distinguish the characters.</div>
+<h2 id="c3">3. Prepare references — establish characters and locations as images</h2>
+<p>Once the script is settled, prepare reference images for the characters and locations. Create a facial image—a character sheet—for each character and a background image—a background sheet—for each location. These references become the basis for every later stage.</p>
+<h3>3-1. Character sheets — a facial image for each character</h3>
+<p>Create a facial image for each character. Use GPT Image and the FlexBoard skill to prepare facial references. Establish the costume, expression, and injury state at the same time. This sheet is the reference that maintains the same character across cuts. For detailed sheet-creation rules—a neutral gray background, five rules to prevent shortened legs in full-body shots, and confirmation questions—see the Prompt Writing Guide.</p>
+<h3>3-2. Background sheets — a background image for each location</h3>
+<p>Create a background image for each location. This includes four-sided background sheets made with Turn: front, left, right, and rear. The background sheet is the reference that maintains the same space across cuts.</p>
+<h3>3-3. Using Turn — create spaces and cut images when needed</h3>
+<p>Use Turn to create a 360° virtual set and derive background sheets from it, or extract cut images directly inside the set. For the detailed Turn workflow, see the Turn chapter in the Website User Manual.</p>
+<div class="warn"><strong>Principle: until the characters and locations are established, you cannot create the references needed for the next stage.</strong> If you skip reference preparation and generate immediately, the characters and locations may change from cut to cut. Save reference images in the Asset Library and reuse them throughout the episode and in subsequent episodes.</div>
+<h2 id="c4">4. Text storyboard — finalize cuts at the writing stage</h2>
+<p>Once the references are ready, create a text storyboard in FlexBoard. Divide the script into instructions for individual cuts and write the text and sound effects for each cut. Finalizing the cut order and composition at the writing stage saves credits.</p>
+<h3>4-1. Enter — select Flex Board and create a new project</h3>
+<p>Select Flex Board in the Storyboard category, then create a new project using New Project in the workspace.</p>
+<h3>4-2. Connect references — add character and background references</h3>
+<p>Connect the prepared character sheets and background sheets to the project. These references keep the characters and space consistent across cuts.</p>
+<h3>4-3. Text for each cut — write instructions and sound effects</h3>
+<p>Divide the script into cuts and write instructions for each one. In the text preview, check the cut cards, descriptions, and sound effects.</p>
+<h3>4-4. Finalize — establish cut order and composition in text</h3>
+<p>Finalize the cut order and composition at the text stage. Revising text before image generation does not consume credits. Refine the text thoroughly before moving on to images.</p>
+<div class="note">Check in this order: cut cards → cut descriptions → sound effects → cut order. Complete these four checks before moving on to image generation.</div>
+<h2 id="c5">5. Storyboard images — check every cut visually</h2>
+<p>Once the text storyboard is finalized, generate the images. Create an image for each cut and check the composition, characters, and background. Revise only the cuts you are unhappy with. Two engines handle consistency: Turn protects the background, while Art Director Pro protects the characters.</p>
+<h3>5-1. Image generation — compare each image in the grid</h3>
+<p>After generating images, compare each image in the grid with its description. Check whether the composition, characters, and background are correct for each cut.</p>
+<h3>5-2. Revise individual cuts — regenerate only what does not work</h3>
+<p>Select only the cuts you are unhappy with, revise their prompts, and generate again. Recreating a cut starts at 20 credits. To keep the same scene while changing only the angle or camera movement, drag an image to replace the intended cut.</p>
+<h3>5-3. When revising a single cut is cheaper — correct the key image first</h3>
+<p>If a cut is wrong, correcting and reusing one key image for that scene can use fewer credits than repeatedly running generations with only the prompt changed.</p>
+<div class="note">Consistency engines: Turn (AI VirtualSet) handles background consistency. Because you choose angles by moving the camera inside a 360° set created from one photograph, the positions of doors, windows, and furniture remain consistent across cuts. Art Director Pro handles character consistency. Four AI agents validate, revise, and propagate changes in sequence, carrying costumes, expressions, and injury states across cuts. Change one frame and the others automatically follow.</div>
+<h2 id="c6">6. Blocking Board rehearsal — review movement before video generation</h2>
+<p>Once the storyboard images are finalized, rehearse scenes with complex movement in Blocking Board. Place actors and cameras on a floor plan and play back the scene in 3D to check that people, the space, and cameras do not collide and that eyelines match. If you generate without rehearsing, you will have to correct collisions and movement errors later.</p>
+<h3>6-1. 1-Click — paste a script to create a draft</h3>
+<p>Paste in a script to create a draft of the actors, space, movement paths, and cameras.</p>
+<h3>6-2. 2D floor plan — adjust placement and movement paths</h3>
+<p>Adjust actor and camera positions and movement routes in the 2D floor plan.</p>
+<h3>6-3. 3D preview — check playback on the 3D stage</h3>
+<p>Play back the scene on the 3D stage and review character and camera movement.</p>
+<h3>6-4. Direction checks — inspect collisions and eyelines, then correct issues</h3>
+<p>Inspect collisions and eyelines in the direction review. If a problem appears, return to the floor plan and correct the placement or movement paths. For scenes in which multiple characters cross paths, it is recommended that you establish positions and movement routes at this stage.</p>
+<h3>6-5. Export — prompts, shot lists, and shot books</h3>
+<p>Reviewed scenes can be exported as English prompts for Seedance, a shot list, floor plans and frame PNGs, and a shot book PDF. You can also play back the scene and export a previsualization video in WebM format.</p>
+<div class="note">Blocking Board is available as a free beta on the website, with no card required. For detailed instructions, see the separate 13-chapter Blocking Board guide.</div>
+<h2 id="c7">7. Video generation — create cut videos with the prompt skill</h2>
+<p>Once the storyboard and rehearsal are finalized, generate the cut videos with Video Generator. The key is the prompt. Transfer the continuity ledger directly into the prompt and generate using the key image as the reference. Seedance prompts accept up to 30,000 characters, so prompt length need not be a concern.</p>
+<h3>7-1. Prompt skill — generate a prompt based on the key image</h3>
+<p>The XCONDA prompt skill creates prompts for Seedance based on key images. It is organized around a four-director framework and a ten-block structure, and lets you edit while viewing Korean and English side by side. Enter the continuity ledger information in Korean and check that the English sentences have been translated correctly. For detailed prompt-writing rules, see the Prompt Writing Guide.</p>
+<h3>7-2. Model and options — choose the model, aspect ratio, resolution, duration, and quality</h3>
+<p>With Seedance 2.5, you can generate up to 30 seconds at up to 1080p in one run. Set the aspect ratio, resolution, duration, and high-quality option. For the full model specifications table, see the Video Generator chapter in the Website User Manual.</p>
+<h3>7-3. Generate and review each cut — check continuity</h3>
+<p>Generate each cut and check whether the characters, space, and states carry through correctly. If a cut does not match, correct that scene’s key image first and generate again.</p>
+<div class="note">Five stages of cut consistency: ① Establish the space with Turn. ② Establish the characters and composition with FlexBoard. ③ Carry the required states forward through references and prompts. ④ Transfer the continuity ledger directly into the prompt. ⑤ Review once more before sending. Following this order helps reduce changes in characters and locations from cut to cut.</div>
+<h2 id="c8">8. Sound and editing — finish the episode</h2>
+<p>Once the cut videos are complete, add sound and edit them into a finished episode. CUBEBERRY’s production flow is to create video in XCONDA, add sound, and finish editing in Premiere Pro.</p>
+<h3>8-1. Sound — add music and sound effects</h3>
+<p>Add music and sound effects to each cut. Match them to the sound effects established at the text-storyboard stage.</p>
+<h3>8-2. Editing — connect the cuts into one episode</h3>
+<p>Arrange the generated cut videos in sequence and edit them into one episode. Complete the finishing work in Premiere Pro.</p>
+<h3>8-3. Refinement tools — use the website’s tools as needed</h3>
+<p>Use Face Swap for face replacement, ClothSwap for costume replacement, Expression Transformer for expression changes, AI Upscaler for image-quality enhancement (up to 4×), and CineGrade AI to unify color. After refinement, check character consistency again.</p>
+<p>If revision requests arise during editing and finishing, repeat the cycle in which the editor makes changes and the affected content is regenerated. Continue this cycle until the result is satisfactory.</p>
+<h2 id="c9">9. Episode completion checklist — check again before delivery</h2>
+<p>Before completing the episode, check the following items. This checklist reflects the review items used in CUBEBERRY’s actual production work. If any item fails, correct the work starting with the affected cut.</p>
+<ul class="check">
+<li>Is the number of characters correct in every cut?</li>
+<li>Are costume colors, buttons, and sleeves the same across cuts?</li>
+<li>Have the props held by characters and the surrounding props remained unchanged?</li>
+<li>Are the positions of background windows, doors, and furniture consistent across cuts?</li>
+<li>Do the characters’ expressions and injury states carry through correctly?</li>
+<li>Do the cut order, shot duration, and camera movement match the intended direction?</li>
+<li>Are any cuts missing?</li>
+<li>Has the continuity ledger been transferred directly into the prompts?</li>
+<li>Have the key images been compared with the generated videos?</li>
+<li>Has the sound—music and effects—been matched to the cuts?</li>
+<li>Does the edit form one coherent episode?</li>
+<li>Have the Turn sets, character sheets, and background sheets been saved to the library for reuse in the next episode?</li>
+</ul>
+<div class="note">If a cut is wrong, correcting and reusing one key image for that scene can use fewer credits than repeatedly running generations with only the prompt changed. Review complex movement scenes again in Blocking Board.</div>
+<h2 id="c10">10. Summary — the essentials of producing an episode</h2>
+<p>The key to producing a web drama episode is the order of operations: script → references → text storyboard → storyboard/blocking → video generation → sound → editing. Following this order helps reduce changes in characters and locations between cuts and saves credits.</p>
+<h3>10-1. Core principle — do not rely on AI to remember</h3>
+<p>Video AI does not remember the previous cut. A person must establish the space with Turn, the characters and composition with FlexBoard, and the states that must carry forward through references and prompts.</p>
+<h3>10-2. Assets — save what you create to the library</h3>
+<p>Save character sheets, background sheets, Turn sets, key images, and storyboard projects to the library and reuse them in the next episode. The more assets you accumulate, the faster the next episode becomes.</p>
+<h3>10-3. The next episode — start episode 2 with assets from episode 1</h3>
+<p>Start the next episode by loading the character sheets, background sheets, and Turn sets from episode 1. Because the characters and locations are already established, you can focus on the script and cut structure for the new episode.</p>
+<div class="note">This guide was prepared on 2026-11-03 using the public XCONDA website, Hub guides, and CUBEBERRY production articles. Prices, model specifications, and credit policies may change with website updates; check the website again before payment or generation. For a complete overview of the website’s features, see the Website User Manual (Detailed Text Edition).</div>
+</main>
+<footer>AI Web Drama Production for Beginners (Detailed Text Edition) · Source prepared 2026-11-03 · English translation updated 2026-11-03 · Original source note: the existing slide-style guide (No. 21) is preserved unchanged.</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

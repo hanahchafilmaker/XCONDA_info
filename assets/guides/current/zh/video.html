@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generator (Seedance 2.5) — 用户指南</title>
+
+
+
+<style>
+
+  :root { --body-font: 'Pretendard', sans-serif; }
+  body { word-break: keep-all; letter-spacing: -0.015em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: auto; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 780px; }
+  .section-lede .ui, .content-table .ui, .sub-block .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; font-family: 'JetBrains Mono', var(--body-font), monospace; }
+  .section-lede strong, .sub-block strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+
+
+  .figure-block { margin-bottom: 32px; max-width: 900px; width: 100%; }
+  .figure-placeholder {
+    width: 100%;
+    min-height: 360px;
+    background: var(--offwhite-warm);
+    border: 1px dashed var(--hairline);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    color: var(--slate-light);
+    font-family: 'JetBrains Mono', var(--body-font), monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .figure-img[src=""] { display: none; }
+
+
+  .content-table { width: 100%; max-width: 900px; border-collapse: collapse; margin-bottom: 32px; font-size: 14.5px; }
+  .content-table th, .content-table td { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 14px 18px; text-align: left; vertical-align: top; line-height: 1.65; }
+  .content-table th { background: var(--offwhite-warm); font-weight: 600; color: var(--midnight); font-family: 'JetBrains Mono', var(--body-font), sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; width: 190px; }
+  .content-table td { color: var(--slate); }
+  .content-table td strong { color: var(--midnight); font-weight: 600; }
+
+  .sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 900px; margin-bottom: 32px; }
+  .sub-block { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 24px 28px; border-radius: 2px; }
+  .sub-block h3 { font-size: 17px; font-weight: 700; color: var(--midnight); margin-bottom: 12px; letter-spacing: -0.02em; }
+  .sub-block p, .sub-block ol, .sub-block ul { font-size: 14.5px; color: var(--slate); line-height: 1.75; }
+  .sub-block ol, .sub-block ul { padding-left: 18px; }
+  .sub-block li { margin-bottom: 6px; }
+
+  .prompt-card { max-width: 900px; border: 1px solid var(--hairline); margin-bottom: 16px; border-radius: 2px; overflow: hidden; }
+  .prompt-card-header { background: var(--offwhite-warm); padding: 10px 20px; border-bottom: 1px solid var(--hairline); font-family: 'JetBrains Mono', var(--body-font), monospace; font-size: 12px; font-weight: 600; color: var(--midnight); letter-spacing: 0.05em; }
+  .prompt-card-body { padding: 16px 20px; }
+  .prompt-en { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--midnight); line-height: 1.65; margin-bottom: 8px; }
+  .prompt-kr { font-size: 13.5px; color: var(--slate); line-height: 1.65; border-top: 1px dashed var(--hairline); padding-top: 8px; }
+
+  .note-box { margin-top: 8px; margin-bottom: 32px; max-width: 900px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover, .sub-grid { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head>
+<body data-current-guide-slug="video" data-current-guide-lang="zh" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="当前用户指南 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/video.html" hreflang="ko" lang="ko">KO</a><a href="../en/video.html" hreflang="en" lang="en">EN</a><a href="../ja/video.html" hreflang="ja" lang="ja">JA</a><a href="../zh/video.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>用户指南</span></div>
+    <div>
+      <div class="cover-title-en">VIDEO<br>GEN<br>ERATOR</div>
+      <div class="cover-subtitle">基于 Seedance 2.5，从文本、图像、视频、音频参考素材生成高清视频的工作流程指南。涵盖参考素材生成、现有视频编辑、视频延长、首尾帧控制及 Draft 草稿功能，全部可在同一界面完成。</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div><div>用户指南</div><div>Seedance 2.5</div></div>
+      <div style="text-align:right"><div>共 12 章</div><div>2026</div></div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>共 12 章</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— 指南结构 —</span>
+      01. 顶部 Video 菜单入口 · 02. 类别与 Seedance 2.5 选择 · 03. Models 与 Generation mode 选择 · 04. Input Assets 与 Reference 管理 · 05. 添加参考素材并赋予 @Image 标签 · 06. Prompt 编写与 @ 调用 · 07. Options 详细设置（画面比例·分辨率·时长） · 08. Draft 模式设置与提示词示例 · 09. 执行 Generate 并确认 credits · 10. 生成确认弹窗 (OK) · 11. 生成队列与后台运行 · 12. 确认生成进度并管理结果
+    </div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>顶部 Video 菜单入口</span></div><div class="right"><span>P. 001</span></div></div>
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Entry · 菜单入口 —</div>
+      <h2 class="section-title">顶部 Video 菜单入口</h2>
+      <p class="section-lede">主界面顶部导航栏（<span class="ui">Image</span> · <span class="ui">Video</span> · <span class="ui">Studio</span> · <span class="ui">Guide</span> · <span class="ui">Hub</span> · <span class="ui">Pricing</span>）中点击以黄色框标示的 <span class="ui">Video</span> 菜单。右上角可以查看当前持有的 credits 和账号头像图标。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/a0ac64bb7f6a83c5bb5f83224e26e5978c05905ab50422781e5b979666f4f548.jpg" alt="Chapter 01 - 顶部 Video 菜单入口 (1.jpg)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text">顶部菜单中的 <span class="ui">Video</span>点击后会立即跳转到 Xconda 提供的全部 AI 视频生成模型列表页面。在工作界面内，也可以通过左侧竖向侧边栏的第二个胶片形状图标打开。</div>
+  </div>
+  <div class="footer-meta"><span>001 — 顶部 Video 菜单入口</span><span>VIDEO-ENTRY</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>类别与 Seedance 2.5 选择</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Category &amp; Engine · 模型选择 —</div>
+      <h2 class="section-title">类别与 Seedance 2.5 选择</h2>
+      <p class="section-lede">左侧 <span class="ui">CATEGORY</span>中确认 <span class="ui">Video</span>已选中，然后在右侧模型卡片列表中点击以黄色框突出显示的第一个 <span class="ui">Seedance 2.5 T2V</span> 卡片。每个卡片下方汇总了最长生成时长、最高分辨率、是否支持音频生成等核心规格。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/908759c8517630e55220d7b82e061c3fe0a9e8e09dabf6d5eb958b4f12b3495b.jpg" alt="Chapter 02 - 选择 Seedance 2.5 T2V (2.jpg)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>系列</th><th>Xconda 支持的视频模型</th><th>主要特点摘要</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Seedance</strong></td><td><strong>Seedance 2.5</strong> · Seedance 2.0 · Seedance 2.0 Fast · Seedance 2.0 Mini</td><td>以 Seedance 2.5 为准，最长 30 秒、最高 1080p，支持音频生成及首尾帧</td></tr>
+      <tr><td><strong>Google</strong></td><td>Veo 3.1 · Veo 3.1 Fast · Gemini Omni Flash</td><td>最长 8~10 秒，支持音频生成（Native audio）及首尾帧</td></tr>
+      <tr><td><strong>Kling</strong></td><td>Kling 3.0 Pro · Kling 3.0 4K · Kling OMNI</td><td>最长 15 秒，支持音频生成，Pro/OMNI 支持多镜头提示词及 4K 分辨率</td></tr>
+      <tr><td><strong>Grok / Vidu</strong></td><td>Grok Imagine Video · Grok Imagine Video 1.5 · Vidu Q3</td><td>支持各引擎独有风格与动作解析的视频生成模型</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text">各模型支持的最高分辨率、视频长度、细节功能各不相同。本指南以支持最长 30 秒时长与多模态参考素材的 <strong>Seedance 2.5</strong>为准进行说明。</div>
+  </div>
+  <div class="footer-meta"><span>002 — 类别与 Seedance 2.5 选择</span><span>MODEL-CARDS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Models 与生成模式选择</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generation Mode · 生成模式 —</div>
+      <h2 class="section-title">Models 与生成模式选择</h2>
+      <p class="section-lede">在 Video Generator 工作界面顶部的 <span class="ui">Models</span> 下拉菜单中确认是否已选择 <strong>Seedance 2.5</strong>。在其下方点击 <span class="ui">Mode</span> 旁的尖括号，即可打开 <strong>Generation mode</strong> 列表，根据制作目的从 4 种模式中选择一种。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/ce63e37ce3908345d0255f73e49ae9c2f01f9fbc4507aca24c3c56480e65a13b.png" alt="Chapter 03 - 选择 Models 与 Generation mode (3.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>生成模式</th><th>主要功能</th><th>推荐使用场景</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Ref-to-video</strong></td><td>使用参考素材（图像、视频、音频）与提示词生成新视频。不添加参考素材、仅输入提示词时，仅凭文本生成视频</td><td>从头制作全新场景时（默认模式）</td></tr>
+      <tr><td><strong>Video edit</strong></td><td>导入现有视频，保留要保留的元素，仅修改想要修改的部分</td><td>只想改变已生成视频的天气、背景、氛围等部分元素时</td></tr>
+      <tr><td><strong>Video extend</strong></td><td>从现有视频的最后一幕自然衔接，生成下一段内容（可反复延长）</td><td>需要超过 30 秒的场景，或无缝连续动作（追逐、舞蹈、运镜）时</td></tr>
+      <tr><td><strong>First/last frame</strong></td><td>指定起始图像与结束图像，生成两幕之间的动作</td><td>场景的首尾画面已明确确定时</td></tr>
+    </tbody>
+  </table>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>仅用文本生成 (Text-to-Video)</h3>
+      <p>没有单独分离的 Text to video 模式。在默认模式 <span class="ui">Ref-to-video</span> 状态下不添加参考素材、仅输入提示词，即可仅凭文本生成视频。仅用文本生成时，请确认已激活的参考素材发送数量（<span class="ui">Sending: Reference N</span>）为 <strong>0</strong>。</p>
+    </div>
+    <div class="sub-block">
+      <h3>Video extend 使用技巧</h3>
+      <p>如果想延长的原始视频较长，仅截取最后 <strong>8~10 秒的片段放入</strong>即可，这样有利于管理参考素材容量。提示词中不要重新描述开头场景，只写 <strong>接下来要发生的动作与运镜</strong>。多次反复延长后人物或背景开始走样时，可将最后自然的一幕提取为图像，用 <span class="ui">First/last frame</span> 模式接续，这样更稳定。</p>
+    </div>
+  </div>
+  <div class="footer-meta"><span>003 — Models 与生成模式选择</span><span>GENERATION-MODE</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Input Assets 与 Reference 管理</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Input Assets · 参考面板 —</div>
+      <h2 class="section-title">Input Assets 与 Reference 管理面板</h2>
+      <p class="section-lede">点击 Input Assets 区域右侧的 <span class="ui">Manage &gt;</span>，画面右侧会打开管理面板。通过顶部 3 个标签页（<span class="ui">Reference</span> · <span class="ui">Asset Library</span> · <span class="ui">Options</span>）管理资料与设置，Seedance 2.5 一次最多支持 <strong>图像最多 30 个 · 视频最多 10 个 · 音频最多 10 个</strong>的参考素材。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/b5af1db034cb89f3798da1c92ed402e750a758a4e4c958df75a8f6a4548563e7.png" alt="Chapter 04 - Reference 管理面板 (4.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>管理面板标签页</th><th>作用与特点</th><th>主要用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Reference</strong></td><td>上传仅供当前任务一次性使用的媒体文件（不注册到公共 Asset Library）</td><td>附上仅供本次镜头生成参考的分镜、构图、示例视频及音频</td></tr>
+      <tr><td><strong>Asset Library</strong></td><td>提前注册到账号 Library 中、在多个项目中反复复用的素材库（Saved assets）</td><td>调用固定的主角角色表、主要场景背景、核心道具</td></tr>
+      <tr><td><strong>Options</strong></td><td>Draft 模式、画面比例（Ratio）、分辨率（Resolution）、时长（Duration）、High Quality 设置</td><td>调整视频输出规格与质量选项</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text"><span class="ui">Reference</span> 标签页下方， <span class="ui">IMAGE</span>, <span class="ui">VIDEO</span>, <span class="ui">AUDIO</span> 类别已分别区分。点击所需媒体区域的 <span class="ui">+ Add</span> 框，从电脑上传文件。</div>
+  </div>
+  <div class="footer-meta"><span>004 — Input Assets 与 Reference 管理面板</span><span>REFERENCE-PANEL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>添加参考素材并赋予标签</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Active Reference · 素材选择 —</div>
+      <h2 class="section-title">添加参考素材并赋予 @Image 标签</h2>
+      <p class="section-lede"><span class="ui">+ Add</span>，上传图像后，缩略图右上角的 <strong>黄色勾选标记</strong>会被激活，下方会自动附上 <span class="ui">@Image1</span>等专属调用名称。只有勾选的文件才会在实际生成时发送给模型。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/e0a76d30b5655982c55ca86781b724c8c7f00ea5da2606691b72374b6abe5bfa.png" alt="Chapter 05 - 上传参考图像并赋予 @Image1 (5.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>直接在 Reference 标签页中使用</h3>
+      <ol>
+        <li>在所需的媒体区域（IMAGE / VIDEO / AUDIO）中点击 <span class="ui">+ Add</span>，上传文件。</li>
+        <li>确认本次生成要使用的文件已勾选黄色标记。</li>
+        <li>按勾选顺序依次赋予 <span class="ui">@Image1</span>, <span class="ui">@Image2</span>, <span class="ui">@Video1</span> 等标签名称。</li>
+      </ol>
+    </div>
+    <div class="sub-block">
+      <h3>从 Asset Library 中调用使用</h3>
+      <ol>
+        <li>常用资料可通过画面右上角头像图标 → <span class="ui">Library</span> → <span class="ui">Uploads</span> 标签页的 <span class="ui">+ Add asset</span>提前注册。</li>
+        <li>在 Video Generator 的 <span class="ui">Asset Library</span> 标签页中点击要使用的资料进行选择（<span class="ui">N selected</span>）。</li>
+        <li>点击底部的 <span class="ui">Use selected assets</span>，即可立即将其添加为当前任务的参考素材。</li>
+      </ol>
+    </div>
+  </div>
+  <div class="note-box">
+    <div class="label">— 提示 —</div>
+    <div class="text">参考素材并非越多越好，精选核心资料放入效果更佳。一次性放入过多资料会分散各参考素材的影响力，因此 <strong>人物面部图像每人仅放 1 张</strong>最为稳妥。</div>
+  </div>
+  <div class="footer-meta"><span>005 — 添加参考素材并赋予 @Image 标签</span><span>ACTIVE-ASSETS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>提示词编写与 @ 调用</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Prompt &amp; @Tag · 场景说明 —</div>
+      <h2 class="section-title">提示词编写与 @ 标签调用</h2>
+      <p class="section-lede"><span class="ui">Prompt</span> 输入框中编写要生成的视频场景。最多可输入 <strong>30,000 字</strong>，右下角会实时显示字数（<span class="ui">0 / 30000</span>）。输入框下方会显示当前已应用选项的摘要芯片（<span class="ui">Draft on | 1:1 | 480p | 25s | High Quality on</span>），点击右侧设置图标可打开 Options 面板。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/1f2b062207e1aac9fe1253a06e39bf4a5360775f32d667b6cb8e4db643f345bd.png" alt="Chapter 06 - Prompt 输入框与摘要芯片 (6.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>通过输入 @ 指定参考素材</h3>
+      <p>在提示词输入过程中输入 <span class="ui">@</span>后，会显示 Input Assets 中已注册的资料列表，点击后 <span class="ui">@Image1</span>, <span class="ui">@Video1</span> 等标签会插入到句子中。仅上传参考素材而不通过提示词调用，模型便不知道应在何处体现，因此请务必在 <strong>人物或背景首次出现的句子中务必附上 <span class="ui">@</span>标签并指定角色</strong>。</p>
+    </div>
+    <div class="sub-block">
+      <h3>排除元素的写法（Negative Prompt 替代方案）</h3>
+      <p>Seedance 2.5 没有单独的 Negative Prompt 输入框。如果有不想要的元素，不要使用“~没有”这样的否定词，而是改写为 <strong>画面中应呈现的肯定状态</strong>来表述。<br><br>· <strong>编写示例：</strong> “相机不晃动” → <em>“相机固定在最初的位置 (Locked-off shot)”</em></p>
+    </div>
+  </div>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text">如果提示词输入框为空，下方的 <span class="ui">Generate</span> 按钮会显示为灰色禁用状态，无法点击。</div>
+  </div>
+  <div class="footer-meta"><span>006 — 提示词编写与 @ 标签调用</span><span>PROMPT-INPUT</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Options — 画面比例·分辨率·时长设置</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Options · 输出规格设置 —</div>
+      <h2 class="section-title">Options — 画面比例·分辨率·时长设置</h2>
+      <p class="section-lede">在右侧管理面板的 <span class="ui">Options</span> 标签页中设置视频的画面比例（<span class="ui">Ratio</span>）、分辨率（<span class="ui">Resolution</span>）、时长（<span class="ui">Duration</span>）、高质量模式（<span class="ui">High Quality</span>）。直接生成正片视频时，请将顶部 Draft 按钮保持为 <span class="ui">Draft off</span>，直接选择所需分辨率。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/ae713aeee31bdd927ca20e53ebbd3a9a421b72a208f18d283c3e7c1e517422a3.png" alt="Chapter 07 - Options 标签页设置画面 (7.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>选项项目</th><th>支持的选项（以 Seedance 2.5 为准）</th><th>设置指南</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Draft</strong></td><td>Draft off / Draft on</td><td>以正片分辨率（720p·1080p）立即生成时选择 <strong>Draft off</strong>，以 480p 测试草稿时选择 <strong>Draft on</strong></td></tr>
+      <tr><td><strong>Ratio（画面比例）</strong></td><td>16:9 · 9:16 · 1:1 · 4:3 · 3:4 · 21:9</td><td>YouTube 横向视频选择 <strong>16:9</strong>，Shorts·Reels 选择 <strong>9:16</strong>，方形动态选择 <strong>1:1</strong>，电影感宽幅选择 <strong>21:9</strong></td></tr>
+      <tr><td><strong>Resolution（分辨率）</strong></td><td>480p · 720p · 1080p</td><td>分辨率越高越清晰，消耗的 credits 也越多（Draft on 时固定为 480p）</td></tr>
+      <tr><td><strong>Duration（时长）</strong></td><td>4s ~ 30s 滑块</td><td>拖动底部滑块条左右移动，以秒为单位设置 4 秒至最长 30 秒</td></tr>
+      <tr><td><strong>High Quality</strong></td><td>High Quality on / off</td><td>启用（黄色按钮）后渲染质量提升，credits 会相应增加</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text"><span class="ui">First/last frame</span> 模式下画面比例遵循起始图像的比例， <span class="ui">Video edit</span> 模式下则以原始视频的画面比例与时长为准运行。</div>
+  </div>
+  <div class="footer-meta"><span>007 — Options - 画面比例·分辨率·时长设置</span><span>OPTIONS-TAB</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Draft 模式与提示词示例</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Draft Mode &amp; Examples · 草稿与提示词 —</div>
+      <h2 class="section-title">Draft 模式设置与实战提示词示例</h2>
+      <p class="section-lede">点击 Options 标签页顶部的按钮，开启黄色的 <span class="ui">Draft on</span> 状态后，下方的 <span class="ui">Resolution</span>会自动固定为 <strong>480p 单一按钮</strong>。先以较少 credits 和较快速度多次试做 480p 草稿，然后仅挑选满意的结果，在结果卡片中转换为 <strong>1080p 正片</strong>。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/6b33fd309881aa5971efae7f9c09e03ad88bd48eb17cb1d2da7e7336cd3c2ff1.png" alt="Chapter 08 - Draft on 激活画面 (8.png)" class="figure-img" loading="lazy">
+
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">01. 仅用文本生成 (Ref-to-video，无参考素材)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">A woman walks alone down a rain-soaked alley at night, neon signs reflecting on the wet pavement. She stops in front of a glass door, hesitates, then pushes it open — warm golden light spills out into the alley. The camera follows her from behind at shoulder height.</div>
+      <div class="prompt-kr"><strong>译文：</strong> 夜晚，一名女子独自走在被雨水浸透的小巷中，霓虹灯映在潮湿的地面上。她在玻璃门前停下，犹豫片刻后推门而入——温暖的金色光芒洒向小巷。镜头在肩部高度从后方跟随她。</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">02. 组合参考素材生成 (Ref-to-video)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">@Image1 sits in the back seat of a taxi at night, city lights sliding across the window. She turns toward @Image2 and speaks quietly. Locked-off medium shot from the front seat, cool streetlight from the left.</div>
+      <div class="prompt-kr"><strong>译文：</strong> 夜晚，@Image1 坐在出租车后座，城市灯光从窗外滑过。她转向 @Image2，轻声说话。从前座拍摄的固定中景镜头，左侧照进冰冷的路灯光。</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">03. 修改现有视频的部分内容 (Video edit — 同时注明保留元素与修改元素)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">Keep @Video1 exactly as it is — same people, same movement, same camera. Change only the weather: light snow falls throughout the shot.</div>
+      <div class="prompt-kr"><strong>译文：</strong> 保持 @Video1 原样——相同人物、相同动作、相同镜头。只改变天气：整个镜头中飘着轻雪。</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">04. 延续视频进行扩展 (Video extend) &amp; 05. 连接首尾帧 (First/last frame)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">[Video extend] Continue @Video1 from its last frame. The woman steps through the glass door into a warm, crowded bar and looks around the room. The camera keeps following her from behind at shoulder height, with the same lighting and mood.<br><br>[First/last frame] The woman walks slowly from the alley entrance toward the glass door as the rain keeps falling. Neon reflections ripple across the wet pavement with each step. Smooth, continuous camera movement following her, realistic night lighting.</div>
+      <div class="prompt-kr"><strong>译文：</strong> （延长）从 @Video1 的最后一幕接续，女子穿过玻璃门走进温暖拥挤的酒吧，环顾四周，镜头以相同的灯光与氛围从后方跟随她。/（首尾帧）从小巷入口的起始图像到玻璃门前的结束图像，以雨夜街道的霓虹倒影与平稳的镜头跟随连接起来。</div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="label">— 注意 —</div>
+    <div class="text">分辨率无法通过提示词文本更改。 <span class="ui">Draft on</span>开启后，即使在提示词中写“请做成 1080p”，结果仍会生成 480p 草稿，因此 1080p 正片务必在生成完成后从结果卡片中申请。</div>
+  </div>
+  <div class="footer-meta"><span>008 — Draft 模式设置与提示词示例</span><span>DRAFT-AND-PROMPTS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>执行 Generate 并确认 credits</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate · 点击生成按钮 —</div>
+      <h2 class="section-title">执行 Generate 并确认 credits</h2>
+      <p class="section-lede">提示词输入完成后（例如： <span class="ui">7526 / 30000</span>），下方的 <span class="ui">Generate</span> 按钮会变为黄色激活状态。请确认左上角的摘要芯片（<span class="ui">Draft on | 1:1 | 480p | 25s | High Quality on</span>）与按钮右侧显示的消耗 credits（例如： <span class="ui">725 credits</span>），然后点击黄色的 <span class="ui">Generate</span> 按钮。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/6d137f07c6124951a46471c1812d4c83a33847735af2331c8638461e1ad154a2.png" alt="Chapter 09 - 黄色 Generate 按钮激活与 credits 显示 (9.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text">消耗的 credits 不是固定值，会根据所选生成模式、视频长度（秒）、分辨率、Draft 设置、High Quality 设置自动计算，并实时显示在按钮旁边。</div>
+  </div>
+  <div class="footer-meta"><span>009 — 执行 Generate 并确认 credits</span><span>GENERATE-BUTTON</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>生成确认弹窗 (OK)</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Confirmation Modal · 生成最终确认 —</div>
+      <h2 class="section-title">生成确认弹窗 (OK)</h2>
+      <p class="section-lede"><span class="ui">Generate</span> 按钮，点击后画面上会出现 <em>"Would you like to generate a video?"</em>（要生成视频吗？）确认弹窗。点击左侧黄色的 <span class="ui">OK</span> 按钮，点击后生成请求会立即发送到服务器；如需再次修改设置，请点击右侧的 <span class="ui">Cancel</span>。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/4af80996a6cc90492eec70ece3cdf993286f45a302047ecb798fc5360bb9fc79.png" alt="Chapter 10 - Would you like to generate a video 弹窗 (10.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— 注意 —</div>
+    <div class="text"><span class="ui">OK</span>点击后生成即开始，此后无法取消任务，因此点击前最好最后确认参考素材（<span class="ui">@</span>标签）与画面比例、时长选项。</div>
+  </div>
+  <div class="footer-meta"><span>010 — 生成确认弹窗 (OK)</span><span>CONFIRM-MODAL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>生成队列与后台运行</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Queue &amp; Background · 后台任务 —</div>
+      <h2 class="section-title">生成队列与后台运行</h2>
+      <p class="section-lede">生成请求受理后，结果区域会显示 <em>"Your video is starting soon / Starting shortly"</em> 状态提示。<br><br>提示文： <em>"You can leave this page. Your accepted request will keep running on the server."</em> （即使离开此页面，已受理的请求仍会在服务器上继续运行。）下方会显示 <span class="ui">Continue in background</span> 提示，同时出现生成已开始、无法取消的提示（<em>"Generation has started — cancel is no longer available."</em>）。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/4e0da51c79eac861b08dfd4cf149a51aceb9c76663ab6c304e85fb99328cd876.png" alt="Chapter 11 - Your video is starting soon 与 Continue in background (11.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— 提示 —</div>
+    <div class="text">视频渲染期间无需一直保持当前窗口打开。切换到其他菜单或并行处理新的提示词任务，视频也会在服务器后台安全完成生成。</div>
+  </div>
+  <div class="footer-meta"><span>011 — 生成队列与后台运行</span><span>BACKGROUND-QUEUE</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>确认生成进度并管理结果</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Progress &amp; Results · 进度与结果保存 —</div>
+      <h2 class="section-title">确认生成进度并管理结果</h2>
+      <p class="section-lede">渲染正式开始后，结果卡片左上角会显示当前生成规格徽章（例如黄色的 <span class="ui">DRAFT · 480p</span>），下方会显示 <em>"Generating video"</em> 文字及实时进度百分比（例如： <span class="ui">~12%</span>）与黄色进度条。生成 100% 完成后，可在右侧结果列表中播放、下载视频，或申请 1080p 正片。</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/5daa108673cf4945c50963e334d89194ee87db4ef06e8d3329e873332a5c99b4.png" alt="Chapter 12 - DRAFT 480p 徽章与 Generating video 进度显示 (12.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>生成完成后的功能</th><th>操作与使用方法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>元信息确认</strong></td><td>在各结果旁的信息面板中确认生成日期（<strong>Date</strong>）、分辨率（<strong>Resolution</strong>）、画面比例（<strong>Aspect Ratio</strong>）、时长（<strong>Duration</strong>）、使用模型（<strong>Model</strong>）。</td></tr>
+      <tr><td><strong>预览与全屏播放</strong></td><td>点击播放按钮后，预览会在卡片内播放；点击视频画面可放大为全屏。</td></tr>
+      <tr><td><strong>申请 1080p 正片 (Draft)</strong></td><td><span class="ui">DRAFT · 480p</span>生成的草稿若令人满意，可在相应结果卡片中申请 <strong>转换为 1080p 正片</strong>，完成高清正片。</td></tr>
+      <tr><td><strong>下载 · 分享 · 删除</strong></td><td>将鼠标悬停在视频上，点击下载（Save）图标保存到电脑，或通过分享图标对外分享，通过垃圾桶图标删除不需要的镜头以整理工作空间。</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— 说明 —</div>
+    <div class="text">生成的结果会持续累积在右侧列表中，也可在顶部头像菜单的 <span class="ui">Library</span> &gt; <span class="ui">Generations</span> 标签页中集中查看与管理。</div>
+  </div>
+  <div class="footer-meta"><span>012 — 确认生成进度并管理结果</span><span>PROGRESS-AND-RESULTS</span></div>
+</section>
+
+
+<script src="../embed.js" defer=""></script></body></html>

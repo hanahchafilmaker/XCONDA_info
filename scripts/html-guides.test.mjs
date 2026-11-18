@@ -11,15 +11,15 @@ import { JSDOM } from "jsdom";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CATALOG = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/htmlGuides.json"), "utf8"));
 const DRIVE = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/driveGuides.json"), "utf8"));
-const view = (id) => `https://drive.google.com/file/d/${id}/view?usp=drive_link`;
-const driveBySlug = new Map(DRIVE.docs.map((doc) => [doc.slug, doc]));
+const CURRENT = path.join(ROOT, "assets/guides/current");
+const MANIFEST = JSON.parse(fs.readFileSync(path.join(CURRENT, "manifest.json"), "utf8"));
 const HREFLANG_KEY = { ko: "ko", en: "en", ja: "ja", "zh-CN": "zh" };
 const LANGS = { ko: "ko", en: "en", ja: "ja", zh: "zh-CN" };
+const currentHref = (lang, slug) => `../../assets/guides/current/${lang}/${slug}.html`;
+const currentRootHref = (lang, slug) => `assets/guides/current/${lang}/${slug}.html`;
 const read = (...parts) => fs.readFileSync(path.join(ROOT, ...parts), "utf8");
+const docOf = (...parts) => new JSDOM(read(...parts));
 
-function docOf(...parts) {
-  return new JSDOM(read(...parts));
-}
 function assertNoExecutableSource(doc, page) {
   assert.equal(doc.querySelectorAll("iframe, object, embed, base, form").length, 0, page);
   for (const element of doc.querySelectorAll("*")) {
@@ -38,6 +38,48 @@ function assertNoExecutableSource(doc, page) {
   assert.match(doc.querySelector('meta[name="robots"]')?.content ?? "", /noindex/i, page);
 }
 
+function assertSanitizedCurrentGuide(html, page, { lang, slug }) {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  assert.equal(doc.documentElement.lang, LANGS[lang], page);
+  assert.equal(doc.body?.getAttribute("data-current-guide-slug"), slug, page);
+  assert.equal(doc.body?.getAttribute("data-current-guide-lang"), lang, page);
+  assert.ok(doc.title.trim(), page);
+  assert.ok(doc.body.textContent.trim().length > 200, page);
+  assert.equal(doc.querySelectorAll("iframe, object, embed, base, form, video, source, audio, noscript, template").length, 0, page);
+  assert.equal(doc.querySelectorAll("script:not([src])").length, 0, page);
+  for (const script of doc.querySelectorAll("script[src]")) {
+    assert.ok(["../embed.js", "../zoom.js"].includes(script.getAttribute("src")), `${page}: ${script.getAttribute("src")}`);
+  }
+  for (const element of doc.querySelectorAll("*")) {
+    for (const { name, value } of element.attributes) {
+      assert.ok(!/^on/i.test(name) && name !== "srcdoc", `${page}: ${name}`);
+      if (/^(href|src|action|formaction)$/i.test(name)) {
+        assert.doesNotMatch(value, /^\s*(?:javascript|vbscript|data:text\/html):/i, page);
+        assert.doesNotMatch(value, /^(?:https?:)?\/\//i, `${page}: ${name}=${value}`);
+      }
+    }
+  }
+  for (const img of doc.querySelectorAll("img")) {
+    const src = img.getAttribute("src") ?? "";
+    assert.match(src, /^\.\.\/screens\/[a-f0-9]{64}\.(?:png|jpg|webp)$/, `${page}: ${src}`);
+    assert.ok(img.hasAttribute("alt"), `${page}: image lacks alt`);
+    const asset = path.join(CURRENT, "screens", path.basename(src));
+    assert.ok(fs.existsSync(asset), `${page}: missing ${src}`);
+    const hash = crypto.createHash("sha256").update(fs.readFileSync(asset)).digest("hex");
+    assert.equal(path.basename(asset).split(".")[0], hash, page);
+  }
+  const csp = doc.querySelector('meta[http-equiv="Content-Security-Policy"]')?.content ?? "";
+  assert.match(csp, /default-src 'self'/, page);
+  assert.match(csp, /script-src 'self'/, page);
+  assert.match(csp, /frame-src 'none'/, page);
+  assert.doesNotMatch(csp, /fonts\.googleapis|cdn\.jsdelivr|drive\.google/i, page);
+  assert.match(doc.querySelector('meta[name="robots"]')?.content ?? "", /noindex/i, page);
+  assert.doesNotMatch(html, /<!--/, `${page}: comment remains`);
+  assert.doesNotMatch(html, /data:image\/|data:font\/|@import|drive\.google\.com|localhost:8010|cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com/i, page);
+  dom.window.close();
+}
+
 test("catalogue covers the 19 hub tools plus separate Turn Video and Asset Library", () => {
   assert.equal(CATALOG.length, 21);
   assert.equal(new Set(CATALOG.map((x) => x.slug)).size, 21);
@@ -50,7 +92,54 @@ test("catalogue covers the 19 hub tools plus separate Turn Video and Asset Libra
   assert.ok(CATALOG.some((guide) => guide.slug === "asset-library"));
 });
 
-test("every guide and index has the right language, navigation, safe scripts and intact screenshots", () => {
+test("the 2026-11-18 current guides are sanitized same-origin HTML with deduplicated screenshots", () => {
+  assert.equal(MANIFEST.updated, "2026-11-18");
+  assert.equal(MANIFEST.docs.length, 96);
+  assert.equal(MANIFEST.videos.length, 65);
+  const checkedImages = new Set();
+  let imageRefs = 0;
+  for (const entry of MANIFEST.docs) {
+    const page = entry.path;
+    const file = path.join(ROOT, page);
+    assert.ok(fs.existsSync(file), page);
+    const html = fs.readFileSync(file, "utf8");
+    assertSanitizedCurrentGuide(html, page, entry);
+    const dom = new JSDOM(html);
+    for (const img of dom.window.document.querySelectorAll("img[src]")) {
+      const src = img.getAttribute("src");
+      checkedImages.add(path.join(CURRENT, "screens", path.basename(src)));
+      imageRefs++;
+    }
+    dom.window.close();
+  }
+  assert.equal(imageRefs, 1192);
+  assert.equal(checkedImages.size, 284);
+  assert.equal(fs.readdirSync(path.join(CURRENT, "screens")).length, 284);
+  for (const entry of MANIFEST.videos) {
+    const file = path.join(ROOT, entry.path);
+    assert.ok(fs.existsSync(file), entry.path);
+    const bytes = fs.readFileSync(file);
+    assert.equal(bytes.subarray(4, 8).toString("ascii"), "ftyp", entry.path);
+  }
+  assert.equal(fs.readdirSync(path.join(CURRENT, "video")).length, 65);
+  for (const lang of Object.keys(LANGS)) {
+    const dom = docOf("assets/guides/current", lang, "index.html");
+    const doc = dom.window.document;
+    assert.equal(doc.documentElement.lang, LANGS[lang]);
+    assert.equal(doc.querySelector("main")?.getAttribute("data-current-guide-count"), "96");
+    assert.equal(doc.querySelector("main")?.getAttribute("data-current-video-count"), "65");
+    const docLinks = [...doc.querySelectorAll("main section:first-of-type li a")].map((a) => a.getAttribute("href"));
+    assert.deepEqual(new Set(docLinks), new Set(DRIVE.docs.map((item) => `${item.slug}.html`)));
+    assert.equal(doc.querySelectorAll("main section:last-of-type li a").length, 65);
+    for (const a of doc.querySelectorAll("a[href]")) assert.doesNotMatch(a.getAttribute("href") ?? "", /^(?:https?:)?\/\//i);
+    dom.window.close();
+  }
+  const root = docOf("assets/guides/current/index.html").window.document;
+  assert.equal(root.querySelectorAll("main li a").length, 4);
+  assert.equal(root.querySelector("main")?.getAttribute("data-current-guide-count"), "96");
+});
+
+test("every archived guide and index links locally and has safe scripts and intact screenshots", () => {
   const checkedImages = new Set();
   let images = 0;
   for (const [lang, htmlLang] of Object.entries(LANGS)) {
@@ -59,14 +148,16 @@ test("every guide and index has the right language, navigation, safe scripts and
     assert.equal(index.documentElement.lang, htmlLang);
     assertNoExecutableSource(index, `${lang}/index.html`);
     const indexHrefs = [...index.querySelectorAll("main li a")].map((a) => a.getAttribute("href"));
-    assert.deepEqual(new Set(indexHrefs), new Set(DRIVE.docs.map((doc) => view(doc.files[lang]))));
+    assert.deepEqual(new Set(indexHrefs), new Set(DRIVE.docs.map((doc) => currentHref(lang, doc.slug))));
     assert.equal(indexHrefs.length, 24);
     assert.equal(index.querySelectorAll(".xconda-manual-languages a").length, 4);
+    assert.doesNotMatch(read("manuals", lang, "index.html"), /drive\.google\.com/i);
     indexDom.window.close();
 
     for (const guide of CATALOG) {
       const page = `${lang}/${guide.slug}.html`;
-      const dom = docOf("manuals", lang, `${guide.slug}.html`);
+      const html = read("manuals", lang, `${guide.slug}.html`);
+      const dom = new JSDOM(html);
       const doc = dom.window.document;
       assert.equal(doc.documentElement.lang, htmlLang, page);
       assert.ok(doc.title.trim(), page);
@@ -75,10 +166,11 @@ test("every guide and index has the right language, navigation, safe scripts and
       assert.equal(doc.querySelector('.xconda-manual-nav a[href="index.html"]')?.textContent.length > 0, true, page);
       for (const [target, targetHtml] of Object.entries(LANGS)) {
         const a = doc.querySelector(`.xconda-manual-languages a[hreflang="${targetHtml}"]`);
-        assert.equal(a?.getAttribute("href"), view(driveBySlug.get(guide.slug).files[HREFLANG_KEY[targetHtml]]), page);
+        assert.equal(a?.getAttribute("href"), currentHref(target, guide.slug), page);
         assert.equal(a?.getAttribute("aria-current") === "page", target === lang, page);
       }
-      assert.ok(doc.querySelector('[data-drive-current] a[href*="drive.google.com/file/d/"]'), `${page}: current Drive banner missing`);
+      assert.equal(doc.querySelector("[data-drive-current] a")?.getAttribute("href"), currentHref(lang, guide.slug), page);
+      assert.doesNotMatch(html, /drive\.google\.com/i, page);
       const imgs = [...doc.querySelectorAll("img[src]")];
       assert.ok(imgs.length > 0, page);
       for (const img of imgs) {
@@ -124,8 +216,9 @@ test("the local screenshot viewer supports keyboard opening, focus and Escape", 
   dom.window.close();
 });
 
-test("the existing Korean standalone guide links each of its 19 tools and the full index", () => {
-  const dom = docOf("user-guide.html");
+test("the standalone user guide links 19 tools and the full 96-document / 65-video local library", () => {
+  const html = read("user-guide.html");
+  const dom = new JSDOM(html);
   const doc = dom.window.document;
   const links = [...doc.querySelectorAll("[data-html-guide]")];
   assert.equal(links.length, 19);
@@ -133,11 +226,15 @@ test("the existing Korean standalone guide links each of its 19 tools and the fu
   for (const a of links) {
     const slug = a.dataset.htmlGuide;
     assert.ok(CATALOG.some((guide) => guide.slug === slug), slug);
-    assert.equal(a.getAttribute("href"), view(driveBySlug.get(slug).files.ko));
+    assert.equal(a.getAttribute("href"), currentRootHref("ko", slug));
     assert.equal(a.target, "_blank");
     assert.match(a.rel, /noopener/);
   }
-  assert.ok(doc.querySelector('a[href="manuals/ko/index.html"]'));
+  assert.ok(doc.querySelector('a[href="assets/guides/current/ko/index.html"]'));
+  const library = doc.querySelector("#latest-guides");
+  assert.equal(library?.querySelectorAll('a[href^="assets/guides/current/"][href$=".html"]').length >= 96, true);
+  assert.equal(library?.querySelectorAll('a[href^="assets/guides/current/video/"][href$=".mp4"]').length, 65);
+  assert.doesNotMatch(html, /drive\.google\.com|Google Drive/i);
   dom.window.close();
 });
 
@@ -173,8 +270,11 @@ test("import stages all languages, deduplicates images and removes source script
     assert.equal(doc.querySelector("pre").textContent, "keep  \nspaces", "preformatted whitespace is preserved");
     assert.doesNotMatch(doc.querySelector("style").textContent, /[ \t]+\n/, "formatting whitespace is tidied");
     assert.equal(doc.querySelectorAll('script[src="../assets/zoom.js"]').length, 1);
+    assert.equal(doc.querySelector("[data-drive-current] a")?.getAttribute("href"), currentHref(lang, "turn"));
     assertNoExecutableSource(doc, `${lang}/fixture`);
     dom.window.close();
+    const index = new JSDOM(fs.readFileSync(path.join(output, lang, "index.html"), "utf8")).window.document;
+    assert.deepEqual(new Set([...index.querySelectorAll("main li a")].map((a) => a.getAttribute("href"))), new Set(DRIVE.docs.map((guide) => currentHref(lang, guide.slug))));
   }
   const sentinel = path.join(output, "ko", "turn.html");
   const before = fs.readFileSync(sentinel, "utf8");

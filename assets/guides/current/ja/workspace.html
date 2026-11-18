@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>25 Workspace Guide JA — XCONDA ワークスペースガイド</title>
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans JP',system-ui,sans-serif;color:var(--ink);line-height:1.8;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}
+header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.2em;color:#9fb0cc}
+header h1{font-size:44px;margin:20px 0 12px;line-height:1.25}
+header p{color:#c6d0e2;max-width:860px}
+header a{color:#fff}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}
+h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}
+h3{font-size:20px;margin:32px 0 4px}
+p{margin:8px 0}ul,ol{margin:8px 0}li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.6;vertical-align:top}
+th{background:#f2f3f6}
+code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}
+.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}
+.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}
+.check li:before{content:"\2610";position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}
+.toc a{color:var(--navy);text-decoration:none}
+.toc li{margin:6px 0}
+footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}
+.fig{margin:24px 0}.fig img{width:100%;height:auto;display:block;border:1px solid var(--hair);border-radius:8px}.fig figcaption{font-size:13px;color:var(--slate);margin-top:8px;line-height:1.6}
+.word{background:#fff8d6;border:1px solid #ecd67a;padding:14px 18px;margin:16px 0}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{body{background:#fff}h2{break-after:avoid}tr{break-inside:avoid}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="workspace" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/workspace.html" hreflang="ko" lang="ko">KO</a><a href="../en/workspace.html" hreflang="en" lang="en">EN</a><a href="../ja/workspace.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/workspace.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+<header><div class="brand">XCONDA / TEXT GUIDE · 25 · WORKSPACE</div><h1>XCONDA ワークスペースガイド</h1><p>チームが一緒に仕事をするときに使う場所を案内します。仕事、メンバー、クレジットを1か所で見ることができます。文は短く書きました。1つの文に1つだけ入れました。画面に出る英語の名前はそのまま書きました。</p><p>基準ページ: xconda.ai/workspace (ワークスペース相談ページ、韓国語) · 基準画面: 2026-11-17に見たワークスペース ベータ画面</p></header>
+<main>
+<div class="note"><b>最初に読んでください。</b> このガイドは相談ページと実際の画面を見て作りました。画面にない価格は書きませんでした。写真は実際の画面です。人に見せてはいけないものだけ黒い箱で隠しました。何を隠したかは写真の下に書きました。</div>
+<div class="word"><b>難しい言葉を、やさしく読み替える</b><ul>
+<li><b>ワークスペース</b> = チームが一緒に使う部屋</li>
+<li><b>プロジェクト</b> = 仕事1つのまとまり</li>
+<li><b>メンバー</b> = 一緒に仕事をするチームの人</li>
+<li><b>クレジット</b> = Xcondaで使うトークン。使うたびに減ります。</li>
+<li><b>組織ウォレット</b> = 会社全体のクレジットを入れておく大きな財布</li>
+<li><b>予算</b> = 仕事ごとに分けたクレジットの量</li>
+<li><b>管理者</b> = 部屋や仕事を担当して決めることができる人</li>
+<li><b>Reuse</b> = すでに作ったものをもう一度使って、続けて作ること</li>
+<li><b>ベータ (Beta)</b> = まだ試している段階。完成したものではありません。</li>
+</ul></div>
+<div class="toc"><b>目次</b><ol>
+<li><a href="#c1">ワークスペースとは</a></li>
+<li><a href="#c2">始める — まず相談を申し込みます</a></li>
+<li><a href="#c3">入る — 選ぶ、参加する、作る</a></li>
+<li><a href="#c4">管理画面をひと目で見る</a></li>
+<li><a href="#c5">Projects — プロジェクトを見る・作る</a></li>
+<li><a href="#c6">Members — メンバーと役割</a></li>
+<li><a href="#c7">Usage &amp; budget — どれだけ使ったか見る</a></li>
+<li><a href="#c8">Operation logs — 誰が何をしたか見る</a></li>
+<li><a href="#c9">Settings — 基本設定を変える</a></li>
+<li><a href="#c10">成果物を分けることと Reuse</a></li>
+<li><a href="#c11">よくある質問</a></li>
+<li><a href="#c12">最後のチェックリスト</a></li>
+</ol></div>
+
+<h2 id="c1">1. ワークスペースとは</h2>
+<p>ワークスペースはチームが一緒に使う部屋です。</p>
+<p>1人で使うときとは違います。チームの仕事、メンバー、クレジットを1か所で見ることができます。</p>
+<p>相談ページにもこう書いてあります。<b>チームプロジェクト・メンバー・クレジットを1か所で管理</b>。</p>
+<p>最初の画面にはこう出ます。<code>Choose a workspace to manage projects, members and budget.</code></p>
+<p>意味はこうです。「仕事、メンバー、予算を見る部屋を選んでください。」</p>
+<table><thead><tr><th>ページに出た言葉</th><th>やさしい意味</th></tr></thead><tbody>
+<tr><td>チームプロジェクト作成・共有</td><td>チームの仕事を作ります。作ったものはメンバーと分けて見ます。</td></tr>
+<tr><td>プロジェクトの進み具合を確認</td><td>仕事がどれだけ進んだか、ひと目で見ます。</td></tr>
+<tr><td>メンバーを自由に調整</td><td>メンバーを入れたり外したりできます。いつでも変えることができます。</td></tr>
+<tr><td>メンバーごとにクレジットを支給</td><td>クレジットを分けて渡します。誰がどれだけ使ったかも簡単に見ます。</td></tr>
+</tbody></table>
+<table><thead><tr><th>できること</th><th>やさしい説明</th></tr></thead><tbody>
+<tr><td>チームプロジェクトを作る · メンバーを呼ぶ</td><td>仕事のまとまりを作ります。そしてメンバーを呼びます。部屋に呼ぶことと仕事に入れることは違います。別々にします。6章を見てください。</td></tr>
+<tr><td>プロジェクトの予算を分ける</td><td>大きな財布にあるクレジットを仕事ごとに分けます。作ることは、分けて受けた量の中でだけできます。予算を分けてもクレジットは新しく増えません。5章と7章を見てください。</td></tr>
+<tr><td>どれだけ使ったか見る</td><td><code>Usage &amp; budget</code> 画面で見ます。クレジットがどこから来たか見ることができます。どの仕事へ行ったかも見ることができます。</td></tr>
+<tr><td>記録を見る · 設定を変える</td><td><code>Operation logs</code>で大切な仕事の記録を見ます。<code>Settings</code>で会社名、言語、時間、ロゴ、基本の色を変えます。</td></tr>
+<tr><td>成果物を分ける · Reuse</td><td>作った成果物を見ることができます。ダウンロードすることもできます。写真で Reuse を押すと、続けて作ることができます。ただし、Reuse は同じ仕事の中だけでできます。他の仕事へ持っていくことはできません。外にリンクで開くこともできません。Beta 1ではできません。10章を見てください。</td></tr>
+</tbody></table>
+<div class="note">こういうチームによく合います。何人もの人が同じ成果物を見なければいけないチームです。仕事ごとに使うお金を分けなければいけない会社です。誰がどれだけ使ったか分かる担当者がいる会社です。画面の下には <code>Project data is isolated by access policy.</code> と出ます。意味はこうです。「仕事ごとに見ることができる人が決まっています。誰でも全部見ることはできません。」</div>
+<figure class="fig"><img src="../screens/539f96506a2ed1060785d6867b8012b11c01c87204d5f9ed36881309c4b0c750.png" alt="XCONDA 上部メニュー画面" loading="lazy"><figcaption>上部のメニューです。<code>Workspace</code>を押すと部屋へ行きます。 · 上部の個人クレジットの数字は黒い箱で隠しました。人に見せてはいけないからです.</figcaption></figure>
+<h2 id="c2">2. 始める — まず相談を申し込みます</h2>
+<p>すぐに登録して使うものではありません。まず相談を申し込みます。</p>
+<p>相談ページで文を書いて送ります。すると返事のメールが来ます。営業日を基準に2日以内に来ます。</p>
+<p>営業日は会社が仕事をする日です。週末は数えません。</p>
+<p>ページのタイトルは <b>Workspace Consultation</b> です。送るボタンは <b>Request consultation</b> です。</p>
+<figure class="fig"><img src="../screens/c518b96ccca5819b988c04eae0b7af7f018ffb6f8ff3dc2e4ce7462b9c900314.png" alt="ワークスペース導入相談 韓国語ページ" loading="lazy"><figcaption>相談ページです。左は説明です。右は申込書です。空の申込書なので、隠したものはありません。</figcaption></figure>
+<div class="note">小さなチームは違います。ページの下にこう書いてあります。<b>小規模チームは Pricing からすぐに利用可能</b>。小さなチームは相談を待たなくても大丈夫です。まず Pricing ページを見てください。お金やアカウントについて聞きたいことがあれば <b>カスタマーセンター</b> に聞いてください。</div>
+<h3>2-1. 申し込む前に準備すること</h3>
+<ul>
+<li>会社名を準備してください。</li>
+<li>担当者の名前を準備してください。</li>
+<li>仕事のメールを準備してください。返事は仕事のメールに来ます。必ず見ることができるメールを書いてください。</li>
+<li>何人で使うか決めてください。この欄は必ず埋めなければいけません。</li>
+<li>いつから使いたいか決めておいてください。なくても申し込むことができます。</li>
+<li>聞きたいことを書いておいてください。なぜ使うか書くと良いです。どんな仕事をするか書くと良いです。何が必要か書くと良いです。この欄は空でも大丈夫です。</li>
+<li>個人情報を使うことに同意しなければいけません。同意にチェックを入れないと送ることができません。</li>
+</ul>
+<h3>2-2. 申込書に書くこと</h3>
+<table><thead><tr><th>欄の名前</th><th>必ず書きますか?</th><th>どう書きますか?</th></tr></thead><tbody>
+<tr><td>会社名</td><td>必須 *</td><td>自分で書きます。欄には <code>회사명 입력</code> と出ます。</td></tr>
+<tr><td>担当者名</td><td>必須 *</td><td>自分で書きます。欄には <code>이름 입력</code> と出ます。</td></tr>
+<tr><td>仕事のメール</td><td>必須 *</td><td>自分で書きます。例: <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98f6f9f5fdd8fbf7f5e8f9f6e1b6fbf7f5">[email&nbsp;protected]</a></code>。返事がここに来ます。間違えて書いていないか必ず見てください。</td></tr>
+<tr><td>連絡先</td><td>選択</td><td>自分で書きます。例: <code>010-0000-0000</code>。空でも大丈夫です。</td></tr>
+<tr><td>予想使用人数</td><td>必須 *</td><td>リストから選びます。欄には <code>선택</code> と出ます。申込画面で直接見てください。</td></tr>
+<tr><td>希望導入時期</td><td>選択</td><td>リストから選びます。使いたい時期を選べば大丈夫です。</td></tr>
+<tr><td>問い合わせ内容</td><td>選択</td><td>自分で書きます。欄には <code>사용 목적, 주요 작업 유형, 필요 기능 등</code> と出ます。</td></tr>
+</tbody></table>
+<h3>2-3. 個人情報の同意 — 必ずチェックが必要です</h3>
+<p>申込書の下に <b>[必須] 個人情報の収集・利用の同意</b> があります。読んでチェックを入れてください。</p>
+<table><thead><tr><th>区分</th><th>ページに出た言葉</th></tr></thead><tbody>
+<tr><td>何を持っていきますか?</td><td>会社名、担当者名、仕事のメール、連絡先</td></tr>
+<tr><td>なぜ使いますか?</td><td>ワークスペース導入の相談と返信。つまり、相談して返事を送るために使います。</td></tr>
+<tr><td>どれだけ置きますか?</td><td>個人情報は相談が終わった1年後に削除します。</td></tr>
+</tbody></table>
+<h3>2-4. 送った後にすること</h3>
+<ol>
+<li><b>Request consultation</b> ボタンを押します。</li>
+<li>待ってください。営業日を基準に2日以内に返事のメールが来ます。</li>
+<li>メールが来なければ、まず迷惑メール箱を見てください。その次に、メールを正しく書いたか見てください。</li>
+<li>お金やアカウントについて聞きたいことがあれば、カスタマーセンターに聞いてください。</li>
+</ol>
+<div class="warn">申込書を送ったからといって、すぐに使うことはできません。価格と使う方法は返事のメールで確認します。この案内にはページにない価格を書きませんでした。</div>
+<h2 id="c3">3. 入る — 選ぶ、参加する、作る</h2>
+<p>ログインしてください。そして <code>xconda.ai/workspace</code> へ行ってください。<code>Your workspaces</code> 画面が開きます。</p>
+<p>意味は「私のワークスペース」です。私が入った部屋のリストです。</p>
+<h3>3-1. リストから開く</h3>
+<ul>
+<li>部屋1つがカード1つで出ます。</li>
+<li>カードには部屋の名前が出ます。私の役割も出ます。プロジェクトの数も出ます。</li>
+<li>例: <code>Administrator</code> は管理者です。<code>0 projects</code> はプロジェクト0個です。</li>
+<li>カードの <code>Open</code> ボタンを押してください。その部屋の管理画面に入ります。最初は <code>Projects</code> 画面が開きます。</li>
+<li>右上にはボタンが2つあります。<code>Join workspace</code> と <code>Create workspace</code> です。</li>
+</ul>
+<figure class="fig"><img src="../screens/ddc56503c3b2bbd3803c9dae369655f6fa88b039c6bb9e6f0fdaf69c0d529ba2.png" alt="Your workspaces ワークスペース一覧画面" loading="lazy"><figcaption><code>Your workspaces</code> 画面です。部屋のカードが見えます。<code>Open</code> ボタンも見えます。<code>Join workspace</code> と <code>Create workspace</code> ボタンも見えます。 · 上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h3>3-2. 新しい部屋を作る — <code>Create workspace</code></h3>
+<ol>
+<li><code>Create workspace</code> ボタンを押します。<code>Create a workspace</code> 欄が開きます。</li>
+<li>そこには <code>You become its first administrator.</code> と出ます。意味は「作った人が最初の管理者になります」です。</li>
+<li><code>Organization name</code> に会社名を書きます。</li>
+<li><code>Create</code> ボタンを押します。部屋が作られます。</li>
+<li>作った記録は <code>Operation logs</code> に残ります。<code>Organization created</code> と出ます。8章を見てください。</li>
+</ol>
+<figure class="fig"><img src="../screens/c6f7d588a05c2ad6dd3290104080ecdb6a4117f5fc7474e943c154fe7b46abd1.png" alt="Create a workspace 入力エリア画面" loading="lazy"><figcaption><code>Create a workspace</code> 画面です。<code>Organization name</code> を書きます。そして <code>Create</code> を押します。 · 上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h3>3-3. すでにある部屋に入る — <code>Join workspace</code></h3>
+<p><code>Join workspace</code> ボタンがあります。すでにある部屋に入るときに押します。メンバーを呼ぶ方法は6章を見てください。</p>
+<h2 id="c4">4. 管理画面をひと目で見る</h2>
+<p>部屋を開くと左にメニューがいつも出ます。名前は <code>Organization console</code> です。会社の管理メニューだと思えば大丈夫です。</p>
+<p>一番上には今入った部屋の名前が出ます。</p>
+<table><thead><tr><th>メニュー (画面の名前)</th><th>アドレス</th><th>やさしい説明</th></tr></thead><tbody>
+<tr><td><code>Projects</code></td><td><code>/workspace/projects</code></td><td>仕事のリストを見ます。仕事の状態も見ます。分けた予算も見ます。誰が見ることができるかも見ます。5章です。</td></tr>
+<tr><td><code>Members</code></td><td><code>/workspace/members</code></td><td>メンバーを呼びます。役割を決めます。6章です。</td></tr>
+<tr><td><code>Usage &amp; budget</code></td><td><code>/workspace/usage</code></td><td>クレジットがどこから来たか見ます。どこへ行ったかも見ます。7章です。</td></tr>
+<tr><td><code>Operation logs</code></td><td><code>/workspace/logs</code></td><td>大切な仕事を誰がしたか見ます。止められたリクエストも見ます。予算を変えたことも見ます。8章です。</td></tr>
+<tr><td><code>Settings</code></td><td><code>/workspace/settings</code></td><td>部屋の名前、言語、時間、ロゴ、基本の色を決めます。9章です。</td></tr>
+<tr><td><code>Billing &amp; documents</code> <code>BETA</code></td><td>—</td><td>まだ押すことができません。オフになっています。請求書とお金を払う方法は Beta 2 で出ます。9章を見てください。</td></tr>
+</tbody></table>
+<p>左下には <code>Project data is isolated by access policy.</code> といつも出ます。意味はこうです。「仕事ごとに見ることができる人が決まっています。」</p>
+<p>部屋に入ったからといって、すべての仕事を見ることはできません。仕事ごとに別々に入れてもらわなければいけません。6章を見てください。</p>
+<div class="note">この画面はベータです。まだ試している途中です。そのため Beta 1 でできることと Beta 2 でできることが分かれて出ます。たとえばカードでお金を払うことは Beta 1 ではできません。請求書も Beta 1 ではできません。</div>
+
+<h2 id="c5">5. Projects — プロジェクトを見る・作る</h2>
+<p><code>Projects</code> 画面にはこう出ます。<code>See project health, shared budgets and access in one place.</code></p>
+<p>意味はこうです。「仕事の状態、分けた予算、誰が見ることができるかを1か所で見てください。」</p>
+<h3>5-1. 上にあるカード5つ</h3>
+<table><thead><tr><th>カード (画面の名前)</th><th>やさしい意味</th></tr></thead><tbody>
+<tr><td><code>Active</code></td><td>今している仕事の数です。</td></tr>
+<tr><td><code>Idle candidates</code></td><td>一度見なければいけない仕事の数です。下に <code>review suggested</code> と出ます。</td></tr>
+<tr><td><code>Archived</code></td><td>終わってしまっておいた仕事の数です。<code>read only</code> と出ます。見ることだけできます。変えることはできません。</td></tr>
+<tr><td><code>Organization wallet</code></td><td>大きな財布に残ったクレジットです。単位は <code>Cr</code> です。<code>issued by XCONDA, unallocated</code> と出ます。意味はこうです。「XCONDAが入れてくれました。まだどの仕事にも分けていません。」</td></tr>
+<tr><td><code>Total members</code></td><td>メンバー全体の数です。下には <code>workspace seats</code> と出ます。</td></tr>
+</tbody></table>
+<h3>5-2. 一番大切なルール — 大きな財布から仕事へ分ける</h3>
+<div class="note"><b><code>Organization wallet to project budget</code></b><br>画面にこう出ます。<code>XCONDA issues credits to the organization wallet after contract or payment confirmation. Manage budget only allocates or returns credits already held in that wallet; it never buys or creates credits.</code><br>やさしく言うとこうです。契約が終わります。またはお金を払ったことが確認されます。すると XCONDA が大きな財布にクレジットを入れてくれます。予算を分けることは、その財布にすでにあるものだけを動かします。仕事へ送るか、また持ってくるだけです。クレジットを買いません。新しく作ることもしません。</div>
+<figure class="fig"><img src="../screens/dece8bfb2c391353e13e67309a067167093a5326566c0790839329a6d8c2dad9.png" alt="Projects プロジェクト一覧画面" loading="lazy"><figcaption><code>Projects</code> 画面です。上にカード5つが見えます。大きな財布の案内も見えます。 · 上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h3>5-3. 仕事を探す</h3>
+<ul>
+<li>検索欄 <code>Search project or client</code> に仕事の名前を書いてください。お客様の名前を書いても大丈夫です。</li>
+<li><code>All statuses</code> を押してください。状態ごとに選んで見ることができます。右に全体の仕事の数が出ます。</li>
+<li>仕事が1つもなければ <code>No projects yet</code> と出ます。下には <code>Create a project to allocate budget and invite members.</code> と出ます。意味はこうです。「仕事を作ると予算を分けてメンバーを呼ぶことができます。」</li>
+<li>右上にはボタンが2つあります。<code>Request credits</code> はクレジットをもっとほしいときに押します。<code>+ New project</code> は新しい仕事を作るときに押します。</li>
+</ul>
+<h3>5-4. 新しい仕事を作る — <code>+ New project</code> → <code>Create project</code></h3>
+<p><code>+ New project</code> を押すと <code>Create project</code> ウィンドウが開きます。そこには <code>Allocate existing organization-wallet credits and assign workspace members.</code> と出ます。意味はこうです。「大きな財布にあるクレジットを分けてください。そしてメンバーをこの仕事に入れてください。」</p>
+<table><thead><tr><th>欄 (画面の名前)</th><th>何を書きますか?</th></tr></thead><tbody>
+<tr><td><code>Project name</code></td><td>仕事の名前です。例として <code>e.g. Global Brand Film</code> が出ます。</td></tr>
+<tr><td><code>Client</code></td><td>お客様の名前です。例として <code>e.g. Northstar Pictures</code> が出ます。</td></tr>
+<tr><td><code>Initial budget</code></td><td>最初に分けてあげるクレジットの量です。大きな財布にある分だけ分けることができます。</td></tr>
+<tr><td><code>Members and project roles</code></td><td>この仕事に入れるメンバーです。<code>Search existing members</code> から探します。すでに部屋にいるメンバーの中から探します。作った人は <code>Project admin (you)</code> と出ます。意味は「私がこの仕事の管理者」です。</td></tr>
+</tbody></table>
+<ul>
+<li>ウィンドウの下には <code>Organization wallet available: ○○ Cr · Project creation does not issue new credits.</code> と出ます。意味はこうです。「大きな財布に ○○ Cr あります。仕事を作っても新しいクレジットは増えません。」</li>
+<li>やめるには <code>Cancel</code> を押してください。作るには <code>Create project</code> を押してください。</li>
+</ul>
+<figure class="fig"><img src="../screens/d34b3549cb235fe9fd12d6c2ef017c88b551751f87a9af7b43e74dfe07779920.png" alt="Create project プロジェクト作成ウィンドウ" loading="lazy"><figcaption><code>Create project</code> ウィンドウです。<code>Project name</code>、<code>Client</code>、<code>Initial budget</code>、<code>Members and project roles</code> 欄が見えます。 · メンバーのメールと上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h2 id="c6">6. Members — メンバーと役割</h2>
+<p><code>Members</code> 画面にはこう出ます。<code>Workspace invitation and project assignment are managed separately.</code></p>
+<p>意味はこうです。「部屋に呼ぶことと仕事に入れることは別々にします。」部屋に入ったからといって、すべての仕事に自動で入るわけではありません。</p>
+<h3>6-1. 役割は2つに分かれます</h3>
+<div class="note"><b><code>Two separate role scopes</code></b><br><code>Workspace: organization admin or member. Project: project admin or project member. Server-side policy remains the source of truth.</code><br>やさしく言うとこうです。役割は2つの層に分かれます。1つ目は部屋での役割です。管理者かメンバーです。2つ目は仕事での役割です。その仕事の管理者か、その仕事のメンバーです。最後に決めるのはサーバーのルールです。</div>
+<table><thead><tr><th>どこの役割ですか?</th><th>役割 (画面の名前)</th><th>どこで決めますか?</th></tr></thead><tbody>
+<tr><td>部屋 (ワークスペース)</td><td><code>Organization admin</code> / メンバー</td><td><code>Members</code> 画面の <code>Role</code> 欄で決めます。</td></tr>
+<tr><td>仕事 (プロジェクト)</td><td><code>Project admin</code> / <code>Project member</code></td><td>仕事を作るときに決めます。<code>Members and project roles</code> で決めます。</td></tr>
+</tbody></table>
+<p><code>Settings</code> 画面にも同じ言葉が出ます。Beta 1 には役割を決める別の画面はありません。それでも部屋と仕事の境界はすべてのリクエストで守られます。</p>
+<div class="warn">必ず覚えておいてください。担当して決める権限と直接作る権限は違います。<br>部屋の管理者は部屋の中のすべての仕事を見ることができます。予算を分けたり、また持ってきたりできます。メンバーを管理できます。仕事をしまっておいたり、また出したりできます。<br>しかし他の人が作った仕事で直接作るには、その仕事の役割が別に必要です。Reuse をするときも同じです。<br>反対に、仕事を新しく作った人は、その仕事の管理者になります。仕事を作るウィンドウに <code>Project admin (you)</code> と出るのがその意味です。</div>
+<h3>6-2. メンバーリストで見ることができるもの</h3>
+<table><thead><tr><th>欄 (画面の名前)</th><th>やさしい意味</th></tr></thead><tbody>
+<tr><td><code>Member</code></td><td>メンバーの名前とメールです。</td></tr>
+<tr><td><code>Role</code></td><td>部屋での役割です。例の画面には <code>Organization admin</code> と出ます。</td></tr>
+<tr><td><code>Workspace status</code></td><td>今部屋で活動中か見ます。例: <code>Active</code> は活動中です。</td></tr>
+<tr><td><code>Assigned projects</code></td><td>入れてあげた仕事です。なければ <code>Not assigned</code> と出ます。意味は「まだ入れた仕事がありません」です。</td></tr>
+<tr><td><code>Monthly usage</code></td><td>今月使ったクレジットです。単位は <code>Cr</code> です。</td></tr>
+<tr><td><code>Access control</code></td><td>入ることができるか決める欄です。例の画面には <code>Active</code> と出ます。</td></tr>
+</tbody></table>
+<figure class="fig"><img src="../screens/3d449c90ab8b9610501fb271b034130d404051277716da15b24edd2ff309d864.png" alt="Members メンバー画面" loading="lazy"><figcaption><code>Members</code> 画面です。メンバーの表が見えます。役割の案内も見えます。 · メンバーのメールと上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h3>6-3. メンバーを呼ぶ — <code>Invite member</code></h3>
+<ul>
+<li><code>Members</code> 画面の右上の <code>Invite member</code> ボタンを押してください。</li>
+<li>相談ページにはメールで呼ぶと出ます。</li>
+<li>呼ぶときは2つを先に決めてください。仕事のメールが合っているか見てください。そして呼んだ後、どの仕事に入れるか決めてください。部屋に呼ぶことと仕事に入れることは違います。</li>
+</ul>
+<h2 id="c7">7. Usage &amp; budget — どれだけ使ったか見る</h2>
+<p><code>Usage &amp; budget</code> 画面にはこう出ます。<code>Trace where organization credits came from and how they move into project budgets.</code></p>
+<p>意味はこうです。「クレジットがどこから来たか見てください。どの仕事へ行ったかも見てください。」右上のボタンは <code>Request credit</code> です。</p>
+<h3>7-1. 残りの量を直接直すことはできません</h3>
+<div class="note"><b><code>No balance editing</code></b><br><code>The organization wallet changes only through XCONDA issuance, project allocation, return or reversal transactions. Card checkout and billing documents are not part of Workspace Beta 1.</code><br>やさしく言うとこうです。大きな財布の量は手で直すことはできません。変わるときは決まったときだけです。XCONDAが入れてくれるときに変わります。仕事へ分けるときに変わります。また持ってくるときに変わります。間違えたものを元に戻すときに変わります。カードでお金を払うことは Beta 1 ではできません。請求書も Beta 1 ではできません。</div>
+<h3>7-2. 上にあるカード4つ</h3>
+<table><thead><tr><th>カード (画面の名前)</th><th>やさしい意味</th></tr></thead><tbody>
+<tr><td><code>Organization wallet</code></td><td>大きな財布に残ったクレジットです。<code>XCONDA-issued, available to allocate</code> と出ます。意味はこうです。「XCONDAが入れてくれました。仕事へ分けることができます。」</td></tr>
+<tr><td><code>Allocated budgets</code></td><td>仕事に分けてあげたクレジットを全部合わせたものです。今している仕事を基準にします。</td></tr>
+<tr><td><code>Processing amount</code></td><td>今作っていて少しの間押さえられているクレジットです。画面には <code>generation holds</code> と出ます。</td></tr>
+<tr><td><code>Total usage</code></td><td>今まで使ったクレジットを全部合わせたものです。すべての仕事を基準にします。</td></tr>
+</tbody></table>
+<h3>7-3. グラフ、信号、もっとほしいというリクエスト</h3>
+<ul>
+<li><b><code>Credit usage</code> — どれだけ使ったかグラフ。</b> 使った量がどう変わったか見ます。<code>7D</code> は7日です。<code>30D</code> は30日です。ボタンで変えます。</li>
+<li><b><code>Budget signals</code> — 予算の信号。</b> 仕事ごとに予算が大丈夫か教えてくれる場所です。まだ仕事が始まっていなければ <code>Credit movements appear here once work begins.</code> と出ます。意味はこうです。「仕事が始まるとクレジットの動きがここに出ます。」</li>
+<li><b><code>Project budget requests</code> — もっとほしいというリクエストのリスト。</b> 仕事で予算をもっとほしいと言うと、ここにたまります。なければ <code>No project has asked for more budget.</code> と出ます。意味は「もっとほしいと言った仕事がありません」です。</li>
+<li><b>予算が足りなければ。</b> プロジェクトの予算が足りなければ、もっとほしいと言うことができます。CubeBerry の管理者がクレジットを支給します。</li>
+</ul>
+<div class="note">ヒントを1つ。全体の合計だけ見ないでください。仕事ごとに分けて見てください。終わった仕事でいくら使ったか書いておいてください。次の仕事で最初にいくら分けるか決めるときに役に立ちます。</div>
+<figure class="fig"><img src="../screens/d6ff998156cf2e9e11e92d56a3927ef0cf3f338203bf3756957a07457f80b69c.png" alt="Usage and budget 使用量と予算画面" loading="lazy"><figcaption><code>Usage &amp; budget</code> 画面です。カード4つが見えます。<code>Credit usage</code>、<code>Budget signals</code>、<code>Project budget requests</code> も見えます。 · 上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h2 id="c8">8. Operation logs — 誰が何をしたか見る</h2>
+<p><code>Operation logs</code> 画面にはこう出ます。<code>Review sensitive actions, blocked requests and budget changes.</code></p>
+<p>意味はこうです。「大切な仕事、止められたリクエスト、予算を変えたことを見てください。」後で確認できるように書いておく記録です。</p>
+<ul>
+<li>検索欄は <code>Search actor, action or target</code> です。1人の人、1つの仕事、対象を入れて探します。</li>
+<li>記録は表で出ます。欄は5つです。<code>Time</code> は時間です。<code>Actor</code> はした人です。<code>Action</code> はした仕事です。<code>Target</code> は対象です。<code>Result</code> は結果です。</li>
+<li>例の画面には部屋を作った記録があります。した仕事は <code>Organization created</code> です。結果は <code>Success</code> です。Success はうまくいったという意味です。時間には日付と時刻が一緒に出ます。</li>
+<li>右上の <code>PDF export, Beta 2</code> ボタンはまだ押すことができません。PDFでダウンロードすることは Beta 1 ではできません。</li>
+</ul>
+<figure class="fig"><img src="../screens/9329004b9277140cf63019026d79def93159f2400af78b84296ac2888e998622.png" alt="Operation logs 運用記録画面" loading="lazy"><figcaption><code>Operation logs</code> 画面です。<code>Time</code>、<code>Actor</code>、<code>Action</code>、<code>Target</code>、<code>Result</code> 表が見えます。 · 1人の人のID、対象のID、上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h2 id="c9">9. Settings — 基本設定を変える</h2>
+<p><code>Settings</code> 画面にはこう出ます。<code>Workspace identity settings. Billing and documents remain in Beta 2.</code></p>
+<p>意味はこうです。「部屋の基本情報を決める場所です。請求と文書は Beta 2 にあります。」</p>
+<h3>9-1. 部屋の情報 — <code>Workspace profile</code></h3>
+<table><thead><tr><th>欄 (画面の名前)</th><th>やさしい説明</th></tr></thead><tbody>
+<tr><td><code>Organization name</code></td><td>会社名です。部屋のリストと管理画面にこの名前が出ます。</td></tr>
+<tr><td><code>Default language</code></td><td>基本の言語です。例の画面には <code>English</code> が選ばれています。</td></tr>
+<tr><td><code>Time zone</code></td><td>時間の基準です。例の画面には <code>Asia/Seoul</code> が選ばれています。必ず覚えておいてください。これはただ画面に見える形式ではありません。1か月の合計をどこで区切るか決める基準です。画面にも <code>This is the monthly aggregation boundary, not a display preference. Changing it moves every monthly total.</code> と出ます。変えるとすべての月の合計が一緒に変わります。</td></tr>
+<tr><td><code>Logo</code></td><td>会社のロゴです。<code>PNG or SVG, up to 512 KB</code>。PNG か SVG ファイルだけできます。大きさは 512KB までだけできます。<code>Choose file</code> でファイルを選んでください。選んだファイルは保存を押さなければ適用されません。</td></tr>
+<tr><td><code>Base color</code></td><td>基本の色です。色の番号を書きます。例の画面の色はその会社の例であるだけです。自分の会社の色を書けば大丈夫です。</td></tr>
+</tbody></table>
+<p>変えたら <code>Save settings</code> ボタンを必ず押してください。押さなければ保存されません。</p>
+<h3>9-2. 右の案内箱3つ</h3>
+<table><thead><tr><th>箱 (画面の名前)</th><th>やさしい意味</th></tr></thead><tbody>
+<tr><td><code>Brand Kit boundary</code></td><td>会社のロゴと基本の色はここに置きます。参考写真、キャラクター、キャンペーンの感じは各仕事の Brand Kit に置きます。混ぜないでください。</td></tr>
+<tr><td><code>Permission engine</code></td><td>Beta 1 には役割を決める別の画面はありません。それでも部屋と仕事の境界はすべてのリクエストで守られます。6章を見てください。</td></tr>
+<tr><td><code>Billing &amp; documents · BETA 2</code></td><td>請求書、お金を払う方法、文書のダウンロードは Beta 2 で出ます。今はできません。</td></tr>
+</tbody></table>
+<figure class="fig"><img src="../screens/a2a08b93de9b5544fd1f0264a7d2df2b4c433e750eed62b77513b9d30a97daa8.png" alt="Settings ワークスペース設定画面" loading="lazy"><figcaption><code>Settings</code> 画面です。<code>Workspace profile</code> が見えます。右の案内箱3つも見えます。 · 上部の個人クレジットの数字は黒い箱で隠しました.</figcaption></figure>
+<h2 id="c10">10. 成果物を分けることと Reuse</h2>
+<p>相談ページにはこう出ます。作った成果物を見ることができます。ダウンロードすることもできます。写真で Reuse をすると、続けて作ることができます。</p>
+<ul>
+<li><b>誰が見ることができますか?</b> 成果物はその仕事の中にあります。その仕事を見ることができる人だけ見ます。画面にも <code>Project data is isolated by access policy.</code> と出ます。</li>
+<li><b>Reuse は同じ仕事の中だけでできます。</b> 他の仕事の成果物を持ってきて Reuse することはできません。リンクで外に開くこともできません。Beta 1 ではできません。</li>
+<li><b>作るにはその仕事の役割が必要です。</b> 部屋の管理者でも、その仕事の役割がなければ作ることはできません。他の人が作った仕事では Reuse もできません。6章を見てください。</li>
+</ul>
+<h2 id="c11">11. よくある質問</h2>
+<h3>Q. すぐに登録して使うことができますか?</h3>
+<p>いいえ。まず相談を申し込みます。2章を見てください。申込書を送ると返事のメールが来ます。営業日を基準に2日以内に来ます。書いた後は <code>Your workspaces</code> 画面で部屋を開くことができます。<code>Create workspace</code> で新しい部屋も作ることができます。3章を見てください。</p>
+<h3>Q. 申込書に必ず書くものは何ですか?</h3>
+<p>4つです。会社名、担当者名、仕事のメール、予想使用人数です。個人情報の同意にも必ずチェックを入れなければいけません。連絡先は空でも大丈夫です。希望導入時期も空でも大丈夫です。問い合わせ内容も空でも大丈夫です。2章を見てください。</p>
+<h3>Q. 部屋を作ると誰が管理者になりますか?</h3>
+<p>作った人が最初の管理者になります。画面にも <code>You become its first administrator.</code> と出ます。</p>
+<h3>Q. 部屋の管理者はすべての仕事ですぐに作ることができますか?</h3>
+<p>いいえ。部屋の管理者はすべての仕事を見ることができます。予算とメンバーも管理できます。しかし他の人が作った仕事で作るには、その仕事の役割が別に必要です。Reuse をするときも同じです。私が作った仕事では自動でその仕事の管理者になります。6章を見てください。</p>
+<h3>Q. メンバーを呼ぶとすべての仕事を見ることができますか?</h3>
+<p>いいえ。部屋に呼ぶことと仕事に入れることは違います。画面にも <code>Workspace invitation and project assignment are managed separately.</code> と出ます。仕事に入れてもらっていない人は、その仕事を見ることはできません。リストには <code>Not assigned</code> と出ます。</p>
+<h3>Q. クレジットはどこから来ますか? 誰が入れてくれますか?</h3>
+<p>契約が終わります。またはお金を払ったことが確認されます。すると XCONDA が大きな財布に入れてくれます。管理画面ではすでにあるものだけ分けることができます。また持ってくることもできます。クレジットを買うことはできません。新しく作ることもできません。仕事を新しく作っても新しいクレジットは増えません。</p>
+<h3>Q. プロジェクトの予算が足りなければどうしますか?</h3>
+<p>もっとほしいと言うことができます。CubeBerry の管理者がクレジットを支給します。7章を見てください。</p>
+<h3>Q. 残りの量を直接直したり、カードで払ったりできますか?</h3>
+<p>Beta 1 ではできません。大きな財布は決まったときだけ変わります。入れてくれるときに変わります。分けるときに変わります。持ってくるときに変わります。元に戻すときに変わります。画面にも <code>No balance editing</code> と出ます。カードで払うことは Beta 1 にはありません。請求書も Beta 1 にはありません。請求書とお金を払う方法は Beta 2 で出ます。</p>
+<h3>Q. 他の仕事の写真を Reuse できますか?</h3>
+<p>いいえ。Beta 1 では同じ仕事の中だけでできます。他の仕事へ持っていくことはできません。外に開くこともできません。</p>
+<h3>Q. 記録を PDF でダウンロードできますか?</h3>
+<p>まだできません。<code>Operation logs</code> 画面のボタンに <code>PDF export, Beta 2</code> と出ます。</p>
+<h2 id="c12">12. 最後のチェックリスト</h2>
+<p>順番が大切です。まず相談を申し込んでください。その次に部屋と仕事を決めてください。その次にメンバーを呼んで仕事に入れてください。</p>
+<ul class="check">
+<li>会社名、担当者、仕事のメールを正しく書いて相談を申し込みましたか?</li>
+<li>予想使用人数を実際に使う人の数で選びましたか?</li>
+<li>個人情報の同意を読んでチェックを入れましたか? 何を持っていくか見ましたか? なぜ使うかも見ましたか?</li>
+<li>部屋を作りましたか? 最初の管理者が誰か決めましたか? (<code>Create workspace</code> → <code>Organization name</code>)</li>
+<li>仕事をどう分けるか決めましたか? 仕事やお客様ごとに分ければ大丈夫です。</li>
+<li>仕事ごとに最初にいくら分けるか決めましたか? 大きな財布にある分だけ分けることができます。(<code>Initial budget</code>)</li>
+<li>呼ぶメンバーの仕事のメールを確認しましたか? 部屋に呼ぶこととは別に、どの仕事に入れるかも決めましたか?</li>
+<li>部屋の管理者が他の人の仕事で仕事をしなければいけませんか? そうなら、その仕事の役割も一緒にあげましたか?</li>
+<li><code>Settings</code> で会社名、基本の言語、時間の基準、ロゴ、基本の色を決めましたか? <code>Save settings</code> を押しましたか? 時間の基準は月の合計を決めます。</li>
+<li><code>Usage &amp; budget</code> と <code>Operation logs</code> を誰が、どれくらいの頻度で見るか決めましたか?</li>
+<li>Beta 1 でできないことを会社の案内から抜きましたか? カードで払うこと、請求書、PDFダウンロード、他の仕事への Reuse、外に開くことはできません。</li>
+</ul>
+<div class="note">この案内は相談ページ (https://www.xconda.ai/workspace) と 2026-11-17 に見た実際の画面を見て作りました。価格と画面は変わることがあります。使う前には相談の返事をもう一度見てください。お金を払う前にはサイトの画面をもう一度見てください。お金やアカウントについて聞きたいことがあれば、相談ページのカスタマーセンターに聞いてください。</div>
+</main>
+<footer>XCONDA ワークスペースガイド · 25_Workspace_Guide_JA.html · 2026-11-17 改定 · 基準: ワークスペース相談ページ + ベータ実際の画面</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

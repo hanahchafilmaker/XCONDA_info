@@ -1,0 +1,908 @@
+{
+  "updated": "2026-11-18",
+  "docs": [
+    {
+      "no": "01",
+      "slug": "image",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/image.html"
+    },
+    {
+      "no": "02",
+      "slug": "video",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/video.html"
+    },
+    {
+      "no": "03",
+      "slug": "upscale",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/upscale.html"
+    },
+    {
+      "no": "04",
+      "slug": "face-swap",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/face-swap.html"
+    },
+    {
+      "no": "05",
+      "slug": "auto-angle",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/auto-angle.html"
+    },
+    {
+      "no": "06",
+      "slug": "background-blend",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/background-blend.html"
+    },
+    {
+      "no": "07",
+      "slug": "expression",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/expression.html"
+    },
+    {
+      "no": "08",
+      "slug": "directors-cut",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/directors-cut.html"
+    },
+    {
+      "no": "09",
+      "slug": "art-director-pro",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/art-director-pro.html"
+    },
+    {
+      "no": "10",
+      "slug": "scene-snap",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/scene-snap.html"
+    },
+    {
+      "no": "11",
+      "slug": "cloth-swap",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/cloth-swap.html"
+    },
+    {
+      "no": "12",
+      "slug": "youtube-ref",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/youtube-ref.html"
+    },
+    {
+      "no": "13",
+      "slug": "spin-angle",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/spin-angle.html"
+    },
+    {
+      "no": "14",
+      "slug": "cine-grade",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/cine-grade.html"
+    },
+    {
+      "no": "15",
+      "slug": "arw-view",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/arw-view.html"
+    },
+    {
+      "no": "16",
+      "slug": "drct-seq",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/drct-seq.html"
+    },
+    {
+      "no": "17",
+      "slug": "turn",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/turn.html"
+    },
+    {
+      "no": "18",
+      "slug": "blocking-board",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/blocking-board.html"
+    },
+    {
+      "no": "19",
+      "slug": "flexboard",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/flexboard.html"
+    },
+    {
+      "no": "20",
+      "slug": "turn-video",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/turn-video.html"
+    },
+    {
+      "no": "21",
+      "slug": "asset-library",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/asset-library.html"
+    },
+    {
+      "no": "23",
+      "slug": "website-manual",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/website-manual.html"
+    },
+    {
+      "no": "24",
+      "slug": "web-drama-beginners",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/web-drama-beginners.html"
+    },
+    {
+      "no": "25",
+      "slug": "workspace",
+      "lang": "ko",
+      "path": "assets/guides/current/ko/workspace.html"
+    },
+    {
+      "no": "01",
+      "slug": "image",
+      "lang": "en",
+      "path": "assets/guides/current/en/image.html"
+    },
+    {
+      "no": "02",
+      "slug": "video",
+      "lang": "en",
+      "path": "assets/guides/current/en/video.html"
+    },
+    {
+      "no": "03",
+      "slug": "upscale",
+      "lang": "en",
+      "path": "assets/guides/current/en/upscale.html"
+    },
+    {
+      "no": "04",
+      "slug": "face-swap",
+      "lang": "en",
+      "path": "assets/guides/current/en/face-swap.html"
+    },
+    {
+      "no": "05",
+      "slug": "auto-angle",
+      "lang": "en",
+      "path": "assets/guides/current/en/auto-angle.html"
+    },
+    {
+      "no": "06",
+      "slug": "background-blend",
+      "lang": "en",
+      "path": "assets/guides/current/en/background-blend.html"
+    },
+    {
+      "no": "07",
+      "slug": "expression",
+      "lang": "en",
+      "path": "assets/guides/current/en/expression.html"
+    },
+    {
+      "no": "08",
+      "slug": "directors-cut",
+      "lang": "en",
+      "path": "assets/guides/current/en/directors-cut.html"
+    },
+    {
+      "no": "09",
+      "slug": "art-director-pro",
+      "lang": "en",
+      "path": "assets/guides/current/en/art-director-pro.html"
+    },
+    {
+      "no": "10",
+      "slug": "scene-snap",
+      "lang": "en",
+      "path": "assets/guides/current/en/scene-snap.html"
+    },
+    {
+      "no": "11",
+      "slug": "cloth-swap",
+      "lang": "en",
+      "path": "assets/guides/current/en/cloth-swap.html"
+    },
+    {
+      "no": "12",
+      "slug": "youtube-ref",
+      "lang": "en",
+      "path": "assets/guides/current/en/youtube-ref.html"
+    },
+    {
+      "no": "13",
+      "slug": "spin-angle",
+      "lang": "en",
+      "path": "assets/guides/current/en/spin-angle.html"
+    },
+    {
+      "no": "14",
+      "slug": "cine-grade",
+      "lang": "en",
+      "path": "assets/guides/current/en/cine-grade.html"
+    },
+    {
+      "no": "15",
+      "slug": "arw-view",
+      "lang": "en",
+      "path": "assets/guides/current/en/arw-view.html"
+    },
+    {
+      "no": "16",
+      "slug": "drct-seq",
+      "lang": "en",
+      "path": "assets/guides/current/en/drct-seq.html"
+    },
+    {
+      "no": "17",
+      "slug": "turn",
+      "lang": "en",
+      "path": "assets/guides/current/en/turn.html"
+    },
+    {
+      "no": "18",
+      "slug": "blocking-board",
+      "lang": "en",
+      "path": "assets/guides/current/en/blocking-board.html"
+    },
+    {
+      "no": "19",
+      "slug": "flexboard",
+      "lang": "en",
+      "path": "assets/guides/current/en/flexboard.html"
+    },
+    {
+      "no": "20",
+      "slug": "turn-video",
+      "lang": "en",
+      "path": "assets/guides/current/en/turn-video.html"
+    },
+    {
+      "no": "21",
+      "slug": "asset-library",
+      "lang": "en",
+      "path": "assets/guides/current/en/asset-library.html"
+    },
+    {
+      "no": "23",
+      "slug": "website-manual",
+      "lang": "en",
+      "path": "assets/guides/current/en/website-manual.html"
+    },
+    {
+      "no": "24",
+      "slug": "web-drama-beginners",
+      "lang": "en",
+      "path": "assets/guides/current/en/web-drama-beginners.html"
+    },
+    {
+      "no": "25",
+      "slug": "workspace",
+      "lang": "en",
+      "path": "assets/guides/current/en/workspace.html"
+    },
+    {
+      "no": "01",
+      "slug": "image",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/image.html"
+    },
+    {
+      "no": "02",
+      "slug": "video",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/video.html"
+    },
+    {
+      "no": "03",
+      "slug": "upscale",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/upscale.html"
+    },
+    {
+      "no": "04",
+      "slug": "face-swap",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/face-swap.html"
+    },
+    {
+      "no": "05",
+      "slug": "auto-angle",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/auto-angle.html"
+    },
+    {
+      "no": "06",
+      "slug": "background-blend",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/background-blend.html"
+    },
+    {
+      "no": "07",
+      "slug": "expression",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/expression.html"
+    },
+    {
+      "no": "08",
+      "slug": "directors-cut",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/directors-cut.html"
+    },
+    {
+      "no": "09",
+      "slug": "art-director-pro",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/art-director-pro.html"
+    },
+    {
+      "no": "10",
+      "slug": "scene-snap",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/scene-snap.html"
+    },
+    {
+      "no": "11",
+      "slug": "cloth-swap",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/cloth-swap.html"
+    },
+    {
+      "no": "12",
+      "slug": "youtube-ref",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/youtube-ref.html"
+    },
+    {
+      "no": "13",
+      "slug": "spin-angle",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/spin-angle.html"
+    },
+    {
+      "no": "14",
+      "slug": "cine-grade",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/cine-grade.html"
+    },
+    {
+      "no": "15",
+      "slug": "arw-view",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/arw-view.html"
+    },
+    {
+      "no": "16",
+      "slug": "drct-seq",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/drct-seq.html"
+    },
+    {
+      "no": "17",
+      "slug": "turn",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/turn.html"
+    },
+    {
+      "no": "18",
+      "slug": "blocking-board",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/blocking-board.html"
+    },
+    {
+      "no": "19",
+      "slug": "flexboard",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/flexboard.html"
+    },
+    {
+      "no": "20",
+      "slug": "turn-video",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/turn-video.html"
+    },
+    {
+      "no": "21",
+      "slug": "asset-library",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/asset-library.html"
+    },
+    {
+      "no": "23",
+      "slug": "website-manual",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/website-manual.html"
+    },
+    {
+      "no": "24",
+      "slug": "web-drama-beginners",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/web-drama-beginners.html"
+    },
+    {
+      "no": "25",
+      "slug": "workspace",
+      "lang": "ja",
+      "path": "assets/guides/current/ja/workspace.html"
+    },
+    {
+      "no": "01",
+      "slug": "image",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/image.html"
+    },
+    {
+      "no": "02",
+      "slug": "video",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/video.html"
+    },
+    {
+      "no": "03",
+      "slug": "upscale",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/upscale.html"
+    },
+    {
+      "no": "04",
+      "slug": "face-swap",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/face-swap.html"
+    },
+    {
+      "no": "05",
+      "slug": "auto-angle",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/auto-angle.html"
+    },
+    {
+      "no": "06",
+      "slug": "background-blend",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/background-blend.html"
+    },
+    {
+      "no": "07",
+      "slug": "expression",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/expression.html"
+    },
+    {
+      "no": "08",
+      "slug": "directors-cut",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/directors-cut.html"
+    },
+    {
+      "no": "09",
+      "slug": "art-director-pro",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/art-director-pro.html"
+    },
+    {
+      "no": "10",
+      "slug": "scene-snap",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/scene-snap.html"
+    },
+    {
+      "no": "11",
+      "slug": "cloth-swap",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/cloth-swap.html"
+    },
+    {
+      "no": "12",
+      "slug": "youtube-ref",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/youtube-ref.html"
+    },
+    {
+      "no": "13",
+      "slug": "spin-angle",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/spin-angle.html"
+    },
+    {
+      "no": "14",
+      "slug": "cine-grade",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/cine-grade.html"
+    },
+    {
+      "no": "15",
+      "slug": "arw-view",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/arw-view.html"
+    },
+    {
+      "no": "16",
+      "slug": "drct-seq",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/drct-seq.html"
+    },
+    {
+      "no": "17",
+      "slug": "turn",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/turn.html"
+    },
+    {
+      "no": "18",
+      "slug": "blocking-board",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/blocking-board.html"
+    },
+    {
+      "no": "19",
+      "slug": "flexboard",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/flexboard.html"
+    },
+    {
+      "no": "20",
+      "slug": "turn-video",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/turn-video.html"
+    },
+    {
+      "no": "21",
+      "slug": "asset-library",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/asset-library.html"
+    },
+    {
+      "no": "23",
+      "slug": "website-manual",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/website-manual.html"
+    },
+    {
+      "no": "24",
+      "slug": "web-drama-beginners",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/web-drama-beginners.html"
+    },
+    {
+      "no": "25",
+      "slug": "workspace",
+      "lang": "zh",
+      "path": "assets/guides/current/zh/workspace.html"
+    }
+  ],
+  "videos": [
+    {
+      "no": "01",
+      "lang": "ko",
+      "path": "assets/guides/current/video/01_ko.mp4"
+    },
+    {
+      "no": "01",
+      "lang": "en",
+      "path": "assets/guides/current/video/01_en.mp4"
+    },
+    {
+      "no": "02",
+      "lang": "ko",
+      "path": "assets/guides/current/video/02_ko.mp4"
+    },
+    {
+      "no": "02",
+      "lang": "en",
+      "path": "assets/guides/current/video/02_en.mp4"
+    },
+    {
+      "no": "03",
+      "lang": "ko",
+      "path": "assets/guides/current/video/03_ko.mp4"
+    },
+    {
+      "no": "03",
+      "lang": "en",
+      "path": "assets/guides/current/video/03_en.mp4"
+    },
+    {
+      "no": "04",
+      "lang": "ko",
+      "path": "assets/guides/current/video/04_ko.mp4"
+    },
+    {
+      "no": "04",
+      "lang": "en",
+      "path": "assets/guides/current/video/04_en.mp4"
+    },
+    {
+      "no": "05",
+      "lang": "ko",
+      "path": "assets/guides/current/video/05_ko.mp4"
+    },
+    {
+      "no": "05",
+      "lang": "en",
+      "path": "assets/guides/current/video/05_en.mp4"
+    },
+    {
+      "no": "06",
+      "lang": "ko",
+      "path": "assets/guides/current/video/06_ko.mp4"
+    },
+    {
+      "no": "06",
+      "lang": "en",
+      "path": "assets/guides/current/video/06_en.mp4"
+    },
+    {
+      "no": "07",
+      "lang": "ko",
+      "path": "assets/guides/current/video/07_ko.mp4"
+    },
+    {
+      "no": "07",
+      "lang": "en",
+      "path": "assets/guides/current/video/07_en.mp4"
+    },
+    {
+      "no": "08",
+      "lang": "ko",
+      "path": "assets/guides/current/video/08_ko.mp4"
+    },
+    {
+      "no": "08",
+      "lang": "en",
+      "path": "assets/guides/current/video/08_en.mp4"
+    },
+    {
+      "no": "09",
+      "lang": "ko",
+      "path": "assets/guides/current/video/09_ko.mp4"
+    },
+    {
+      "no": "09",
+      "lang": "en",
+      "path": "assets/guides/current/video/09_en.mp4"
+    },
+    {
+      "no": "10",
+      "lang": "ko",
+      "path": "assets/guides/current/video/10_ko.mp4"
+    },
+    {
+      "no": "10",
+      "lang": "en",
+      "path": "assets/guides/current/video/10_en.mp4"
+    },
+    {
+      "no": "11",
+      "lang": "ko",
+      "path": "assets/guides/current/video/11_ko.mp4"
+    },
+    {
+      "no": "11",
+      "lang": "en",
+      "path": "assets/guides/current/video/11_en.mp4"
+    },
+    {
+      "no": "12",
+      "lang": "ko",
+      "path": "assets/guides/current/video/12_ko.mp4"
+    },
+    {
+      "no": "12",
+      "lang": "en",
+      "path": "assets/guides/current/video/12_en.mp4"
+    },
+    {
+      "no": "13",
+      "lang": "ko",
+      "path": "assets/guides/current/video/13_ko.mp4"
+    },
+    {
+      "no": "13",
+      "lang": "en",
+      "path": "assets/guides/current/video/13_en.mp4"
+    },
+    {
+      "no": "14",
+      "lang": "ko",
+      "path": "assets/guides/current/video/14_ko.mp4"
+    },
+    {
+      "no": "14",
+      "lang": "en",
+      "path": "assets/guides/current/video/14_en.mp4"
+    },
+    {
+      "no": "15",
+      "lang": "ko",
+      "path": "assets/guides/current/video/15_ko.mp4"
+    },
+    {
+      "no": "15",
+      "lang": "en",
+      "path": "assets/guides/current/video/15_en.mp4"
+    },
+    {
+      "no": "16",
+      "lang": "ko",
+      "path": "assets/guides/current/video/16_ko.mp4"
+    },
+    {
+      "no": "16",
+      "lang": "en",
+      "path": "assets/guides/current/video/16_en.mp4"
+    },
+    {
+      "no": "17",
+      "lang": "ko",
+      "path": "assets/guides/current/video/17_ko.mp4"
+    },
+    {
+      "no": "17",
+      "lang": "en",
+      "path": "assets/guides/current/video/17_en.mp4"
+    },
+    {
+      "no": "18",
+      "lang": "ko",
+      "path": "assets/guides/current/video/18_ko.mp4"
+    },
+    {
+      "no": "18",
+      "lang": "en",
+      "path": "assets/guides/current/video/18_en.mp4"
+    },
+    {
+      "no": "19",
+      "lang": "ko",
+      "path": "assets/guides/current/video/19_ko.mp4"
+    },
+    {
+      "no": "19",
+      "lang": "en",
+      "path": "assets/guides/current/video/19_en.mp4"
+    },
+    {
+      "no": "20",
+      "lang": "ko",
+      "path": "assets/guides/current/video/20_ko.mp4"
+    },
+    {
+      "no": "20",
+      "lang": "en",
+      "path": "assets/guides/current/video/20_en.mp4"
+    },
+    {
+      "no": "21",
+      "lang": "ko",
+      "path": "assets/guides/current/video/21_ko.mp4"
+    },
+    {
+      "no": "21",
+      "lang": "en",
+      "path": "assets/guides/current/video/21_en.mp4"
+    },
+    {
+      "no": "23_01",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_01_ko.mp4"
+    },
+    {
+      "no": "23_01",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_01_en.mp4"
+    },
+    {
+      "no": "23_02",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_02_ko.mp4"
+    },
+    {
+      "no": "23_02",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_02_en.mp4"
+    },
+    {
+      "no": "23_03",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_03_en.mp4"
+    },
+    {
+      "no": "23_04",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_04_ko.mp4"
+    },
+    {
+      "no": "23_04",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_04_en.mp4"
+    },
+    {
+      "no": "23_05",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_05_ko.mp4"
+    },
+    {
+      "no": "23_05",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_05_en.mp4"
+    },
+    {
+      "no": "23_06",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_06_ko.mp4"
+    },
+    {
+      "no": "23_06",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_06_en.mp4"
+    },
+    {
+      "no": "23_07",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_07_ko.mp4"
+    },
+    {
+      "no": "23_07",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_07_en.mp4"
+    },
+    {
+      "no": "23_08",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_08_ko.mp4"
+    },
+    {
+      "no": "23_08",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_08_en.mp4"
+    },
+    {
+      "no": "23_09",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_09_ko.mp4"
+    },
+    {
+      "no": "23_09",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_09_en.mp4"
+    },
+    {
+      "no": "23_10",
+      "lang": "ko",
+      "path": "assets/guides/current/video/23_10_ko.mp4"
+    },
+    {
+      "no": "23_10",
+      "lang": "en",
+      "path": "assets/guides/current/video/23_10_en.mp4"
+    },
+    {
+      "no": "24",
+      "lang": "ko",
+      "path": "assets/guides/current/video/24_ko.mp4"
+    },
+    {
+      "no": "24",
+      "lang": "en",
+      "path": "assets/guides/current/video/24_en.mp4"
+    },
+    {
+      "no": "25",
+      "lang": "ko",
+      "path": "assets/guides/current/video/25_ko.mp4"
+    },
+    {
+      "no": "25",
+      "lang": "en",
+      "path": "assets/guides/current/video/25_en.mp4"
+    }
+  ]
+}

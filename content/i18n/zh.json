@@ -6,7 +6,7 @@
     "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변)."
   ],
   "lang": "zh",
-  "updated": "2026-11-14",
+  "updated": "2026-11-18",
   "site": {
     "title": "XCONDA Hub — 问答、指南与公告",
     "description": "关于 XCONDA 的中文解答：价格与退款、隐私与支付，以及 FLEXBOARD、Turn、Blocking Board 工具的使用方法。由 Cubeberry 发布。"
@@ -5016,6 +5016,70 @@
         {
           "type": "p",
           "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+        }
+      ]
+    },
+    "qna/blocking-board-getting-started": {
+      "title": "如何开始使用分镜板？",
+      "summary": "先做顶视图，再写文字分镜，接着创建场景，最后导出。分镜板从布局到导出共有 4 个步骤，适合按顺序完成一次镜头预演。"
+    },
+    "qna/blocking-board-ambiguous-details": {
+      "title": "分镜板如何处理模糊信息？",
+      "summary": "分镜板不会猜测模糊信息，而是通过弹窗确认；当移动与视线冲突时优先处理移动，让画面方向保持明确，不会自行补写细节。"
+    },
+    "qna/blocking-board-space-json-size": {
+      "title": "分镜板的空间尺寸不对怎么办？",
+      "summary": "空间 JSON 中记录的尺寸优先。目录里的尺寸只在该 JSON 没有数值时使用，因此已保存的尺寸会生效，而不是显示目录的默认大小。"
+    },
+    "qna/workspace-overview": {
+      "title": "什么是 XCONDA 工作区？",
+      "summary": "XCONDA 工作区是 11/17 下午开启测试的新团队空间，可管理组织、项目与共享预算，并提供指南 No.25 帮助完成初始设置。"
+    },
+    "qna/workspace-organization-count": {
+      "title": "订阅套餐包含多少个组织？",
+      "summary": "所有订阅套餐都包含 1 个组织。Lite、Plus、Pro、Studio、Max 均相同，升级会改变其他额度，但不会改变这个组织数量。"
+    },
+    "qna/workspace-member-limit": {
+      "title": "各套餐的工作区成员上限是多少？",
+      "summary": "工作区成员上限为 Lite 1 人、Plus 3 人、Pro 5 人、Studio 10 人、Max 20 人，均包含本人。请按需要协作的人数选择套餐。"
+    },
+    "qna/workspace-organization-credits-separate-request": {
+      "title": "组织额度会自动从订阅额度转入吗？",
+      "summary": "不是。组织额度不会从订阅额度自动转入，需要单独申请；订阅余额也不会自行变成共享组织预算，因此请通过专用流程提出需求。"
+    },
+    "qna/workspace-enterprise-unlimited": {
+      "title": "如何获得不限数量的组织和成员？",
+      "summary": "如需无限使用组织与成员，请走企业版的单独申请流程。标准套餐仍按公布上限执行，企业版需求会作为专门申请处理，不会自动放开额度。"
+    },
+    "qna/credits-are-tokens-not-points": {
+      "title": "XCONDA 额度是积分吗？",
+      "summary": "不是。XCONDA 额度是平台内使用的服务令牌，而不是积分或分数。运行工具或模型时会消耗，生成前会显示所需数量，因此它不是等级分或评价分。"
+    },
+    "qna/seedance-draft-1080p-window-14-days": {
+      "title": "Seedance 2.5 的 Draft 会保留多久？",
+      "summary": "14 天是 Seedance 2.5 的 Draft 转换为 1080p 的可用期限。期限结束后，Draft 视频本身仍会作为结果保留，不会自动删除，转换按钮只是不再开放。",
+      "blocks": [
+        {
+          "type": "h2",
+          "text": "来源"
+        },
+        {
+          "type": "p",
+          "text": "来源：XCONDA 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）"
+        }
+      ]
+    },
+    "qna/seedance-completed-video-no-expiry": {
+      "title": "完成视频会在 14 天后删除吗？",
+      "summary": "不会。完成视频没有到期日，也不会在 14 天后被删除。这个 14 天期限只适用于将 Seedance 2.5 的 Draft 转换为 1080p，和已完成视频的保存无关。",
+      "blocks": [
+        {
+          "type": "h2",
+          "text": "来源"
+        },
+        {
+          "type": "p",
+          "text": "来源：XCONDA 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）"
         }
       ]
     }

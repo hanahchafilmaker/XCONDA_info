@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Swap — User Guide</title>
+
+
+<style>
+
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  .usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+  .flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 32px; }
+  .flow-card { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 28px 24px; text-align: center; }
+  .flow-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 10px; }
+  .flow-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+  .flow-arrow { font-family: var(--body-font); font-size: 24px; color: var(--midnight); }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="face-swap" data-current-guide-lang="en" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="Current user guides navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/face-swap.html" hreflang="ko" lang="ko">KO</a><a href="../en/face-swap.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/face-swap.html" hreflang="ja" lang="ja">JA</a><a href="../zh/face-swap.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div><div class="cover-title-en">FACE<br>SWAP</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">A workflow guide for replacing a face in an image while keeping the background, outfit, pose, and lighting intact. Built for fast casting comparisons and creative iteration.</div></div>
+    <div class="cover-bottom-meta"><div><div>User Guide</div><div>Tutorial</div></div><div style="text-align:right"><div>15 Chapters</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>15 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— Guide Structure —</span>
+    Purpose · Use Cases · Entry · Layout · Models · Original Image · Marking the face area · Brush Size · Swap to Image · Generate · Confirmation dialog · Reviewing the result · Result card icons · Share and delete confirmation</div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Purpose</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— Purpose —</div><h2 class="section-title">What does Face Swap do?</h2><p class="section-lede">It replaces a specific face in an original image with another face. The background, outfit, pose, lighting, and framing are kept as intact as possible, so you can quickly change only the impression of the person's face.</p></div></div>
+  <div class="flow-row">
+    <div class="flow-card"><div class="label">— Step 01 —</div><h4>Original Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card"><div class="label">— Step 02 —</div><h4>Swap to Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card" style="background: var(--midnight); border-color: var(--midnight);"><div class="label" style="color: rgba(240,239,234,0.6);">— Result —</div><h4 style="color: #F0EFEA;">Replacement result</h4></div>
+  </div>
+  <div class="note-box"><div class="label">— How it works —</div><div class="text">Paint the face area in the original image with the brush, add the replacement face image, and generate the result.</div></div>
+  <div class="footer-meta"><span>002 — Purpose</span><span>Purpose</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Use Cases</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— Use Cases —</div><h2 class="section-title">Why use it, and when?</h2><p class="section-lede">Use it to compare casting candidates, model looks, or character faces in the same shot without reshooting. It saves time on work that needs quick results, such as ad drafts, lookbooks, and video storyboards.</p></div></div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>Comparing casting candidates</h4><p>When comparing casting candidates, model looks, or character faces in the same shot without reshooting.</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>Keep the pose and outfit, change the face</h4><p>When you like the pose and outfit in the existing image but need to change only the face.</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>Replacing a reference</h4><p>When replacing a reference that is sensitive for portrait rights, or when comparing different actor/model versions within a single scene.</p></div>
+  </div>
+  <div class="footer-meta"><span>003 — Use Cases</span><span>Use Cases</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Entry</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— Entry —</div><h2 class="section-title">Opening Face Swap</h2><p class="section-lede">Click the face swap icon in the left vertical menu.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Click the face swap icon</h3><p class="step-body">Click the face swap icon in the left vertical menu. That menu is the Face Swap feature.</p></div></div><div><img src="../screens/eaf0c0833b28c82ad9833794fc4f1442848c0ff40195538422ed2986509c2f90.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>004 — Entry</span><span>Entry</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Layout</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— Layout —</div><h2 class="section-title">Default screen layout</h2><p class="section-lede">Settings and upload areas are on the left; generated results appear on the right.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Layout —</div><h3 class="step-title">Left: settings and upload / Right: results</h3><p class="step-body">The left side holds the settings and upload areas, and the right side shows the generated results.</p></div><div class="step-block"><div class="step-number">— Order —</div><h3 class="step-title">Generate after preparation</h3><p class="step-body">At first, the result area on the right is empty. Once the original image and the replacement image are ready, run Generate.</p></div></div><div><img src="../screens/269482b42c91fc9fba07ff2377eb82e77865b642e38e787267c343d6a43d10d9.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>005 — Layout</span><span>Layout</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— Models —</div><h2 class="section-title">Models</h2><p class="section-lede">Select the image generation model to use in Models at the top.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Select a model</h3><p class="step-body">Select the image generation model to use in  <span class="ui">Models</span> at the top.</p></div><div class="step-block"><div class="step-number">— Options —</div><h3 class="step-title">Nano Banana 2 / Nano Banana</h3><p class="step-body">On the current screen, you can see the Nano Banana 2 and Nano Banana options.</p></div></div><div><img src="../screens/039c804a46d030b623d26cbc3484fc88ca5f5af02635c22703aa17b091728323.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>006 — Models</span><span>Selection</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Original Image</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— Original Image —</div><h2 class="section-title">Original image</h2><p class="section-lede">Upload the original image whose face you want to replace, using Drop Image Here or Click to Upload.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Upload the original image</h3><p class="step-body"><span class="ui">Drop Image Here</span>  or  <span class="ui">Click to Upload</span> to upload the original image whose face you want to replace.</p></div><div class="step-block"><div class="step-number">— Recommended —</div><h3 class="step-title">A stable photo</h3><p class="step-body">The more stable the face, head direction, lighting, and resolution of the photo, the more natural the result.</p></div><div class="step-block"><div class="step-number">— Reselect —</div><h3 class="step-title">Remove with the X button</h3><p class="step-body">You can remove an uploaded image with the X button at the top right and select a new one.</p></div></div><div><img src="../screens/727170b8e4e82ee1a1de1d5eed0cbfef7c88d4b08357ba1e47cf7c0108d790cc.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>007 — Original Image</span><span>Original</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Mask</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— Mask —</div><h2 class="section-title">Mark the face area to replace</h2><p class="section-lede">Paint the face area to replace with the brush on top of the original image.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Paint the face area with the brush</h3><p class="step-body">Paint the face area to replace with the brush on top of the original image.</p></div><div class="step-block"><div class="step-number">— Caution —</div><h3 class="step-title">Set an appropriate range</h3><p class="step-body">The painted area is what actually gets replaced, so check that you do not mark the area around the face too narrowly or too broadly.</p></div></div><div><img src="../screens/65bf08046101cdd17075ebf24056e05fc967e53aabfa95c36cad2e683f323b75.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>008 — Mask</span><span>Mask</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Brush Size</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— Brush Size —</div><h2 class="section-title">Brush Size</h2><p class="section-lede">Adjust the brush size with the Brush Size slider.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Large areas —</div><h3 class="step-title">A thick brush</h3><p class="step-body">Paint large areas quickly with a thick brush.</p></div><div class="step-block"><div class="step-number">— Fine details —</div><h3 class="step-title">A small brush</h3><p class="step-body">Clean up delicate areas, such as around the eyes or along the jawline, with a small brush.</p></div></div><div><img src="../screens/fd38196350775411309f5975d3cbf546ab14fc2b4f98009284e9299d9a2f36e2.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>009 — Brush Size</span><span>Slider</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Swap to image</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— Swap to Image —</div><h2 class="section-title">Swap to image</h2><p class="section-lede">Upload the new face image to apply in the Swap to image area.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Upload the replacement face</h3><p class="step-body"><span class="ui">Swap to image</span>  area is where you upload the new face image to apply.</p></div><div class="step-block"><div class="step-number">— Recommended —</div><h3 class="step-title">Front or 3/4 angle</h3><p class="step-body">Use an image where the facial structure is clearly visible, such as a front or 3/4 angle, for a more stable replacement result.</p></div><div class="note-box"><div class="label">— Required —</div><div class="text">Without a replacement face image, the Generate button stays disabled.</div></div></div><div><img src="../screens/e2b6b0744d422ec88d758291348790fae23690d17c6b1000a0d9f237e0074b82.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>010 — Swap to image</span><span>New Face</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— Generate —</div><h2 class="section-title">Generate</h2><p class="section-lede">Once the original image, brush mask, and replacement face image are all ready, the Generate button becomes active.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Activation condition —</div><h3 class="step-title">All three inputs ready</h3><p class="step-body">Once the original image, brush mask, and replacement face image are all ready, the  <span class="ui">Generate</span>  button becomes active.</p></div><div class="step-block"><div class="step-number">— Reselect —</div><h3 class="step-title">Remove with the X button</h3><p class="step-body">You can also remove the replacement face image with the X button at the top right and upload it again.</p></div><div class="note-box"><div class="label">— Credits —</div><div class="text">Based on the current test screen, one generation uses 6 credits.</div></div></div><div><img src="../screens/89eba19b1e01f19f326fa5c6d447376af48855a48d7325a2390f463f842624bb.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>011 — Generate</span><span>Run</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Confirmation dialog</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— Confirm —</div><h2 class="section-title">Confirmation dialog</h2><p class="section-lede">Pressing Generate shows a confirmation popup.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Step 01 —</div><h3 class="step-title">Confirmation popup appears</h3><p class="step-body"><span class="ui">Generate</span> shows a confirmation popup when pressed.</p></div><div class="step-block"><div class="step-number">— Actions —</div><h3 class="step-title">OK to proceed / Cancel to cancel</h3><p class="step-body"><span class="ui">OK</span> starts the actual generation when pressed, and  <span class="ui">Cancel</span> returns to the previous screen when pressed.</p></div></div><div><img src="../screens/ea06cb5d010f025d22b235148f725e0b66a1a01c89624f8a61f4f71f2d5defcc.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>012 — Confirmation dialog</span><span>Confirm</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>Reviewing the result</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— Result Card —</div><h2 class="section-title">Reviewing the result</h2><p class="section-lede">When generation finishes, the result image appears in the result area on the right.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Result —</div><h3 class="step-title">Result area display</h3><p class="step-body">When generation finishes, the result image appears in the result area on the right.</p></div><div class="step-block"><div class="step-number">— Comparison —</div><h3 class="step-title">Result · area · replacement face</h3><p class="step-body">The result card shows the generated result, the face area marked in the original, and the face image used for the replacement together, making them easy to compare.</p></div></div><div><img src="../screens/5c792f6d7982601e05636da652fbcf37488d6b35a406f7ec71ce32d5f7142867.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>013 — Reviewing the result</span><span>Result</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>Result card icons</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— Result Icons —</div><h2 class="section-title">Result card icons</h2><p class="section-lede">Manage results with the icons on the right of the result card.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— Icons —</div><h3 class="step-title">Share · Regenerate · Download · Delete</h3><p class="step-body">The external-link icon opens the public share confirmation, the refresh icon regenerates, the download icon saves the file, and the trash icon deletes.</p></div><div class="step-block"><div class="step-number">— Regenerate —</div><h3 class="step-title">Regenerate with the same inputs</h3><p class="step-body">Use regenerate to create a new result from the same inputs.</p></div></div><div><img src="../screens/b19d8daeb1d763532f1abcf18db653fd9fb218699b6198374af43d209632f7e4.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>014 — Result card icons</span><span>Icons</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>Share and delete confirmation</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— Confirm Dialogs —</div><h2 class="section-title">Share and delete confirmation</h2><p class="section-lede">Sharing and deleting each go through a confirmation popup to prevent mistakes.</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— Public share —</div><h3 class="step-title">Share confirmation popup</h3><p class="step-body">Pressing the external-link icon shows a popup asking whether to share the media publicly. <span class="ui">OK</span> proceeds with the share, and  <span class="ui">Cancel</span> closes without sharing.</p></div>
+      <div><img src="../screens/ca245727f8785d8743fefc4db8a553021429396be23cbad5e539caf66d662a74.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div>
+    </div>
+    <div>
+      <div class="step-block"><div class="step-number">— Delete —</div><h3 class="step-title">Delete confirmation popup</h3><p class="step-body">Pressing the trash icon asks whether to delete the selected result media. Only press  <span class="ui">OK</span> if the result needs to be deleted; if it should be kept, press  <span class="ui">Cancel</span>.</p></div>
+      <div><img src="../screens/2c0d7c30065435cd04917447ba9b4f41c4a0d433d91daecb0d2ed5d01e46f827.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>015 — Share and delete confirmation</span><span>Final Step</span></div>
+</section>
+
+<script src="../embed.js" defer=""></script></body></html>

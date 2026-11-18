@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Swap — ユーザーガイド</title>
+
+
+<style>
+
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  .usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+  .flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 32px; }
+  .flow-card { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 28px 24px; text-align: center; }
+  .flow-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 10px; }
+  .flow-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+  .flow-arrow { font-family: var(--body-font); font-size: 24px; color: var(--midnight); }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="face-swap" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/face-swap.html" hreflang="ko" lang="ko">KO</a><a href="../en/face-swap.html" hreflang="en" lang="en">EN</a><a href="../ja/face-swap.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/face-swap.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>ユーザーガイド</span></div>
+    <div><div class="cover-title-en">FACE<br>SWAP</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">背景・服装・ポーズ・ライティングを保ったまま、画像内の顔だけを差し替えるワークフローガイドです。キャスティング比較や制作の試行錯誤を素早く行うために作られました。</div></div>
+    <div class="cover-bottom-meta"><div><div>ユーザーガイド</div><div>チュートリアル</div></div><div style="text-align:right"><div>全 15 章</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目次</span><span>全 15 章</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— ガイド構成 —</span>     利用目的 · 活用例 · 開始 · 画面構成 · Models · 元画像 · 顔領域の指定 · Brush Size · Swap to image · Generate · 生成確認 · 結果の確認 · 結果カードのアイコン · 共有/削除の確認</div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>利用目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">Face Swap でできること</h2><p class="section-lede">元画像の中の特定の顔を、別の顔画像に差し替える機能です。背景・服装・ポーズ・ライティング・構図はできるだけ維持したまま、人物の顔の印象だけを素早く変えることができます。</p></div></div>
+  <div class="flow-row">
+    <div class="flow-card"><div class="label">— ステップ 01 —</div><h4>Original Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card"><div class="label">— ステップ 02 —</div><h4>Swap to Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card" style="background: var(--midnight); border-color: var(--midnight);"><div class="label" style="color: rgba(240,239,234,0.6);">— 結果 —</div><h4 style="color: #F0EFEA;">差し替え結果</h4></div>
+  </div>
+  <div class="note-box"><div class="label">— 作業の仕組み —</div><div class="text">元画像の顔の領域をブラシで指定し、差し替える顔画像を入れて結果を生成します。</div></div>
+  <div class="footer-meta"><span>002 — 利用目的</span><span>目的</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>活用例</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 活用例 —</div><h2 class="section-title">この機能をなぜ、どんなときに使うのか</h2><p class="section-lede">再撮影なしで、同じカットでキャスティング候補やモデルの印象、キャラクターの顔を比較するために使います。広告の試案やルックブック、映像コンテのように、結果を素早く見せる必要がある作業で時間を短縮します。</p></div></div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>キャスティング候補の比較</h4><p>再撮影なしで、同じカットでキャスティング候補やモデルの印象、キャラクターの顔を比較するとき。</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>ポーズ・衣装を維持した差し替え</h4><p>既存の画像のポーズや衣装は気に入っているが、顔だけを変えたいとき。</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>リファレンスの差し替え</h4><p>肖像権に配慮が必要なリファレンスを差し替えるときや、1つのシーンの中で別の俳優／モデルのバージョンを比較するとき。</p></div>
+  </div>
+  <div class="footer-meta"><span>003 — 活用例</span><span>活用例</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>開始</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 開始 —</div><h2 class="section-title">Face Swap の開始</h2><p class="section-lede">左側の縦メニューで顔の差し替えアイコンをクリックします。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">顔の差し替えアイコンをクリック</h3><p class="step-body">左側の縦メニューで顔の差し替えアイコンをクリックします。そのメニューが Face Swap 機能です。</p></div></div><div><img src="../screens/eaf0c0833b28c82ad9833794fc4f1442848c0ff40195538422ed2986509c2f90.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>004 — 開始</span><span>開始</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>画面構成</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 画面構成 —</div><h2 class="section-title">基本的な画面構成</h2><p class="section-lede">左側には設定とアップロードのエリア、右側には生成された結果が表示されます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 構成 —</div><h3 class="step-title">左：設定・アップロード ／ 右：結果</h3><p class="step-body">左側には設定とアップロードのエリアがあり、右側には生成された結果が表示されます。</p></div><div class="step-block"><div class="step-number">— 順番 —</div><h3 class="step-title">準備後に Generate</h3><p class="step-body">最初は右側の結果エリアは空です。元画像と差し替え画像がそろうと Generate を実行します。</p></div></div><div><img src="../screens/269482b42c91fc9fba07ff2377eb82e77865b642e38e787267c343d6a43d10d9.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>005 — 画面構成</span><span>画面構成</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— モデル選択 —</div><h2 class="section-title">Models</h2><p class="section-lede">上部の Models で使用する画像生成モデルを選択します。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">モデルを選択</h3><p class="step-body">上部の <span class="ui">Models</span>で使用する画像生成モデルを選択します。</p></div><div class="step-block"><div class="step-number">— オプション —</div><h3 class="step-title">Nano Banana 2 / Nano Banana</h3><p class="step-body">現在の画面では Nano Banana 2 と Nano Banana のオプションを確認できます。</p></div></div><div><img src="../screens/039c804a46d030b623d26cbc3484fc88ca5f5af02635c22703aa17b091728323.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>006 — Models</span><span>選択</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>元画像</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 元画像のアップロード —</div><h2 class="section-title">Original image</h2><p class="section-lede">Drop Image Here または Click to Upload で、顔を差し替える元画像をアップロードします。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">元画像のアップロード</h3><p class="step-body"><span class="ui">Drop Image Here</span> または <span class="ui">Click to Upload</span>で、顔を差し替える元画像をアップロードします。</p></div><div class="step-block"><div class="step-number">— 推奨 —</div><h3 class="step-title">安定した写真</h3><p class="step-body">顔や頭の向き、ライティング、解像度が安定した写真ほど、結果が自然になります。</p></div><div class="step-block"><div class="step-number">— 再選択 —</div><h3 class="step-title">X ボタンで削除</h3><p class="step-body">アップロードした画像は右上の X ボタンで削除し、選び直すことができます。</p></div></div><div><img src="../screens/727170b8e4e82ee1a1de1d5eed0cbfef7c88d4b08357ba1e47cf7c0108d790cc.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>007 — 元画像</span><span>元画像</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>顔領域の指定</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— マスク・顔領域の指定 —</div><h2 class="section-title">差し替える顔の領域を指定</h2><p class="section-lede">元画像の上で、ブラシで差し替える顔の領域を塗ります。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">ブラシで顔の領域を塗る</h3><p class="step-body">元画像の上で、ブラシで差し替える顔の領域を塗ります。</p></div><div class="step-block"><div class="step-number">— 注意 —</div><h3 class="step-title">適切な範囲で指定</h3><p class="step-body">塗った領域が実際に差し替え対象になるため、顔の周りを狭すぎたり広すぎたりしないよう確認します。</p></div></div><div><img src="../screens/65bf08046101cdd17075ebf24056e05fc967e53aabfa95c36cad2e683f323b75.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>008 — 顔領域の指定</span><span>Mask</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Brush Size</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— ブラシサイズ —</div><h2 class="section-title">Brush Size</h2><p class="section-lede">Brush Size スライダーでブラシのサイズを調整します。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 広い領域 —</div><h3 class="step-title">太いブラシ</h3><p class="step-body">広い領域は太いブラシで素早く塗ります。</p></div><div class="step-block"><div class="step-number">— 細かい部分 —</div><h3 class="step-title">細いブラシ</h3><p class="step-body">目元やあごのラインなど、繊細な部分は細いブラシで整えます。</p></div></div><div><img src="../screens/fd38196350775411309f5975d3cbf546ab14fc2b4f98009284e9299d9a2f36e2.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>009 — Brush Size</span><span>スライダー</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Swap to image</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 差し替える顔 —</div><h2 class="section-title">Swap to image</h2><p class="section-lede">Swap to image エリアには、新しく適用する顔画像をアップロードします。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">差し替える顔のアップロード</h3><p class="step-body"><span class="ui">Swap to image</span> エリアには、新しく適用する顔画像をアップロードします。</p></div><div class="step-block"><div class="step-number">— 推奨 —</div><h3 class="step-title">正面または 3/4 の角度</h3><p class="step-body">正面や 3/4 の角度のように顔の構造がよく見える画像を使うと、差し替え結果が安定します。</p></div><div class="note-box"><div class="label">— 必須 —</div><div class="text">差し替え用の顔画像がないと Generate ボタンは有効になりません。</div></div></div><div><img src="../screens/e2b6b0744d422ec88d758291348790fae23690d17c6b1000a0d9f237e0074b82.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>010 — Swap to image</span><span>新しい顔</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate</h2><p class="section-lede">元画像・ブラシマスク・差し替える顔画像がすべてそろうと Generate ボタンが有効になります。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 有効化の条件 —</div><h3 class="step-title">3つの入力が完了</h3><p class="step-body">元画像・ブラシマスク・差し替える顔画像がすべてそろうと <span class="ui">Generate</span> ボタンが有効になります。</p></div><div class="step-block"><div class="step-number">— 再選択 —</div><h3 class="step-title">X ボタンで削除</h3><p class="step-body">差し替える顔画像も右上の X ボタンで削除し、再度アップロードできます。</p></div><div class="note-box"><div class="label">— クレジット —</div><div class="text">現在のテスト画面では、1 回の生成で 6 credits を消費します。</div></div></div><div><img src="../screens/89eba19b1e01f19f326fa5c6d447376af48855a48d7325a2390f463f842624bb.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>011 — Generate</span><span>実行</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>生成確認</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 生成の確認 —</div><h2 class="section-title">生成確認ポップアップ</h2><p class="section-lede">Generate を押すと確認ポップアップが表示されます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— ステップ 01 —</div><h3 class="step-title">確認ポップアップの表示</h3><p class="step-body"><span class="ui">Generate</span>を押すと確認ポップアップが表示されます。</p></div><div class="step-block"><div class="step-number">— 動作 —</div><h3 class="step-title">OK で実行 / Cancel でキャンセル</h3><p class="step-body"><span class="ui">OK</span>を押すと実際の生成が始まり、 <span class="ui">Cancel</span>を押すと前の画面に戻ります。</p></div></div><div><img src="../screens/ea06cb5d010f025d22b235148f725e0b66a1a01c89624f8a61f4f71f2d5defcc.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>012 — 確認ダイアログ</span><span>確認</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>結果の確認</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— 結果カード —</div><h2 class="section-title">結果カードの確認</h2><p class="section-lede">生成が終わると、右側の結果エリアに結果画像が表示されます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 結果 —</div><h3 class="step-title">結果エリアの表示</h3><p class="step-body">生成が終わると、右側の結果エリアに結果画像が表示されます。</p></div><div class="step-block"><div class="step-number">— 比較 —</div><h3 class="step-title">結果・領域・差し替える顔</h3><p class="step-body">結果カードには生成結果、元画像で指定した顔の領域、差し替えに使った顔画像が一緒に表示され、比較しやすくなっています。</p></div></div><div><img src="../screens/5c792f6d7982601e05636da652fbcf37488d6b35a406f7ec71ce32d5f7142867.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>013 — 結果の確認</span><span>結果</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>結果カードのアイコン</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— 結果アイコン・結果の管理 —</div><h2 class="section-title">結果カード右側のアイコン</h2><p class="section-lede">結果カード右側のアイコンで結果を管理します。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— アイコン —</div><h3 class="step-title">共有・再生成・ダウンロード・削除</h3><p class="step-body">外部リンクのアイコンは公開共有の確認、更新アイコンは再生成、ダウンロードアイコンはファイルの保存、ごみ箱アイコンは削除の機能です。</p></div><div class="step-block"><div class="step-number">— 再生成 —</div><h3 class="step-title">同じ入力値で再生成</h3><p class="step-body">再生成は、同じ入力値をもとに新しい結果をもう一度作るときに使います。</p></div></div><div><img src="../screens/b19d8daeb1d763532f1abcf18db653fd9fb218699b6198374af43d209632f7e4.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>014 — 結果カードのアイコン</span><span>アイコン</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>共有/削除の確認</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— 確認ダイアログ —</div><h2 class="section-title">公開共有と削除の確認</h2><p class="section-lede">共有と削除は、誤操作を防ぐためにそれぞれ確認ポップアップを経ます。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 公開共有 —</div><h3 class="step-title">共有の確認ポップアップ</h3><p class="step-body">外部リンクのアイコンを押すと、メディアを公開で共有するかどうかを尋ねるポップアップが表示されます。 <span class="ui">OK</span>は共有を進め、 <span class="ui">Cancel</span>は共有せずに閉じます。</p></div>
+      <div><img src="../screens/ca245727f8785d8743fefc4db8a553021429396be23cbad5e539caf66d662a74.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div>
+    </div>
+    <div>
+      <div class="step-block"><div class="step-number">— 削除 —</div><h3 class="step-title">削除の確認ポップアップ</h3><p class="step-body">ごみ箱アイコンを押すと、選択した結果メディアを削除するかどうかを確認します。削除が必要な場合にのみ <span class="ui">OK</span>を押し、保管すべき結果であれば <span class="ui">Cancel</span>を押します。</p></div>
+      <div><img src="../screens/2c0d7c30065435cd04917447ba9b4f41c4a0d433d91daecb0d2ed5d01e46f827.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>015 — 共有・削除の確認</span><span>最終ステップ</span></div>
+</section>
+
+<script src="../embed.js" defer=""></script></body></html>

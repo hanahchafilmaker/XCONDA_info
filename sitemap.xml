@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hub.xconda.ai/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-18</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/post/</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://hub.xconda.ai/qna/</loc>
-    <lastmod>2026-11-14</lastmod>
+    <lastmod>2026-11-18</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/guide/</loc>
@@ -499,6 +499,50 @@
   <url>
     <loc>https://hub.xconda.ai/qna/how-credits-are-deducted/</loc>
     <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/blocking-board-getting-started/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/blocking-board-ambiguous-details/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/blocking-board-space-json-size/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/workspace-overview/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/workspace-organization-count/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/workspace-member-limit/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/workspace-organization-credits-separate-request/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/workspace-enterprise-unlimited/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/credits-are-tokens-not-points/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/seedance-draft-1080p-window-14-days/</loc>
+    <lastmod>2026-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://hub.xconda.ai/qna/seedance-completed-video-no-expiry/</loc>
+    <lastmod>2026-11-18</lastmod>
   </url>
   <url>
     <loc>https://hub.xconda.ai/user-guide.html</loc>

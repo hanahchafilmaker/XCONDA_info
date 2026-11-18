@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generator (Seedance 2.5) — User Guide</title>
+
+
+
+<style>
+
+  :root { --body-font: 'Pretendard', sans-serif; }
+  body { word-break: keep-all; letter-spacing: -0.015em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: auto; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 780px; }
+  .section-lede .ui, .content-table .ui, .sub-block .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; font-family: 'JetBrains Mono', var(--body-font), monospace; }
+  .section-lede strong, .sub-block strong { font-weight: 600; color: var(--midnight); }
+  .section-lede em { font-style: italic; color: var(--slate); }
+
+
+  .figure-block { margin-bottom: 32px; max-width: 900px; width: 100%; }
+  .figure-placeholder {
+    width: 100%;
+    min-height: 360px;
+    background: var(--offwhite-warm);
+    border: 1px dashed var(--hairline);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    color: var(--slate-light);
+    font-family: 'JetBrains Mono', var(--body-font), monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .figure-img { display: block; width: 100%; height: auto; border-radius: 2px; max-width: 900px; border: 1px solid var(--hairline); }
+  .figure-img[src=""] { display: none; }
+
+
+  .content-table { width: 100%; max-width: 900px; border-collapse: collapse; margin-bottom: 32px; font-size: 14.5px; }
+  .content-table th, .content-table td { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 14px 18px; text-align: left; vertical-align: top; line-height: 1.65; }
+  .content-table th { background: var(--offwhite-warm); font-weight: 600; color: var(--midnight); font-family: 'JetBrains Mono', var(--body-font), sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; width: 190px; }
+  .content-table td { color: var(--slate); }
+  .content-table td strong { color: var(--midnight); font-weight: 600; }
+
+  .sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 900px; margin-bottom: 32px; }
+  .sub-block { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 24px 28px; border-radius: 2px; }
+  .sub-block h3 { font-size: 17px; font-weight: 700; color: var(--midnight); margin-bottom: 12px; letter-spacing: -0.02em; }
+  .sub-block p, .sub-block ol, .sub-block ul { font-size: 14.5px; color: var(--slate); line-height: 1.75; }
+  .sub-block ol, .sub-block ul { padding-left: 18px; }
+  .sub-block li { margin-bottom: 6px; }
+
+  .prompt-card { max-width: 900px; border: 1px solid var(--hairline); margin-bottom: 16px; border-radius: 2px; overflow: hidden; }
+  .prompt-card-header { background: var(--offwhite-warm); padding: 10px 20px; border-bottom: 1px solid var(--hairline); font-family: 'JetBrains Mono', var(--body-font), monospace; font-size: 12px; font-weight: 600; color: var(--midnight); letter-spacing: 0.05em; }
+  .prompt-card-body { padding: 16px 20px; }
+  .prompt-en { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--midnight); line-height: 1.65; margin-bottom: 8px; }
+  .prompt-kr { font-size: 13.5px; color: var(--slate); line-height: 1.65; border-top: 1px dashed var(--hairline); padding-top: 8px; }
+
+  .note-box { margin-top: 8px; margin-bottom: 32px; max-width: 900px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; font-family: 'JetBrains Mono', monospace; }
+  .note-box .text strong { font-weight: 600; color: #fff; }
+
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .cover, .sub-grid { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+</style>
+<meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head>
+<body data-current-guide-slug="video" data-current-guide-lang="en" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="Current user guides navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/video.html" hreflang="ko" lang="ko">KO</a><a href="../en/video.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="../ja/video.html" hreflang="ja" lang="ja">JA</a><a href="../zh/video.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav>
+
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>User Guide</span></div>
+    <div>
+      <div class="cover-title-en">VIDEO<br>GEN<br>ERATOR</div>
+      <div class="cover-subtitle">A workflow guide for creating high-quality video from text, image, video, and audio references, based on Seedance 2.5. It covers reference-based generation, editing existing videos, extending videos, first/last frame control, and the Draft feature — all on one screen.</div>
+    </div>
+    <div class="cover-bottom-meta">
+      <div><div>User Guide</div><div>Seedance 2.5</div></div>
+      <div style="text-align:right"><div>12 Chapters</div><div>2026</div></div>
+    </div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>Contents</span><span>12 Chapters</span></div>
+    <div></div>
+    <div class="cover-tag">
+      <span class="label">— Guide Structure —</span>
+      01. Enter via the Video menu at the top · 02. Select a category and Seedance 2.5 · 03. Select Models and a Generation mode · 04. Manage Input Assets and Reference · 05. Add references and assign @Image tags · 06. Write a Prompt and call @ · 07. Configure Options in detail (aspect ratio, resolution, duration) · 08. Draft mode settings and prompt examples · 09. Run Generate and check credits · 10. Generation confirmation pop-up (OK) · 11. Generation queue and background execution · 12. Check generation progress and manage results
+    </div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>Enter via the Video menu at the top</span></div><div class="right"><span>P. 001</span></div></div>
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Entry —</div>
+      <h2 class="section-title">Enter via the Video menu at the top</h2>
+      <p class="section-lede">In the top navigation bar on the main screen (<span class="ui">Image</span> · <span class="ui">Video</span> · <span class="ui">Studio</span> · <span class="ui">Guide</span> · <span class="ui">Hub</span> · <span class="ui">Pricing</span>), click the <span class="ui">Video</span> menu, highlighted with a yellow box. In the top right, you can check the credits you currently hold and your account profile icon.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/a0ac64bb7f6a83c5bb5f83224e26e5978c05905ab50422781e5b979666f4f548.jpg" alt="Chapter 01 - Enter via the Video menu at the top (1.jpg)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">Clicking <span class="ui">Video</span>in the top menu takes you straight to the screen listing all AI video generation models offered by Xconda. Inside the workspace screen, you can also open it with the second, film-shaped icon in the left vertical sidebar.</div>
+  </div>
+  <div class="footer-meta"><span>001 — Enter via the Video menu at the top</span><span>VIDEO-ENTRY</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>Select a category and Seedance 2.5</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Category &amp; Engine —</div>
+      <h2 class="section-title">Select a category and Seedance 2.5</h2>
+      <p class="section-lede">In <span class="ui">CATEGORY</span>on the left, check that <span class="ui">Video</span>is selected, then in the model card list on the right, click the first <span class="ui">Seedance 2.5 T2V</span> card, highlighted with a yellow box. At the bottom of each card, the key specs are summarized, including maximum generation length, maximum resolution, and whether audio generation is supported.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/908759c8517630e55220d7b82e061c3fe0a9e8e09dabf6d5eb958b4f12b3495b.jpg" alt="Chapter 02 - Select Seedance 2.5 T2V (2.jpg)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>Family</th><th>Video models supported by Xconda</th><th>Key features at a glance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Seedance</strong></td><td><strong>Seedance 2.5</strong> · Seedance 2.0 · Seedance 2.0 Fast · Seedance 2.0 Mini</td><td>Based on Seedance 2.5: up to 30 seconds, up to 1080p, audio generation and first/last frame support</td></tr>
+      <tr><td><strong>Google</strong></td><td>Veo 3.1 · Veo 3.1 Fast · Gemini Omni Flash</td><td>Up to 8–10 seconds, audio generation (Native audio) and first/last frame support</td></tr>
+      <tr><td><strong>Kling</strong></td><td>Kling 3.0 Pro · Kling 3.0 4K · Kling OMNI</td><td>Up to 15 seconds, audio generation support, Pro/OMNI multi-shot prompts and 4K resolution support</td></tr>
+      <tr><td><strong>Grok / Vidu</strong></td><td>Grok Imagine Video · Grok Imagine Video 1.5 · Vidu Q3</td><td>Video generation models supporting each engine's own style and motion interpretation</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">Each model supports different maximum resolutions, video lengths, and detailed features. This guide is based on <strong>Seedance 2.5</strong>, which supports up to 30 seconds in length and multimodal references.</div>
+  </div>
+  <div class="footer-meta"><span>002 — Select a category and Seedance 2.5</span><span>MODEL-CARDS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>Select Models and a generation mode</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generation Mode —</div>
+      <h2 class="section-title">Select Models and a generation mode</h2>
+      <p class="section-lede">At the top of the Video Generator workspace screen, in the <span class="ui">Models</span> dropdown, check that <strong>Seedance 2.5</strong>is selected. Below it, click the chevron next to <span class="ui">Mode</span> to open the <strong>Generation mode</strong> list, then choose one of the four modes to suit your purpose.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/ce63e37ce3908345d0255f73e49ae9c2f01f9fbc4507aca24c3c56480e65a13b.png" alt="Chapter 03 - Select Models and Generation mode (3.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>Generation mode</th><th>Key features</th><th>Recommended use</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Ref-to-video</strong></td><td>Create a new video from references (image, video, audio) and a prompt. Enter only a prompt with no references to generate a video from text alone</td><td>When creating a new scene from scratch (default mode)</td></tr>
+      <tr><td><strong>Video edit</strong></td><td>Load an existing video and keep the elements you want, changing only the parts you want</td><td>When you want to change only some elements of a generated video, such as the weather, background, or mood</td></tr>
+      <tr><td><strong>Video extend</strong></td><td>Generate the next segment that continues naturally from the last scene of an existing video (repeatable extension)</td><td>When you need a scene longer than 30 seconds or seamless continuous motion (a chase, dance, or camera move)</td></tr>
+      <tr><td><strong>First/last frame</strong></td><td>Specify a start image and an end image, and generate the movement between the two scenes</td><td>When the first and last look of a scene are clearly decided</td></tr>
+    </tbody>
+  </table>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>Text only (Text-to-Video)</h3>
+      <p>There is no separate Text to video mode. In the default mode, <span class="ui">Ref-to-video</span> , entering only a prompt with no references generates a video from text alone. When generating from text only, check that the active reference send count (<span class="ui">Sending: Reference N</span>) is <strong>0</strong>.</p>
+    </div>
+    <div class="sub-block">
+      <h3>Video extend tips</h3>
+      <p>If the source video you want to extend is long, <strong>trimming in only the last 8–10 seconds</strong>is efficient for managing reference size. In the prompt, do not describe the opening scene again — write only <strong>the action that happens next and the camera movement</strong>. If repeated extensions start to drift the people or background, extract the last scene that still looked natural as an image and continue in <span class="ui">First/last frame</span> mode for a more stable result.</p>
+    </div>
+  </div>
+  <div class="footer-meta"><span>003 — Select Models and a generation mode</span><span>GENERATION-MODE</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>Manage Input Assets and Reference</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Input Assets —</div>
+      <h2 class="section-title">Input Assets and Reference management panel</h2>
+      <p class="section-lede">To the right of the Input Assets area, click <span class="ui">Manage &gt;</span>to open the management panel on the right side of the screen. It has three tabs at the top (<span class="ui">Reference</span> · <span class="ui">Asset Library</span> · <span class="ui">Options</span>) for managing materials and settings. Seedance 2.5 supports up to <strong>up to 30 images · up to 10 videos · up to 10 audios</strong>as references at a time.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/b5af1db034cb89f3798da1c92ed402e750a758a4e4c958df75a8f6a4548563e7.png" alt="Chapter 04 - Reference management panel (4.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>Management panel tab</th><th>Role &amp; features</th><th>Main use</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Reference</strong></td><td>Upload media files for one-time use in the current task only (not registered in the shared Asset Library)</td><td>Attach storyboards, compositions, sample videos, and audio to refer to for this cut only</td></tr>
+      <tr><td><strong>Asset Library</strong></td><td>An asset library stored in the account Library in advance and reused repeatedly across projects (Saved assets)</td><td>Load a fixed main-character sheet, main location background, or key props</td></tr>
+      <tr><td><strong>Options</strong></td><td>Draft mode, aspect ratio (Ratio), resolution (Resolution), duration (Duration), and High Quality settings</td><td>Adjust video output specs and quality options</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text"><span class="ui">Reference</span> tab, the <span class="ui">IMAGE</span>, <span class="ui">VIDEO</span>, <span class="ui">AUDIO</span> are shown separately at the bottom. Click the <span class="ui">+ Add</span> box in the media area you want to upload a file from your PC.</div>
+  </div>
+  <div class="footer-meta"><span>004 — Input Assets and Reference management panel</span><span>REFERENCE-PANEL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Add references and assign tags</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Active Reference —</div>
+      <h2 class="section-title">Add references and assign @Image tags</h2>
+      <p class="section-lede"><span class="ui">+ Add</span>: press it to upload an image, and a <strong>yellow check mark</strong>appears at the top right of the thumbnail, and a unique call name such as <span class="ui">@Image1</span>is automatically assigned below it. Only checked files are actually sent to the model at generation time.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/e0a76d30b5655982c55ca86781b724c8c7f00ea5da2606691b72374b6abe5bfa.png" alt="Chapter 05 - Upload a reference image and assign @Image1 (5.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>Use directly from the Reference tab</h3>
+      <ol>
+        <li>In the media area you want (IMAGE / VIDEO / AUDIO), click <span class="ui">+ Add</span>to upload a file.</li>
+        <li>Check that the files you want to use for this generation have the yellow check turned on.</li>
+        <li>Tag names are assigned in the order checked, such as <span class="ui">@Image1</span>, <span class="ui">@Image2</span>, <span class="ui">@Video1</span> .</li>
+      </ol>
+    </div>
+    <div class="sub-block">
+      <h3>Load from the Asset Library</h3>
+      <ol>
+        <li>Register frequently used materials in advance from the profile icon at the top right of the screen → <span class="ui">Library</span> → <span class="ui">Uploads</span> tab → <span class="ui">+ Add asset</span>.</li>
+        <li>In the Video Generator's <span class="ui">Asset Library</span> tab, click the materials you want to use to select them (<span class="ui">N selected</span>).</li>
+        <li>At the bottom, click <span class="ui">Use selected assets</span>to add them immediately as references for the current task.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="note-box">
+    <div class="label">— Tip —</div>
+    <div class="text">Adding references is not a matter of adding as many as possible — it is better to select only the key materials. Adding too many at once dilutes the influence of each reference, so <strong>one face image per person</strong>is the most stable choice.</div>
+  </div>
+  <div class="footer-meta"><span>005 — Add references and assign @Image tags</span><span>ACTIVE-ASSETS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Write a prompt and call @</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Prompt &amp; @Tag —</div>
+      <h2 class="section-title">Write a prompt and call @ tags</h2>
+      <p class="section-lede"><span class="ui">Prompt</span> input field, write the scene for the video you want to generate. You can enter up to <strong>30,000 characters</strong>, and the live character count (<span class="ui">0 / 30000</span>) is shown at the bottom right. Below the input field, a summary chip of the currently applied options (<span class="ui">Draft on | 1:1 | 480p | 25s | High Quality on</span>) is shown, and clicking the settings icon on the right opens the Options panel.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/1f2b062207e1aac9fe1253a06e39bf4a5360775f32d667b6cb8e4db643f345bd.png" alt="Chapter 06 - Prompt input field and summary chips (6.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="sub-grid">
+    <div class="sub-block">
+      <h3>Specify references with @ input</h3>
+      <p>While typing a prompt, type <span class="ui">@</span>and a list of the materials registered in Input Assets appears; clicking one inserts a tag such as <span class="ui">@Image1</span>, <span class="ui">@Video1</span> into the sentence. Uploading a reference alone is not enough — if you do not call it in the prompt, the model cannot tell where to apply it, so <strong>always attach an <span class="ui">@</span>tag to the sentence where a person or background first appears to assign its role</strong>.</p>
+    </div>
+    <div class="sub-block">
+      <h3>How to write elements to exclude (Negative Prompt alternative)</h3>
+      <p>Seedance 2.5 has no separate Negative Prompt input field. If there is an element you do not want, instead of a negative such as "no ~", describe it as <strong>the positive state that should appear on screen</strong>.<br><br>· <strong>Example:</strong> "No camera shake" → <em>"The camera is fixed in its original position (Locked-off shot)"</em></p>
+    </div>
+  </div>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">If the prompt input field is empty, the <span class="ui">Generate</span> button below is greyed out and cannot be clicked.</div>
+  </div>
+  <div class="footer-meta"><span>006 — Write a prompt and call @ tags</span><span>PROMPT-INPUT</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>Options — Set aspect ratio, resolution, and duration</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Options —</div>
+      <h2 class="section-title">Options — Set aspect ratio, resolution, and duration</h2>
+      <p class="section-lede">In the <span class="ui">Options</span> tab of the management panel on the right, set the video's aspect ratio (<span class="ui">Ratio</span>), resolution (<span class="ui">Resolution</span>), duration (<span class="ui">Duration</span>), and high-quality mode (<span class="ui">High Quality</span>). To generate the final video directly, leave the Draft button at the top set to <span class="ui">Draft off</span>and choose the resolution you want directly.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/ae713aeee31bdd927ca20e53ebbd3a9a421b72a208f18d283c3e7c1e517422a3.png" alt="Chapter 07 - Options tab settings screen (7.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>Option</th><th>Available options (based on Seedance 2.5)</th><th>Settings guide</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Draft</strong></td><td>Draft off / Draft on</td><td>For immediate generation at final resolution (720p·1080p), use <strong>Draft off</strong>; for a 480p draft test, use <strong>Draft on</strong></td></tr>
+      <tr><td><strong>Ratio (aspect ratio)</strong></td><td>16:9 · 9:16 · 1:1 · 4:3 · 3:4 · 21:9</td><td>For horizontal YouTube videos, use <strong>16:9</strong>, for Shorts/Reels, use <strong>9:16</strong>, for square feeds, use <strong>1:1</strong>, and for cinematic widescreen, use <strong>21:9</strong></td></tr>
+      <tr><td><strong>Resolution</strong></td><td>480p · 720p · 1080p</td><td>The higher the resolution, the sharper the image, and the more credits it consumes (fixed at 480p when Draft on is on)</td></tr>
+      <tr><td><strong>Duration</strong></td><td>4s ~ 30s slider</td><td>Drag the slider bar at the bottom left and right to set the duration in seconds, from 4 seconds up to a maximum of 30 seconds</td></tr>
+      <tr><td><strong>High Quality</strong></td><td>High Quality on / off</td><td>When enabled (yellow button), rendering quality improves and additional credits apply</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text"><span class="ui">First/last frame</span> mode, the aspect ratio follows the starting image, and in <span class="ui">Video edit</span> mode, it follows the source video's aspect ratio and length.</div>
+  </div>
+  <div class="footer-meta"><span>007 — Options - Set aspect ratio, resolution, and duration</span><span>OPTIONS-TAB</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>Draft mode and prompt examples</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Draft Mode &amp; Examples —</div>
+      <h2 class="section-title">Draft mode settings and practical prompt examples</h2>
+      <p class="section-lede">Click the button at the top of the Options tab to switch it to the yellow <span class="ui">Draft on</span> state, and the <span class="ui">Resolution</span>below is automatically fixed to <strong>a single 480p button</strong>. First test several 480p drafts at low cost and high speed, then pick the result you like and convert it to a <strong>1080p final version</strong>from the result card.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/6b33fd309881aa5971efae7f9c09e03ad88bd48eb17cb1d2da7e7336cd3c2ff1.png" alt="Chapter 08 - Draft on enabled screen (8.png)" class="figure-img" loading="lazy">
+
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">01. Text only (Ref-to-video, no references)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">A woman walks alone down a rain-soaked alley at night, neon signs reflecting on the wet pavement. She stops in front of a glass door, hesitates, then pushes it open — warm golden light spills out into the alley. The camera follows her from behind at shoulder height.</div>
+      <div class="prompt-kr"><strong>Meaning:</strong> At night, a woman walks alone down a rain-soaked alley. Neon signs reflect on the wet pavement. She stops in front of a glass door, hesitates briefly, then pushes it open — warm golden light spills out into the alley. The camera follows her from behind at shoulder height.</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">02. Combining references (Ref-to-video)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">@Image1 sits in the back seat of a taxi at night, city lights sliding across the window. She turns toward @Image2 and speaks quietly. Locked-off medium shot from the front seat, cool streetlight from the left.</div>
+      <div class="prompt-kr"><strong>Meaning:</strong> At night, @Image1 sits in the back seat of a taxi as city lights slide past the window. She turns toward @Image2 and speaks quietly. A locked-off medium shot from the front seat, with cool streetlight coming from the left.</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">03. Editing part of an existing video (Video edit — state what to keep and what to change)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">Keep @Video1 exactly as it is — same people, same movement, same camera. Change only the weather: light snow falls throughout the shot.</div>
+      <div class="prompt-kr"><strong>Meaning:</strong> Keep @Video1 exactly as it is — the same people, same movement, same camera. Change only the weather: light snow falls throughout the shot.</div>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-card-header">04. Extending a video (Video extend) &amp; 05. Connecting first/last frames (First/last frame)</div>
+    <div class="prompt-card-body">
+      <div class="prompt-en">[Video extend] Continue @Video1 from its last frame. The woman steps through the glass door into a warm, crowded bar and looks around the room. The camera keeps following her from behind at shoulder height, with the same lighting and mood.<br><br>[First/last frame] The woman walks slowly from the alley entrance toward the glass door as the rain keeps falling. Neon reflections ripple across the wet pavement with each step. Smooth, continuous camera movement following her, realistic night lighting.</div>
+      <div class="prompt-kr"><strong>Meaning:</strong> (Extension) Continuing from the last scene of @Video1, the woman steps through the glass door into a warm, crowded bar, looks around, and the camera follows her from behind in the same lighting and mood. / (First/last frame) Connects from the starting image at the alley entrance to the ending image in front of the glass door, with neon reflections on the rainy night street and a smooth camera follow.</div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="label">— Caution —</div>
+    <div class="text">Resolution cannot be changed in the prompt text. With <span class="ui">Draft on</span>enabled, even writing "Make it in 1080p" in the prompt still produces a 480p draft, so request the 1080p final version from the result card after generation is complete.</div>
+  </div>
+  <div class="footer-meta"><span>008 — Draft mode settings and prompt examples</span><span>DRAFT-AND-PROMPTS</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Run Generate and check credits</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Generate —</div>
+      <h2 class="section-title">Run Generate and check credits</h2>
+      <p class="section-lede">Once you have finished entering the prompt (for example: <span class="ui">7526 / 30000</span>), the <span class="ui">Generate</span> button below turns yellow and becomes active. Check the summary chip at the top left (<span class="ui">Draft on | 1:1 | 480p | 25s | High Quality on</span>) and the credits to be consumed shown to the right of the button (for example: <span class="ui">725 credits</span>), then click the yellow <span class="ui">Generate</span> button.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/6d137f07c6124951a46471c1812d4c83a33847735af2331c8638461e1ad154a2.png" alt="Chapter 09 - Yellow Generate button enabled and credits shown (9.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">The credits consumed are not a fixed value; they are calculated automatically based on the generation mode, video length (seconds), resolution, Draft setting, and High Quality setting, and shown in real time next to the button.</div>
+  </div>
+  <div class="footer-meta"><span>009 — Run Generate and check credits</span><span>GENERATE-BUTTON</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Generation confirmation pop-up (OK)</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Confirmation Modal —</div>
+      <h2 class="section-title">Generation confirmation pop-up (OK)</h2>
+      <p class="section-lede"><span class="ui">Generate</span> button, a confirmation modal appears on screen: <em>"Would you like to generate a video?"</em>Click the yellow <span class="ui">OK</span> button on the left to send the generation request to the server immediately; to change the settings again, click <span class="ui">Cancel</span>on the right.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/4af80996a6cc90492eec70ece3cdf993286f45a302047ecb798fc5360bb9fc79.png" alt="Chapter 10 - &quot;Would you like to generate a video?&quot; pop-up (10.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— Caution —</div>
+    <div class="text"><span class="ui">OK</span>— once generation has started, the task cannot be cancelled, so before clicking, it is a good idea to do a final check of your references (<span class="ui">@</span>tags) and the aspect-ratio and duration options.</div>
+  </div>
+  <div class="footer-meta"><span>010 — Generation confirmation pop-up (OK)</span><span>CONFIRM-MODAL</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Generation queue and background execution</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Queue &amp; Background —</div>
+      <h2 class="section-title">Generation queue and background execution</h2>
+      <p class="section-lede">Once the generation request is accepted, the result area shows a status message: <em>"Your video is starting soon / Starting shortly"</em> .<br><br>Notice: <em>"You can leave this page. Your accepted request will keep running on the server."</em> (Even if you leave this page, your accepted request will keep running on the server.) At the bottom, <span class="ui">Continue in background</span> is shown, along with a notice that generation has started and can no longer be cancelled (<em>"Generation has started — cancel is no longer available."</em>).</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/4e0da51c79eac861b08dfd4cf149a51aceb9c76663ab6c304e85fb99328cd876.png" alt="Chapter 11 - &quot;Your video is starting soon&quot; and Continue in background (11.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <div class="note-box">
+    <div class="label">— Tip —</div>
+    <div class="text">While the video is rendering, you do not need to keep the current window open. You can move to another menu or work on a new prompt in parallel, and the video will still complete safely in the server background.</div>
+  </div>
+  <div class="footer-meta"><span>011 — Generation queue and background execution</span><span>BACKGROUND-QUEUE</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>Check generation progress and manage results</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title-block">
+      <div class="eyebrow">— Progress &amp; Results —</div>
+      <h2 class="section-title">Check generation progress and manage results</h2>
+      <p class="section-lede">Once rendering is fully under way, a badge showing the current generation spec (for example, the yellow <span class="ui">DRAFT · 480p</span>) appears at the top left of the result card, and below it, the text <em>"Generating video"</em> appears with the live progress percentage (for example: <span class="ui">~12%</span>) and a yellow progress bar. Once generation reaches 100%, you can play or download the video from the result list on the right, or request a 1080p final version.</p>
+    </div>
+  </div>
+  <div class="figure-block">
+    <img src="../screens/5daa108673cf4945c50963e334d89194ee87db4ef06e8d3329e873332a5c99b4.png" alt="Chapter 12 - DRAFT 480p badge and Generating video progress display (12.png)" class="figure-img" loading="lazy">
+
+  </div>
+  <table class="content-table">
+    <thead>
+      <tr><th>Feature after completion</th><th>How it works</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Check meta information</strong></td><td>In the information panel next to each result, check the creation date (<strong>Date</strong>), resolution (<strong>Resolution</strong>), aspect ratio (<strong>Aspect Ratio</strong>), duration (<strong>Duration</strong>), and model used (<strong>Model</strong>).</td></tr>
+      <tr><td><strong>Preview &amp; full screen</strong></td><td>Click the Play button to play a preview inside the card, and click the video screen to expand it to full screen.</td></tr>
+      <tr><td><strong>Request a 1080p final version (Draft)</strong></td><td><span class="ui">DRAFT · 480p</span>— if you like a draft generated in this way, request a <strong>1080p final-version conversion</strong>from that result card to complete the high-quality final video.</td></tr>
+      <tr><td><strong>Download · Share · Delete</strong></td><td>Hover over the video to save it to your PC with the download (Save) icon, share it externally with the share icon, or delete unneeded cuts with the trash icon to tidy up your workspace.</td></tr>
+    </tbody>
+  </table>
+  <div class="note-box">
+    <div class="label">— Note —</div>
+    <div class="text">Generated results keep accumulating in the list on the right, and you can also view and manage them together in the <span class="ui">Library</span> &gt; <span class="ui">Generations</span> tab under the profile menu at the top.</div>
+  </div>
+  <div class="footer-meta"><span>012 — Check generation progress and manage results</span><span>PROGRESS-AND-RESULTS</span></div>
+</section>
+
+
+<script src="../embed.js" defer=""></script></body></html>

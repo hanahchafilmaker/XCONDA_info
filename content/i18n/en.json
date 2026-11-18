@@ -7,7 +7,7 @@
     "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변). 블로그·가이드는 본문 번역(bodies)이 아직 없어 영어 주소를 만들지 않습니다."
   ],
   "lang": "en",
-  "updated": "2026-11-14",
+  "updated": "2026-11-18",
   "site": {
     "title": "XCONDA Hub — Q&A, Guides and Notices",
     "description": "English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry."
@@ -5026,6 +5026,70 @@
         {
           "type": "p",
           "text": "Source: XCONDA Hub: production workflow series"
+        }
+      ]
+    },
+    "qna/blocking-board-getting-started": {
+      "title": "How do I start with the Blocking Board?",
+      "summary": "Start with Top View, then the text storyboard, create the scenes, and finally export. The Blocking Board workflow has 4 stages from the first layout to delivery."
+    },
+    "qna/blocking-board-ambiguous-details": {
+      "title": "How does the Blocking Board handle ambiguous details?",
+      "summary": "The Blocking Board does not guess ambiguous details. It asks in a popup and prioritizes character movement over eyelines when the two conflict, so the scene direction stays explicit."
+    },
+    "qna/blocking-board-space-json-size": {
+      "title": "Why does the Blocking Board show the wrong space size?",
+      "summary": "The space size stored in the space JSON takes priority in the Blocking Board. The catalog value is used only when no size is present in that JSON, so the saved dimensions win."
+    },
+    "qna/workspace-overview": {
+      "title": "What is the XCONDA Workspace and which guide covers it?",
+      "summary": "The XCONDA Workspace is a new team area that opened in beta on the afternoon of 11/17. It manages organizations, projects and shared budgets, and guide No.25 is available for setup."
+    },
+    "qna/workspace-organization-count": {
+      "title": "How many organizations are included with a subscription?",
+      "summary": "Every subscription plan includes 1 organization. The count is the same across Lite, Plus, Pro, Studio and Max, so upgrading changes other limits but not this organization allowance."
+    },
+    "qna/workspace-member-limit": {
+      "title": "How many members can a Workspace include by plan?",
+      "summary": "Workspace member limits are Lite 1, Plus 3, Pro 5, Studio 10 and Max 20, including the account owner. Choose a plan based on how many people need to collaborate."
+    },
+    "qna/workspace-organization-credits-separate-request": {
+      "title": "Do organization credits come automatically from subscription credits?",
+      "summary": "No, organization credits are not taken automatically from subscription credits. They require a separate request, so the subscription balance is not converted into a shared organization budget by itself."
+    },
+    "qna/workspace-enterprise-unlimited": {
+      "title": "How can I get unlimited organizations and members?",
+      "summary": "For unlimited organizations and members, use the separate enterprise request path. The standard plans keep their published limits, while the enterprise route is handled as a dedicated request."
+    },
+    "qna/credits-are-tokens-not-points": {
+      "title": "Are XCONDA credits points or service tokens?",
+      "summary": "No. XCONDA credits are service tokens used inside the platform, not score points. They are spent when a tool or model runs and the cost is shown before generation, so they are not a loyalty or ranking score."
+    },
+    "qna/seedance-draft-1080p-window-14-days": {
+      "title": "How long is a Seedance 2.5 Draft retained?",
+      "summary": "The 14-day window is the time allowed to convert a Seedance 2.5 Draft to 1080p. After that window, the draft video itself remains available as a completed result and is not removed.",
+      "blocks": [
+        {
+          "type": "h2",
+          "text": "Source"
+        },
+        {
+          "type": "p",
+          "text": "Source: XCONDA News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)"
+        }
+      ]
+    },
+    "qna/seedance-completed-video-no-expiry": {
+      "title": "Are completed videos deleted after 14 days?",
+      "summary": "No. Completed videos are stored without an expiry date and are not deleted after 14 days. That 14-day period applies only to converting a Seedance 2.5 Draft into 1080p.",
+      "blocks": [
+        {
+          "type": "h2",
+          "text": "Source"
+        },
+        {
+          "type": "p",
+          "text": "Source: XCONDA News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)"
         }
       ]
     }

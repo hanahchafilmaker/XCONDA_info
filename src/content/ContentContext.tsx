@@ -138,7 +138,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       if (!tool) return;
       // Preserve the existing Notion/local guide as the secondary view.
       const notionGuide = remoteGuideFor(entries, tool.name);
-      openEntry(notionGuide ?? toolToEntry(tool));
+      openEntry(notionGuide ?? toolToEntry(tool, lang, target));
       setActiveToolSlug(tool.slug);
       try {
         // Reloading or sharing the tool dialog should reopen the illustrated guide,
@@ -148,7 +148,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
         /* noop */
       }
     },
-    [entries, openEntry]
+    [entries, lang, target, openEntry]
   );
 
   /**
@@ -172,7 +172,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       const tool = TOOLS.find((t) => `tool-${t.slug}` === id);
       if (tool) {
         const notionGuide = remoteGuideFor(entries, tool.name);
-        setActive(notionGuide ?? toolToEntry(tool));
+        setActive(notionGuide ?? toolToEntry(tool, lang, target));
         setActiveToolSlug(tool.slug);
         return;
       }
@@ -183,8 +183,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       return;
     }
     if (hit) setActive(hit);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entries]);
+  }, [entries, lang, target]);
 
   // A shared tool link opens immediately even when Notion is still loading.
   // If a matching remote guide arrives later, retain it as the original view.

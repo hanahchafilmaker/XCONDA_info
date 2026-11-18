@@ -7,10 +7,10 @@
  *
  * The input directory must contain the 21 × 4 original files, using the names
  * in src/content/htmlGuides.json. The generated language indexes link to the
- * 24-topic × 4-language current Drive files in src/content/driveGuides.json;
+ * sanitized 24-topic × 4-language current copies in assets/guides/current/;
  * the local 21 × 4 HTML copies are kept as archived 2026-11-03 snapshots and
- * are no longer linked from the hub. The Drive originals are NOT modified. Images
- * are extracted losslessly, deduplicated by SHA-256, and served from this site.
+ * are no longer linked from the hub. The supplied originals are NOT modified.
+ * Images are extracted losslessly, deduplicated by SHA-256, and served locally.
  * Untrusted source scripts (including copied Cloudflare loaders) are removed;
  * the two screenshot-zoom pages use our small local viewer instead. All work is
  * staged and validated before the currently served files are replaced.
@@ -25,8 +25,7 @@ import { JSDOM } from "jsdom";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CATALOG = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/htmlGuides.json"), "utf8"));
 const DRIVE = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/driveGuides.json"), "utf8"));
-const driveView = (id) => `https://drive.google.com/file/d/${id}/view?usp=drive_link`;
-const driveDocBySlug = new Map(DRIVE.docs.map((doc) => [doc.slug, doc]));
+const currentGuideHref = (lang, slug) => `../../assets/guides/current/${lang}/${slug}.html`;
 const INPUT = process.argv[2] ? path.resolve(process.argv[2]) : "";
 const OUT = process.argv[3] ? path.resolve(process.argv[3]) : path.join(ROOT, "manuals");
 const LANGS = [
@@ -59,8 +58,8 @@ const CATEGORY_ORDER = ["image", "video", "storyboard", "assets"];
 const CSP = [
   "default-src 'none'",
   "img-src 'self' data:",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' data: https://fonts.gstatic.com",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self' data:",
   "script-src 'self'",
   "object-src 'none'",
   "base-uri 'none'",
@@ -133,8 +132,7 @@ function addNav(doc, lang, slug) {
   languages.className = "xconda-manual-languages";
   for (const option of LANGS) {
     const a = doc.createElement("a");
-    const current = slug ? driveDocBySlug.get(slug)?.files[option.code] : null;
-    a.href = current ? driveView(current) : `../${option.code}/${slug ? `${slug}.html` : "index.html"}`;
+    a.href = slug ? currentGuideHref(option.code, slug) : `../../assets/guides/current/${option.code}/index.html`;
     a.hreflang = option.html;
     a.lang = option.html;
     a.textContent = option.file;
@@ -143,6 +141,23 @@ function addNav(doc, lang, slug) {
   }
   nav.append(links, languages);
   doc.body.prepend(nav);
+}
+function addCurrentBanner(doc, lang, slug) {
+  const banner = doc.createElement("div");
+  banner.className = "xconda-drive-banner";
+  banner.setAttribute("data-drive-current", "");
+  banner.setAttribute("style", "margin:16px auto 0;max-width:1100px;padding:12px 16px;border:1px solid #dce3eb;border-radius:12px;background:#f4f6f9;font:14px/1.6 system-ui,sans-serif;color:#172433");
+  banner.append(doc.createTextNode("이 페이지는 2026-11-03 정적 사본입니다. "));
+  const link = doc.createElement("a");
+  link.href = currentGuideHref(lang.code, slug);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.setAttribute("style", "color:#2456b8;font-weight:600");
+  link.textContent = "2026-11-18 현재판을 이 사이트에서 열기 ↗";
+  banner.append(link);
+  const nav = doc.querySelector(".xconda-manual-nav");
+  if (nav) nav.after(banner);
+  else doc.body.prepend(banner);
 }
 function sanitize(doc) {
   for (const node of doc.querySelectorAll("script, iframe, object, embed, base, form")) node.remove();
@@ -225,7 +240,7 @@ function createIndex(lang) {
     for (const guide of group) {
       const item = doc.createElement("li");
       const a = doc.createElement("a");
-      a.href = driveView(guide.files[lang.code]);
+      a.href = currentGuideHref(lang.code, guide.slug);
       a.target = "_blank";
       a.rel = "noopener noreferrer";
       const name = doc.createElement("span");
@@ -273,6 +288,7 @@ try {
       setPolicy(doc);
       addStylesheet(doc, "../assets/navigation.css");
       addNav(doc, lang, guide.slug);
+      addCurrentBanner(doc, lang, guide.slug);
       if (doc.querySelector('.zoom[role="dialog"]')) {
         const script = doc.createElement("script");
         script.src = "../assets/zoom.js";

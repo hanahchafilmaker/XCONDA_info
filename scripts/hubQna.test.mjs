@@ -22,7 +22,7 @@ import {
   hubAnswerFromPage,
   hubPublicPageMap,
 } from "../src/content/hubQna.js";
-import { loadHubQna } from "./notion-snapshot.mjs";
+import { loadHubQna, DEFAULT_FAQ_DATA_SOURCE_ID } from "./notion-snapshot.mjs";
 
 /* ========================= 1. 게시 판정 ========================= */
 
@@ -176,8 +176,11 @@ test("내부 메모 문단 판정 — 콜아웃 본문", () => {
 /* ========================= 4. 표 → 스냅샷 (fetch 스텁) ========================= */
 
 const FAQ_PAGE_ID = "15d208576a644c499959ace667de40a2";
+/** 공개 Q&A 페이지의 컬렉션 뷰 ID(`?v=…`) — 데이터 소스 ID와 다릅니다. */
 const FAQ_VIEW_ID = "2d3c8b526b4845999e2014f1db5eab93";
-const COLLECTION_ID = "84f0b15c3aa54e4e9b1b4a0a49b0cbb1";
+/** Notion API 2025-09 데이터 소스 ID — 커넥터·공식 API의 실제 Q&A 표 ID. */
+const FAQ_DATA_SOURCE_ID = DEFAULT_FAQ_DATA_SOURCE_ID;
+const COLLECTION_ID = FAQ_DATA_SOURCE_ID.replaceAll("-", "");
 const SPACE_ID = "0a0a0a0a-0a0a-0a0a-0a0a-0a0a0a0a0a0a";
 
 const PROP = { title: "p-title", no: "p-no", status: "p-status", publish: "p-publish", priority: "p-priority", category: "p-category" };
@@ -291,9 +294,14 @@ function withFakeNotion(run, { flaky = {} } = {}) {
 }
 
 test("loadHubQna: 게시 대상만 행으로 만들고, 내부 근거는 본문에서 뺀다", async () => {
-  const { value: result, loaded } = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }));
+  const { value: result, loaded } = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID }));
 
   assert.equal(result.report.rowCount, 4);
+  // `?v=` 뷰 ID와 커넥터/공식 API 데이터 소스 ID는 서로 다른 값입니다.
+  assert.notEqual(FAQ_VIEW_ID.replaceAll("-", ""), FAQ_DATA_SOURCE_ID.replaceAll("-", ""));
+  assert.equal(result.report.dataSourceId, FAQ_DATA_SOURCE_ID);
+  assert.equal(result.report.viewBlockId, FAQ_PAGE_ID);
+  assert.equal(result.report.collectionId, COLLECTION_ID);
   assert.deepEqual(
     result.rows.map((r) => r.Title),
     ["엑스콘다(XCONDA)는 어떤 서비스인가요?", "문의는 어디로 하나요?"]
@@ -334,12 +342,12 @@ test("loadHubQna: 질문 페이지가 그대로면 본문을 다시 읽지 않�
   // 2026-11-08 동기화가 44시간 멈춘 원인은 노션 공개 API 의 HTTP 429(Cloudflare 1015) 였습니다.
   // 5분마다 Q&A 70여 건의 본문을 다시 받아 레이트리밋에 걸렸으므로, 수정되지 않은 문항은
   // 이전 스냅샷의 행 · 본문을 재사용합니다.
-  const first = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }));
+  const first = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID }));
   const previous = { rows: first.value.rows, pages: first.value.pages };
   assert.equal(first.value.report.reused, 0);
   assert.ok(first.value.rows[0].__modified, "다음 실행에서 재사용할 수 있도록 __modified 를 남긴다");
 
-  const second = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, previous }));
+  const second = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID, previous }));
   assert.equal(second.value.report.reused, 2); // 포함 문항 2건 모두 캐시 적중
   assert.equal(second.loaded.length, 1); // 표(1) 만 읽고 문항 본문은 읽지 않는다
   assert.deepEqual(second.value.rows, first.value.rows); // 행 내용은 그대로
@@ -350,13 +358,13 @@ test("loadHubQna: 질문 페이지가 그대로면 본문을 다시 읽지 않�
     rows: previous.rows.map((r, i) => (i === 0 ? { ...r, __modified: "2026-11-10" } : r)),
     pages: previous.pages,
   };
-  const third = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, previous: edited }));
+  const third = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID, previous: edited }));
   assert.equal(third.value.report.reused, 1); // 바뀐 1건만 다시 읽는다
   assert.equal(third.loaded.length, 2); // 표(1) + 수정된 문항(1)
 });
 
 test("loadHubQna: 본문을 끝내 못 읽으면 이전 답변을 그대로 둔다 (빈 답변 노출·요동 커밋 방지)", async () => {
-  const first = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }));
+  const first = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID }));
   const previous = {
     // 질문이 방금 수정된 상황(이전 __modified 와 다름) → 캐시를 쓰지 않고 본문을 다시 읽는다
     rows: first.value.rows.map((r) =>
@@ -368,7 +376,7 @@ test("loadHubQna: 본문을 끝내 못 읽으면 이전 답변을 그대로 둔�
   // 질문 페이지가 계속 빈 본문으로 온다(레이트리밋) → 재시도 후 실패
   const flaky = { "11111111-1111-1111-1111-111111111111": 99 };
   const second = await withFakeNotion(
-    () => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, previous }),
+    () => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID, previous }),
     { flaky }
   );
 
@@ -384,7 +392,7 @@ test("loadHubQna: 본문을 끝내 못 읽으면 이전 답변을 그대로 둔�
 });
 
 test("loadHubQna: 본문이 일시적으로 비어 오면 다시 읽어 답변을 채운다 (레이트리밋 대비)", async () => {
-  const { value: result } = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID }), {
+  const { value: result } = await withFakeNotion(() => loadHubQna({ pageId: FAQ_PAGE_ID, databaseId: FAQ_VIEW_ID, dataSourceId: FAQ_DATA_SOURCE_ID }), {
     flaky: { "11111111-1111-1111-1111-111111111111": 1 }, // 첫 요청은 빈 recordMap
   });
 

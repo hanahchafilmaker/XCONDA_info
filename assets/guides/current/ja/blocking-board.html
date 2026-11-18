@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="ja"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport"><title>Blocking Board — ユーザーガイド</title><meta content="Turn動画ガイド形式のBlocking Boardユーザーガイド" name="description"><style>
+
+
+:root {
+  --midnight: #1D2A4D;
+  --midnight-deep: #141E3A;
+  --offwhite: #FFFFFF;
+  --offwhite-warm: #F8F8F8;
+  --slate: #4A4A4A;
+  --slate-light: #8A8A8A;
+  --hairline: rgba(29, 42, 77, 0.15);
+  --hairline-light: rgba(29, 42, 77, 0.08);
+  --kor: 'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--kor);
+  background: var(--offwhite);
+  color: var(--midnight);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.75;
+  font-weight: 400;
+  word-break: keep-all;
+  font-size: 16px;
+}
+::selection { background: var(--midnight); color: var(--offwhite); }
+
+.slide {
+  min-height: 100vh;
+  padding: 80px;
+  position: relative;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+}
+.slide-meta {
+  position: absolute;
+  top: 32px; left: 80px; right: 80px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--slate); font-weight: 500; z-index: 5;
+}
+.slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+.slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+
+.footer-meta {
+  margin-top: auto; padding-top: 32px;
+  border-top: 1px solid var(--hairline);
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light);
+}
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--midnight); font-weight: 500;
+}
+.section-header {
+  display: grid; grid-template-columns: 180px 1fr; gap: 60px;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 36px; margin-bottom: 50px; align-items: end;
+}
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em;
+}
+.section-title-block .eyebrow { margin-bottom: 14px; }
+.section-title {
+  font-family: var(--kor); font-weight: 700; font-size: 42px;
+  line-height: 1.25; color: var(--midnight); letter-spacing: -0.035em;
+}
+.section-lede {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: var(--slate); margin-top: 18px; line-height: 1.75;
+  max-width: 720px; letter-spacing: -0.015em;
+}
+
+
+.cover {
+  background: var(--midnight); color: var(--offwhite);
+  padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.cover-left {
+  padding: 80px; display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid rgba(240,239,234,0.15);
+}
+.cover-right {
+  background: var(--offwhite); padding: 80px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.cover-right::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%);
+  background-size: 4px 4px; pointer-events: none;
+}
+.cover-meta-top {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6);
+}
+.cover-title-en {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(70px, 10vw, 150px); line-height: 0.85;
+  letter-spacing: -0.02em; color: var(--offwhite);
+}
+.cover-title-kor {
+  font-family: var(--kor); font-weight: 600; font-size: 28px;
+  color: rgba(240,239,234,0.95); letter-spacing: -0.04em; margin-top: 24px; line-height: 1.3;
+}
+.cover-subtitle {
+  font-family: var(--kor); font-weight: 400; font-size: 16px;
+  color: rgba(240,239,234,0.75); margin-top: 24px; max-width: 460px;
+  line-height: 1.75; letter-spacing: -0.015em;
+}
+.cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+.cover-bottom-meta div {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8;
+}
+.cover-tag {
+  border-top: 1px solid var(--hairline); padding-top: 24px;
+  font-family: var(--kor); font-weight: 500; font-size: 14px;
+  color: var(--midnight); line-height: 1.85; letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+}
+.cover-tag .label {
+  display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--slate); margin-bottom: 8px; text-transform: uppercase;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
+.two-col.even { grid-template-columns: 1fr 1fr; }
+
+.step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+.step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.step-number {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--midnight); margin-bottom: 10px; display: inline-block;
+}
+.step-body {
+  font-family: var(--kor); font-size: 15.5px; color: var(--slate);
+  line-height: 1.85; letter-spacing: -0.015em;
+}
+.step-body strong { font-weight: 600; color: var(--midnight); }
+
+.image-plate { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.image-plate figure { width: 100%; }
+.image-plate img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--hairline); background: #101425;
+}
+.image-plate figcaption {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--slate-light); margin-top: 10px;
+}
+
+
+.flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 34px; }
+.flow .fchip {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  border: 1px solid var(--midnight); padding: 8px 14px; color: var(--midnight);
+  background: var(--offwhite-warm);
+}
+.flow .fchip.dark { background: var(--midnight); color: var(--offwhite); }
+.flow .arr { font-family: var(--mono); color: var(--slate-light); font-size: 12px; }
+
+
+.k {
+  font-family: var(--mono); font-size: 0.86em; letter-spacing: 0.02em;
+  background: var(--midnight); color: var(--offwhite);
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
+.k.light { background: var(--offwhite-warm); color: var(--midnight); border: 1px solid var(--hairline); }
+
+
+.dict-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+  background: var(--hairline); border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline); margin-top: 40px;
+}
+.dict-item { background: var(--offwhite); padding: 26px 26px; display: flex; flex-direction: column; gap: 10px; min-height: 150px; }
+.dict-item .term { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--midnight); }
+.dict-item .kor { font-family: var(--kor); font-size: 15px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+.dict-item .desc { font-family: var(--kor); font-size: 13.5px; color: var(--slate); line-height: 1.7; letter-spacing: -0.01em; margin-top: auto; }
+.dict-item .tagline { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate-light); }
+
+
+.summary-list { display: grid; gap: 24px; margin-top: 40px; }
+.summary-item { padding: 28px 32px; background: var(--offwhite-warm); border-left: 3px solid var(--midnight); }
+.summary-item h4 { font-family: var(--kor); font-size: 17px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.025em; }
+.summary-item p { font-family: var(--kor); font-size: 14.5px; color: var(--slate); line-height: 1.8; letter-spacing: -0.015em; }
+
+
+.stage-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+.stage-cell { background: var(--offwhite); padding: 22px 20px; }
+.stage-cell .no { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--midnight); }
+.stage-cell .nm { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--midnight); margin-top: 8px; }
+.stage-cell .ds { font-family: var(--kor); font-size: 13px; color: var(--slate); margin-top: 8px; line-height: 1.65; }
+.stage-cell.dim { background: var(--offwhite-warm); }
+
+@media (max-width: 1100px) {
+  body { font-size: 15px; }
+  .slide { padding: 60px 32px; }
+  .slide-meta { left: 32px; right: 32px; }
+  .two-col, .two-col.even { grid-template-columns: 1fr; gap: 40px; }
+  .section-header { grid-template-columns: 1fr; gap: 20px; padding-bottom: 28px; margin-bottom: 36px; }
+  .section-num { font-size: 72px; }
+  .section-title { font-size: 30px; }
+  .dict-grid { grid-template-columns: 1fr; }
+  .cover { grid-template-columns: 1fr; }
+  .cover-left, .cover-right { padding: 50px 32px; }
+  .cover-title-en { font-size: 64px; }
+  .cover-title-kor { font-size: 22px; }
+  .stage-row { grid-template-columns: 1fr 1fr; }
+}
+
+
+
+.cover-title-en{font-size:clamp(68px,8.2vw,116px)}
+.stage-row.five{grid-template-columns:repeat(5,1fr)}
+.stage-row.three{grid-template-columns:repeat(3,1fr)}
+.stage-row.five .stage-cell{padding:20px 16px}
+.stage-row.five .nm{word-break:break-word}
+.code-panel{background:var(--midnight-deep);color:#f2f4f7;padding:30px 34px;font:13px/2.15 var(--mono);border:1px solid var(--midnight)}
+.code-panel .prompt{color:#b9cbd5}.code-panel .comment{color:#9eabc1}.code-panel .address{color:#fff}
+.sub-note{border-top:1px solid var(--hairline);padding-top:20px;margin-top:24px;color:var(--slate);font-size:14px;line-height:1.8}
+.image-plate img{cursor:zoom-in}
+.image-plate figure{margin:0}
+.image-plate figcaption{letter-spacing:.05em;text-transform:none}
+.flow.tight{margin-top:22px}
+.dict-grid.compact{margin-top:0}.dict-grid.compact .dict-item{min-height:128px;padding:20px 22px}
+.summary-list.compact{margin-top:0;gap:16px}
+.summary-list.compact .summary-item{padding:22px 26px}
+.two-col.aligned{align-items:center}
+.small-caps{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--slate-light)}
+.image-plate .figure-stack{display:grid;gap:22px;width:100%}
+
+.zoom[hidden]{display:none}.zoom{position:fixed;z-index:1000;inset:0;background:rgba(9,16,31,.94);display:flex;align-items:center;justify-content:center;padding:56px 20px 20px}
+.zoom img{max-width:100%;max-height:100%;object-fit:contain}.zoom button{position:absolute;top:18px;right:22px;background:white;color:var(--midnight);border:0;padding:9px 14px;font:600 13px var(--kor);cursor:pointer}
+@media(max-width:1100px){.stage-row.five{grid-template-columns:repeat(2,1fr)}.stage-row.three{grid-template-columns:1fr}.cover-title-en{font-size:clamp(61px,12vw,96px)}}
+@media(max-width:600px){.cover-title-en{font-size:clamp(58px,15vw,80px)}.stage-row.five{grid-template-columns:1fr}.slide{padding:66px 24px 42px}.slide-meta{left:24px;right:24px}.cover-left,.cover-right{padding:64px 24px}.section-header{margin-bottom:28px}.section-num{font-size:68px}.section-title{font-size:29px}.flow{gap:7px}}
+@media print{@page{size:A4 landscape;margin:0}.slide{break-after:page;page-break-after:always;min-height:100vh;padding:48px 64px}.cover{min-height:100vh}.cover-left,.cover-right{padding:60px}.slide-meta{left:64px;right:64px}.zoom{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="blocking-board" data-current-guide-lang="ja" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="現在のユーザーガイド navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/blocking-board.html" hreflang="ko" lang="ko">KO</a><a href="../en/blocking-board.html" hreflang="en" lang="en">EN</a><a href="../ja/blocking-board.html" hreflang="ja" lang="ja" aria-current="page">JA</a><a href="../zh/blocking-board.html" hreflang="zh-CN" lang="zh-CN">ZH</a></div></nav><main><section class="slide cover" id="cover"><div class="cover-left">
+<div class="cover-meta-top"><span>Xconda / 2026</span><span>製品ユーザーガイド</span></div>
+<div><div class="cover-title-en">BLOCKING<br>BOARD</div><div class="cover-title-kor">Blocking Board — ユーザーガイド</div><div class="cover-subtitle">台本をステージの動きに変え、俳優・空間・カメラ・タイミングを検討したうえで、その結果を映像プロンプトとショットブックへ渡すローカルWebアプリの案内書。</div></div>
+<div class="cover-bottom-meta"><div><div>ユーザーガイド</div><div>実際のアプリ画面基準</div></div><div style="text-align:right"><div>13チャプター</div><div>2026</div></div></div>
+</div><div class="cover-right"><div class="cover-meta-top" style="color:var(--slate)"><span>目次</span><span>13チャプター</span></div><div></div>
+<div class="cover-tag"><span class="label">— ガイド内容 —</span>Blocking Board紹介 · インストール · ワークフロー · ホーム画面 · プロンプトと1-Click · 空間・俳優・経路 · カメラ · カットとタイムライン · 演出チェック · 保存と書き出し · Photo Blockingとプリビズ · 連携とショートカット · まとめ</div></div></section><section class="slide" id="chapter-01">
+<div class="slide-meta"><div class="left"><span>Chapter 01</span><span class="dot"></span><span>紹介</span></div><div class="right"><span>P. 001</span></div></div>
+<div class="section-header"><div class="section-num">01</div><div class="section-title-block"><div class="eyebrow">— 概要 · ツール紹介 —</div><h2 class="section-title">Blocking Boardが解決すること</h2><p class="section-lede">映像を生成する前に俳優・空間・カメラが衝突しないかを確認するデジタルリハーサルツール。</p></div></div>
+<div class="stage-row three"><div class="stage-cell"><div class="no">1</div><div class="nm">PLAN / 平面図</div><div class="ds">位置・経路・小道具を整理します。</div></div><div class="stage-cell"><div class="no">2</div><div class="nm">PREVIEW / 3D</div><div class="ds">シーンを再生して高さ・視線・衝突を確認します。</div></div><div class="stage-cell"><div class="no">3</div><div class="nm">OUTPUT / カット</div><div class="ds">結果をタイムラインとプロンプトにつなげます。</div></div></div><div class="two-col" style="margin-top:48px"><div><div class="step-block"><div class="step-number">— メモ 01 · 核心概念 —</div><p class="step-body">映像を生成する前に、Blocking Boardは  <strong> 俳優・空間・カメラが衝突しないかを確認することを</strong> 可能にします — デジタルリハーサルツールです。</p></div><div class="step-block"><div class="step-number">— メモ 02 · 順序 —</div><p class="step-body">平面図で位置と経路を設定し、3Dステージで高さと視線を検討します。結果はカット・タイムライン・プロンプトにつながります。</p></div></div><div><div class="summary-item"><h4>「回す前に視覚的に検討して調整する」</h4><p>自動生成そのものより重要なのは、 <strong>検討可能な中間状態を作ることです</strong>.</p></div><div class="flow tight"><span class="fchip">台本</span><span class="arr">→</span><span class="fchip">平面図</span><span class="arr">→</span><span class="fchip">3Dステージ</span><span class="arr">→</span><span class="fchip dark">カット / 出力</span></div></div></div>
+<div class="footer-meta"><span>001 — 紹介</span><span>概要</span></div>
+</section><section class="slide" id="chapter-02">
+<div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>インストール</span></div><div class="right"><span>P. 002</span></div></div>
+<div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— インストール · ローカルWebアプリ —</div><h2 class="section-title">アプリを実行して作業スペースを準備します</h2><p class="section-lede">Blocking BoardはローカルWebアプリです。開始に必要なのはプロジェクトフォルダとブラウザだけです。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— ステップ 01 · 依存関係のインストール —</div><p class="step-body">リポジトリのルートで次を実行します  <span class="k">npm ci</span>.</p></div><div class="step-block"><div class="step-number">— ステップ 02 · ビルド —</div><p class="step-body"><span class="k">npm run build</span> — アプリバンドルをビルドします。 —</p></div><div class="step-block"><div class="step-number">— ステップ 03 · ローカルサーバー —</div><p class="step-body"><span class="k">node tools/static-server.js 8010</span> を実行し、  <strong>local server address</strong> をブラウザで開きます。</p></div></div><div><div class="code-panel"><div class="comment"># リポジトリのルートで実行</div><div><span class="prompt">$</span> npm ci</div><div><span class="prompt">$</span> npm run build</div><div><span class="prompt">$</span> node tools/static-server.js 8010</div><br><div class="comment"># ブラウザで開く</div><div class="address">local server address</div></div><p class="sub-note">ファイルをダブルクリックして開くのではなく、ローカルHTTPサーバーを使ってください。</p></div></div>
+<div class="footer-meta"><span>002 — インストール</span><span>はじめに</span></div>
+</section><section class="slide" id="chapter-03">
+<div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>ワークフロー</span></div><div class="right"><span>P. 003</span></div></div>
+<div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— ワークフロー · 5ステップ —</div><h2 class="section-title">最初から最後まで五つのステップ</h2><p class="section-lede">この順序でシーンを作成して検討します。いつでも前のステップに戻って修正できます。</p></div></div>
+<div class="stage-row five"><div class="stage-cell"><div class="no">1</div><div class="nm">SCENE</div><div class="ds">台本とプロンプトの入力</div></div><div class="stage-cell"><div class="no">2</div><div class="nm">SPACE</div><div class="ds">平面図と小道具の配置</div></div><div class="stage-cell"><div class="no">3</div><div class="nm">PATH</div><div class="ds">俳優と経路の配置</div></div><div class="stage-cell"><div class="no">4</div><div class="nm">PREVIEW</div><div class="ds">3Dでプレビュー・検討</div></div><div class="stage-cell"><div class="no">5</div><div class="nm">EXPORT</div><div class="ds">プロンプト · 映像 · ショットブック</div></div></div><div class="two-col" style="margin-top:42px"><div><div class="step-block"><div class="step-number">— ステップ 01 · シーン —</div><p class="step-body">台本とプロンプトを入力してドラフトを作成します。空間と小道具を整えたうえで、俳優の開始位置と経路を設定します。</p></div><div class="step-block"><div class="step-number">— ステップ 02 · 検討 —</div><p class="step-body">3Dステージでシーンを再生し、衝突と視線の問題を確認します。問題が見つかったら、  <strong>ステージングのステップに戻って修正します。</strong>.</p></div><div class="step-block"><div class="step-number">— ステップ 03 · 書き出し —</div><p class="step-body">検討が終わったら、カット・タイムライン・映像プロンプト・ショットブックを書き出します。</p></div></div><div class="image-plate"><figure><img alt="3Dステージで俳優の動きを選択する様子" loading="lazy" src="../screens/b6ac1de292013532254c7eee551fe6a8e04d1eda434e25bae179d6b532f8e0e6.png" tabindex="0"><figcaption>3Dステージでの俳優の動きの選択 · 実際のアプリ画面</figcaption></figure></div></div>
+<div class="footer-meta"><span>003 — ワークフロー</span><span>ワークフロー</span></div>
+</section><section class="slide" id="chapter-04">
+<div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>ホーム画面</span></div><div class="right"><span>P. 004</span></div></div>
+<div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— ホーム · 画面構成 —</div><h2 class="section-title">ホーム画面とトップバー</h2><p class="section-lede">入力画面でシーンを作成し、トップバーで作業モードとファイル操作を管理します。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— メモ 01 · シーン入力 —</div><p class="step-body">ホーム画面中央の入力フィールドに台本やシーンの指示を貼り付け、 <span class="k">1-Click</span> でステージドラフトを作成します。</p></div><div class="step-block"><div class="step-number">— メモ 02 · 空間設定 —</div><p class="step-body">空間JSONを読み込むか、  <strong>空のスペースから開始</strong>を選択します。セットがまだ準備できていない場合、空間はあとで調整できます。</p></div><div class="step-block"><div class="step-number">— メモ 03 · トップバー —</div><p class="step-body"><strong>File</strong> は新規シーン、読み込み、保存、書き出しを管理します。 <span class="k light">Floor Plan</span> / <span class="k light">Stage</span> にビューを切り替えます。CUTモードを使うとカットを順番に再生できます。</p></div><div class="step-block"><div class="step-number">— メモ 04 · ツール表示 —</div><p class="step-body">Photo Pathと演出プランを開き、表示するツールセットを次に切り替えます  <strong>Tools: Simple / Full</strong>.</p></div></div><div class="image-plate"><figure><img alt="シーンプロンプトと空間設定が見える実際のホーム画面" loading="lazy" src="../screens/c4c0cecd5c0a6b81b0fd016274ed300f178a4cd70a5a09abe0cadc1825e773f2.png" tabindex="0"><figcaption>シーンプロンプトと空間設定が見える実際のホーム画面 · 実際のアプリ画面</figcaption></figure></div></div>
+<div class="footer-meta"><span>004 — ホーム画面</span><span>ホーム画面</span></div>
+</section><section class="slide" id="chapter-05">
+<div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>Prompt</span></div><div class="right"><span>P. 005</span></div></div>
+<div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 入力 · 1-Click —</div><h2 class="section-title">台本を構造化して1-Clickでドラフトを生成</h2><p class="section-lede">自然言語をステージデータに変えます。フィールドが明確なほど結果が安定します。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— ステップ 01 · 入力 —</div><p class="step-body">サンプルを選んで入力形式を確認するか、台本を貼り付けます。動作は動詞で記述し、保持する姿勢と移動を区別します。</p></div><div class="step-block"><div class="step-number">— ステップ 02 · 空間 —</div><p class="step-body">空間設定を選びます。指定がなければ、シーンは空の空間から始まります。</p></div><div class="step-block"><div class="step-number">— ステップ 03 · 1-Click —</div><p class="step-body"><span class="k">1-Click</span> で俳優・空間・経路・カメラのドラフトレイアウトを作成します。レポートで漏れと警告を確認してください。</p></div><div class="step-block"><div class="step-number">— 注意 —</div><p class="step-body">再実行すると、現在のシーンが新しい分析結果に置き換えられます。 <strong>まず保存してください。</strong></p></div></div><div><div class="eyebrow" style="margin-bottom:20px">— 入力フィールド —</div><div class="dict-grid compact"><div class="dict-item"><div class="term">Scene / Title</div><div class="kor">空間とプロジェクト名</div><div class="desc">シーンがどこで起こるかを指定し、プロジェクト名を決めます。</div></div><div class="dict-item"><div class="term">Actors / Props</div><div class="kor">シーン内の主体</div><div class="desc">名前・体型・相互作用の対象を明確に指定します。</div></div><div class="dict-item"><div class="term">Camera</div><div class="kor">台数 · ショット · 動き</div><div class="desc">カメラの台数、ショットサイズ、動きを指定します。</div></div><div class="dict-item"><div class="term">Time · Action</div><div class="kor">時間別アクション</div><div class="desc">「0〜3秒：キャラクター — アクション」形式を使います。</div></div></div></div></div>
+<div class="footer-meta"><span>005 — プロンプト</span><span>プロンプトと1-Click</span></div>
+</section><section class="slide" id="chapter-06">
+<div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>空間と経路</span></div><div class="right"><span>P. 006</span></div></div>
+<div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— ステージング · 空間 / 俳優 / 経路 —</div><h2 class="section-title">空間を配置したうえで俳優と経路を置きます</h2><p class="section-lede">自動配置は出発点にすぎません。空間を整え、俳優を置いたうえで、平面図に経路を描きます。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— ステップ 01 · 空間 —</div><p class="step-body">左パネルで  <span class="k">Add Object</span>を選択し、カテゴリを選んで壁・ドア・窓・家具を平面図に配置します。</p></div><div class="step-block"><div class="step-number">— ステップ 02 · 俳優 —</div><p class="step-body">俳優を配置し、名前・体型・開始位置・方向を指定します。</p></div><div class="step-block"><div class="step-number">— ステップ 03 · 経路 —</div><p class="step-body">平面図でウェイポイントをクリックして経路を描きます。 <span class="k light">Enter</span> で確定、  <span class="k light">Esc</span> でキャンセルします。</p></div><div class="step-block"><div class="step-number">— ステップ 04 · 微調整 —</div><p class="step-body">3Dツールでは、  <span class="k light">E</span>  で移動 ·  <span class="k light">R</span>  で回転 ·  <span class="k light">T</span>  でサイズ調整。 <strong>平面図のグリッド1マス = 1 m</strong> — これをスケール基準として使います。 —</p></div></div><div class="image-plate"><figure><img alt="平面図での俳優配置・経路・カメラプレビュー" loading="lazy" src="../screens/9add0027bdf38d8d92116448e6dfc85a66aa11339428973735a3e954d6b703bc.png" tabindex="0"><figcaption>平面図での俳優配置・経路・カメラプレビュー · 実際のアプリ画面</figcaption></figure></div></div>
+<div class="footer-meta"><span>006 — 空間と経路</span><span>空間と経路</span></div>
+</section><section class="slide" id="chapter-07">
+<div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>カメラ</span></div><div class="right"><span>P. 007</span></div></div>
+<div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— カメラ · マルチカム —</div><h2 class="section-title">カメラとショットサイズを設計します</h2><p class="section-lede">各カメラの役割を決め、ショットサイズ・画角・追跡対象・動きを設定します。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— メモ 01 · カメラ管理 —</div><p class="step-body">カメラパネルで  <strong>CAM1~4</strong>を管理します。各カメラごとにショットサイズ、画角（FOV）、追跡対象、動きを設定します。</p></div><div class="step-block"><div class="step-number">— メモ 02 · ショットサイズ —</div><p class="step-body"><strong>WIDE</strong> は俳優の全身を収め、  <strong>MEDIUM</strong> は会話を担当し、  <strong>CLOSE</strong> はリアクションを捉え、  <strong>OTS</strong> は肩越しビューに使用します。</p></div><div class="step-block"><div class="step-number">— メモ 03 · パネル設定 —</div><p class="step-body">レンズとFOV、追跡対象、カメラの動き、角度、高さZ（m）を確認します。</p></div><div class="step-block"><div class="step-number">— Tip —</div><p class="step-body">レンズの数値に悩む前に、  <strong>そのショットが何を見せるべきかをまず決めてください。</strong>.</p></div></div><div class="image-plate"><figure><img alt="レンズ・対象・動き・角度・高さのカメラパネル" loading="lazy" src="../screens/0b46ae01a4d5552f2863d37f197be66b2afbbd024a98aa3602410f1430c229b0.png" tabindex="0"><figcaption>レンズ・対象・動き・角度・高さのカメラ設定パネル · 実際のアプリ画面</figcaption></figure></div></div>
+<div class="footer-meta"><span>007 — カメラ</span><span>カメラ</span></div>
+</section><section class="slide" id="chapter-08">
+<div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>カットとタイミング</span></div><div class="right"><span>P. 008</span></div></div>
+<div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 時間 · カットとセリフ —</div><h2 class="section-title">タイムラインにカットとセリフを配置します</h2><p class="section-lede">カットは物語時間の単位です。俳優の動きとセリフが不自然に重ならないよう配置します。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— ステップ 01 · カット —</div><p class="step-body">マスタータイムラインにカットを追加し、長さとカメラを設定します。カット間の空白区間と連続性の警告を確認します。</p></div><div class="step-block"><div class="step-number">— ステップ 02 · セリフ —</div><p class="step-body">セリフは別トラックで管理します。 <strong>誰がいつ話すかを確認し、 </strong> セリフをアクション区間に合わせます。</p></div><div class="step-block"><div class="step-number">— ステップ 03 · 再生 —</div><p class="step-body">下部タイムラインの再生・一時停止・スクラブを使います。特定のフレームで姿勢を確認し、全体の動きで衝突を検討します。</p></div><div class="step-block"><div class="step-number">— メモ · FPSとカーブ —</div><p class="step-body">FPSは最終映像の速度を、カーブは動きの速度の変化を調整します。</p></div></div><div class="image-plate"><figure><img alt="3Dステージの再生バーとカメラプレビュー" loading="lazy" src="../screens/6eeb4732a379820e73604321f8bc0380528330416ce1a23495e1c619443e2aa1.png" tabindex="0"><figcaption>3Dステージの再生バーとカメラプレビュー · 実際のアプリ画面</figcaption></figure></div></div>
+<div class="footer-meta"><span>008 — カットとタイミング</span><span>タイムライン</span></div>
+</section><section class="slide" id="chapter-09">
+<div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>演出チェック</span></div><div class="right"><span>P. 009</span></div></div>
+<div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— チェック · 演出QA —</div><h2 class="section-title">再生前に演出チェックを確認します</h2><p class="section-lede">結果を確認し、視線、180度軸、衝突、経路の問題を修正します。</p></div></div>
+<div class="stage-row three"><div class="stage-cell"><div class="no">✓</div><div class="nm">合格</div><div class="ds">現在の条件で問題なし</div></div><div class="stage-cell"><div class="no">✕</div><div class="nm">問題発見</div><div class="ds">視線・軸・衝突の問題を修正する必要があります</div></div><div class="stage-cell"><div class="no">·</div><div class="nm">参考</div><div class="ds">判定なしに参考として示す項目</div></div></div><div class="two-col" style="margin-top:48px"><div><div class="step-block"><div class="step-number">— チェック 01 · 視線 —</div><p class="step-body">各カメラのビューコーンが対象俳優に向いているかを確認します。</p></div><div class="step-block"><div class="step-number">— チェック 02 · 軸 —</div><p class="step-body">俳優とカメラの間のアクションライン、いわゆる  <strong>180度軸に注意します。</strong>.</p></div></div><div><div class="step-block"><div class="step-number">— チェック 03 · 衝突 —</div><p class="step-body">俳優が重なったり壁を通過したりしていないか、到達できない経路がないかを確認します。</p></div><div class="step-block"><div class="step-number">— Fix —</div><p class="step-body">演出チェックに警告が出たら、ステージングや経路設定に戻って修正し、再び再生します。</p></div></div></div>
+<div class="footer-meta"><span>009 — 演出チェック</span><span>演出チェック</span></div>
+</section><section class="slide" id="chapter-10">
+<div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>保存と書き出し</span></div><div class="right"><span>P. 010</span></div></div>
+<div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— ファイル · 保存と書き出し —</div><h2 class="section-title">作業を保存して書き出します</h2><p class="section-lede">プロジェクトの状態をJSONで保存し、検討済みのシーンを用途に合った形式で共有します。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— 保存 · JSONプロジェクトファイル —</div><p class="step-body">ボードの状態、入力プロンプト、空間、俳優、カメラ、タイムラインを一つのJSONプロジェクトファイルとして保存します。</p></div><div class="step-block"><div class="step-number">— 書き出し · 四つの成果物 —</div><p class="step-body">レビュー済みのシーンを英語プロンプト、ショットリスト、PNG、ショットブックPDFとして書き出します。</p></div><div class="step-block"><div class="step-number">— ヒント · バックアップ —</div><p class="step-body">重要なレイアウト変更の前に保存します。空間JSONはセットと初期配置に再利用できます。</p></div></div><div><div class="eyebrow" style="margin-bottom:20px">— 書き出し形式 —</div><div class="dict-grid compact"><div class="dict-item"><div class="term">英語プロンプト</div><div class="kor">Seedance用テキスト</div><div class="desc">レビュー済みのシーンの空間とアクションを英語プロンプトに整理します。</div></div><div class="dict-item"><div class="term">ショットリスト</div><div class="kor">カット要約</div><div class="desc">カット・タイミング・カメラ・アクションを一目で整理します。</div></div><div class="dict-item"><div class="term">PNG</div><div class="kor">平面図 / フレーム画像</div><div class="desc">平面図と選択したフレームを画像として保存します。</div></div><div class="dict-item"><div class="term">ショットブックPDF</div><div class="kor">撮影・レビュー文書</div><div class="desc">カット構成をチームと共有し、検討するための文書です。</div></div></div></div></div>
+<div class="footer-meta"><span>010 — 保存と書き出し</span><span>保存と書き出し</span></div>
+</section><section class="slide" id="chapter-11">
+<div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>プリビズとPhoto Path</span></div><div class="right"><span>P. 011</span></div></div>
+<div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 高度な機能 · Photo Path —</div><h2 class="section-title">プリビズと高度なツール</h2><p class="section-lede">Photo Pathで実際のロケーションに合わせ、代替の演出案を並べて比較します。</p></div></div>
+<div class="two-col"><div><div class="step-block"><div class="step-number">— ステップ 01 · プリビズ —</div><p class="step-body">シーンを再生してプリビズ映像（WebM）を書き出します。最終生成の前にチームとタイミングとフレーミングを合わせるために使います。</p></div><div class="step-block"><div class="step-number">— ステップ 02 · Photo Path —</div><p class="step-body">実際のロケーション写真を読み込み、床の基準点4つを合わせたうえで、俳優の位置と経路を表示します。</p></div><div class="step-block"><div class="step-number">— ステップ 03 · 演出案 A/B —</div><p class="step-body">演出案を保存すると、カメラや経路を変えても元の案を保存できます。新しい試みをする前に、元の案に名前を付けて目的を書き留めておきます。</p></div><div class="step-block"><div class="step-number">— Note —</div><p class="step-body">プリビズ映像は <strong>最終成果物ではなく</strong> 、ブロッキングとカットを合意するための中間結果です。</p></div></div><div class="image-plate"><figure><img alt="写真の上で俳優配置と経路編集をする様子" loading="lazy" src="../screens/2a9a2488fce367c5b12e25eba15f8dac74842a5aab2cd0c44b00571cde4f00ae.png" tabindex="0"><figcaption>写真の上で俳優配置と経路編集 · 実際のアプリ画面</figcaption></figure></div></div>
+<div class="footer-meta"><span>011 — プリビズとPhoto Path</span><span>プリビズと高度な機能</span></div>
+</section><section class="slide" id="chapter-12">
+<div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>連携とショートカット</span></div><div class="right"><span>P. 012</span></div></div>
+<div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 参照 · パイプラインとキー —</div><h2 class="section-title">外部ツールと接続し、ショートカットを覚えます</h2><p class="section-lede">検討済みのボードを映像生成とモーション実行用のデータパッケージに変換します。</p></div></div>
+<div class="two-col"><div><div class="eyebrow" style="margin-bottom:20px">— データ連携 —</div><div class="dict-grid compact"><div class="dict-item"><div class="term">Seedance</div><div class="kor">英語シーンプロンプト</div><div class="desc">空間とアクションを生成プロンプトとして渡します。</div></div><div class="dict-item"><div class="term">Video IR</div><div class="kor">カットとタイミング</div><div class="desc">カットの配置とタイミングを構造化します。</div></div><div class="dict-item"><div class="term">Motion IR</div><div class="kor">俳優別モーションプラン</div><div class="desc">各俳優の動きの計画をデータとして整理します。</div></div><div class="dict-item"><div class="term">UniMate</div><div class="kor">モーション実行パッケージ</div><div class="desc">モーション実行に必要なパッケージを渡します。</div></div></div></div><div><div class="step-block"><div class="step-number">— キー · Q —</div><p class="step-body"><span class="k light">Q</span> ビューを回転します。</p></div><div class="step-block"><div class="step-number">— キー · E / R / T —</div><p class="step-body"><span class="k light">E</span>  で移動 ·  <span class="k light">R</span>  で回転 ·  <span class="k light">T</span> サイズ調整。</p></div><div class="step-block"><div class="step-number">— キー · A / F —</div><p class="step-body"><span class="k light">A</span> シーン全体を表示 ·  <span class="k light">F</span> 選択項目にフォーカス。</p></div></div></div>
+<div class="footer-meta"><span>012 — 連携とショートカット</span><span>パイプラインとキー</span></div>
+</section><section class="slide" id="chapter-13">
+<div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>まとめ</span></div><div class="right"><span>P. 013</span></div></div>
+<div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— まとめ · 締めくくり —</div><h2 class="section-title">良いブロッキングは次の担当者に確信を与えます</h2><p class="section-lede">台本から書き出しまで、一つのシーンを検討する手順のまとめ。</p></div></div>
+<div class="summary-list compact"><div class="summary-item"><h4>一つのシーンの順序</h4><p>台本 → 空間 → 俳優 → カメラ → タイミング → チェック → 書き出し。問題が起きたら前のステップに戻って修正します。</p></div><div class="summary-item"><h4>シーンに入るとき</h4><p>出来事とアクションを時間区間で書き、俳優・小道具・カメラに一貫した名前を使います。</p></div><div class="summary-item"><h4>検討するとき</h4><p>平面図で経路を計画し、3Dでシーンを再生します。視線・衝突・連続性の警告を解消します。</p></div><div class="summary-item"><h4>渡すとき</h4><p>レビュー後、英語プロンプト、ショットリスト、PNG、ショットブックPDFを書き出します。最終入力は「シーン / タイトル / 俳優 / 小道具 / カメラ / 時間 · アクション」の順序で構成します。</p></div></div>
+<div class="footer-meta"><span>013 — まとめ</span><span>まとめ</span></div>
+</section></main><div aria-label="スクリーンショットを拡大表示" aria-modal="true" class="zoom" hidden="" role="dialog"><button type="button">閉じる ×</button></div><script src="../embed.js" defer=""></script><script src="../zoom.js" defer=""></script></body></html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XCONDA 网站使用说明书</title>
+<meta name="description" content="XCONDA 网站使用说明书 — 图像创建、Video Generator、素材库及平台全部功能的详细指南。">
+<style>
+:root{--navy:#0f2040;--ink:#141821;--slate:#5a6272;--hair:#dde1e8;--bg:#f7f5f0;--gold:#f4ce4a}
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans SC','Microsoft YaHei','PingFang SC',system-ui,sans-serif;color:var(--ink);line-height:1.85;background:#fff}
+header{background:var(--navy);color:#fff;padding:64px 80px}header .brand{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.15em;color:#9fb0cc}header h1{font-size:44px;margin:20px 0 12px;line-height:1.35}header p{color:#c6d0e2;max-width:860px}
+main{max-width:980px;margin:0 auto;padding:48px 40px 80px}h2{font-size:28px;margin:56px 0 8px;padding-top:24px;border-top:2px solid var(--navy)}h3{font-size:20px;margin:32px 0 4px}h4{font-size:17px;margin:24px 0 4px}p{margin:8px 0}ul,ol{margin:8px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--hair);padding:9px 11px;text-align:left;line-height:1.7;vertical-align:top}th{background:#f2f3f6}
+pre{background:#f2f3f6;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all}code{font-family:ui-monospace,monospace;font-size:.92em;background:#f2f3f6;padding:1px 5px}
+.note{background:var(--bg);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0}.warn{background:#fdf2f2;border-left:4px solid #c0392b;padding:16px 20px;margin:20px 0}.check{list-style:none;padding:0}.check li{padding:6px 0 6px 28px;position:relative}.check li:before{content:'☐';position:absolute;left:0;color:var(--navy)}
+.toc{background:var(--bg);padding:24px 32px;margin:32px 0}.toc a{color:var(--navy);text-decoration:none}footer{border-top:1px solid var(--hair);padding:24px 40px;color:var(--slate);font-size:13px}.language-nav{font-size:13px;margin-top:20px}.language-nav a,.language-nav strong{display:inline-block;margin-right:16px;color:#fff}.table-scroll{overflow-x:auto}
+@media(max-width:700px){header{padding:40px 24px}main{padding:32px 20px}header h1{font-size:32px}}
+@media print{header{background:#fff;color:var(--ink);padding:24px 0}header p,header .brand{color:var(--slate)}.language-nav{display:none}main{padding:20px 0}h2,h3{break-after:avoid}tr{break-inside:avoid}.table-scroll{overflow:visible}}
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="website-manual" data-current-guide-lang="zh" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="当前用户指南 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/website-manual.html" hreflang="ko" lang="ko">KO</a><a href="../en/website-manual.html" hreflang="en" lang="en">EN</a><a href="../ja/website-manual.html" hreflang="ja" lang="ja">JA</a><a href="../zh/website-manual.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+<header><div class="brand">XCONDA / 2026 · 网站使用说明书（详细文档版）</div>
+<h1>XCONDA 网站使用说明书</h1>
+<p>先设计，再生成。从网站入门到图像创建、Video Generator、素材库，以及角色、编辑、角度和音频工具，本说明书汇集了 XCONDA 网站的全部功能，并采用与提示词编写详细指南相同的文档形式重新整理。</p>
+<nav class="language-nav" aria-label="文档语言">한국어English日本語<strong aria-current="page">简体中文</strong></nav></header>
+<main>
+<div class="toc"><strong>目录</strong><ol>
+<li><a href="#c1">什么是 XCONDA 网站</a></li>
+<li><a href="#c2">开始使用 — 免费起步，使用点数创作</a></li>
+<li><a href="#c3">素材库 — 保存创作成果，在后续工作中复用</a></li>
+<li><a href="#c4">创建图像 — FlexBoard 详细流程</a></li>
+<li><a href="#c5">图像工具总览 — 按用途选择</a></li>
+<li><a href="#c6">Turn — 用一张照片创建 360° 虚拟场景</a></li>
+<li><a href="#c7">Video Generator — 用文本和图像生成视频</a></li>
+<li><a href="#c8">角色、编辑、角度和音频工具 — 完善创作成果</a></li>
+<li><a href="#c9">Blocking Board — 在生成视频前排练动线</a></li>
+<li><a href="#c10">总结 — 生成前的检查清单</a></li>
+</ol></div>
+<h2 id="c1">1. 什么是 XCONDA 网站</h2>
+<p>XCONDA 是由 CUBEBERRY（큐브베리）运营的 AI 视频与图像制作平台。您可以在同一平台使用多种生成式 AI 模型，并获得从剧本到故事板、再到视频生成的连贯制作工具。其核心原则只有一个。</p>
+<p><strong>Direct first, then generate — 先设计，再生成。</strong></p>
+<p>为什么要先设计？视频 AI 每次生成镜头时都会从头绘制，并不会记住上一个镜头。因此，如果不先确定空间、人物和构图，人物与地点就可能随着镜头变化。XCONDA 在设计阶段解决这个问题：先用 Turn 确定空间，用 FlexBoard 确定人物与构图，用 Blocking Board 确定动线，然后再进行生成。</p>
+<p>XCONDA 由 CUBEBERRY 自主开发和运营。CUBEBERRY 使用这些工具制作在地面电视播出的作品，以及 KOCCA 内容实验室的 AI 网络剧。本说明书的流程与实际制作现场的使用顺序一致。</p>
+<div class="note">网站采用点数制。每次操作都会扣除规定的点数，您可以购买点数包进行充值。支持的语言包括 English、한국어、日本語和简体中文。</div>
+<h2 id="c2">2. 开始使用 — 免费起步，使用点数创作</h2>
+<h3>2-1. 通过 Start free 开始</h3>
+<p>在网站首页选择开始使用选项，即可获得欢迎点数。Blocking Board 目前为免费测试版，无需绑定银行卡即可使用。</p>
+<h3>2-2. 购买点数包</h3>
+<p>点数不足时，可以购买点数包进行充值。完成一次付款后即可立即开始创作。以下表格为参考标准。</p>
+<div class="table-scroll"><table><tbody><tr><th>套餐</th><th>价格</th><th>点数</th></tr>
+<tr><td>Starter Pack V1</td><td>$6.90</td><td>2,020</td></tr>
+<tr><td>Starter Pack V2</td><td>$20.90</td><td>6,200</td></tr>
+<tr><td>Pro Pack V1</td><td>$34.90</td><td>10,500</td></tr>
+<tr><td>Pro Pack V2</td><td>$67.90</td><td>21,500</td></tr>
+<tr><td>Master Pack</td><td>$369.90</td><td>114,000</td></tr></tbody></table></div>
+<p style="color:var(--slate);font-size:13px">依据网站价格表（核对日期：2026-11-03）。价格可能会根据网站政策调整。</p>
+<h3>2-3. 遇到问题时查看 Hub</h3>
+<p>XCONDA Hub（hub.xconda.ai）汇集了公告、工具使用方法、博客和问答。Hub 中还提供 FlexBoard 各个界面的操作指南。</p>
+<div class="note">节省点数的习惯：不要从头重做全部内容，只选择不满意的镜头重新生成。生成前，请检查镜头顺序、参考素材和镜头时长。</div>
+<h2 id="c3">3. 素材库 — 保存创作成果，在后续工作中复用</h2>
+<p>在 XCONDA 中创建的素材会保存到素材库，供后续工作复用。使用 Turn 创建的场景也会保存在素材库中。角色和背景参考、关键图像、故事板项目，以及生成的图像和视频，都属于素材。素材积累得越多，后续工作就越快，一致性也越高。</p>
+<h3>3-1. 角色表 — 人物面部参考</h3>
+<p>为每个人物准备面部图像，作为角色表。角色表是让不同镜头保持同一人物的基准。在剧本中写入角色名称，让 AI 将对应的面部和服装参考关联起来。创建角色表的详细规则请参阅提示词编写详细指南。</p>
+<h3>3-2. 背景表 — 地点与空间参考</h3>
+<p>为每个地点准备背景图像，作为背景表。使用 Turn 创建的四面背景表（正面、左侧、右侧、背面）也属于这一类。背景表是让不同镜头保持同一空间的基准。</p>
+<h3>3-3. Turn 场景 — 360° 虚拟场景</h3>
+<p>将 Turn 创建的 360° 虚拟场景保存到素材库，在后续工作中复用。无需再次创建相同的空间。</p>
+<h3>3-4. 关键图像 — 镜头的参考图像</h3>
+<p>从 Turn 输出的关键图像，以及在 FlexBoard 中确定的镜头图像，将成为下一阶段（视频生成）的基准。没有人物、只有空间的图像（Freeze Frame）可作为视频生成的背景参考；加入人物的关键图像则可作为故事板镜头使用。</p>
+<h3>3-5. 项目 — 故事板与场景项目</h3>
+<p>FlexBoard 故事板项目和 Blocking Board 场景项目也属于素材。您可以打开项目修改镜头、重新生成并导出结果。</p>
+<p><strong>最重要的原则：如果人物和地点尚未确定，就无法创建下一阶段所需的参考素材。</strong> 素材库正是落实这一原则的存储空间。开始新工作前，请先检查素材库中是否已有角色表和背景表。</p>
+<h2 id="c4">4. 创建图像 — FlexBoard 详细流程</h2>
+<p>使用 FlexBoard 创建图像。将剧本拆分为逐镜头指令，再为每个镜头生成图像，提前检查构图与人物。您可以创建 6 至 36 个镜头的故事板，并使用 GPT Image 2 生成图像。关键是只修改不符合要求的镜头。</p>
+<h3>4-1. 步骤 01 · 进入 — 选择 Flex Board，新建项目</h3>
+<p>在故事板类别中选择 Flex Board。在工作区通过 New Project 新建项目，并打开项目选择面板。您也可以从示例开始，先熟悉整个流程。</p>
+<h3>4-2. 步骤 02 · 参考 — 固定角色与背景参考</h3>
+<p>确定角色和背景参考图像。这些参考是让不同镜头保持同一人物与空间的基准。没有参考，人物就可能随着镜头变化。</p>
+<h3>4-3. 步骤 03 · 文本镜头 — 编写逐镜头文本，预览文本</h3>
+<p>将剧本拆分成镜头，并为每个镜头编写指令。在文本预览中，先检查镜头卡片、描述和音效。在文本阶段确定镜头顺序与构图，可以节省点数。文本预览免费，是进入生成阶段前的检查环节。</p>
+<h3>4-4. 步骤 04 · 图像生成 — 在网格中逐镜头核对</h3>
+<p>生成图像后，将网格中的每张图像与对应描述进行核对。检查每个镜头的构图、人物和背景是否正确。</p>
+<h3>4-5. 步骤 05 · 逐镜头修改 — 只重做不合适的镜头</h3>
+<p>只选择不满意的镜头，修改提示词后重新生成。重新生成镜头从 20 点起。如果希望保留同一场景，只改变角度或摄像机运动，可以拖动图像来替换目标镜头。</p>
+<h3>4-6. 步骤 06 · 确定 — 检查最终镜头与摄像机设置</h3>
+<p>检查最终镜头，确认摄像机设置（镜头时长、景别、摄像机角度、摄像机运动）符合创作意图，然后进入视频生成阶段。</p>
+<div class="note">发送到视频生成前的检查顺序：镜头网格图像 → 场景描述 → 角色标记 → 是否缺少镜头。完成这四项检查后再发送。</div>
+<h2 id="c5">5. 图像工具总览 — 按用途选择</h2>
+<p>除 FlexBoard 外，还有其他图像创建工具。请根据用途进行选择。下表列出了全部工具。所有工具遵循同一原则：固定参考，逐镜头检查，只修改不符合要求的部分。</p>
+<div class="table-scroll"><table><tbody><tr><th>工具</th><th>功能</th><th>适用场景</th></tr>
+<tr><td>Flex Board</td><td>将剧本转换为 6–36 个镜头的故事板，并为每个镜头提供文本和图像。</td><td>需要制作正片故事板和逐镜头设计时。</td></tr>
+<tr><td>Directors Cut</td><td>选择艺术风格并输入剧本后，AI 生成 9 镜头故事板，可逐镜头单独调整提示词。</td><td>需要快速建立 9 镜头结构时。</td></tr>
+<tr><td>Art Director Pro</td><td>生成 9 镜头故事板，让角色与场景在不同镜头间保持一致。</td><td>重视人物、服装与状态的一致性时。</td></tr>
+<tr><td>SceneSnap</td><td>上传一张参考照片，AI 生成包含 6 个关键帧的电影风格故事板。</td><td>从照片开始创作时。</td></tr>
+<tr><td>YouTube Ref</td><td>粘贴 YouTube 链接，分析视频风格并生成包含指定角色的 9 场景故事板。</td><td>借鉴参考视频的风格时。</td></tr>
+<tr><td>Director's Sequence</td><td>输入一张关键帧和故事梗概，AI 生成连续叙事的 8 个场景。</td><td>从一个场景发展连续故事时。</td></tr>
+<tr><td>Image Generator</td><td>通过文本提示词生成高分辨率、照片般逼真的图像，支持电影、编辑和商业产品摄影等多种风格。</td><td>需要单张图像时。</td></tr></tbody></table></div>
+<div class="note">一致性引擎：背景一致性由 Turn（AI VirtualSet）负责，角色一致性由 Art Director Pro 负责。Art Director Pro 中的四个 AI 智能体依次进行验证、修正与同步，让服装、表情和受伤状态在不同镜头间延续。修改一个画面，其余画面会自动随之更新。</div>
+<h2 id="c6">6. Turn — 用一张照片创建 360° 虚拟场景</h2>
+<p>Turn 可以根据一张照片或文本描述创建 360° 虚拟场景。由于它先建立空间，再让您在空间内移动摄像机选择角度，因此即使切换镜头，门、窗和家具的位置也能保持不变。Turn 是解决背景一致性问题的工具。</p>
+<h3>6-1. 步骤 01 · 空间分析 — 用一张照片生成 360° 空间</h3>
+<p>输入一张室内照片，或通过文本描述空间，即可生成 360° 环境。</p>
+<h3>6-2. 步骤 02 · 3D 预览 — 旋转寻找角度，调整尺寸</h3>
+<p>在 3D 预览中环视空间，寻找所需角度。房间大小和天花板高度可以即时调整，调整尺寸无需额外生成。</p>
+<h3>6-3. 步骤 03 · 墙面编辑 — 添加道具，更换壁纸</h3>
+<p>您可以为每面墙添加道具并更换壁纸。使用蒙版工具指定要修改的区域，输入提示词即可创建新道具；将提示词留空，则会自动移除所选内容。</p>
+<h3>6-4. 步骤 04 · 关键图像 — 固定人物、服装和电影风格，输出 2K 关键图像</h3>
+<p>在已确定的画面中加入角色、服装和电影风格，输出 1K/2K 关键图像。这些关键图像将成为故事板镜头或视频生成的基准。</p>
+<h3>6-5. 用法 A · 背景表 — 创建四面背景表</h3>
+<p>将背景表的一面（正面图像）输入 Turn，生成左侧、右侧和背面，再将四个视角组合成一套。这套图像将成为视频生成的背景参考。</p>
+<h3>6-6. 用法 B · 镜头图像 — 在场景内直接输出镜头图像</h3>
+<p>创建 360° 虚拟场景，在其中放置人物与道具，然后旋转到所需角度，直接生成镜头图像。该图像可直接用作故事板镜头。</p>
+<div class="note">将 Turn 创建的场景保存到素材库，在后续工作中复用。无需再次创建相同的空间。</div>
+<h2 id="c7">7. Video Generator — 用文本和图像生成视频</h2>
+<p>Video Generator 可以仅根据文本提示词生成视频，也可以根据起始帧和结束帧生成视频。您可以直接衔接 FlexBoard 创建的故事板图像与镜头指令。发送前，必须检查镜头顺序、参考素材和镜头时长。</p>
+<h3>7-1. 步骤 01 · 选择模型 — 根据用途选择合适的模型</h3>
+<p>请根据时长、分辨率、音频支持，以及是否支持起始帧和结束帧来选择。以下表格为参考标准。Seedance 2.5 单次最多可生成 30 秒、最高 1080p 的视频。</p>
+<div class="table-scroll"><table><tbody><tr><th>模型</th><th>最长时长</th><th>分辨率</th><th>音频</th><th>起始帧与结束帧</th></tr>
+<tr><td>Seedance 2.5 T2V</td><td>30 秒</td><td>1080p</td><td>支持</td><td>支持</td></tr>
+<tr><td>Seedance 2.0 T2V</td><td>15 秒</td><td>4K</td><td>支持</td><td>支持</td></tr>
+<tr><td>Seedance 2.0 Fast T2V</td><td>15 秒</td><td>720p</td><td>支持</td><td>支持</td></tr>
+<tr><td>Seedance 2.0 MINI T2V</td><td>15 秒</td><td>720p</td><td>支持</td><td>支持</td></tr>
+<tr><td>Veo 3.1 T2V</td><td>8 秒</td><td>—</td><td>支持</td><td>支持</td></tr>
+<tr><td>Veo 3.1 Fast T2V</td><td>8 秒</td><td>1080p</td><td>支持</td><td>支持</td></tr>
+<tr><td>Gemini Omni Flash T2V</td><td>10 秒</td><td>720p</td><td>原生</td><td>—</td></tr>
+<tr><td>Kling 3.0 Pro T2V</td><td>15 秒</td><td>—</td><td>支持</td><td>多镜头提示词</td></tr>
+<tr><td>Kling 3.0 4K T2V</td><td>15 秒</td><td>4K</td><td>支持</td><td>支持</td></tr>
+<tr><td>Kling OMNI T2V</td><td>15 秒</td><td>—</td><td>支持</td><td>支持</td></tr>
+<tr><td>Grok Imagine Video T2V</td><td>15 秒</td><td>720p</td><td>原生</td><td>—</td></tr>
+<tr><td>Vidu Q3 T2V</td><td>16 秒</td><td>1080p</td><td>支持</td><td>最多同时生成 4 个</td></tr></tbody></table></div>
+<p style="color:var(--slate);font-size:13px">依据网站视频页面（核对日期：2026-11-03）。规格可能会随着模型更新而变化。</p>
+<h3>7-2. 步骤 02 · 输入 — 提示词或起始帧与结束帧</h3>
+<p>可以仅使用文本生成，也可以输入 FlexBoard 图像等起始帧和结束帧来确定场景。使用故事板中已确定的图像，有助于保持人物和空间一致。</p>
+<h3>7-3. 步骤 03 · 选项 — 画面比例、分辨率、时长与高画质</h3>
+<p>在选项中设置画面比例、分辨率、时长和高画质。启用高画质选项可提高质量。</p>
+<h3>7-4. 步骤 04 · 生成与检查 — 逐镜头检查，不符合要求时返回故事板</h3>
+<p>逐镜头检查生成的视频。如果人物或空间发生变化，请返回故事板阶段，固定参考后重新生成。先设计、再生成，是保持一致性的方式。</p>
+<h2 id="c8">8. 角色、编辑、角度和音频工具 — 完善创作成果</h2>
+<p>这些工具用于在图像和视频创建后进行完善。您可以更换面部、表情或服装，提高画质、改变角度或应用色彩风格。加上故事板、角色、编辑、角度和音频工具，网站提供超过 16 种工具。</p>
+<div class="table-scroll"><table><tbody><tr><th>工具</th><th>功能</th><th>适用场景</th></tr>
+<tr><td>Face Swap</td><td>利用 AI 精确替换照片与视频中的面部，并保持光照、肤色和表情匹配。</td><td>需要更换人物面部时。</td></tr>
+<tr><td>Expression Transformer</td><td>转换人物表情。</td><td>需要同一人物呈现不同表情时。</td></tr>
+<tr><td>ClothSwap</td><td>用蒙版标出需要换装的区域，上传参考服装图像即可替换服装，并保持光照、体型和场景语境。</td><td>只需要更换服装时。</td></tr>
+<tr><td>AI Upscaler</td><td>在不损失质量的情况下，将图像分辨率最高提升至 4 倍。</td><td>分辨率不足时。</td></tr>
+<tr><td>Auto Angle Generator</td><td>自动生成角度。</td><td>需要同一场景的不同角度时。</td></tr>
+<tr><td>SpinAngle</td><td>生成与角度旋转相关的内容。</td><td>需要旋转角度序列时。</td></tr>
+<tr><td>CineGrade AI</td><td>将普通照片转化为电影般的画面，通过一个提示词应用胶片级色彩、景深和电影质感。</td><td>需要统一色调与视觉风格时。</td></tr></tbody></table></div>
+<p>这些工具可以单独使用，但在正片制作流程中，通常用于故事板和视频生成之后的完善阶段。更换服装后，建议再次使用 Art Director Pro 检查角色一致性。</p>
+<h2 id="c9">9. Blocking Board — 在生成视频前排练动线</h2>
+<p>Blocking Board 是一款数字排练工具，可在生成视频前检查人物、空间和摄像机是否会发生碰撞。它在网站上提供免费测试版，无需绑定银行卡。粘贴剧本后，即可生成演员、空间、动线和摄像机的初稿。</p>
+<h3>9-1. 步骤 01 · 1-Click — 粘贴剧本生成初稿</h3>
+<p>粘贴剧本后，即可生成演员、空间、动线和摄像机的初稿。</p>
+<h3>9-2. 步骤 02 · 2D 平面图 — 调整布局与动线</h3>
+<p>在 2D 平面图中调整演员与摄像机的位置，以及移动路径。</p>
+<h3>9-3. 步骤 03 · 3D 预览 — 在 3D 舞台中播放检查</h3>
+<p>在 3D 舞台中播放场景，检查人物与摄像机的运动。</p>
+<h3>9-4. 步骤 04 · 设计检查 — 检查碰撞与视线</h3>
+<p>在设计检查中检测碰撞和视线问题。发现问题后，请返回平面图修改布局或动线。</p>
+<h3>9-5. 步骤 05 · 导出 — 输出镜头手册 PDF 等文件</h3>
+<p>检查完成的场景可以导出为供 Seedance 使用的英文提示词、镜头清单、平面图与画面 PNG，以及镜头手册 PDF。也可以播放场景并导出预演视频（WebM）。</p>
+<div class="note">对于多名人物交叉移动的复杂场景，建议先使用 Blocking Board 确定人物位置与移动路径。如果未经排练直接生成，之后就需要修正碰撞和动线错误。详细使用方法请参阅独立的 Blocking Board 指南（13 章）。</div>
+<h2 id="c10">10. 总结 — 生成前的检查清单</h2>
+<p>使用网站的关键在于顺序。先设计，再生成。通过故事板确定构图与人物，通过 Blocking Board 检查动线，再使用 Video Generator 生成，可以减少重复生成的次数。</p>
+<ul class="check">
+<li>素材库中是否已有角色表和背景表？</li>
+<li>镜头顺序和逐镜头指令是否已经确定？</li>
+<li>是否已核对镜头网格图像、场景描述和角色标记？</li>
+<li>是否缺少镜头？</li>
+<li>镜头时长、景别、摄像机角度和摄像机运动是否符合创作意图？</li>
+<li>如果需要 Turn 场景，是否已从素材库中复用？</li>
+<li>发送到视频生成前，是否已检查最终镜头和摄像机设置？</li>
+</ul>
+<div class="note">本说明书依据 XCONDA 网站公开页面、Hub 指南及 CUBEBERRY 制作文章，于 2026-11-03 编写。价格、模型规格和点数政策可能会随网站更新而变化，请在付款或生成前再次核对网站页面。帮助信息请访问 hub.xconda.ai。提示词编写的详细规则请参阅提示词编写详细指南。</div>
+</main>
+<footer>XCONDA 网站使用说明书（详细文档版） · 原文编写于 2026-11-03 · 简体中文版更新于 2026-11-03 · 原文注记：现有幻灯片式指南（第 20 号）保持不变。</footer>
+
+<script src="../embed.js" defer=""></script></body></html>

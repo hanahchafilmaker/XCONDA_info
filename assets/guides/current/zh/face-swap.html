@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Swap — 用户指南</title>
+
+
+<style>
+
+  :root { --body-font: 'Inter', sans-serif; }
+  body { letter-spacing: -0.011em; }
+
+  :root {
+    --midnight: #1D2A4D; --midnight-deep: #141E3A; --offwhite: #FFFFFF;
+    --offwhite-warm: #F8F8F8; --slate: #4A4A4A; --slate-light: #8A8A8A;
+    --hairline: rgba(29, 42, 77, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font, sans-serif); background: var(--offwhite); color: var(--midnight); -webkit-font-smoothing: antialiased; line-height: 1.75; font-weight: 400; font-size: 16px; }
+  ::selection { background: var(--midnight); color: var(--offwhite); }
+  .slide { min-height: 100vh; padding: 80px; position: relative; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; }
+  .slide-meta { position: absolute; top: 32px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate); font-weight: 500; z-index: 5; }
+  .slide-meta .left, .slide-meta .right { display: flex; gap: 24px; }
+  .slide-meta .dot { width: 4px; height: 4px; background: var(--midnight); border-radius: 50%; align-self: center; }
+  .footer-meta { margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate-light); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--midnight); font-weight: 500; }
+  .section-header { display: grid; grid-template-columns: 180px 1fr; gap: 60px; border-bottom: 1px solid var(--hairline); padding-bottom: 36px; margin-bottom: 50px; align-items: end; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 130px; line-height: 0.85; color: var(--midnight); letter-spacing: -0.02em; }
+  .section-title { font-family: var(--body-font); font-weight: 700; font-size: 42px; line-height: 1.25; color: var(--midnight); letter-spacing: -0.03em; }
+  .section-title-block .eyebrow { margin-bottom: 14px; }
+  .section-lede { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: var(--slate); margin-top: 18px; line-height: 1.75; max-width: 640px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: start; }
+  .step-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--hairline); }
+  .step-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .step-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--midnight); margin-bottom: 10px; display: inline-block; }
+  .step-title { font-family: var(--body-font); font-size: 19px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.4; }
+  .step-body { font-family: var(--body-font); font-size: 15px; color: var(--slate); line-height: 1.85; }
+  .step-body .ui { background: var(--offwhite-warm); padding: 1px 8px; border: 1px solid var(--hairline); font-size: 13px; color: var(--midnight); font-weight: 500; border-radius: 2px; }
+  .step-body strong { font-weight: 600; color: var(--midnight); }
+  .note-box { margin-top: 32px; padding: 20px 28px; background: var(--midnight); color: #F0EFEA; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .note-box .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; border-right: 1px solid rgba(240,239,234,0.2); padding-right: 28px; white-space: nowrap; }
+  .note-box .text { font-family: var(--body-font); font-weight: 400; font-size: 14px; line-height: 1.7; }
+  .note-box .text .ui { background: rgba(240,239,234,0.1); padding: 1px 8px; border: 1px solid rgba(240,239,234,0.2); font-size: 12.5px; color: #F0EFEA; font-weight: 500; border-radius: 2px; }
+  .cover { background: var(--midnight); color: #F0EFEA; padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .cover-left { padding: 80px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(240,239,234,0.15); }
+  .cover-right { background: var(--offwhite); padding: 80px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .cover-right::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(29,42,77,0.04) 25%, transparent 25%), linear-gradient(225deg, rgba(29,42,77,0.04) 25%, transparent 25%); background-size: 4px 4px; pointer-events: none; }
+  .cover-meta-top { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); }
+  .cover-title-en { font-family: 'Bebas Neue', sans-serif; font-size: clamp(70px, 11vw, 160px); line-height: 0.85; letter-spacing: -0.02em; color: #F0EFEA; }
+  .cover-subtitle { font-family: var(--body-font); font-weight: 400; font-size: 16px; color: rgba(240,239,234,0.75); margin-top: 32px; max-width: 460px; line-height: 1.7; }
+  .cover-bottom-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-bottom-meta div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,239,234,0.6); line-height: 1.8; }
+  .cover-tag { border-top: 1px solid var(--hairline); padding-top: 24px; font-family: var(--body-font); font-weight: 500; font-size: 14px; color: var(--midnight); line-height: 1.85; position: relative; z-index: 1; }
+  .cover-tag .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--slate); margin-bottom: 8px; text-transform: uppercase; font-weight: 500; }
+  .usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: 40px; }
+  .usecase-card { background: var(--offwhite); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; }
+  .usecase-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 0.9; color: var(--midnight); margin-bottom: 12px; }
+  .usecase-card h4 { font-family: var(--body-font); font-size: 15px; font-weight: 600; color: var(--midnight); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .usecase-card p { font-family: var(--body-font); font-size: 13px; color: var(--slate); line-height: 1.7; margin-top: auto; }
+  .flow-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; margin-top: 32px; }
+  .flow-card { background: var(--offwhite-warm); border: 1px solid var(--hairline); padding: 28px 24px; text-align: center; }
+  .flow-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 10px; }
+  .flow-card h4 { font-family: var(--body-font); font-size: 16px; font-weight: 600; color: var(--midnight); letter-spacing: -0.02em; }
+  .flow-arrow { font-family: var(--body-font); font-size: 24px; color: var(--midnight); }
+  @media (max-width: 1100px) {
+    body { font-size: 15px; }
+    .slide { padding: 60px 32px; }
+    .slide-meta { left: 32px; right: 32px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .section-header { grid-template-columns: 1fr; gap: 20px; }
+    .section-num { font-size: 72px; }
+    .section-title { font-size: 30px; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    .cover { grid-template-columns: 1fr; }
+    .cover-left, .cover-right { padding: 50px 32px; }
+    .note-box { grid-template-columns: 1fr; gap: 12px; }
+    .note-box .label { border-right: none; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(240,239,234,0.2); }
+  }
+
+</style><meta name="robots" content="noindex, follow"><link rel="stylesheet" href="../navigation.css"></head><body data-current-guide-slug="face-swap" data-current-guide-lang="zh" data-current-guide-updated="2026-11-18"><nav class="xconda-manual-nav notranslate" aria-label="当前用户指南 navigation" data-zoom-label="이미지 확대"><div class="xconda-manual-links"><a class="xconda-manual-brand" href="../../../../#guides">XCONDA HUB</a><a href="../../../../#guides">Back to the hub</a><a href="index.html">Guide index</a></div><div class="xconda-manual-languages"><a href="../ko/face-swap.html" hreflang="ko" lang="ko">KO</a><a href="../en/face-swap.html" hreflang="en" lang="en">EN</a><a href="../ja/face-swap.html" hreflang="ja" lang="ja">JA</a><a href="../zh/face-swap.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">ZH</a></div></nav>
+
+<section class="slide cover">
+  <div class="cover-left">
+    <div class="cover-meta-top"><span>Xconda / 2026</span><span>用户指南</span></div>
+    <div><div class="cover-title-en">FACE<br>SWAP</div>
+    <div class="cover-subtitle" style="margin-top: 32px;">本指南介绍如何在保持背景、服装、姿势和光线不变的前提下，只替换图像中的人物面部。适用于快速进行选角对比与创意迭代。</div></div>
+    <div class="cover-bottom-meta"><div><div>用户指南</div><div>教程</div></div><div style="text-align:right"><div>共 15 章</div><div>2026</div></div></div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-top" style="color: var(--slate)"><span>目录</span><span>共 15 章</span></div>
+    <div></div>
+    <div class="cover-tag"><span class="label">— 指南结构 —</span>     使用目的 · 使用场景 · 进入 · 界面构成 · Models · 原图 · 人脸区域指定 · Brush Size · Swap to image · Generate · 生成确认 · 查看结果 · 结果卡片图标 · 分享/删除确认</div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 02</span><span class="dot"></span><span>使用目的</span></div><div class="right"><span>P. 002</span></div></div>
+  <div class="section-header"><div class="section-num">02</div><div class="section-title-block"><div class="eyebrow">— 目的 —</div><h2 class="section-title">Face Swap 做什么</h2><p class="section-lede">将原图中的特定人脸替换为另一张人脸图像。背景、服装、姿势、光线和构图尽量保持不变，只快速改变人物的面部印象。</p></div></div>
+  <div class="flow-row">
+    <div class="flow-card"><div class="label">— 步骤 01 —</div><h4>Original Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card"><div class="label">— 步骤 02 —</div><h4>Swap to Image</h4></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-card" style="background: var(--midnight); border-color: var(--midnight);"><div class="label" style="color: rgba(240,239,234,0.6);">— 结果 —</div><h4 style="color: #F0EFEA;">替换结果</h4></div>
+  </div>
+  <div class="note-box"><div class="label">— 工作原理 —</div><div class="text">用画笔指定原图中的人脸区域，放入替换用人脸图像，即可生成结果。</div></div>
+  <div class="footer-meta"><span>002 — 使用目的</span><span>目的</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 03</span><span class="dot"></span><span>使用场景</span></div><div class="right"><span>P. 003</span></div></div>
+  <div class="section-header"><div class="section-num">03</div><div class="section-title-block"><div class="eyebrow">— 使用场景 —</div><h2 class="section-title">为什么使用这个功能、在什么情况下使用</h2><p class="section-lede">无需重新拍摄，即可在同一镜头中比较选角候选、模特形象或角色面孔。适用于广告方案、造型手册、视频分镜等需要快速呈现结果的工作，可节省时间。</p></div></div>
+  <div class="usecase-grid">
+    <div class="usecase-card"><div class="num">01</div><h4>选角候选比较</h4><p>无需重新拍摄，在同一镜头中比较选角候选、模特形象或角色面孔时。</p></div>
+    <div class="usecase-card"><div class="num">02</div><h4>保持姿势与服装的替换</h4><p>现有图像的姿势和服装都很满意，但只需要更换面孔时。</p></div>
+    <div class="usecase-card"><div class="num">03</div><h4>替代参考图</h4><p>替代肖像权敏感的参考图，或在同一场景中比较不同演员／模特版本时。</p></div>
+  </div>
+  <div class="footer-meta"><span>003 — 使用场景</span><span>使用场景</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 04</span><span class="dot"></span><span>进入</span></div><div class="right"><span>P. 004</span></div></div>
+  <div class="section-header"><div class="section-num">04</div><div class="section-title-block"><div class="eyebrow">— 进入 —</div><h2 class="section-title">进入 Face Swap</h2><p class="section-lede">点击左侧竖排菜单中的人脸替换图标。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">点击人脸替换图标</h3><p class="step-body">点击左侧竖排菜单中的人脸替换图标，该菜单即为 Face Swap 功能。</p></div></div><div><img src="../screens/eaf0c0833b28c82ad9833794fc4f1442848c0ff40195538422ed2986509c2f90.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>004 — 进入</span><span>进入</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 05</span><span class="dot"></span><span>界面构成</span></div><div class="right"><span>P. 005</span></div></div>
+  <div class="section-header"><div class="section-num">05</div><div class="section-title-block"><div class="eyebrow">— 界面构成 —</div><h2 class="section-title">默认界面构成</h2><p class="section-lede">左侧是设置与上传区域，右侧显示生成结果。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 构成 —</div><h3 class="step-title">左：设置·上传 / 右：结果</h3><p class="step-body">左侧是设置与上传区域，右侧显示生成结果。</p></div><div class="step-block"><div class="step-number">— 顺序 —</div><h3 class="step-title">准备好后点击 Generate</h3><p class="step-body">初始状态下右侧结果区域为空；当原图和替换图都准备好后，执行 Generate。</p></div></div><div><img src="../screens/269482b42c91fc9fba07ff2377eb82e77865b642e38e787267c343d6a43d10d9.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>005 — 界面构成</span><span>界面构成</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 06</span><span class="dot"></span><span>Models</span></div><div class="right"><span>P. 006</span></div></div>
+  <div class="section-header"><div class="section-num">06</div><div class="section-title-block"><div class="eyebrow">— 模型选择 —</div><h2 class="section-title">Models</h2><p class="section-lede">在上方 Models 中选择要使用的图像生成模型。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">选择模型</h3><p class="step-body">在上方 <span class="ui">Models</span>中选择要使用的图像生成模型。</p></div><div class="step-block"><div class="step-number">— 选项 —</div><h3 class="step-title">Nano Banana 2 / Nano Banana</h3><p class="step-body">在当前界面中可以看到 Nano Banana 2 与 Nano Banana 两个选项。</p></div></div><div><img src="../screens/039c804a46d030b623d26cbc3484fc88ca5f5af02635c22703aa17b091728323.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>006 — Models</span><span>选择</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 07</span><span class="dot"></span><span>原图</span></div><div class="right"><span>P. 007</span></div></div>
+  <div class="section-header"><div class="section-num">07</div><div class="section-title-block"><div class="eyebrow">— 上传原图 —</div><h2 class="section-title">Original image</h2><p class="section-lede">通过 Drop Image Here 或 Click to Upload 上传需要替换人脸的原图。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">上传原图</h3><p class="step-body"><span class="ui">Drop Image Here</span> 或 <span class="ui">Click to Upload</span>上传需要替换人脸的原图。</p></div><div class="step-block"><div class="step-number">— 建议 —</div><h3 class="step-title">稳定的照片</h3><p class="step-body">照片的人脸、头部朝向、光线和分辨率越稳定，结果越自然。</p></div><div class="step-block"><div class="step-number">— 重新选择 —</div><h3 class="step-title">用 X 按钮移除</h3><p class="step-body">已上传的图像可用右上角的 X 按钮移除并重新选择。</p></div></div><div><img src="../screens/727170b8e4e82ee1a1de1d5eed0cbfef7c88d4b08357ba1e47cf7c0108d790cc.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>007 — 原图</span><span>原图</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 08</span><span class="dot"></span><span>人脸区域指定</span></div><div class="right"><span>P. 008</span></div></div>
+  <div class="section-header"><div class="section-num">08</div><div class="section-title-block"><div class="eyebrow">— 蒙版 · 人脸区域指定 —</div><h2 class="section-title">指定要替换的人脸区域</h2><p class="section-lede">在原图上用画笔涂抹要替换的人脸区域。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">用画笔涂抹人脸区域</h3><p class="step-body">在原图上用画笔涂抹要替换的人脸区域。</p></div><div class="step-block"><div class="step-number">— 注意 —</div><h3 class="step-title">指定适当范围</h3><p class="step-body">涂抹的区域就是实际替换对象，请确认不要把面部周围划得太窄或太宽。</p></div></div><div><img src="../screens/65bf08046101cdd17075ebf24056e05fc967e53aabfa95c36cad2e683f323b75.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>008 — 人脸区域指定</span><span>Mask</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 09</span><span class="dot"></span><span>Brush Size</span></div><div class="right"><span>P. 009</span></div></div>
+  <div class="section-header"><div class="section-num">09</div><div class="section-title-block"><div class="eyebrow">— 画笔大小 —</div><h2 class="section-title">Brush Size</h2><p class="section-lede">使用 Brush Size 滑块调整画笔大小。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 大面积 —</div><h3 class="step-title">粗画笔</h3><p class="step-body">大面积区域用粗画笔快速涂抹。</p></div><div class="step-block"><div class="step-number">— 精细部位 —</div><h3 class="step-title">细画笔</h3><p class="step-body">眼角或下颌线等精细部位用细画笔修整。</p></div></div><div><img src="../screens/fd38196350775411309f5975d3cbf546ab14fc2b4f98009284e9299d9a2f36e2.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>009 — Brush Size</span><span>滑块</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 10</span><span class="dot"></span><span>Swap to image</span></div><div class="right"><span>P. 010</span></div></div>
+  <div class="section-header"><div class="section-num">10</div><div class="section-title-block"><div class="eyebrow">— 替换人脸 —</div><h2 class="section-title">Swap to image</h2><p class="section-lede">在 Swap to image 区域上传要应用的新人脸图像。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">上传替换用人脸</h3><p class="step-body"><span class="ui">Swap to image</span> 区域上传要应用的新人脸图像。</p></div><div class="step-block"><div class="step-number">— 建议 —</div><h3 class="step-title">正面或 3/4 角度</h3><p class="step-body">使用正面或 3/4 角度这类面部结构清晰可见的图像，替换结果更稳定。</p></div><div class="note-box"><div class="label">— 必备 —</div><div class="text">如果没有替换用人脸图像，Generate 按钮将不可用。</div></div></div><div><img src="../screens/e2b6b0744d422ec88d758291348790fae23690d17c6b1000a0d9f237e0074b82.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>010 — Swap to image</span><span>新人脸</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 11</span><span class="dot"></span><span>Generate</span></div><div class="right"><span>P. 011</span></div></div>
+  <div class="section-header"><div class="section-num">11</div><div class="section-title-block"><div class="eyebrow">— 生成 —</div><h2 class="section-title">Generate</h2><p class="section-lede">原图、画笔蒙版和替换人脸图像全部准备就绪后，Generate 按钮才会激活。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 激活条件 —</div><h3 class="step-title">三项输入完成</h3><p class="step-body">原图、画笔蒙版和替换人脸图像全部准备就绪后， <span class="ui">Generate</span> 按钮才会激活。</p></div><div class="step-block"><div class="step-number">— 重新选择 —</div><h3 class="step-title">用 X 按钮移除</h3><p class="step-body">替换用人脸图像也可以用右上角的 X 按钮移除并重新上传。</p></div><div class="note-box"><div class="label">— 点数 —</div><div class="text">以当前测试界面为准，每次生成消耗 6 credits。</div></div></div><div><img src="../screens/89eba19b1e01f19f326fa5c6d447376af48855a48d7325a2390f463f842624bb.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>011 — Generate</span><span>运行</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 12</span><span class="dot"></span><span>生成确认</span></div><div class="right"><span>P. 012</span></div></div>
+  <div class="section-header"><div class="section-num">12</div><div class="section-title-block"><div class="eyebrow">— 生成确认 —</div><h2 class="section-title">生成确认弹窗</h2><p class="section-lede">点击 Generate 后会弹出确认窗口。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 步骤 01 —</div><h3 class="step-title">显示确认弹窗</h3><p class="step-body"><span class="ui">Generate</span>后会弹出确认窗口。</p></div><div class="step-block"><div class="step-number">— 操作 —</div><h3 class="step-title">OK 继续 / Cancel 取消</h3><p class="step-body"><span class="ui">OK</span>后开始实际生成， <span class="ui">Cancel</span>后返回上一界面。</p></div></div><div><img src="../screens/ea06cb5d010f025d22b235148f725e0b66a1a01c89624f8a61f4f71f2d5defcc.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>012 — 确认弹窗</span><span>确认</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 13</span><span class="dot"></span><span>查看结果</span></div><div class="right"><span>P. 013</span></div></div>
+  <div class="section-header"><div class="section-num">13</div><div class="section-title-block"><div class="eyebrow">— 结果卡片 —</div><h2 class="section-title">确认结果卡片</h2><p class="section-lede">生成完成后，右侧结果区域会显示结果图像。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 结果 —</div><h3 class="step-title">结果区域显示</h3><p class="step-body">生成完成后，右侧结果区域会显示结果图像。</p></div><div class="step-block"><div class="step-number">— 对比 —</div><h3 class="step-title">结果 · 区域 · 替换人脸</h3><p class="step-body">结果卡片会同时显示生成结果、原图中指定的人脸区域以及用于替换的人脸图像，便于对比。</p></div></div><div><img src="../screens/5c792f6d7982601e05636da652fbcf37488d6b35a406f7ec71ce32d5f7142867.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>013 — 查看结果</span><span>结果</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 14</span><span class="dot"></span><span>结果卡片图标</span></div><div class="right"><span>P. 014</span></div></div>
+  <div class="section-header"><div class="section-num">14</div><div class="section-title-block"><div class="eyebrow">— 结果图标 · 结果管理 —</div><h2 class="section-title">结果卡片右侧图标</h2><p class="section-lede">使用结果卡片右侧的图标管理结果。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1.1fr;"><div><div class="step-block"><div class="step-number">— 图标 —</div><h3 class="step-title">分享 · 重新生成 · 下载 · 删除</h3><p class="step-body">外部链接图标用于公开分享确认，刷新图标用于重新生成，下载图标用于保存文件，回收站图标用于删除。</p></div><div class="step-block"><div class="step-number">— 重新生成 —</div><h3 class="step-title">用相同输入重新生成</h3><p class="step-body">重新生成用于基于相同输入再次生成新结果。</p></div></div><div><img src="../screens/b19d8daeb1d763532f1abcf18db653fd9fb218699b6198374af43d209632f7e4.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div></div>
+  <div class="footer-meta"><span>014 — 结果卡片图标</span><span>图标</span></div>
+</section>
+
+
+<section class="slide">
+  <div class="slide-meta"><div class="left"><span>Chapter 15</span><span class="dot"></span><span>分享/删除确认</span></div><div class="right"><span>P. 015</span></div></div>
+  <div class="section-header"><div class="section-num">15</div><div class="section-title-block"><div class="eyebrow">— 确认弹窗 —</div><h2 class="section-title">公开分享与删除确认</h2><p class="section-lede">分享和删除各需经过确认弹窗，以防止误操作。</p></div></div>
+  <div class="two-col" style="grid-template-columns: 1fr 1fr;">
+    <div>
+      <div class="step-block"><div class="step-number">— 公开分享 —</div><h3 class="step-title">分享确认弹窗</h3><p class="step-body">点击外部链接图标后，会弹出窗口询问是否公开分享该媒体。 <span class="ui">OK</span>继续分享， <span class="ui">Cancel</span>则不分享并关闭。</p></div>
+      <div><img src="../screens/ca245727f8785d8743fefc4db8a553021429396be23cbad5e539caf66d662a74.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div>
+    </div>
+    <div>
+      <div class="step-block"><div class="step-number">— 删除 —</div><h3 class="step-title">删除确认弹窗</h3><p class="step-body">点击回收站图标后，会确认是否删除所选的结果媒体。仅在需要删除时点击 <span class="ui">OK</span>；如果结果需要保留，请点击 <span class="ui">Cancel</span>。</p></div>
+      <div><img src="../screens/2c0d7c30065435cd04917447ba9b4f41c4a0d433d91daecb0d2ed5d01e46f827.webp" alt="" style="display: block; width: 100%; height: auto;" loading="lazy"></div>
+    </div>
+  </div>
+  <div class="footer-meta"><span>015 — 分享与删除确认</span><span>最后一步</span></div>
+</section>
+
+<script src="../embed.js" defer=""></script></body></html>
