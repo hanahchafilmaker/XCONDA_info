@@ -130,7 +130,9 @@ const collectionViewChunk = () => ({
   cursor: { stack: [] },
 });
 const collectionQuery = () => {
-  const blockIds = fixture.pages.map((page) => dashed(page.id));
+  // 실제 Notion 동기화는 최신 문항부터 돌려줍니다(No 91 → 81). 정적 페이지와
+  // llms.txt 의 Q&A 노출 순서가 자동 동기화 결과와 달라지지 않게 같은 순서로 넘깁니다.
+  const blockIds = fixture.pages.map((page) => dashed(page.id)).reverse();
   return {
     result: { reducerResults: { collection_group_results: { blockIds } } },
     recordMap: {
@@ -180,7 +182,14 @@ try {
   }
 
   const newIds = new Set(qna.rows.map((row) => row.id));
-  const rows = previous.rows.filter((row) => !newIds.has(row.id)).concat(qna.rows);
+  const previousRows = previous.rows.filter((row) => !newIds.has(row.id));
+  // 자동 동기화의 행 순서와 맞춥니다: 일반 글 → 새 Q&A(최신순) → 기존 Q&A.
+  // 새 문항을 맨 뒤에 붙이면 llms.txt 의 섹션별 20건 노출에서 빠집니다.
+  const rows = [
+    ...previousRows.filter((row) => row.__type !== "faq"),
+    ...qna.rows,
+    ...previousRows.filter((row) => row.__type === "faq"),
+  ];
   const pages = { ...previous.pages };
   for (const [id, body] of Object.entries(qna.pages)) pages[id] = body;
   const source = {
