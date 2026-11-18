@@ -65,24 +65,24 @@ npm run test:a11y                           # axe-core 검사만
 `npm run i18n:progress` 는 **검수 진행률**을 셉니다 — 95항목 × 3언어 중 `YYYY-MM-DD 검수 완료(검수자)` 로 표시된 항목 수와, 기계 점검이 문제를 찾은 항목을 묶어 `reports/i18n-progress-<날짜>.md` 로 남깁니다. CI(`build-site.yml`)는 이 스크립트를 `-- --summary` 로 불러 **실행 요약에 진행률과 "번역이 없는 원문(새 글)"** 을 남깁니다.
 공유 미리보기 카드는 언어별로 따로 있습니다 — `npm run og:cards` 가 언어 홈 · 목록 · 커버 없는 글의 1200×630 카드를 `assets/img/og/lang/` 에 그리고 목록(manifest)을 갱신합니다(카드는 커밋되는 산출물이라 CI 에 Pillow 가 필요 없습니다).
 
-## 화면으로 보는 HTML 가이드
+## 최신 가이드 링크 (2026-11-18)
 
-공유받은 툴 가이드를 2026-11-03 기준 정적 사본으로 제공합니다. 허브의 19개 툴에서 **전체 가이드 열기**를 누르면 해당 언어의 화면 가이드가 팝업에 표시됩니다. 팝업의 **기존 안내 · 영상** 버튼으로 기존 본문과 영상 링크도 볼 수 있습니다. 기존 `user-guide.html`은 각 가이드를 새 탭으로 열며, 전체 목록에는 별도 문서인 **Turn Video**와 **Asset Library**까지 21개가 있습니다. 한국어·영어·일본어·중국어 원본을 각각 사용합니다.
+허브의 가이드는 공유 Drive의 **2026-11-18 현재판**을 가리킵니다. [`src/content/driveGuides.json`](./src/content/driveGuides.json) 이 단일 출처이며, 24주제 × 4개 언어 문서 96개와 KO/EN 영상 65편의 Drive 파일 ID를 담습니다. 문서 KO/EN은 `00_XCONDA_가이드_통합관리.html`의 「현재판」, JA/ZH는 `00_Guide_Index.html`, 영상은 `xconda_video_guide`의 현재 8개 폴더를 기준으로 했습니다. **이전 버전 링크와 구버전 보관 항목은 사이트에 넣지 않습니다.** Google Drive는 자체 CSP로 iframe 삽입을 통제하므로 문서·영상 모두 새 탭 링크로 엽니다.
 
-- `src/content/htmlGuides.json`: 허브 slug와 원본 파일명·분류 매핑.
-- `manuals/{ko,en,ja,zh}/`: 사용자에게 제공하는 HTML 및 언어별 목록. 공유 Drive의 원본은 수정하지 않습니다.
-- `manuals/assets/screens/`: 원본에 내장된 이미지를 바이트 그대로 추출해 SHA-256으로 중복 제거한 정적 이미지. `navigation.css`, `index.css`, `zoom.js`는 직접 관리합니다.
-- Drive HTML의 스크립트와 Cloudflare 로더는 실행하지 않으며, 확대 보기가 있는 문서에는 로컬 확대 스크립트를 사용합니다. 제공받은 번역의 검색용 검수 전까지 새 사본은 `noindex`입니다. 기존 `user-guide.html`의 색인 설정은 유지합니다.
-- **실시간 동기화가 아닙니다.** Drive 원본 수정은 배포 사본에 자동 반영되지 않습니다. 네 언어의 21개 파일을 원래 이름 그대로 별도 폴더에 다운로드한 뒤 아래 명령을 실행하고 변경 내용을 검토·배포합니다. 일부 원본만 있으면 기존 파일을 건드리지 않고 실패합니다.
+- 허브 `#guides`의 **전체 최신 가이드 보기**는 다국어 문서 색인으로, 툴 모달의 상세 가이드는 해당 언어 현재판 Drive 문서로 연결됩니다. 같은 섹션 아래 `#latest-guides`에서 96개 문서 링크와 65개 영상 링크를 모두 펼쳐 볼 수 있습니다.
+- `src/content/toolVideos.ts`는 21개 툴 영상 전부를 현재판 KO/EN ID로 만듭니다. 예전 `1a9mw…` / `1uVP…` ID는 제거했습니다.
+- `user-guide.html`의 19개 링크와 `manuals/{ko,en,ja,zh}/index.html`도 현재판 Drive 문서로 교체했습니다. `manuals/{ko,en,ja,zh}/{slug}.html`은 **2026-11-03 정적 사본(아카이브)** 으로 남겨 두었지만 사이트 링크로는 쓰지 않으며, 각 페이지 상단에 현재판 Drive 링크를 넣었습니다.
+- `scripts/import-html-guides.mjs`는 로컬 사본을 재생성할 때도 언어별 목록을 `driveGuides.json`의 현재판 링크로 만듭니다. Drive 원본은 수정하지 않습니다.
 
 ```bash
 npm ci
 node scripts/import-html-guides.mjs /path/to/downloaded-guides
 npm run test:unit
 npm run test:smoke
+npm run build
 ```
 
-가이드 콘텐츠와 스크린샷은 GitHub Pages에서 직접 제공하므로, 방문자에게 Drive 편집 권한을 부여하거나 HTML 원본 다운로드를 요구하지 않습니다.
+`npm run build`는 `assets/app.js`·`index.html` 등 커밋된 산출물을 다시 만듭니다. Drive에서 HTML 미리보기가 제한되면 파일을 다운로드한 뒤 브라우저로 열면 됩니다.
 
 ## 언어별 주소
 

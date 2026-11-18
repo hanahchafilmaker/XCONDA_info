@@ -10,6 +10,10 @@ import { JSDOM } from "jsdom";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CATALOG = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/htmlGuides.json"), "utf8"));
+const DRIVE = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/driveGuides.json"), "utf8"));
+const view = (id) => `https://drive.google.com/file/d/${id}/view?usp=drive_link`;
+const driveBySlug = new Map(DRIVE.docs.map((doc) => [doc.slug, doc]));
+const HREFLANG_KEY = { ko: "ko", en: "en", ja: "ja", "zh-CN": "zh" };
 const LANGS = { ko: "ko", en: "en", ja: "ja", zh: "zh-CN" };
 const read = (...parts) => fs.readFileSync(path.join(ROOT, ...parts), "utf8");
 
@@ -55,8 +59,8 @@ test("every guide and index has the right language, navigation, safe scripts and
     assert.equal(index.documentElement.lang, htmlLang);
     assertNoExecutableSource(index, `${lang}/index.html`);
     const indexHrefs = [...index.querySelectorAll("main li a")].map((a) => a.getAttribute("href"));
-    assert.deepEqual(new Set(indexHrefs), new Set(CATALOG.map((x) => `${x.slug}.html`)));
-    assert.equal(indexHrefs.length, 21);
+    assert.deepEqual(new Set(indexHrefs), new Set(DRIVE.docs.map((doc) => view(doc.files[lang]))));
+    assert.equal(indexHrefs.length, 24);
     assert.equal(index.querySelectorAll(".xconda-manual-languages a").length, 4);
     indexDom.window.close();
 
@@ -71,9 +75,10 @@ test("every guide and index has the right language, navigation, safe scripts and
       assert.equal(doc.querySelector('.xconda-manual-nav a[href="index.html"]')?.textContent.length > 0, true, page);
       for (const [target, targetHtml] of Object.entries(LANGS)) {
         const a = doc.querySelector(`.xconda-manual-languages a[hreflang="${targetHtml}"]`);
-        assert.equal(a?.getAttribute("href"), `../${target}/${guide.slug}.html`, page);
+        assert.equal(a?.getAttribute("href"), view(driveBySlug.get(guide.slug).files[HREFLANG_KEY[targetHtml]]), page);
         assert.equal(a?.getAttribute("aria-current") === "page", target === lang, page);
       }
+      assert.ok(doc.querySelector('[data-drive-current] a[href*="drive.google.com/file/d/"]'), `${page}: current Drive banner missing`);
       const imgs = [...doc.querySelectorAll("img[src]")];
       assert.ok(imgs.length > 0, page);
       for (const img of imgs) {
@@ -128,10 +133,9 @@ test("the existing Korean standalone guide links each of its 19 tools and the fu
   for (const a of links) {
     const slug = a.dataset.htmlGuide;
     assert.ok(CATALOG.some((guide) => guide.slug === slug), slug);
-    assert.equal(a.getAttribute("href"), `manuals/ko/${slug}.html`);
+    assert.equal(a.getAttribute("href"), view(driveBySlug.get(slug).files.ko));
     assert.equal(a.target, "_blank");
     assert.match(a.rel, /noopener/);
-    assert.ok(fs.existsSync(path.join(ROOT, a.getAttribute("href"))));
   }
   assert.ok(doc.querySelector('a[href="manuals/ko/index.html"]'));
   dom.window.close();

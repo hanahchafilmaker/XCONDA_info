@@ -6,7 +6,10 @@
  *   node scripts/import-html-guides.mjs /path/to/downloaded-guides [output-directory]
  *
  * The input directory must contain the 21 × 4 original files, using the names
- * in src/content/htmlGuides.json. The Drive originals are NOT modified. Images
+ * in src/content/htmlGuides.json. The generated language indexes link to the
+ * 24-topic × 4-language current Drive files in src/content/driveGuides.json;
+ * the local 21 × 4 HTML copies are kept as archived 2026-11-03 snapshots and
+ * are no longer linked from the hub. The Drive originals are NOT modified. Images
  * are extracted losslessly, deduplicated by SHA-256, and served from this site.
  * Untrusted source scripts (including copied Cloudflare loaders) are removed;
  * the two screenshot-zoom pages use our small local viewer instead. All work is
@@ -21,6 +24,9 @@ import { JSDOM } from "jsdom";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CATALOG = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/htmlGuides.json"), "utf8"));
+const DRIVE = JSON.parse(fs.readFileSync(path.join(ROOT, "src/content/driveGuides.json"), "utf8"));
+const driveView = (id) => `https://drive.google.com/file/d/${id}/view?usp=drive_link`;
+const driveDocBySlug = new Map(DRIVE.docs.map((doc) => [doc.slug, doc]));
 const INPUT = process.argv[2] ? path.resolve(process.argv[2]) : "";
 const OUT = process.argv[3] ? path.resolve(process.argv[3]) : path.join(ROOT, "manuals");
 const LANGS = [
@@ -127,7 +133,8 @@ function addNav(doc, lang, slug) {
   languages.className = "xconda-manual-languages";
   for (const option of LANGS) {
     const a = doc.createElement("a");
-    a.href = `../${option.code}/${slug ? `${slug}.html` : "index.html"}`;
+    const current = slug ? driveDocBySlug.get(slug)?.files[option.code] : null;
+    a.href = current ? driveView(current) : `../${option.code}/${slug ? `${slug}.html` : "index.html"}`;
     a.hreflang = option.html;
     a.lang = option.html;
     a.textContent = option.file;
@@ -207,7 +214,7 @@ function createIndex(lang) {
   header.append(eyebrow, h1, intro);
   main.append(header);
   for (const category of CATEGORY_ORDER) {
-    const group = CATALOG.filter((guide) => guide.category === category);
+    const group = DRIVE.docs.filter((guide) => guide.group === category);
     const section = doc.createElement("section");
     const h2 = doc.createElement("h2");
     h2.textContent = lang.categories[category];
@@ -218,7 +225,9 @@ function createIndex(lang) {
     for (const guide of group) {
       const item = doc.createElement("li");
       const a = doc.createElement("a");
-      a.href = `${guide.slug}.html`;
+      a.href = driveView(guide.files[lang.code]);
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
       const name = doc.createElement("span");
       name.className = "notranslate";
       name.textContent = guide.name;

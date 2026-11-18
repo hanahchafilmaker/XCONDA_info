@@ -1,22 +1,20 @@
 import type { Lang } from "../i18n/dict";
+import { DRIVE_GUIDE_VIDEOS, driveVideoUrl } from "./driveGuides";
 
 /**
- * 툴별 공식 영상 가이드 (Google Drive · xconda_video_guide / 공식 공유 폴더).
- * Google Drive 영상은 가이드 모달에서 새 탭 링크로 엽니다.
+ * 툴별 공식 영상 가이드 (2026-11-18 현재판 · Google Drive).
+ * Drive는 CSP를 직접 통제하므로 새 탭 링크로만 엽니다.
+ * 구버전 ID(1a9mw… / 1uVP…)는 제거했습니다.
  */
-const drive = (id: string) => `https://drive.google.com/file/d/${id}/preview`;
+export const TOOL_VIDEOS: Partial<Record<string, Record<Lang, string>>> = {};
 
-export const TOOL_VIDEOS: Partial<Record<string, Record<Lang, string>>> = {
-  turn: {
-    ko: drive("1a9mwJiB5NJPEu70l3UWaNNE-Y-kKr_Nm"),
-    en: drive("1a9mwJiB5NJPEu70l3UWaNNE-Y-kKr_Nm"),
-  },
-  video: {
-    ko: drive("1uVP4Ih6kKHxb0uUHsntCR7UsepMJ2djG"),
-    en: drive("1uVP4Ih6kKHxb0uUHsntCR7UsepMJ2djG"),
-  },
-};
+for (const video of DRIVE_GUIDE_VIDEOS) {
+  if (!video.slug) continue;
+  const ko = driveVideoUrl(video.slug, "ko");
+  const en = driveVideoUrl(video.slug, "en");
+  if (ko && en) TOOL_VIDEOS[video.slug] = { ko, en };
+}
 
 export function getToolVideo(slug: string, lang: Lang): string | undefined {
-  return TOOL_VIDEOS[slug]?.[lang];
+  return driveVideoUrl(slug, lang);
 }
