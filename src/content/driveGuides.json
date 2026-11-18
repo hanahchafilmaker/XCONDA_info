@@ -1,0 +1,612 @@
+{
+  "updated": "2026-11-18",
+  "sourceFolder": "https://drive.google.com/drive/folders/1g9CyTfpCtPE7jPHSVdvv_kK18QNZ5WIN",
+  "note": "공유 Drive 폴더의 2026-11-18 최신본. 문서 KO/EN은 00_XCONDA_가이드_통합관리.html 현재판, JA/ZH는 00_Guide_Index.html 기준. 이전 버전 링크는 포함하지 않습니다.",
+  "indexes": {
+    "master": "184BJwB3ZcntIoHApK1Q4gF9E62SqRmdv",
+    "textIndex": "1SHjJyljrNbfS9ohptIu_eNGzl1xeA40Y",
+    "textFolder": "15BYUYRJQJ8Sah6iOdpZ3sm3RSv2xBjbB",
+    "videoFolder": "1zjUR-T6J0BE1jfTrw7YWWazO7huHKDQD",
+    "videoZip": "1roJvqQDgUgHSX1seG_xUgiolKJ4APe5k"
+  },
+  "docs": [
+    {
+      "no": "01",
+      "slug": "image",
+      "name": "Image Generator",
+      "group": "image",
+      "files": {
+        "ko": "1Iwadbdz9ejNSJnmN1iMH1gIhwS6JADkw",
+        "en": "100rF1hupo2O7uDbm_qSN-jJWKFJbGaEB",
+        "ja": "1atBtZqawDRkQCCBpugTrwNx8PRAkm8uo",
+        "zh": "12dizpyD5BDW6hlfjQlGpc_KDYwJ7e9mH"
+      }
+    },
+    {
+      "no": "02",
+      "slug": "video",
+      "name": "Video Generator",
+      "group": "video",
+      "files": {
+        "ko": "1jg6upxedJBghI7zgux9jQp8ATWmk_POJ",
+        "en": "1CRvo9tNJpYopmsJtNDnyFgaKwlT3GLlh",
+        "ja": "16xRWf8JmjJWvNiKByiNWArp4-8ZGwizW",
+        "zh": "1lXzdB7brrGMvr-ohB4C1kQiCnQeLscEu"
+      }
+    },
+    {
+      "no": "03",
+      "slug": "upscale",
+      "name": "Upscale",
+      "group": "image",
+      "files": {
+        "ko": "1fG7xEHRM-ETnjOLX4GlxtZrjwDq1vYO2",
+        "en": "1HpRvEIFtV1ygjQBjvPLa4qFstqlM39o2",
+        "ja": "1SHiCaCphnbW8Kz8p9ebAclGEtRH8jwEF",
+        "zh": "1kQ2Fx4aTBTQ9XJzIdfiIJL8k8MH4hMMR"
+      }
+    },
+    {
+      "no": "04",
+      "slug": "face-swap",
+      "name": "Face Swap",
+      "group": "image",
+      "files": {
+        "ko": "1-UL9GJ579bhmnpIlauUVAGoIBr2b95zJ",
+        "en": "1yg4Jn2dYf3lKRseUKfJpmEfVlac_rOOw",
+        "ja": "1-AVXC6kUTbSdG6hvcRHePjzV8kAMQ4Ba",
+        "zh": "18bQmDYxc0syyDVWK73rt2PRbMJSqvcBC"
+      }
+    },
+    {
+      "no": "05",
+      "slug": "auto-angle",
+      "name": "Auto Angle Generator",
+      "group": "image",
+      "files": {
+        "ko": "1xR44YjzgbeDz_RQ4TjUFkZ6jOr0qj7VT",
+        "en": "1YZvYe5dADygHEH75BlfW6aD3tPjiXZkS",
+        "ja": "1HmRqiYCmmUsJNt-bUURHTYAGBfilDwrk",
+        "zh": "1oLOUMWLOS4ueSsyHH-F9zopF6NqwOK_w"
+      }
+    },
+    {
+      "no": "06",
+      "slug": "background-blend",
+      "name": "Cinematic Image Blender",
+      "group": "image",
+      "files": {
+        "ko": "1MRsDIOq1vJtQ9Mapg3IrorWRWNB6NDtl",
+        "en": "1NAF5J4Cb8L8Y3dEBF2TM6ErGPWZdOAWC",
+        "ja": "150Vb_QHERpeVsVQ0P1e4araxK7pGZVgH",
+        "zh": "1CLtxGatr-b3VL9BuyBlznmhbARuRZO3F"
+      }
+    },
+    {
+      "no": "07",
+      "slug": "expression",
+      "name": "Expression Transformer",
+      "group": "image",
+      "files": {
+        "ko": "1Ya00XVpFOp1FTMAsyNhYQnQaF_o0Oe0L",
+        "en": "1NwJBLSzpFzNC7XhUNKSvZyAgKakTkcWP",
+        "ja": "163GL9WLfWEzsOMeNYDqi7H-hVjJ4z-L0",
+        "zh": "1V1pqWmpT3z6MmhzT7KINSZ-OKSngenKS"
+      }
+    },
+    {
+      "no": "08",
+      "slug": "directors-cut",
+      "name": "Director's Cut",
+      "group": "storyboard",
+      "files": {
+        "ko": "1Baa9P9-4VlTqAhbGdmYovUO0hJHeRjuG",
+        "en": "1y4YdHhUUvLkgserCmppQ9cD8sSq2f8R-",
+        "ja": "1QcmRM5mPlfQjbbNTwsQRvyiQS3g-r2af",
+        "zh": "14-zsjjSPBKXdhdh7JRQyUxiahyVt6YUS"
+      }
+    },
+    {
+      "no": "09",
+      "slug": "art-director-pro",
+      "name": "Art Director Pro",
+      "group": "storyboard",
+      "files": {
+        "ko": "1WpCu8ZbDUCme68oxg0dLv3il1LJEBgJa",
+        "en": "1Y54kLMMP_iKtOuLLo8n47JrWMK2RWW1w",
+        "ja": "1wbVUBHTTqVPpoPN82x4FIZddoNhN5901",
+        "zh": "1qZAin2w4pjW29LZhPzmaRPJ77snQ1Jv6"
+      }
+    },
+    {
+      "no": "10",
+      "slug": "scene-snap",
+      "name": "Scene Snap",
+      "group": "storyboard",
+      "files": {
+        "ko": "1GZs6KintM0Y2xpT8inwHrAmXnjKqcLWW",
+        "en": "1TFZMIB2W4bzbgwyOM-sHmxKco1kHgIC0",
+        "ja": "1zVxcnJsLV3RxvvAvlLAew2ZZS_gGfG_c",
+        "zh": "1SlbfmgA3lpTrFeh4T1f_MEpLpWu2blHZ"
+      }
+    },
+    {
+      "no": "11",
+      "slug": "cloth-swap",
+      "name": "Cloth Swap",
+      "group": "image",
+      "files": {
+        "ko": "1Z3HRYVKA6hvqeQqXMCexDVXaIFjJlJvb",
+        "en": "1W7z6K4lo0qa3AGsMUQjTu9mS0qlHIbvp",
+        "ja": "1H5vjIqOb7RYYpolY1lZX0AAC0e8T3a1p",
+        "zh": "1XvfvGxENN2B03MfrERyIJL4bpL0UauR3"
+      }
+    },
+    {
+      "no": "12",
+      "slug": "youtube-ref",
+      "name": "YouTube Ref",
+      "group": "storyboard",
+      "files": {
+        "ko": "1AMgjDCpfAz0FTh3aTa1XcYmqVhW_w4mN",
+        "en": "1S9dLNbdniBYVE4jm68pywgUmwoOiyLiF",
+        "ja": "1mBcdq0-m0TTwlnBHrwZA6TOXGpof5g0Q",
+        "zh": "1MVAHdrlpG5JOCEyt-abQdcbDiXK3CvLf"
+      }
+    },
+    {
+      "no": "13",
+      "slug": "spin-angle",
+      "name": "SpinAngle",
+      "group": "image",
+      "files": {
+        "ko": "1nX6_uMuHmsurx9eKGEYusAjn1NAjeRRG",
+        "en": "1cA0j2RjlrbptabLL2OYCN4fU6OjOSis3",
+        "ja": "19TRza1-LcxUlq8eP-OkeHOgpPdtar7Ux",
+        "zh": "1tDQCf57JcTcjtrmqLoyfFmPPOGJmtr7y"
+      }
+    },
+    {
+      "no": "14",
+      "slug": "cine-grade",
+      "name": "CineGrade AI",
+      "group": "image",
+      "files": {
+        "ko": "13CC3LhxFkxzpgxoceYQrqXR5gjWjO8nW",
+        "en": "1EZVQbj1KSZ-mZyLHGLEEZ_-rdtDAd5aC",
+        "ja": "1YdTcsDmcgdIGb31nxwpNAci279nCIJ9c",
+        "zh": "1WsbO0GNWcQhj50-OV3-B-M9iYzEotPQn"
+      }
+    },
+    {
+      "no": "15",
+      "slug": "arw-view",
+      "name": "Arrow View",
+      "group": "image",
+      "files": {
+        "ko": "1x3WPSPic4LDet6lszfUOvvXUFDhBLLx_",
+        "en": "1fPKmHbaS3n9oFw-bDA0NK6VlfH4C_znd",
+        "ja": "1ZGMZAIKXLHavH_lkOuadYmeEowJ2Vom3",
+        "zh": "1Pg5Ietm58RFKHexh0ELqtK4jWg96SGAz"
+      }
+    },
+    {
+      "no": "16",
+      "slug": "drct-seq",
+      "name": "Director's Sequence",
+      "group": "storyboard",
+      "files": {
+        "ko": "1ANBHeGxZIDmGCFf6BTXl4XTefaPeBz4n",
+        "en": "1SvzCdknsQGnf0zXdA8_yrhdhCIvHtJZ7",
+        "ja": "1ts6EjMscQncVtoOBL3jGUTKUeTjvsPkd",
+        "zh": "1VpGzwr1RoqRMVBV73_tOfKcArkWTRapt"
+      }
+    },
+    {
+      "no": "17",
+      "slug": "turn",
+      "name": "Turn",
+      "group": "video",
+      "files": {
+        "ko": "1TB-1o7eyqA1idZIkMsUdytNB4EGc3D0W",
+        "en": "1bDpXBe-Z_EG_O-neBfNEp061FoXC96v4",
+        "ja": "1nYkz76o2gfihZpmZUcN55TwqIHFdVr1t",
+        "zh": "1m7b432xpZxGXM3aZb-VsTB53d8IL5o9w"
+      }
+    },
+    {
+      "no": "18",
+      "slug": "blocking-board",
+      "name": "Blocking Board",
+      "group": "storyboard",
+      "files": {
+        "ko": "1RYdDZdGUNJzTn6L8506uIOjNKGN8-VRd",
+        "en": "1gTCLYauK9Iv_xfSrYn8ljCILiwuw3Geq",
+        "ja": "1kWrZzY_eknUHJXDKg9OzjSvXd2dQfhZW",
+        "zh": "1m1XRTXVeJPCEJWioWw3W4utuk-6txfcJ"
+      }
+    },
+    {
+      "no": "19",
+      "slug": "flexboard",
+      "name": "FlexBoard",
+      "group": "storyboard",
+      "files": {
+        "ko": "1m4wwJXdhMFHHJgfAk_DO3Yk6fROv3cbx",
+        "en": "1Q-3h3BxrFuJ9sVrl4MSS-WI2oMDIid1O",
+        "ja": "1tEeJvvh6h86MH7xSKEVsdB1pD_QnbbOq",
+        "zh": "1ZDlIPfHETJNZCzYjlTnX3jG6bJWtkvyz"
+      }
+    },
+    {
+      "no": "20",
+      "slug": "turn-video",
+      "name": "Turn Video",
+      "group": "video",
+      "files": {
+        "ko": "12YWvEGnCfxNSsEepzAtkOndmNIVRGjaU",
+        "en": "1Zep3sCUk67g6433cDFKz-QPTLlfTpNrW",
+        "ja": "1FbcWH4GL6RfUpThunKAe1cBL8lk5NyJG",
+        "zh": "14GdwiK-hKHqKzkAV5c1eDs_nm__6N5Dm"
+      }
+    },
+    {
+      "no": "21",
+      "slug": "asset-library",
+      "name": "Asset Library",
+      "group": "assets",
+      "files": {
+        "ko": "1XWJ_GAjpon_acMnm8O0fhX0ioI2BK8dS",
+        "en": "1jgqUcE-Xc6yU2uJrFMhdr_4AcnhCLKe0",
+        "ja": "1sk9pLQsXII5WtRq12Wi-oEPD1rxzvfqI",
+        "zh": "10JeCdROs7KzUy8RUWxyr0EkR_oR0bL5E"
+      }
+    },
+    {
+      "no": "23",
+      "slug": "website-manual",
+      "name": "XCONDA Website User Manual",
+      "group": "assets",
+      "files": {
+        "ko": "1W2fI2L1nyfwxEBIz_feCQmkgk08M7KL4",
+        "en": "13Z8QO5z5affaaDDA1GdHXgQpz4sUANCZ",
+        "ja": "1ILhtkDiAi0gaAP4LKLX54qXg7rTATWHA",
+        "zh": "1igucu88r5QviqN-bC5k1C9Zf8vHif80V"
+      }
+    },
+    {
+      "no": "24",
+      "slug": "web-drama-beginners",
+      "name": "AI Web Drama for Beginners",
+      "group": "assets",
+      "files": {
+        "ko": "19pMTv69OfHQDFQZ48drGTEPFsuCXkwIv",
+        "en": "1M3xsZzPp2cnIj7t0fvpXOA9_rZHFwKeW",
+        "ja": "1u7QWn2plXXvSC-9OtgD1sxa8TyyFa6m5",
+        "zh": "12T9K9cNmjzNEmfULxBw7zTIiyguEmV-I"
+      }
+    },
+    {
+      "no": "25",
+      "slug": "workspace",
+      "name": "XCONDA Workspace Guide",
+      "group": "assets",
+      "files": {
+        "ko": "1hkTXop3JF6GhZ1KDAQPOB-so5fBHGkYR",
+        "en": "1Vo0fqJKPxPZmPO11XDUyo7Yb61mdhfvO",
+        "ja": "1LSVRP923Zkht7nSksANSupb1BFR9KNnj",
+        "zh": "1vE8Yf08fY_yJ6IuUOx1t8FwKnjIvROIl"
+      }
+    }
+  ],
+  "videos": [
+    {
+      "no": "01",
+      "slug": "image",
+      "name": "Image Generator",
+      "group": "image",
+      "files": {
+        "ko": "13nSS3uNFb40xYloR6agZdPAZYyPXyyZF",
+        "en": "1IdFoKPimhe6IGHIrZTLFmcsn_VBWZBO9"
+      }
+    },
+    {
+      "no": "02",
+      "slug": "video",
+      "name": "Video Generator",
+      "group": "video",
+      "files": {
+        "ko": "141OVbDzeI7U82GNuCjDYbBzqqwxO3YVQ",
+        "en": "1sQvofsK3DNBJS8I_8b8uoNBFIH9skh-Z"
+      }
+    },
+    {
+      "no": "03",
+      "slug": "upscale",
+      "name": "Upscale",
+      "group": "image",
+      "files": {
+        "ko": "1hRc5NwzrRHitX_lsIcfv-wToanolVlS3",
+        "en": "1pupvEaTkvl0OtFyaxej0BZU1c44KNtHS"
+      }
+    },
+    {
+      "no": "04",
+      "slug": "face-swap",
+      "name": "Face Swap",
+      "group": "image",
+      "files": {
+        "ko": "1qhMz2DzC6n2rjrv_YMdm70wZ8jse_5G5",
+        "en": "1XXv5oIECHFA0kXJb0cxSoj2xBXFno5gz"
+      }
+    },
+    {
+      "no": "05",
+      "slug": "auto-angle",
+      "name": "Auto Angle Generator",
+      "group": "image",
+      "files": {
+        "ko": "1r4Sk4ydMV4yTBBqxtlK7EJw66qF7oj29",
+        "en": "1zmiFwWyhzkdVw-KvSZexFkSIB0iOsR2y"
+      }
+    },
+    {
+      "no": "06",
+      "slug": "background-blend",
+      "name": "Cinematic Image Blender",
+      "group": "image",
+      "files": {
+        "ko": "1eFmmgOopuOZdt_UL-hHIQjgxfOW4pf-X",
+        "en": "1gv21LbyvCJdcGRLzPeKmN4usm3RWkdru"
+      }
+    },
+    {
+      "no": "07",
+      "slug": "expression",
+      "name": "Expression Transformer",
+      "group": "image",
+      "files": {
+        "ko": "11SnlTxFpcufQB4-YKwHTY7__7kgvhtJj",
+        "en": "13LDd2yGsK3ol6T-veBCRbRCt-79HJSY5"
+      }
+    },
+    {
+      "no": "08",
+      "slug": "directors-cut",
+      "name": "Director's Cut",
+      "group": "storyboard",
+      "files": {
+        "ko": "1klhDJrRdqiMzAxADgycNGFn8ole1semu",
+        "en": "11XOhsJuFZACvoKgvTDSj3bNex2MOQb2P"
+      }
+    },
+    {
+      "no": "09",
+      "slug": "art-director-pro",
+      "name": "Art Director Pro",
+      "group": "storyboard",
+      "files": {
+        "ko": "1E9Hm6vUjqXRgl0gXiNtqd67IfLy3Y3V_",
+        "en": "1YpBw-6hWZLQjJMXHxcg9lvB45yPtcJCG"
+      }
+    },
+    {
+      "no": "10",
+      "slug": "scene-snap",
+      "name": "Scene Snap",
+      "group": "storyboard",
+      "files": {
+        "ko": "1CxZSRZhv0Y--p0rKUrcBUcSHNwrgwvTu",
+        "en": "1kqYL0VaIe-ZtRZ6H9F0whlblp_ZEZCMz"
+      }
+    },
+    {
+      "no": "11",
+      "slug": "cloth-swap",
+      "name": "Cloth Swap",
+      "group": "image",
+      "files": {
+        "ko": "1Aa0kkwaZddo2UH8RczIldBChxhc5-bWY",
+        "en": "1F6rzAKptJcY9cTfuI9BqJ_yg1wnL_Ko-"
+      }
+    },
+    {
+      "no": "12",
+      "slug": "youtube-ref",
+      "name": "YouTube Ref",
+      "group": "storyboard",
+      "files": {
+        "ko": "1Y2n45uRnWNAXcQ5PgdXBXNhJ9QuhGhCS",
+        "en": "1YNFig4fCNBA1vJfxdjufROuggpiGCQRh"
+      }
+    },
+    {
+      "no": "13",
+      "slug": "spin-angle",
+      "name": "SpinAngle",
+      "group": "image",
+      "files": {
+        "ko": "1AuBOxSpwfEphr73XdNtwl0BN9To_U1q6",
+        "en": "1IAEdKzRKYt6omzIHmw9M5RsfYq6_x997"
+      }
+    },
+    {
+      "no": "14",
+      "slug": "cine-grade",
+      "name": "CineGrade AI",
+      "group": "image",
+      "files": {
+        "ko": "1eQiAbxvd__tIEUeLK1BtjzcUp6A6xKeG",
+        "en": "1b7irUPZ1Yp31b59pqlp_kLsO-IXv4uaQ"
+      }
+    },
+    {
+      "no": "15",
+      "slug": "arw-view",
+      "name": "Arrow View",
+      "group": "image",
+      "files": {
+        "ko": "1EeiLrUCYClU_np8AcDlPp2alX-4u1KK2",
+        "en": "1BNwS2aOOe6lkjPnYTwcIRvPbIcuTmtRw"
+      }
+    },
+    {
+      "no": "16",
+      "slug": "drct-seq",
+      "name": "Director's Sequence",
+      "group": "storyboard",
+      "files": {
+        "ko": "1I2JkiOCbaRjDTt_ua28PBeYJH2R1jQtF",
+        "en": "1tMhZtlJOzt35XQyGG89cdG6NMJRnmw-O"
+      }
+    },
+    {
+      "no": "17",
+      "slug": "turn",
+      "name": "Turn",
+      "group": "video",
+      "files": {
+        "ko": "1H0BRqdrQ-2OnrtgRgEv3PKMVu_2JPAB1",
+        "en": "1OBT-0W2FKThdmy-tkZXVXG6Wszp-qMwc"
+      }
+    },
+    {
+      "no": "18",
+      "slug": "blocking-board",
+      "name": "Blocking Board",
+      "group": "storyboard",
+      "files": {
+        "ko": "1AXAsqqNARkG_t3lTixQc_agPsU4IDSIO",
+        "en": "1IGSz6-GSLUK_XE6296Zb-sWjGIyWQHqO"
+      }
+    },
+    {
+      "no": "19",
+      "slug": "flexboard",
+      "name": "FlexBoard",
+      "group": "storyboard",
+      "files": {
+        "ko": "1oGs0ry53d5ZdHpeo-pvKLGdM9xiZt46T",
+        "en": "1k736l-_nnXsRau1hUJm2ajB3vGloXRg_"
+      }
+    },
+    {
+      "no": "20",
+      "slug": "turn-video",
+      "name": "Turn Video",
+      "group": "video",
+      "files": {
+        "ko": "1EkrkwdULtM44OuQLpKcS5270PoMzLTat",
+        "en": "1M7kf_xccHfkFgXjwEN-LkF0Jp4N0HgBA"
+      }
+    },
+    {
+      "no": "21",
+      "slug": "asset-library",
+      "name": "Asset Library",
+      "group": "assets",
+      "files": {
+        "ko": "1XcxENzhDn7ZfKdhjbeVR06icKnzyMD5k",
+        "en": "1MaliNW6Mg7EtXvqR3OvP0eLmVxx4qTNY"
+      }
+    }
+  ],
+  "extraVideos": [
+    {
+      "no": "23_01",
+      "name": "Plan Before You Generate",
+      "files": {
+        "ko": "1xmtvAnNF0kzIm5mVaMziZdr0cJxmZmfD",
+        "en": "1MKx--EOSggiSouSbS-2yxBvf5FyXipQE"
+      }
+    },
+    {
+      "no": "23_02",
+      "name": "Check Your Credit Balance",
+      "files": {
+        "ko": "1tFQtTFqFgEfqKdv33KbV0G7dQ2s8Sa3m",
+        "en": "1uOklLEQmcIjXrMwc0QxGSVtCdiHVYs9H"
+      }
+    },
+    {
+      "no": "23_03",
+      "name": "Asset Library: Save and Reuse Images",
+      "files": {
+        "ko": null,
+        "en": "1Yp_s6XohT-yW-1YyD3jH5h4M4FZZb4dU"
+      }
+    },
+    {
+      "no": "23_04",
+      "name": "FlexBoard: Turn a Script into Shots",
+      "files": {
+        "ko": "19_DAs9MYlOl7uEy53V84vykQHeYgcgbt",
+        "en": "1SpyGClMnVx6kIbtkdoCpaE_bPOMq5tvh"
+      }
+    },
+    {
+      "no": "23_05",
+      "name": "Choose a Storyboard Tool for Your Shot",
+      "files": {
+        "ko": "1vgYftboI_izUoCkeROuYyYfW8LzUFq2d",
+        "en": "1_VTh01wTWv2hwaMJZ1kDhZWABnJqc8WD"
+      }
+    },
+    {
+      "no": "23_06",
+      "name": "Turn: Create a 360 Set",
+      "files": {
+        "ko": "1v9FHYtD7v48I141j8f3RrTezswSk1u7-",
+        "en": "1Vwu6xhHmzXyYKjLEg680M2mDQxNLuUFw"
+      }
+    },
+    {
+      "no": "23_07",
+      "name": "Start a Video with Text or Reference Frames",
+      "files": {
+        "ko": "1Hhy-4xseZpdCVUgo_EVwIlRfCR3FDSlA",
+        "en": "1Jszk1WcMxLQtCGAXHOUvaEKTwOmm9FCQ"
+      }
+    },
+    {
+      "no": "23_08",
+      "name": "Refine a Generated Image",
+      "files": {
+        "ko": "1WwlP34KJCkZit3WTOKBsxYWuXe_O8ntM",
+        "en": "1V_41nWFozzfTz0cLICwv9_fhNxsIk4dE"
+      }
+    },
+    {
+      "no": "23_09",
+      "name": "Blocking Board: Rehearse Actor & Camera Positions",
+      "files": {
+        "ko": "11ZEnui4lJH4rKmA-x8r9kYcUoXdQ3pR8",
+        "en": "18w9lcmWZcw7CARGm7JmuFjcDj41t_brI"
+      }
+    },
+    {
+      "no": "23_10",
+      "name": "Finalize Storyboard & Movement",
+      "files": {
+        "ko": "114VHIZuaMWpHnWwcBgO52Xw2JfD939Ur",
+        "en": "1fA5zNdY6YAqKyDSgDMzmJ1FmrJ5BBMJJ"
+      }
+    },
+    {
+      "no": "24",
+      "name": "AI Web Drama for Beginners",
+      "files": {
+        "ko": "1McKwYbQ8EkCar_oXeKyO8X1kRBx_-FTd",
+        "en": "1PspM43XcclTPS3KdIC7L4pI5KpdblCoS"
+      }
+    },
+    {
+      "no": "25",
+      "name": "XCONDA Workspace Guide",
+      "files": {
+        "ko": "1VM01cVRsjWLLX82VAr-xBk5fV8KRQkct",
+        "en": "1Ok4RcN9em2XzvTRyOUlJ5AiNYCF0obsS"
+      }
+    }
+  ]
+}

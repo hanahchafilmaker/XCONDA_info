@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type SyntheticEvent } from "react";
-import { ArrowUpRight, BookOpen, CalendarDays, Link2, Printer, X, Pin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, BookOpen, CalendarDays, Link2, X, Pin } from "lucide-react";
 import { useContent } from "../content/ContentContext";
 import { categoryLabel, changeLabel, useLang } from "../i18n";
 import type { Block } from "../content/types";
@@ -11,10 +11,11 @@ import { cn } from "../utils/cn";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { TOOLS } from "../content/tools";
-import { htmlGuideLabels, htmlGuidePath } from "../content/htmlGuides";
-import { hubAbsolute, hubBase, shareUrlFor } from "../seo";
+import { htmlGuideLabels, htmlGuideUrl } from "../content/htmlGuides";
+import { hubAbsolute, shareUrlFor } from "../seo";
 import { productLinks } from "../content/cta";
 import { isEndedTitle } from "../content/seo";
+import { DRIVE_GUIDE_UPDATED } from "../content/driveGuides";
 
 /**
  * 제품 사이트 링크(관련 툴 · 무료 시작 · 요금). 정적 페이지(scripts/build-seo.mjs)와 같은
@@ -59,13 +60,10 @@ export default function ArticleModal() {
   const [loading, setLoading] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [guideView, setGuideView] = useState<"illustrated" | "original">("illustrated");
-  const [frameStatus, setFrameStatus] = useState<"loading" | "ready" | "error">("loading");
   const scrollRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const frameRef = useRef<HTMLIFrameElement>(null);
-  const frameCleanup = useRef<(() => void) | null>(null);
-  const modalGuidePath = activeToolSlug ? htmlGuidePath(activeToolSlug, target) : undefined;
+  const modalGuideUrl = activeToolSlug ? htmlGuideUrl(activeToolSlug, target) : undefined;
   const focusKey = activeToolSlug ?? active?.id;
   const labels = htmlGuideLabels[target];
 
@@ -84,11 +82,6 @@ export default function ArticleModal() {
 
   useEffect(() => {
     setGuideView("illustrated");
-    setFrameStatus("loading");
-    return () => {
-      frameCleanup.current?.();
-      frameCleanup.current = null;
-    };
   }, [activeToolSlug, target]);
 
   useEffect(() => {
@@ -128,7 +121,7 @@ export default function ArticleModal() {
   const guideTool = active.type === "guide"
     ? TOOLS.find((tool) => active.id === `tool-${tool.slug}` || (active.tool && active.tool.toLowerCase() === tool.name.toLowerCase()))
     : undefined;
-  const guidePath = guideTool ? htmlGuidePath(guideTool.slug, target) : undefined;
+  const guideUrl = guideTool ? htmlGuideUrl(guideTool.slug, target) : undefined;
 
   const related = entries
     // 끝난 행사 글(제목에 「종료」)은 추천하지 않습니다 — 정적 페이지의 관련 글과 같은 기준.
@@ -136,9 +129,9 @@ export default function ArticleModal() {
     .slice(0, 3);
 
   const share = async () => {
-    // Tool-dialog links reopen the same illustrated guide and selected language;
+    // Tool-dialog links reopen the same current guide and selected language;
     // ordinary article links continue to use their canonical article URL.
-    const url = modalGuidePath && activeToolSlug
+    const url = modalGuideUrl && activeToolSlug
       ? `${hubAbsolute("")}?lang=${encodeURIComponent(target)}#post=${encodeURIComponent(`tool-${activeToolSlug}`)}`
       : shareUrlFor(active);
     setSharing(true);
@@ -153,79 +146,30 @@ export default function ArticleModal() {
     }
   };
 
-  const onFrameLoad = (event: SyntheticEvent<HTMLIFrameElement>) => {
-    frameCleanup.current?.();
-    frameCleanup.current = null;
-    try {
-      const frame = event.currentTarget;
-      const doc = frame.contentDocument;
-      if (!doc?.querySelector(".slide.cover")) {
-        setFrameStatus("error");
-        return;
-      }
-      doc.documentElement.classList.add("xconda-guide-embedded");
-      const onKey = (keyEvent: KeyboardEvent) => {
-        // Escape first closes an enlarged screenshot, then closes the outer dialog.
-        if (doc.querySelector('.zoom[role="dialog"]:not([hidden])')) return;
-        if (keyEvent.key === "Escape") {
-          keyEvent.preventDefault();
-          closeEntry();
-          return;
-        }
-        if (keyEvent.key !== "Tab" || !dialogRef.current) return;
-        const children = visibleFocusables(doc);
-        const focused = doc.activeElement;
-        const beforeFirst = focused === doc.body || focused === doc.documentElement || focused === children[0];
-        const afterLast = focused === children[children.length - 1] || (!children.length && beforeFirst);
-        const controls = visibleFocusables(dialogRef.current);
-        const frameIndex = controls.indexOf(frame);
-        if (frameIndex < 0) return;
-        if (keyEvent.shiftKey && beforeFirst) {
-          keyEvent.preventDefault();
-          (controls[frameIndex - 1] ?? controls[controls.length - 1])?.focus();
-        } else if (!keyEvent.shiftKey && afterLast) {
-          keyEvent.preventDefault();
-          (controls[frameIndex + 1] ?? controls[0])?.focus();
-        }
-      };
-      doc.addEventListener("keydown", onKey, true);
-      frameCleanup.current = () => doc.removeEventListener("keydown", onKey, true);
-      setFrameStatus("ready");
-    } catch {
-      setFrameStatus("error");
-    }
-  };
-
-  const printGuide = () => {
-    if (frameStatus !== "ready") return;
-    frameRef.current?.contentWindow?.focus();
-    frameRef.current?.contentWindow?.print();
-  };
-
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby={modalGuidePath ? "manual-modal-title" : "article-title"} className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center sm:p-6">
+    <div role="dialog" aria-modal="true" aria-labelledby={modalGuideUrl ? "manual-modal-title" : "article-title"} className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center sm:p-6">
       <button type="button" aria-label={t("common.close")} tabIndex={-1} onClick={closeEntry} className="absolute inset-0 cursor-default bg-neutral-950/35 backdrop-blur-sm" />
       <div
         ref={dialogRef}
         className={cn(
           "anim-modal relative z-10 flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-black/10 bg-ink-900 shadow-2xl sm:rounded-2xl",
-          modalGuidePath ? "h-[94dvh] sm:h-[min(90dvh,900px)] sm:max-w-[980px]" : "sm:max-w-3xl",
+          modalGuideUrl ? "h-[94dvh] sm:h-[min(90dvh,900px)] sm:max-w-[980px]" : "sm:max-w-3xl",
         )}
       >
-        {modalGuidePath && <h2 id="manual-modal-title" className="sr-only">{active.title} — {labels.illustrated}</h2>}
+        {modalGuideUrl && <h2 id="manual-modal-title" className="sr-only">{active.title} — {labels.illustrated}</h2>}
         {/* Top bar */}
         <div className="flex shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-black/[0.06] px-4 py-3 sm:px-7">
           <div className="flex min-w-0 items-center gap-2">
             <TypeLabel type={active.type} />
             {active.category && !["공지", "Notice"].includes(active.category) && (
-              <span className={modalGuidePath ? "hidden sm:contents" : "contents"}>
+              <span className={modalGuideUrl ? "hidden sm:contents" : "contents"}>
                 <CategoryBadge>{categoryLabel(active.category, lang)}</CategoryBadge>
               </span>
             )}
             {active.version && <span className="font-mono text-xs text-neutral-500">{active.version}</span>}
           </div>
           <div className="ml-auto flex items-center gap-1">
-            {modalGuidePath && (
+            {modalGuideUrl && (
               <button
                 type="button"
                 data-guide-view={guideView === "illustrated" ? "original" : "illustrated"}
@@ -237,20 +181,6 @@ export default function ArticleModal() {
                 {guideView === "illustrated" ? labels.original : labels.illustrated}
               </button>
             )}
-            {modalGuidePath && guideView === "illustrated" && (
-              <button
-                type="button"
-                data-guide-print
-                onClick={printGuide}
-                disabled={frameStatus !== "ready"}
-                aria-label={labels.print}
-                title={labels.print}
-                className="notranslate inline-flex items-center gap-1.5 rounded-full border border-black/10 px-2.5 py-1.5 text-xs font-medium text-neutral-500 transition hover:border-black/25 hover:text-black disabled:opacity-40"
-              >
-                <Printer className="h-3.5 w-3.5" aria-hidden />
-                <span className="hidden min-[480px]:inline">{labels.print}</span>
-              </button>
-            )}
             <Button
               variant="outline"
               size="sm"
@@ -260,7 +190,7 @@ export default function ArticleModal() {
               aria-label={t("common.share")}
             >
               <Link2 className="h-3.5 w-3.5" aria-hidden />
-              <span className={modalGuidePath ? "sr-only min-[480px]:not-sr-only" : undefined}>{t("common.share")}</span>
+              <span className={modalGuideUrl ? "sr-only min-[480px]:not-sr-only" : undefined}>{t("common.share")}</span>
             </Button>
             <button
               ref={closeRef}
@@ -275,31 +205,33 @@ export default function ArticleModal() {
           </div>
         </div>
 
-        {modalGuidePath && (
-          <div id="illustrated-guide" hidden={guideView !== "illustrated"} className="relative min-h-0 flex-1 bg-white">
-            <iframe
-              ref={frameRef}
-              data-html-guide={activeToolSlug}
-              src={`${hubBase()}${modalGuidePath}`}
-              title={`${guideTool?.name ?? active.title} — ${labels.illustrated}`}
-              sandbox="allow-scripts allow-same-origin allow-modals"
-              onLoad={onFrameLoad}
-              className="block h-full w-full border-0"
-            />
-            {frameStatus !== "ready" && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white p-6 text-center text-sm text-neutral-600">
-                <p role={frameStatus === "error" ? "alert" : "status"}>{frameStatus === "error" ? labels.failed : labels.loading}</p>
-                {frameStatus === "error" && (
-                  <a href={`${hubBase()}${modalGuidePath}`} target="_blank" rel="noopener noreferrer" className="notranslate underline underline-offset-4">
-                    {labels.openNew} ↗
-                  </a>
-                )}
-              </div>
-            )}
+        {/* Drive는 자체 CSP로 iframe 삽입을 막습니다 → 현재판 문서는 새 탭 링크로 엽니다. */}
+        {modalGuideUrl && (
+          <div id="illustrated-guide" hidden={guideView !== "illustrated"} className="relative min-h-0 flex-1 overflow-y-auto bg-white px-5 py-8 sm:px-10">
+            <div className="mx-auto max-w-2xl rounded-2xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                XCONDA / CURRENT GUIDE · {DRIVE_GUIDE_UPDATED}
+              </p>
+              <h3 className="mt-3 text-xl font-bold tracking-tight text-neutral-950 notranslate">{guideTool?.name ?? active.title}</h3>
+              <p className="mt-3 text-[13px] leading-relaxed text-neutral-600">
+                {labels.read}. Google Drive에서 HTML 미리보기가 제한되면 파일을 다운로드한 뒤 브라우저로 열어 주세요.
+              </p>
+              <a
+                data-html-guide={activeToolSlug}
+                href={modalGuideUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-black"
+              >
+                {labels.read}
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+              <p className="mt-4 text-xs text-neutral-500">이전 버전 정적 사본 링크는 제거했습니다.</p>
+            </div>
           </div>
         )}
 
-        <div id="original-guide" ref={scrollRef} hidden={!!modalGuidePath && guideView === "illustrated"} className="min-h-0 overflow-y-auto overscroll-contain">
+        <div id="original-guide" ref={scrollRef} hidden={!!modalGuideUrl && guideView === "illustrated"} className="min-h-0 overflow-y-auto overscroll-contain">
           {(() => {
             // Link 가 YouTube 영상이면 상단 커버 자리에 바로 재생할 수 있게 끼워 넣습니다.
             const ytEmbed = active.url ? youTubeEmbed(active.url) : null;
@@ -351,10 +283,10 @@ export default function ArticleModal() {
             {active.summary && <p className="mt-3 text-pretty text-base leading-relaxed text-neutral-500">{active.summary}</p>}
             <ProductLinks lang={String(target).slice(0, 2)} tool={active.tool} title={active.title} placement="top" />
 
-            {guidePath && !modalGuidePath && (
+            {guideUrl && !modalGuideUrl && (
               <a
                 data-html-guide={guideTool?.slug}
-                href={`${hubBase()}${guidePath}`}
+                href={guideUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="notranslate mt-6 inline-flex items-center gap-2 rounded-none bg-amber-50 px-4 py-3 text-sm font-medium text-neutral-900 ring-1 ring-inset ring-amber-200 transition hover:bg-amber-100"
