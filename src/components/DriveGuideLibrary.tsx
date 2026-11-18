@@ -86,7 +86,7 @@ export default function DriveGuideLibrary() {
       </div>
 
       <details className="group mt-6 rounded-xl border border-neutral-200 bg-white">
-        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-neutral-800 marker:hidden">
+        <summary className="cursor-pointer list-none break-words px-4 py-3 text-sm font-semibold text-neutral-800 marker:hidden">
           {pick(`문서 24주제 × 4개 언어 (${docLinks.length}개 링크)`, `24 topics × 4 languages (${docLinks.length} links)`)}
           <span className="ml-2 text-xs font-normal text-neutral-500" aria-hidden="true">▾</span>
         </summary>
@@ -95,7 +95,7 @@ export default function DriveGuideLibrary() {
             {DRIVE_GUIDE_DOCS.map((doc) => (
               <li key={doc.no} className="rounded-lg border border-neutral-200 p-3">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                  <span className="text-[13px] font-semibold text-neutral-900 notranslate">
+                  <span className="min-w-0 break-words text-[13px] font-semibold text-neutral-900 notranslate">
                     <span className="mr-2 font-mono text-[11px] text-neutral-500">{doc.no}</span>{doc.name}
                   </span>
                   <span className="text-[11px] text-neutral-500">{GROUP_LABEL[doc.group][lang]}</span>
@@ -125,7 +125,7 @@ export default function DriveGuideLibrary() {
       </details>
 
       <details className="group mt-3 rounded-xl border border-neutral-200 bg-white">
-        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-neutral-800 marker:hidden">
+        <summary className="cursor-pointer list-none break-words px-4 py-3 text-sm font-semibold text-neutral-800 marker:hidden">
           {pick(`KO/EN 영상 가이드 (${ALL_DRIVE_VIDEO_LINKS.length}편)`, `KO/EN video guides (${ALL_DRIVE_VIDEO_LINKS.length})`)}
           <span className="ml-2 text-xs font-normal text-neutral-500" aria-hidden="true">▾</span>
         </summary>
@@ -137,7 +137,7 @@ export default function DriveGuideLibrary() {
             {topicVideos.map((video) =>
               video.url ? (
                 <li key={`${video.no}-${video.code}`} className="flex items-center justify-between gap-2 rounded-md border border-neutral-200 px-2.5 py-2 text-[12px]">
-                  <span className="truncate text-neutral-700 notranslate">
+                  <span className="min-w-0 truncate text-neutral-700 notranslate">
                     <span className="mr-1.5 font-mono text-[10px] text-neutral-500">{video.no}</span>{video.name}
                   </span>
                   <a href={video.url} target="_blank" rel="noopener noreferrer" className="shrink-0 font-semibold text-neutral-900 hover:underline">
@@ -157,7 +157,7 @@ export default function DriveGuideLibrary() {
                 if (!url) return null;
                 return (
                   <li key={`${video.no}-${item.code}`} className="flex items-center justify-between gap-2 rounded-md border border-neutral-200 px-2.5 py-2 text-[12px]">
-                    <span className="truncate text-neutral-700 notranslate">
+                    <span className="min-w-0 truncate text-neutral-700 notranslate">
                       <span className="mr-1.5 font-mono text-[10px] text-neutral-500">{video.no}</span>{video.name}
                     </span>
                     <a href={url} target="_blank" rel="noopener noreferrer" className="shrink-0 font-semibold text-neutral-900 hover:underline">

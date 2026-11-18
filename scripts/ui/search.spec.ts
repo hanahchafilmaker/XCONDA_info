@@ -186,7 +186,9 @@ test("neutral editorial home: search form, five destinations and featured guide 
   await page.keyboard.press("Escape");
   const featured = page.locator("[data-featured-guide]");
   await featured.click();
-  await expect(page.locator('iframe[data-html-guide="flexboard"]')).toBeVisible();
+  // 2026-11-18 현재판 Drive 문서는 CSP 때문에 iframe 대신 새 탭 링크로 엽니다.
+  await expect(page.locator('a[data-html-guide="flexboard"]')).toBeVisible();
+  await expect(page.locator('iframe[data-html-guide="flexboard"]')).toHaveCount(0);
   await page.locator("[data-modal-close]").click();
   await expect(featured).toBeFocused();
 });
