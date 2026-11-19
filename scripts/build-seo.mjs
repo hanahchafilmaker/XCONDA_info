@@ -40,6 +40,7 @@ import {
   SEO_DESCRIPTION_MAX,
   SEO_TITLE_MAX,
   SITE_NAME,
+  siteNameFor,
   absoluteUrl,
   appJsonLd,
   articleJsonLd,
@@ -583,6 +584,33 @@ export function summaryRepeatsBody(summary, blocks = []) {
 const noteHtml = (text) =>
   escapeHtml(text).replace(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g, (mail) => `<a href="mailto:${mail}">${mail}</a>`);
 
+/** 약관·개인정보·환불 링크 — 모든 정적 페이지 하단에 둡니다(영어 페이지에 없던 문제). */
+const LEGAL_LABELS = {
+  ko: { terms: "이용약관", privacy: "개인정보처리방침", refund: "환불 정책" },
+  en: { terms: "Terms of Use", privacy: "Privacy Policy", refund: "Refund Policy" },
+  ja: { terms: "利用規約", privacy: "プライバシーポリシー", refund: "返金ポリシー" },
+  zh: { terms: "使用条款", privacy: "隐私政策", refund: "退款政策" },
+};
+export function legalLinksHtml(lang = "ko") {
+  const l = LEGAL_LABELS[lang] ?? LEGAL_LABELS.en;
+  return [
+    `<nav class="seo-legal" aria-label="Legal">`,
+    `<a href="https://www.xconda.ai/legal/terms" rel="noopener noreferrer">${escapeHtml(l.terms)}</a>`,
+    `<a href="https://www.xconda.ai/legal/privacy" rel="noopener noreferrer">${escapeHtml(l.privacy)}</a>`,
+    `<a href="https://www.xconda.ai/legal/refund" rel="noopener noreferrer">${escapeHtml(l.refund)}</a>`,
+    `</nav>`,
+  ].join("");
+}
+
+/** 번역 목록 카드 — 썸네일(커버)과 날짜를 함께 보여 줍니다(제목만 있던 문제). */
+function localizedCardHtml(it, href, code) {
+  const title = escapeHtml(it.tr.title ?? it.record.title);
+  const date = localizedDate(code, it.record.date);
+  const thumb = it.record.cover ? `<img src="${escapeHtml(it.record.cover)}" alt="" loading="lazy">` : "";
+  const meta = date ? `<span class="seo-meta">${escapeHtml(date)}</span>` : "";
+  return `<li class="seo-card"><a href="${escapeHtml(href)}">${thumb}<span class="seo-card-text"><span class="seo-card-title">${title}</span>${meta}</span></a></li>`;
+}
+
 /** 제품 사이트 링크 묶음(글 상단·하단) — 주소·문구는 src/content/cta.js 한 곳에서 만듭니다. */
 export function productLinksHtml({ lang = "ko", tool = "", title = "", placement = "bottom", utm = true } = {}) {
   const { label, links } = productLinks({ lang, tool, title, placement, utm });
@@ -767,6 +795,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         ogType: "article",
         ogTitle: title,
         ogDescription: description,
+        siteName: siteNameFor(code),
         // 언어별 카드(제목을 그 언어로 그린 카드) → 글 커버 → 기본 카드 순서
         image: localizedOgImageUrl(ogLangManifest, code, path, site) || it.record.image || defaultImageUrl,
         publishedTime: it.record.date ?? "",
@@ -845,6 +874,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `<p class="seo-meta">${metaLine}</p>`,
         it.record.ended ? `<p class="seo-ended" role="note">${escapeHtml(ui.ended ?? uiDefaults.ended)}</p>` : "",
         productLinksHtml({ lang: code, tool: it.record.tool, title: `${it.record.title} ${title}`, placement: "top", utm: !moved }),
+        // 본문 커버 — 한국어 글과 같은 사진입니다(영어 글에 없던 문제).
+        it.record.cover ? `<figure class="seo-cover"><img src="${escapeHtml(it.record.cover)}" alt="${escapeHtml(title)}" loading="eager"></figure>` : "",
         // 도입 문단 — 한국어 페이지처럼 요약을 본문 앞에 싣습니다(본문 첫 글과 같은 말이면 생략).
         !bodyHtml || !summaryRepeatsBody(summaryText, bodyBlocks) ? paragraphsHtml(summaryText) : "",
         bodyHtml,
@@ -862,6 +893,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
             ].join("")
           : "",
         ui.note ? `<p class="seo-note">${noteHtml(ui.note)}</p>` : "",
+        legalLinksHtml(code),
         `</main></div>`,
       ]
         .filter(Boolean)
@@ -874,7 +906,8 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
     // 섹션 목록 (/en/qna/ 등)
     const prefixes = [...new Set(items.map((i) => i.prefix))].sort();
     for (const prefix of prefixes) {
-      const list = items.filter((i) => i.prefix === prefix).sort((a, b) => (a.record.seq ?? 0) - (b.record.seq ?? 0));
+      // 끝난 행사 글은 목록에 넣지 않습니다(주소 페이지는 그대로 둡니다).
+      const list = items.filter((i) => i.prefix === prefix && !i.record.ended).sort((a, b) => (a.record.seq ?? 0) - (b.record.seq ?? 0));
       const path = `${prefix}/`;
       const url = localizedUrl(site, code, path);
       const sec = t.sections?.[prefix] ?? {};
@@ -887,11 +920,11 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         ogType: "website",
         ogTitle: title,
         ogDescription: description,
+        siteName: siteNameFor(code),
         image: localizedOgImageUrl(ogLangManifest, code, path, site) || defaultImageUrl,
         publishedTime: "",
         ogLocale: lang.ogLocale,
         alternates: hreflangAlternates(site, path, langCodes),
-        // 문의처는 언어에 따라 갈립니다 — 영어는 미국 법인, 그 밖에는 한국 법인.
         siteLd: jsonLdGraph(site, [], code),
       });
       const body = [
@@ -901,11 +934,12 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
         `<h1>${escapeHtml(title)}</h1>`,
         `<p>${escapeHtml(description)}</p>`,
         `<ul class="seo-cards">`,
-        ...list.map((it) => `<li class="seo-card"><a href="./${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+        ...list.map((it) => localizedCardHtml(it, `./${it.record.slug}/`, code)),
         `</ul>`,
         `<p><a href="${escapeHtml(localizedUrl(site, "ko", path))}" hreflang="ko">${escapeHtml(ui.koreanOriginal ?? "한국어 원문")}</a></p>`,
         // 목록으로 바로 들어온 방문자용 제품 링크. 영어가 제품 사이트 아래로 옮겨지면(moved) 같은 사이트 이동이라 UTM 을 뺍니다.
         listingLinksHtml({ lang: code, placement: "bottom", utm: !moved }),
+        legalLinksHtml(code),
         `</main></div>`,
       ].join("\n");
       const anchor = { guide: "guides", notice: "notices", post: "blog", qna: "faq" }[prefix] ?? "";
@@ -922,6 +956,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       ogType: "website",
       ogTitle: homeTitle,
       ogDescription: homeDescription,
+      siteName: siteNameFor(code),
       image: localizedOgImageUrl(ogLangManifest, code, homePath, site) || defaultImageUrl,
       publishedTime: "",
       ogLocale: lang.ogLocale,
@@ -936,12 +971,13 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       `<p>${escapeHtml(homeDescription)}</p>`,
       ...prefixes.map((prefix) => {
         const sec = t.sections?.[prefix] ?? {};
-        const list = items.filter((i) => i.prefix === prefix);
+        // 끝난 행사 글은 목록에 넣지 않습니다(주소 페이지는 그대로 둡니다).
+        const list = items.filter((i) => i.prefix === prefix && !i.record.ended);
         return [
           `<section class="seo-card-section">`,
           `<h2 class="seo-card-heading"><a href="./${escapeHtml(prefix)}/">${escapeHtml(sec.title ?? prefix)}</a></h2>`,
           `<ul class="seo-cards">`,
-          ...list.map((it) => `<li class="seo-card"><a href="./${escapeHtml(prefix)}/${escapeHtml(it.record.slug)}/">${escapeHtml(it.tr.title ?? it.record.title)}</a></li>`),
+          ...list.map((it) => localizedCardHtml(it, `./${prefix}/${it.record.slug}/`, code)),
           `</ul>`,
           `</section>`,
         ].join("\n");
@@ -949,6 +985,7 @@ export function localizedPages({ site, translations = {}, template, pageRecords 
       ui.note ? `<p class="seo-note">${noteHtml(ui.note)}</p>` : "",
       // 언어 홈으로 바로 들어온 방문자용 제품 링크(목록 페이지와 같은 규칙).
       listingLinksHtml({ lang: code, placement: "bottom", utm: !moved }),
+      legalLinksHtml(code),
       `</main></div>`,
     ].join("\n");
     // 앱 스크립트·CSS 를 남긴 템플릿을 씁니다(홈만). 목록·글은 아래 base(문서형) 그대로.
@@ -1012,7 +1049,7 @@ export function headBlock(meta) {
           `<link rel="alternate" hreflang="x-default" href="${e(meta.url)}" />`,
         ]),
     `<meta property="og:type" content="${meta.ogType}" />`,
-    `<meta property="og:site_name" content="${e(SITE_NAME)}" />`,
+    `<meta property="og:site_name" content="${e(meta.siteName ?? SITE_NAME)}" />`,
     `<meta property="og:locale" content="${e(meta.ogLocale ?? "ko_KR")}" />`,
     `<meta property="og:title" content="${e(meta.ogTitle)}" />`,
     `<meta property="og:description" content="${e(meta.ogDescription)}" />`,
@@ -1098,6 +1135,7 @@ export function articleBodyHtml({ prefix, type, title, date, modified, author, s
           `</nav>`,
         ].join("")
       : "",
+    legalLinksHtml("ko"),
     `<p><a href="${hubHref}">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -1191,6 +1229,7 @@ export function homeDigestHtml({ groups, description, total, updated }) {
     sectionHtml({ anchor: "blog", heading: SECTION_LABELS.blog, items: groups.blog, linkOf, moreHref: "post/" }),
     sectionHtml({ anchor: "faq", heading: "Q&A", items: groups.faq, linkOf, moreHref: "qna/" }),
     listingLinksHtml({ lang: "ko", placement: "bottom" }),
+    legalLinksHtml("ko"),
     `<p><a href="https://www.xconda.ai/">XCONDA 스튜디오 열기</a></p>`,
     `</main></div>`,
   ]
@@ -1214,6 +1253,7 @@ export function sectionPageHtml({ page, items, lang = "ko", cta = true }) {
       : "",
     // 목록으로 바로 들어온 방문자도 제품 사이트로 갈 수 있게 합니다(글 페이지와 같은 링크 묶음).
     cta ? listingLinksHtml({ lang, placement: "bottom" }) : "",
+    legalLinksHtml(lang),
     `<p><a href="../">${escapeHtml(SITE_NAME)} 메인으로</a></p>`,
     `</main></div>`,
   ]
@@ -1289,7 +1329,7 @@ function blocksToText(blocks) {
 }
 
 /** 정적 페이지가 로드되기 전에만 보이는 최소 스타일 (앱이 뜨면 #root 와 함께 사라집니다) */
-const STATIC_STYLE = `<style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-cta{display:flex;flex-wrap:wrap;gap:8px 10px;margin:20px 0}.seo-article .seo-cta a{display:inline-block;padding:8px 16px;border:1px solid #171717;border-radius:999px;font-size:14px;line-height:1.4;text-decoration:none}.seo-article .seo-cta a:first-child{background:#000;color:#fff}.seo-ended{border:1px solid #d4d4d4;padding:10px 14px;font-size:14px;color:#525252}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}.seo-article .seo-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;margin:18px 0 8px;padding:0;list-style:none}.seo-article .seo-card{display:flex;margin:0;min-width:0}.seo-article .seo-card>a{display:flex;align-items:flex-start;width:100%;padding:18px 20px;border:1px solid #e5e5e5;border-radius:14px;background:#fafafa;color:#171717;font-size:16px;line-height:1.5;text-decoration:none;transition:background .15s ease,border-color .15s ease,transform .15s ease}.seo-article .seo-card>a::after{content:">";margin-left:auto;padding-left:12px;color:#a3a3a3;font-size:15px;line-height:1.5}.seo-article .seo-card>a:hover{background:#fff;border-color:#171717;transform:translateY(-1px);opacity:1}.seo-article .seo-card-section{margin-top:44px}.seo-article .seo-card-heading{margin:0 0 4px}.seo-article .seo-card-heading>a{text-decoration:none}.seo-article .seo-card-heading>a:hover{opacity:.6}.seo-article.seo-home{max-width:1180px}@media (prefers-reduced-motion:reduce){.seo-article .seo-card>a{transition:none}.seo-article .seo-card>a:hover{transform:none}}@media print{.seo-article .seo-cards{gap:6px}.seo-article .seo-card>a{border-color:#d4d4d4;background:#fff}}</style>`;
+const STATIC_STYLE = `<style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-cta{display:flex;flex-wrap:wrap;gap:8px 10px;margin:20px 0}.seo-article .seo-cta a{display:inline-block;padding:8px 16px;border:1px solid #171717;border-radius:999px;font-size:14px;line-height:1.4;text-decoration:none}.seo-article .seo-cta a:first-child{background:#000;color:#fff}.seo-ended{border:1px solid #d4d4d4;padding:10px 14px;font-size:14px;color:#525252}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}.seo-article .seo-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;margin:18px 0 8px;padding:0;list-style:none}.seo-article .seo-card{display:flex;margin:0;min-width:0}.seo-article .seo-card>a{display:flex;align-items:flex-start;width:100%;padding:18px 20px;border:1px solid #e5e5e5;border-radius:14px;background:#fafafa;color:#171717;font-size:16px;line-height:1.5;text-decoration:none;transition:background .15s ease,border-color .15s ease,transform .15s ease}.seo-article .seo-card>a::after{content:">";margin-left:auto;padding-left:12px;color:#a3a3a3;font-size:15px;line-height:1.5}.seo-article .seo-card>a:hover{background:#fff;border-color:#171717;transform:translateY(-1px);opacity:1}.seo-article .seo-card-section{margin-top:44px}.seo-article .seo-card-heading{margin:0 0 4px}.seo-article .seo-card-heading>a{text-decoration:none}.seo-article .seo-card-heading>a:hover{opacity:.6}.seo-article .seo-card>a>img{width:88px;height:64px;object-fit:cover;border-radius:8px;flex-shrink:0}.seo-article .seo-card-text{display:flex;flex-direction:column;gap:4px;min-width:0}.seo-article .seo-card-title{font-size:16px;line-height:1.5}.seo-legal{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:32px;padding-top:16px;border-top:1px solid #e5e5e5;font-size:13px;color:#737373}.seo-legal a{color:#525252}.seo-article.seo-home{max-width:1180px}@media (prefers-reduced-motion:reduce){.seo-article .seo-card>a{transition:none}.seo-article .seo-card>a:hover{transform:none}}@media print{.seo-article .seo-cards{gap:6px}.seo-article .seo-card>a{border-color:#d4d4d4;background:#fff}}</style>`;
 
 /* ------------------------------ 언어별 공유 카드 ------------------------------ */
 
@@ -1609,6 +1649,8 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
       url,
       description: meta.description,
       image: meta.image,
+      // 번역 페이지(영어 등)의 본문 커버·목록 썸네일용 — 한국어 글과 같은 사진입니다.
+      cover: coverRaw,
       pageTitle: meta.pageTitle,
       date,
       modified,
@@ -1632,12 +1674,14 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
   // 홈과 목록 주소 4개(/post/ · /notice/ · /qna/ · /guide/)를 **정적 HTML** 로 만듭니다.
   // 앱(React)은 이 내용을 지우고 화면을 그리므로 사용자 화면은 그대로이고,
   // 자바스크립트를 실행하지 않는 AI 크롤러만 이 목록을 읽습니다.
+  // 끝난 행사 글은 목록에 넣지 않습니다(주소 페이지는 그대로 둡니다).
+  const liveRecords = pageRecords.filter((p) => !p.ended);
   const groups = {
-    notices: pageRecords.filter((p) => p.type === "notice").sort(byPinnedThenDate),
-    news: pageRecords.filter((p) => p.type === "news").sort(byDateDesc),
-    guides: pageRecords.filter((p) => p.type === "guide").sort((a, b) => a.seq - b.seq),
-    blog: pageRecords.filter((p) => p.type === "blog").sort(byDateDesc),
-    faq: pageRecords.filter((p) => p.type === "faq").sort((a, b) => a.seq - b.seq),
+    notices: liveRecords.filter((p) => p.type === "notice").sort(byPinnedThenDate),
+    news: liveRecords.filter((p) => p.type === "news").sort(byDateDesc),
+    guides: liveRecords.filter((p) => p.type === "guide").sort((a, b) => a.seq - b.seq),
+    blog: liveRecords.filter((p) => p.type === "blog").sort(byDateDesc),
+    faq: liveRecords.filter((p) => p.type === "faq").sort((a, b) => a.seq - b.seq),
   };
   const allItems = [...groups.notices, ...groups.news, ...groups.guides, ...groups.blog, ...groups.faq];
   const newest = pageRecords
@@ -1684,7 +1728,7 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
   const sectionRecords = [];
   for (const page of SECTION_PAGES) {
     const items = [
-      ...page.types.flatMap((t) => pageRecords.filter((p) => p.type === t)),
+      ...page.types.flatMap((t) => liveRecords.filter((p) => p.type === t)),
     ].sort((a, b) => (a.type === "notice" ? byPinnedThenDate(a, b) : byDateDesc(a, b)));
     if (!items.length) continue; // 해당 섹션이 비어 있으면 목록 주소를 만들지 않습니다.
     const url = absoluteUrl(site, `${page.prefix}/`);
@@ -1733,15 +1777,27 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
     robots: "noindex",
     siteLd,
   });
+  const recentList = (heading) =>
+    recent.length
+      ? `<h2>${heading}</h2><ul>${recent.map((p) => `<li><a href="${escapeHtml(p.url)}">${escapeHtml(p.title)}</a></li>`).join("")}</ul>`
+      : "";
   const notFoundBody = [
     `<div id="root"><main class="seo-article">`,
+    // 영어 주소(/en/ · /hub/en/ · ?lang=en)에서 온 방문자에게는 영어 404를 보여 줍니다.
+    `<div data-404-ko>`,
     `<h1>페이지를 찾을 수 없습니다</h1>`,
     `<p>주소가 바뀌었거나 삭제된 페이지입니다. 아래에서 찾으시는 내용을 확인해 보세요.</p>`,
     `<p><a href="${escapeHtml(site)}">${escapeHtml(SITE_NAME)} 메인으로 가기</a></p>`,
-    recent.length
-      ? `<h2>최근 글</h2><ul>${recent.map((p) => `<li><a href="${escapeHtml(p.url)}">${escapeHtml(p.title)}</a></li>`).join("")}</ul>`
-      : "",
+    recentList("최근 글"),
+    `</div>`,
+    `<div data-404-en hidden>`,
+    `<h1>Page not found</h1>`,
+    `<p>This page has moved or been deleted. Check the links below.</p>`,
+    `<p><a href="${escapeHtml(site)}">Go to XCONDA Hub home</a></p>`,
+    recentList("Recent posts"),
+    `</div>`,
     `</main></div>`,
+    `<script>(function(){try{var p=location.pathname||"";var en=/\\/en(\\/|$)/.test(p)||new URLSearchParams(location.search).get("lang")==="en";if(!en)return;var ko=document.querySelector("[data-404-ko]");var e=document.querySelector("[data-404-en]");if(ko)ko.hidden=true;if(e)e.hidden=false;document.documentElement.lang="en";document.title="Page not found | XCONDA Hub";}catch(_){}})();</script>`,
   ]
     .filter(Boolean)
     .join("\n");

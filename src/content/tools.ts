@@ -52,7 +52,7 @@ const BASE_TOOLS: Tool[] = [
     group: "핵심 스튜디오",
     tagline: "시나리오 기반 9컷 스토리보드 생성 & 원하는 컷만 선택 재생성",
     desc: "시나리오를 입력해 3×3 그리드의 9컷 시네마틱 스토리보드를 한 번에 생성하고, 마음에 들지 않는 컷만 골라 개별 재생성(Selective Regeneration)합니다.",
-    href: `${STUDIO_URL}/studio/directors-cut`,
+    href: `${STUDIO_URL}/studio/flexboard-v2`,
     image: `${LOCAL_IMG}/tool-flexboard.jpg`,
     badge: "Core",
     steps: [
@@ -73,7 +73,7 @@ const BASE_TOOLS: Tool[] = [
     group: "핵심 스튜디오",
     tagline: "공간 내 인물·카메라 동선 및 공간 연출 블로킹",
     desc: "고정된 360° 가상 공간 위에 인물의 위치, 시선 방향, 카메라 무브먼트 동선을 직관적으로 배치해 장면 간 시각적 연속성을 설계합니다.",
-    href: `${STUDIO_URL}`,
+    href: `${STUDIO_URL}/studio/blocking-board`,
     image: `${LOCAL_IMG}/tool-blocking-board.jpg`,
     badge: "Core",
     steps: [

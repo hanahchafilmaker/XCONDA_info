@@ -25,11 +25,19 @@ const PLACEMENT = { top: "cb_top", bottom: "cb_bottom" };
  * 툴 → 제품 사이트 주소. 지금 공개된 주소만 적습니다.
  * 스튜디오 주소는 로그인 뒤 화면이라 비로그인 방문자는 로그인으로 넘어갑니다.
  * www 기능 소개 페이지(`/features/<slug>`, 개발 9순위)가 열리면 `path` 를 그 주소로 바꾸세요.
- * 블로킹 보드는 아직 전용 주소가 없어 넣지 않았습니다(「무료로 시작하기」가 대신합니다).
+ * 주소는 메인 사이트 메뉴 기준입니다(2026-11-19 점검: Flex Board=/studio/flexboard-v2,
+ * Blocking Board=/studio/blocking-board, Turn=/studio/turn, Director's Cut=/studio/directors-cut).
+ * 배열 순서는 매칭 우선순위입니다 — 한 글에 여러 툴 이름이 있어도 먼저 맞는 툴 버튼만 넣습니다.
+ * (예: 블로킹 보드 베타 공지는 Seedance 를 함께 언급하지만 블로킹 보드 버튼이 먼저입니다.)
  */
 export const TOOL_LINKS = [
-  { name: "FLEXBOARD", path: "/studio/directors-cut", match: /flex\s?board|플렉스\s?보드/i },
-  { name: "Turn", path: "/studio/turn", match: /\bTurn\b|\(턴\)/ },
+  { name: "FLEXBOARD", path: "/studio/flexboard-v2", match: /flex\s?board|플렉스\s?보드/i },
+  { name: "Blocking Board", path: "/studio/blocking-board", match: /blocking\s?board|블로킹\s?보드/i },
+  // 턴은 조사(턴으로·턴에서)가 붙어 "턴" 단독으로 나오기도 합니다. "리턴"(리+턴)은 제외합니다.
+  // 컷 일관성(배경 고정)은 Turn 의 역할이라 함께 봅니다(배경 일관성 글).
+  { name: "Turn", path: "/studio/turn", match: /\bTurns?\b|(?:^|[^리])턴|컷 일관성|cut consistency|cuts consistent/i },
+  // Seedance 는 영상 모델이라 영상 생성 도구(Video Generator)로 보냅니다.
+  { name: "Video Generator", path: "/studio/video", match: /seedance|시댄스/i },
 ];
 
 const LABELS = {

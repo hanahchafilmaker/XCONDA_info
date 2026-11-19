@@ -238,9 +238,29 @@ const esc = (value) =>
 
 const isHttp = (href) => /^https?:\/\//i.test(String(href ?? ""));
 
+/**
+ * 본문 URL을 클릭 가능한 링크로 만듭니다.
+ * 번역 본문(content/i18n/*.json)은 href 없이 문자열로 오므로, 그대로 두면 약관·개인정보
+ * 링크가 글자만 되고 눌리지 않습니다(한국어 원문은 노션 href 로 링크가 됩니다).
+ * URL 뒤에 붙은 조사(에서·으로 등)는 링크에 넣지 않습니다(ASCII만 URL로 봅니다).
+ */
+const URL_RE = /https?:\/\/[^\s<>"'\u0080-\uffff]+/g;
+function linkifyText(text) {
+  const raw = String(text ?? "");
+  let out = "";
+  let last = 0;
+  for (const m of raw.matchAll(URL_RE)) {
+    const url = m[0].replace(/[.,;:!?)\]}]+$/, "");
+    if (!url || url === "http://" || url === "https://") continue;
+    out += esc(raw.slice(last, m.index)) + `<a href="${esc(url)}" rel="noopener noreferrer">${esc(url)}</a>`;
+    last = m.index + url.length;
+  }
+  return out + esc(raw.slice(last));
+}
+
 /** Rich → HTML (서식 · 링크 · 줄바꿈 보존) */
 export function richToHtml(rich) {
-  if (typeof rich === "string") return esc(rich).replace(/\n/g, "<br>");
+  if (typeof rich === "string") return linkifyText(rich).replace(/\n/g, "<br>");
   if (!Array.isArray(rich)) return "";
   return rich
     .map((seg) => {
