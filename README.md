@@ -70,7 +70,7 @@ npm run test:a11y                           # axe-core 검사만
 허브의 가이드는 공유 Drive의 **2026-11-18 현재판**을 이 저장소로 sanitize해 커밋한 같은 출처 자산입니다. [`src/content/driveGuides.json`](./src/content/driveGuides.json) 은 24주제 × 4개 언어 문서 96개와 KO/EN 영상 65편의 원본 파일 ID·슬러그를 담은 카탈로그입니다. 문서 KO/EN은 `00_XCONDA_가이드_통합관리.html`의 「현재판」, JA/ZH는 `00_Guide_Index.html`, 영상은 `xconda_video_guide`의 현재 8개 폴더를 기준으로 했습니다. **Drive `/view`·`/preview` 링크와 구버전 보관 항목, 원본 `google_drive/` 다운로드는 사이트나 커밋에 넣지 않습니다.**
 
 - `assets/guides/current/`에는 안전하게 정리한 HTML 96개, 재생 가능한 MP4 65편, 중복 제거한 스크린샷 284개, `manifest.json`, 언어별 색인과 로컬 CSS/JS가 들어 있습니다. 외부 스크립트·폰트·Drive 주소·인라인 데이터 이미지는 제거했습니다.
-- 허브 `#guides`의 툴 상세 영역 전체가 선택한 언어의 현재 HTML을 같은 출처 `<iframe>`으로 보여 줍니다. 상단 오른쪽의 옛 `전체 최신 가이드 보기` 버튼과 `#latest-guides` 라이브러리는 제거했습니다. 툴 모달도 같은 HTML과 MP4를 페이지 안에서 재생하며, JA/ZH는 자국어 HTML + 영어 MP4를 씁니다.
+- 허브 `#guides`의 툴 상세 영역 전체가 선택한 언어의 현재 HTML을 같은 출처 `<iframe>`으로 보여 줍니다. 상단 오른쪽의 옛 `전체 최신 가이드 보기` 버튼과 `#latest-guides` 라이브러리는 제거했습니다. 툴 상세 상단의 「영상 가이드 보기」 버튼은 같은 출처 MP4를 팝업으로 재생하고, 툴 모달도 같은 HTML과 MP4를 페이지 안에서 재생하며, JA/ZH는 자국어 HTML + 영어 MP4를 씁니다.
 - `src/content/siteAssets.ts`의 `siteAssetUrl()`·`currentGuidePath()`·`currentVideoPath()`가 GitHub Pages 프로젝트 경로와 제품 사이트 `/hub/*` 프록시에서 자산 주소를 맞춥니다. `htmlGuides.ts`·`toolVideos.ts`는 Drive URL을 만들지 않습니다.
 - `user-guide.html`의 19개 링크, `manuals/{ko,en,ja,zh}/index.html`, 보관된 2026-11-03 정적 사본의 현재판 배너도 `assets/guides/current/`의 같은 출처 문서로 연결합니다.
 - 재생성은 `scripts/import-current-guides.mjs <downloaded-raw-dir> assets/guides/current`로 staged 검증 후 교체합니다. `scripts/import-html-guides.mjs`는 오래된 정적 사본을 다시 만들 때도 같은 현재판 경로를 씁니다. 두 스크립트 모두 Drive 원본은 수정하지 않습니다.

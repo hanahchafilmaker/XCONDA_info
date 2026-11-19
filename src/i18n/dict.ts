@@ -311,6 +311,11 @@ export const DICT: Dict = {
   "v.guides.next": { ko: "다음 툴 가이드", en: "Next tool" },
   "v.guides.openFull": { ko: "전체 가이드 열기", en: "Open full guide" },
   "v.guides.video": { ko: "공식 영상 가이드", en: "Official video guide" },
+  "v.guides.watchVideo": { ko: "영상 가이드 보기", en: "Watch video guide" },
+  "v.guides.videoDialogHint": {
+    ko: "공식 영상 가이드를 팝업으로 재생합니다. Esc 또는 닫기 버튼으로 닫습니다.",
+    en: "Plays the official video guide in a popup. Press Esc or the close button to close.",
+  },
   "v.guides.footnote": {
     ko: "가이드는 실제 서비스 화면 기준으로 작성되었으며, UI 변경 시 함께 업데이트됩니다.",
     en: "Guides follow the real product screens and are updated alongside UI changes.",

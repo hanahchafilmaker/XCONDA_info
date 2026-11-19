@@ -1,9 +1,13 @@
 import { useMemo, useState } from "react";
+import { Play } from "lucide-react";
 import { cn } from "../utils/cn";
 import { TOOLS, TOOL_GROUPS } from "../content/tools";
 import { htmlGuideUrl } from "../content/htmlGuides";
+import { getToolVideo } from "../content/toolVideos";
 import { groupLabel, localizeTool, useLang } from "../i18n";
-import { Reveal, SectionHeader, Tabs } from "./volt";
+import { IconClose, Reveal, SectionHeader, Tabs } from "./volt";
+import { Button } from "./ui/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog";
 
 type Group = (typeof TOOL_GROUPS)[number];
 
@@ -11,6 +15,9 @@ export default function Guides() {
   const { t, lang, target } = useLang();
   const [group, setGroup] = useState<Group>("전체");
   const [activeSlug, setActiveSlug] = useState(TOOLS[0].slug);
+  // null = closed. The slug is captured on open so the popup keeps playing
+  // the video the user asked for even if the background tool changes.
+  const [videoSlug, setVideoSlug] = useState<string | null>(null);
 
   const tools = useMemo(() => TOOLS.map((tool) => localizeTool(tool, lang)), [lang]);
   const filtered = useMemo(
@@ -19,6 +26,9 @@ export default function Guides() {
   );
   const active = filtered.find((tool) => tool.slug === activeSlug) ?? filtered[0] ?? tools[0];
   const guideUrl = htmlGuideUrl(active.slug, target);
+  const videoUrl = getToolVideo(active.slug, target);
+  const popupTool = videoSlug ? tools.find((tool) => tool.slug === videoSlug) : undefined;
+  const popupVideoUrl = videoSlug ? getToolVideo(videoSlug, target) : undefined;
 
   const pickGroup = (g: Group) => {
     setGroup(g);
@@ -44,6 +54,7 @@ export default function Guides() {
             value={group}
             onChange={pickGroup}
             items={TOOL_GROUPS.map((g) => ({ id: g, label: groupLabel(g, lang) }))}
+
           />
         </Reveal>
 
@@ -94,6 +105,24 @@ export default function Guides() {
             data-current-guide-target={target}
             className="anim-fade min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white"
           >
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4 py-3 sm:px-5">
+              <p className="min-w-0 truncate text-sm font-semibold text-neutral-950">
+                <span className="notranslate">{active.name}</span>
+              </p>
+              {videoUrl && (
+                <button
+                  type="button"
+                  data-guide-video-button={active.slug}
+                  aria-haspopup="dialog"
+                  aria-label={`${active.name} — ${t("v.guides.video")}`}
+                  onClick={() => setVideoSlug(active.slug)}
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-neutral-950 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-neutral-800 active:scale-95"
+                >
+                  <Play className="h-4 w-4 fill-white text-white" aria-hidden />
+                  {t("v.guides.watchVideo")}
+                </button>
+              )}
+            </div>
             {guideUrl ? (
               <iframe
                 key={guideUrl}
@@ -111,6 +140,38 @@ export default function Guides() {
           </article>
         </div>
       </div>
+
+      {/* Guide video popup — same-origin MP4, KO clip for KO, EN clip otherwise. */}
+      <Dialog open={videoSlug !== null} onOpenChange={(open) => { if (!open) setVideoSlug(null); }}>
+        {videoSlug && popupTool && popupVideoUrl && (
+          <DialogContent data-guide-video-dialog className="max-w-4xl p-0">
+            <div className="flex items-center justify-between gap-3 px-5 py-4">
+              <DialogTitle className="min-w-0 truncate text-base font-bold text-neutral-950">
+                <span className="notranslate">{popupTool.name}</span> — {t("v.guides.video")}
+              </DialogTitle>
+              <DialogClose asChild>
+                <Button variant="ghost" size="icon" data-guide-video-close aria-label={t("common.close")}>
+                  <IconClose className="size-4" />
+                </Button>
+              </DialogClose>
+            </div>
+            <DialogDescription className="sr-only">{t("v.guides.videoDialogHint")}</DialogDescription>
+            <div className="px-5 pb-5">
+              <video
+                key={popupVideoUrl}
+                data-guide-video={videoSlug}
+                src={popupVideoUrl}
+                controls
+                autoPlay
+                playsInline
+                preload="metadata"
+                aria-label={`${popupTool.name} — ${t("v.guides.video")}`}
+                className="aspect-video w-full rounded-xl bg-black"
+              />
+            </div>
+          </DialogContent>
+        )}
+      </Dialog>
     </section>
   );
 }
