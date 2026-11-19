@@ -107,9 +107,33 @@ for (const { target } of cases) {
     expect(iframe.getAttribute("data-html-guide") === slug, `${target}: wrong inline guide for ${slug}`);
     expect(iframe.getAttribute("src") === guideUrl(base, target, slug), `${target}: wrong same-origin guide URL for ${slug}: ${iframe.getAttribute("src")}`);
     expect(iframe.getAttribute("loading") === "lazy" && iframe.getAttribute("referrerPolicy") === "no-referrer", `${target}: ${slug} iframe is not loaded safely`);
-    expect(article.querySelectorAll("a, button[aria-haspopup='dialog']").length === 0, `${target}: ${slug} detail area contains legacy controls`);
+    expect(article.querySelectorAll("a").length === 0, `${target}: ${slug} detail area contains a legacy link`);
+    const videoButton = article.querySelector("button[data-guide-video-button]");
+    expect(!!videoButton, `${target}: ${slug} video popup button is missing`);
+    expect(videoButton.getAttribute("data-guide-video-button") === slug, `${target}: wrong video popup button for ${slug}`);
+    expect(videoButton.getAttribute("aria-haspopup") === "dialog", `${target}: ${slug} video button does not announce a dialog`);
+    expect(article.querySelectorAll("button[aria-haspopup='dialog']").length === 1, `${target}: ${slug} detail area contains unexpected dialog controls`);
   }
   expect(popups.length === 0, `${target}: a guide unexpectedly opened a new window`);
+
+  // Guide video opens as an in-page popup (same-origin MP4, no new window) and closes cleanly.
+  click(window, buttons[slugs.indexOf("flexboard")]);
+  await wait(20);
+  const flexTrigger = q("#guides article[data-current-guide-slug='flexboard'] button[data-guide-video-button='flexboard']");
+  expect(!!flexTrigger, `${target}: flexboard video popup button is missing`);
+  click(window, flexTrigger);
+  await wait(150);
+  const videoDialog = q("[data-guide-video-dialog]");
+  expect(!!videoDialog, `${target}: video popup did not open`);
+  expect(videoDialog.getAttribute("role") === "dialog", `${target}: video popup is not a dialog`);
+  const popupVideo = videoDialog.querySelector("video[data-guide-video='flexboard']");
+  expect(!!popupVideo, `${target}: popup video is missing`);
+  expect(popupVideo.getAttribute("src") === videoUrl(base, target, "flexboard"), `${target}: popup video URL is wrong: ${popupVideo.getAttribute("src")}`);
+  expect(popupVideo.hasAttribute("controls") && popupVideo.hasAttribute("playsinline"), `${target}: popup video is not playable`);
+  expect(!!videoDialog.querySelector("[data-guide-video-close]"), `${target}: video popup close button is missing`);
+  click(window, videoDialog.querySelector("[data-guide-video-close]"));
+  await eventually(() => !q("[data-guide-video-dialog]"), `${target}: video popup did not close`);
+  expect(popups.length === 0, `${target}: video popup opened a new window`);
 
   click(window, q("[data-modal-share]") || q("[data-featured-guide]"));
   await wait(70);
