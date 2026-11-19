@@ -237,13 +237,9 @@ function ratioFlag(ko, tr, lang) {
  * @returns {{ errors: object[], warnings: object[] }}
  */
 /**
- * 언어별로 **다른 법인 연락처를 쓰는 것이 정상**인 경우(대표 확정 2026-11-14).
- * 여기 적힌 값은 "원문 연락처가 번역에 그대로 있어야 한다"는 규칙의 대체값으로 인정됩니다.
- *   영어 = 미국 법인  /  한국어·일본어·중국어 = 한국 법인
+ * 문의처는 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
+ * 번역은 원문 연락처를 그대로 써야 합니다(법인 교체 허용 없음).
  */
-const CONTACT_SWAP = {
-  en: new Set(["info@cubeberry.ai", "+18882021989"]),
-};
 
 export function qcLanguage(lang, dict, sources, allow = {}) {
   const errors = [];
@@ -258,19 +254,14 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
     const koText = `${ko.title}\n${ko.summary}`;
 
     // 1) 연락처 · 주소는 사실이므로 그대로 있어야 합니다.
-    //    단, 영어는 문의 창구가 미국 법인으로 갈립니다(대표 확정 2026-11-14:
-    //    한국어=한국 법인, 영어=미국 법인, 일본어·중국어=한국 법인).
-    //    영어에서 한국 법인 연락처를 요구하면 규칙과 정면으로 충돌하므로 비교에서 뺍니다.
+    //    문의처는 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
     const koContact = contactTokens(koText);
     const trContact = contactTokens(text);
-    const swap = CONTACT_SWAP[lang] ?? null;
-    // 번역문이 원문 연락처를 그대로 썼거나, 그 언어의 대체 연락처(다른 법인)를 썼으면 통과.
-    const inRange = (tok, set) => set.includes(tok) || (swap ? [...swap].some((v) => set.includes(v)) : false);
     for (const email of koContact.emails) {
-      if (!inRange(email, trContact.emails)) errors.push({ key, kind: "email-missing", detail: email });
+      if (!trContact.emails.includes(email)) errors.push({ key, kind: "email-missing", detail: email });
     }
     for (const phone of koContact.phones) {
-      if (!inRange(phone, trContact.phones)) errors.push({ key, kind: "phone-missing", detail: phone });
+      if (!trContact.phones.includes(phone)) errors.push({ key, kind: "phone-missing", detail: phone });
     }
     for (const url of koContact.urls) {
       if (!trContact.urls.some((u) => u.replace(/\/$/, "") === url.replace(/\/$/, "")))

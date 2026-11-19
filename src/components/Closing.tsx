@@ -14,7 +14,7 @@ const socialColors: Record<string, string> = {
 
 export default function Closing() {
   const { t, lang } = useLang();
-  // 푸터 문의처도 화면 언어를 따릅니다(영어 = 미국 법인, 그 밖 = 한국 법인).
+  // 푸터 문의처는 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
   const supportEmail = supportEmailFor(lang);
   const footerTools = TOOLS.slice(0, 5);
 
@@ -120,6 +120,11 @@ export default function Closing() {
             <a href={`mailto:${supportEmail}`} className="transition-colors hover:text-neutral-700">
               {supportEmail}
             </a>
+            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-1">
+              <a href="https://www.xconda.ai/legal/terms" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neutral-700">{t("v.footer.terms")}</a>
+              <a href="https://www.xconda.ai/legal/privacy" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neutral-700">{t("v.footer.privacy")}</a>
+              <a href="https://www.xconda.ai/legal/refund" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neutral-700">{t("v.footer.refund")}</a>
+            </nav>
           </div>
         </div>
       </footer>

@@ -400,6 +400,9 @@ export const DICT: Dict = {
     ko: "XCONDA 개발·운영: 주식회사 큐브베리(한국) · Stripe 결제 판매·청구: Cubeberry Co., Ltd (Delaware, US)",
     en: "XCONDA developed and operated by Cubeberry Co., Ltd. (Korea) · Stripe payments sold and billed by Cubeberry Co., Ltd (Delaware, US)",
   },
+  "v.footer.terms": { ko: "이용약관", en: "Terms of Use" },
+  "v.footer.privacy": { ko: "개인정보처리방침", en: "Privacy Policy" },
+  "v.footer.refund": { ko: "환불 정책", en: "Refund Policy" },
 
   "v.search.placeholder": {
     ko: "공지 · 뉴스 · 툴 사용법 · 블로그를 검색하세요 (예: 크레딧, Kling, 컨티뉴이티)",

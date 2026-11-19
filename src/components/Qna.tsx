@@ -6,18 +6,17 @@ import { useLang } from "../i18n";
 import { IconArrow, IconPlus, Reveal, SectionHeader } from "./volt";
 
 /**
- * 문의 메일 — 언어에 따라 갈립니다(대표 확정 2026-11-14).
- *   영어 화면(앱 언어 EN)      → info@cubeberry.ai    (미국 법인)
- *   한국어·일본어·중국어 화면  → cubeberry@cuberry.kr (한국 법인)
- * 앱은 ja/zh 도 한국어 원문을 그리므로 `lang`(ko|en) 만 보면 됩니다.
+ * 문의 메일 — 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
+ *   모든 화면 → cubeberry@cuberry.kr (한국 법인)
+ * 미국 법인(info@cubeberry.ai)은 Stripe 결제 청구 문의만 담당하므로 허브 문의 창구로는 쓰지 않습니다.
  * Q&A 섹션 링크 · 푸터(Closing.tsx) · 구조화 데이터가 같은 규칙을 씁니다.
  */
 const SUPPORT_EMAIL_EN = "info@cubeberry.ai";
 const SUPPORT_EMAIL_KO = "cubeberry@cuberry.kr";
 
-/** 화면 언어 → 문의 메일. */
-function supportEmailFor(lang: string): string {
-  return String(lang).slice(0, 2) === "en" ? SUPPORT_EMAIL_EN : SUPPORT_EMAIL_KO;
+/** 문의 메일. 언어와 무관하게 한국 법인입니다. */
+function supportEmailFor(_lang?: string): string {
+  return SUPPORT_EMAIL_KO;
 }
 
 function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; onOpen: () => void }) {

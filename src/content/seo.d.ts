@@ -5,6 +5,7 @@
 import type { EntryType } from "./types";
 
 export const SITE_NAME: string;
+export function siteNameFor(lang?: string): string;
 export const DEFAULT_SITE_URL: string;
 export const DEFAULT_OG_IMAGE_PATH: string;
 export const SITE_META: Record<"ko" | "en" | "ja" | "zh-CN", { title: string; description: string }>;

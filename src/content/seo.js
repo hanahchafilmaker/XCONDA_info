@@ -34,6 +34,14 @@ import { OFFICIAL_SOCIAL_URLS } from "./socialAccounts.js";
 export const SITE_NAME = "XCONDA허브";
 
 /**
+ * 언어 코드 → 사이트 이름(og:site_name · WebSite 명찰).
+ * 영어 페이지는 "XCONDA Hub"를 씁니다(2026-11-19 점검 A3).
+ */
+export function siteNameFor(lang) {
+  return String(lang ?? "").slice(0, 2) === "en" ? "XCONDA Hub" : SITE_NAME;
+}
+
+/**
  * 허브의 정식 주소(끝에 / 포함). 허브 전용 도메인입니다 (DNS 설정 요청 중).
  * 빌드 환경 변수 `SITE_URL`(GitHub Actions Variables) 로 덮어쓸 수 있습니다.
  */
@@ -821,21 +829,22 @@ export const OFFICIAL_SAME_AS = OFFICIAL_SOCIAL_URLS;
  */
 export const RESELLER_ID = "https://www.cuberry.kr/#reseller-us";
 /**
- * 문의처는 **언어에 따라 갈립니다** — 대표 확정(2026-11-14).
+ * 문의처는 **모든 언어에서 한국 법인**입니다 — 대표 확정(2026-11-14 최종).
  *
- *   영어 페이지            → info@cubeberry.ai     (미국 법인)
- *   한국어·일본어·중국어    → cubeberry@cuberry.kr  (한국 법인)
+ *   모든 허브 글(한·영·일·중) → cubeberry@cuberry.kr (한국 법인)
  *
- * 개발·운영사는 세 언어 모두 한국 법인입니다. 갈리는 것은 **문의 창구**뿐입니다.
+ * XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사만 답할 수 있기 때문입니다.
+ * 미국 법인(info@cubeberry.ai)은 Stripe 결제 청구 문의만 담당하므로, 허브의 문의 창구로는
+ * 쓰지 않고 푸터의 공인 리셀러 연락처로만 남깁니다(구조화 데이터 리셀러 노드).
  * 정적 페이지 하단 문구(content/i18n/{en,ja,zh}.json `ui.note`), 앱 Q&A·푸터,
  * 구조화 데이터 contactPoint 가 모두 이 함수를 씁니다.
  */
 export const SUPPORT_EMAIL_US = "info@cubeberry.ai";
 export const SUPPORT_EMAIL_KR = "cubeberry@cuberry.kr";
 
-/** 언어 코드(en·ko·ja·zh) → 문의 메일. */
-export function supportEmailFor(lang) {
-  return String(lang ?? "").slice(0, 2) === "en" ? SUPPORT_EMAIL_US : SUPPORT_EMAIL_KR;
+/** 언어 코드(en·ko·ja·zh) → 문의 메일. 언어와 무관하게 한국 법인입니다. */
+export function supportEmailFor() {
+  return SUPPORT_EMAIL_KR;
 }
 
 /** 한국어(기본값) 문의처. */
@@ -888,7 +897,7 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL, lang = "ko") {
       "@type": "WebSite",
       "@id": `${site}#website`,
       url: site,
-      name: SITE_NAME,
+      name: siteNameFor(lang),
       publisher: { "@id": ORG_ID },
       inLanguage: "ko-KR",
     },
@@ -896,12 +905,12 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL, lang = "ko") {
 }
 
 /**
- * 끝난 행사 글인지 — 제목(또는 SEO 제목)에 `(종료)` · `(10/7~11/6, 종료)` 표기가 있으면 끝난 것으로 봅니다.
+ * 끝난 행사 글인지 — 제목(또는 SEO 제목)에 `(종료)` · `(10/7~11/6, 종료)` · `(ended)` 표기가 있으면 끝난 것으로 봅니다.
  * 날짜를 계산하지 않고 **노션 제목의 표기**만 믿습니다(빌드 시점에 따라 결과가 바뀌지 않게).
- * 끝난 글은 주소는 그대로 두되 「관련 글」 추천에서 뺍니다.
+ * 끝난 글은 주소는 그대로 두되 「관련 글」 추천과 목록에서 뺍니다.
  */
 export function isEndedTitle(...titles) {
-  return titles.some((t) => /\((?:[^()]*[,·]\s*)?종료\)/.test(String(t ?? "")));
+  return titles.some((t) => /\((?:[^()]*[,·\s–—]*)?(?:종료|ended)\)/i.test(String(t ?? "")));
 }
 
 /**
