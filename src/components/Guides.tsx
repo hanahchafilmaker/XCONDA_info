@@ -114,7 +114,7 @@ export default function Guides() {
                   type="button"
                   data-guide-video-button={active.slug}
                   aria-haspopup="dialog"
-                  aria-label={`${active.name} — ${t("v.guides.video")}`}
+                  aria-label={`${active.name} — ${t("v.guides.watchVideo")}`}
                   onClick={() => setVideoSlug(active.slug)}
                   className="inline-flex shrink-0 items-center gap-2 rounded-full bg-neutral-950 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-neutral-800 active:scale-95"
                 >

@@ -39,6 +39,12 @@ function NoticeRow({ n, onOpen }: { n: Entry; onOpen: () => void }) {
 
 function Featured({ n, onOpen }: { n: Entry; onOpen: () => void }) {
   const { t } = useLang();
+  // 카드 폭은 화면을 가득 채우고, 높이는 그림이 잘리지 않도록 원본 비율을 따릅니다.
+  // (그림이 오기 전·없을 때는 공지 커버 기본 비율 1200×630)
+  const [coverRatio, setCoverRatio] = useState<{ src?: string; ratio: number } | null>(null);
+  const aspectRatio = coverRatio && coverRatio.src === n.cover && coverRatio.ratio > 0
+    ? coverRatio.ratio
+    : 1200 / 630;
   const points = (n.changes?.map((c) => c.text) ?? n.tags).slice(0, 3);
   return (
     <button
@@ -47,12 +53,22 @@ function Featured({ n, onOpen }: { n: Entry; onOpen: () => void }) {
       className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white text-left shadow-[0_2px_3px_rgba(28,28,26,0.04)] transition-all hover:border-black/15 hover:shadow-[0_12px_32px_rgba(0,0,0,.07)]"
     >
       {n.cover && (
-        <span data-card-cover className="block aspect-[1200/630] w-full shrink-0 overflow-hidden bg-neutral-100">
+        <span
+          data-card-cover
+          style={{ aspectRatio }}
+          className="block w-full shrink-0 overflow-hidden bg-neutral-100"
+        >
           <SmartImage
             src={n.cover}
             fallbackSrc={n.coverFallback}
             alt=""
             className="block h-full w-full object-contain"
+            onLoad={(event) => {
+              const img = event.currentTarget;
+              if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                setCoverRatio({ src: n.cover, ratio: img.naturalWidth / img.naturalHeight });
+              }
+            }}
           />
         </span>
       )}
