@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode, type SyntheticEvent } from "react";
 import { Check, Copy, ExternalLink, ImageOff, PenLine } from "lucide-react";
 import type { Block, EntryType, Rich } from "../content/types";
 import { useContent } from "../content/ContentContext";
@@ -190,12 +190,15 @@ export function SmartImage({
   alt = "",
   className,
   loading = "lazy",
+  onLoad,
 }: {
   src?: string;
   fallbackSrc?: string;
   alt?: string;
   className?: string;
   loading?: "lazy" | "eager";
+  /** 실제로 그려진 그림의 원본 크기를 알려 줍니다(비율에 맞춰 영역을 잡을 때 사용). */
+  onLoad?: (event: SyntheticEvent<HTMLImageElement>) => void;
 }) {
   // 0 = 첫 주소 · 1 = 폴백 주소 · 2 = 자리 표시자
   const [failure, setFailure] = useState<{ key: string; stage: number }>({ key: "", stage: 0 });
@@ -214,6 +217,7 @@ export function SmartImage({
       src={active}
       alt={alt}
       loading={loading}
+      onLoad={onLoad}
       onError={() => setFailure({ key, stage: Math.min(2, stage + 1) })}
       className={className}
     />
