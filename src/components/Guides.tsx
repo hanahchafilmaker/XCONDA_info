@@ -106,9 +106,9 @@ export default function Guides() {
             className="anim-fade min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white"
           >
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4 py-3 sm:px-5">
-              <p className="min-w-0 truncate text-sm font-semibold text-neutral-950">
+              <h3 className="min-w-0 truncate text-sm font-bold text-neutral-950">
                 <span className="notranslate">{active.name}</span>
-              </p>
+              </h3>
               {videoUrl && (
                 <button
                   type="button"
