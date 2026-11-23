@@ -57,8 +57,8 @@ test("search keyboard selection, IME, article handoff and focus restoration", as
 });
 
 test("filters, clear, empty recovery, pagination and no stale hero keyword", async ({ page }) => {
-  await page.locator("#top").getByRole("button", { name: "FLEXBOARD", exact: true }).click();
-  await expect(input(page)).toHaveValue("FLEXBOARD");
+  await page.locator("#top").getByRole("button", { name: "Flex Board", exact: true }).click();
+  await expect(input(page)).toHaveValue("Flex Board");
   await page.keyboard.press("Escape");
   await trigger(page).click();
   await expect(input(page)).toHaveValue("");

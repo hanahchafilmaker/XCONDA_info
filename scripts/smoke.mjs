@@ -68,10 +68,10 @@ const heroLinks = heroNav ? [...heroNav.querySelectorAll('a[href^="#"]')].map((a
 if (JSON.stringify(heroLinks) !== JSON.stringify(expectedHeroLinks) || heroLinks.some((href) => !doc.getElementById(href.slice(1)))) {
   throw new Error(`Hero section navigation missing or invalid: ${heroLinks.join(', ')}`);
 }
-click(qa('#top button').find((button) => button.textContent === 'FLEXBOARD'));
+click(qa('#top button').find((button) => button.textContent === 'Flex Board'));
 await new Promise((resolve) => setTimeout(resolve, 150));
 const seededInput = q('[data-search-dialog] input');
-if (seededInput?.value !== 'FLEXBOARD') throw new Error('Hero keyword was not passed to search');
+if (seededInput?.value !== 'Flex Board') throw new Error('Hero keyword was not passed to search');
 window.document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 await new Promise((resolve) => setTimeout(resolve, 150));
 
