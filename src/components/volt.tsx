@@ -7,7 +7,6 @@ import {
   type SVGProps,
 } from "react";
 import { cn } from "../utils/cn";
-import { hubBase } from "../seo";
 
 /* ───────────────────────── icons ───────────────────────── */
 
@@ -160,8 +159,9 @@ export function LogoMark({ className, title }: { className?: string; title?: str
 /** Operator-supplied official wordmark, kept unmodified on its original dark background. */
 export function Logo({ className, href = "#top" }: { className?: string; href?: string }) {
   return (
-    <a href={href} aria-label={href === "#top" ? "XCONDA허브 홈" : "XCONDA 홈페이지"} className={cn("flex shrink-0 items-center whitespace-nowrap", className)}>
-      <img data-official-wordmark src={`${hubBase()}assets/img/logo/xconda-wordmark-official.png`} alt="XCONDA" width={179} height={60} className="h-12 w-auto shrink-0 object-contain" />
+    <a href={href} aria-label={href === "#top" ? "Xconda Hub home" : "Xconda website"} className={cn("flex shrink-0 items-center gap-1.5 whitespace-nowrap", className)}>
+      <LogoMark title="Xconda" className="size-8 text-volt-400" />
+      <span className="notranslate text-[25px] font-extrabold leading-none tracking-[-0.07em] text-neutral-950">conda</span>
     </a>
   );
 }

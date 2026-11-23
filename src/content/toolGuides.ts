@@ -551,7 +551,7 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
 
   image: {
     ko: [
-      { type: "p", text: "7가지 AI 모델에서 텍스트 프롬프트와 선택적인 레퍼런스 이미지를 이용해 이미지를 생성하고 결과를 비교·관리합니다." },
+      { type: "p", text: "11가지 이미지 모델에서 텍스트 프롬프트와 선택적인 레퍼런스를 이용해 이미지를 생성하고 결과를 비교·관리합니다." },
       callout("2026 사용자 가이드 기준 · 프롬프트는 필수이며 영어로 작성하면 더 정확한 결과를 얻을 수 있습니다.", "✨"),
       { type: "h2", text: "빠른 시작" },
       { type: "ol", items: [
@@ -562,15 +562,15 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
         "Generate를 누른 뒤 오른쪽에서 결과를 확인·다운로드합니다.",
       ] },
       { type: "h2", text: "1. 모델과 레퍼런스 제한" },
-      toggle("7가지 모델", [
+      toggle("11가지 모델", [
         { type: "ul", items: [
-          "Nano Banana 2: 범용적이고 텍스트 정확도가 높은 안정적인 모델 · 레퍼런스 최대 14장.",
-          "Nano Banana Pro: 더 높은 디테일과 품질 · 레퍼런스 최대 14장.",
-          "Kling Image O1: 독자적인 이미지 해석 스타일 · 레퍼런스 최대 10장.",
-          "Z Image: 레퍼런스 미지원, Negative Prompt 지원, 해상도 1K 전용.",
-          "Seedream 5.0 Lite: 감성적이고 부드러운 톤 · 레퍼런스 최대 14장.",
-          "Grok Imagine Image: 레퍼런스 1장.",
-          "Grok Imagine Pro: Grok Imagine 상위 모델 · 레퍼런스 최대 3장.",
+          "Seedream 5.5, Seedream 5.0 Lite, Seedream 5.0 Pro",
+          "Kling Image O1",
+          "Nano Banana 2, Nano Banana 2 Lite, Nano Banana Pro",
+          "Grok Imagine Pro, Grok Imagine Image",
+          "Z Image",
+          "GPT Image 2.5",
+          "지원 옵션과 입력 제한은 모델 및 생성 모드에 따라 다르므로 도구 화면에서 확인해 주세요.",
         ] },
       ]),
       { type: "h2", text: "2. 프롬프트와 레퍼런스" },
@@ -599,7 +599,7 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
       ] },
     ],
     en: [
-      { type: "p", text: "Generate, compare, and manage images across seven AI models using text prompts and optional reference images." },
+      { type: "p", text: "Generate, compare, and manage images across 11 models using text prompts and optional references." },
       callout("Based on the 2026 user guide · A prompt is required, and writing it in English can improve accuracy.", "✨"),
       { type: "h2", text: "Quick start" },
       { type: "ol", items: [
@@ -610,15 +610,15 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
         "Press Generate, then review and download results on the right.",
       ] },
       { type: "h2", text: "1. Models and reference limits" },
-      toggle("Seven models", [
+      toggle("11 models", [
         { type: "ul", items: [
-          "Nano Banana 2: stable general model with strong text accuracy · up to 14 references.",
-          "Nano Banana Pro: higher detail and quality · up to 14 references.",
-          "Kling Image O1: distinctive image interpretation · up to 10 references.",
-          "Z Image: no references, supports Negative Prompt, and limited to 1K.",
-          "Seedream 5.0 Lite: emotional, soft tone · up to 14 references.",
-          "Grok Imagine Image: 1 reference.",
-          "Grok Imagine Pro: upper-tier Grok Imagine model · up to 3 references.",
+          "Seedream 5.5, Seedream 5.0 Lite, and Seedream 5.0 Pro",
+          "Kling Image O1",
+          "Nano Banana 2, Nano Banana 2 Lite, and Nano Banana Pro",
+          "Grok Imagine Pro and Grok Imagine Image",
+          "Z Image",
+          "GPT Image 2.5",
+          "Supported options and input limits vary by model and generation mode; check the tool screen.",
         ] },
       ]),
       { type: "h2", text: "2. Prompt and references" },
@@ -760,8 +760,8 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
   },
   video: {
     ko: [
-      { type: "p", text: "텍스트와 이미지에서 영상을 만드는 도구입니다. Veo·Runway·Kling·Grok·Vidu·Seedance 등 다중 비디오 엔진을 한 화면에서 사용합니다." },
-      callout("2026 사용자 가이드 기준 · 제공 모델: Veo 3.1 / Veo 3.1 Fast, Runway Gen-4.5, Kling 3.0 Pro / Kling OMNI, Grok Imagine Video, Vidu Q3, Seedance 2.0 / Seedance 2.0 Fast (업데이트: 2026-04-28)", "🧭"),
+      { type: "p", text: "텍스트 또는 이미지에서 영상을 생성합니다. 입력 모드에 따라 I2V 14종, T2V 13종을 지원하며 모델별 입력·길이·해상도 옵션이 다릅니다." },
+      callout("현재 영상 모델 14종: Kling 4.0, Seedance 2.5, Seedance 2.0, Seedance 2.0 Fast, Seedance 2.0 MINI, Kling 3.0 Pro, Kling 3.0 4K, Kling OMNI (O3 Pro), Veo 3.1, Veo 3.1 Fast, Gemini Omni Flash, Grok Imagine Video, Grok Imagine Video 1.5, Vidu Q3.", "🧭"),
       { type: "h2", text: "빠른 시작" },
       { type: "ol", items: [
         "상단 Tools 메뉴 → 사이드바 2번째 아이콘으로 Video Generator를 엽니다.",
@@ -797,8 +797,8 @@ export const TOOL_GUIDES: Partial<Record<string, LocalizedGuide>> = {
       ] },
     ],
     en: [
-      { type: "p", text: "Create videos from text and images. Use multiple video engines — Veo, Runway, Kling, Grok, Vidu, and Seedance — from a single screen." },
-      callout("Based on the 2026 user guide · Available models: Veo 3.1 / Veo 3.1 Fast, Runway Gen-4.5, Kling 3.0 Pro / Kling OMNI, Grok Imagine Video, Vidu Q3, Seedance 2.0 / Seedance 2.0 Fast (updated 2026-04-28)", "🧭"),
+      { type: "p", text: "Generate videos from text or images. The selector provides 14 image-to-video (I2V) models and 13 text-to-video (T2V) options; supported inputs, durations, and resolutions vary by model." },
+      callout("14 video models: Kling 4.0, Seedance 2.5, Seedance 2.0, Seedance 2.0 Fast, Seedance 2.0 MINI, Kling 3.0 Pro, Kling 3.0 4K, Kling OMNI (O3 Pro), Veo 3.1, Veo 3.1 Fast, Gemini Omni Flash, Grok Imagine Video, Grok Imagine Video 1.5, and Vidu Q3.", "🧭"),
       { type: "h2", text: "Quick start" },
       { type: "ol", items: [
         "Open Video Generator from the Tools menu — the second icon in the sidebar.",

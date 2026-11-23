@@ -315,7 +315,7 @@
       "hub": "seedance-2-5-length-resolution",
       "hubSection": "qna",
       "ko": {
-        "title": "AI 영상 생성 — Seedance 2.5·Kling·Veo 한 화면에서 | XCONDA",
+        "title": "AI 영상 생성 — Seedance 2.5·Kling 4.0·Veo 3.1 등 | XCONDA",
         "description": "글, 이미지, 시작·끝 프레임, 레퍼런스로 영상을 만듭니다. Seedance 2.5는 최대 30초까지 소리와 함께 생성하고, 컷마다 길이와 화면비를 직접 정합니다.",
         "h1": "AI 영상 생성",
         "intro": "글·이미지·레퍼런스 어느 방식으로도 영상을 만들 수 있고, 시작과 끝 프레임을 지정해 장면 전환을 통제할 수 있습니다. 생성된 영상에는 해상도·화면비·길이가 함께 기록됩니다.",
@@ -341,7 +341,7 @@
         ]
       },
       "en": {
-        "title": "AI video generation — Seedance 2.5, Kling, Veo",
+        "title": "AI video — Seedance 2.5, Kling 4.0, Veo 3.1 and more",
         "description": "Generate video from text, images, start and end frames or references. Seedance 2.5 produces up to 30 seconds with audio in one pass.",
         "h1": "AI Video Generation",
         "intro": "Generate video from text, from an image, from start and end frames, or from references. Specifying both ends of a shot gives you control over the transition, and every result records its resolution, aspect ratio and length.",

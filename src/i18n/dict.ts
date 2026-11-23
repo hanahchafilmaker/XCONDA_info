@@ -205,12 +205,12 @@ export const DICT: Dict = {
 
   /* ----------------------------- 푸터 ----------------------------- */
   "footer.tagline": {
-    ko: "Directing Tools for AI Video — Storyboard & Blocking. XCONDA의 모든 소식과 사용법을 가장 빠르게 전합니다.",
-    en: "Directing Tools for AI Video — Storyboard & Blocking. The fastest way to get all XCONDA news and how-tos.",
+    ko: "Directing Tools for AI Video — Storyboard & Blocking. Xconda의 모든 소식과 사용법을 가장 빠르게 전합니다.",
+    en: "Directing Tools for AI Video — Storyboard & Blocking. The fastest way to get all Xconda news and how-tos.",
   },
   "footer.navAria": { ko: "푸터", en: "Footer" },
   "footer.poweredNotion": { ko: "Powered by Notion", en: "Powered by Notion" },
-  "footer.col.guide": { ko: "XCONDA허브", en: "XCONDA Hub" },
+  "footer.col.guide": { ko: "Xconda 허브", en: "Xconda Hub" },
   "footer.col.studio": { ko: "핵심 스튜디오", en: "Core Studios" },
   "footer.link.allTools": { ko: "전체 툴", en: "All tools" },
   "footer.link.openStudio": { ko: "스튜디오 열기", en: "Open Studio" },
@@ -377,19 +377,19 @@ export const DICT: Dict = {
     ko: "가이드를 옆에 두고, 지금 바로 첫 스토리보드를 만들어 보세요. 가입 즉시 크레딧이 지급됩니다.",
     en: "Keep a guide open and make your first storyboard right now. Credits land in your account as soon as you sign up.",
   },
-  "v.cta.start": { ko: "XCONDA 시작하기", en: "Start with XCONDA" },
+  "v.cta.start": { ko: "Xconda 시작하기", en: "Start with Xconda" },
   "v.cta.again": { ko: "가이드 다시 보기", en: "Back to guides" },
 
   "v.footer.desc": {
-    ko: "AI로 광고·영상을 만드는 사람들을 위한 XCONDA허브. 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한 곳에서.",
-    en: "XCONDA Hub for people making ads and film with AI — notices, social news, tool guides, blog posts and Q&A in one place.",
+    ko: "AI로 광고·영상을 만드는 사람들을 위한 Xconda 허브. 공지사항, 타 SNS 뉴스, 툴 사용법, 블로그, Q&A를 한 곳에서.",
+    en: "Xconda Hub for people making ads and film with AI — notices, social news, tool guides, blog posts and Q&A in one place.",
   },
-  "v.footer.guide": { ko: "XCONDA허브", en: "XCONDA Hub" },
+  "v.footer.guide": { ko: "Xconda 허브", en: "Xconda Hub" },
   "v.footer.tools": { ko: "툴", en: "Tools" },
   "v.footer.support": { ko: "지원", en: "Support" },
   "v.footer.rights": {
-    ko: "© 2026 XCONDA. All rights reserved. · 가이드 내용은 사전 고지 없이 업데이트됩니다.",
-    en: "© 2026 XCONDA. All rights reserved. · Guides may change without prior notice.",
+    ko: "© 2026 Xconda. All rights reserved. · 가이드 내용은 사전 고지 없이 업데이트됩니다.",
+    en: "© 2026 Xconda. All rights reserved. · Guides may change without prior notice.",
   },
   "v.footer.backToTop": { ko: "맨 위로", en: "Back to top" },
   /**
@@ -397,8 +397,8 @@ export const DICT: Dict = {
    * 개발·운영은 한국 법인, Stripe 결제 판매·청구는 미국 법인이 맡습니다.
    */
   "v.footer.entities": {
-    ko: "XCONDA 개발·운영: 주식회사 큐브베리(한국) · Stripe 결제 판매·청구: Cubeberry Co., Ltd (Delaware, US)",
-    en: "XCONDA developed and operated by Cubeberry Co., Ltd. (Korea) · Stripe payments sold and billed by Cubeberry Co., Ltd (Delaware, US)",
+    ko: "Xconda 개발·운영: 주식회사 큐브베리(한국) · Stripe 결제 판매·청구: Cubeberry Co., Ltd (Delaware, US)",
+    en: "Xconda developed and operated by Cubeberry Co., Ltd. (Korea) · Stripe payments sold and billed by Cubeberry Co., Ltd (Delaware, US)",
   },
   "v.footer.terms": { ko: "이용약관", en: "Terms of Use" },
   "v.footer.privacy": { ko: "개인정보처리방침", en: "Privacy Policy" },
