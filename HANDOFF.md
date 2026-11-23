@@ -165,7 +165,7 @@ XCONDA_info/
 │
 ├── scripts/                    Node 실행 스크립트 (동기화 · 테스트 · 글별 SEO 페이지 생성 `build-seo.mjs`)
 ├── notion-worker/worker.js     (선택) Cloudflare Worker 프록시 — 비공개 Notion DB용
-├── hub-redirect-worker/        (배포 전) Cloudflare Worker — `hub.xconda.ai/en/*` → `www.xconda.ai/hub/*` 301
+├── hub-redirect-worker/        (미배포 · 앞단 미정) Cloudflare Worker — `hub.xconda.ai/en/*` → `www.xconda.ai/hub/*` 301
 ├── .github/workflows/          notion-sync.yml · build-site.yml
 ├── assets/img/                 로고 · 툴 커버 이미지
 └── admin-guide.html  user-guide.html   운영자/사용자용 정적 가이드 페이지
@@ -635,7 +635,7 @@ npm run build
 | **노션 속성 추가** | ① `src/content/fields.js`(별칭 키) 또는 `classify.js`(분류 관련) ② `src/notion.ts` `mapPage` ③ `scripts/notion-snapshot.mjs`(행 추출 · 요약) ④ `src/content/types.ts` `Entry` ⑤ 테스트 + `NOTION_SETUP.md` 표 갱신 |
 | **분류 규칙 변경** | `src/content/classify.js` **한 곳만** → `npm run test:unit` (사이트·스크립트 동시 반영) |
 | **영어 허브를 `www.xconda.ai/hub/` 로 옮기기(켜기/끄기)** | `src/content/seo.js` `LOCALE_BASE_URLS.en` 한 줄 → `npm run build`. **제품 사이트 프록시가 먼저** 열려 있어야 함(`npm run proxy:check` 로 확인). **2026-11-17 켬** (`"https://www.xconda.ai/hub/"`). 되돌리려면 `""` 로 바꿔 다시 빌드·배포(스위치를 끄면 영어 주소는 즉시 `hub.xconda.ai/en/` 로 돌아감). 조건·순서: `reports/en-hub-subdirectory-handoff-20261114.md` |
-| **영어 예전 주소(`hub.xconda.ai/en/*`)를 서버 301 로** | `hub-redirect-worker/`(Cloudflare Worker). **코드만 준비됨 · 배포 전**(2026-11-23). `wrangler.toml` 의 `MODE` 를 `observe` 로 배포 → `npm run redirect:check` 가 "켜도 안전합니다" → `on`. 제품 사이트 프록시가 `x-hub-origin-key` 헤더를 보내야 함(없이 켜면 `/hub/` 무한 반복). 끄기: `MODE = "off"` 배포. 영어 허브 스위치를 끌 때는 **Worker 를 먼저** 끕니다. 순서: `reports/en-hub-subdirectory-handoff-20261114.md` 5-2 |
+| **영어 예전 주소(`hub.xconda.ai/en/*`)를 서버 301 로** | `hub-redirect-worker/`(Cloudflare Worker). **코드만 준비됨 · 지금 구성에서는 배포 불가**(2026-11-23) — `xconda.ai` DNS 가 Route 53 이라 Cloudflare 라우트를 걸 수 없음. 앞단(CloudFront · Cloudflare Pages 이전 · 현행 유지) 결정 필요. 아래는 도메인이 Cloudflare 에 있을 때의 절차: `wrangler.toml` 의 `MODE` 를 `observe` 로 배포 → `npm run redirect:check` 가 "켜도 안전합니다" → `on`. 제품 사이트 프록시가 `x-hub-origin-key` 헤더를 보내야 함(없이 켜면 `/hub/` 무한 반복). 끄기: `MODE = "off"` 배포. 영어 허브 스위치를 끌 때는 **Worker 를 먼저** 끕니다. 순서: `reports/en-hub-subdirectory-handoff-20261114.md` 5-2 |
 | **디자인 토큰/색 변경** | `src/index.css` `@theme` |
 | **디버그: 노션 없이 보기** | `?notion=off` (샘플 모드) |
 | **디버그: 다른 노션 페이지로 보기** | `?notion=<페이지 URL 또는 32자리 ID>` |

@@ -5,6 +5,8 @@
 #   npx wrangler deploy
 #
 # 전제: xconda.ai 가 Cloudflare 에 있고, DNS 의 `hub` 레코드가 프록시(주황 구름)여야 합니다.
+# ⚠️ 2026-11-23 현재 xconda.ai DNS 는 AWS Route 53 이라 **이대로는 배포할 수 없습니다**.
+#    (reports/en-hub-subdirectory-handoff-20261114.md › 5-2 머리말)
 name = "xconda-hub-en-redirect"
 main = "worker.js"
 compatibility_date = "2025-01-01"

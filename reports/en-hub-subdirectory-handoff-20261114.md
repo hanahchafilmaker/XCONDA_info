@@ -176,7 +176,17 @@ export const LOCALE_BASE_URLS = { en: "https://www.xconda.ai/hub/" };    // 켬
 ### 5-2. 2026-11-23 — 예전 주소 301 (요청 2-5) 준비 · **아직 배포 전**
 
 `hub.xconda.ai/en/*` → `www.xconda.ai/hub/*` 를 **서버 301** 로 보내는 Cloudflare Worker 를 저장소에 넣었습니다.
-코드와 검사만 준비된 상태이고, Cloudflare 배포는 계정 권한이 있는 분이 아래 순서로 합니다.
+코드와 검사만 준비된 상태입니다.
+
+> **⚠️ 아래 순서는 지금 구성에서 실행할 수 없습니다 (2026-11-23 확인).**
+> `xconda.ai` DNS 는 Cloudflare 가 아니라 **AWS Route 53** 입니다(NS 조회 · `HANDOFF.md` 10.3). 순서 1번(hub 레코드를 Cloudflare 프록시로)과
+> `wrangler.toml` 의 라우트(`zone_name = "xconda.ai"`)는 도메인이 Cloudflare 에 있어야만 동작합니다.
+> 진짜 301 을 내려면 `hub.xconda.ai` 앞에 무언가를 세워야 하고, `hub` DNS 레코드는 Route 53 담당(태윤 님)이 바꿔야 합니다.
+> 앞단을 어디에 둘지는 **미정**입니다 — A) AWS CloudFront(태윤 님 운영) · B) Cloudflare Pages 로 허브 호스팅 이전 · C) 지금처럼 canonical + 스크립트 이동 유지.
+> 정해지면 이 절의 순서와 `wrangler.toml` 을 그에 맞게 다시 씁니다. 301 판정(`decide`)과 검사는 A·B 어느 쪽에도 옮겨 쓸 수 있습니다.
+> 참고: `www.xconda.ai` 서버 IP 는 Google Cloud 대역으로 조회됩니다(프록시가 도는 곳은 태윤 님 확인 필요).
+
+아래는 **도메인이 Cloudflare 에 있을 때**의 순서입니다.
 
 | 파일 | 내용 |
 | --- | --- |
@@ -225,4 +235,4 @@ export const LOCALE_BASE_URLS = { en: "https://www.xconda.ai/hub/" };    // 켬
 **확인한 것 / 못 한 것**
 
 - 확인: 회귀 검사 22개 통과. Worker 와 제품 사이트 프록시를 흉내 낸 가짜 네트워크에서 점검 스크립트가 ① 통과 표식 없이 켠 경우의 무한 반복 ② 관찰 단계에서 "켜면 반복" ③ 정상 구성을 각각 맞게 판정. `wrangler deploy --dry-run` (4.166.0) 통과.
-- 미확인: **실제 Cloudflare·실제 프록시에서는 돌려 보지 않았습니다.** `xconda.ai` 가 Cloudflare 에 있는지, 제품 사이트 프록시가 어떤 헤더를 보내는지는 저장소에서 알 수 없습니다. 그래서 관찰 단계(③)를 두었습니다.
+- 미확인: **실제 Cloudflare·실제 프록시에서는 돌려 보지 않았습니다.** 제품 사이트 프록시가 어떤 헤더를 보내는지는 저장소에서 알 수 없습니다. 그래서 관찰 단계(③)를 두었습니다.
