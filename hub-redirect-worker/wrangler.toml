@@ -1,0 +1,25 @@
+# hub.xconda.ai/en/* → www.xconda.ai/hub/* 301 (설명: worker.js 머리말)
+#
+#   cd hub-redirect-worker
+#   npx wrangler secret put ORIGIN_KEY     # 제품 사이트 프록시가 붙여 보내는 값 (저장소에 적지 않습니다)
+#   npx wrangler deploy
+#
+# 전제: xconda.ai 가 Cloudflare 에 있고, DNS 의 `hub` 레코드가 프록시(주황 구름)여야 합니다.
+# ⚠️ 2026-11-23 현재 xconda.ai DNS 는 AWS Route 53 이라 **이대로는 배포할 수 없습니다**.
+#    (reports/en-hub-subdirectory-handoff-20261114.md › 5-2 머리말)
+name = "xconda-hub-en-redirect"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+workers_dev = false
+
+# 영어 폴더에만 겁니다. 한국어·일본어·중국어와 앱 자산은 Worker 를 거치지 않습니다.
+routes = [
+  { pattern = "hub.xconda.ai/en", zone_name = "xconda.ai" },
+  { pattern = "hub.xconda.ai/en/*", zone_name = "xconda.ai" },
+]
+
+[vars]
+# observe → (npm run redirect:check 전부 ✅) → on.  되돌리기: off
+MODE = "observe"
+# 프록시가 x-hub-origin-key 를 붙일 수 없을 때만: "www.xconda.ai"
+BYPASS_FORWARDED_HOSTS = ""
