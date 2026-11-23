@@ -170,3 +170,59 @@ export const LOCALE_BASE_URLS = { en: "https://www.xconda.ai/hub/" };    // 켬
 
 - **되돌리기**: `LOCALE_BASE_URLS` 를 `{ en: "" }` 로 바꿔 다시 빌드·배포하면 영어 주소가
   즉시 `hub.xconda.ai/en/` 로 돌아갑니다(파일 위치는 그대로라 되돌리기가 안전합니다).
+  **5-2 의 301 을 켠 뒤라면 Worker 를 먼저 끄세요**(`MODE = "off"` 배포). 301 이 켜진 채로
+  스위치만 끄면 영어의 대표 주소(`hub.xconda.ai/en/`)가 계속 새 주소로 튕깁니다.
+
+### 5-2. 2026-11-23 — 예전 주소 301 (요청 2-5) 준비 · **아직 배포 전**
+
+`hub.xconda.ai/en/*` → `www.xconda.ai/hub/*` 를 **서버 301** 로 보내는 Cloudflare Worker 를 저장소에 넣었습니다.
+코드와 검사만 준비된 상태이고, Cloudflare 배포는 계정 권한이 있는 분이 아래 순서로 합니다.
+
+| 파일 | 내용 |
+| --- | --- |
+| `hub-redirect-worker/worker.js` | 301 Worker. `/en` · `/en/*` 만 다룹니다 |
+| `hub-redirect-worker/wrangler.toml` | 라우트 · `MODE`(observe → on) |
+| `scripts/check-en-301.mjs` | 점검 — `npm run redirect:check` |
+| `scripts/hub-redirect-worker.test.mjs` | 회귀 검사(`npm run test:unit` 에 포함) |
+
+**동작**
+
+| 요청 | 결과 |
+| --- | --- |
+| `hub.xconda.ai/en/` · `/en` · `/en/index.html` | 301 → `www.xconda.ai/hub/` |
+| `hub.xconda.ai/en/qna/<글>/?utm_…` | 301 → `www.xconda.ai/hub/qna/<글>/?utm_…` (쿼리 유지) |
+| 끝 슬래시 없는 글 주소 `/en/qna/<글>` | 301 한 번에 `…/hub/qna/<글>/` |
+| `hub.xconda.ai/en/assets/*` | 그대로 200 (새 주소에는 `/hub/assets/` 가 없음) |
+| 한국어 · `/ja/` · `/zh/` · `/assets/` | Worker 를 거치지 않음 |
+| **제품 사이트 프록시가 원본을 가져오는 요청** | 그대로 200 (통과) — 아래 ②가 필요 |
+
+301 응답은 `cache-control: public, max-age=3600` 입니다. 기한이 없으면 브라우저가 301 을 계속 기억해 되돌릴 수 없습니다.
+해시(`#…`)는 서버로 오지 않지만 브라우저가 이동 뒤에도 그대로 붙입니다.
+
+**순서** — ③에서 ✅ 가 나오기 전에는 ④를 하지 마세요. 통과 표식 없이 켜면 `/hub/` 가 무한 반복으로 멈춥니다.
+
+1. **(Cloudflare)** `xconda.ai` DNS 의 `hub` 레코드를 **프록시(주황 구름)** 로. SSL/TLS 모드는 **Full**.
+   - Flexible 이면 GitHub Pages 의 HTTPS 강제와 맞물려 리다이렉트가 반복됩니다.
+   - 프록시를 켜면 GitHub 이 Pages 인증서를 갱신하지 못할 수 있어 Full (strict) 은 나중에 실패할 수 있습니다.
+   - 이 두 가지는 일반적으로 알려진 동작이고 이 저장소에서 확인한 것은 아닙니다. 켠 직후 `https://hub.xconda.ai/` 가 열리는지 먼저 보세요.
+2. **(제품 사이트 개발자)** `/hub/*` 프록시가 `hub.xconda.ai` 로 보내는 요청에 헤더 **`x-hub-origin-key: <값>`** 을 붙입니다.
+   값은 임의의 긴 문자열로 정해 허브 담당자와 공유합니다. 응답 헤더 `x-hub-redirect` 는 지우지 말고 넘겨 주세요(점검이 읽습니다).
+   - 헤더를 붙일 수 없는 구성이면: 프록시가 `x-forwarded-host: www.xconda.ai` 를 보내는 경우에 한해 `wrangler.toml` 의 `BYPASS_FORWARDED_HOSTS = "www.xconda.ai"` 로 대신할 수 있습니다. 보내는지는 ③의 실패 메시지(`xfh=` 값)에 나옵니다.
+3. **(허브)** 관찰 단계로 배포 → 점검. 이 단계에서는 301 이 **나가지 않습니다**.
+   ```
+   cd hub-redirect-worker
+   npx wrangler secret put ORIGIN_KEY      # ②에서 정한 값
+   npx wrangler deploy                     # MODE = "observe"
+   cd .. && npm run redirect:check         # "켜도 안전합니다" 가 나와야 함
+   ```
+   제품 사이트 프록시는 응답을 5~10분 캐시합니다. 점검은 주소마다 새 쿼리를 붙여 캐시를 피합니다.
+4. **(허브)** `wrangler.toml` 의 `MODE = "on"` → `npx wrangler deploy` → `npm run redirect:check` 전부 ✅.
+5. 2~4주 뒤 Search Console 에서 `hub.xconda.ai/en/` 색인이 `www.xconda.ai/hub/` 로 넘어갔는지 확인합니다.
+
+**문제가 생기면**: `MODE = "off"` 로 바꿔 `npx wrangler deploy`. 급하면 Cloudflare 대시보드에서 Worker 라우트를 지워도 됩니다.
+끄면 지금처럼 canonical + 스크립트 이동으로 돌아갑니다(페이지의 `data-hub-moved` 스크립트는 그대로 남겨 두었습니다).
+
+**확인한 것 / 못 한 것**
+
+- 확인: 회귀 검사 22개 통과. Worker 와 제품 사이트 프록시를 흉내 낸 가짜 네트워크에서 점검 스크립트가 ① 통과 표식 없이 켠 경우의 무한 반복 ② 관찰 단계에서 "켜면 반복" ③ 정상 구성을 각각 맞게 판정. `wrangler deploy --dry-run` (4.166.0) 통과.
+- 미확인: **실제 Cloudflare·실제 프록시에서는 돌려 보지 않았습니다.** `xconda.ai` 가 Cloudflare 에 있는지, 제품 사이트 프록시가 어떤 헤더를 보내는지는 저장소에서 알 수 없습니다. 그래서 관찰 단계(③)를 두었습니다.

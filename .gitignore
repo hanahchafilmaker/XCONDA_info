@@ -10,3 +10,5 @@ env
 www/dist/
 .playwright-results/
 playwright-report/
+# wrangler 로컬 캐시
+.wrangler/
