@@ -4081,7 +4081,7 @@
     },
     "qna/access-edit-delete-data": {
       "title": "How do I view, correct or delete my data?",
-      "summary": "Email cubeberry@cuberry.kr, call +82-70-8095-2302 (weekdays 10:00–17:00 KST), or make the request in your XCONDA account settings. After verifying your identity we forward the request to the relevant company and answer within 45 days, at no charge. Requests through an authorised representative are also accepted. The data protection officer is the CEO, Jinseo Lee.",
+      "summary": "Email cubeberry@cuberry.kr, call +82-70-8095-2302 (weekdays 10:00–17:00 KST), or make the request in your Xconda account settings. After verifying your identity we forward the request to the relevant company and answer within 45 days, at no charge. Requests through an authorised representative are also accepted. The data protection officer is the CEO, Jinseo Lee.",
       "blocks": [
         {
           "type": "h2",
@@ -4113,7 +4113,7 @@
     },
     "qna/best-stage-to-edit": {
       "title": "At which stage is editing most efficient?",
-      "summary": "At the storyboard stage. Once video is generated with the wrong framing you end up regenerating at the video stage several times. Fix framing, characters and props on the per-shot images in FLEXBOARD first, then move to video, and you regenerate far less.",
+      "summary": "At the storyboard stage. Once video is generated with the wrong framing you end up regenerating at the video stage several times. Fix framing, characters and props on the per-shot images in Flex Board first, then move to video, and you regenerate far less.",
       "blocks": [
         {
           "type": "h2",
@@ -4121,7 +4121,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series/ XCONDA Hub: FLEXBOARD guide"
+          "text": "Source: Xconda Hub: production workflow series/ Xconda Hub: Flex Board guide"
         }
       ]
     },
@@ -4135,7 +4135,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: Blocking Board guide"
+          "text": "Source: Xconda Hub: Blocking Board guide"
         }
       ]
     },
@@ -4168,8 +4168,8 @@
       ]
     },
     "qna/commercial-use": {
-      "title": "Can I use XCONDA output commercially?",
-      "summary": "Under our terms, you own what you create with XCONDA, and no clause restricts commercial use. Uploading or creating content that infringes someone else's intellectual property is prohibited, so please confirm that you hold the rights to the images and footage you use.",
+      "title": "Can I use Xconda output commercially?",
+      "summary": "Under our terms, you own what you create with Xconda, and no clause restricts commercial use. Uploading or creating content that infringes someone else's intellectual property is prohibited, so please confirm that you hold the rights to the images and footage you use.",
       "blocks": [
         {
           "type": "h2",
@@ -4183,7 +4183,7 @@
     },
     "qna/commission-video-production": {
       "title": "Can Cubeberry produce a video for me?",
-      "summary": "Yes. Cubeberry handles planning, story, AI generation, editing and post-production in one team, built on XCONDA. We have produced web dramas, animation, documentaries, advertising and corporate films. Contact us to discuss a project.",
+      "summary": "Yes. Cubeberry handles planning, story, AI generation, editing and post-production in one team, built on Xconda. We have produced web dramas, animation, documentaries, advertising and corporate films. Contact us to discuss a project.",
       "blocks": [
         {
           "type": "h2",
@@ -4196,8 +4196,8 @@
       ]
     },
     "qna/company-business-info": {
-      "title": "Which company operates XCONDA?",
-      "summary": "XCONDA is developed and operated by Cubeberry Co., Ltd. (주식회사 큐브베리). CEO: Jinseo Lee (이진서). Business registration number 480-88-03079; e-commerce registration 2026-광주동구-0289. Address: 2F, 69-12 Chungjang-ro, Dong-gu, Jeonnam-Gwangju 61482, Republic of Korea. Phone +82-70-8095-2302, email cubeberry@cuberry.kr, weekdays 10:00–17:00 KST. Servers run on Amazon Web Services. The registration can be verified on the Korean Fair Trade Commission site (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079).",
+      "title": "Which company operates Xconda?",
+      "summary": "Xconda is developed and operated by Cubeberry Co., Ltd. (주식회사 큐브베리). CEO: Jinseo Lee (이진서). Business registration number 480-88-03079; e-commerce registration 2026-광주동구-0289. Address: 2F, 69-12 Chungjang-ro, Dong-gu, Jeonnam-Gwangju 61482, Republic of Korea. Phone +82-70-8095-2302, email cubeberry@cuberry.kr, weekdays 10:00–17:00 KST. Servers run on Amazon Web Services. The registration can be verified on the Korean Fair Trade Commission site (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079).",
       "blocks": [
         {
           "type": "h2",
@@ -4205,7 +4205,7 @@
         },
         {
           "type": "p",
-          "text": "Source: Terms of Use(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / XCONDA official site footer (https://www.xconda.ai) / Korea Fair Trade Commission business information lookup (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079)"
+          "text": "Source: Terms of Use(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / Xconda official site footer (https://www.xconda.ai) / Korea Fair Trade Commission business information lookup (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079)"
         }
       ]
     },
@@ -4219,7 +4219,7 @@
         },
         {
           "type": "p",
-          "text": "Source: Terms of Use(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / XCONDA official site footer (https://www.xconda.ai)"
+          "text": "Source: Terms of Use(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / Xconda official site footer (https://www.xconda.ai)"
         }
       ]
     },
@@ -4261,7 +4261,7 @@
         },
         {
           "type": "p",
-          "text": "Source: Terms of Use(Terms of Use) 1.8 (https://www.xconda.ai/legal/terms) / XCONDA Pricing (https://www.xconda.ai/pricing)"
+          "text": "Source: Terms of Use(Terms of Use) 1.8 (https://www.xconda.ai/legal/terms) / Xconda Pricing (https://www.xconda.ai/pricing)"
         }
       ]
     },
@@ -4281,7 +4281,7 @@
     },
     "qna/current-discount-events": {
       "title": "Are there any discounts running now?",
-      "summary": "We are running a Seedance 2.5 promotion to mark the FLEXBOARD launch. In Korea, 30% usage discount plus 10% price discount adds up to 40%; in the US, up to 30% usage discount. It runs from 11:00 on 7 October 2026 to 11:00 on 6 November 2026 (KST).",
+      "summary": "We are running a Seedance 2.5 promotion to mark the Flex Board launch. In Korea, 30% usage discount plus 10% price discount adds up to 40%; in the US, up to 30% usage discount. It runs from 11:00 on 7 October 2026 to 11:00 on 6 November 2026 (KST).",
       "blocks": [
         {
           "type": "h2",
@@ -4289,13 +4289,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA promotion notice"
+          "text": "Source: Xconda promotion notice"
         }
       ]
     },
     "qna/data-operation-location": {
-      "title": "Where is XCONDA data processed and stored?",
-      "summary": "XCONDA runs on Amazon Web Services, and stored data is encrypted in transit and at rest. Personal data may be processed and stored in Korea, our primary location, and in the United States (our US entity, Stripe and cloud providers) and other countries where our service providers operate. Cross-border transfers rely on standard contractual clauses and data processing agreements.",
+      "title": "Where is Xconda data processed and stored?",
+      "summary": "Xconda runs on Amazon Web Services, and stored data is encrypted in transit and at rest. Personal data may be processed and stored in Korea, our primary location, and in the United States (our US entity, Stripe and cloud providers) and other countries where our service providers operate. Cross-border transfers rely on standard contractual clauses and data processing agreements.",
       "blocks": [
         {
           "type": "h2",
@@ -4337,7 +4337,7 @@
     },
     "qna/flexboard-auto-refine-instant-apply": {
       "title": "When should I use Auto Refine and Instant Apply?",
-      "summary": "Auto Refine refines an idea or a rough scenario and breaks it into shots. Instant Apply applies a scenario you have already organised, quickly and as written. If you prepared a written board with the FLEXBOARD skill first, Instant Apply is the easier path.",
+      "summary": "Auto Refine refines an idea or a rough scenario and breaks it into shots. Instant Apply applies a scenario you have already organised, quickly and as written. If you prepared a written board with the Flex Board skill first, Instant Apply is the easier path.",
       "blocks": [
         {
           "type": "h2",
@@ -4345,7 +4345,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: FLEXBOARD guide"
+          "text": "Source: Xconda Hub: Flex Board guide"
         }
       ]
     },
@@ -4359,16 +4359,16 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: FLEXBOARD guide"
+          "text": "Source: Xconda Hub: Flex Board guide"
         }
       ]
     },
     "qna/flexboard-cut-count-and-length": {
-      "title": "How many shots can FLEXBOARD hold, and how long can each be?",
+      "title": "How many shots can Flex Board hold, and how long can each be?",
       "summary": "Up to 36 shots per board. Set the count in Number of Panels and each shot's length in Shot Length, between 4 and 30 seconds. For example, 9 shots at 15 seconds add up to roughly 2 minutes 15 seconds."
     },
     "qna/flexboard-download-storyboard": {
-      "title": "Can I download the storyboard I made in FLEXBOARD?",
+      "title": "Can I download the storyboard I made in Flex Board?",
       "summary": "Yes. From the top right of the Edit Panel, choose Download CUT ZIP in Panel view to get all shot images at once, or Download Sheet in Sheet view to get a single sheet. It is the easiest way to share a board with a team or a client."
     },
     "qna/flexboard-edit-single-cut": {
@@ -4381,7 +4381,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: FLEXBOARD guide"
+          "text": "Source: Xconda Hub: Flex Board guide"
         }
       ]
     },
@@ -4405,7 +4405,7 @@
     },
     "qna/how-credits-are-deducted": {
       "title": "How are credits deducted?",
-      "summary": "Credits are charged differently depending on the feature and model used. The credit cost per generation is shown on the generate button or the selection screen, so check before generating. In Turn, for example, the cost per generation is shown for each image model, and FLEXBOARD's image regenerate button shows the credits it needs. Credits lost to a service outage or a failed generation are restored automatically. When you hold several batches of credits, the ones expiring earliest are used first.",
+      "summary": "Credits are charged differently depending on the feature and model used. The credit cost per generation is shown on the generate button or the selection screen, so check before generating. In Turn, for example, the cost per generation is shown for each image model, and Flex Board's image regenerate button shows the credits it needs. Credits lost to a service outage or a failed generation are restored automatically. When you hold several batches of credits, the ones expiring earliest are used first.",
       "blocks": [
         {
           "type": "h2",
@@ -4413,13 +4413,13 @@
         },
         {
           "type": "p",
-          "text": "Source: Terms of Use(Terms of Use) 1.10.5, 1.16 (https://www.xconda.ai/legal/terms) / Refund Policy(Refund Policy) 3.1.6 (https://www.xconda.ai/legal/refund) / XCONDA Hub: Turn guide / XCONDA Hub: FLEXBOARD guide"
+          "text": "Source: Terms of Use(Terms of Use) 1.10.5, 1.16 (https://www.xconda.ai/legal/terms) / Refund Policy(Refund Policy) 3.1.6 (https://www.xconda.ai/legal/refund) / Xconda Hub: Turn guide / Xconda Hub: Flex Board guide"
         }
       ]
     },
     "qna/how-to-access-hub": {
       "title": "How do I get to the hub?",
-      "summary": "On the XCONDA website (xconda.ai), open the Resources menu and choose Hub.",
+      "summary": "On the Xconda website (xconda.ai), open the Resources menu and choose Hub.",
       "blocks": [
         {
           "type": "h2",
@@ -4427,7 +4427,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA official site footer (https://www.xconda.ai)"
+          "text": "Source: Xconda official site footer (https://www.xconda.ai)"
         }
       ]
     },
@@ -4441,7 +4441,7 @@
         },
         {
           "type": "p",
-          "text": "Source: Claude Help Center https://support.claude.com/en/articles/12512180 / XCONDA Hub"
+          "text": "Source: Claude Help Center https://support.claude.com/en/articles/12512180 / Xconda Hub"
         }
       ]
     },
@@ -4461,7 +4461,7 @@
     },
     "qna/how-to-sign-up": {
       "title": "How do I sign up?",
-      "summary": "Create an account on the XCONDA website (xconda.ai). You can sign in with Google, Facebook or X, or use an email address and password. You must be 18 or older, provide accurate details and keep your credentials secure. Do not share an account with anyone else. Signing up does not currently include free credits.",
+      "summary": "Create an account on the Xconda website (xconda.ai). You can sign in with Google, Facebook or X, or use an email address and password. You must be 18 or older, provide accurate details and keep your credentials secure. Do not share an account with anyone else. Signing up does not currently include free credits.",
       "blocks": [
         {
           "type": "h2",
@@ -4487,7 +4487,7 @@
         },
         {
           "type": "p",
-          "text": "Source: Terms of Use(Terms of Use) 1.2, 1.8, 1.9 (https://www.xconda.ai/legal/terms) / XCONDA official site footer (https://www.xconda.ai)"
+          "text": "Source: Terms of Use(Terms of Use) 1.2, 1.8, 1.9 (https://www.xconda.ai/legal/terms) / Xconda official site footer (https://www.xconda.ai)"
         }
       ]
     },
@@ -4506,8 +4506,8 @@
       ]
     },
     "qna/minors-eligibility": {
-      "title": "Can minors use XCONDA?",
-      "summary": "No. XCONDA is available only to people aged 18 or older. We do not collect personal data from anyone under 18, and if we learn that we have, we delete it immediately.",
+      "title": "Can minors use Xconda?",
+      "summary": "No. Xconda is available only to people aged 18 or older. We do not collect personal data from anyone under 18, and if we learn that we have, we delete it immediately.",
       "blocks": [
         {
           "type": "h2",
@@ -4529,7 +4529,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Video Generator (https://www.xconda.ai/video)"
+          "text": "Source: Xconda Video Generator (https://www.xconda.ai/video)"
         }
       ]
     },
@@ -4543,7 +4543,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
@@ -4563,7 +4563,7 @@
     },
     "qna/output-copyright": {
       "title": "Who owns the copyright in what I create?",
-      "summary": "Under our terms you own the content you generate with the service. The XCONDA platform itself (software, technology, trademarks) belongs to Cubeberry Co., Ltd. You grant Cubeberry (the Korean and US entities) a non-exclusive licence to use your content only to provide and improve the service. You may not upload or create content that infringes the intellectual property of others.",
+      "summary": "Under our terms you own the content you generate with the service. The Xconda platform itself (software, technology, trademarks) belongs to Cubeberry Co., Ltd. You grant Cubeberry (the Korean and US entities) a non-exclusive licence to use your content only to provide and improve the service. You may not upload or create content that infringes the intellectual property of others.",
       "blocks": [
         {
           "type": "h2",
@@ -4646,7 +4646,7 @@
       ]
     },
     "qna/prohibited-actions": {
-      "title": "What is prohibited on XCONDA?",
+      "title": "What is prohibited on Xconda?",
       "summary": "Using the service for unlawful purposes; uploading or creating content that infringes someone else's intellectual property; reverse engineering, decompiling or hacking the service; creating harmful, offensive or otherwise inappropriate content; sharing account credentials; and accessing the service by automated means without written permission. Violations can lead to restricted access or account termination.",
       "blocks": [
         {
@@ -4675,7 +4675,7 @@
     },
     "qna/seedance-2-5-length-resolution": {
       "title": "What length and resolution can Seedance 2.5 produce?",
-      "summary": "In the XCONDA Video Generator, choosing Seedance 2.5 lets you generate from text, images, start and end frames, or references (Ref-to-video). Per the model's developer ByteDance Seed, Seedance 2.5 produces up to 30 seconds of video with audio in one pass. Results record resolution, aspect ratio and length — for example 720P, 16:9, 20 or 27 seconds — so you can set the duration to the second. The settings bar under the prompt box controls aspect ratio (e.g. 16:9), resolution (e.g. 720p), length (e.g. 20s) and High Quality, and prompts can be up to 30,000 characters. Available values are listed in each settings menu.",
+      "summary": "In the Xconda Video Generator, choosing Seedance 2.5 lets you generate from text, images, start and end frames, or references (Ref-to-video). Per the model's developer ByteDance Seed, Seedance 2.5 produces up to 30 seconds of video with audio in one pass. Results record resolution, aspect ratio and length — for example 720P, 16:9, 20 or 27 seconds — so you can set the duration to the second. The settings bar under the prompt box controls aspect ratio (e.g. 16:9), resolution (e.g. 720p), length (e.g. 20s) and High Quality, and prompts can be up to 30,000 characters. Available values are listed in each settings menu.",
       "blocks": [
         {
           "type": "h2",
@@ -4683,13 +4683,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Video Generator (https://www.xconda.ai/video) / ByteDance Seed Seedance 2.5 announcement (https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5)"
+          "text": "Source: Xconda Video Generator (https://www.xconda.ai/video) / ByteDance Seed Seedance 2.5 announcement (https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5)"
         }
       ]
     },
     "qna/seedance-prompt-language": {
       "title": "Do I have to write prompts in English?",
-      "summary": "With the XCONDA Prompt skill you edit prompts in a side-by-side Korean and English editor. Check the meaning in Korean, then paste the English working version into video generation. You do not need to write English yourself.",
+      "summary": "With the Xconda Prompt skill you edit prompts in a side-by-side Korean and English editor. Check the meaning in Korean, then paste the English working version into video generation. You do not need to write English yourself.",
       "blocks": [
         {
           "type": "h2",
@@ -4697,13 +4697,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
     "qna/seedance-prompt-retry": {
       "title": "Do I have to rewrite the prompt from scratch if I dislike the result?",
-      "summary": "No. In the XCONDA Prompt skill you tell it in conversation what to fix, the prompt in the editor is updated, and you generate again with it. Repeat until the shot reaches the standard you want.",
+      "summary": "No. In the Xconda Prompt skill you tell it in conversation what to fix, the prompt in the editor is updated, and you generate again with it. Repeat until the shot reaches the standard you want.",
       "blocks": [
         {
           "type": "h2",
@@ -4711,13 +4711,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
     "qna/seedance-reference-limits": {
       "title": "How many reference images and videos can I add?",
-      "summary": "In the Reference mode of XCONDA video generation you can add up to 30 images, 10 videos and 10 audio clips at a time. Assets you add are kept in the Input Assets library, and you type @ in the prompt to point at the asset you mean.",
+      "summary": "In the Reference mode of Xconda video generation you can add up to 30 images, 10 videos and 10 audio clips at a time. Assets you add are kept in the Input Assets library, and you type @ in the prompt to point at the asset you mean.",
       "blocks": [
         {
           "type": "h2",
@@ -4725,7 +4725,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Video Generator (https://www.xconda.ai/video)"
+          "text": "Source: Xconda Video Generator (https://www.xconda.ai/video)"
         }
       ]
     },
@@ -4753,7 +4753,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
@@ -4805,7 +4805,7 @@
     },
     "qna/turn-image-usage": {
       "title": "Where do images made in Turn get used?",
-      "summary": "Three places. Empty-space images (Freeze Frame) become background references for Seedance video generation; key images with a character become FLEXBOARD storyboard shots; and the space image becomes the stage for blocking in Blocking Board.",
+      "summary": "Three places. Empty-space images (Freeze Frame) become background references for Seedance video generation; key images with a character become Flex Board storyboard shots; and the space image becomes the stage for blocking in Blocking Board.",
       "blocks": [
         {
           "type": "h2",
@@ -4813,7 +4813,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series / XCONDA Hub: Turn guide"
+          "text": "Source: Xconda Hub: production workflow series / Xconda Hub: Turn guide"
         }
       ]
     },
@@ -4827,7 +4827,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: Turn guide"
+          "text": "Source: Xconda Hub: Turn guide"
         }
       ]
     },
@@ -4841,7 +4841,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: Turn guide"
+          "text": "Source: Xconda Hub: Turn guide"
         }
       ]
     },
@@ -4855,13 +4855,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: Turn guide"
+          "text": "Source: Xconda Hub: Turn guide"
         }
       ]
     },
     "qna/uploaded-content-usage": {
       "title": "Does Cubeberry use the images and videos I upload?",
-      "summary": "You own the images and videos you upload and the work you create. Cubeberry may use that content to provide and improve the service. It is used to train XCONDA models only with your consent. We do not sell personal data and do not share it for targeted advertising.",
+      "summary": "You own the images and videos you upload and the work you create. Cubeberry may use that content to provide and improve the service. It is used to train Xconda models only with your consent. We do not sell personal data and do not share it for targeted advertising.",
       "blocks": [
         {
           "type": "h2",
@@ -4883,7 +4883,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
@@ -4897,13 +4897,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: Blocking Board guide"
+          "text": "Source: Xconda Hub: Blocking Board guide"
         }
       ]
     },
     "qna/what-is-flexboard": {
-      "title": "What is FLEXBOARD?",
-      "summary": "FLEXBOARD is a storyboard tool that splits a scenario into shots and previews each shot with text and an image. You check framing and characters before generating video, then fix only the shots you dislike. It is designed to be used together with Seedance 2.5.",
+      "title": "What is Flex Board?",
+      "summary": "Flex Board is a storyboard tool that splits a scenario into shots and previews each shot with text and an image. You check framing and characters before generating video, then fix only the shots you dislike. It is designed to be used together with Seedance 2.5.",
       "blocks": [
         {
           "type": "h2",
@@ -4911,7 +4911,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: FLEXBOARD guide"
+          "text": "Source: Xconda Hub: Flex Board guide"
         }
       ]
     },
@@ -4925,13 +4925,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: Turn guide"
+          "text": "Source: Xconda Hub: Turn guide"
         }
       ]
     },
     "qna/what-is-xconda": {
-      "title": "What is XCONDA?",
-      "summary": "XCONDA is an AI video and image production platform run by Cubeberry (xconda.ai). It gives you several generative models in one place plus production tools — FLEXBOARD, Turn, Blocking Board and others — that carry a project from scenario to storyboard to generated video. The focus is not a single clip but work in which many shots hold the same characters in the same space.",
+      "title": "What is Xconda?",
+      "summary": "Xconda is an AI video and image production platform run by Cubeberry (xconda.ai). It gives you several generative models in one place plus production tools — Flex Board, Turn, Blocking Board and others — that carry a project from scenario to storyboard to generated video. The focus is not a single clip but work in which many shots hold the same characters in the same space.",
       "blocks": [
         {
           "type": "h2",
@@ -4939,21 +4939,21 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series / Cubeberry company profile (https://www.cubeberry.ai/)"
+          "text": "Source: Xconda Hub: production workflow series / Cubeberry company profile (https://www.cubeberry.ai/)"
         }
       ]
     },
     "qna/what-is-xconda-claude-skill": {
-      "title": "What is an XCONDA skill for Claude?",
-      "summary": "A skill is a task tool for XCONDA work that you add to Claude. There are two. The FLEXBOARD skill splits a scenario into shots and checks the total running time, how much action each shot carries, whether similar shots sit next to each other and jar, and how many characters are on screen. The XCONDA Prompt skill builds Seedance 2.5 prompts from the key images you locked in FLEXBOARD, written as if four directors — overall, camera, lighting and art — each had a say."
+      "title": "What is an Xconda skill for Claude?",
+      "summary": "A skill is a task tool for Xconda work that you add to Claude. There are two. The Flex Board skill splits a scenario into shots and checks the total running time, how much action each shot carries, whether similar shots sit next to each other and jar, and how many characters are on screen. The Xconda Prompt skill builds Seedance 2.5 prompts from the key images you locked in Flex Board, written as if four directors — overall, camera, lighting and art — each had a say."
     },
     "qna/where-to-get-skills": {
       "title": "Where do I get the skills?",
-      "summary": "The Claude skills for the XCONDA production workflow (FLEXBOARD skill and XCONDA Prompt skill) are downloaded from the XCONDA hub. Add the downloaded file to Claude using the installation steps."
+      "summary": "The Claude skills for the Xconda production workflow (Flex Board skill and Xconda Prompt skill) are downloaded from the Xconda hub. Add the downloaded file to Claude using the installation steps."
     },
     "qna/who-made-xconda": {
-      "title": "Who made XCONDA?",
-      "summary": "XCONDA is developed and operated by Cubeberry Co., Ltd., based in Korea. Cubeberry was founded in 2023 and designed by CEO Jinseo Lee, a former KBS drama PD, together with a broadcast writer, working directors and AI video artists. The XCONDA pipeline produced KBS 1TV's \"Legend of the Haunted: Gumiho\" (May 2025 — the first AI animation broadcast in prime time by a Korean broadcaster), KBS documentary \"Korean War Mobile Trauma Centre\" (June 2025) and the generative AI parts of KBS 1TV documentary \"Sacred Object\" (aired March 2026), and is producing four AI web dramas in KOCCA's New Media Technology Content Lab. Cubeberry has delivered more than 3,100 broadcast-grade AI shots.",
+      "title": "Who made Xconda?",
+      "summary": "Xconda is developed and operated by Cubeberry Co., Ltd., based in Korea. Cubeberry was founded in 2023 and designed by CEO Jinseo Lee, a former KBS drama PD, together with a broadcast writer, working directors and AI video artists. The Xconda pipeline produced KBS 1TV's \"Legend of the Haunted: Gumiho\" (May 2025 — the first AI animation broadcast in prime time by a Korean broadcaster), KBS documentary \"Korean War Mobile Trauma Centre\" (June 2025) and the generative AI parts of KBS 1TV documentary \"Sacred Object\" (aired March 2026), and is producing four AI web dramas in KOCCA's New Media Technology Content Lab. Cubeberry has delivered more than 3,100 broadcast-grade AI shots.",
       "blocks": [
         {
           "type": "h2",
@@ -4961,13 +4961,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA official site footer (https://www.xconda.ai) / Cubeberry company profile (https://www.cubeberry.ai/)"
+          "text": "Source: Xconda official site footer (https://www.xconda.ai) / Cubeberry company profile (https://www.cubeberry.ai/)"
         }
       ]
     },
     "qna/why-faces-change-between-cuts": {
       "title": "Why does the face change from shot to shot in AI video?",
-      "summary": "Given only text, a video model imagines each frame anew, so faces, clothing and framing drift even when you describe the same character. Anything that must stay the same has to be pinned visually: faces and wardrobe with reference images, the space with a background image, and framing with a storyboard. XCONDA's workflow is built so that pinning happens before video generation.",
+      "summary": "Given only text, a video model imagines each frame anew, so faces, clothing and framing drift even when you describe the same character. Anything that must stay the same has to be pinned visually: faces and wardrobe with reference images, the space with a background image, and framing with a storyboard. Xconda's workflow is built so that pinning happens before video generation.",
       "blocks": [
         {
           "type": "h2",
@@ -4975,7 +4975,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         },
         {
           "type": "p",
@@ -4993,7 +4993,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         },
         {
           "type": "p",
@@ -5002,8 +5002,8 @@
       ]
     },
     "qna/xconda-video-workflow-overview": {
-      "title": "What is the full workflow for making a video with XCONDA?",
-      "summary": "Cubeberry's production flow has seven steps: 1) write the scenario; 2) secure reference images (character sheet, Turn backgrounds); 3) write the written board and storyboard prompts (FLEXBOARD skill); 4) build the storyboard and blocking clip (FLEXBOARD, Blocking Board); 5) write the Seedance prompts and generate video; 6) produce sound; 7) combine video and sound. Step 4, the storyboard, is where preparation hands over to generation. The hub blog post \"From one scenario to a finished video\" walks through it.",
+      "title": "What is the full workflow for making a video with Xconda?",
+      "summary": "Cubeberry's production flow has seven steps: 1) write the scenario; 2) secure reference images (character sheet, Turn backgrounds); 3) write the written board and storyboard prompts (Flex Board skill); 4) build the storyboard and blocking clip (Flex Board, Blocking Board); 5) write the Seedance prompts and generate video; 6) produce sound; 7) combine video and sound. Step 4, the storyboard, is where preparation hands over to generation. The hub blog post \"From one scenario to a finished video\" walks through it.",
       "blocks": [
         {
           "type": "h2",
@@ -5011,13 +5011,13 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
     "qna/xconda-vs-other-ai-video-tools": {
-      "title": "How is XCONDA different from other AI video tools?",
-      "summary": "XCONDA puts more weight on the stage before generation. Give a video model text alone and faces, wardrobe and framing drift from shot to shot. XCONDA's workflow pins faces, space, framing and blocking first — with FLEXBOARD (per-shot storyboard), Turn (360° virtual set) and Blocking Board (movement paths) — and then generates video. It is broadcast drama practice transferred to AI video.",
+      "title": "How is Xconda different from other AI video tools?",
+      "summary": "Xconda puts more weight on the stage before generation. Give a video model text alone and faces, wardrobe and framing drift from shot to shot. Xconda's workflow pins faces, space, framing and blocking first — with Flex Board (per-shot storyboard), Turn (360° virtual set) and Blocking Board (movement paths) — and then generates video. It is broadcast drama practice transferred to AI video.",
       "blocks": [
         {
           "type": "h2",
@@ -5025,7 +5025,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA Hub: production workflow series"
+          "text": "Source: Xconda Hub: production workflow series"
         }
       ]
     },
@@ -5042,8 +5042,8 @@
       "summary": "The space size stored in the space JSON takes priority in the Blocking Board. The catalog value is used only when no size is present in that JSON, so the saved dimensions win."
     },
     "qna/workspace-overview": {
-      "title": "What is the XCONDA Workspace and which guide covers it?",
-      "summary": "The XCONDA Workspace is a new team area that opened in beta on the afternoon of 11/17. It manages organizations, projects and shared budgets, and guide No.25 is available for setup."
+      "title": "What is the Xconda Workspace and which guide covers it?",
+      "summary": "The Xconda Workspace is a new team area that opened in beta on the afternoon of 11/17. It manages organizations, projects and shared budgets, and guide No.25 is available for setup."
     },
     "qna/workspace-organization-count": {
       "title": "How many organizations are included with a subscription?",
@@ -5062,8 +5062,8 @@
       "summary": "For unlimited organizations and members, use the separate enterprise request path. The standard plans keep their published limits, while the enterprise route is handled as a dedicated request."
     },
     "qna/credits-are-tokens-not-points": {
-      "title": "Are XCONDA credits points or service tokens?",
-      "summary": "No. XCONDA credits are service tokens used inside the platform, not score points. They are spent when a tool or model runs and the cost is shown before generation, so they are not a loyalty or ranking score."
+      "title": "Are Xconda credits points or service tokens?",
+      "summary": "No. Xconda credits are service tokens used inside the platform, not score points. They are spent when a tool or model runs and the cost is shown before generation, so they are not a loyalty or ranking score."
     },
     "qna/seedance-draft-1080p-window-14-days": {
       "title": "How long is a Seedance 2.5 Draft retained?",
@@ -5075,7 +5075,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)"
+          "text": "Source: Xconda News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)"
         }
       ]
     },
@@ -5089,7 +5089,7 @@
         },
         {
           "type": "p",
-          "text": "Source: XCONDA News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)"
+          "text": "Source: Xconda News, “Seedance 2.5 Draft Mode update: draft retention extended to 14 days” (2026-11-02)"
         }
       ]
     }
