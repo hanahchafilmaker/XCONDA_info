@@ -187,10 +187,10 @@ export const TOOL_EN: Record<string, ToolTranslation> = {
     ],
   },
   image: {
-    tagline: "Create with seven AI models and image references",
-    desc: "Use Nano Banana, Kling, Z Image, Seedream, and Grok Imagine models in one workspace with model-specific references, ratios, resolutions, and output counts.",
+    tagline: "Create with 11 AI image models and references",
+    desc: "Choose from 11 models across Seedream, Kling Image, Nano Banana, Grok Imagine, Z Image, and GPT Image, with model-specific references, ratios, resolutions, and output counts.",
     steps: [
-      "Choose one of seven models based on your goal and reference-image limits.",
+      "Choose one of 11 models based on your goal and reference-image limits.",
       "Enter the required prompt and optionally attach references in @image format.",
       "Set one of 12 ratios, 1K/2K/4K resolution, and a count of 1, 2, or 4 images.",
       "With Z Image, enter unwanted elements under Negative prompt.",
@@ -202,8 +202,8 @@ export const TOOL_EN: Record<string, ToolTranslation> = {
     ],
   },
   video: {
-    tagline: "Video models including Kling 3.0",
-    desc: "Generate video from a finished storyboard cut or a text prompt.",
+    tagline: "14 video models · 14 I2V / 13 T2V options",
+    desc: "Generate video with models including Kling 4.0, Seedance 2.5, and Veo 3.1. Supported inputs, durations, and resolutions vary by model.",
     steps: [
       "Choose a video model.",
       "Enter a prompt or upload a starting image.",

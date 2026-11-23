@@ -4777,7 +4777,7 @@
     },
     "qna/supported-ai-models": {
       "title": "どの AI モデルを使えますか？",
-      "summary": "映像生成は Seedance 2.5 に対応しており、Cubeberry は BytePlus の Authorized Dealer（公認ディーラー）です。画像モデルはツールごとに異なります。FLEXBOARD では GPT Image 2、Seedream 5.0 Pro、GPT Image 2.5 Flare、GPT Image 2.5 Sunburst から選べ、Turn では Gemini 3.1 Flash と GPT Image 2 から選べます。対応モデルはアップデートで変わることがあるため、各ツールの画面でご確認ください。"
+      "summary": "Xcondaは入力モードに応じて、I2V 14モデル、T2V 13モデルに対応しています。映像モデル: Kling 4.0, Seedance 2.5, Seedance 2.0, Seedance 2.0 Fast, Seedance 2.0 MINI, Kling 3.0 Pro, Kling 3.0 4K, Kling OMNI (O3 Pro), Veo 3.1, Veo 3.1 Fast, Gemini Omni Flash, Grok Imagine Video, Grok Imagine Video 1.5, Vidu Q3。画像モデル11種: Seedream 5.5, Seedream 5.0 Lite, Seedream 5.0 Pro, Kling Image O1, Nano Banana 2, Nano Banana 2 Lite, Nano Banana Pro, Grok Imagine Pro, Grok Imagine Image, Z Image, GPT Image 2.5。対応する入力、長さ、解像度はモデルと生成モードによって異なるため、各ツール画面でご確認ください。"
     },
     "qna/terms-change-notice": {
       "title": "料金や規約が変わる場合は事前に知らせてもらえますか？",

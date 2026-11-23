@@ -37,7 +37,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
             </form>
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
               <span className="font-medium text-neutral-600">{t("home.quickSearch")}</span>
-              {["FLEXBOARD", "Seedance 2.5", "Turn"].map((keyword) => <button type="button" key={keyword} onClick={() => onSearch(keyword)} className="rounded-full bg-ink-850 px-3 py-1.5 font-medium text-neutral-700 transition hover:bg-neutral-200">{keyword}</button>)}
+              {["Flex Board", "Seedance 2.5", "Turn"].map((keyword) => <button type="button" key={keyword} onClick={() => onSearch(keyword)} className="rounded-full bg-ink-850 px-3 py-1.5 font-medium text-neutral-700 transition hover:bg-neutral-200">{keyword}</button>)}
             </div>
           </div>
 
@@ -48,7 +48,7 @@ export default function Hero({ onSearch }: { onSearch: (query?: string) => void 
               <span className="absolute left-3 top-3 rounded-full bg-volt-500 px-3 py-1 text-[11px] font-bold text-neutral-950">{t("home.startHere")}</span>
             </span>
             <span className="block px-3 pb-3 pt-4 sm:px-4 sm:pb-4">
-              <span className="notranslate block text-[11px] font-semibold tracking-wider text-neutral-600">FLEXBOARD GUIDE</span>
+              <span className="notranslate block text-[11px] font-semibold tracking-wider text-neutral-600">FLEX BOARD GUIDE</span>
               <span className="mt-2 flex items-center justify-between gap-4"><span className="text-xl font-bold tracking-tight text-neutral-950 sm:text-[22px]">{t("home.featuredTitle")}</span><ArrowRight className="size-6 shrink-0 text-neutral-800 transition group-hover:translate-x-1" aria-hidden /></span>
               <span className="mt-2 block text-sm leading-relaxed text-neutral-600">{t("home.featuredDescription")}</span>
             </span>
