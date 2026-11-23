@@ -4071,7 +4071,7 @@
     },
     "qna/access-edit-delete-data": {
       "title": "如何查看、更正或删除我的信息？",
-      "summary": "您可以通过邮箱 cubeberry@cuberry.kr、电话 +82-70-8095-2302（工作日 10:00~17:00 韩国时间），或在 XCONDA 账户设置中提出请求。我们会在核实身份后转交相应公司，并在 45 天内答复，不收取任何费用。也可通过代理人提出请求。个人信息保护负责人为代表理事李珍瑞。",
+      "summary": "您可以通过邮箱 cubeberry@cuberry.kr、电话 +82-70-8095-2302（工作日 10:00~17:00 韩国时间），或在 Xconda 账户设置中提出请求。我们会在核实身份后转交相应公司，并在 45 天内答复，不收取任何费用。也可通过代理人提出请求。个人信息保护负责人为代表理事李珍瑞。",
       "blocks": [
         {
           "type": "h2",
@@ -4103,7 +4103,7 @@
     },
     "qna/best-stage-to-edit": {
       "title": "在哪个阶段修改最高效？",
-      "summary": "故事板阶段。若在构图错误的情况下生成视频，就需要在视频阶段反复重新生成。在 FLEXBOARD 中先逐镜头检查并修正构图、人物和道具，再进入视频阶段，可以减少重新生成的次数。",
+      "summary": "故事板阶段。若在构图错误的情况下生成视频，就需要在视频阶段反复重新生成。在 Flex Board 中先逐镜头检查并修正构图、人物和道具，再进入视频阶段，可以减少重新生成的次数。",
       "blocks": [
         {
           "type": "h2",
@@ -4111,7 +4111,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍/ XCONDA Hub：FLEXBOARD 使用指南"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍/ Xconda Hub：Flex Board 使用指南"
         }
       ]
     },
@@ -4125,7 +4125,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：Blocking Board 使用指南"
+          "text": "来源：Xconda Hub：Blocking Board 使用指南"
         }
       ]
     },
@@ -4158,8 +4158,8 @@
       ]
     },
     "qna/commercial-use": {
-      "title": "用 XCONDA 制作的视频可以商用吗？",
-      "summary": "根据条款，使用 XCONDA 生成的成果所有权归会员所有，没有禁止商业使用的条款。但禁止上传或制作侵犯他人知识产权的内容，请确认所使用图片和视频的权利归属。",
+      "title": "用 Xconda 制作的视频可以商用吗？",
+      "summary": "根据条款，使用 Xconda 生成的成果所有权归会员所有，没有禁止商业使用的条款。但禁止上传或制作侵犯他人知识产权的内容，请确认所使用图片和视频的权利归属。",
       "blocks": [
         {
           "type": "h2",
@@ -4173,7 +4173,7 @@
     },
     "qna/commission-video-production": {
       "title": "可以委托 Cubeberry 制作视频吗？",
-      "summary": "可以。Cubeberry 基于 XCONDA，由同一团队负责企划、故事、AI 生成、剪辑和后期制作。我们制作过网络剧、动画、纪录片、广告和企业宣传片等。请通过下方联系方式咨询。",
+      "summary": "可以。Cubeberry 基于 Xconda，由同一团队负责企划、故事、AI 生成、剪辑和后期制作。我们制作过网络剧、动画、纪录片、广告和企业宣传片等。请通过下方联系方式咨询。",
       "blocks": [
         {
           "type": "h2",
@@ -4186,8 +4186,8 @@
       ]
     },
     "qna/company-business-info": {
-      "title": "能否告知运营 XCONDA 的公司工商信息？",
-      "summary": "XCONDA 由株式会社 Cubeberry（Cubeberry Co., Ltd.）开发和运营。代表理事为李珍瑞，营业执照号为 480-88-03079，通信销售业申报号为 2026-광주동구-0289。地址为 2F, 69-12 Chungjang-ro, Dong-gu, Jeonnam-Gwangju 61482, Republic of Korea，电话 +82-70-8095-2302，邮箱 cubeberry@cuberry.kr，运营时间为工作日 10:00~17:00（韩国时间）。服务器运行在 Amazon Web Services 上。工商信息可在韩国公平交易委员会网站（https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079）查询。",
+      "title": "能否告知运营 Xconda 的公司工商信息？",
+      "summary": "Xconda 由株式会社 Cubeberry（Cubeberry Co., Ltd.）开发和运营。代表理事为李珍瑞，营业执照号为 480-88-03079，通信销售业申报号为 2026-광주동구-0289。地址为 2F, 69-12 Chungjang-ro, Dong-gu, Jeonnam-Gwangju 61482, Republic of Korea，电话 +82-70-8095-2302，邮箱 cubeberry@cuberry.kr，运营时间为工作日 10:00~17:00（韩国时间）。服务器运行在 Amazon Web Services 上。工商信息可在韩国公平交易委员会网站（https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079）查询。",
       "blocks": [
         {
           "type": "h2",
@@ -4195,13 +4195,13 @@
         },
         {
           "type": "p",
-          "text": "来源：使用条款(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / XCONDA 官网页脚 (https://www.xconda.ai) / 韩国公平交易委员会经营者信息查询 (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079)"
+          "text": "来源：使用条款(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / Xconda 官网页脚 (https://www.xconda.ai) / 韩国公平交易委员会经营者信息查询 (https://www.ftc.go.kr/bizCommPop.do?wrkr_no=4808803079)"
         }
       ]
     },
     "qna/contact-inquiry": {
       "title": "咨询应该联系哪里？",
-      "summary": "有关 XCONDA 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）。邮箱 cubeberry@cuberry.kr，电话 +82-70-8095-2302，工作日 10:00~17:00（韩国时间，午休 12:00~13:00）。英文咨询也可联系美国法人 Cubeberry Co., Ltd（Delaware，info@cubeberry.ai，+1-888-202-1989）。通过美国法人购买的项目，退款也请向同一客服窗口申请。",
+      "summary": "有关 Xconda 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）。邮箱 cubeberry@cuberry.kr，电话 +82-70-8095-2302，工作日 10:00~17:00（韩国时间，午休 12:00~13:00）。英文咨询也可联系美国法人 Cubeberry Co., Ltd（Delaware，info@cubeberry.ai，+1-888-202-1989）。通过美国法人购买的项目，退款也请向同一客服窗口申请。",
       "blocks": [
         {
           "type": "h2",
@@ -4209,7 +4209,7 @@
         },
         {
           "type": "p",
-          "text": "来源：使用条款(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / XCONDA 官网页脚 (https://www.xconda.ai)"
+          "text": "来源：使用条款(Terms of Use) 1.22 (https://www.xconda.ai/legal/terms) / Xconda 官网页脚 (https://www.xconda.ai)"
         }
       ]
     },
@@ -4251,7 +4251,7 @@
         },
         {
           "type": "p",
-          "text": "来源：使用条款(Terms of Use) 1.8 (https://www.xconda.ai/legal/terms) / XCONDA Pricing (https://www.xconda.ai/pricing)"
+          "text": "来源：使用条款(Terms of Use) 1.8 (https://www.xconda.ai/legal/terms) / Xconda Pricing (https://www.xconda.ai/pricing)"
         }
       ]
     },
@@ -4271,7 +4271,7 @@
     },
     "qna/current-discount-events": {
       "title": "目前有正在进行的优惠活动吗？",
-      "summary": "为纪念 FLEXBOARD 上线，我们正在进行 Seedance 2.5 优惠活动。韩国为使用折扣 30% 加价格折扣 10%，最高合计 40%；美国为使用折扣最高 30%。活动时间为 2026 年 10 月 7 日上午 11 点至 11 月 6 日上午 11 点（韩国时间）。",
+      "summary": "为纪念 Flex Board 上线，我们正在进行 Seedance 2.5 优惠活动。韩国为使用折扣 30% 加价格折扣 10%，最高合计 40%；美国为使用折扣最高 30%。活动时间为 2026 年 10 月 7 日上午 11 点至 11 月 6 日上午 11 点（韩国时间）。",
       "blocks": [
         {
           "type": "h2",
@@ -4279,13 +4279,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA 活动说明"
+          "text": "来源：Xconda 活动说明"
         }
       ]
     },
     "qna/data-operation-location": {
-      "title": "XCONDA 的数据在哪里运营？",
-      "summary": "XCONDA 运行在 Amazon Web Services 上，存储的数据在传输和存储过程中均加密。个人信息可能在主要运营地韩国，以及美国（美国法人、Stripe、云服务商）和服务提供商所在国家/地区处理或存储。跨境传输适用标准合同条款和数据处理协议等。",
+      "title": "Xconda 的数据在哪里运营？",
+      "summary": "Xconda 运行在 Amazon Web Services 上，存储的数据在传输和存储过程中均加密。个人信息可能在主要运营地韩国，以及美国（美国法人、Stripe、云服务商）和服务提供商所在国家/地区处理或存储。跨境传输适用标准合同条款和数据处理协议等。",
       "blocks": [
         {
           "type": "h2",
@@ -4327,7 +4327,7 @@
     },
     "qna/flexboard-auto-refine-instant-apply": {
       "title": "什么时候使用 Auto Refine 和 Instant Apply？",
-      "summary": "Auto Refine 用于把想法或粗略剧本整理并拆分为镜头。Instant Apply 用于直接快速应用已经整理好的剧本。若已使用 FLEXBOARD 技能提前做好文字分镜，使用 Instant Apply 会更方便。",
+      "summary": "Auto Refine 用于把想法或粗略剧本整理并拆分为镜头。Instant Apply 用于直接快速应用已经整理好的剧本。若已使用 Flex Board 技能提前做好文字分镜，使用 Instant Apply 会更方便。",
       "blocks": [
         {
           "type": "h2",
@@ -4335,7 +4335,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：FLEXBOARD 使用指南"
+          "text": "来源：Xconda Hub：Flex Board 使用指南"
         }
       ]
     },
@@ -4349,16 +4349,16 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：FLEXBOARD 使用指南"
+          "text": "来源：Xconda Hub：Flex Board 使用指南"
         }
       ]
     },
     "qna/flexboard-cut-count-and-length": {
-      "title": "FLEXBOARD 最多可以做多少个镜头、每个镜头多长？",
+      "title": "Flex Board 最多可以做多少个镜头、每个镜头多长？",
       "summary": "一个画面最多可编排 36 个镜头。镜头数量在 Number of Panels 中设置，单个镜头时长在 Shot Length 中设置为 4 秒至 30 秒。例如设置为 9 个镜头 × 15 秒，简单相加约为 2 分 15 秒。"
     },
     "qna/flexboard-download-storyboard": {
-      "title": "可以下载在 FLEXBOARD 中制作的分镜吗？",
+      "title": "可以下载在 Flex Board 中制作的分镜吗？",
       "summary": "可以。在 Edit Panel 右上角，Panel 视图下可用 Download CUT ZIP 一次性下载所有镜头画面，Sheet 视图下可用 Download Sheet 下载单张汇总表。适合与团队成员或客户分享分镜。"
     },
     "qna/flexboard-edit-single-cut": {
@@ -4371,7 +4371,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：FLEXBOARD 使用指南"
+          "text": "来源：Xconda Hub：Flex Board 使用指南"
         }
       ]
     },
@@ -4395,7 +4395,7 @@
     },
     "qna/how-credits-are-deducted": {
       "title": "点数是如何扣减的？",
-      "summary": "点数按所使用的功能和模型不同而扣减。生成按钮或选择界面会显示单次生成所需的点数，请在生成前确认。例如 Turn 中每种图像引擎显示的单次生成点数不同，FLEXBOARD 的图像重新生成按钮也会显示所需点数。因服务故障或生成失败而扣减的点数会自动恢复。若点数分为多批，将按到期日由近及远扣减。",
+      "summary": "点数按所使用的功能和模型不同而扣减。生成按钮或选择界面会显示单次生成所需的点数，请在生成前确认。例如 Turn 中每种图像引擎显示的单次生成点数不同，Flex Board 的图像重新生成按钮也会显示所需点数。因服务故障或生成失败而扣减的点数会自动恢复。若点数分为多批，将按到期日由近及远扣减。",
       "blocks": [
         {
           "type": "h2",
@@ -4403,13 +4403,13 @@
         },
         {
           "type": "p",
-          "text": "来源：使用条款(Terms of Use) 1.10.5, 1.16 (https://www.xconda.ai/legal/terms) / 退款政策(Refund Policy) 3.1.6 (https://www.xconda.ai/legal/refund) / XCONDA Hub：Turn 指南 / XCONDA Hub：FLEXBOARD 使用指南"
+          "text": "来源：使用条款(Terms of Use) 1.10.5, 1.16 (https://www.xconda.ai/legal/terms) / 退款政策(Refund Policy) 3.1.6 (https://www.xconda.ai/legal/refund) / Xconda Hub：Turn 指南 / Xconda Hub：Flex Board 使用指南"
         }
       ]
     },
     "qna/how-to-access-hub": {
       "title": "如何进入 Hub？",
-      "summary": "在 XCONDA 网站（xconda.ai）打开 Resources 菜单，选择 Hub 即可进入。",
+      "summary": "在 Xconda 网站（xconda.ai）打开 Resources 菜单，选择 Hub 即可进入。",
       "blocks": [
         {
           "type": "h2",
@@ -4417,7 +4417,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA 官网页脚 (https://www.xconda.ai)"
+          "text": "来源：Xconda 官网页脚 (https://www.xconda.ai)"
         }
       ]
     },
@@ -4431,7 +4431,7 @@
         },
         {
           "type": "p",
-          "text": "来源：Claude 帮助中心 https://support.claude.com/en/articles/12512180 / XCONDA Hub"
+          "text": "来源：Claude 帮助中心 https://support.claude.com/en/articles/12512180 / Xconda Hub"
         }
       ]
     },
@@ -4451,7 +4451,7 @@
     },
     "qna/how-to-sign-up": {
       "title": "如何注册会员？",
-      "summary": "在 XCONDA 官网（xconda.ai）创建账户即可开始。可使用 Google、Facebook、X 社交登录，或使用邮箱和密码注册。仅限年满 18 周岁者使用，须以真实准确的信息注册，并请自行管理账户信息。请勿与他人共享账户。目前注册不赠送免费点数。",
+      "summary": "在 Xconda 官网（xconda.ai）创建账户即可开始。可使用 Google、Facebook、X 社交登录，或使用邮箱和密码注册。仅限年满 18 周岁者使用，须以真实准确的信息注册，并请自行管理账户信息。请勿与他人共享账户。目前注册不赠送免费点数。",
       "blocks": [
         {
           "type": "h2",
@@ -4477,7 +4477,7 @@
         },
         {
           "type": "p",
-          "text": "来源：使用条款(Terms of Use) 1.2, 1.8, 1.9 (https://www.xconda.ai/legal/terms) / XCONDA 官网页脚 (https://www.xconda.ai)"
+          "text": "来源：使用条款(Terms of Use) 1.2, 1.8, 1.9 (https://www.xconda.ai/legal/terms) / Xconda 官网页脚 (https://www.xconda.ai)"
         }
       ]
     },
@@ -4497,7 +4497,7 @@
     },
     "qna/minors-eligibility": {
       "title": "未成年人可以使用吗？",
-      "summary": "不可以。XCONDA 仅限年满 18 周岁的用户使用。我们不会收集未满 18 周岁者的个人信息，一旦发现已收集将立即删除。",
+      "summary": "不可以。Xconda 仅限年满 18 周岁的用户使用。我们不会收集未满 18 周岁者的个人信息，一旦发现已收集将立即删除。",
       "blocks": [
         {
           "type": "h2",
@@ -4519,7 +4519,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Video Generator (https://www.xconda.ai/video)"
+          "text": "来源：Xconda Video Generator (https://www.xconda.ai/video)"
         }
       ]
     },
@@ -4533,7 +4533,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
@@ -4553,7 +4553,7 @@
     },
     "qna/output-copyright": {
       "title": "生成成果的版权归谁？",
-      "summary": "根据条款，通过服务生成的内容所有权归会员所有。XCONDA 平台本身（软件、技术、商标）归株式会社 Cubeberry 所有。会员授予 Cubeberry（韩国及美国法人）非独占使用权，以便在提供和改进服务的范围内使用会员内容。不得上传或制作侵犯他人知识产权的内容。",
+      "summary": "根据条款，通过服务生成的内容所有权归会员所有。Xconda 平台本身（软件、技术、商标）归株式会社 Cubeberry 所有。会员授予 Cubeberry（韩国及美国法人）非独占使用权，以便在提供和改进服务的范围内使用会员内容。不得上传或制作侵犯他人知识产权的内容。",
       "blocks": [
         {
           "type": "h2",
@@ -4665,7 +4665,7 @@
     },
     "qna/seedance-2-5-length-resolution": {
       "title": "使用 Seedance 2.5 可以制作多长、多高分辨率的视频？",
-      "summary": "在 XCONDA 的 Video Generator 中选择 Seedance 2.5，可通过文本、图片、首尾帧、Reference（Ref-to-video）方式生成视频。根据开发方 ByteDance Seed 的发布说明，Seedance 2.5 一次最多可生成 30 秒带声音的视频。生成结果会记录分辨率、画面比例和时长，例如 720P、16:9、20 秒或 27 秒，因此时长可按秒设定。在提示词输入框下方的设置栏中可选择画面比例（如 16:9）、分辨率（如 720p）、时长（如 20s）以及是否开启 High Quality，提示词最多可输入 30,000 个字符。可选数值请在各设置项中查看。",
+      "summary": "在 Xconda 的 Video Generator 中选择 Seedance 2.5，可通过文本、图片、首尾帧、Reference（Ref-to-video）方式生成视频。根据开发方 ByteDance Seed 的发布说明，Seedance 2.5 一次最多可生成 30 秒带声音的视频。生成结果会记录分辨率、画面比例和时长，例如 720P、16:9、20 秒或 27 秒，因此时长可按秒设定。在提示词输入框下方的设置栏中可选择画面比例（如 16:9）、分辨率（如 720p）、时长（如 20s）以及是否开启 High Quality，提示词最多可输入 30,000 个字符。可选数值请在各设置项中查看。",
       "blocks": [
         {
           "type": "h2",
@@ -4673,13 +4673,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Video Generator (https://www.xconda.ai/video) / ByteDance Seed 的 Seedance 2.5 发布 (https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5)"
+          "text": "来源：Xconda Video Generator (https://www.xconda.ai/video) / ByteDance Seed 的 Seedance 2.5 发布 (https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5)"
         }
       ]
     },
     "qna/seedance-prompt-language": {
       "title": "提示词必须用英文写吗？",
-      "summary": "使用 XCONDA 提示词技能，可在中英并排显示的编辑器中编写和修改提示词。用中文核对，生成视频时填入英文实际使用版即可。对英文提示词感到负担的用户也可以轻松使用。",
+      "summary": "使用 Xconda 提示词技能，可在中英并排显示的编辑器中编写和修改提示词。用中文核对，生成视频时填入英文实际使用版即可。对英文提示词感到负担的用户也可以轻松使用。",
       "blocks": [
         {
           "type": "h2",
@@ -4687,13 +4687,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
     "qna/seedance-prompt-retry": {
       "title": "如果不满意结果，需要从头重写提示词吗？",
-      "summary": "不需要。在 XCONDA Prompt 技能中，您只需在对话中说明想修改的地方，编辑器中的提示词就会更新，然后直接用其重新生成。反复调整直至达到您想要的效果。",
+      "summary": "不需要。在 Xconda Prompt 技能中，您只需在对话中说明想修改的地方，编辑器中的提示词就会更新，然后直接用其重新生成。反复调整直至达到您想要的效果。",
       "blocks": [
         {
           "type": "h2",
@@ -4701,13 +4701,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
     "qna/seedance-reference-limits": {
       "title": "最多可以添加多少个参考图像和参考视频？",
-      "summary": "在 XCONDA 视频生成的 Reference 模式下，一次最多可添加 30 张图片、10 个视频和 10 个音频作为参考。添加的素材会保存在 Input Assets 素材库中，在提示词中输入 @ 即可指定要引用的素材。",
+      "summary": "在 Xconda 视频生成的 Reference 模式下，一次最多可添加 30 张图片、10 个视频和 10 个音频作为参考。添加的素材会保存在 Input Assets 素材库中，在提示词中输入 @ 即可指定要引用的素材。",
       "blocks": [
         {
           "type": "h2",
@@ -4715,7 +4715,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Video Generator (https://www.xconda.ai/video)"
+          "text": "来源：Xconda Video Generator (https://www.xconda.ai/video)"
         }
       ]
     },
@@ -4743,7 +4743,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
@@ -4795,7 +4795,7 @@
     },
     "qna/turn-image-usage": {
       "title": "用 Turn 制作的图像用在哪里？",
-      "summary": "用在三个地方。空白空间图像（Freeze Frame）作为 Seedance 视频生成的背景参考；加入人物的关键画面作为 FLEXBOARD 故事板的镜头；空间图像则作为 Blocking Board 中规划走位的舞台。",
+      "summary": "用在三个地方。空白空间图像（Freeze Frame）作为 Seedance 视频生成的背景参考；加入人物的关键画面作为 Flex Board 故事板的镜头；空间图像则作为 Blocking Board 中规划走位的舞台。",
       "blocks": [
         {
           "type": "h2",
@@ -4803,7 +4803,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍 / XCONDA Hub：Turn 指南"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍 / Xconda Hub：Turn 指南"
         }
       ]
     },
@@ -4817,7 +4817,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：Turn 指南"
+          "text": "来源：Xconda Hub：Turn 指南"
         }
       ]
     },
@@ -4831,7 +4831,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：Turn 指南"
+          "text": "来源：Xconda Hub：Turn 指南"
         }
       ]
     },
@@ -4845,13 +4845,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：Turn 指南"
+          "text": "来源：Xconda Hub：Turn 指南"
         }
       ]
     },
     "qna/uploaded-content-usage": {
       "title": "Cubeberry 会使用我上传的图片和视频吗？",
-      "summary": "您上传的图片、视频以及生成成果的所有权归会员所有。Cubeberry 可在提供和改进服务的范围内使用这些内容。只有在会员同意的情况下，才会将其用于训练 XCONDA AI 模型。我们不会出售个人信息，也不会将其共享用于定向广告。",
+      "summary": "您上传的图片、视频以及生成成果的所有权归会员所有。Cubeberry 可在提供和改进服务的范围内使用这些内容。只有在会员同意的情况下，才会将其用于训练 Xconda AI 模型。我们不会出售个人信息，也不会将其共享用于定向广告。",
       "blocks": [
         {
           "type": "h2",
@@ -4873,7 +4873,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
@@ -4887,13 +4887,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：Blocking Board 使用指南"
+          "text": "来源：Xconda Hub：Blocking Board 使用指南"
         }
       ]
     },
     "qna/what-is-flexboard": {
-      "title": "FLEXBOARD 是什么工具？",
-      "summary": "FLEXBOARD 是一款把剧本拆分为镜头，并用文字和画面逐镜头预览的故事板工具。在生成视频前可确认每个镜头的构图和人物，只挑选不满意的镜头进行修改。它专为配合 Seedance 2.5 使用而设计。",
+      "title": "Flex Board 是什么工具？",
+      "summary": "Flex Board 是一款把剧本拆分为镜头，并用文字和画面逐镜头预览的故事板工具。在生成视频前可确认每个镜头的构图和人物，只挑选不满意的镜头进行修改。它专为配合 Seedance 2.5 使用而设计。",
       "blocks": [
         {
           "type": "h2",
@@ -4901,7 +4901,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：FLEXBOARD 使用指南"
+          "text": "来源：Xconda Hub：Flex Board 使用指南"
         }
       ]
     },
@@ -4915,13 +4915,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub：Turn 指南"
+          "text": "来源：Xconda Hub：Turn 指南"
         }
       ]
     },
     "qna/what-is-xconda": {
-      "title": "XCONDA 是什么服务？",
-      "summary": "XCONDA 是 Cubeberry 运营的 AI 视频与图像制作平台（xconda.ai）。可在同一处使用多种生成式 AI 模型，并提供从剧本到故事板、再到视频生成的制作工具（FLEXBOARD、Turn、Blocking Board 等）。它的重点不是生成单个片段，而是制作多个镜头以相同人物、相同空间连贯呈现的作品。",
+      "title": "Xconda 是什么服务？",
+      "summary": "Xconda 是 Cubeberry 运营的 AI 视频与图像制作平台（xconda.ai）。可在同一处使用多种生成式 AI 模型，并提供从剧本到故事板、再到视频生成的制作工具（Flex Board、Turn、Blocking Board 等）。它的重点不是生成单个片段，而是制作多个镜头以相同人物、相同空间连贯呈现的作品。",
       "blocks": [
         {
           "type": "h2",
@@ -4929,21 +4929,21 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍 / Cubeberry 公司介绍 (https://www.cubeberry.ai/)"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍 / Cubeberry 公司介绍 (https://www.cubeberry.ai/)"
         }
       ]
     },
     "qna/what-is-xconda-claude-skill": {
-      "title": "XCONDA 的 Claude 技能是什么？",
-      "summary": "这是添加到 Claude 中使用的 XCONDA 专用工作工具，共有两种。FLEXBOARD 技能把剧本拆分为镜头，并检查镜头时长总和、单个镜头的动作量、相似镜头相连导致画面跳跃的问题以及出场人物数量。XCONDA 提示词技能基于 FLEXBOARD 确定的关键画面，制作 Seedance 2.5 的提示词，按照总导演、摄影、灯光、美术四位分工的方式撰写。"
+      "title": "Xconda 的 Claude 技能是什么？",
+      "summary": "这是添加到 Claude 中使用的 Xconda 专用工作工具，共有两种。Flex Board 技能把剧本拆分为镜头，并检查镜头时长总和、单个镜头的动作量、相似镜头相连导致画面跳跃的问题以及出场人物数量。Xconda 提示词技能基于 Flex Board 确定的关键画面，制作 Seedance 2.5 的提示词，按照总导演、摄影、灯光、美术四位分工的方式撰写。"
     },
     "qna/where-to-get-skills": {
       "title": "在哪里可以获取技能？",
-      "summary": "用于 XCONDA 制作工作流的 Claude 技能（FLEXBOARD 技能、XCONDA 提示词技能）可在 XCONDA Hub 下载。下载后请按下方安装方法添加到 Claude 中使用。"
+      "summary": "用于 Xconda 制作工作流的 Claude 技能（Flex Board 技能、Xconda 提示词技能）可在 Xconda Hub 下载。下载后请按下方安装方法添加到 Claude 中使用。"
     },
     "qna/who-made-xconda": {
-      "title": "XCONDA 是谁开发的？",
-      "summary": "XCONDA 由韩国株式会社 Cubeberry（Cubeberry Co., Ltd.）开发和运营。Cubeberry 成立于 2023 年，由出身 KBS 电视剧 PD 的代表李珍瑞与编剧、在职导演、AI 影像艺术家共同设计。使用 XCONDA 流程制作了 KBS 1TV《传说中的故乡：九尾狐》（2025 年 5 月，韩国电视台首次播出 AI 动画正片）、KBS 纪录片《韩国战争 移动创伤中心》（2025 年 6 月）、KBS 1TV 纪录片《圣物》的生成式 AI 部分（2026 年 3 月播出），并在韩国内容振兴院（KOCCA）新媒体新技术内容实验室制作 4 部 AI 网络剧。累计制作了 3,100 多个达到播出水准的 AI 内容镜头。",
+      "title": "Xconda 是谁开发的？",
+      "summary": "Xconda 由韩国株式会社 Cubeberry（Cubeberry Co., Ltd.）开发和运营。Cubeberry 成立于 2023 年，由出身 KBS 电视剧 PD 的代表李珍瑞与编剧、在职导演、AI 影像艺术家共同设计。使用 Xconda 流程制作了 KBS 1TV《传说中的故乡：九尾狐》（2025 年 5 月，韩国电视台首次播出 AI 动画正片）、KBS 纪录片《韩国战争 移动创伤中心》（2025 年 6 月）、KBS 1TV 纪录片《圣物》的生成式 AI 部分（2026 年 3 月播出），并在韩国内容振兴院（KOCCA）新媒体新技术内容实验室制作 4 部 AI 网络剧。累计制作了 3,100 多个达到播出水准的 AI 内容镜头。",
       "blocks": [
         {
           "type": "h2",
@@ -4951,13 +4951,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA 官网页脚 (https://www.xconda.ai) / Cubeberry 公司介绍 (https://www.cubeberry.ai/)"
+          "text": "来源：Xconda 官网页脚 (https://www.xconda.ai) / Cubeberry 公司介绍 (https://www.cubeberry.ai/)"
         }
       ]
     },
     "qna/why-faces-change-between-cuts": {
       "title": "为什么 AI 视频在每个镜头中脸部会变化？",
-      "summary": "如果只给视频 AI 输入文字（提示词），AI 每次都会重新想象并绘制。因此即使写明是同一个人物，不同镜头的脸部、服装和构图也会略有差异。要避免这一点，需要用图像固定可见的部分：脸部与服装用参考图像、空间用背景图像、构图用故事板来传达。XCONDA 的制作流程正是把这项固定工作安排在视频生成之前完成。",
+      "summary": "如果只给视频 AI 输入文字（提示词），AI 每次都会重新想象并绘制。因此即使写明是同一个人物，不同镜头的脸部、服装和构图也会略有差异。要避免这一点，需要用图像固定可见的部分：脸部与服装用参考图像、空间用背景图像、构图用故事板来传达。Xconda 的制作流程正是把这项固定工作安排在视频生成之前完成。",
       "blocks": [
         {
           "type": "h2",
@@ -4965,7 +4965,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         },
         {
           "type": "p",
@@ -4983,7 +4983,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         },
         {
           "type": "p",
@@ -4992,8 +4992,8 @@
       ]
     },
     "qna/xconda-video-workflow-overview": {
-      "title": "想了解用 XCONDA 制作视频的完整流程。",
-      "summary": "Cubeberry 的制作流程分为 7 个步骤：1) 撰写剧本 2) 准备参考图像（角色设定图、Turn 背景）3) 编写文字分镜与故事板提示词（FLEXBOARD 技能）4) 制作故事板与走位视频（FLEXBOARD、Blocking Board）5) 编写 Seedance 提示词并生成视频 6) 制作声音 7) 合成画面与声音完成作品。其中第 4 步故事板是连接准备阶段与视频制作阶段的节点。详情可见 Hub 博客文章《从一份剧本到成片》。",
+      "title": "想了解用 Xconda 制作视频的完整流程。",
+      "summary": "Cubeberry 的制作流程分为 7 个步骤：1) 撰写剧本 2) 准备参考图像（角色设定图、Turn 背景）3) 编写文字分镜与故事板提示词（Flex Board 技能）4) 制作故事板与走位视频（Flex Board、Blocking Board）5) 编写 Seedance 提示词并生成视频 6) 制作声音 7) 合成画面与声音完成作品。其中第 4 步故事板是连接准备阶段与视频制作阶段的节点。详情可见 Hub 博客文章《从一份剧本到成片》。",
       "blocks": [
         {
           "type": "h2",
@@ -5001,13 +5001,13 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
     "qna/xconda-vs-other-ai-video-tools": {
       "title": "与其他 AI 视频工具的区别是什么？",
-      "summary": "XCONDA 更专注于视频生成之前的阶段。若只给视频 AI 输入文字，每个镜头的脸部、服装和构图很容易出现差异。XCONDA 通过 FLEXBOARD（逐镜头故事板）、Turn（360 度虚拟场景）和 Blocking Board（人物走位）先固定脸部、空间、构图和走位，再生成视频，制作流程正是按此设计。这套结构把电视连续剧现场的制作方式移植到了 AI 视频上。",
+      "summary": "Xconda 更专注于视频生成之前的阶段。若只给视频 AI 输入文字，每个镜头的脸部、服装和构图很容易出现差异。Xconda 通过 Flex Board（逐镜头故事板）、Turn（360 度虚拟场景）和 Blocking Board（人物走位）先固定脸部、空间、构图和走位，再生成视频，制作流程正是按此设计。这套结构把电视连续剧现场的制作方式移植到了 AI 视频上。",
       "blocks": [
         {
           "type": "h2",
@@ -5015,7 +5015,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA Hub 博客：制作流程系列介绍"
+          "text": "来源：Xconda Hub 博客：制作流程系列介绍"
         }
       ]
     },
@@ -5032,8 +5032,8 @@
       "summary": "空间 JSON 中记录的尺寸优先。目录里的尺寸只在该 JSON 没有数值时使用，因此已保存的尺寸会生效，而不是显示目录的默认大小。"
     },
     "qna/workspace-overview": {
-      "title": "什么是 XCONDA 工作区？",
-      "summary": "XCONDA 工作区是 11/17 下午开启测试的新团队空间，可管理组织、项目与共享预算，并提供指南 No.25 帮助完成初始设置。"
+      "title": "什么是 Xconda 工作区？",
+      "summary": "Xconda 工作区是 11/17 下午开启测试的新团队空间，可管理组织、项目与共享预算，并提供指南 No.25 帮助完成初始设置。"
     },
     "qna/workspace-organization-count": {
       "title": "订阅套餐包含多少个组织？",
@@ -5052,8 +5052,8 @@
       "summary": "如需无限使用组织与成员，请走企业版的单独申请流程。标准套餐仍按公布上限执行，企业版需求会作为专门申请处理，不会自动放开额度。"
     },
     "qna/credits-are-tokens-not-points": {
-      "title": "XCONDA 额度是积分吗？",
-      "summary": "不是。XCONDA 额度是平台内使用的服务令牌，而不是积分或分数。运行工具或模型时会消耗，生成前会显示所需数量，因此它不是等级分或评价分。"
+      "title": "Xconda 额度是积分吗？",
+      "summary": "不是。Xconda 额度是平台内使用的服务令牌，而不是积分或分数。运行工具或模型时会消耗，生成前会显示所需数量，因此它不是等级分或评价分。"
     },
     "qna/seedance-draft-1080p-window-14-days": {
       "title": "Seedance 2.5 的 Draft 会保留多久？",
@@ -5065,7 +5065,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）"
+          "text": "来源：Xconda 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）"
         }
       ]
     },
@@ -5079,7 +5079,7 @@
         },
         {
           "type": "p",
-          "text": "来源：XCONDA 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）"
+          "text": "来源：Xconda 新闻《Seedance 2.5 Draft Mode 更新：初稿保存期限延长至 14 天》（2026-11-02）"
         }
       ]
     }
