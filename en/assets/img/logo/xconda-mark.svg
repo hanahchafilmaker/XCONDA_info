@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Xconda">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 32" fill="none" role="img" aria-label="Xconda">
   <defs>
-    <mask id="xconda-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-      <rect width="32" height="32" fill="#fff"/>
-      <path d="M4 4h7l17 24h-7z" fill="#000" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
+    <mask id="xconda-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="27" height="32">
+      <rect width="27" height="32" fill="#fff"/>
+      <path d="M0.25 0H8.75L26.75 32H18.25Z" fill="#000" stroke="#000" stroke-width="4.8" stroke-linejoin="round"/>
     </mask>
   </defs>
-  <!-- 화이트 획 (／) — 옐로 획 주변을 잘라냄 -->
-  <path d="M21 4h7L11 28H4z" fill="#FFFFFF" mask="url(#xconda-cut)"/>
+  <!-- 화이트 획 (／) — 옐로 획 둘레를 잘라 틈을 만듭니다 -->
+  <path d="M18.75 0H26.25L7.75 32H0.25Z" fill="#FFD60A" mask="url(#xconda-cut)"/>
   <!-- 옐로 획 (＼) -->
-  <path d="M4 4h7l17 24h-7z" fill="#FFD60A"/>
+  <path d="M0.25 0H8.75L26.75 32H18.25Z" fill="#FFD60A"/>
 </svg>
