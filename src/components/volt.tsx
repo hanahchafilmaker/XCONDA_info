@@ -7,6 +7,7 @@ import {
   type SVGProps,
 } from "react";
 import { cn } from "../utils/cn";
+import { siteAssetUrl } from "../content/siteAssets";
 
 /* ───────────────────────── icons ───────────────────────── */
 
@@ -168,15 +169,35 @@ export function LogoMark({ className, title }: { className?: string; title?: str
 }
 
 /**
- * 헤더·푸터 로고 — 마크는 브랜드 옐로(#FFD60A), "conda" 는 잉크색 텍스트.
- * (제공 원본은 흰색 워드마크라 흰 배경에서 글자가 사라집니다 — 2026-11-24 대표 결정:
- *  헤더는 옐로 마크 + 검정 "conda" 로 유지)
+ * 헤더·푸터 로고 — **대표가 준 워드마크 이미지를 그대로** 씁니다(글자 모양·자간·비율 유지).
+ *
+ * 원본 `xconda-wordmark-official.png` 은 투명 배경의 **흰색** 워드마크라 흰 헤더에서
+ * "conda" 가 사라집니다. 그래서 같은 원본에서 글자 획만 잉크색(#0B0B0B)으로 바꾼
+ * `xconda-wordmark-ink.png` 를 화면용으로 함께 두었습니다 — 옐로 마크·글자 모양·비율은
+ * 원본과 1:1 로 같고, 밝은 배경에서 읽히도록 색만 바꾼 것입니다.
+ *
+ * 원본 그대로(흰색)를 쓰는 곳: 어두운 배경용으로 `xconda-wordmark-official.png` 를 그대로
+ * 참조하면 됩니다. 파비콘·OG·구조화 데이터는 SVG 마크(xconda-mark.svg)를 씁니다.
  */
-export function Logo({ className, href = "#top" }: { className?: string; href?: string }) {
+export function Logo({ className, href = "#top", tone = "ink" }: { className?: string; href?: string; tone?: "ink" | "light" }) {
+  const src = siteAssetUrl("assets/img/logo/xconda-wordmark-ink.png");
+  const srcLight = siteAssetUrl("assets/img/logo/xconda-wordmark-official.png");
   return (
-    <a href={href} aria-label={href === "#top" ? "Xconda Hub home" : "Xconda website"} className={cn("flex shrink-0 items-center gap-1 whitespace-nowrap", className)}>
-      <LogoMark title="Xconda" className="h-8 w-[27px] text-[#FFD60A]" />
-      <span className="notranslate text-[25px] font-extrabold leading-none tracking-[-0.07em] text-neutral-950">conda</span>
+    <a
+      href={href}
+      aria-label={href === "#top" ? "Xconda Hub home" : "Xconda website"}
+      data-brand-logo
+      className={cn("flex shrink-0 items-center whitespace-nowrap", className)}
+    >
+      <img
+        src={tone === "light" ? srcLight : src}
+        alt="Xconda"
+        width={268}
+        height={64}
+        data-brand-wordmark
+        className="h-6 w-auto select-none sm:h-7"
+        draggable={false}
+      />
     </a>
   );
 }

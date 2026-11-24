@@ -84,6 +84,7 @@ for (const rel of ["", "qna/"]) {
 //   허브 쪽에서 가벼운 자산만 en/ 에 복사해 두었지만, 본문 커버·OG 카드는 프록시 예외가 있어야 합니다.
 const ASSETS = [
   ["assets/img/logo/xconda-wordmark-official.png", /^image\//],
+  ["assets/img/logo/xconda-wordmark-ink.png", /^image\//],
   ["assets/img/tools/tool-flexboard.jpg", /^image\//],
   ["assets/img/og/lang/en-home.png", /^image\//],
   // 앱 번들은 프록시를 거치지 않고 원본 도메인 절대 주소로 부릅니다(그래야 404 → HTML 을 피함).

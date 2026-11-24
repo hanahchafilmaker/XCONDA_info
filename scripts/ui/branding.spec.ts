@@ -16,6 +16,7 @@ const MIME: Record<string, string> = {
 };
 
 const wordmark = new URL("../../assets/img/logo/xconda-wordmark-official.png", import.meta.url);
+const wordmarkInk = new URL("../../assets/img/logo/xconda-wordmark-ink.png", import.meta.url);
 
 /**
  * 이 저장소 자산은 **원본 도메인 절대 주소**로도 요청됩니다.
@@ -85,25 +86,24 @@ test("featured notice cover fills the card without cropping at every breakpoint"
   await expect(page.locator("[data-article-cover] img")).toHaveCSS("object-fit", "contain");
 });
 
-test("header and footer use the exact supplied wordmark, including subpath deployments", async ({ page }) => {
+test("header and footer show the supplied wordmark artwork", async ({ page }) => {
+  // 대표 제공 원본(흰색)은 그대로 보관하고, 밝은 화면에는 같은 도안의 잉크색 사본을 씁니다.
   expect(createHash("sha256").update(readFileSync(wordmark)).digest("hex"))
     .toBe("37af2c10459010812eb9d733dd30ba61dbd8bf31aa75c388a2e42fa1f984c501");
-  const logos = page.locator("[data-official-wordmark]");
-  await expect(logos).toHaveCount(2);
+  expect(createHash("sha256").update(readFileSync(wordmarkInk)).digest("hex"))
+    .toBe("578e9584d7d736d5fc95c8e78a26ac5f9d97a8b06a5fd6ff64ad6355ac2226f3");
+
+  const logos = page.locator("[data-brand-logo]");
+  await expect(logos).toHaveCount(2); // 헤더 + 푸터
   for (const logo of await logos.all()) {
-    await expect(logo).toHaveAttribute("src", "/assets/img/logo/xconda-wordmark-official.png");
-    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => [img.naturalWidth, img.naturalHeight])).toEqual([268, 64]);
-    await expect(logo).toHaveCSS("filter", "none");
-    const box = (await logo.boundingBox())!;
+    const img = logo.locator("img[data-brand-wordmark]");
+    await expect(img).toHaveAttribute("src", /assets\/img\/logo\/xconda-wordmark-ink\.png$/);
+    await expect(img).toHaveAttribute("alt", "Xconda");
+    // 원본 비율(268×64)이 그대로 유지되어야 합니다 — 글자가 찌그러지면 안 됩니다.
+    await expect.poll(() => img.evaluate((el: HTMLImageElement) => [el.naturalWidth, el.naturalHeight]))
+      .toEqual([268, 64]);
+    const box = (await img.boundingBox())!;
     expect(box.width / box.height).toBeCloseTo(268 / 64, 2);
-  }
-  // Serve the same file under a Pages project prefix, while executing the dev app.
-  await page.route("**/XCONDA_info/assets/img/logo/xconda-wordmark-official.png", (route) => route.fulfill({ body: readFileSync(wordmark), contentType: "image/png" }));
-  await page.addInitScript(() => history.replaceState(null, "", "/XCONDA_info/"));
-  await page.goto("/dev.html");
-  for (const logo of await page.locator("[data-official-wordmark]").all()) {
-    await expect(logo).toHaveAttribute("src", "/XCONDA_info/assets/img/logo/xconda-wordmark-official.png");
-    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(268);
   }
 });
 
