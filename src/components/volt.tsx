@@ -127,7 +127,18 @@ export const IconGit = (p: IconProps) => (
 /* ───────────────────────── logo ───────────────────────── */
 
 /**
- * XCONDA 공식 마크 — 옐로(＼) 획이 화이트(／) 획을 가르며 교차하는 플랫 X.
+ * 옐로 획(＼)의 아래·오른쪽 끝을 잇는 도안 좌표(27×32 박스).
+ * 2026-11-24 대표 제공 워드마크(assets/img/logo/xconda-wordmark-official.png)의
+ * X 마크를 그대로 옮겨 온 값입니다 — 각도 55.6°, 획 폭 8.5.
+ */
+const LOGO_YELLOW = "M0.25 0H8.75L26.75 32H18.25Z";
+/** 화이트 획(／) — 옐로 획을 180° 돌린 같은 도형 */
+const LOGO_WHITE = "M18.75 0H26.25L7.75 32H0.25Z";
+/** 옐로 획 둘레의 틈(클리어 스페이스). stroke 로 그리므로 실제 틈은 절반입니다. */
+const LOGO_GAP = 4.8;
+
+/**
+ * XCONDA 공식 마크 — 옐로(＼) 획과 화이트(／) 획이 교차하며 X 를 만듭니다.
  * 화이트 획은 마스크로 잘라내 배경색과 무관하게 틈이 보입니다.
  * 에셋 원본: assets/img/logo/xconda-mark.svg (단일 파일 빌드를 위해 인라인으로도 유지)
  */
@@ -135,7 +146,7 @@ export function LogoMark({ className, title }: { className?: string; title?: str
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   return (
     <svg
-      viewBox="0 0 32 32"
+      viewBox="0 0 27 32"
       className={className}
       fill="none"
       role={title ? "img" : undefined}
@@ -143,24 +154,28 @@ export function LogoMark({ className, title }: { className?: string; title?: str
     >
       {title ? <title>{title}</title> : null}
       <defs>
-        <mask id={`${uid}-cut`} maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-          <rect width="32" height="32" fill="#fff" />
-          <path d="M4 4h7l17 24h-7z" fill="#000" stroke="#000" strokeWidth="3" strokeLinejoin="round" />
+        <mask id={`${uid}-cut`} maskUnits="userSpaceOnUse" x="0" y="0" width="27" height="32">
+          <rect width="27" height="32" fill="#fff" />
+          <path d={LOGO_YELLOW} fill="#000" stroke="#000" strokeWidth={LOGO_GAP} strokeLinejoin="round" />
         </mask>
       </defs>
       {/* 화이트 획 (／) — 옐로 획 주변을 잘라냄 */}
-      <path d="M21 4h7L11 28H4z" fill="currentColor" mask={`url(#${uid}-cut)`} />
+      <path d={LOGO_WHITE} fill="currentColor" mask={`url(#${uid}-cut)`} />
       {/* 옐로 획 (＼) */}
-      <path d="M4 4h7l17 24h-7z" fill="currentColor" />
+      <path d={LOGO_YELLOW} fill="currentColor" />
     </svg>
   );
 }
 
-/** Operator-supplied official wordmark, kept unmodified on its original dark background. */
+/**
+ * 헤더·푸터 로고 — 마크는 브랜드 옐로(#FFD60A), "conda" 는 잉크색 텍스트.
+ * (제공 원본은 흰색 워드마크라 흰 배경에서 글자가 사라집니다 — 2026-11-24 대표 결정:
+ *  헤더는 옐로 마크 + 검정 "conda" 로 유지)
+ */
 export function Logo({ className, href = "#top" }: { className?: string; href?: string }) {
   return (
-    <a href={href} aria-label={href === "#top" ? "Xconda Hub home" : "Xconda website"} className={cn("flex shrink-0 items-center gap-1.5 whitespace-nowrap", className)}>
-      <LogoMark title="Xconda" className="size-8 text-volt-400" />
+    <a href={href} aria-label={href === "#top" ? "Xconda Hub home" : "Xconda website"} className={cn("flex shrink-0 items-center gap-1 whitespace-nowrap", className)}>
+      <LogoMark title="Xconda" className="h-8 w-[27px] text-[#FFD60A]" />
       <span className="notranslate text-[25px] font-extrabold leading-none tracking-[-0.07em] text-neutral-950">conda</span>
     </a>
   );

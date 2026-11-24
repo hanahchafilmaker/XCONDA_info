@@ -1,7 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Xconda">
   <rect width="32" height="32" rx="7" fill="#0B0B0B"/>
-  <g transform="translate(4 4) scale(.75)">
-    <path d="M21 4h7L11 28H4z" fill="#FFFFFF"/>
-    <path d="M4 4h7l17 24h-7z" fill="#FFD60A" stroke="#0B0B0B" stroke-width="3" stroke-linejoin="round" paint-order="stroke"/>
+  <g transform="translate(6.28 4.48) scale(.72)">
+    <defs>
+      <mask id="xconda-fav-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="27" height="32">
+        <rect width="27" height="32" fill="#fff"/>
+        <path d="M0.25 0H8.75L26.75 32H18.25Z" fill="#000" stroke="#000" stroke-width="4.8" stroke-linejoin="round"/>
+      </mask>
+    </defs>
+    <path d="M18.75 0H26.25L7.75 32H0.25Z" fill="#FFFFFF" mask="url(#xconda-fav-cut)"/>
+    <path d="M0.25 0H8.75L26.75 32H18.25Z" fill="#FFD60A"/>
   </g>
 </svg>

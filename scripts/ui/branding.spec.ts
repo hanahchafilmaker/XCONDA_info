@@ -87,15 +87,15 @@ test("featured notice cover fills the card without cropping at every breakpoint"
 
 test("header and footer use the exact supplied wordmark, including subpath deployments", async ({ page }) => {
   expect(createHash("sha256").update(readFileSync(wordmark)).digest("hex"))
-    .toBe("6fee4abdb9b8129b3d09628c83fc40ca893b87803997e5aacda29a8f7e0423b7");
+    .toBe("37af2c10459010812eb9d733dd30ba61dbd8bf31aa75c388a2e42fa1f984c501");
   const logos = page.locator("[data-official-wordmark]");
   await expect(logos).toHaveCount(2);
   for (const logo of await logos.all()) {
     await expect(logo).toHaveAttribute("src", "/assets/img/logo/xconda-wordmark-official.png");
-    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => [img.naturalWidth, img.naturalHeight])).toEqual([179, 60]);
+    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => [img.naturalWidth, img.naturalHeight])).toEqual([268, 64]);
     await expect(logo).toHaveCSS("filter", "none");
     const box = (await logo.boundingBox())!;
-    expect(box.width / box.height).toBeCloseTo(179 / 60, 2);
+    expect(box.width / box.height).toBeCloseTo(268 / 64, 2);
   }
   // Serve the same file under a Pages project prefix, while executing the dev app.
   await page.route("**/XCONDA_info/assets/img/logo/xconda-wordmark-official.png", (route) => route.fulfill({ body: readFileSync(wordmark), contentType: "image/png" }));
@@ -103,7 +103,7 @@ test("header and footer use the exact supplied wordmark, including subpath deplo
   await page.goto("/dev.html");
   for (const logo of await page.locator("[data-official-wordmark]").all()) {
     await expect(logo).toHaveAttribute("src", "/XCONDA_info/assets/img/logo/xconda-wordmark-official.png");
-    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(179);
+    await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(268);
   }
 });
 
