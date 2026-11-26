@@ -39,7 +39,6 @@
 
 ## 뉴스
 
-- [힉스필드 Miracle 공개, 영상 레이어 부분 편집](https://hub.xconda.ai/post/higgsfield-miracle-video-layer-editing/)
 - [챗GPT GIF 생성 기능, 이미지 2.6으로 움짤 만들기](https://hub.xconda.ai/post/chatgpt-gif-images-2-6/)
 - [사진 한 장으로 3D 모델 만드는 블렌더 애드온](https://hub.xconda.ai/post/blender-addon-single-photo-3d-model/)
 - [GPT-6.1 테라, 아스트라·솔과의 차이 정리](https://hub.xconda.ai/post/gpt-6-1-terra-astra-sol/)
