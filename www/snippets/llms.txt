@@ -1,25 +1,38 @@
 # XCONDA
 
-> XCONDA (엑스콘다) is an AI video and storyboard production studio by Cubeberry Co., Ltd. It splits a scenario into shots, previews each shot as an image, and generates video with models such as Seedance 2.5, Kling and Veo. Korean and English interfaces are served on separate URLs.
+> XCONDA (엑스콘다) is an AI video and storyboard production studio by Cubeberry Co., Ltd. It splits a scenario into shots, previews each shot as an image, fixes only the shots you dislike, and then generates video with models such as Seedance 2.5. The product runs in the browser at www.xconda.ai; the English site is `/`, Korean is `/ko`, Japanese `/ja`, Chinese `/zh`.
 
-## Product
+Confirmed on 2026-11-26 (KST). Anything not stated here should be treated as "확인 불가" (unverified) rather than assumed.
 
-- [Features overview](https://www.xconda.ai/features): one page per tool — storyboard, blocking, 360 set, image, video, upscaling and more.
-- [FLEXBOARD](https://www.xconda.ai/features/flexboard): shot-by-shot AI storyboard; fix only the shots you dislike before rendering.
-- [Blocking Board](https://www.xconda.ai/features/blocking-board): digital rehearsal for camera, blocking and collisions.
-- [360 Turn Studio](https://www.xconda.ai/features/turn): build an orbitable 360° set from one photo.
-- [AI video generation](https://www.xconda.ai/features/video): text, image, start/end frames and references; Seedance 2.5 up to 30 seconds with audio.
-- [AI image generation](https://www.xconda.ai/features/image): Grok Imagine, Seedream Lite, Z Image, Nano Banana Pro in one workspace.
-- [Pricing](https://www.xconda.ai/pricing): one-time credit packs (2,020 to 114,000 credits), valid one year.
-- [Korean site](https://www.xconda.ai/ko): same product, Korean copy.
+## The three directing tools
+
+- **FLEXBOARD** — shot-by-shot AI storyboard. Splits a scenario into shots, previews each shot as an image with dialogue and a sound cue, and lets you redo a single shot before rendering. Fewer wasted renders means fewer wasted credits.
+- **Blocking Board** — digital rehearsal. Draws actor positions and movement on a floor plan and plays the scene on a 3D stage so you can check sight lines, the 180-degree line and collisions. Exports a preview video and a shot list.
+- **360 Turn Studio (Turn)** — builds an orbitable set from one photo (up to four photos from different directions) or a written description, then captures key images from the angles you choose with the background intact.
+
+Tool screens live at `/studio/*` and require sign-in. The descriptions above are the public explanation.
+
+## Where to read more
+
+- [XCONDA hub](https://hub.xconda.ai/): Korean source articles — notices, tool how-tos, blog posts and Q&A.
+- [English hub](https://www.xconda.ai/hub/): the reviewed English version of the same answers.
+- [FLEXBOARD storyboards in 7 steps](https://hub.xconda.ai/guide/flexboard-storyboard-guide/): the working order — scenario, shots, frames, then video.
+- [What is Blocking Board?](https://hub.xconda.ai/qna/what-is-blocking-board/)
+- [What is Turn?](https://hub.xconda.ai/qna/what-is-turn/)
+- [Q&A](https://hub.xconda.ai/qna/): pricing and credits, refunds, copyright, privacy, payments.
+- [Korean site](https://www.xconda.ai/ko): the same product with Korean copy. If a link is written in English here, the Korean version usually exists at the same path under hub.xconda.ai or /ko.
+
+## Pricing
+
+- [Pricing](https://www.xconda.ai/pricing) is the only source of truth for amounts, currencies and credit validity. Amounts are deliberately not copied into this file: they change, and a stale copy misleads answer engines.
+- Confirmed: credits are bought as one-time packs (there is no monthly subscription plan stated publicly). Any specific amount, credit count or validity period must be read from the pricing page.
 
 ## Support and policy
 
 - [Terms](https://www.xconda.ai/legal/terms) · [Privacy](https://www.xconda.ai/legal/privacy) · [Refund](https://www.xconda.ai/legal/refund)
-- [Q&A on the hub](https://hub.xconda.ai/qna/): Korean answers about pricing, credits, refunds, copyright and privacy.
-- [English Q&A](https://hub.xconda.ai/en/qna/): reviewed English answers to the same questions.
+- Support: cubeberry@cuberry.kr — [contact Q&A](https://hub.xconda.ai/qna/contact-inquiry/) lists the current hours and phone numbers.
 
-## Notes
+## Notes for agents
 
-- Prices are stated in USD on the English site; Korean billing includes 10% VAT and is charged in KRW.
-- Tool screens at /studio/* require sign-in. The /features/* pages describe the same tools and are public.
+- This site does not currently expose MCP, OpenAPI or `agent.json`. A 404 from a path such as `/.well-known/mcp.json` means the resource does not exist — the response body is HTML, not JSON.
+- Prices are shown in USD on the English site; Korean billing is charged in KRW with VAT included. Exact figures: see the pricing page.

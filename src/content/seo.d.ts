@@ -121,6 +121,8 @@ export function siteMetaFor(lang?: string): SiteMeta;
 
 export function sitemapXml(urls: { loc: string; lastmod?: string }[]): string;
 export function robotsTxt(siteUrl: string): string;
+/** 이름으로 명시하는 AI 크롤러(검색용·학습용). 검색용·학습용 모두 허용이 2026-11-26 결정입니다. */
+export const AI_CRAWLERS: { search: string[]; training: string[] };
 export function escapeHtml(value: unknown): string;
 export function escapeXml(value: unknown): string;
 

@@ -26,6 +26,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { AI_CRAWLERS } from "../../src/content/seo.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(here, "../..");
@@ -337,8 +338,31 @@ ${sitemapEntries.join("\n")}
 </urlset>
 `,
 );
-write("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+/**
+ * www robots.txt — 허브와 **같은 AI 크롤러 정책**을 씁니다(2026-11-26 대표 결정: 검색용·학습용 모두 허용).
+ * 이름 목록은 `src/content/seo.js` 의 `AI_CRAWLERS` 한 곳에서 가져와, 두 사이트가 서로 어긋나지 않게 합니다.
+ * 사이트맵 줄은 www 의 주소여야 합니다 — 이 파일이 배포되는 곳은 www.xconda.ai 입니다.
+ */
+const namedCrawlers = [...AI_CRAWLERS.search, ...AI_CRAWLERS.training];
+write(
+  "robots.txt",
+  [
+    "# AI 크롤러 — 검색용·학습용 모두 허용 (2026-11-26 대표 결정)",
+    "# 학습용만 막으려면 src/content/seo.js › AI_CRAWLERS.training 을 Disallow 그룹으로 옮깁니다.",
+    ...namedCrawlers.map((name) => `User-agent: ${name}`),
+    "Allow: /",
+    "",
+    "User-agent: *",
+    "Allow: /",
+    "",
+    `Sitemap: ${SITE}/sitemap.xml`,
+    `# AI 도우미용 안내문: ${SITE}/llms.txt`,
+    "",
+  ].join("\n"),
+);
 
+// llms.txt — www 본사이트용 짧은 안내문(www/snippets/llms.txt).
+//   허브 링크(hub.xconda.ai)는 그대로 두고, www 절대 주소만 배포 도메인으로 바꿉니다.
 const llms = fs.readFileSync(path.join(ROOT, "www/snippets/llms.txt"), "utf8");
 write("llms.txt", llms.replace(/https:\/\/www\.xconda\.ai/g, SITE));
 
@@ -391,6 +415,17 @@ for (const rel of written.filter((f) => f.endsWith(".html"))) {
   }
 }
 
+/* llms.txt — AI 안내문이 실제로 나갔는지, 링크가 살아 있는 주소인지 확인합니다 */
+const llmsOut = fs.readFileSync(path.join(OUT, "llms.txt"), "utf8");
+if (!/^# /m.test(llmsOut)) errors.push("llms.txt: 제목(# )이 없습니다");
+if (!llmsOut.includes(`${SITE}/pricing`)) errors.push("llms.txt: 요금 페이지 링크가 없습니다");
+if (llmsOut.includes("hub.xconda.ai/sitemap.xml")) errors.push("llms.txt: 이 파일은 www 사이트맵이 아니라 허브 사이트맵을 가리킵니다");
+const llmsUrls = [...llmsOut.matchAll(/\((https?:\/\/[^)\s]+)\)/g)].map((m) => m[1]);
+for (const url of llmsUrls) {
+  const base = url.startsWith(SITE) ? SITE : "https://hub.xconda.ai/";
+  if (!url.startsWith(base)) errors.push(`llms.txt: 설명할 수 없는 도메인 링크 ${url}`);
+}
+
 const files = written.length;
 const htmlCount = written.filter((f) => f.endsWith(".html")).length;
 console.log(`✔ www 기능 페이지 산출물 → ${path.relative(ROOT, OUT)}/`);
@@ -400,6 +435,7 @@ if (missingBodies.length) {
 const cards = written.filter((f) => /og\.(svg|png)$/.test(f)).length;
 console.log(`  페이지 ${htmlCount}개 · 공유 카드 ${cards}개(${hasPngCards ? "PNG" : "SVG"}) · 사이트맵 ${sitemapEntries.length} URL`);
 console.log(`  JSON-LD ${jsonLdCount}개 파싱 성공 · 내부 링크 ${linkCount}개 확인 · 본사이트 링크 ${appLinkCount}개(검사 제외)`);
+console.log(`  llms.txt 링크 ${llmsUrls.length}개 · robots.txt AI 크롤러 ${namedCrawlers.length}개 명시`);
 if (errors.length) {
   console.error(`\n실패 ${errors.length}건`);
   for (const e of errors.slice(0, 20)) console.error(`  ✗ ${e}`);

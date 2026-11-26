@@ -71,3 +71,48 @@ test("기능 페이지 허브 링크는 실제 섹션과 존재하는 한국어�
     }
   }
 });
+
+test("www llms.txt 는 짧은 안내문이고, 확정되지 않은 가격 숫자를 담지 않는다 (2026-11-26)", () => {
+  const llms = read("www/snippets/llms.txt");
+  // 형식: llmstxt.org — H1 + 인용 요약
+  assert.match(llms, /^# XCONDA$/m);
+  assert.match(llms, /^> /m);
+  // 세 도구가 모두 설명됩니다.
+  for (const tool of ["FLEXBOARD", "Blocking Board", "Turn"]) assert.ok(llms.includes(tool), tool);
+  // 허브 가이드로 가는 길
+  assert.match(llms, /hub\.xconda\.ai\/guide\/flexboard-storyboard-guide\//);
+  // 가격은 숫자를 옮겨 적지 않고 요금 페이지로 보냅니다(값이 바뀌면 낡은 인용이 됩니다).
+  assert.match(llms, /https:\/\/www\.xconda\.ai\/pricing/);
+  assert.doesNotMatch(llms, /\$\s?\d/);
+  assert.doesNotMatch(llms, /\d{1,3}(?:,\d{3})+\s*(?:credits|크레딧)/i);
+  // 데이터 신뢰 규칙 — 기준일과 확인 불가 원칙을 밝힙니다.
+  assert.match(llms, /2026-11-26/);
+  assert.match(llms, /확인 불가/);
+  // 아직 없는 에이전트 경로를 있다고 말하지 않습니다.
+  assert.match(llms, /does not currently expose MCP, OpenAPI or `agent\.json`/);
+});
+
+test("www 빌드는 robots.txt(같은 AI 정책)와 llms.txt 를 함께 내보낸다", (t) => {
+  const root = fileURLToPath(new URL("../../", import.meta.url));
+  const out = mkdtempSync(path.join(tmpdir(), "xconda-www-robots-"));
+  t.after(() => rmSync(out, { recursive: true, force: true }));
+  const result = spawnSync(process.execPath, ["scripts/www/build-feature-pages.mjs", "--out", out], {
+    cwd: root, encoding: "utf8", env: { ...process.env, WWW_NO_PNG: "1" },
+  });
+  assert.equal(result.status, 0, result.stdout + result.stderr);
+
+  const robots = readFileSync(path.join(out, "robots.txt"), "utf8");
+  // 허브와 같은 이름 목록
+  for (const name of ["GPTBot", "ClaudeBot", "PerplexityBot", "OAI-SearchBot", "Google-Extended"]) {
+    assert.ok(robots.includes(`User-agent: ${name}`), name);
+  }
+  // 이 파일이 배포되는 곳은 www 입니다 — 사이트맵 줄이 허브를 가리키면 안 됩니다.
+  assert.match(robots, /^Sitemap: https:\/\/www\.xconda\.ai\/sitemap\.xml$/m);
+  assert.doesNotMatch(robots, /hub\.xconda\.ai\/sitemap\.xml/);
+
+  const llms = readFileSync(path.join(out, "llms.txt"), "utf8");
+  assert.match(llms, /^# XCONDA$/m);
+  // 허브 링크는 그대로, www 링크는 배포 도메인 기준
+  assert.match(llms, /https:\/\/hub\.xconda\.ai\/guide\/flexboard-storyboard-guide\//);
+  assert.match(llms, /https:\/\/www\.xconda\.ai\/pricing/);
+});
