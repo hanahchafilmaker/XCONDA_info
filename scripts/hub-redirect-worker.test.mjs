@@ -17,7 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import worker, { decide, restOf, TARGET_BASE, KEY_HEADER, STATE_HEADER, REDIRECT_CACHE_SECONDS } from "../hub-redirect-worker/worker.js";
-import { runChecks, sampleArticle, sampleAsset } from "./check-en-301.mjs";
+import { runChecks, sampleArticle, sampleAsset, WORKER_DEPLOYABLE, CURRENT_FALLBACK } from "./check-en-301.mjs";
 import { LOCALE_BASE_URLS } from "../src/content/seo.js";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -260,4 +260,21 @@ test("점검에 쓰는 표본은 저장소에 실제로 있는 영어 글·자�
   assert.ok(fs.existsSync(path.join(ROOT, "en", asset)));
   assert.equal(decide({ url: new URL(`https://hub.xconda.ai/en/${asset}`), headers: new Headers() }, ON).state, "pass:assets");
   assert.equal(STATE_HEADER, "x-hub-redirect");
+});
+
+/* ------------------------------ 6) 지금 배포 가능한가 ------------------------------ */
+
+test("301 Worker 는 아직 배포할 수 없다 — DNS 가 Route 53 이고, 그동안은 canonical + 브라우저 이동만 돈다", () => {
+  // 이 값이 false 인 동안에는 배포 절차를 안내하지 않습니다(안내하면 실행 불가한 순서를 따르게 됩니다).
+  // 앞단이 정해져(CloudFront · Cloudflare Pages 이전) DNS 를 옮길 수 있게 되면
+  // check-en-301.mjs 의 WORKER_DEPLOYABLE 을 true 로 바꾸고 이 테스트도 함께 고칩니다.
+  assert.equal(WORKER_DEPLOYABLE, false);
+  // 서버 301 이 없다는 사실을 코드가 말해 줍니다 — 크롤러는 200 을 받고 JS 는 돌지 않습니다.
+  assert.deepEqual(CURRENT_FALLBACK, {
+    serverRedirect: false,
+    mechanism: "canonical + data-hub-moved (브라우저 JS 이동)",
+    affectsCrawlers: false,
+  });
+  // wrangler 라우트는 Cloudflare 존을 전제합니다 — DNS 를 옮기기 전에는 배포할 수 없습니다.
+  assert.match(wrangler, /zone_name = "xconda\.ai"/);
 });
