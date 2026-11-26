@@ -1,0 +1,223 @@
+{
+    "ResourceRecordSets": [
+        {
+            "Name": "xconda.ai.",
+            "Type": "A",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "35.219.200.15"
+                }
+            ]
+        },
+        {
+            "Name": "xconda.ai.",
+            "Type": "NS",
+            "TTL": 172800,
+            "ResourceRecords": [
+                {
+                    "Value": "ns-1548.awsdns-01.co.uk."
+                },
+                {
+                    "Value": "ns-1491.awsdns-58.org."
+                },
+                {
+                    "Value": "ns-166.awsdns-20.com."
+                },
+                {
+                    "Value": "ns-954.awsdns-55.net."
+                }
+            ]
+        },
+        {
+            "Name": "xconda.ai.",
+            "Type": "SOA",
+            "TTL": 900,
+            "ResourceRecords": [
+                {
+                    "Value": "ns-1548.awsdns-01.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+                }
+            ]
+        },
+        {
+            "Name": "xconda.ai.",
+            "Type": "TXT",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "\"fah-claim=002-02-24064398-7c2e-4287-a5e9-e1ae6ec2fcf7\""
+                },
+                {
+                    "Value": "\"google-site-verification=3YmL3d-bt_mxD6m9txYcpIyQnA_qn57Vd1uxrFI2Et4\""
+                }
+            ]
+        },
+        {
+            "Name": "_acme-challenge_gvsrh3lss5wifiym.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "f9d0b41d-9784-4fe3-aaa8-c21a58cc568f.7.authorize.certificatemanager.goog."
+                }
+            ]
+        },
+        {
+            "Name": "_d5f4d2abb0f253a011a8705780480ec8.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "_04c5066cab7b1a15c1d919cb58bebe83.jkddzztszm.acm-validations.aws."
+                }
+            ]
+        },
+        {
+            "Name": "_dmarc.xconda.ai.",
+            "Type": "TXT",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "\"v=DMARC1; p=none;\""
+                }
+            ]
+        },
+        {
+            "Name": "s1._domainkey.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "s1.domainkey.u61585962.wl213.sendgrid.net"
+                }
+            ]
+        },
+        {
+            "Name": "s2._domainkey.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "s2.domainkey.u61585962.wl213.sendgrid.net"
+                }
+            ]
+        },
+        {
+            "Name": "em3890.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "u61585962.wl213.sendgrid.net"
+                }
+            ]
+        },
+        {
+            "Name": "hub.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "hanahchafilmaker.github.io"
+                }
+            ]
+        },
+        {
+            "Name": "media.xconda.ai.",
+            "Type": "A",
+            "AliasTarget": {
+                "HostedZoneId": "Z2FDTNDATAQYW2",
+                "DNSName": "d1vtuvuzrisdnm.cloudfront.net.",
+                "EvaluateTargetHealth": false
+            }
+        },
+        {
+            "Name": "media.xconda.ai.",
+            "Type": "AAAA",
+            "AliasTarget": {
+                "HostedZoneId": "Z2FDTNDATAQYW2",
+                "DNSName": "d1vtuvuzrisdnm.cloudfront.net.",
+                "EvaluateTargetHealth": false
+            }
+        },
+        {
+            "Name": "_3bcc7d416c0aada3907e3b3955fbe52a.media.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "_edba3a06dfc48aa967b1d639ab2963e0.jkddzztszm.acm-validations.aws."
+                }
+            ]
+        },
+        {
+            "Name": "ml.xconda.ai.",
+            "Type": "A",
+            "AliasTarget": {
+                "HostedZoneId": "Z35SXDOTRQ7X7K",
+                "DNSName": "dualstack.cuberry-ml-alb-900449763.us-east-1.elb.amazonaws.com.",
+                "EvaluateTargetHealth": true
+            }
+        },
+        {
+            "Name": "test.xconda.ai.",
+            "Type": "A",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "35.219.200.15"
+                }
+            ]
+        },
+        {
+            "Name": "test.xconda.ai.",
+            "Type": "TXT",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "\"fah-claim=002-02-dd3d09c5-157e-4b09-af77-912292ec1ed5\""
+                }
+            ]
+        },
+        {
+            "Name": "_acme-challenge_gvsrh3lss5wifiym.test.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "ec21f696-dba6-4e78-b38a-e9200dc80169.11.authorize.certificatemanager.goog."
+                }
+            ]
+        },
+        {
+            "Name": "www.xconda.ai.",
+            "Type": "A",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "35.219.200.15"
+                }
+            ]
+        },
+        {
+            "Name": "www.xconda.ai.",
+            "Type": "TXT",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "\"fah-claim=002-02-408363c1-0087-4fd9-85c8-55fa900e6036\""
+                }
+            ]
+        },
+        {
+            "Name": "_acme-challenge_gvsrh3lss5wifiym.www.xconda.ai.",
+            "Type": "CNAME",
+            "TTL": 86400,
+            "ResourceRecords": [
+                {
+                    "Value": "7a1a45f8-c6e3-4d3f-a64f-22c3a07369d3.3.authorize.certificatemanager.goog."
+                }
+            ]
+        }
+    ]
+}
