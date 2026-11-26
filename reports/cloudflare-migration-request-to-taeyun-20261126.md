@@ -93,10 +93,13 @@ curl -sI https://hub.xconda.ai/en/qna/commercial-use/ | head -1   # 지금은 20
 # 2) 프록시(제품 사이트)가 살아 있는가 — 여기가 깨지면 영어 허브 전체가 멈춥니다
 curl -sI https://www.xconda.ai/hub/ | head -1      # 200
 
-# 3) Worker 관찰 단계(301 안 냄)에서 "켜도 안전한가"
+# 3) 리다이렉트·WAF·캐시 규칙이 없는가 (7번 요청) — 응답 헤더로 확인
+npm run hub:headers                                # 실패 0 이어야 함 (--json 으로 첨부 가능)
+
+# 4) Worker 관찰 단계(301 안 냄)에서 "켜도 안전한가"
 npm run redirect:check                             # observe → "켜도 안전합니다"
 
-# 4) 켠 뒤 전부 ✅ 인지
+# 5) 켠 뒤 전부 ✅ 인지
 npm run redirect:check                             # on → 모든 항목 ✅
 ```
 
