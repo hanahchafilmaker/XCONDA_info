@@ -1026,6 +1026,30 @@ function injectRoot(html, body) {
   return emptyRoot(html).replace('<div id="root"></div>', () => `${STATIC_STYLE}\n    ${body}`);
 }
 
+/**
+ * **앱 번들 참조를 걷어 냅니다** — 오류 화면(404) 전용.
+ * -----------------------------------------------------------------------------
+ * 404.html 은 GitHub Pages 가 **없는 모든 주소**에 돌려주는 문서입니다. 그런데 지금까지
+ * 404.html 도 홈과 같은 템플릿이라 `assets/app.js` 를 실행했고, 앱은 그 주소를 모르니
+ * **홈 화면(공지·뉴스·Q&A 목록)을 그대로 그렸습니다**.
+ *
+ *   /.well-known/mcp.json · /openapi.json · /agent.json 요청
+ *     → 상태 404 + 본문은 홈페이지 HTML  (2026-11-26 확인)
+ *
+ * 에이전트는 `openapi.json` 을 받았다고 믿고 JSON 파싱을 시도합니다. 그래서 404 문서는
+ * 앱을 실행하지 않고, 정적 안내문만 남깁니다(브라우저 방문자에게는 지금과 같은 안내 화면).
+ *
+ * 앱 참조만 지우고 정적 안내문·스타일·JSON-LD 는 그대로 둡니다. 여러 번 실행해도 같습니다.
+ */
+export function stripAppRefs(html) {
+  return String(html)
+    // 빌드 후: 사이트 절대 주소 · 예전 빌드: 상대 경로
+    .replace(/[ \t]*<script\b[^>]*\bsrc="[^"]*assets\/app\.js"[^>]*>\s*<\/script>[ \t]*\r?\n?/gi, "")
+    .replace(/[ \t]*<link\b[^>]*\bhref="[^"]*assets\/app\.css"[^>]*>[ \t]*\r?\n?/gi, "")
+    // 그 밖의 preload 힌트도 함께 정리합니다(받지 않을 파일을 미리 받지 않게).
+    .replace(/[ \t]*<link\b[^>]*\brel="(?:modulepreload|preload)"[^>]*assets\/app\.[^"]*"[^>]*>[ \t]*\r?\n?/gi, "");
+}
+
 /** 구조화 데이터 객체 → <script type="application/ld+json"> (</script> 가 값을 깨지 않게 < 를 이스케이프) */
 const jsonLdScript = (data, article = false) =>
   data
@@ -1785,15 +1809,18 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
     `<div id="root"><main class="seo-article">`,
     // 영어 주소(/en/ · /hub/en/ · ?lang=en)에서 온 방문자에게는 영어 404를 보여 줍니다.
     `<div data-404-ko>`,
-    `<h1>페이지를 찾을 수 없습니다</h1>`,
+    `<h1>없는 주소입니다</h1>`,
+    // 에이전트·개발자가 JSON·설정 파일을 기대하고 연 경우를 위해, 이 응답이 무엇인지 먼저 밝힙니다.
+    `<p>이 주소에는 문서가 없습니다. 요청한 파일(예: <code>/.well-known/mcp.json</code> · <code>/openapi.json</code> · <code>/agent.json</code>)이 아직 없으면 <strong>이 응답은 404 이고 본문은 HTML</strong> 입니다 — JSON 으로 해석하지 마세요. XCONDA허브는 현재 MCP·OpenAPI·agent.json 을 제공하지 않습니다.</p>`,
     `<p>주소가 바뀌었거나 삭제된 페이지입니다. 아래에서 찾으시는 내용을 확인해 보세요.</p>`,
-    `<p><a href="${escapeHtml(site)}">${escapeHtml(SITE_NAME)} 메인으로 가기</a></p>`,
+    `<p><a href="${escapeHtml(site)}">${escapeHtml(SITE_NAME)} 메인으로 가기</a> · <a href="${escapeHtml(absoluteUrl(site, "llms.txt"))}">llms.txt (AI 안내문)</a> · <a href="${escapeHtml(absoluteUrl(site, "sitemap.xml"))}">sitemap.xml</a></p>`,
     recentList("최근 글"),
     `</div>`,
     `<div data-404-en hidden>`,
     `<h1>Page not found</h1>`,
+    `<p>There is no document at this address. If you were looking for a JSON or config file (for example <code>/.well-known/mcp.json</code>, <code>/openapi.json</code> or <code>/agent.json</code>), note that <strong>this response is 404 and the body is HTML</strong> — do not parse it as JSON. XCONDA Hub does not currently provide MCP, OpenAPI or agent.json.</p>`,
     `<p>This page has moved or been deleted. Check the links below.</p>`,
-    `<p><a href="${escapeHtml(site)}">Go to XCONDA Hub home</a></p>`,
+    `<p><a href="${escapeHtml(site)}">Go to XCONDA Hub home</a> · <a href="${escapeHtml(absoluteUrl(site, "llms.txt"))}">llms.txt</a> · <a href="${escapeHtml(absoluteUrl(site, "sitemap.xml"))}">sitemap.xml</a></p>`,
     recentList("Recent posts"),
     `</div>`,
     `</main></div>`,
@@ -1801,7 +1828,9 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
   ]
     .filter(Boolean)
     .join("\n");
-  files.set("404.html", injectRoot(applyHead(template, notFoundHead), notFoundBody));
+  // 앱 번들을 실행하지 않습니다 — 실행하면 없는 주소에도 **홈 화면**이 그려져,
+  // 에이전트가 `/.well-known/mcp.json` · `/openapi.json` · `/agent.json` 응답을 홈으로 오해합니다.
+  files.set("404.html", stripAppRefs(injectRoot(applyHead(template, notFoundHead), notFoundBody)));
 
   // 사이트맵 — 홈(전체 최신 갱신일) → 섹션 인덱스 → 글 순.
   // lastmod 는 "작성일 → 수정일" 순으로 채워, 날짜 속성이 없는 글도 값이 비지 않게 합니다.
@@ -1889,6 +1918,9 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
         })),
       ],
       pages: pageRecords.map((p) => ({ type: p.type, title: p.pageTitle || p.title, url: p.url, summary: p.summary })),
+      // 데이터 신뢰 규칙 — 기준일과 출처를 함께 적어, AI 가 인용할 때 "언제 기준"인지 알게 합니다.
+      referenceDate: newest || "",
+      sourceUrl: absoluteUrl(site, "sitemap.xml"),
     }),
   );
 

@@ -723,17 +723,60 @@ export function sitemapXml(urls) {
 }
 
 /**
- * robots.txt — 모든 크롤러 허용 + 사이트맵 위치
+ * 이름으로 명시하는 AI 크롤러 — 2026-11-26.
+ *
+ * 정책: **검색용은 허용, 학습용은 차단.** (2026-11-26 대표 결정 — 학습 이용은 허용하지 않습니다.)
+ *   · search   → `Allow: /` 그룹. AI 검색 결과에 **인용**하려고 읽는 크롤러입니다.
+ *   · training → `Disallow: /` 그룹. **모델 학습**에 쓰는 크롤러입니다.
+ *
+ * ⚠️ 검색용과 학습용을 겸하는 크롤러(예: `Googlebot`)는 막지 않습니다 — 검색 노출이 함께
+ *    사라집니다. 학습 목적만 밝힌 이름(`Google-Extended` · `Applebot-Extended` 등)만 막습니다.
+ * ⚠️ robots.txt 는 **요청**을 거절하는 신호일 뿐 기술적 차단이 아닙니다. 이름을 바꾸거나
+ *    무시하는 수집기에는 효력이 없으므로, 꼭 지켜야 하는 콘텐츠는 접근 제어·약관으로 다룹니다.
+ * 목록은 새 크롤러가 생기면 늘립니다(목록에 없는 이름은 아래 `User-agent: *` 규칙을 따릅니다).
+ */
+export const AI_CRAWLERS = {
+  /** AI 검색 결과에 인용하려고 읽는 크롤러 — 허용 */
+  search: ["OAI-SearchBot", "ChatGPT-User", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User"],
+  /** 모델 학습에 쓰는 크롤러 — 차단 (2026-11-26: 학습 이용 불허) */
+  training: ["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot", "Amazonbot", "meta-externalagent"],
+};
+
+/**
+ * robots.txt — 모든 크롤러 허용 + AI 크롤러 이름 명시 + 사이트맵 위치
  *
  * `/reports/` 만 예외로 막습니다. 이 폴더에는 SEO 감사 문서와 함께 **사고 대응·피해액·
- * 수사 관련 보고서**가 Markdown/Word 로 들어 있고, GitHub Pages 는 저장소 루트를 그대로
+ * 수사 관련 문서**가 Markdown/Word 로 들어 있고, GitHub Pages 는 저장소 루트를 그대로
  * 서빙하므로 아무 설정이 없으면 그대로 공개됩니다. 문서에 적힌 계정·금액·대응 상태가
  * 검색 결과에 노출되지 않도록 색인만이라도 차단합니다.
  * ⚠️ robots.txt 는 **색인 요청 차단**일 뿐 접근 제어가 아닙니다. 주소를 아는 사람은
- *    여전히 내려받을 수 있으므로, 민감한 보고서는 비공개 저장소로 옮기는 것이 원칙입니다.
+ *    여전히 내려받을 수 있으므로, 민감한 문서는 비공개 저장소로 옮기는 것이 원칙입니다.
+ *
+ * AI 크롤러 그룹을 `User-agent: *` **앞에** 둡니다 — 같은 이름이 양쪽에 걸리면
+ * 크롤러마다 해석이 갈리므로, 이름은 한 번만 나오게 만듭니다.
  */
 export function robotsTxt(siteUrl) {
-  return `User-agent: *\nAllow: /\nDisallow: /reports/\n\nSitemap: ${absoluteUrl(siteUrl, "sitemap.xml")}\n`;
+  return [
+    "# AI 검색 크롤러 — 허용 (AI 검색 결과에 인용하기 위해 읽는 크롤러)",
+    ...AI_CRAWLERS.search.map((name) => `User-agent: ${name}`),
+    "Allow: /",
+    "Disallow: /reports/",
+    "",
+    "# AI 학습 크롤러 — 차단 (2026-11-26: 모델 학습 이용 불허)",
+    "# 검색용과 학습용을 겸하는 크롤러(Googlebot 등)는 검색 노출을 위해 막지 않습니다.",
+    ...AI_CRAWLERS.training.map((name) => `User-agent: ${name}`),
+    "Disallow: /",
+    "",
+    // 나머지 크롤러·브라우저. 학습 크롤러는 위에서 이름으로 이미 막혔으므로 여기서는 허용합니다.
+    "# 그 밖의 크롤러 · 브라우저",
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /reports/",
+    "",
+    `Sitemap: ${absoluteUrl(siteUrl, "sitemap.xml")}`,
+    `# AI 도우미용 안내문: ${absoluteUrl(siteUrl, "llms.txt")}`,
+    "",
+  ].join("\n");
 }
 
 /**
@@ -744,9 +787,13 @@ export function robotsTxt(siteUrl) {
  * @param {{ siteUrl: string, title: string, description: string,
  *           sections: Array<{heading: string, url: string, description?: string}>,
  *           pages: Array<{type: string, title: string, url: string, summary?: string}>,
- *           perSection?: number }} input
+ *           perSection?: number, referenceDate?: string, sourceUrl?: string }} input
+ *
+ * 데이터 신뢰 규칙(2026-11-26): AI 가 이 파일을 인용할 때 **언제 기준인지**를 함께 읽도록
+ * 기준일(`referenceDate`)과 출처(`sourceUrl`)를 머리말에 적습니다. 확정되지 않은 숫자는
+ * 애초에 넣지 않고, 모르는 값은 0 으로 채우지 않습니다(요금·크레딧은 확정 전까지 대외 문구 금지).
  */
-export function llmsTxt({ siteUrl, title, description, sections = [], pages = [], perSection = 20 }) {
+export function llmsTxt({ siteUrl, title, description, sections = [], pages = [], perSection = 20, referenceDate = "", sourceUrl = "" }) {
   const bySection = new Map();
   for (const p of pages) {
     if (!bySection.has(p.type)) bySection.set(p.type, []);
@@ -755,6 +802,17 @@ export function llmsTxt({ siteUrl, title, description, sections = [], pages = []
   const LABEL = { guide: "툴 사용법", notice: "공지사항", news: "뉴스", blog: "블로그", faq: "Q&A" };
   const ORDER = ["guide", "notice", "news", "blog", "faq"];
   const lines = [`# ${title}`, "", `> ${description}`, ""];
+  const meta = [
+    referenceDate ? `기준일: ${referenceDate}` : "",
+    sourceUrl ? `출처: ${sourceUrl}` : "",
+  ].filter(Boolean);
+  if (meta.length) {
+    lines.push(meta.join(" · "));
+    lines.push(
+      "이 파일의 목록은 위 기준일 빌드 결과입니다. 목록에 없는 글도 사이트맵에 있을 수 있고, 숫자·요금·크레딧처럼 바뀌는 값은 각 글의 본문과 요금 페이지가 기준입니다 — 확인할 수 없는 값은 0 이 아니라 \"확인 불가\" 로 다루세요.",
+      "",
+    );
+  }
   if (sections.length) {
     lines.push("## 섹션", "");
     for (const s of sections) {

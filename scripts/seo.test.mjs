@@ -64,6 +64,7 @@ import {
   summarize,
 } from "../src/content/seo.js";
 import { blocksToHtml, cleanFaqBlocks, parseLegacyRecordMap } from "../src/content/body.js";
+import { AI_CRAWLERS } from "../src/content/seo.js";
 import {
   localizedDate,
   promoteSubheadings,
@@ -563,9 +564,71 @@ test("404.html 이 함께 만들어지고 noindex 와 메인·최근 글 링크�
   const notFound = pageOf("404.html");
   assert.ok(notFound);
   assert.match(notFound, /<meta name="robots" content="noindex" \/>/);
-  assert.match(notFound, /페이지를 찾을 수 없습니다/);
+  assert.match(notFound, /없는 주소입니다|페이지를 찾을 수 없습니다/);
   // 임의의 깊이에서 서빙되므로 링크는 절대 주소여야 한다
-  assert.match(notFound, /href="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\/"/);
+  assert.match(notFound, /href="https:\/\/example\.test\/XCONDA_info\/post\/deepseek-official-harness\//);
+});
+
+test("404.html 은 앱 번들을 실행하지 않는다 — 없는 JSON 경로가 홈 화면으로 보이던 문제(2026-11-26)", () => {
+  const notFound = pageOf("404.html");
+  // 앱이 실행되면 없는 주소에도 홈(공지·뉴스·Q&A 목록)이 그려져, 에이전트가
+  // /.well-known/mcp.json · /openapi.json · /agent.json 응답을 홈 HTML 로 오해했습니다.
+  assert.doesNotMatch(notFound, /assets\/app\.js/);
+  assert.doesNotMatch(notFound, /assets\/app\.css/);
+  assert.doesNotMatch(notFound, /<script[^>]*\bsrc="[^"]*app\.js"/);
+  // 대신 이 응답이 HTML · 404 라는 사실을 본문에서 바로 밝힙니다.
+  assert.match(notFound, /본문은 HTML/);
+  assert.match(notFound, /do not parse it as JSON/);
+  // 정적 안내문과 언어 전환 스크립트는 그대로 남습니다(브라우저 방문자용).
+  assert.match(notFound, /data-404-ko/);
+  assert.match(notFound, /llms\.txt/);
+  // 다른 페이지(홈·글)는 앱을 계속 실행해야 합니다 — 정적 본문만으로는 언어 전환이 안 됩니다.
+  assert.match(pageOf("index.html"), /assets\/app\.js/);
+});
+
+test("robots.txt 는 AI 검색 크롤러만 이름으로 허용하고, 학습 크롤러는 차단한다 (2026-11-26 결정)", () => {
+  const txt = pageOf("robots.txt");
+
+  /** `User-agent: 이름` 다음 첫 지시(`Allow`/`Disallow`)를 그 그룹의 판정으로 봅니다. */
+  const ruleFor = (agent) => {
+    // 이름 줄은 여러 개가 묶일 수 있으므로, 같은 그룹의 첫 지시까지 넘어가며 찾습니다.
+    const re = new RegExp(
+      `User-agent: ${agent.replace(/[-.]/g, "\\$&")}\\n(?:User-agent: [^\\n]+\\n)*(Allow|Disallow): (\\S+)`,
+    );
+    const m = re.exec(txt);
+    return m ? `${m[1]}: ${m[2]}` : null;
+  };
+
+  // 검색용 — 허용 (AI 검색 결과 인용)
+  for (const name of AI_CRAWLERS.search) {
+    assert.equal(ruleFor(name), "Allow: /", name);
+  }
+  // 학습용 — 차단. 2026-11-26 결정: 모델 학습 이용 불허.
+  assert.ok(AI_CRAWLERS.training.length > 0, "차단할 학습 크롤러 목록이 비었습니다");
+  for (const name of AI_CRAWLERS.training) {
+    assert.equal(ruleFor(name), "Disallow: /", name);
+  }
+
+  // 이름은 한 번만 나와야 합니다(중복 그룹은 크롤러마다 해석이 갈립니다).
+  const named = txt.match(/^User-agent: (?!\*$).+$/gm) ?? [];
+  assert.equal(new Set(named).size, named.length);
+  // 검색용 그룹이 학습용 그룹보다 앞에 옵니다(읽는 사람이 정책 순서대로 보게).
+  assert.ok(txt.indexOf("User-agent: PerplexityBot") < txt.indexOf("User-agent: GPTBot"));
+  // 학습 목적만 밝힌 크롤러는 막고, 검색 겸용 크롤러(Googlebot 등)는 막지 않습니다.
+  assert.match(txt, /겸하는 크롤러\(Googlebot 등\)는 검색 노출을 위해 막지 않습니다/);
+  // 민감한 보고서는 검색 크롤러도 색인하지 않습니다.
+  assert.match(txt, /^Allow: \/$\nDisallow: \/reports\/$/m);
+});
+
+test("robots.txt 는 학습 크롤러를 막아도 검색·브라우저 크롤러는 계속 허용한다", () => {
+  const txt = pageOf("robots.txt");
+  // `User-agent: *` 그룹은 계속 허용입니다 — 학습 크롤러만 이름으로 따로 막습니다.
+  const star = txt.slice(txt.indexOf("User-agent: *"));
+  assert.match(star, /^Allow: \/$/m);
+  assert.doesNotMatch(star.split("Sitemap:")[0], /^Disallow: \/$/m);
+  // 사이트맵·llms.txt 안내는 그대로 남습니다.
+  assert.match(txt, /Sitemap: https:\/\/example\.test\/XCONDA_info\/sitemap\.xml/);
+  assert.match(txt, /llms\.txt/);
 });
 
 /* ------------------------------ 9) GEO 보강 (2026-10-25) ------------------------------ */
@@ -947,6 +1010,9 @@ test("llms.txt — 사이트 요약 · 섹션 · 대표 글 링크를 절대 주
   // 모든 링크는 절대 주소
   for (const m of txt.matchAll(/\]\(([^)]+)\)/g)) assert.match(m[1], /^https:\/\/example\.test\//);
   assert.match(txt, /\[뉴스 · 블로그\]\(https:\/\/example\.test\/XCONDA_info\/post\/\)/);
+  // 데이터 신뢰 규칙(2026-11-26) — 기준일·출처를 머리말에 적고, 모르는 값은 0 이 아니라 "확인 불가" 로 다루라고 밝힙니다.
+  assert.match(txt, /^기준일: \d{4}-\d{2}-\d{2} · 출처: https:\/\/example\.test\/XCONDA_info\/sitemap\.xml$/m);
+  assert.match(txt, /확인할 수 없는 값은 0 이 아니라 "확인 불가"/);
   // 섹션별 상한(20건)을 넘으면 사이트맵으로 안내합니다
   const many = Array.from({ length: 25 }, (_, i) => ({
     id: `77777777-0000-4000-8000-${String(i).padStart(12, "0")}`,

@@ -1,5 +1,28 @@
+# AI 검색 크롤러 — 허용 (AI 검색 결과에 인용하기 위해 읽는 크롤러)
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Allow: /
+Disallow: /reports/
+
+# AI 학습 크롤러 — 차단 (2026-11-26: 모델 학습 이용 불허)
+# 검색용과 학습용을 겸하는 크롤러(Googlebot 등)는 검색 노출을 위해 막지 않습니다.
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: Amazonbot
+User-agent: meta-externalagent
+Disallow: /
+
+# 그 밖의 크롤러 · 브라우저
 User-agent: *
 Allow: /
 Disallow: /reports/
 
 Sitemap: https://hub.xconda.ai/sitemap.xml
+# AI 도우미용 안내문: https://hub.xconda.ai/llms.txt
