@@ -725,17 +725,20 @@ export function sitemapXml(urls) {
 /**
  * 이름으로 명시하는 AI 크롤러 — 2026-11-26.
  *
- * 정책(대표 결정): **검색용·학습용 모두 허용.** 지금 동작(`User-agent: * / Allow: /`)과
- * 실질적으로 같지만, 이름으로 적어 두면 AI 검색·인용 쪽에 의도가 분명해지고 나중에
- * 학습용만 막고 싶을 때 **목록에서 빼는 것으로** 결정을 되돌릴 수 있습니다.
- *   · 학습용까지 허용 → 이 그룹에 검색용과 학습용을 함께 둡니다.
- *   · 학습용만 막으려면 → 학습용 줄을 이 그룹에서 빼고 `Disallow: /` 그룹으로 옮깁니다.
- * 목록은 새 크롤러가 생기면 늘립니다(없는 이름은 아래 `User-agent: *` 규칙을 따릅니다).
+ * 정책: **검색용은 허용, 학습용은 차단.** (2026-11-26 대표 결정 — 학습 이용은 허용하지 않습니다.)
+ *   · search   → `Allow: /` 그룹. AI 검색 결과에 **인용**하려고 읽는 크롤러입니다.
+ *   · training → `Disallow: /` 그룹. **모델 학습**에 쓰는 크롤러입니다.
+ *
+ * ⚠️ 검색용과 학습용을 겸하는 크롤러(예: `Googlebot`)는 막지 않습니다 — 검색 노출이 함께
+ *    사라집니다. 학습 목적만 밝힌 이름(`Google-Extended` · `Applebot-Extended` 등)만 막습니다.
+ * ⚠️ robots.txt 는 **요청**을 거절하는 신호일 뿐 기술적 차단이 아닙니다. 이름을 바꾸거나
+ *    무시하는 수집기에는 효력이 없으므로, 꼭 지켜야 하는 콘텐츠는 접근 제어·약관으로 다룹니다.
+ * 목록은 새 크롤러가 생기면 늘립니다(목록에 없는 이름은 아래 `User-agent: *` 규칙을 따릅니다).
  */
 export const AI_CRAWLERS = {
-  /** AI 검색 결과에 인용하려고 읽는 크롤러 */
+  /** AI 검색 결과에 인용하려고 읽는 크롤러 — 허용 */
   search: ["OAI-SearchBot", "ChatGPT-User", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User"],
-  /** 모델 학습까지 하는 크롤러 */
+  /** 모델 학습에 쓰는 크롤러 — 차단 (2026-11-26: 학습 이용 불허) */
   training: ["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot", "Amazonbot", "meta-externalagent"],
 };
 
@@ -753,14 +756,19 @@ export const AI_CRAWLERS = {
  * 크롤러마다 해석이 갈리므로, 이름은 한 번만 나오게 만듭니다.
  */
 export function robotsTxt(siteUrl) {
-  const named = [...AI_CRAWLERS.search, ...AI_CRAWLERS.training];
   return [
-    "# AI 크롤러 — 검색용·학습용 모두 허용 (2026-11-26 대표 결정)",
-    "# 학습용만 막으려면 src/content/seo.js › AI_CRAWLERS.training 을 Disallow 그룹으로 옮깁니다.",
-    ...named.map((name) => `User-agent: ${name}`),
+    "# AI 검색 크롤러 — 허용 (AI 검색 결과에 인용하기 위해 읽는 크롤러)",
+    ...AI_CRAWLERS.search.map((name) => `User-agent: ${name}`),
     "Allow: /",
     "Disallow: /reports/",
     "",
+    "# AI 학습 크롤러 — 차단 (2026-11-26: 모델 학습 이용 불허)",
+    "# 검색용과 학습용을 겸하는 크롤러(Googlebot 등)는 검색 노출을 위해 막지 않습니다.",
+    ...AI_CRAWLERS.training.map((name) => `User-agent: ${name}`),
+    "Disallow: /",
+    "",
+    // 나머지 크롤러·브라우저. 학습 크롤러는 위에서 이름으로 이미 막혔으므로 여기서는 허용합니다.
+    "# 그 밖의 크롤러 · 브라우저",
     "User-agent: *",
     "Allow: /",
     "Disallow: /reports/",

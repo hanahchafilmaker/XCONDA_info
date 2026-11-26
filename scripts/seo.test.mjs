@@ -586,22 +586,49 @@ test("404.html 은 앱 번들을 실행하지 않는다 — 없는 JSON 경로�
   assert.match(pageOf("index.html"), /assets\/app\.js/);
 });
 
-test("robots.txt 는 AI 크롤러를 이름으로 명시하고, 검색용·학습용 모두 허용한다 (2026-11-26 대표 결정)", () => {
+test("robots.txt 는 AI 검색 크롤러만 이름으로 허용하고, 학습 크롤러는 차단한다 (2026-11-26 결정)", () => {
   const txt = pageOf("robots.txt");
-  for (const name of [...AI_CRAWLERS.search, ...AI_CRAWLERS.training]) {
-    assert.ok(txt.includes(`User-agent: ${name}`), name);
+
+  /** `User-agent: 이름` 다음 첫 지시(`Allow`/`Disallow`)를 그 그룹의 판정으로 봅니다. */
+  const ruleFor = (agent) => {
+    // 이름 줄은 여러 개가 묶일 수 있으므로, 같은 그룹의 첫 지시까지 넘어가며 찾습니다.
+    const re = new RegExp(
+      `User-agent: ${agent.replace(/[-.]/g, "\\$&")}\\n(?:User-agent: [^\\n]+\\n)*(Allow|Disallow): (\\S+)`,
+    );
+    const m = re.exec(txt);
+    return m ? `${m[1]}: ${m[2]}` : null;
+  };
+
+  // 검색용 — 허용 (AI 검색 결과 인용)
+  for (const name of AI_CRAWLERS.search) {
+    assert.equal(ruleFor(name), "Allow: /", name);
   }
-  // 정책의 핵심: 학습용 크롤러도 막지 않습니다. 막으려면 `Disallow: /` 가 아니라
-  // 목록을 Disallow 그룹으로 옮기도록 안내합니다(주석).
-  const namedGroups = txt.split(/\n\n/)[0];
-  assert.doesNotMatch(namedGroups, /^Disallow: \/$/m);
+  // 학습용 — 차단. 2026-11-26 결정: 모델 학습 이용 불허.
+  assert.ok(AI_CRAWLERS.training.length > 0, "차단할 학습 크롤러 목록이 비었습니다");
+  for (const name of AI_CRAWLERS.training) {
+    assert.equal(ruleFor(name), "Disallow: /", name);
+  }
+
   // 이름은 한 번만 나와야 합니다(중복 그룹은 크롤러마다 해석이 갈립니다).
   const named = txt.match(/^User-agent: (?!\*$).+$/gm) ?? [];
   assert.equal(new Set(named).size, named.length);
-  // 이름 그룹이 `*` 그룹보다 앞에 옵니다.
-  assert.ok(txt.indexOf("User-agent: GPTBot") < txt.indexOf("User-agent: *"));
-  // 민감한 보고서는 계속 색인에서 뺍니다.
-  assert.match(txt, /Disallow: \/reports\//);
+  // 검색용 그룹이 학습용 그룹보다 앞에 옵니다(읽는 사람이 정책 순서대로 보게).
+  assert.ok(txt.indexOf("User-agent: PerplexityBot") < txt.indexOf("User-agent: GPTBot"));
+  // 학습 목적만 밝힌 크롤러는 막고, 검색 겸용 크롤러(Googlebot 등)는 막지 않습니다.
+  assert.match(txt, /겸하는 크롤러\(Googlebot 등\)는 검색 노출을 위해 막지 않습니다/);
+  // 민감한 보고서는 검색 크롤러도 색인하지 않습니다.
+  assert.match(txt, /^Allow: \/$\nDisallow: \/reports\/$/m);
+});
+
+test("robots.txt 는 학습 크롤러를 막아도 검색·브라우저 크롤러는 계속 허용한다", () => {
+  const txt = pageOf("robots.txt");
+  // `User-agent: *` 그룹은 계속 허용입니다 — 학습 크롤러만 이름으로 따로 막습니다.
+  const star = txt.slice(txt.indexOf("User-agent: *"));
+  assert.match(star, /^Allow: \/$/m);
+  assert.doesNotMatch(star.split("Sitemap:")[0], /^Disallow: \/$/m);
+  // 사이트맵·llms.txt 안내는 그대로 남습니다.
+  assert.match(txt, /Sitemap: https:\/\/example\.test\/XCONDA_info\/sitemap\.xml/);
+  assert.match(txt, /llms\.txt/);
 });
 
 /* ------------------------------ 9) GEO 보강 (2026-10-25) ------------------------------ */

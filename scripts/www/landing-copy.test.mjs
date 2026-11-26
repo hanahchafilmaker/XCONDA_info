@@ -88,6 +88,8 @@ test("www llms.txt 는 짧은 안내문이고, 확정되지 않은 가격 숫자
   // 데이터 신뢰 규칙 — 기준일과 확인 불가 원칙을 밝힙니다.
   assert.match(llms, /2026-11-26/);
   assert.match(llms, /확인 불가/);
+  // 학습 이용 불가를 밝힙니다(robots.txt 의 차단과 같은 정책).
+  assert.match(llms, /Model-training crawling is not permitted/);
   // 아직 없는 에이전트 경로를 있다고 말하지 않습니다.
   assert.match(llms, /does not currently expose MCP, OpenAPI or `agent\.json`/);
 });
@@ -102,10 +104,21 @@ test("www 빌드는 robots.txt(같은 AI 정책)와 llms.txt 를 함께 내보�
   assert.equal(result.status, 0, result.stdout + result.stderr);
 
   const robots = readFileSync(path.join(out, "robots.txt"), "utf8");
-  // 허브와 같은 이름 목록
-  for (const name of ["GPTBot", "ClaudeBot", "PerplexityBot", "OAI-SearchBot", "Google-Extended"]) {
-    assert.ok(robots.includes(`User-agent: ${name}`), name);
+  // 허브와 같은 정책: 검색용은 허용, 학습용은 차단 (2026-11-26)
+  // 이름 줄은 여러 개가 묶이므로, 같은 그룹의 첫 지시까지 넘어가며 판정합니다.
+  const ruleFor = (agent) => {
+    const re = new RegExp(`User-agent: ${agent}\\n(?:User-agent: [^\\n]+\\n)*(Allow|Disallow): (\\S+)`);
+    const m = re.exec(robots);
+    return m ? `${m[1]}: ${m[2]}` : null;
+  };
+  for (const name of ["PerplexityBot", "OAI-SearchBot", "Claude-SearchBot"]) {
+    assert.equal(ruleFor(name), "Allow: /", name);
   }
+  for (const name of ["GPTBot", "ClaudeBot", "Google-Extended", "CCBot"]) {
+    assert.equal(ruleFor(name), "Disallow: /", name);
+  }
+  // 학습 크롤러는 이름으로 막혔으므로 `User-agent: *` 는 계속 허용입니다.
+  assert.match(robots, /^User-agent: \*\nAllow: \/$/m);
   // 이 파일이 배포되는 곳은 www 입니다 — 사이트맵 줄이 허브를 가리키면 안 됩니다.
   assert.match(robots, /^Sitemap: https:\/\/www\.xconda\.ai\/sitemap\.xml$/m);
   assert.doesNotMatch(robots, /hub\.xconda\.ai\/sitemap\.xml/);

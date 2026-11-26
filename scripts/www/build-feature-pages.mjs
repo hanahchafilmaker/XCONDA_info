@@ -26,7 +26,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
-import { AI_CRAWLERS } from "../../src/content/seo.js";
+import { AI_CRAWLERS, robotsTxt } from "../../src/content/seo.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(here, "../..");
@@ -339,27 +339,12 @@ ${sitemapEntries.join("\n")}
 `,
 );
 /**
- * www robots.txt — 허브와 **같은 AI 크롤러 정책**을 씁니다(2026-11-26 대표 결정: 검색용·학습용 모두 허용).
+ * www robots.txt — 허브와 **같은 AI 크롤러 정책**을 씁니다(2026-11-26: 검색용 허용 · 학습용 차단).
  * 이름 목록은 `src/content/seo.js` 의 `AI_CRAWLERS` 한 곳에서 가져와, 두 사이트가 서로 어긋나지 않게 합니다.
  * 사이트맵 줄은 www 의 주소여야 합니다 — 이 파일이 배포되는 곳은 www.xconda.ai 입니다.
+ * 실제 문구는 `robotsTxt()` 한 곳에서 만들고, 사이트맵 줄만 www 주소로 바꿉니다.
  */
-const namedCrawlers = [...AI_CRAWLERS.search, ...AI_CRAWLERS.training];
-write(
-  "robots.txt",
-  [
-    "# AI 크롤러 — 검색용·학습용 모두 허용 (2026-11-26 대표 결정)",
-    "# 학습용만 막으려면 src/content/seo.js › AI_CRAWLERS.training 을 Disallow 그룹으로 옮깁니다.",
-    ...namedCrawlers.map((name) => `User-agent: ${name}`),
-    "Allow: /",
-    "",
-    "User-agent: *",
-    "Allow: /",
-    "",
-    `Sitemap: ${SITE}/sitemap.xml`,
-    `# AI 도우미용 안내문: ${SITE}/llms.txt`,
-    "",
-  ].join("\n"),
-);
+write("robots.txt", robotsTxt(SITE));
 
 // llms.txt — www 본사이트용 짧은 안내문(www/snippets/llms.txt).
 //   허브 링크(hub.xconda.ai)는 그대로 두고, www 절대 주소만 배포 도메인으로 바꿉니다.
@@ -435,7 +420,9 @@ if (missingBodies.length) {
 const cards = written.filter((f) => /og\.(svg|png)$/.test(f)).length;
 console.log(`  페이지 ${htmlCount}개 · 공유 카드 ${cards}개(${hasPngCards ? "PNG" : "SVG"}) · 사이트맵 ${sitemapEntries.length} URL`);
 console.log(`  JSON-LD ${jsonLdCount}개 파싱 성공 · 내부 링크 ${linkCount}개 확인 · 본사이트 링크 ${appLinkCount}개(검사 제외)`);
-console.log(`  llms.txt 링크 ${llmsUrls.length}개 · robots.txt AI 크롤러 ${namedCrawlers.length}개 명시`);
+console.log(
+  `  llms.txt 링크 ${llmsUrls.length}개 · robots.txt AI 검색 크롤러 ${AI_CRAWLERS.search.length}개 허용 · 학습 크롤러 ${AI_CRAWLERS.training.length}개 차단`,
+);
 if (errors.length) {
   console.error(`\n실패 ${errors.length}건`);
   for (const e of errors.slice(0, 20)) console.error(`  ✗ ${e}`);

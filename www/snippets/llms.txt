@@ -34,5 +34,6 @@ Tool screens live at `/studio/*` and require sign-in. The descriptions above are
 
 ## Notes for agents
 
+- Content may be read for search and citation. **Model-training crawling is not permitted** — `robots.txt` names the training crawlers and blocks them. Quoting a page with a link back is fine; bulk copying for dataset or model training is not.
 - This site does not currently expose MCP, OpenAPI or `agent.json`. A 404 from a path such as `/.well-known/mcp.json` means the resource does not exist — the response body is HTML, not JSON.
 - Prices are shown in USD on the English site; Korean billing is charged in KRW with VAT included. Exact figures: see the pricing page.

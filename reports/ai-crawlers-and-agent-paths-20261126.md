@@ -1,32 +1,40 @@
 # AI 크롤러 정책 · 에이전트 경로 정리 — 2026-11-26
 
 - 대상: `hub.xconda.ai`(이 저장소) · `www.xconda.ai`(이관 패키지 `www/`)
-- 코드: `src/content/seo.js` › `AI_CRAWLERS` · `robotsTxt` / `scripts/www/build-feature-pages.mjs`
+- 코드: `src/content/seo.js` › `AI_CRAWLERS` · `robotsTxt` / `scripts/www/build-feature-pages.mjs`(같은 `robotsTxt()` 사용)
 - 검사: `npm run test:unit` (`scripts/seo.test.mjs` · `scripts/www/landing-copy.test.mjs`)
 
-## 1. 결정 — AI 크롤러는 이름으로 명시하고, 학습용까지 허용한다
+## 1. 결정 — AI 크롤러는 이름으로 명시하고, **검색용만 허용 · 학습용은 차단**한다
 
 | 구분 | 크롤러 | robots.txt |
 |---|---|---|
-| AI 검색(인용용) | `OAI-SearchBot` · `ChatGPT-User` · `Claude-SearchBot` · `Claude-User` · `PerplexityBot` · `Perplexity-User` | `Allow: /` |
-| 모델 학습 | `GPTBot` · `ClaudeBot` · `Google-Extended` · `Applebot-Extended` · `CCBot` · `Amazonbot` · `meta-externalagent` | `Allow: /` |
+| AI 검색(인용용) | `OAI-SearchBot` · `ChatGPT-User` · `Claude-SearchBot` · `Claude-User` · `PerplexityBot` · `Perplexity-User` | `Allow: /` (단 `/reports/` 제외) |
+| 모델 학습 | `GPTBot` · `ClaudeBot` · `Google-Extended` · `Applebot-Extended` · `CCBot` · `Amazonbot` · `meta-externalagent` | `Disallow: /` |
 
-- **대표 결정(2026-11-26): 검색용·학습용 모두 허용.** 지금 동작(`User-agent: * / Allow: /`)과 실질적으로 같지만, 이름으로 적어 두면 AI 검색·인용 쪽에 의도가 분명해집니다.
+- **대표 결정(2026-11-26): 학습 이용 불허.** AI 검색에 인용되도록 읽는 크롤러는 열어 두고, 모델 학습용 크롤러는 이름으로 막습니다.
+- `User-agent: *` 는 계속 허용입니다 — 학습 크롤러는 위에서 **이름으로** 이미 막혔고, 나머지 검색·브라우저 크롤러는 정상 동작해야 합니다.
+- **검색용과 학습용을 겸하는 크롤러(`Googlebot` 등)는 막지 않습니다.** 막으면 구글 검색 노출까지 사라집니다. 학습 목적만 밝힌 이름만 대상으로 합니다.
 - `/reports/` 색인 차단은 그대로 유지합니다(사고 대응 문서).
-- 이름 그룹을 `User-agent: *` **앞에** 두고, 같은 이름이 두 파일 안에서 두 번 나오지 않게 합니다(중복 그룹은 크롤러마다 해석이 갈립니다).
+- 이름은 그룹마다 한 번만 나오게 합니다(중복 그룹은 크롤러마다 해석이 갈립니다).
 
-### 학습용만 막기로 결정이 바뀌면 (한 곳만 고치면 됩니다)
+### 정책을 되돌리거나 넓힐 때 (한 곳만 고치면 됩니다)
 
-`src/content/seo.js` 의 `AI_CRAWLERS.training` 에서 이름을 빼고, `robotsTxt()` 의 Disallow 그룹으로 옮깁니다.
+`src/content/seo.js` 의 `AI_CRAWLERS` 를 고치고 `npm run build`:
 
 ```js
-// 예: 학습용만 차단
-export const AI_CRAWLERS = { search: [ ... ], training: [] };
-// robotsTxt() 안, 이름 그룹 뒤에
-"User-agent: GPTBot", "User-agent: ClaudeBot", ..., "Disallow: /",
+// 학습용을 완전히 막고 싶지 않다면 목록에서 빼면 됩니다(그러면 `User-agent: *` 규칙을 따릅니다).
+training: [],
+// 막을 크롤러를 늘리려면 이름을 추가합니다.
+training: ["GPTBot", "ClaudeBot", ..., "새크롤러이름"],
 ```
 
-`www` 빌드는 같은 `AI_CRAWLERS` 를 import 하므로 **두 사이트가 자동으로 같이 바뀝니다.** 바꾼 뒤 `npm run test:unit` 으로 두 사이트의 `robots.txt` 를 확인하세요.
+`www` 빌드는 같은 `robotsTxt()` 를 import 하므로 **두 사이트가 자동으로 같이 바뀝니다.** 바꾼 뒤 `npm run test:unit` 으로 두 사이트의 `robots.txt` 를 확인하세요(`seo.test.mjs` · `scripts/www/landing-copy.test.mjs`).
+
+### ⚠️ 한계 — 이건 기술적 차단이 아닙니다
+
+- robots.txt 는 **자발적 준수 신호**입니다. 이름을 바꾸거나 규칙을 무시하는 수집기에는 효력이 없습니다.
+- 꼭 지켜야 하는 것(비공개 문서·유료 콘텐츠)은 **접근 제어 · 약관 · 요청 제한**으로 다루고, `reports/` 처럼 공개되면 안 되는 문서는 비공개 저장소로 옮기는 것이 원칙입니다.
+- 검색 겸용 크롤러(`Googlebot` · `Bingbot`)는 계속 허용되므로, 그 경로로 수집된 내용은 학습에 쓰일 수 있습니다(구글 정책 범위). 이를 원하면 `Googlebot` 도 막아야 하지만 **검색 노출 손실**이 큽니다.
 
 ## 2. hub 404 — 없는 경로가 홈 화면으로 보이던 문제를 고쳤습니다
 
