@@ -25,12 +25,12 @@
 
 | # | 요청 | 담당 | 왜 필요한가 | 되돌리기 |
 |---|---|---|---|---|
-| **1** | `xconda.ai` 존을 **Cloudflare로 이전**(네임서버 교체) 또는 `xconda.ai` 존을 Cloudflare에 **추가하고 NS 위임** | 태윤 | Worker 라우트를 걸려면 Cloudflare 존이어야 함 | NS를 Route 53 값으로 되돌리면 원복(전파 최대 24~48h) |
-| **2** | **이전 전 DNS 레코드 전수 조사·기록** (A · CNAME · MX · TXT · 서브도메인) | 태윤 | 옮기면서 하나라도 빠지면 메일·서브도메인이 죽습니다. **아래 §3-A는 반드시 값까지 보존** | 기록해 둔 표로 복원 |
+| **1** | `xconda.ai` 존을 **Cloudflare로 이전** — Cloudflare 존 추가 후, **등록기관(후이즈) 화면에서 NS 교체**. 도메인 **등록기관은 후이즈 그대로** 두고 NS 만 위임합니다 | 태윤 | Worker 라우트를 걸려면 Cloudflare 존이어야 함 | NS를 Route 53 값으로 되돌리면 원복(전파 최대 24~48h) |
+| **2** | **이전 전 DNS 레코드 전수 조사·기록** | ✅ **완료 (2026-11-26)** | 태윤 님이 Route 53 내보내기를 주셨고 권한 NS 실측과 **완전 일치**(23레코드, 빠진 것 0) | → `reports/dns/xconda-ai-dns-inventory-20261126.md` |
 | **3** | Cloudflare **DNS only(회색 구름)** 로 먼저 전부 옮겨 트래픽 영향 0 확인 | 태윤 | 프록시(주황 구름)는 SSL·IP 노출이 바뀝니다. DNS만 옮겨도 301 라우트는 걸 수 있습니다 | 레코드 단위로 원복 |
 | **4** | 허브 호스팅을 **Cloudflare Pages** 로 이전(저장소 연결 또는 `main` 산출물 업로드) | 태윤 + 허브 | `hub.xconda.ai` 가 Cloudflare 안에 있어야 Worker 라우트·Pages 커스텀 도메인이 한 곳에서 끝납니다 | GitHub Pages 설정은 그대로 두므로 `CNAME`·`Settings→Pages` 로 즉시 복귀 |
 | **5** | `hub` 레코드를 **프록시(주황 구름) + SSL/TLS `Full`** 로 | 태윤 | Worker 라우트는 프록시된 레코드에만 적용. `Flexible` 이면 GitHub/Pages HTTPS 강제와 맞물려 **리다이렉트 반복** | 회색 구름으로 되돌리면 301만 사라지고 사이트는 유지 |
-| **6** | Worker 시크릿 `ORIGIN_KEY` 값 전달 (임의의 긴 문자열) | 태윤 ↔ 허브 | 301 Worker 가 **제품 사이트 프록시의 요청은 통과**시켜야 `/hub/` 무한 반복을 막습니다. 이 값이 없으면 301을 켤 수 없습니다 | 값 교체 후 재배포 |
+| **6** | Worker 시크릿 `ORIGIN_KEY` — **값을 "찾는" 게 아니라 새로 만듭니다**(지금 어디에도 없는 게 정상) | 태윤 ↔ 허브 | 301 Worker 가 **제품 사이트 프록시의 요청은 통과**시켜야 `/hub/` 무한 반복을 막습니다. 값 생성은 허브 쪽에서 해서 드리고, `www` 프록시 헤더 + Worker 시크릿 두 곳에 같은 값을 넣으면 됩니다 | 값 교체 후 재배포 |
 | **7** | 기존 리다이렉트·WAF·캐시 규칙이 `hub` 에 걸려 있지 않은지 확인 | 태윤 | `x-robots-tag: noindex`·로그인 미들웨어·캐시 규칙이 걸리면 허브가 검색에서 빠지거나 옛 화면이 남습니다 | — |
 | **8** | Cloudflare **Web Analytics** 사용 여부 알려 주기 | 태윤 | 허브는 지금 GA4 를 씁니다. 같은 방문을 두 번 세지 않게 하나만 씁니다 | — |
 
@@ -40,7 +40,8 @@
 
 ## 3. A. 반드시 값까지 보존할 레코드
 
-> **이 표는 추정입니다.** 실제 값은 `dig` 로 뽑아 채워 주세요. 하나라도 빠지면 그 서비스가 죽습니다.
+> **2026-11-26 값 확정.** 태윤 님이 Route 53 내보내기(`xconda-ai-records.json`)를 주셨고, 권한 네임서버 실측과 전부 일치했습니다(빠진 레코드 0).
+> 레코드별 실제 값·Cloudflare 입력 방식·**옮기면 깨지는 레코드**는 **`reports/dns/xconda-ai-dns-inventory-20261126.md`** 에 정리했습니다. 아래 표는 "무엇을 보존해야 하는가" 체크리스트로만 쓰세요.
 
 | 이름 | 타입 | 용도 | 옮길 때 주의 | 실제 값(태윤 님이 채움) |
 |---|---|---|---|---|
@@ -56,25 +57,22 @@
 | `_acme-challenge.*` | TXT | 인증서 발급 | 이전 중 인증서 갱신과 겹치면 발급 실패 | |
 | `_indexnow` / `b431e2c…txt` 관련 | — | IndexNow 검증 파일은 **저장소 루트 파일** | DNS 아님. 옮겨도 그대로 동작(§5) | |
 
-### 3-B. 값을 모를 때 확인 명령 (태윤 님이 실행)
+### 3-B. ~~값을 모를 때 확인 명령~~ → **2026-11-26 값 확정됨**
 
-```bash
-# 전체 레코드 훑기 (Route 53 콘솔의 Hosted zone → Export 도 가능)
-dig +short NS   xconda.ai
-dig +short A    xconda.ai;  dig +short A www.xconda.ai
-dig +short CNAME hub.xconda.ai
-dig +short MX   xconda.ai
-dig +short TXT  xconda.ai
+전수 조사가 끝났습니다(`reports/dns/xconda-ai-dns-inventory-20261126.md`). 요약:
 
-# 메일 인증(DKIM) 선택자 찾기 — 자주 쓰는 이름들
-for s in google selector1 selector2 s1 s2 k1 default mail dkim; do
-  printf '%s: ' "$s"; dig +short TXT "$s._domainkey.xconda.ai"
-done
-dig +short TXT _dmarc.xconda.ai
+| 실제 확인된 것 | 결과 |
+|---|---|
+| MX | **없음** (이 도메인으로 오는 메일 없음) |
+| SPF | **없음** (SendGrid 는 DKIM 으로만 인증) |
+| DKIM | **SendGrid 2건** — `s1._domainkey` · `s2._domainkey` (둘 다 CNAME) |
+| 링크 브랜딩 | `em3890` CNAME → `u61585962.wl213.sendgrid.net` (실제 쓰이는지 SendGrid 화면 확인 필요) |
+| `_dmarc` | `v=DMARC1; p=none;` |
+| `_github-pages-challenge-…hub` TXT | **없음** — 이전 전에 추가 권장 |
+| CAA | 없음 |
+| 그 밖 | `media`(CloudFront alias) · `ml`(ALB alias) · `test` · `www` · apex · ACM/Google 검증 CNAME 4건 |
 
-# 이전 전후 비교용 스냅샷
-for q in "NS" "A" "CNAME" "MX" "TXT"; do echo "== $q"; dig +short $q xconda.ai; done > dns-before.txt
-```
+이전 후 비교는 인벤토리 §3 의 PowerShell 스크립트로 `dns-before.txt` / `dns-after.txt` 를 떠서 diff 하세요.
 
 **이전 후 같은 명령을 `dns-after.txt` 로 떠서 diff 가 비면 성공입니다.**
 
@@ -121,6 +119,21 @@ Cloudflare 로 옮긴 뒤 아래가 하나라도 깨지면 롤백 대상입니�
 - [ ] `www.xconda.ai/hub/` 프록시 200 (제품 사이트 쪽 규칙)
 - [ ] TLS 인증서: `hub` · `www` · apex 모두 유효, `http → https` 301
 
+### 5-B. 허브 **밖** 서비스가 그대로 살아 있어야 함 (2026-11-26 추가)
+
+`xconda.ai` 존 전체를 옮기므로 허브와 무관한 레코드도 함께 넘어갑니다. 하나라도 어긋나면 **허브와 상관없는 장애**가 납니다.
+
+- [ ] **`media.xconda.ai`** — CloudFront 이전 후 이미지·영상 200. **SSL `Full (strict)`**, 인증서 검증용 `_3bcc7d41….media` CNAME 은 **회색 구름**
+- [ ] **`ml.xconda.ai`** — ALB 응답 200. ALB 보안그룹이 Cloudflare IP 대역을 허용하는지
+- [ ] **SendGrid** — 테스트 메일 1통 발송 → 수신 → **본문 링크 클릭**까지 (링크 브랜딩 `em3890` 이 살아 있는지)
+- [ ] `s1._domainkey` · `s2._domainkey` **CNAME 그대로** (회색 구름) — DKIM 이 깨지면 발송 메일이 스팸 처리
+- [ ] `_acme-challenge_*` CNAME 4건 **회색 구름** — 주황 구름이면 인증서 **갱신** 실패(지금 당장은 멀쩡해 보이다가 60~90일 뒤 터짐)
+- [ ] `xconda.ai` TXT `fah-claim=…` 유지 (후이즈 소유확인)
+- [ ] `test.xconda.ai` 유지 (사이트 자체는 이번 범위 아님)
+- [ ] **DNSSEC 켜지 않기** — 이전 중에 켜면 해석 실패 구간이 생깁니다
+
+> 상세·레코드별 입력 방식·위험도: **`reports/dns/xconda-ai-dns-inventory-20261126.md`** §2 · §4 · §7
+
 ---
 
 ## 6. 일정 · 위험 · 롤백
@@ -159,20 +172,33 @@ hub.xconda.ai/en/* → www.xconda.ai/hub/* 를 *서버 301* 로 보내려면 Wor
 크롤러는 계속 200 을 받습니다.
 
 *부탁드릴 것 (순서대로)*
-1️⃣ DNS 레코드 *전수 조사해서 값까지 표로* 공유 — A · CNAME · MX · TXT · DKIM 선택자 · _dmarc
-   ⚠️ 여기서 빠지는 게 있으면 메일·서브도메인이 죽습니다
-2️⃣ xconda.ai 존을 Cloudflare 로 이전(NS 교체). 처음엔 전부 *DNS only(회색 구름)*
-   → 트래픽 영향 0 확인
+1️⃣ ~~DNS 레코드 전수 조사~~ ✅ *받았습니다* — Route 53 내보내기 + 실측 대조 완료(빠진 레코드 0)
+2️⃣ xconda.ai 존을 Cloudflare 로 이전
+   • 도메인 *등록기관(후이즈)은 그대로* 두고, 후이즈 화면에서 *네임서버만* Cloudflare 값 2개로 교체
+   • 처음엔 전부 *DNS only(회색 구름)* → 트래픽 영향 0 확인
+   ⚠️ 후이즈에 "네임서버 변경" 화면이 막혀 있으면 고객센터 요청이 필요합니다 — 먼저 확인 부탁드립니다
 3️⃣ 허브 호스팅을 Cloudflare Pages 로 이전
    (GitHub Pages 설정·CNAME 파일은 그대로 두시면 언제든 되돌릴 수 있습니다)
 4️⃣ hub 레코드만 *프록시(주황 구름) + SSL/TLS Full*
    ⚠️ Flexible 이면 리다이렉트가 반복됩니다
-5️⃣ Worker 시크릿 *ORIGIN_KEY* 값 하나 정해서 저희에게 전달
+5️⃣ Worker 시크릿 *ORIGIN_KEY* — 값은 *저희가 만들어서* 전달드립니다 (찾으실 필요 없습니다)
    → 제품 사이트 프록시 요청을 통과시키는 표식입니다. 이게 없으면 301 을 켤 수 없습니다
    (없이 켜면 /hub/ 가 무한 반복으로 영어 허브 전체가 멈춥니다)
 6️⃣ hub 에 걸린 리다이렉트·WAF·캐시 규칙 없는지 확인
    (x-robots-tag: noindex 나 로그인 미들웨어가 걸리면 허브가 검색에서 빠집니다)
 7️⃣ Cloudflare Web Analytics 쓸지 알려 주세요 (허브는 지금 GA4 — 중복 집계 방지)
+
+*허브 말고 같이 넘어가는 것 — 여기가 더 위험합니다*
+• media.xconda.ai : CloudFront 인증서가 지금 Route 53 alias 에 묶여 있어서, 옮기면 *SSL Full(strict)* 로 넣어야 합니다
+• ml.xconda.ai : ALB. 보안그룹이 Cloudflare IP 를 허용하는지 확인 필요
+• SendGrid : s1/s2 DKIM + em3890 링크브랜딩은 *회색 구름 필수*. 옮긴 뒤 테스트 메일 1통 링크 클릭까지 확인
+• _acme-challenge_* 4건 : 주황 구름이면 *인증서 갱신이 60~90일 뒤 조용히 실패*합니다
+• DNSSEC 는 이전 중에 켜지 마세요
+
+*확인 부탁드릴 3가지*
+• media CloudFront 의 alternate domain / 인증서 / origin
+• ml ALB 인증서 + 보안그룹
+• SendGrid 링크 브랜딩 실제 호스트가 em3890 이 맞는지
 
 *옮긴 뒤 제가 확인할 것* (알려만 주시면 됩니다)
 • hub / ja / en 주소 200, www.xconda.ai/hub/ 프록시 200
