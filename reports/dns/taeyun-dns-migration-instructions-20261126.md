@@ -11,7 +11,9 @@
 **후이즈 관리 화면에서 "네임서버(NS) 변경" 이 열리는지** 확인 부탁드립니다.
 
 - 도메인 **등록기관은 후이즈 그대로** 둡니다. 바꾸는 건 **NS 값만**입니다
+- 경로: 후이즈 로그인 → **마이후이즈 → 내 도메인 자산 관리** → 도메인 선택 → **네임서버 변경** → `네임서버 정보 직접 입력`
 - 잠겨 있으면 → 후이즈 고객센터에 "Cloudflare 로 NS 위임하겠다" 요청 1회
+- 등록기관 상태가 `clientTransferProhibited`(도메인 이전 잠금)인데, 이건 **NS 변경과 무관**합니다. 그대로 두세요
 - 이게 되면 나머지는 아래 순서대로 1시간 안에 끝납니다
 
 ---
@@ -44,7 +46,7 @@
 | **`ml`** A | alias 는 못 옮김 → **CNAME `dualstack.cuberry-ml-alb-900449763.us-east-1.elb.amazonaws.com`** | ❌ ALB 보안그룹이 Cloudflare IP 를 막으면 503 |
 | `s1`·`s2._domainkey`, `em3890` | CNAME 그대로 | ❌ **회색 구름 필수.** 옮긴 뒤 테스트 메일 1통 **링크 클릭까지** 확인 |
 | `_acme-challenge_*` 4건, `_d5f4…`, `_3bcc…` | CNAME 그대로 | ❌ **회색 구름 필수.** 주황이면 인증서 갱신이 60~90일 뒤 **조용히** 실패 |
-| apex TXT `fah-claim=…` | TXT 그대로 | 후이즈 소유확인 — 빠지면 소유권 확인이 풀릴 수 있음 |
+| apex · `www` · `test` TXT `fah-claim=…` | TXT 그대로 | **제품 사이트(Firebase App Hosting) 커스텀 도메인 소유확인** — 빠지면 사이트 도메인 연결이 풀림 |
 | `_dmarc` TXT | `v=DMARC1; p=none;` | 그대로 |
 | MX · SPF · CAA | **없음** | **새로 만들지 마세요.** 지금이 정상 |
 | NS · SOA | Cloudflare 자동 | 옮길 필요 없음 |

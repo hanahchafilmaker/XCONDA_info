@@ -17,7 +17,7 @@
 | `xconda.ai` (apex) | A | `35.219.200.15` | 86400 | 제품 사이트 (GCLB 대역) |
 | `xconda.ai` | NS | `ns-1548.awsdns-01.co.uk` `ns-1491.awsdns-58.org` `ns-166.awsdns-20.com` `ns-954.awsdns-55.net` | 172800 | **Route 53** — Cloudflare 이전 시 교체 대상 |
 | `xconda.ai` | SOA | `ns-1548.awsdns-01.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400` | 900 | Cloudflare 가 자기 값으로 대체 |
-| `xconda.ai` | TXT | `"fah-claim=002-02-24064398-7c2e-4287-a5e9-e1ae6ec2fcf7"`<br>`"google-site-verification=3YmL3d-bt_mxD6m9txYcpIyQnA_qn57Vd1uxrFI2Et4"` | 300 | 2건 모두 보존. 앞의 것은 **후이즈(FinderA) 도메인 소유확인** |
+| `xconda.ai` | TXT | `"fah-claim=002-02-24064398-7c2e-4287-a5e9-e1ae6ec2fcf7"`<br>`"google-site-verification=3YmL3d-bt_mxD6m9txYcpIyQnA_qn57Vd1uxrFI2Et4"` | 300 | 2건 모두 보존. 앞의 것은 **Firebase App Hosting 커스텀 도메인 소유확인**(`fah-claim`, Google). 뒤는 Search Console |
 | `xconda.ai` | AAAA | *(없음)* | — | IPv6 미사용 |
 | `xconda.ai` | MX | *(없음)* | — | **MX 없음 = 이 도메인으로 오는 메일은 현재 없음** |
 | `xconda.ai` | CAA | *(없음)* | — | 인증서 발급 제한 없음 → 이전 후에도 그대로 두는 게 안전 |
@@ -32,10 +32,10 @@
 | `_3bcc7d41….media.xconda.ai` | CNAME | `_edba3a06….jkddzztszm.acm-validations.aws` | 300 | **media 의 ACM 인증서 검증** |
 | `ml.xconda.ai` | A (Alias) | `dualstack.cuberry-ml-alb-900449763.us-east-1.elb.amazonaws.com` (Route 53 alias, `Z35SXDOTRQ7X7K`, **EvaluateTargetHealth=true**) | alias | ML 서비스 ALB. 실측 `52.45.153.238` `54.167.65.239` |
 | `test.xconda.ai` | A | `35.219.200.15` | 86400 | 테스트 서버 (apex·www 와 같은 IP) |
-| `test.xconda.ai` | TXT | `"fah-claim=002-02-dd3d09c5-157e-4b09-af77-912292ec1ed5"` | 86400 | 후이즈 소유확인(테스트) |
+| `test.xconda.ai` | TXT | `"fah-claim=002-02-dd3d09c5-157e-4b09-af77-912292ec1ed5"` | 86400 | **Firebase App Hosting 소유확인**(test) |
 | `_acme-challenge_gvsrh3lss5wifiym.test.xconda.ai` | CNAME | `ec21f696-….11.authorize.certificatemanager.goog` | 86400 | **test 의 Google 관리 인증서 검증** |
 | `www.xconda.ai` | A | `35.219.200.15` | 86400 | 제품 사이트. **CNAME 아님** |
-| `www.xconda.ai` | TXT | `"fah-claim=002-02-408363c1-0087-4fd9-85c8-55fa900e6036"` | 86400 | 후이즈 소유확인(www) |
+| `www.xconda.ai` | TXT | `"fah-claim=002-02-408363c1-0087-4fd9-85c8-55fa900e6036"` | 86400 | **Firebase App Hosting 소유확인**(www) |
 | `_acme-challenge_gvsrh3lss5wifiym.www.xconda.ai` | CNAME | `7a1a45f8-….3.authorize.certificatemanager.goog` | 86400 | **www 의 Google 관리 인증서 검증** |
 | `_acme-challenge_gvsrh3lss5wifiym.xconda.ai` | CNAME | `f9d0b41d-….7.authorize.certificatemanager.goog` | 300 | **apex 의 Google 관리 인증서 검증** |
 | `_d5f4d2abb0f253a011a8705780480ec8.xconda.ai` | CNAME | `_04c5066cab7b1a15c1d919cb58bebe83.jkddzztszm.acm-validations.aws` | 300 | **apex/www 용 ACM 인증서 검증(레거시로 보임)** |
@@ -65,10 +65,22 @@
 | `media` A/AAAA | **Alias 를 그대로 옮길 수 없음** → `CNAME d1vtuvuzrisdnm.cloudfront.net` + **주황 구름(프록시)** 로 넣어야 함 (Cloudflare CNAME flattening 이 apex/서브도메인 모두 처리) | CloudFront 는 SNI 로 인증서를 고르므로 **SSL 모드 `Full (strict)`** 필요. `Flexible` 이면 521/526 |
 | `ml` A alias | ALB DNS 이름을 **CNAME** 으로 (`dualstack.cuberry-ml-alb-900449763.us-east-1.elb.amazonaws.com`) | Cloudflare 는 `dualstack.` 제거한 이름을 권장. ALB 가 `xconda.ai` 인증서를 쓰면 **Full (strict)**. `EvaluateTargetHealth` 는 Cloudflare 에 없는 개념 → 헬스체크로 대체(선택) |
 | ACM/Google 검증 CNAME 4+2건 | CNAME 그대로, **회색 구름 필수** | **주황 구름이면 검증이 깨져 인증서 갱신 실패.** 특히 `_acme-challenge*` 는 와일드카드가 아니라 이름이 고정된 값이라 그대로 옮겨야 함 |
-| `_dmarc` · `fah-claim` · `google-site-verification` | TXT 그대로 | `fah-claim` 이 빠지면 **후이즈 도메인 소유확인이 풀릴 수 있음** |
+| `_dmarc` · `fah-claim` · `google-site-verification` | TXT 그대로 | `fah-claim` 이 빠지면 **제품 사이트(Firebase App Hosting) 커스텀 도메인 연결이 풀릴 수 있음** |
 | `hub` | CNAME `hanahchafilmaker.github.io` | 이전 단계에서는 **회색 구름**. 5단계에서만 주황 구름 + `Full` |
 | `test` | A 그대로 | 2026-11-08 noindex 사고 관련. 레코드는 유지, **사이트 자체는 손대지 않음** |
 | NS/SOA | Cloudflare 가 자동 생성 | 옮길 필요 없음 |
+
+### 2-0. 등록기관 확인 (RDAP · 2026-11-26)
+
+| 항목 | 값 |
+|---|---|
+| 등록기관 | **Whois Corp. (후이즈)** — IANA Registrar ID 100 |
+| 등록 / 만료 | 2025-10-14 / **2027-10-14** |
+| 상태 | `clientTransferProhibited` (= **도메인 이전 잠금**, NS 변경에는 영향 없음) |
+| DNSSEC | `delegationSigned: false` — **DS 레코드 없음**. 이전 중에 켜지 마세요 |
+| 등록자 | Cubeberry Co., Ltd (연락처는 공개 정보이지만 **저장소에 옮겨 적지 않음**) |
+
+→ **DNS 존(Route 53)과 위임(등록기관)은 다른 층입니다.** 레코드 23개는 Cloudflare 에 다시 만들고, 위임은 **후이즈 화면에서만** 바꿀 수 있습니다. Route 53 콘솔에서는 NS 위임을 바꿀 수 없습니다(ICANN 규칙).
 
 ### 2-1. Cloudflare 의 "자동 추가" 함정 3개
 
@@ -171,7 +183,7 @@ Compare-Object (Get-Content dns-before.txt) (Get-Content dns-after.txt)
 
 | 무엇 | 지금 | Cloudflare 로 바꿀 때 |
 |---|---|---|
-| **도메인 등록(소유권)** | 후이즈(Findera?) | **바꿀 필요 없음.** 등록기관은 그대로 두고 NS 만 바꾸는 게 정석 |
+| **도메인 등록(소유권)** | **후이즈(Whois Corp., IANA ID 100)** — 만료 2027-10-14, `clientTransferProhibited` | **바꿀 필요 없음.** 등록기관은 그대로 두고 NS 만 바꾸는 게 정석 |
 | **DNS 존(네임서버)** | AWS Route 53 (`ns-*.awsdns-*`) | Cloudflare 존 추가 → **NS 2개**(`xxx.ns.cloudflare.com`)를 **등록기관(후이즈) 화면에서** 교체 |
 
 즉 "AWS 에서 등록 → 후이즈에서 다시 옮긴다" 가 아니라:
@@ -181,7 +193,9 @@ Compare-Object (Get-Content dns-before.txt) (Get-Content dns-after.txt)
 3. 전파 1~24h (TTL 172800 이라 최대 48h 까지 여유)
 4. Route 53 hosted zone 은 **최소 2주간 그대로 두세요** — 롤백은 NS 를 Route 53 값으로 되돌리는 것 한 번이면 됩니다.
 
-> **후이즈의 네임서버 변경 화면 위치**: 후이즈 로그인 → 도메인 관리 → `xconda.ai` → **네임서버(NS) 변경**. 여기서 Route 53 NS 4개를 Cloudflare NS 2개로 바꿉니다. `fah-claim` TXT 는 **그대로 두세요**(후이즈 소유확인).
+> **후이즈의 네임서버 변경 화면 위치**: 후이즈 로그인 → **마이후이즈 → 내 도메인 자산 관리** → 도메인 선택(체크) → **네임서버 변경** → `네임서버 정보 직접 입력` → 기존 값 삭제 후 Cloudflare NS 1·2차 입력 → 다음 → **신청하기**. 반영까지 **최대 24~48시간**(후이즈 안내).
+> `fah-claim` TXT 는 **그대로 두세요** — 이건 후이즈 것이 아니라 **제품 사이트(Firebase App Hosting) 커스텀 도메인 소유확인** 값입니다.
+> 등록기관 상태 `clientTransferProhibited`(도메인 이전 잠금)는 **NS 변경과 무관**합니다. 그대로 두세요.
 >
 > **주의**: 후이즈가 "DNS 관리는 후이즈에서" 모드로 잠겨 있으면 NS 변경이 막힙니다. 그 경우 후이즈 고객센터에 "네임서버를 외부(Cloudflare)로 위임" 요청해야 합니다. 이게 "또 옮기는 작업"의 실체일 수 있습니다 — **먼저 후이즈 화면에서 NS 수정이 가능한지 확인**해 주세요.
 
