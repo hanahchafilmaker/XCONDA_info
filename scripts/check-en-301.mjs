@@ -17,6 +17,26 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATE_HEADER = "x-hub-redirect";
+
+/**
+ * **지금 이 저장소 구성에서 Worker 를 배포할 수 있는가** — 2026-11-23 확인 기준 `false`.
+ * Cause: xconda.ai DNS 가 Cloudflare 가 아니라 AWS Route 53 이라 `wrangler.toml` 의
+ * `zone_name = "xconda.ai"` 라우트를 걸 수 없습니다. 코드·점검은 A(CloudFront) · B(Cloudflare
+ * Pages 이전) 어느 쪽으로 옮겨도 그대로 쓸 수 있습니다.
+ */
+export const WORKER_DEPLOYABLE = false;
+
+/**
+ * **서버 301 없이 지금 실제로 도는 것** — 답을 물을 때 먼저 보여 줄 사실.
+ *   · 영어 페이지의 canonical → `https://www.xconda.ai/hub/…`
+ *   · `hub.xconda.ai/en/…` 로 직접 들어온 **브라우저**만 JS(`data-hub-moved`)로 새 주소 이동
+ *   · 크롤러·curl 은 200 + HTML 을 받습니다(서버 301 아님). JS 를 실행하지 않으면 이동하지 않습니다.
+ */
+export const CURRENT_FALLBACK = {
+  serverRedirect: false,
+  mechanism: "canonical + data-hub-moved (브라우저 JS 이동)",
+  affectsCrawlers: false,
+};
 const slash = (u) => String(u).replace(/\/*$/, "/");
 
 /** 저장소에 실제로 있는 영어 글 하나(끝 `/` 포함 경로). 없으면 목록 주소. */
