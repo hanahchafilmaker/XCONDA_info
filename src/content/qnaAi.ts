@@ -10,21 +10,21 @@
  *   - Worker 는 그 글만 근거로 답합니다 (설정: qna-bot-worker/wrangler.toml).
  *   - 하루 무료 한도 초과 · 오류 · 8초 초과면 조용히 포기하고 검색 답변만 남깁니다.
  */
-export const QNA_AI_ENDPOINT = "";
+export const QNA_AI_ENDPOINT = "https://xconda-qna-bot.wjwn93.workers.dev";
 
 /**
- * 실제로 쓸 주소. 위 상수가 비어 있으면, 배포 직후 시험용으로 브라우저에 직접 넣은 값을 씁니다.
+ * 실제로 쓸 주소. 시험용으로 브라우저에 직접 넣은 값이 있으면 그것을, 없으면 위 상수를 씁니다.
  *   (개발자 도구 Console 에서) localStorage.setItem("xconda-qna-ai-endpoint", "https://….workers.dev")
  * https 주소(또는 내 컴퓨터 localhost)만 받습니다.
  */
 export function resolveQnaAiEndpoint(): string {
-  if (QNA_AI_ENDPOINT) return QNA_AI_ENDPOINT;
   try {
     const v = window.localStorage.getItem("xconda-qna-ai-endpoint") ?? "";
-    return /^https:\/\/[^\s]+$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/.*)?$/.test(v) ? v : "";
+    if (/^https:\/\/[^\s]+$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/.*)?$/.test(v)) return v;
   } catch {
-    return "";
+    /* 저장소를 못 읽는 브라우저 → 기본 주소 사용 */
   }
+  return QNA_AI_ENDPOINT;
 }
 
 export type AiDoc = { title: string; answer: string; url: string; kind: string; date?: string };
