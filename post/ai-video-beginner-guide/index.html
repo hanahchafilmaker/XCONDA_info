@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ko" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 제목 · 설명 · canonical · OG · 트위터 카드는 빌드 시 scripts/build-seo.mjs 가 채웁니다.
+         (한국어 문구의 원본: src/content/seo.js › SITE_META.ko) -->
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22Xconda%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0B0B%22%2F%3E%0A%20%20%3Cg%20transform%3D%22translate(6.28%204.48)%20scale(.72)%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3Cmask%20id%3D%22xconda-fav-cut%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2227%22%20height%3D%2232%22%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%2227%22%20height%3D%2232%22%20fill%3D%22%23fff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M0.25%200H8.75L26.75%2032H18.25Z%22%20fill%3D%22%23000%22%20stroke%3D%22%23000%22%20stroke-width%3D%224.8%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%20%20%20%20%20%20%3C%2Fmask%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Cpath%20d%3D%22M18.75%200H26.25L7.75%2032H0.25Z%22%20fill%3D%22%23FFFFFF%22%20mask%3D%22url(%23xconda-fav-cut)%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0.25%200H8.75L26.75%2032H18.25Z%22%20fill%3D%22%23FFD60A%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="https://hub.xconda.ai/assets/app.js"></script>
+    <link rel="stylesheet" href="https://hub.xconda.ai/assets/app.css" />
+      <!-- SEO:START -->
+    <title>대본 쓰기부터 영상 생성까지, 엑스콘다(XCONDA)로 따라하는 AI 영상 초보자 가이드, 영상도 AI도 처음이어도 쉬운 말로 따라 할 수 있어요. | XCONDA허브</title>
+    <meta name="description" content="AI 영상, 처음이라면 이 순서로 시작하세요" />
+    <link rel="canonical" href="https://hub.xconda.ai/post/ai-video-beginner-guide/" />
+    <link rel="alternate" hreflang="ko" href="https://hub.xconda.ai/post/ai-video-beginner-guide/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.xconda.ai/post/ai-video-beginner-guide/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="XCONDA허브" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="대본 쓰기부터 영상 생성까지, 엑스콘다(XCONDA)로 따라하는 AI 영상 초보자 가이드, 영상도 AI도 처음이어도 쉬운 말로 따라 할 수 있어요." />
+    <meta property="og:description" content="AI 영상, 처음이라면 이 순서로 시작하세요" />
+    <meta property="og:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-beginner-guide.png" />
+    <meta property="og:url" content="https://hub.xconda.ai/post/ai-video-beginner-guide/" />
+    <meta property="article:published_time" content="2026-11-27" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="대본 쓰기부터 영상 생성까지, 엑스콘다(XCONDA)로 따라하는 AI 영상 초보자 가이드, 영상도 AI도 처음이어도 쉬운 말로 따라 할 수 있어요." />
+    <meta name="twitter:description" content="AI 영상, 처음이라면 이 순서로 시작하세요" />
+    <meta name="twitter:image" content="https://hub.xconda.ai/assets/img/og/posts/post-ai-video-beginner-guide.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.cuberry.kr/#organization","name":"Cubeberry","alternateName":"큐브베리","legalName":"주식회사 큐브베리","description":"Developer and operator of XCONDA, the AI storyboard and video production platform.","url":"https://www.cuberry.kr/","logo":"https://www.cuberry.kr/images/logo-512.png","foundingDate":"2023-08","email":"ceo@cubeberry.ai","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"cubeberry@cuberry.kr","availableLanguage":["ko","en","ja","zh"]},"brand":{"@type":"Brand","name":"Xconda","alternateName":["엑스콘다"]},"sameAs":["https://www.xconda.ai","https://hub.xconda.ai","https://www.instagram.com/xconda_official/","https://www.threads.com/@xconda_official","https://www.youtube.com/@xconda_official","https://www.facebook.com/profile.php?id=61584980414012","https://www.instagram.com/xconda_korea/","https://www.threads.com/@xconda_korea","https://www.youtube.com/@xconda_korea","https://www.facebook.com/profile.php?id=61587791698809","https://x.com/Xconda_official/"]},{"@type":"Organization","@id":"https://www.cuberry.kr/#reseller-us","name":"Cubeberry Co., Ltd","description":"Authorized reseller of XCONDA. Sells and bills XCONDA purchases paid through Stripe under its own name. XCONDA is developed and operated by Cubeberry Co., Ltd. (Korea).","email":"info@cubeberry.ai","address":{"@type":"PostalAddress","addressRegion":"DE","addressCountry":"US"}},{"@type":"WebSite","@id":"https://hub.xconda.ai/#website","url":"https://hub.xconda.ai/","name":"XCONDA허브","publisher":{"@id":"https://www.cuberry.kr/#organization"},"inLanguage":"ko-KR"}]}</script>
+    <script type="application/ld+json" data-article-jsonld>{"@context":"https://schema.org","@type":"BlogPosting","@id":"https://hub.xconda.ai/post/ai-video-beginner-guide/#article","publisher":{"@id":"https://www.cuberry.kr/#organization"},"inLanguage":"ko-KR","headline":"대본 쓰기부터 영상 생성까지, 엑스콘다(XCONDA)로 따라하는 AI 영상 초보자 가이드, 영상도 AI도 처음이어도 쉬운 말로 따라 할 수 있어요.","description":"AI 영상, 처음이라면 이 순서로 시작하세요","mainEntityOfPage":{"@type":"WebPage","@id":"https://hub.xconda.ai/post/ai-video-beginner-guide/"},"isPartOf":{"@id":"https://hub.xconda.ai/#website"},"image":["https://hub.xconda.ai/assets/img/og/posts/post-ai-video-beginner-guide.png"],"datePublished":"2026-11-27","author":{"@type":"Person","name":"황보민혁 PD"}}</script>
+    <!-- SEO:END -->
+  </head>
+  <body>
+    <style id="xconda-static-style">html{background:#fff;color:#000;scroll-behavior:smooth}body{margin:0;background:#fff;color:#000;font-family:"Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}*{box-sizing:border-box}a:focus-visible{outline:2px solid #000;outline-offset:4px}::selection{background:#000;color:#fff}.seo-article{box-sizing:border-box;min-height:100vh;max-width:960px;margin:0 auto;padding:48px 24px 80px;background:#fff;color:#171717;font:16px/1.8 "Inter Tight","Pretendard Variable",Pretendard,system-ui,sans-serif}.seo-article h1{font-size:clamp(28px,5vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.2;color:#000;margin:12px 0}.seo-article h2{font-size:26px;font-weight:500;color:#000;margin:28px 0 8px}.seo-article h3{font-size:17px;color:#000;margin:20px 0 6px}.seo-article img{max-width:100%;height:auto}.seo-article a{color:#171717;text-underline-offset:4px}.seo-article a:hover{opacity:.6}.seo-article nav{font-size:14px}.seo-article[data-lang] h2{border-top:1px solid #e5e5e5;padding-top:28px}.seo-langs{border-bottom:1px solid #e5e5e5;padding-bottom:20px}.seo-meta{color:#737373;font-size:14px}.seo-article .notion-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}.seo-article .notion-column{min-width:0}.seo-article .notion-table-wrap{max-width:100%;overflow-x:auto}.seo-article table{border-collapse:collapse;width:100%}.seo-article td{border:1px solid #d4d4d4;padding:8px 12px}.seo-article .notion-file{display:inline-flex;padding:10px 14px;border:1px solid #d4d4d4;border-radius:8px}.seo-article .notion-video{display:block;width:100%;max-height:70vh}.seo-article audio{max-width:100%}.seo-article ul,.seo-article ol{padding-left:22px}.seo-article li{margin:8px 0}.seo-article .seo-toc{display:flex;flex-wrap:wrap;gap:6px 16px;margin:18px 0}.seo-article section{margin-top:34px}.seo-langs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 18px;font-size:14px;color:#737373}.seo-langs strong{color:#000}.seo-cta{display:flex;flex-wrap:wrap;gap:8px 10px;margin:20px 0}.seo-article .seo-cta a{display:inline-block;padding:8px 16px;border:1px solid #171717;border-radius:999px;font-size:14px;line-height:1.4;text-decoration:none}.seo-article .seo-cta a:first-child{background:#000;color:#fff}.seo-ended{border:1px solid #d4d4d4;padding:10px 14px;font-size:14px;color:#525252}.seo-note{color:#737373;font-size:14px;border-top:1px solid #e5e5e5;margin-top:32px;padding-top:16px}.seo-article .seo-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px;margin:18px 0 8px;padding:0;list-style:none}.seo-article .seo-card{display:flex;margin:0;min-width:0}.seo-article .seo-card>a{display:flex;align-items:flex-start;width:100%;padding:18px 20px;border:1px solid #e5e5e5;border-radius:14px;background:#fafafa;color:#171717;font-size:16px;line-height:1.5;text-decoration:none;transition:background .15s ease,border-color .15s ease,transform .15s ease}.seo-article .seo-card>a::after{content:">";margin-left:auto;padding-left:12px;color:#a3a3a3;font-size:15px;line-height:1.5}.seo-article .seo-card>a:hover{background:#fff;border-color:#171717;transform:translateY(-1px);opacity:1}.seo-article .seo-card-section{margin-top:44px}.seo-article .seo-card-heading{margin:0 0 4px}.seo-article .seo-card-heading>a{text-decoration:none}.seo-article .seo-card-heading>a:hover{opacity:.6}.seo-article .seo-card>a>img{width:88px;height:64px;object-fit:cover;border-radius:8px;flex-shrink:0}.seo-article .seo-card-text{display:flex;flex-direction:column;gap:4px;min-width:0}.seo-article .seo-card-title{font-size:16px;line-height:1.5}.seo-legal{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:32px;padding-top:16px;border-top:1px solid #e5e5e5;font-size:13px;color:#737373}.seo-legal a{color:#525252}.seo-article.seo-home{max-width:1180px}@media (prefers-reduced-motion:reduce){.seo-article .seo-card>a{transition:none}.seo-article .seo-card>a:hover{transform:none}}@media print{.seo-article .seo-cards{gap:6px}.seo-article .seo-card>a{border-color:#d4d4d4;background:#fff}}</style>
+    <div id="root"><main class="seo-article" data-prefix="post">
+<nav aria-label="breadcrumb"><a href="../../">XCONDA허브</a> / 블로그</nav>
+<article>
+<h1>AI영상_입문가이드</h1>
+<p class="seo-meta"><time datetime="2026-11-27">2026-11-27</time> · <span>수정 <time datetime="2026-11-27">2026-11-27</time></span> · 황보민혁 PD</p>
+<nav class="seo-cta" data-cta="top" aria-label="XCONDA 바로가기"><a href="https://www.xconda.ai/ko?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_top" data-cta-kind="start">무료로 시작하기</a><a href="https://www.xconda.ai/pricing?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_top" data-cta-kind="pricing">요금 보기</a></nav>
+<figure class="seo-cover"><img src="https://hub.xconda.ai/assets/img/covers/2fddc0fc7ebb0252876a717ad4009216141a57bd5e57d8b4561dc78c9fa5caa8.png" alt="AI영상_입문가이드" loading="eager"></figure>
+<p>AI 영상, 처음이라면 이 순서로 시작하세요</p>
+<h2>AI 영상, 처음이라면 이 순서로 시작하세요</h2>
+<p class="notion-default">대본 쓰기부터 영상 생성까지, 엑스콘다(XCONDA)로 따라 하는 초보자 가이드</p>
+<p class="notion-default"><strong>저자 :</strong> 황보민혁 PD · <strong>Contact :</strong> leoxflux@gmail.com · Seedance 2.5 화면 기준</p>
+<p class="notion-default">큐브베리가 엑스콘다로 만든 AI 웹드라마의 장면들</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ad42025b2-b7f3-4524-b902-48f7d61e0816%3Ad42025b2-b7f3-4524-b902-48f7d61e0816.png?table=block&amp;id=4252ebc0-17ad-8081-8e14-f0e3d21720cb&amp;cache=v2" alt="큐브베리가 엑스콘다로 만든 AI 웹드라마의 장면들" loading="lazy" decoding="async"></figure>
+<p class="notion-default">AI로 영상을 만들어 보고 싶은데 어디서부터 시작해야 할지 막막하신가요? 영상도 AI도 처음이어도 괜찮습니다. 이 글은 <strong>모르는 말이 나올 때마다 쉬운 말로 풀어</strong> 드리고, 전문가들이 <strong>왜 그렇게 하는지</strong>도 함께 알려 드립니다. 이유를 알면 외우지 않아도 기억에 남아요.</p>
+<p class="notion-default">글을 끝까지 따라가면 <strong>이야기 쓰기 → 컷 나누기 → 에셋(기준 이미지) 만들기 → 영상 만들기</strong>의 기본 과정을 엑스콘다 화면으로 직접 해 볼 수 있습니다.</p>
+<blockquote><p>📌 <strong>이 글을 읽는 방법</strong></p></blockquote>
+<h2>결과물부터 먼저 보기</h2>
+<p class="notion-default">’AI 영상’이라고 하면 어떤 모습인지 상상이 안 되는 분이 많습니다. 큐브베리가 엑스콘다로 만든 <strong>AI 웹드라마 4편</strong>을 먼저 보세요. 사람과 이야기와 분위기가 전부 다릅니다.</p>
+<p class="notion-default">이상한 나라의 이엘</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aa756c196-0052-472f-8012-9c1a1a5f9fd9%3Aa756c196-0052-472f-8012-9c1a1a5f9fd9.png?table=block&amp;id=4252ebc0-17ad-80dc-8150-f5537523a531&amp;cache=v2" alt="이상한 나라의 이엘" loading="lazy" decoding="async"></figure>
+<p class="notion-default">DIVISION 0</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aadbc5160-9741-45cf-9490-38a866485587%3Aadbc5160-9741-45cf-9490-38a866485587.png?table=block&amp;id=4252ebc0-17ad-8048-96d3-fe25213ff4ff&amp;cache=v2" alt="DIVISION 0" loading="lazy" decoding="async"></figure>
+<p class="notion-default">콜드사이트</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae77cffcc-fb25-48d1-a907-8d74ac3badb4%3Ae77cffcc-fb25-48d1-a907-8d74ac3badb4.png?table=block&amp;id=4252ebc0-17ad-8037-a5aa-e59f3b6ecdf7&amp;cache=v2" alt="콜드사이트" loading="lazy" decoding="async"></figure>
+<p class="notion-default">목구령 포도청</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7e3ee46c-8aa9-4008-8fe3-ce2946c6eadf%3A7e3ee46c-8aa9-4008-8fe3-ce2946c6eadf.png?table=block&amp;id=4252ebc0-17ad-801d-b04b-f8839a9cbc20&amp;cache=v2" alt="목구령 포도청" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 먼저 보여 드릴까요?</strong></p></blockquote>
+<h2>기초 지식: 영상, AI, 그리고 AI 영상</h2>
+<h3>영상이 뭘까요?</h3>
+<p class="notion-default">영상은 <strong>사진을 아주 빠르게 넘겨 보는 것</strong>입니다. 어릴 때 공책 귀퉁이에 조금씩 다른 그림을 그리고 휙휙 넘기면 그림이 움직이던 것, 기억나시나요? 그게 영상의 원리예요.</p>
+<p class="notion-default">영상은 보통 <strong>1초에 사진이 24~30장쯤</strong> 지나갑니다. 눈이 사진들을 하나로 이어서 보기 때문에 움직이는 것처럼 보여요.</p>
+<p class="notion-default">사진 4장만 빠르게 넘겨도 사람이 걷는 것처럼 보여요</p>
+<figure><img src="https://www.notion.so/image/attachment%3A511786bb-51c9-4e67-a110-d7b80c51bc4b%3A511786bb-51c9-4e67-a110-d7b80c51bc4b.png?table=block&amp;id=4252ebc0-17ad-8050-beb1-c3536ff985bc&amp;cache=v2" alt="사진 4장만 빠르게 넘겨도 사람이 걷는 것처럼 보여요" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 알아야 할까요?</strong></p></blockquote>
+<h3>AI가 뭘까요?</h3>
+<p class="notion-default">AI는 <strong>‘인공지능’</strong>이라는 뜻입니다. 사람이 아니라 컴퓨터가 스스로 배우고 판단하는 똑똑한 프로그램이에요.</p>
+<p class="notion-default">그림을 만드는 AI는 엄청나게 많은 그림과 영상을 미리 보면서 <strong>‘고양이는 이렇게 생겼구나’, ‘노을은 이런 색이구나’</strong> 하고 배웁니다. 그래서 우리가 글로 말하면, 배운 걸 바탕으로 <strong>새 그림을 그려 줘요.</strong></p>
+<p class="notion-default">글로 주문하면, AI가 배운 것을 바탕으로 새 그림을 그립니다</p>
+<figure><img src="https://www.notion.so/image/attachment%3A4f04f61d-8292-43a9-b684-8c4a8a54ac1b%3A4f04f61d-8292-43a9-b684-8c4a8a54ac1b.png?table=block&amp;id=4252ebc0-17ad-80bd-a1db-cccf6c6d4a7a&amp;cache=v2" alt="글로 주문하면, AI가 배운 것을 바탕으로 새 그림을 그립니다" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 알아야 할까요?</strong></p></blockquote>
+<h3>AI 영상은 뭐가 다를까요?</h3>
+<p class="notion-default">AI 영상은 <strong>글이나 사진을 컴퓨터에 알려 주면</strong> AI가 그에 맞는 영상을 그려 주는 방식입니다. 카메라로 촬영하지 않아요.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td></td><td>예전 방식 (촬영)</td><td>AI 영상</td></tr><tr><td>필요한 것</td><td>카메라, 배우, 촬영 장소, 조명, 스태프</td><td>글, 참고 사진, 컴퓨터</td></tr><tr><td>걸리는 시간</td><td>촬영 날짜를 잡고 모여야 합니다</td><td>컴퓨터 앞에서 바로 시작해요</td></tr><tr><td>어려운 장면</td><td>우주, 옛날 조선시대는 찍기 힘듭니다</td><td>글로 설명하면 그려 줘요</td></tr></tbody></table></div>
+<blockquote><p>💡 <strong>왜 요즘 많이 쓸까요?</strong></p></blockquote>
+<blockquote><p>⚠️ <strong>솔직한 한계</strong></p></blockquote>
+<h3>AI 영상을 만드는 5가지 방식</h3>
+<p class="notion-default">AI에게 영상을 만들어 달라고 할 때, <strong>무엇을 먼저 건네는지</strong>에 따라 방식이 나뉩니다. 글만 줄 수도 있고, 사진을 줄 수도 있고, 이미 만든 영상을 줄 수도 있어요.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>방식</td><td>쉽게 말하면</td></tr><tr><td>텍스트 투 비디오<br>(T2V)</td><td><strong>글(프롬프트)만</strong> 넣어 영상을 만듭니다. (말로만 주문)</td></tr><tr><td>이미지 투 비디오<br>(I2V)</td><td><strong>이미지 한 장</strong>을 첫 장면으로 삼아 움직이게 해요. (사진이 살아 움직임)</td></tr><tr><td>첫·끝 프레임<br>(Start/End frame)</td><td><strong>시작 이미지와 끝 이미지</strong>를 주고, 그 사이를 만들어요. (출발과 도착만 지정)</td></tr><tr><td>레퍼런스 투 비디오<br>(Ref-to-video)</td><td><strong>인물·배경·소품 이미지를 여러 장</strong> 참고로 주고 영상을 만듭니다. (‘이 사람들, 이 장소로’ 하고 보여 줌)</td></tr><tr><td>확장<br>(Extend)</td><td>영상 <strong>끝에 이어서</strong> 더 만들어요. (이야기 이어 쓰기)</td></tr></tbody></table></div>
+<blockquote><p>💡 <strong>왜 방식이 여러 가지일까요?</strong></p></blockquote>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<p class="notion-default">※ 서비스와 모델마다 쓸 수 있는 방식이 다릅니다. 엑스콘다 화면에서 방식을 고르는 곳은 4단계의 영상 생성기에서 보여 드려요.</p>
+<h3>촬영 전에 미리 보는 세 가지 말</h3>
+<p class="notion-default">영상을 찍기 전에 <strong>장면을 미리 만들어 보는 일</strong>이 있습니다. 이때 쓰는 말이 <strong>프리비즈, 블록아웃, 블로킹</strong>이에요. 영상 이야기에서 자주 나오니 뜻만 알아 두세요.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>말</td><td>뜻</td></tr><tr><td>프리비즈<br>(Previs)</td><td>촬영 전에 <strong>대충 만든 장면 미리보기</strong>입니다.</td></tr><tr><td>블록아웃<br>(Blockout)</td><td><strong>무늬 없는 회색 공간 + 색깔별 마네킹</strong>으로 만든 3D 장면이에요.</td></tr><tr><td>블로킹<br>(Blocking)</td><td>인물의 <strong>자리와 이동 경로</strong>를 정하는 것입니다.</td></tr></tbody></table></div>
+<p class="notion-default">블록아웃 장면의 느낌을 설명하려고 직접 그린 그림이에요. 색깔 마네킹이 서 있고, 점선은 인물의 이동 경로입니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A774680fc-4fa6-401e-9952-f40874f45c4d%3A774680fc-4fa6-401e-9952-f40874f45c4d.png?table=block&amp;id=4252ebc0-17ad-8036-9aca-d94aae5ebc83&amp;cache=v2" alt="블록아웃 장면의 느낌을 설명하려고 직접 그린 그림이에요. 색깔 마네킹이 서 있고, 점선은 인물의 이동 경로입니다." loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 미리 볼까요?</strong></p></blockquote>
+<blockquote><p>📌 <strong>이 글에서는 이렇게 이해해요</strong></p></blockquote>
+<h2>AI 영상은 이 순서로 만들어요</h2>
+<p class="notion-default">AI 영상 제작의 전체 순서를 먼저 보겠습니다. 뒤에서 한 단계씩 자세히 설명할게요.</p>
+<ol><li><strong>이야기 쓰기</strong> 어떤 이야기인지 글로 적습니다 (시나리오) → 1단계</li><li><strong>컷 나누기</strong> 이야기를 짧은 장면 조각으로 쪼개요. 어려우면 FlexBoard가 도와줍니다 → 2단계</li><li><strong>에셋(기준 이미지) 만들기</strong> 이미지 제너레이터로 인물·배경 그림을 만들어 등록해요 → 3단계</li><li><strong>영상 만들기</strong> 에셋을 불러와 주문서(프롬프트)와 함께 비디오 제너레이터로 만듭니다 → 4단계</li><li><strong>이어 붙이기</strong> 만든 조각들을 순서대로 이어 한 편으로 만들어요 (이 글에서는 다루지 않습니다)</li></ol>
+<blockquote><p>💡 <strong>왜 계획부터 할까요?</strong></p></blockquote>
+<blockquote><p>💡 <strong>왜 3번(에셋 만들기)이 따로 있을까요?</strong></p></blockquote>
+<p class="notion-default">※ 이 5단계는 영상 제작 전체 순서를 쉽게 풀어 정리한 것입니다.</p>
+<h2>1단계 · 시나리오: 이야기를 글로 적기</h2>
+<p class="notion-default">시나리오는 <strong>이야기를 글로 적은 것</strong>입니다. 누가, 어디서, 무엇을 하는지 순서대로 써요. 영화나 드라마의 <strong>‘대본’</strong>과 같다고 생각하면 됩니다.</p>
+<blockquote><p>📝 <strong>시나리오 예시 (이해를 돕기 위해 지어낸 이야기입니다)</strong></p></blockquote>
+<blockquote><p>💡 <strong>왜 글부터 쓸까요?</strong></p></blockquote>
+<blockquote><p>⚠️ <strong>안 하면 어떻게 될까요?</strong></p></blockquote>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<h2>2단계 · 컷 나누기와 FlexBoard</h2>
+<h3>컷이 뭘까요?</h3>
+<p class="notion-default"><strong>컷</strong>은 카메라가 한 번 쭉 찍은 짧은 조각입니다. 드라마를 보면 얼굴, 손, 걸어가는 모습처럼 화면이 계속 바뀌죠? 그 하나하나가 컷이에요. 컷이 모이면 <strong>장면(씬)</strong>이 되고, 장면이 모이면 <strong>한 편</strong>이 됩니다.</p>
+<p class="notion-default">같은 장면도 카메라 거리를 바꿔 여러 컷으로 나눠요 (WS·MS·CU 뜻은 아래에 있습니다)</p>
+<figure><img src="https://www.notion.so/image/attachment%3A41fe65c2-9e02-43c8-bbe2-bd65c042af5c%3A41fe65c2-9e02-43c8-bbe2-bd65c042af5c.png?table=block&amp;id=4252ebc0-17ad-806e-9e96-f96cdb57834a&amp;cache=v2" alt="같은 장면도 카메라 거리를 바꿔 여러 컷으로 나눠요 (WS·MS·CU 뜻은 아래에 있습니다)" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 쪼갤까요?</strong></p></blockquote>
+<blockquote><p>⚠️ <strong>안 하면 어떻게 될까요?</strong></p></blockquote>
+<h3>컷 나누기가 어렵다면, FlexBoard</h3>
+<p class="notion-default"><strong>FlexBoard(플렉스보드)</strong>는 엑스콘다 안에 있는 도구입니다. <strong>이야기를 글로 적어 넣으면</strong> 컷으로 나누고, 컷마다 ’어떻게 찍을지’를 적어서 <strong>그림 콘티(스토리보드)</strong>까지 만들어 줘요. 콘티는 만화처럼 장면을 칸칸이 늘어놓은 <strong>설계도</strong>입니다.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td></td><td>혼자 하면</td><td>FlexBoard를 쓰면</td></tr><tr><td>이야기를 컷으로 나누기</td><td>몇 컷이 필요한지, 어디서 끊을지 혼자 고민해요</td><td>이야기를 넣으면 컷별로 나눠 줍니다</td></tr><tr><td>컷마다 카메라 정하기</td><td>‘클로즈업’, ‘와이드’ 같은 용어부터 공부해야 해요</td><td>컷마다 샷 크기 표시(CU, MS, WS, FS)를 붙여 줍니다</td></tr><tr><td>그림으로 미리 보기</td><td>컷마다 직접 그려야 해요</td><td>6~36컷짜리 그림 콘티를 보여 줍니다</td></tr></tbody></table></div>
+<blockquote><p>💡 <strong>왜 쉬워질까요?</strong></p></blockquote>
+<blockquote><p>🔎 <strong>컷 옆에 붙는 알파벳은 무슨 뜻일까요?</strong></p></blockquote>
+<h3>FlexBoard 화면 둘러보기</h3>
+<p class="notion-default">엑스콘다 위쪽 메뉴의 <strong>Flex Board</strong>를 눌러 열어요. 처음이라면 화면의 <strong>Try a sample project</strong>(샘플 프로젝트 체험)로 연습해 볼 수 있습니다.</p>
+<p class="notion-default">설명을 위해 간단히 그린 메뉴 그림입니다. 실제 메뉴에는 더 많은 항목이 있어요.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A0d919fd4-b948-4e2c-bea0-23b56f159897%3A0d919fd4-b948-4e2c-bea0-23b56f159897.png?table=block&amp;id=4252ebc0-17ad-8023-ab5e-e658b1605705&amp;cache=v2" alt="설명을 위해 간단히 그린 메뉴 그림입니다. 실제 메뉴에는 더 많은 항목이 있어요." loading="lazy" decoding="async"></figure>
+<p class="notion-default">FlexBoard 화면. 왼쪽에 네 단계 메뉴가 번호로 표시되어 있다</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1b4ce3d6-eaac-417c-99a1-e4ec5696c0b8%3A1b4ce3d6-eaac-417c-99a1-e4ec5696c0b8.png?table=block&amp;id=4252ebc0-17ad-8001-9711-f0afd1e82d67&amp;cache=v2" alt="FlexBoard 화면. 왼쪽에 네 단계 메뉴가 번호로 표시되어 있다" loading="lazy" decoding="async"></figure>
+<ol><li><strong>Text Preview</strong> 이야기를 컷별 글 콘티로 먼저 확인합니다.</li><li><strong>Cut Grid</strong> 6~36컷짜리 그림 콘티를 만듭니다.</li><li><strong>Cast &amp; Face Lock</strong> 모든 컷에 @image로 인물과 배경을 고정합니다.</li><li><strong>Detailed Edit</strong> 샷 크기, 앵글, 카메라 움직임만 바꿔 다시 만들어요.</li></ol>
+<p class="notion-default">콘티가 끝나면 Seedance 2.5 같은 영상 모델로 바로 이어서 영상을 만들 수 있습니다.</p>
+<h2>3단계 · 에셋 만들기</h2>
+<p class="notion-default">AI 영상에서 가장 많이 겪는 문제가 <strong>‘컷마다 얼굴이 달라지는 것’</strong>입니다. 이 문제를 풀려고 영상을 만들기 전에 <strong>기준 이미지(에셋)</strong>를 먼저 만들어 둡니다.</p>
+<h3>일관성이 뭐고, 왜 중요할까요?</h3>
+<p class="notion-default">드라마 1회에서 주인공이 짧은 머리에 파란 옷이었는데, 2회에 갑자기 다른 얼굴로 나오면 어떨까요? 이렇게 <strong>컷이 바뀌어도 얼굴, 옷, 방이 똑같이 유지되는 것</strong>을 <strong>‘일관성’</strong>이라고 해요.</p>
+<p class="notion-default">컷이 바뀌어도 같은 인물과 같은 방이 나오는 세 장면</p>
+<figure><img src="https://www.notion.so/image/attachment%3Abf6224fd-7613-4840-9007-901ad066a4c7%3Abf6224fd-7613-4840-9007-901ad066a4c7.png?table=block&amp;id=4252ebc0-17ad-8021-a6e7-ee6dda169c38&amp;cache=v2" alt="컷이 바뀌어도 같은 인물과 같은 방이 나오는 세 장면" loading="lazy" decoding="async"></figure>
+<p class="notion-default">컷마다 인물과 방이 달라진 세 장면</p>
+<figure><img src="https://www.notion.so/image/attachment%3A5699692f-a094-4404-bfb0-e18cb7014374%3A5699692f-a094-4404-bfb0-e18cb7014374.png?table=block&amp;id=4252ebc0-17ad-8027-8db5-fdf4ceffe6da&amp;cache=v2" alt="컷마다 인물과 방이 달라진 세 장면" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 중요할까요?</strong></p></blockquote>
+<h3>AI는 왜 어려워하고, 어떻게 해결할까요?</h3>
+<blockquote><p>💡 <strong>왜 어려울까요?</strong></p></blockquote>
+<p class="notion-default">말로만 부탁하면 다른 사람이 나오고, 같은 사진을 건네면 같은 사람이 나오는 비교</p>
+<figure><img src="https://www.notion.so/image/attachment%3A3fff06bd-88c5-4ad7-9d6b-12e0360a3b4d%3A3fff06bd-88c5-4ad7-9d6b-12e0360a3b4d.png?table=block&amp;id=4252ebc0-17ad-8061-8f27-c6594ba645e1&amp;cache=v2" alt="말로만 부탁하면 다른 사람이 나오고, 같은 사진을 건네면 같은 사람이 나오는 비교" loading="lazy" decoding="async"></figure>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<p class="notion-default">캐릭터 시트 예시 (사람뿐 아니라 방과 물건도 같은 방식으로 정리합니다)</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1432c97b-8228-40f5-95c8-37ac2e86d3eb%3A1432c97b-8228-40f5-95c8-37ac2e86d3eb.png?table=block&amp;id=4252ebc0-17ad-8082-acd7-cda3fc02d6c1&amp;cache=v2" alt="캐릭터 시트 예시 (사람뿐 아니라 방과 물건도 같은 방식으로 정리합니다)" loading="lazy" decoding="async"></figure>
+<h3>참고 이미지와 에셋</h3>
+<p class="notion-default"><strong>참고 이미지</strong>는 AI에게 <strong>‘이 사진처럼 그려 줘’</strong> 하고 보여 주는 사진입니다. 자주 쓰는 사진을 엑스콘다에 한 번 등록해 두면 <strong>에셋(Asset)</strong>이라고 불러요. 에셋은 영상을 만들 때 가져다 쓰는 <strong>‘재료’</strong>라는 뜻입니다.</p>
+<p class="notion-default">글로만 설명하면 조건에 맞는 사람이 수만 명이지만, 사진을 보여 주면 바로 이 사람이라고 콕 집을 수 있다는 비교</p>
+<figure><img src="https://www.notion.so/image/attachment%3A25015ccf-7e2f-438f-aba3-4e886a69b9a3%3A25015ccf-7e2f-438f-aba3-4e886a69b9a3.png?table=block&amp;id=4252ebc0-17ad-8048-a849-db222f65c654&amp;cache=v2" alt="글로만 설명하면 조건에 맞는 사람이 수만 명이지만, 사진을 보여 주면 바로 이 사람이라고 콕 집을 수 있다는 비교" loading="lazy" decoding="async"></figure>
+<div class="notion-table-wrap"><table><tbody><tr><td>부르는 말</td><td>뜻</td></tr><tr><td>기준 이미지</td><td>이 글에서 쓰는 말입니다. AI에게 <strong>“이 모습을 기준으로 해”</strong> 하고 보여 주는 이미지</td></tr><tr><td>참고 이미지</td><td>같은 뜻입니다. 엑스콘다 화면의 <strong>Reference(참고)</strong> 탭도 같은 말이에요</td></tr><tr><td>에셋</td><td>그 이미지를 엑스콘다 Library에 <strong>이름을 붙여 등록해 둔 것</strong> (영상·소리도 등록할 수 있어요)</td></tr></tbody></table></div>
+<blockquote><p>💡 <strong>왜 사진을 보여 주고, 왜 등록해 둘까요?</strong></p></blockquote>
+<h3>기준 이미지는 어디서 만들까요?</h3>
+<p class="notion-default"><strong>이미지 제너레이터</strong>는 글(필요하면 참고 사진도 함께)로 주문하면 AI가 <strong>그림 한 장</strong>을 만들어 주는 도구입니다. 엑스콘다 위쪽 메뉴의 <strong>Image</strong>에서 열어요. 영상이 아니라 <strong>그림(사진)</strong>을 만드는 도구라는 점만 기억해 주세요.</p>
+<blockquote><p>💡 <strong>왜 영상 전에 그림부터 만들까요?</strong></p></blockquote>
+<div class="notion-table-wrap"><table><tbody><tr><td>무엇을</td><td>어떤 그림으로</td><td>왜</td></tr><tr><td>인물</td><td>정면 전신, 뒷모습 전신, 얼굴이 보이는 상반신을 한 장에 (캐릭터 시트)</td><td>어느 각도에서 찍어도 같은 사람입니다</td></tr><tr><td>배경</td><td>방이나 거리의 전체 모습</td><td>컷이 바뀌어도 같은 장소입니다</td></tr><tr><td>소품</td><td>자주 나오는 물건</td><td>물건 모양이 안 바뀌어요</td></tr></tbody></table></div>
+<blockquote><p>⚠️ <strong>안 만들고 바로 영상부터 만들면?</strong></p></blockquote>
+<h3>이미지 제너레이터 쓰는 법</h3>
+<p class="notion-default">이미지 제너레이터 화면. 다섯 군데에 번호가 표시되어 있다</p>
+<figure><img src="https://www.notion.so/image/attachment%3A20a89bef-3780-49a6-831d-7a8e1c56305b%3A20a89bef-3780-49a6-831d-7a8e1c56305b.png?table=block&amp;id=4252ebc0-17ad-80ee-a005-d1eb128c7b33&amp;cache=v2" alt="이미지 제너레이터 화면. 다섯 군데에 번호가 표시되어 있다" loading="lazy" decoding="async"></figure>
+<ol><li><strong>Models</strong> 어떤 AI 모델로 그릴지 골라요.</li><li><strong>Input Assets</strong> 참고할 사진을 붙입니다. 없어도 돼요.</li><li><strong>Prompt</strong> 만들고 싶은 그림을 글로 씁니다.</li><li><strong>옵션</strong> 화면 비율, 선명도(1K 등), 한 번에 만들 장수를 정해요.</li><li><strong>Generate</strong> 눌러서 만듭니다. 옆에 크레딧이 보여요.</li></ol>
+<p class="notion-default">그림이 만들어지면 오른쪽에 여러 장이 나란히 나옵니다. 그중 <strong>제일 마음에 드는 한 장</strong>을 고르면 돼요.</p>
+<blockquote><p>📝 <strong>인물 그림 주문서 예시 (이해를 돕기 위해 지어낸 예시입니다)</strong></p></blockquote>
+<blockquote><p>💡 <strong>왜 한 번에 여러 장을 만들까요?</strong></p></blockquote>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<h3>에셋으로 등록하기</h3>
+<p class="notion-default">엑스콘다 Library 화면. Uploads 탭과 Add asset 버튼, 이름이 붙은 카드에 번호가 표시되어 있다</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1ccfc9ac-fb01-4858-9230-bb1238dff346%3A1ccfc9ac-fb01-4858-9230-bb1238dff346.png?table=block&amp;id=4252ebc0-17ad-8094-b263-c68fc122381d&amp;cache=v2" alt="엑스콘다 Library 화면. Uploads 탭과 Add asset 버튼, 이름이 붙은 카드에 번호가 표시되어 있다" loading="lazy" decoding="async"></figure>
+<ol><li><strong>Uploads 탭</strong>: 등록한 에셋이 모이는 곳입니다. 만든 그림은<strong>Generations 탭</strong>에 쌓이니,<strong>다운로드 아이콘</strong> 으로 먼저 저장합니다.</li><li><strong>Add asset</strong>: 저장한 그림을 여기서 올려요. 이름, 설명, 파일을 넣고<strong>Create</strong> 를 누릅니다.</li><li><strong>이름이 붙은 카드</strong> : 등록이 끝나면 카드가 맨 앞에 생겨요.</li></ol>
+<blockquote><p>💡 <strong>왜 한 번 더 등록할까요?</strong></p></blockquote>
+<p class="notion-default">실제 라이브러리 카드 예시. 그림 한 장이 <strong>이름이 붙은 카드</strong>로 등록된 모습이고, 카드 아래 이름이 그 에셋의 이름입니다.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A69def795-0f7a-4b84-bc38-5135d27bdee8%3A69def795-0f7a-4b84-bc38-5135d27bdee8.png?table=block&amp;id=4252ebc0-17ad-80f9-8c2a-feb419aff970&amp;cache=v2" alt="실제 라이브러리 카드 예시. 그림 한 장이 이름이 붙은 카드로 등록된 모습이고, 카드 아래 이름이 그 에셋의 이름입니다." loading="lazy" decoding="async"></figure>
+<blockquote><p>⚠️ <strong>주의할 점</strong></p></blockquote>
+<h3>이름을 짓고 에셋을 등록해요</h3>
+<p class="notion-default">위에서 본 <strong>Add asset</strong>을 누르면 아래 <strong>New Asset(새 에셋)</strong> 창이 열립니다. 이미지 제너레이터로 만든 그림도 이렇게 등록해요.</p>
+<p class="notion-default">엑스콘다의 New Asset 창 예시 화면 (화면 속 이름·메모는 예시입니다)</p>
+<figure><img src="https://www.notion.so/image/attachment%3A0a0a776a-f49a-4d6d-bff2-759d67029a63%3A0a0a776a-f49a-4d6d-bff2-759d67029a63.png?table=block&amp;id=4252ebc0-17ad-8002-9fda-ef67779855f4&amp;cache=v2" alt="엑스콘다의 New Asset 창 예시 화면 (화면 속 이름·메모는 예시입니다)" loading="lazy" decoding="async"></figure>
+<ol><li><strong>이름</strong> 을 적습니다. 아래 규칙대로 지어요.</li><li><strong>메모</strong> 에 구별되는 특징을 짧게 적습니다.</li><li>사진이나 영상 <strong>파일</strong> 을 골라 넣어요.</li><li><strong>Create</strong> 를 누르면 등록이 끝납니다.</li></ol>
+<blockquote><p>💡 <strong>왜, 어떻게 이름을 지을까요?</strong></p></blockquote>
+<h2>4단계 · 영상 만들기</h2>
+<h3>프롬프트는 AI에게 주는 ‘주문서’</h3>
+<p class="notion-default">프롬프트는 AI에게 하고 싶은 말을 <strong>글로 적은 주문서</strong>입니다. 식당에서 <strong>‘맛있는 거 주세요’</strong>라고 하면 뭐가 나올지 모르죠. <strong>‘김치찌개 하나, 덜 맵게요’</strong>라고 해야 원하는 게 나옵니다. AI도 똑같아요.</p>
+<p class="notion-default">막연한 주문은 만들 때마다 다른 사람이 나오고, 구체적인 주문은 비슷한 사람이 나오는 비교</p>
+<figure><img src="https://www.notion.so/image/attachment%3A42dc164a-56e7-4118-8dd5-0875f3a16128%3A42dc164a-56e7-4118-8dd5-0875f3a16128.png?table=block&amp;id=4252ebc0-17ad-8077-89cb-d49ec1249e66&amp;cache=v2" alt="막연한 주문은 만들 때마다 다른 사람이 나오고, 구체적인 주문은 비슷한 사람이 나오는 비교" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 자세히 써야 할까요?</strong></p></blockquote>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<h3>주문서에는 무엇을 적을까요?</h3>
+<div class="notion-table-wrap"><table><tbody><tr><td>적을 것</td><td>이렇게 적어요</td><td>왜 적을까요?</td></tr><tr><td>누가</td><td>나이, 생김새, 옷</td><td>안 쓰면 AI가 아무나 고릅니다</td></tr><tr><td>어디서</td><td>장소, 밤/낮, 날씨</td><td>색과 분위기가 달라져요</td></tr><tr><td>무엇을</td><td>하는 행동을 순서대로</td><td>동작이 뒤죽박죽 안 됩니다</td></tr><tr><td>어떻게 찍나</td><td>멀리서/가까이서, 카메라가 움직이는지</td><td>같은 장면도 느낌이 달라요</td></tr><tr><td>분위기</td><td>따뜻하고 밝게, 어둡고 긴장되게</td><td>조명과 색감이 정해집니다</td></tr></tbody></table></div>
+<blockquote><p>📝 <strong>주문서 예시 (이해를 돕기 위해 지어낸 주문서입니다)</strong></p></blockquote>
+<blockquote><p>📌 <strong>엑스콘다에서는</strong></p></blockquote>
+<h3>영상 생성기와 만드는 방식</h3>
+<p class="notion-default">위쪽 메뉴에서 <strong>Video</strong>를 누르고 <strong>Seedance 2.5</strong> 모델을 고르면 <strong>영상 생성기(Video Generator)</strong>가 열려요. 먼저 <strong>‘어떤 방식으로 만들지’</strong> 고르는 <strong>Mode</strong> 칸이 있습니다. (방식 소개는 위의 5가지 방식)</p>
+<p class="notion-default">영상 생성기의 Mode 선택 화면. 모델, 방식 선택, 방식 4가지에 번호가 표시되어 있다</p>
+<figure><img src="https://www.notion.so/image/attachment%3Adf81d08c-047b-413d-bdd9-3ffc72f3e1df%3Adf81d08c-047b-413d-bdd9-3ffc72f3e1df.png?table=block&amp;id=4252ebc0-17ad-8087-bfc2-d4e0f129b55d&amp;cache=v2" alt="영상 생성기의 Mode 선택 화면. 모델, 방식 선택, 방식 4가지에 번호가 표시되어 있다" loading="lazy" decoding="async"></figure>
+<ol><li>쓸 AI 모델을 골라요 (Seedance 2.5)</li><li>만드는 방식을 고릅니다 (Mode)</li><li>방식 4가지가 나와요</li></ol>
+<div class="notion-table-wrap"><table><tbody><tr><td>방식</td><td>쉽게 말하면</td></tr><tr><td>Ref-to-video</td><td>내 사진·영상을 참고해서 <strong>새 장면</strong> 만들기 (기본)</td></tr><tr><td>Video edit</td><td>이미 있는 영상을 <strong>고치기</strong></td></tr><tr><td>Video extend</td><td>있는 영상 뒤에 <strong>이어서 길게</strong> 만들기</td></tr><tr><td>First/last frame</td><td><strong>시작 장면과 끝 장면</strong>을 정해 주면 사이를 채우기</td></tr></tbody></table></div>
+<blockquote><p>📌 <strong>Seedance 2.5는 무엇일까요?</strong></p></blockquote>
+<blockquote><p>💡 <strong>왜 방식을 골라야 할까요?</strong></p></blockquote>
+<h3>등록해 둔 에셋을 가져오기</h3>
+<p class="notion-default"><strong>Input Assets</strong> 옆의 <strong>Manage</strong>를 누르면 오른쪽에 창이 열립니다. 이번 장면에 나오는 카드에 체크하고 <strong>Use Selected Assets</strong>를 누르면 영상 생성기로 불러와요.</p>
+<p class="notion-default">Manage 창. Reference 탭, Asset Library 탭, 카드 체크, Use Selected Assets 버튼에 번호가 표시되어 있다</p>
+<figure><img src="https://www.notion.so/image/attachment%3A659c630d-d1bb-42b3-a780-0a397d053d7d%3A659c630d-d1bb-42b3-a780-0a397d053d7d.png?table=block&amp;id=4252ebc0-17ad-8028-ad9f-f6d5af8a8a98&amp;cache=v2" alt="Manage 창. Reference 탭, Asset Library 탭, 카드 체크, Use Selected Assets 버튼에 번호가 표시되어 있다" loading="lazy" decoding="async"></figure>
+<ol><li><strong>Reference</strong> 탭: 이번 한 번만 쓸 재료입니다.</li><li><strong>Asset Library</strong> 탭: 미리 등록해 둔 에셋입니다.</li><li>이번 장면에 나오는 카드만 체크합니다.</li><li><strong>Use Selected Assets</strong> 를 눌러 불러와요.</li></ol>
+<blockquote><p>💡 <strong>왜 번호가 붙을까요?</strong></p></blockquote>
+<h3>해상도(화질)가 뭘까요?</h3>
+<p class="notion-default">화면은 <strong>아주 작은 점(픽셀)</strong>들로 채워져 있습니다. 점이 많을수록 그림이 또렷해요. 해상도는 이 <strong>선명한 정도를 나타내는 숫자</strong>입니다. <strong>480p, 720p, 1080p</strong>처럼 쓰고, 숫자가 클수록 선명해요.</p>
+<p class="notion-default">점이 적을 때 (480p 같은 낮은 화질)</p>
+<figure><img src="https://www.notion.so/image/attachment%3A1822ce7f-7951-4257-8ed0-bac642356437%3A1822ce7f-7951-4257-8ed0-bac642356437.png?table=block&amp;id=4252ebc0-17ad-801f-90fa-fb4fdbc8b15c&amp;cache=v2" alt="점이 적을 때 (480p 같은 낮은 화질)" loading="lazy" decoding="async"></figure>
+<p class="notion-default">점이 많을 때 (1080p 같은 높은 화질)</p>
+<figure><img src="https://www.notion.so/image/attachment%3Aadbc5160-9741-45cf-9490-38a866485587%3Aadbc5160-9741-45cf-9490-38a866485587.png?table=block&amp;id=4252ebc0-17ad-800f-a734-f8a4a8352ce1&amp;cache=v2" alt="점이 많을 때 (1080p 같은 높은 화질)" loading="lazy" decoding="async"></figure>
+<p class="notion-default">이해를 돕기 위한 예시 그림입니다. 실제 영상 화질과는 차이가 있습니다.</p>
+<blockquote><p>💡 <strong>왜 숫자를 골라야 할까요?</strong></p></blockquote>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<h3>크레딧과 Draft(초안) 모드</h3>
+<p class="notion-default"><strong>크레딧</strong>이 뭘까요? 교통카드에 돈을 미리 넣어 두고, 탈 때마다 차감되죠? <strong>크레딧도 똑같아요.</strong> 엑스콘다에서 영상을 만들 때 쓰는 <strong>충전금(이용권)</strong>입니다. 영상을 그릴 때 컴퓨터가 일하는 비용이라서 만들 때마다 조금씩 차감돼요.</p>
+<p class="notion-default">에셋을 <strong>고르고 불러오는 것</strong>은 크레딧이 들지 않습니다. 크레딧은 <strong>Generate(만들기) 버튼을 눌러 그림이나 영상 만들기를 시작할 때</strong> 차감돼요. 이 글의 화면 예시에서는 그림 한 번에 48, 영상 한 번에 410 크레딧이 표시됩니다. 설정에 따라 달라지고 가격은 바뀔 수 있어요.</p>
+<p class="notion-default"><strong>Draft(초안) 모드</strong>는 그림 대회에 나가기 전에 <strong>연습장에 스케치</strong>부터 해 보는 것과 같은 <strong>연습용 초안</strong>입니다. 켜면 <strong>480p의 낮은 화질</strong>로 먼저 만들어요.</p>
+<p class="notion-default">Draft로 초안 만들기, 구도와 움직임 확인하기, 마음에 들면 1080p 요청하기의 세 단계</p>
+<figure><img src="https://www.notion.so/image/attachment%3A06295d8b-76af-4e10-842b-70e38ca9bfe7%3A06295d8b-76af-4e10-842b-70e38ca9bfe7.png?table=block&amp;id=4252ebc0-17ad-80b5-8234-cf67b474f1af&amp;cache=v2" alt="Draft로 초안 만들기, 구도와 움직임 확인하기, 마음에 들면 1080p 요청하기의 세 단계" loading="lazy" decoding="async"></figure>
+<blockquote><p>💡 <strong>왜 초안부터 만들까요?</strong></p></blockquote>
+<h3>Draft를 켜고 영상 모양 정하기</h3>
+<p class="notion-default"><strong>Options</strong> 탭에서 영상의 모양을 정합니다. 프롬프트 칸에는 주문서를 쓰고, 참고 사진은 <strong>@image 번호</strong>로 가리켜요.</p>
+<p class="notion-default">Draft를 끄면 화질을 고를 수 있습니다</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ae14e06dc-4b3a-4d52-8120-5bdecb47fa60%3Ae14e06dc-4b3a-4d52-8120-5bdecb47fa60.png?table=block&amp;id=4252ebc0-17ad-806d-a215-f515df792bef&amp;cache=v2" alt="Draft를 끄면 화질을 고를 수 있습니다" loading="lazy" decoding="async"></figure>
+<p class="notion-default">Draft를 켜면 480p로 고정돼요</p>
+<figure><img src="https://www.notion.so/image/attachment%3A7c271fa4-e2a4-4ab1-b397-7c03382a3277%3A7c271fa4-e2a4-4ab1-b397-7c03382a3277.png?table=block&amp;id=4252ebc0-17ad-8067-a02f-c4dbebe0d2ea&amp;cache=v2" alt="Draft를 켜면 480p로 고정돼요" loading="lazy" decoding="async"></figure>
+<ol><li><strong>Draft</strong> : 초안 모드를 켜고 끕니다.</li><li><strong>Ratio(화면 비율)</strong> : 16:9는 가로(유튜브, TV), 9:16은 세로(쇼츠, 릴스), 1:1은 정사각형입니다.</li><li><strong>Resolution(해상도)</strong> : Draft가 켜져 있으면 480p만 나와요.</li><li><strong>Duration(길이)</strong> : 4초부터 30초까지 정합니다.</li></ol>
+<blockquote><p>💡 <strong>왜 Draft부터 켤까요?</strong></p></blockquote>
+<h3>Generate를 누르고 결과 확인하기</h3>
+<p class="notion-default">맨 아래 노란 <strong>Generate</strong> 버튼을 누르면 <strong>‘영상을 만들까요?’</strong>라는 확인 창이 나옵니다. <strong>OK</strong>를 누르면 영상 만들기가 시작돼요.</p>
+<p class="notion-default">① 노란 Generate 버튼</p>
+<figure><img src="https://www.notion.so/image/attachment%3A2381f823-7652-4388-b299-50b54a4651ae%3A2381f823-7652-4388-b299-50b54a4651ae.png?table=block&amp;id=4252ebc0-17ad-806a-b091-e07597f11fbf&amp;cache=v2" alt="① 노란 Generate 버튼" loading="lazy" decoding="async"></figure>
+<p class="notion-default">② 확인 창에서 OK</p>
+<figure><img src="https://www.notion.so/image/attachment%3Ab52c0f14-b247-4b56-99df-aaaefc077df9%3Ab52c0f14-b247-4b56-99df-aaaefc077df9.png?table=block&amp;id=4252ebc0-17ad-80bd-b9e7-f9f3cc7008c8&amp;cache=v2" alt="② 확인 창에서 OK" loading="lazy" decoding="async"></figure>
+<p class="notion-default">완성된 영상은 Library의 <strong>Generations</strong> 탭에 <strong>날짜별로 모이고</strong>, 다운로드 아이콘으로 내 컴퓨터에 저장할 수 있습니다.</p>
+<p class="notion-default">Library의 Generations 탭. 날짜별로 모인 영상과 DRAFT 480p 표시, 다운로드 아이콘에 번호가 표시되어 있다</p>
+<figure><img src="https://www.notion.so/image/attachment%3A8bb845fb-65d8-4288-a9e4-b8e9cccd30d7%3A8bb845fb-65d8-4288-a9e4-b8e9cccd30d7.png?table=block&amp;id=4252ebc0-17ad-809a-bc51-eec63c2f0b3f&amp;cache=v2" alt="Library의 Generations 탭. 날짜별로 모인 영상과 DRAFT 480p 표시, 다운로드 아이콘에 번호가 표시되어 있다" loading="lazy" decoding="async"></figure>
+<ol><li><strong>Generations</strong> 탭: 만든 영상이 모입니다.</li><li><strong>DRAFT · 480p</strong> 표시: 초안으로 만든 영상입니다.</li><li><strong>다운로드</strong> 아이콘: 컴퓨터에 저장해요.</li></ol>
+<blockquote><p>💡 <strong>왜 바로 확인할까요?</strong></p></blockquote>
+<h2>에셋으로 영상 만드는 전체 흐름</h2>
+<p class="notion-default">기준 이미지 한 장을 컷 1, 2, 3에 똑같이 건네면 같은 사람이 나온다는 그림</p>
+<figure><img src="https://www.notion.so/image/attachment%3A9d40fae1-e3aa-47db-b994-3624595d3f4e%3A9d40fae1-e3aa-47db-b994-3624595d3f4e.png?table=block&amp;id=4252ebc0-17ad-8049-a504-d770764146c0&amp;cache=v2" alt="기준 이미지 한 장을 컷 1, 2, 3에 똑같이 건네면 같은 사람이 나온다는 그림" loading="lazy" decoding="async"></figure>
+<ol><li><strong>이미지 제너레이터</strong> 로 인물·배경 그림을 만듭니다. (3단계)</li><li>마음에 드는 그림을 하나 고르고 <strong>내려받아요.</strong></li><li>Library의 <strong>Add asset</strong> 으로 이름을 붙여 등록합니다.</li><li><strong>비디오 제너레이터</strong> 를 열어요. (Video → Seedance 2.5)</li><li><strong>Manage → Asset Library</strong>탭에서 이번 컷에 나오는 에셋만 체크하고<strong>Use selected assets</strong> 를 누릅니다.</li><li>프롬프트에서 <strong>@image 번호</strong> 로 부르며 장면을 써요.</li><li><strong>Draft</strong>로 확인한 뒤<strong>Generate</strong> 를 누릅니다. (4단계)</li></ol>
+<blockquote><p>💡 <strong>왜 이렇게 돌아서 갈까요?</strong></p></blockquote>
+<blockquote><p>✅ <strong>전문가는 이렇게 해요</strong></p></blockquote>
+<h2>예시로 따라가 보기: 민수 우산 이야기</h2>
+<p class="notion-default">지금까지 배운 순서를 짧은 이야기 하나에 적용해 봅니다. <strong>이해를 돕기 위해 지어낸 예시</strong>예요.</p>
+<ol><li><strong>시나리오</strong> 비 오는 밤, 민수가 편의점 앞에서 우산 없이 서 있다. 낯선 여자가 우산을 내밀고, 민수가 놀란 얼굴로 받는다.</li><li><strong>컷 나누기</strong> 컷 1 (WS) 편의점 앞에 선 민수 전체 / 컷 2 (MS) 우산을 내미는 여자 / 컷 3 (CU) 놀란 민수의 얼굴</li><li><strong>에셋 만들기</strong> 이미지 제너레이터로 그림을 만들어 Library에 이름을 붙여 등록합니다. / <code>char_minsu_front</code> (민수 앞모습) · <code>bg_convenience_wide</code> (편의점 앞 전체)</li><li><strong>영상 만들기 (컷 1)</strong> Manage에서 위 에셋 두 개를 불러오면 @image 1, @image 2가 돼요. Draft로 확인한 뒤 Generate를 누릅니다.</li></ol>
+<blockquote><p>📝 <strong>컷 1 주문서 예시</strong></p></blockquote>
+<blockquote><p>💡 <strong>컷 2, 컷 3은 어떻게 할까요?</strong></p></blockquote>
+<h2>실패해도 정상입니다</h2>
+<blockquote><p>💡 <strong>왜 실패할까요?</strong></p></blockquote>
+<h3>자주 생기는 실패</h3>
+<ul><li>컷마다 얼굴이나 옷이 바뀌어요</li><li>배경이나 방의 모습이 달라집니다</li><li>말한 행동을 안 하거나 엉뚱하게 해요</li><li>손이나 몸의 모양이 어색합니다</li></ul>
+<h3>전문가는 체크리스트를 씁니다</h3>
+<p class="notion-default">만들기 전과 후에 확인할 것을 목록으로 만들어 두고 하나씩 살펴보는 거예요.</p>
+<ul><li><strong>만들기 전</strong> 참고 사진을 넣었나요?</li><li><strong>만들기 전</strong> 바뀌면 안 되는 조건을 글에 적었나요?</li><li><strong>만든 뒤</strong> 얼굴과 옷이 앞 컷과 같나요?</li><li><strong>만든 뒤</strong> 배경과 행동이 계획대로인가요?</li></ul>
+<blockquote><p>💡 <strong>왜 체크리스트를 쓸까요?</strong></p></blockquote>
+<h2>용어 사전</h2>
+<p class="notion-default">모르는 말이 나오면 여기서 찾아보세요.</p>
+<div class="notion-table-wrap"><table><tbody><tr><td>용어</td><td>뜻</td></tr><tr><td>영상</td><td>사진을 아주 빠르게 넘겨 보는 것 (보통 1초에 24~30장쯤)</td></tr><tr><td>AI(인공지능)</td><td>많은 그림을 보고 배워서 새 그림을 그려 주는 똑똑한 프로그램. 눈치가 없어서 말한 것만 알아들어요.</td></tr><tr><td>시나리오</td><td>이야기를 글로 적은 것. 영상의 설계도입니다.</td></tr><tr><td>컷 / 씬</td><td>컷은 카메라가 한 번 찍은 짧은 조각, 씬은 컷이 모인 한 장면입니다. 짧게 나눠야 틀린 곳만 다시 만듭니다.</td></tr><tr><td>콘티</td><td>장면을 칸칸이 늘어놓은 설계도(스토리보드). 영상 전에 흐름을 확인해요.</td></tr><tr><td>FlexBoard</td><td>이야기를 컷으로 나눠 그림 콘티로 만들어 주는 도구. 컷 나누기가 어려울 때 씁니다.</td></tr><tr><td>프롬프트</td><td>AI에게 주는 주문서. 자세히 써야 AI가 마음대로 정하지 않아요.</td></tr><tr><td>참고 이미지</td><td>‘이 사진처럼 그려 줘’ 하고 보여 주는 이미지. 기준 이미지와 같은 말입니다.</td></tr><tr><td>이미지 제너레이터</td><td>글로 그림 한 장을 만들어 주는 도구. 영상 전에 기준 이미지(에셋)를 만듭니다.</td></tr><tr><td>에셋</td><td>엑스콘다에 이름을 붙여 등록해 둔 기준 이미지(영상·소리도 가능). 한 번 등록하면 계속 불러 써요.</td></tr><tr><td>일관성</td><td>컷이 바뀌어도 얼굴, 옷, 방이 똑같이 유지되는 것. 깨지면 이야기가 안 이어집니다.</td></tr><tr><td>캐릭터 시트</td><td>한 사람을 앞, 뒤, 얼굴 등 여러 각도로 모은 그림. 일관성을 지키는 기준입니다.</td></tr><tr><td>해상도</td><td>화면의 선명한 정도(480p, 720p, 1080p). 클수록 선명하고, 크레딧도 더 드는 편입니다.</td></tr><tr><td>Draft</td><td>480p로 먼저 만드는 연습용 초안. 적은 크레딧으로 확인해요.</td></tr><tr><td>크레딧</td><td>그림·영상을 만들 때 차감되는 충전금.</td></tr><tr><td>Generate</td><td>만들기를 시작하는 노란 버튼. 누를 때 크레딧이 차감됩니다.</td></tr><tr><td>T2V / I2V</td><td>글만으로 만들기(Text to Video) / 이미지 한 장을 첫 장면으로 움직이기(Image to Video).</td></tr><tr><td>Ref-to-video</td><td>인물·배경·소품 이미지를 여러 장 참고로 주고 영상 만들기. 이 글의 기본 방식입니다.</td></tr><tr><td>프리비즈</td><td>촬영 전에 대충 만든 장면 미리보기.</td></tr><tr><td>블록아웃 / 블로킹</td><td>블록아웃은 회색 공간+색깔 마네킹으로 만든 3D 장면, 블로킹은 인물의 자리와 이동 경로를 정하는 것입니다.</td></tr><tr><td>Seedance 2.5</td><td>엑스콘다에서 고르는 영상 AI 모델 중 하나. 최대 30초, 1080p까지.</td></tr><tr><td>Library</td><td>등록한 에셋(Uploads)과 만든 결과물(Generations)이 모이는 곳.</td></tr></tbody></table></div>
+<p class="notion-default">위 용어를 한 장으로 줄인 정리 이미지입니다. 저장해 두고 보세요.</p>
+<figure><img src="https://www.notion.so/image/attachment%3A78aa7bb1-8aba-4262-a6d2-2e8694b0d7a8%3A78aa7bb1-8aba-4262-a6d2-2e8694b0d7a8.png?table=block&amp;id=4252ebc0-17ad-805c-a91c-f9920fe5ef2c&amp;cache=v2" alt="위 용어를 한 장으로 줄인 정리 이미지입니다. 저장해 두고 보세요." loading="lazy" decoding="async"></figure>
+<h3>정리하면</h3>
+<ul><li>AI는 <strong>눈치가 없어서</strong> 적지 않은 건 마음대로 정합니다. 그래서 주문서를 자세히 쓰고 사진을 함께 건넵니다.</li><li>순서는 <strong>시나리오 → 컷 나누기 → 에셋 만들기 → 영상 만들기</strong> 입니다. 만들기 전에 고치는 게 가장 싸요.</li><li><strong>기준 이미지(에셋)</strong> 를 한 번 만들어 두고 모든 컷에 건네면 같은 얼굴을 유지하기 쉽습니다.</li><li><strong>Draft</strong> 로 먼저 확인하고, 실패해도 정상이니 체크리스트를 쓰며 다시 만들면 됩니다.</li></ul>
+<p class="notion-default">처음이라면 엑스콘다 FlexBoard의 <strong>Try a sample project</strong>로 가볍게 연습해 보세요.</p>
+<p class="notion-default"><strong>저자 :</strong> 황보민혁 PD</p>
+<p class="notion-default"><strong>Contact :</strong> leoxflux@gmail.com</p>
+<p class="notion-default">큐브베리 · 엑스콘다(XCONDA). 글의 이야기와 그림 예시는 이해를 돕기 위해 만든 것이며, 화면 속 크레딧 숫자와 가격은 설정에 따라 달라지거나 바뀔 수 있습니다.</p>
+<nav class="seo-cta" data-cta="bottom" aria-label="XCONDA 바로가기"><a href="https://www.xconda.ai/ko?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_bottom" data-cta-kind="start">무료로 시작하기</a><a href="https://www.xconda.ai/pricing?utm_source=hub&amp;utm_medium=referral&amp;utm_campaign=hub_cta_202611&amp;utm_content=cb_bottom" data-cta-kind="pricing">요금 보기</a></nav>
+</article>
+<nav class="seo-related" aria-label="관련 글"><h2>관련 글</h2><ul><li><a href="../../post/ai-web-drama-first-episode-guide/">처음 시작하는 AI 웹드라마 제작법: 시나리오부터 웹드라마까지 7단계</a></li><li><a href="../../post/ai-prompt-editor/">AI 영상 제작 온보딩 — 시나리오에서 Seedance 프롬프트까지</a></li><li><a href="../../guide/xconda-video-generator-input-guide/">[입력 조건 안내 ②] XCONDA Video Generator: 생성 모드·모델별 옵션·파일 규격</a></li><li><a href="../../guide/flexboard-storyboard-guide/">FLEXBOARD로 컷별 스토리보드 만들기 7단계 (AI 영상제작 과정 EP.03)</a></li></ul></nav>
+<nav class="seo-legal" aria-label="Legal"><a href="https://www.xconda.ai/legal/terms" rel="noopener noreferrer">이용약관</a><a href="https://www.xconda.ai/legal/privacy" rel="noopener noreferrer">개인정보처리방침</a><a href="https://www.xconda.ai/legal/refund" rel="noopener noreferrer">환불 정책</a></nav>
+<p><a href="../../">XCONDA허브 메인으로</a></p>
+</main></div>
+    <!-- 언어 결정 · googtrans 쿠키 · Google 번역 위젯 로드(EN/JA/ZH만)는 앱 번들이 첫 렌더 전에 처리합니다.
+         → src/i18n/index.tsx (bootstrapLanguage) · src/i18n/google.ts (loadTranslateWidget)
+         여기에 언어 관련 인라인 스크립트를 다시 두지 마세요 — 결정 로직이 두 벌이 되면 서로 어긋납니다. -->
+  </body>
+</html>

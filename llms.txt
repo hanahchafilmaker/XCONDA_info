@@ -59,6 +59,7 @@
 
 ## 블로그
 
+- [대본 쓰기부터 영상 생성까지, 엑스콘다(XCONDA)로 따라하는 AI 영상 초보자 가이드, 영상도 AI도 처음이어도 쉬운 말로 따라 할 수 있어요.](https://hub.xconda.ai/post/ai-video-beginner-guide/): AI 영상, 처음이라면 이 순서로 시작하세요
 - [AI 영상 제작 온보딩 — 시나리오에서 Seedance 프롬프트까지](https://hub.xconda.ai/post/ai-prompt-editor/): 이 문서를 처음부터 차례대로 따라 하면, 짧은 이야기 한 편으로 영상 하나를 만들 수 있어요. 영상 만들기는 요리와 비슷해요. 재료를 고르고, 레시피를 쓰고, 맛을 보고, 마지막에 요리를 완성하죠.
 - [XCONDA 스킬 3종 세트 무료 제공](https://hub.xconda.ai/post/xconda-skill-set/): 저희가 실제 제작에 쓰는 Claude 스킬과 지침을 XCONDA 이용자 누구나 무료로 쓸 수 있도록 묶었습니다. FLEXBOARD 스킬, 영상 프롬프트 편집기 지침(v5.4), FLEXBOARD 작성 규칙 문서를 구글 드라이브에서 내려받으세요.
 - [처음 시작하는 AI 웹드라마 제작법 7단계](https://hub.xconda.ai/post/ai-web-drama-first-episode-guide/): AI 웹드라마 1편은 이미지와 영상을 따로 만드는 것이 아니라, 시나리오에서 편집까지 하나의 흐름으로 만들어야 합니다. 이 글은 XCONDA의 FLEXBOARD, Turn, 블로킹보드, 비디오제너레이터를 순서대로 연결해 1편을 완성하는 7단계와, 보내기 전 확인할…
