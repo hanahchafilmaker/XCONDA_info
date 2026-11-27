@@ -9,6 +9,7 @@ import Qna from "./components/Qna";
 import Closing from "./components/Closing";
 import SearchOverlay from "./components/SearchOverlay";
 import ArticleModal from "./components/ArticleModal";
+import ChatBot from "./components/ChatBot";
 import { Toaster } from "./components/ui/sonner";
 import { ContentProvider } from "./content/ContentContext";
 import { useLang } from "./i18n";
@@ -83,6 +84,7 @@ export default function App() {
         <Closing />
 
         <SearchOverlay initialQuery={searchQuery} open={searchOpen} onClose={() => setSearchOpen(false)} />
+        <ChatBot />
         <ArticleModal />
         <Toaster />
       </div>
