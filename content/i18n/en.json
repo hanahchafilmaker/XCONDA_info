@@ -17,7 +17,7 @@
     "hubHome": "XCONDA Hub home",
     "koreanOriginal": "Read this in Korean",
     "allSections": "All topics",
-    "note": "Questions about XCONDA? Contact the developer and operator, Cubeberry Co., Ltd. (Korea): cubeberry@cuberry.kr",
+    "note": "Questions about XCONDA? Product inquiries: product@cubeberry.ai · Payments and contracts: info@cubeberry.ai (Cubeberry Co., Ltd.)",
     "articleCount": "articles"
   },
   "sections": {
@@ -4211,7 +4211,7 @@
     },
     "qna/contact-inquiry": {
       "title": "How do I contact support?",
-      "summary": "Support is run from one place for all customers. Email cubeberry@cuberry.kr or call +82-70-8095-2302, weekdays 10:00–17:00 KST (lunch 12:00–13:00). The US entity (Cubeberry Co., Ltd, Delaware) can also be reached at info@cubeberry.ai or +1-888-202-1989; its New York address is 276 5th Ave, Ste 704-2816, New York, NY 10001. Refunds for purchases made through the US entity go through the same support desk.",
+      "summary": "Contact channels follow the market. Global and US product inquiries: product@cubeberry.ai. Payments and contracts (US entity, Cubeberry Co., Ltd, Delaware): info@cubeberry.ai or +1-888-202-1989; its New York address is 276 5th Ave, Ste 704-2816, New York, NY 10001. Korea: cubeberry@cuberry.kr or +82-70-8095-2302, weekdays 10:00–17:00 KST (lunch 12:00–13:00). Refunds for purchases made through the US entity go through the same support desk.",
       "blocks": [
         {
           "type": "h2",

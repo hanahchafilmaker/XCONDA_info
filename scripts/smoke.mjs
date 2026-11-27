@@ -106,6 +106,15 @@ click(koBtn);
 await new Promise((r) => setTimeout(r, 400));
 const h1AfterKo = q("h1")?.textContent?.trim().slice(0, 60) ?? null;
 
+// 4b) 글로벌(EN) 화면의 문의처는 cubeberry.ai 창구를 안내한다 — 도메인·메일 분리(2026-11-27).
+//     확인 후 다시 한국어로 돌려 이후 검사(한국어 화면 기준)를 그대로 이어 갑니다.
+const enBtn = qa("header button").find((b) => b.textContent?.trim().toLowerCase() === "en");
+click(enBtn);
+await new Promise((r) => setTimeout(r, 400));
+const contactEmailsEn = qa('#faq a[href^="mailto:"], footer a[href^="mailto:"]').map((a) => a.getAttribute("href"));
+click(koBtn);
+await new Promise((r) => setTimeout(r, 400));
+
 // 5) open a blog post and confirm the article modal shows the author byline
 const blogCard = qa("#blog article button")[0];
 click(blogCard);
@@ -178,8 +187,9 @@ const result = {
   // notranslate 스팬으로 보호된 상태여야 합니다.
   langCodeTexts: qa("header button[aria-pressed] > span.notranslate").map((s) => s.textContent?.trim()),
   syncStatus: qa("#news [aria-label]").length > 0,
-  // 문의 메일 — 한국어 화면이므로 Q&A 섹션 · 푸터 모두 한국 법인 주소
+  // 문의 메일 — 한국어 화면은 한국(cuberry.kr), 영어(글로벌) 화면은 cubeberry.ai 창구
   contactEmails: qa('#faq a[href^="mailto:"], footer a[href^="mailto:"]').map((a) => a.getAttribute("href")),
+  contactEmailsEn,
 };
 
 console.log(JSON.stringify({ result, interactions, problems: problems.slice(0, 20) }, null, 2));
@@ -215,9 +225,13 @@ if (JSON.stringify(result.langCodeTexts) !== JSON.stringify(["EN", "KO", "JA", "
   fail.push(`language codes missing or not notranslate-protected: ${JSON.stringify(result.langCodeTexts)}`);
 }
 if (!/[가-힣]/.test(interactions.h1AfterKo ?? "")) fail.push("hero copy did not become Korean");
-// 문의처는 화면 언어를 따릅니다 — 스모크는 한국어 화면이라 한국 법인이어야 합니다.
+// 문의처는 시장을 따릅니다 — 도메인·메일 분리(2026-11-27). 스모크는 한국어 화면이라 cuberry.kr 입니다.
 if (result.contactEmails.length < 2 || result.contactEmails.some((h) => h !== "mailto:cubeberry@cuberry.kr")) {
   fail.push(`contact email must be cubeberry@cuberry.kr on KO screen (Q&A + footer): ${JSON.stringify(result.contactEmails)}`);
+}
+// 영어 화면(글로벌) 은 product@cubeberry.ai 입니다.
+if (result.contactEmailsEn.length < 2 || result.contactEmailsEn.some((h) => h !== "mailto:product@cubeberry.ai")) {
+  fail.push(`contact email must be product@cubeberry.ai on EN screen (Q&A + footer): ${JSON.stringify(result.contactEmailsEn)}`);
 }
 // 랜딩 뉴스 섹션의 "Notion" 연결 카드는 숨김 (노션 원본 DB 링크를 랜딩에 노출하지 않음)
 const notionCards = doc.querySelectorAll('#news a[href*="notion.site"], #news a[href*="notion.so"]').length;

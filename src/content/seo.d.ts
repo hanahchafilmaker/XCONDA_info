@@ -130,11 +130,18 @@ export function escapeXml(value: unknown): string;
 export const ORG_ID: string;
 export const RESELLER_ID: string;
 export const SUPPORT_EMAIL: string;
+/** 글로벌·미국(cubeberry.ai) 제품 문의 */
+export const SUPPORT_EMAIL_GLOBAL: string;
+/** 미국 법인(cubeberry.ai) 결제·계약 */
+export const SUPPORT_EMAIL_US: string;
+/** 한국(cuberry.kr) 문의 */
+export const SUPPORT_EMAIL_KR: string;
+export function supportEmailFor(lang?: string): string;
 export function isEndedTitle(...titles: unknown[]): boolean;
 export const WWW_URL: string;
 export const ORG_LOGO_PATH: string;
 export const OFFICIAL_SAME_AS: string[];
-export function siteJsonLd(siteUrl?: string): Record<string, unknown>[];
+export function siteJsonLd(siteUrl?: string, lang?: string): Record<string, unknown>[];
 export const BRAND_NAME: string;
 export const APP_ID: string;
 export type ArticleJsonLdInput = {

@@ -112,4 +112,11 @@ Q&A 는 `summary`(답변 전문)만 있고, 블로그·가이드·공지는 `blo
 
 ## 라이선스 · 문의
 
-비공개 저장소입니다. 운영 주체: 주식회사 큐브베리(Cubeberry Co., Ltd.) · 문의 cubeberry@cuberry.kr
+비공개 저장소입니다. 운영 주체: 주식회사 큐브베리(Cubeberry Co., Ltd.)
+
+문의 메일은 시장(도메인)을 따릅니다 — 2026-11-27 대표 승인.
+
+| 시장 | 도메인 | 문의 |
+|---|---|---|
+| 한국 | `cuberry.kr` | `cubeberry@cuberry.kr` (한국어 화면) |
+| 글로벌·미국 | `cubeberry.ai` | 제품 `product@cubeberry.ai` · 결제·계약 `info@cubeberry.ai` (영어·일본어·중국어 화면) |

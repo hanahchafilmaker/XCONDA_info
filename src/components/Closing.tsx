@@ -14,7 +14,7 @@ const socialColors: Record<string, string> = {
 
 export default function Closing() {
   const { t, lang } = useLang();
-  // 푸터 문의처는 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
+  // 푸터 문의처는 시장을 따릅니다 — 한국어는 cuberry.kr, 그 밖의 언어는 cubeberry.ai(2026-11-27 도메인·메일 분리).
   const supportEmail = supportEmailFor(lang);
   const footerTools = TOOLS.slice(0, 5);
 
