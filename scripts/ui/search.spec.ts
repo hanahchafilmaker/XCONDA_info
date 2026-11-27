@@ -113,8 +113,33 @@ test("focus trap, dismissal, shortcuts and editable-field protection", async ({ 
   await expect(dialog(page)).toHaveCount(0);
 });
 
+/**
+ * 블로그의 가장 최근 글이 코드 블록을 갖고 있다고 가정하지 않습니다.
+ * (예: 2026-11-27 에 동기화된 post/ai-video-beginner-guide 는 코드 블록이 없는 글입니다.)
+ * 카드를 차례로 열어 [data-code-copy] 가 있는 글을 고르고, 첫 페이지에 없으면 '더 보기' 로 목록을 펼칩니다.
+ */
+async function openBlogPostWithCodeBlock(page: Page) {
+  const cards = page.locator("#blog article button");
+  await expect(cards.first()).toBeVisible();
+  let checked = 0;
+  for (;;) {
+    const total = await cards.count();
+    for (; checked < total; checked += 1) {
+      await cards.nth(checked).click();
+      await expect(page.locator("[data-modal-close]")).toBeVisible();
+      if (await page.locator("[data-code-copy]").count()) return;
+      await page.locator("[data-modal-close]").click();
+      await expect(page.locator("[data-modal-close]")).toHaveCount(0);
+    }
+    const more = page.getByRole("button", { name: /^더 보기/ });
+    if (!(await more.count())) break;
+    await more.click();
+  }
+  throw new Error("블로그 글 중 코드 블록이 있는 글을 찾지 못했습니다.");
+}
+
 test("clipboard success, rejected permission and missing API show honest toasts", async ({ page }) => {
-  await page.locator("#blog article button").first().click();
+  await openBlogPostWithCodeBlock(page);
   await page.evaluate(() => Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async (text: string) => { (window as any).__copiedUrl = text; } } }));
   await page.locator("[data-modal-share]").click();
   await expect(page.locator("[data-sonner-toast][data-type=success]")).toContainText("링크 복사됨");
