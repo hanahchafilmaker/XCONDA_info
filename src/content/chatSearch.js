@@ -29,10 +29,11 @@ const SAME_WORDS = [
 /** 질문에 이런 말이 있으면 관련 단어를 덧붙여 검색 (질문에만 적용) */
 const EXPAND = [
   [/^\s*(엑스콘다|xconda)\s*(가|는|이|란|이란)?\s*(뭐|무엇|어떤|뭔)/i, " 서비스 소개 플랫폼 "],
-  [/가격|요금|비용|얼마(?!나)|가격표|price|pricing|cost|결제\s*금액/i, " 크레딧 팩 가격 "],
-  [/무료|공짜|체험|웰컴|free/i, " 웰컴 크레딧 무료 "],
-  [/연락|전화|이메일|메일|고객\s*센터|상담|문의|contact|email/i, " 문의 고객센터 "],
-  [/해지|구독\s*취소|그만|cancel/i, " 구독 해지 "],
+  [/가격|요금|비용|얼마(?!나)|가격표|price|pricing|cost|how\s*much|결제\s*금액|価格|料金|値段|いくら|价格|價格|多少钱|费用/i, " 크레딧 팩 가격 credit pack price "],
+  [/무료|공짜|체험|웰컴|free|無料|免费/i, " 웰컴 크레딧 무료 welcome credits free "],
+  [/연락|전화|이메일|메일|고객\s*센터|상담|문의|contact|email|問い合わせ|联系|客服/i, " 문의 고객센터 contact "],
+  [/해지|구독\s*취소|그만|cancel|unsubscribe|解約|退订|取消订阅/i, " 구독 해지 cancel subscription "],
+  [/환불|refund|返金|退款/i, " 환불 refund "],
   [/할인|프로모션|이벤트|세일|discount|promo/i, " 할인 행사 "],
   [/저작권|상업|copyright|commercial/i, " 저작권 상업적 "],
   [/회사|운영|만든/, " 회사 큐브베리 "],
@@ -41,13 +42,16 @@ const EXPAND = [
   [/뭐야|뭐예요|뭐에요|무엇|뭔가요|뭔데|소개/, " 어떤 도구 "],
 ];
 
+/** 영어 질문에서 뜻이 없는 낱말 (검색에서 뺌) */
+const EN_STOP = new Set("a an the is are was were be do does did can could i you we my your it its to of in on for and or how what when where why which who with me please tell about there this that".split(" "));
+
 /** 질문 끝말처럼 어디에나 나오는 말은 빼고 검색 */
 const STOP = /(싶어요|싶은데|싶으면|싶다|뭐야|인가요|있나요|하나요|되나요|어떻게|무엇|뭔가요|뭐예요|뭐에요|이에요|예요|에요|해요|나요|까요|궁금|알려\s*주세요|알려줘|주세요)/g;
 
 /** 검색이 잘 되도록 글(Slug)마다 손님이 쓸 법한 말을 덧붙임. 화면에 보이는 답변은 바뀌지 않습니다. */
 export const HINTS = {
   "credit-packs-and-price": "가격 요금 비용 얼마 요금제 가격표 플랜 상품 구매 원 달러",
-  "how-to-request-refund": "환불 신청 요청 돌려받기 환불 받고 받기 방법",
+  "how-to-request-refund": "환불 신청 요청 돌려받기 환불 받고 받기 방법 refund refund request get money back",
   "non-refundable-cases": "환불 불가 안되는",
   "credit-expiry-and-refund-policy": "환불 규정 유효기간 만료",
   "cancel-subscription": "구독 해지 취소 그만 방법",
@@ -58,6 +62,7 @@ export const HINTS = {
   "how-to-sign-up": "가입 계정 만들기 로그인",
   "welcome-credits-500": "무료 공짜 체험 신규 가입 혜택",
   "seedance-credit-pricing": "시댄스 가격 크레딧 단가 초당 해상도 몇 크레딧",
+  "what-is-turn": "턴 뜻 정의 turn",
   "commercial-use": "유튜브 광고 판매 수익 상업 사용",
 };
 
@@ -68,15 +73,23 @@ export const SCORE_MAYBE = 4;
 function norm(s) {
   let out = String(s || "").normalize("NFKC").toLowerCase();
   for (const [re, to] of SAME_WORDS) out = out.replace(re, to);
-  return out.replace(/[^0-9a-z가-힣\s]/g, " ");
+  // 한국어뿐 아니라 영어·일본어·중국어 글자도 남깁니다 (문장부호만 지움).
+  return out.replace(/[^\p{L}\p{N}\s]/gu, " ");
 }
+
+/** 영어 낱말 끝을 간단히 맞춤: packs→pack, credits→credit (단 -ss 는 그대로) */
+const stem = (w) => (w.length > 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w);
 
 function grams(s) {
   const out = [];
   for (const w of s.split(/\s+/)) {
     if (!w) continue;
     if (/^[a-z0-9]+$/.test(w)) {
-      if (w.length > 1) out.push(w);
+      if (w.length > 1 && !EN_STOP.has(w)) out.push(stem(w));
+      continue;
+    }
+    if (/^[\p{Script=Latin}0-9]+$/u.test(w)) {
+      out.push(w); // é 같은 다른 라틴 글자가 섞인 낱말은 통째로
       continue;
     }
     if (w.length === 1) {

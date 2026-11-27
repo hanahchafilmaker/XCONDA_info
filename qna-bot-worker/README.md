@@ -6,6 +6,28 @@
 
 ---
 
+## 0. Cloudflare Workers AI 만으로 켜기 (2026-11-27 기본 설정 · API 키 필요 없음)
+
+`wrangler.toml` 에 `[ai] binding = "AI"` 가 켜져 있고 `PROVIDER_ORDER` 첫 번째가 `workers-ai` 입니다. 외부 키 없이 Cloudflare 계정의 무료 한도(하루 10,000 Neurons, 매일 UTC 0시 = 한국 오전 9시 초기화)로 답합니다.
+
+```bash
+cd qna-bot-worker
+npx wrangler login     # 처음 한 번: 브라우저가 열리면 Cloudflare 계정으로 로그인 → Allow
+npx wrangler deploy    # 끝에 https://xconda-qna-bot.<내계정>.workers.dev 주소가 나옵니다
+curl https://xconda-qna-bot.<내계정>.workers.dev/health   # {"ok":true,...,"providers":["workers-ai"]}
+```
+
+허브 챗봇과 연결: `src/content/qnaAi.ts` 의 `QNA_AI_ENDPOINT` 에 위 주소를 적고 main 에 합치면 끝입니다.
+합치기 전에 내 브라우저에서만 먼저 시험하려면 허브를 열고 개발자 도구 Console 에
+`localStorage.setItem("xconda-qna-ai-endpoint", "https://xconda-qna-bot.<내계정>.workers.dev")` 를 입력한 뒤 새로고침하세요 (지우기: `localStorage.removeItem("xconda-qna-ai-endpoint")`).
+
+- **하루 몇 번 답할 수 있나요?** 답 하나에 쓰는 Neurons 는 모델·글 길이에 따라 다릅니다. 기본 모델(`@cf/meta/llama-3.3-70b-instruct-fp8-fast`)은 한국어 품질이 좋지만 무거워서 대략 하루 수십~백 건 안팎입니다. 더 많이 쓰려면 `CF_AI_MODEL` 을 더 가벼운 모델로 바꾸세요(한국어 품질은 낮아질 수 있음). 실제 사용량은 Cloudflare 대시보드 → AI → Workers AI 에서 확인합니다.
+- **한도를 다 쓰면?** Worker 가 503 을 돌려주고, 챗봇은 AI 칸을 지운 채 지금처럼 허브 글 검색 답변만 보여 줍니다. 다음 날 오전 9시(한국)에 다시 켜집니다.
+- **비용** 무료(Free) 플랜이면 한도를 넘어도 과금되지 않고 멈추기만 합니다. Workers **유료** 플랜 계정이면 넘은 만큼 과금됩니다(1,000 Neurons 당 약 $0.011).
+- 이 Worker 는 허브(`hub.xconda.ai`) 화면에서 온 요청만 받도록 CORS 를 제한하지만, 브라우저 밖에서 흉내 낸 요청까지 완전히 막지는 못합니다. 그래서 IP 당 분당 20회 제한(`RATE_LIMIT_RPM`)이 걸려 있습니다.
+
+---
+
 ## 1. 무료 API 키 발급 (하나만 있어도 동작, 둘 다 넣으면 자동 백업)
 
 1. **Google Gemini API (1순위 추천 · 한국어/다국어 품질 우수)**
