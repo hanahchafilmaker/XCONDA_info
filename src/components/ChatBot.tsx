@@ -4,8 +4,9 @@ import { useContent } from "../content/ContentContext";
 import { buildChatIndex, searchChat, SCORE_GOOD, SCORE_MAYBE } from "../content/chatSearch";
 import { useLang } from "../i18n";
 import { SUPPORT_EMAIL_KO } from "./Qna";
-import { IconArrow, IconClose } from "./volt";
-import { cn } from "../utils/cn";
+import { ArrowRight, MessageCircle } from "lucide-react";
+import { IconArrow, IconClose, Pill } from "./volt";
+import { Button } from "./ui/button";
 
 /**
  * 허브 Q&A 챗봇 — 화면 오른쪽 아래에 떠 있는 "질문하기" 버튼과 대화 창.
@@ -101,6 +102,7 @@ export default function ChatBot() {
     setQ("");
   };
 
+  // 허브 첫 화면의 "빠른 검색" 칩과 같은 모양
   const Chips = ({ items }: { items: string[] }) => (
     <div className="flex flex-wrap gap-1.5">
       {items.map((s) => (
@@ -108,7 +110,7 @@ export default function ChatBot() {
           key={s}
           type="button"
           onClick={() => ask(s)}
-          className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-left text-[13px] text-neutral-800 transition-colors hover:border-neutral-950 hover:text-neutral-950"
+          className="rounded-full bg-ink-850 px-3 py-1.5 text-left text-xs font-medium text-neutral-700 transition hover:bg-neutral-200"
         >
           {s}
         </button>
@@ -119,58 +121,52 @@ export default function ChatBot() {
   return (
     <>
       {!open && (
+        // 허브의 기본 검은 버튼(VoltButton · "XCONDA 열기")과 같은 모양
         <button
           type="button"
           onClick={() => setOpen(true)}
           aria-expanded={false}
           aria-controls={panelId}
           data-testid="chat-open"
-          className="fixed z-[60] inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-3.5 text-[14px] font-bold text-white shadow-lg shadow-black/20 transition-transform hover:-translate-y-0.5"
+          className="fixed z-[60] inline-flex items-center gap-2 rounded-lg bg-neutral-950 px-4 py-3 text-[13px] font-medium text-white shadow-[0_8px_28px_-12px_rgba(28,28,26,0.45)] transition-colors hover:bg-neutral-800 active:scale-[0.98]"
           style={{
             right: "calc(16px + env(safe-area-inset-right, 0px))",
             bottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
           }}
         >
-          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-volt-500" />
+          <MessageCircle className="size-4" aria-hidden />
           {t("chat.open")}
         </button>
       )}
 
       {open && (
+        // 통합검색 창(SearchOverlay)과 같은 흰 패널 · 테두리 · 모서리 · 그림자
         <section
           id={panelId}
           role="dialog"
           aria-label={t("chat.title")}
           data-testid="chat-panel"
-          className="fixed inset-0 z-[70] flex flex-col bg-ink-950 sm:inset-auto sm:right-5 sm:bottom-5 sm:h-[min(620px,calc(100dvh-6rem))] sm:w-[400px] sm:rounded-2xl sm:border sm:border-neutral-200 sm:shadow-2xl"
+          className="fixed inset-0 z-[70] flex flex-col overflow-hidden bg-white text-neutral-950 sm:inset-auto sm:right-5 sm:bottom-5 sm:h-[min(620px,calc(100dvh-6rem))] sm:w-[400px] sm:rounded-2xl sm:border sm:border-black/10 sm:shadow-2xl"
         >
-          <header className="flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-3 sm:rounded-t-2xl">
-            <span aria-hidden="true" className="grid h-9 w-9 place-items-center rounded-xl bg-volt-500 font-bold text-neutral-950">
-              Q
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-[15px] font-bold leading-tight text-neutral-950">{t("chat.title")}</p>
-              <p className="text-[12px] text-neutral-500">{t("chat.sub")}</p>
+          <header className="flex items-start justify-between gap-3 border-b border-black/[0.06] px-5 pt-4 pb-3">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold">{t("chat.title")}</p>
+              <p className="mt-1 text-xs text-neutral-600">{t("chat.sub")}</p>
             </div>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={t("chat.close")}
-              className="rounded-full p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-950"
-            >
-              <IconClose className="h-5 w-5" />
-            </button>
+            <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label={t("chat.close")} className="-mr-2 -mt-1">
+              <IconClose className="size-4" />
+            </Button>
           </header>
 
-          <div ref={logRef} aria-live="polite" className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-4">
+          <div ref={logRef} aria-live="polite" className="flex flex-1 flex-col gap-4 overflow-y-auto bg-ink-950 px-4 py-4">
             {msgs.map((m) =>
               m.who === "user" ? (
-                <p key={m.id} className="max-w-[85%] self-end whitespace-pre-line rounded-2xl rounded-br-md bg-neutral-950 px-3.5 py-2.5 text-[14px] text-white">
+                <p key={m.id} className="max-w-[85%] self-end whitespace-pre-line rounded-xl bg-neutral-950 px-3.5 py-2.5 text-sm text-white">
                   {m.text}
                 </p>
               ) : m.who === "bot" ? (
                 <div key={m.id} className="flex flex-col gap-2">
-                  <p className="whitespace-pre-line rounded-2xl rounded-bl-md border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] leading-relaxed text-neutral-800">
+                  <p className="whitespace-pre-line rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm leading-[1.8] text-neutral-700">
                     {m.text}
                     {m.text === t("chat.notFound") && (
                       <>
@@ -181,30 +177,29 @@ export default function ChatBot() {
                   </p>
                   {m.options && m.options.length > 0 && (
                     <>
-                      <p className="text-[12px] text-neutral-500">{t("chat.maybe")}</p>
+                      <p className="text-xs font-medium text-neutral-600">{t("chat.maybe")}</p>
                       <Chips items={m.options} />
                     </>
                   )}
                 </div>
               ) : (
                 <div key={m.id} className="flex flex-col gap-2">
-                  <article data-testid="chat-answer" className="rounded-2xl rounded-bl-md border border-neutral-200 bg-white px-3.5 py-3">
-                    <div className="mb-1.5 flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-volt-200 px-2 py-0.5 text-[11px] font-bold text-neutral-900">{kindLabel[m.doc.kind]}</span>
-                      <h3 className="text-[14px] font-bold leading-snug text-neutral-950">{m.doc.title}</h3>
-                    </div>
-                    <p className="line-clamp-[12] whitespace-pre-line text-[14px] leading-relaxed text-neutral-700">{m.doc.entry.summary}</p>
+                  {/* 통합검색 결과 · Q&A 섹션과 같은 구성: Pill 분류 + 제목 + 답변 + "전체 보기" */}
+                  <article data-testid="chat-answer" className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5">
+                    <Pill tone="zinc">{kindLabel[m.doc.kind]}</Pill>
+                    <h3 className="mt-2 text-[15px] font-semibold leading-relaxed text-neutral-950">{m.doc.title}</h3>
+                    <p className="mt-1.5 line-clamp-[12] whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-600">{m.doc.entry.summary}</p>
                     <button
                       type="button"
                       onClick={() => openEntry(m.doc.entry)}
-                      className="mt-2 inline-flex items-center gap-1 text-[13px] font-medium text-volt-400 hover:text-volt-600"
+                      className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-neutral-500 transition-colors hover:text-volt-400"
                     >
                       {t("chat.full")} <IconArrow className="h-4 w-4" />
                     </button>
                   </article>
                   {m.related.length > 0 && (
                     <>
-                      <p className="text-[12px] text-neutral-500">{t("chat.related")}</p>
+                      <p className="text-xs font-medium text-neutral-600">{t("chat.related")}</p>
                       <Chips items={m.related} />
                     </>
                   )}
@@ -213,23 +208,30 @@ export default function ChatBot() {
             )}
           </div>
 
-          <div className="flex flex-col gap-2 border-t border-neutral-200 bg-white px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom,0px))] sm:rounded-b-2xl sm:pb-3">
+          <div className="flex flex-col gap-3 border-t border-black/[0.07] bg-white px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom,0px))] sm:pb-3">
             {msgs.length <= 1 && <Chips items={EXAMPLE_KEYS.map((k) => t(k))} />}
-            <form onSubmit={submit} className="flex gap-2">
-              <input
-                ref={inputRef}
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                aria-label={t("chat.input")}
-                placeholder={t("chat.placeholder")}
-                data-testid="chat-input"
-                className="min-w-0 flex-1 rounded-xl border border-neutral-300 bg-ink-950 px-3.5 py-2.5 text-[16px] text-neutral-950 outline-none focus:border-neutral-950 sm:text-[14px]"
-              />
-              <button type="submit" className={cn("rounded-xl bg-neutral-950 px-4 text-[14px] font-bold text-white", !q.trim() && "opacity-60")}>
-                {t("chat.send")}
+            {/* 허브 첫 화면 검색창과 같은 입력칸 + 노란 화살표 버튼 */}
+            <form onSubmit={submit} className="flex items-stretch gap-2">
+              <div className="flex min-w-0 flex-1 items-center rounded-lg border border-neutral-200 bg-white px-3.5 shadow-sm transition focus-within:border-neutral-600 focus-within:ring-2 focus-within:ring-neutral-200">
+                <input
+                  ref={inputRef}
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  aria-label={t("chat.input")}
+                  placeholder={t("chat.placeholder")}
+                  data-testid="chat-input"
+                  className="min-w-0 flex-1 bg-transparent py-3 text-[16px] text-neutral-950 outline-none placeholder:text-neutral-500 focus-visible:outline-none sm:text-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                aria-label={t("chat.send")}
+                className="grid w-12 shrink-0 place-items-center rounded-lg bg-volt-500 text-neutral-950 shadow-sm transition hover:bg-volt-200"
+              >
+                <ArrowRight className="size-5" aria-hidden />
               </button>
             </form>
-            <p className="text-[11px] leading-snug text-neutral-500">{t("chat.disclaimer")}</p>
+            <p className="text-[11px] leading-snug text-neutral-600">{t("chat.disclaimer")}</p>
           </div>
         </section>
       )}
