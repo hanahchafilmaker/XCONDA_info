@@ -59,3 +59,31 @@ test("Q&A chatbot panel has no WCAG A/AA violations @a11y", async ({ page }) => 
   });
   expect(violations).toEqual([]);
 });
+
+test("AI summary appears above the hub answer when a worker is connected, and disappears on failure", async ({ page }) => {
+  let calls = 0;
+  let fail = false;
+  await page.route("https://qna-ai.test/ask", async (route) => {
+    calls += 1;
+    const body = route.request().postDataJSON();
+    expect(body.docs[0].url).toMatch(/^https:\/\/hub\.xconda\.ai\/qna\//);
+    if (fail) return route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "llm_unavailable", fallback: "bm25" }) });
+    return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ answer: "AI가 정리한 테스트 답변입니다." }) });
+  });
+  await page.evaluate(() => localStorage.setItem("xconda-qna-ai-endpoint", "https://qna-ai.test"));
+  await page.reload();
+  await expect(page.locator("#top h1")).toBeVisible();
+
+  await page.getByTestId("chat-open").click();
+  await page.getByTestId("chat-input").fill("엑스콘다 가격이 얼마예요?");
+  await page.getByTestId("chat-input").press("Enter");
+  await expect(page.getByTestId("chat-ai")).toContainText("AI가 정리한 테스트 답변입니다.");
+  await expect(page.getByTestId("chat-answer")).toHaveCount(1);
+
+  fail = true;
+  await page.getByTestId("chat-input").fill("환불 받고 싶어요");
+  await page.getByTestId("chat-input").press("Enter");
+  await expect(page.getByTestId("chat-answer")).toHaveCount(2);
+  await expect(page.getByTestId("chat-ai")).toHaveCount(1); // 실패한 AI 칸은 사라지고 검색 답변만 남음
+  expect(calls).toBe(2);
+});

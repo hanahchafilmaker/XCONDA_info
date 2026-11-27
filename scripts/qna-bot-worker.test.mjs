@@ -225,3 +225,34 @@ test("단독 프로토타입 HTML 은 BM25 검색과 API 실패 시 자동 폴�
   assert.ok(doc.querySelectorAll("#log .msg.bot").length >= 2, "인사말과 첫 예시 답변 카드가 표시되어야 합니다");
   dom.window.close();
 });
+
+/* ---------------- Workers AI 를 기본 공급자로 쓰는 배포 설정 (2026-11-27) ---------------- */
+
+test("wrangler.toml: Workers AI 바인딩이 켜져 있고 가장 먼저 호출된다", () => {
+  const toml = fs.readFileSync(path.join(ROOT, "qna-bot-worker/wrangler.toml"), "utf8");
+  assert.match(toml, /^\[ai\]\s*\nbinding = "AI"/m, "[ai] binding 이 주석 처리되어 있으면 Workers AI 를 쓸 수 없습니다");
+  const order = /^PROVIDER_ORDER = "([^"]+)"/m.exec(toml)?.[1] ?? "";
+  assert.equal(order.split(",")[0], "workers-ai");
+});
+
+test("키 없이 Workers AI 만 있어도 답하고, 하루 한도를 넘기면 503 + bm25 폴백을 알린다", async () => {
+  resetRateLimitsForTest();
+  const req = () =>
+    new Request("https://xconda-qna-bot.example.workers.dev/ask", {
+      method: "POST",
+      headers: { Origin: "https://hub.xconda.ai", "CF-Connecting-IP": "203.0.113.77", "Content-Type": "application/json" },
+      body: JSON.stringify({ question: "환불은 어떻게 받나요?", docs: SAMPLE_DOCS, lang: "ko" }),
+    });
+  const order = { PROVIDER_ORDER: "workers-ai,gemini,groq" };
+
+  const ok = await worker.fetch(req(), { ...order, AI: { run: async () => ({ response: "7일 이내 미사용이면 환불됩니다." }) } });
+  assert.equal(ok.status, 200);
+  assert.equal((await ok.json()).provider, "workers-ai");
+
+  const quota = await worker.fetch(req(), {
+    ...order,
+    AI: { run: async () => { throw new Error("4006: you have used up your daily free allocation of 10,000 neurons"); } },
+  });
+  assert.equal(quota.status, 503);
+  assert.equal((await quota.json()).fallback, "bm25");
+});

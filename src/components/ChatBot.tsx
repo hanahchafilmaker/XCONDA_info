@@ -3,6 +3,8 @@ import type { Entry } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { buildChatIndex, searchChat, SCORE_GOOD, SCORE_MAYBE } from "../content/chatSearch";
 import { useLang } from "../i18n";
+import { routePathFor } from "../content/seo";
+import { askQnaAi, resolveQnaAiEndpoint, type AiDoc } from "../content/qnaAi";
 import { SUPPORT_EMAIL_KO } from "./Qna";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { IconArrow, IconClose, Pill } from "./volt";
@@ -22,7 +24,9 @@ type Doc = { kind: Kind; slug?: string; title: string; text: string; entry: Entr
 type Msg =
   | { id: number; who: "user"; text: string }
   | { id: number; who: "bot"; text: string; options?: string[] }
-  | { id: number; who: "answer"; doc: Doc; related: string[] };
+  | { id: number; who: "answer"; doc: Doc; related: string[] }
+  /** AI 요약 — text 가 null 이면 아직 답을 기다리는 중 */
+  | { id: number; who: "ai"; text: string | null };
 
 /** id 를 뺀 새 메시지 (유니언 각각에 Omit 적용) */
 type NewMsg = Msg extends infer M ? (M extends Msg ? Omit<M, "id"> : never) : never;
@@ -38,7 +42,7 @@ const toDoc = (entry: Entry, kind: Kind): Doc => ({
 });
 
 export default function ChatBot() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { faqs, notices, guides, openEntry, active } = useContent();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
@@ -55,8 +59,12 @@ export default function ChatBot() {
 
   const kindLabel: Record<Kind, string> = { faq: t("nav.qna"), notice: t("nav.notices"), guide: t("nav.tools") };
 
-  const push = (...add: NewMsg[]) =>
-    setMsgs((prev) => [...prev, ...add.map((m) => ({ ...m, id: nextId.current++ }) as Msg)]);
+  /** 메시지를 추가하고 각 메시지에 붙은 id 를 돌려줍니다. (id 는 상태 갱신 함수 밖에서 정해야 개발 모드의 두 번 실행에도 안전합니다) */
+  const push = (...add: NewMsg[]) => {
+    const withIds = add.map((m) => ({ ...m, id: nextId.current++ }) as Msg);
+    setMsgs((prev) => [...prev, ...withIds]);
+    return withIds.map((m) => m.id);
+  };
 
   const ask = (raw: string) => {
     const question = raw.trim();
@@ -69,7 +77,24 @@ export default function ChatBot() {
     const user = { who: "user" as const, text: question };
     if (hits[0] && hits[0].score >= SCORE_GOOD) {
       const related = hits.slice(1, 4).filter((h) => h.score >= SCORE_MAYBE).map((h) => h.doc.title);
-      push(user, { who: "answer", doc: hits[0].doc, related });
+      if (!resolveQnaAiEndpoint()) {
+        push(user, { who: "answer", doc: hits[0].doc, related });
+        return;
+      }
+      // AI 요약을 먼저 "정리하는 중"으로 보여 주고, 근거 글 카드는 바로 아래에 둡니다.
+      const [, aiId] = push(user, { who: "ai", text: null }, { who: "answer", doc: hits[0].doc, related });
+      const docs: AiDoc[] = hits
+        .slice(0, 4)
+        .filter((h, i) => i === 0 || h.score >= SCORE_MAYBE)
+        .map(({ doc }) => {
+          const path = doc.slug ? routePathFor(doc.entry.type, doc.slug) : null;
+          return { title: doc.title, answer: doc.entry.summary, url: path ? `https://hub.xconda.ai/${path}` : "", kind: doc.kind, date: doc.entry.modified ?? doc.entry.date };
+        });
+      void askQnaAi(question, docs, lang).then((text) =>
+        setMsgs((prev) =>
+          text ? prev.map((m) => (m.id === aiId && m.who === "ai" ? { ...m, text } : m)) : prev.filter((m) => m.id !== aiId),
+        ),
+      );
     } else {
       const options = hits.slice(0, 3).filter((h) => h.score >= SCORE_MAYBE).map((h) => h.doc.title);
       push(user, { who: "bot", text: t("chat.notFound"), options });
@@ -82,10 +107,14 @@ export default function ChatBot() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  // 새 질문을 하면 그 질문이 창 맨 위에 오도록 스크롤 → 바로 아래의 AI 요약·답변을 위에서부터 읽을 수 있음
   useEffect(() => {
     const el = logRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [msgs]);
+    if (!el) return;
+    const lastUser = [...msgs].reverse().find((m) => m.who === "user");
+    const target = lastUser ? el.querySelector<HTMLElement>(`[data-msg="${lastUser.id}"]`) : null;
+    el.scrollTop = target ? target.offsetTop - el.offsetTop - 12 : el.scrollHeight;
+  }, [msgs.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!open) return;
@@ -158,14 +187,26 @@ export default function ChatBot() {
             </Button>
           </header>
 
-          <div ref={logRef} aria-live="polite" className="flex flex-1 flex-col gap-4 overflow-y-auto bg-ink-950 px-4 py-4">
+          <div ref={logRef} aria-live="polite" className="relative flex flex-1 flex-col gap-4 overflow-y-auto bg-ink-950 px-4 py-4">
             {msgs.map((m) =>
               m.who === "user" ? (
-                <p key={m.id} className="max-w-[85%] self-end whitespace-pre-line rounded-xl bg-neutral-950 px-3.5 py-2.5 text-sm text-white">
+                <p key={m.id} data-msg={m.id} className="max-w-[85%] self-end whitespace-pre-line rounded-xl bg-neutral-950 px-3.5 py-2.5 text-sm text-white">
                   {m.text}
                 </p>
+              ) : m.who === "ai" ? (
+                <div key={m.id} data-msg={m.id} data-testid="chat-ai" className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5">
+                  <Pill tone="amber">{t("chat.ai")}</Pill>
+                  {m.text === null ? (
+                    <p className="mt-2 text-sm text-neutral-600" aria-busy="true">{t("chat.aiPending")}</p>
+                  ) : (
+                    <>
+                      <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-800">{m.text}</p>
+                      <p className="mt-2 text-xs text-neutral-600">{t("chat.aiNote")}</p>
+                    </>
+                  )}
+                </div>
               ) : m.who === "bot" ? (
-                <div key={m.id} className="flex flex-col gap-2">
+                <div key={m.id} data-msg={m.id} className="flex flex-col gap-2">
                   <p className="whitespace-pre-line rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm leading-[1.8] text-neutral-700">
                     {m.text}
                     {m.text === t("chat.notFound") && (
@@ -183,7 +224,7 @@ export default function ChatBot() {
                   )}
                 </div>
               ) : (
-                <div key={m.id} className="flex flex-col gap-2">
+                <div key={m.id} data-msg={m.id} className="flex flex-col gap-2">
                   {/* 통합검색 결과 · Q&A 섹션과 같은 구성: Pill 분류 + 제목 + 답변 + "전체 보기" */}
                   <article data-testid="chat-answer" className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5">
                     <Pill tone="zinc">{kindLabel[m.doc.kind]}</Pill>
