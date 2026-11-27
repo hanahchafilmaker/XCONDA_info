@@ -3,7 +3,8 @@ import type { Entry } from "../content/types";
 import { useContent } from "../content/ContentContext";
 import { buildChatIndex, searchChat, SCORE_GOOD, SCORE_MAYBE } from "../content/chatSearch";
 import { useLang } from "../i18n";
-import { routePathFor } from "../content/seo";
+import { routePathFor, routePrefixFor } from "../content/seo";
+import { aiLangOf, loadChatTranslations, type ChatTranslations } from "../content/chatI18n";
 import { askQnaAi, resolveQnaAiEndpoint, type AiDoc } from "../content/qnaAi";
 import { SUPPORT_EMAIL_KO } from "./Qna";
 import { ArrowRight, MessageCircle } from "lucide-react";
@@ -17,10 +18,13 @@ import { Button } from "./ui/button";
  *   질문과 가장 비슷한 글을 찾아(`src/content/chatSearch.js`) 그 답변(요약)을 그대로 보여 줍니다.
  * - 노션에서 글을 고치면 사이트와 함께 챗봇 답변도 자동으로 바뀝니다(따로 데이터 파일 없음).
  * - "전체 보기"는 기존 글 상세 창(ArticleModal)을 엽니다.
+ * - 허브가 EN/JA/ZH 화면이면 사람이 검수한 번역(`src/content/chatI18n.ts`)으로 제목·답변을 보여 주고,
+ *   검색도 번역문과 한국어 원문을 함께 찾습니다. 번역이 없는 글만 한국어로 보입니다.
  */
 
 type Kind = "faq" | "notice" | "guide";
-type Doc = { kind: Kind; slug?: string; title: string; text: string; entry: Entry };
+/** title·summary 는 화면 언어로 보여 줄 글자, translated 는 사람이 번역한 글인지 여부 */
+type Doc = { kind: Kind; slug?: string; title: string; summary: string; translated: boolean; text: string; entry: Entry };
 type Msg =
   | { id: number; who: "user"; text: string }
   | { id: number; who: "bot"; text: string; options?: string[] }
@@ -33,16 +37,24 @@ type NewMsg = Msg extends infer M ? (M extends Msg ? Omit<M, "id"> : never) : ne
 
 const EXAMPLE_KEYS = ["chat.ex1", "chat.ex2", "chat.ex3", "chat.ex4"] as const;
 
-const toDoc = (entry: Entry, kind: Kind): Doc => ({
-  kind,
-  slug: entry.slug,
-  title: entry.title,
-  text: [entry.summary, entry.seoTitle, entry.seoDescription, entry.category, ...entry.tags].filter(Boolean).join(" "),
-  entry,
-});
+const toDoc = (entry: Entry, kind: Kind, tr: ChatTranslations): Doc => {
+  const prefix = routePrefixFor(entry.type);
+  const local = prefix && entry.slug ? tr.get(`${prefix}/${entry.slug}`) : undefined;
+  const ko = [entry.summary, entry.seoTitle, entry.seoDescription, entry.category, ...entry.tags].filter(Boolean).join(" ");
+  return {
+    kind,
+    slug: entry.slug,
+    title: local?.title ?? entry.title,
+    summary: local?.summary ?? entry.summary,
+    translated: Boolean(local),
+    // 번역문과 한국어 원문을 함께 넣어, 어느 언어로 물어도 찾을 수 있게 합니다.
+    text: local ? `${local.summary} ${entry.title} ${ko}` : ko,
+    entry,
+  };
+};
 
 export default function ChatBot() {
-  const { t, lang } = useLang();
+  const { t, target } = useLang();
   const { faqs, notices, guides, openEntry, active } = useContent();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
@@ -51,11 +63,23 @@ export default function ChatBot() {
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelId = useId();
+  // 화면 언어의 번역(한국어면 빈 표). 챗봇을 처음 열 때 그 언어 파일만 불러옵니다.
+  const [tr, setTr] = useState<{ target: string; map: ChatTranslations }>({ target: "ko", map: new Map() });
 
-  const index = useMemo(
-    () => buildChatIndex([...faqs.map((e) => toDoc(e, "faq")), ...notices.map((e) => toDoc(e, "notice")), ...guides.map((e) => toDoc(e, "guide"))]),
-    [faqs, notices, guides],
-  );
+  useEffect(() => {
+    if (!open || tr.target === target) return;
+    let alive = true;
+    void loadChatTranslations(target).then((map) => alive && setTr({ target, map }));
+    return () => {
+      alive = false;
+    };
+  }, [open, target, tr.target]);
+
+  const trMap = tr.target === target ? tr.map : null;
+  const index = useMemo(() => {
+    const m = trMap ?? new Map();
+    return buildChatIndex([...faqs.map((e) => toDoc(e, "faq", m)), ...notices.map((e) => toDoc(e, "notice", m)), ...guides.map((e) => toDoc(e, "guide", m))]);
+  }, [faqs, notices, guides, trMap]);
 
   const kindLabel: Record<Kind, string> = { faq: t("nav.qna"), notice: t("nav.notices"), guide: t("nav.tools") };
 
@@ -88,9 +112,9 @@ export default function ChatBot() {
         .filter((h, i) => i === 0 || h.score >= SCORE_MAYBE)
         .map(({ doc }) => {
           const path = doc.slug ? routePathFor(doc.entry.type, doc.slug) : null;
-          return { title: doc.title, answer: doc.entry.summary, url: path ? `https://hub.xconda.ai/${path}` : "", kind: doc.kind, date: doc.entry.modified ?? doc.entry.date };
+          return { title: doc.title, answer: doc.summary, url: path ? `https://hub.xconda.ai/${path}` : "", kind: doc.kind, date: doc.entry.modified ?? doc.entry.date };
         });
-      void askQnaAi(question, docs, lang).then((text) =>
+      void askQnaAi(question, docs, aiLangOf(target)).then((text) =>
         setMsgs((prev) =>
           text ? prev.map((m) => (m.id === aiId && m.who === "ai" ? { ...m, text } : m)) : prev.filter((m) => m.id !== aiId),
         ),
@@ -175,6 +199,7 @@ export default function ChatBot() {
           role="dialog"
           aria-label={t("chat.title")}
           data-testid="chat-panel"
+          data-chat-lang={trMap && trMap.size ? target : "ko"}
           className="fixed inset-0 z-[70] flex flex-col overflow-hidden bg-white text-neutral-950 sm:inset-auto sm:right-5 sm:bottom-5 sm:h-[min(620px,calc(100dvh-6rem))] sm:w-[400px] sm:rounded-2xl sm:border sm:border-black/10 sm:shadow-2xl"
         >
           <header className="flex items-start justify-between gap-3 border-b border-black/[0.06] px-5 pt-4 pb-3">
@@ -200,7 +225,7 @@ export default function ChatBot() {
                     <p className="mt-2 text-sm text-neutral-600" aria-busy="true">{t("chat.aiPending")}</p>
                   ) : (
                     <>
-                      <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-800">{m.text}</p>
+                      <p className={`mt-2 whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-800${target === "ko" ? "" : " notranslate"}`}>{m.text}</p>
                       <p className="mt-2 text-xs text-neutral-600">{t("chat.aiNote")}</p>
                     </>
                   )}
@@ -228,8 +253,11 @@ export default function ChatBot() {
                   {/* 통합검색 결과 · Q&A 섹션과 같은 구성: Pill 분류 + 제목 + 답변 + "전체 보기" */}
                   <article data-testid="chat-answer" className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5">
                     <Pill tone="zinc">{kindLabel[m.doc.kind]}</Pill>
-                    <h3 className="mt-2 text-[15px] font-semibold leading-relaxed text-neutral-950">{m.doc.title}</h3>
-                    <p className="mt-1.5 line-clamp-[12] whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-600">{m.doc.entry.summary}</p>
+                    {/* 사람이 번역한 글은 구글 자동 번역이 다시 건드리지 않게 notranslate */}
+                    <div className={m.doc.translated ? "notranslate" : undefined} lang={m.doc.translated ? target : undefined}>
+                      <h3 className="mt-2 text-[15px] font-semibold leading-relaxed text-neutral-950">{m.doc.title}</h3>
+                      <p className="mt-1.5 line-clamp-[12] whitespace-pre-line text-pretty text-sm leading-[1.8] text-neutral-600">{m.doc.summary}</p>
+                    </div>
                     <button
                       type="button"
                       onClick={() => openEntry(m.doc.entry)}

@@ -259,6 +259,21 @@ export function loadTranslations(root) {
   return { translations: out, warnings };
 }
 
+/**
+ * 챗봇용 가벼운 번역 — Q&A·공지·가이드 글의 제목과 요약(답변)만 남깁니다(본문 blocks·블로그 글 제외).
+ * @returns {{ entries: Record<string, { title: string, summary: string }> }}
+ */
+export function chatTranslationsOf(dict) {
+  const entries = {};
+  for (const [key, e] of Object.entries(dict?.entries ?? {})) {
+    if (!/^(qna|notice|guide)\//.test(key)) continue;
+    const title = String(e?.title ?? "").trim();
+    const summary = String(e?.summary ?? "").trim();
+    if (title && summary) entries[key] = { title, summary };
+  }
+  return { entries };
+}
+
 /* ------------------------------ 번역 본문(blocks) ------------------------------
  * 번역 파일(`content/i18n/<언어>.json`)의 `entries[키].blocks` 는 **사람이 쓰는 최소 형식**입니다.
  * 노션 블록 구조를 그대로 번역하지 않고 아래 6가지만 받습니다(번역가가 다루기 쉬운 형태).
@@ -1878,6 +1893,12 @@ function renderSeoSiteWith({ rows, pages = {}, template: inputTemplate, siteUrl 
   // 있으면 /en/... 으로 이동하고, 없으면 지금처럼 번역 위젯으로 폴백합니다.
   if (Object.keys(localized.paths).length) {
     files.set("assets/i18n-paths.json", `${JSON.stringify(localized.paths, null, 2)}\n`);
+  }
+  // 허브 챗봇(src/components/ChatBot.tsx)이 EN/JA/ZH 화면에서 쓰는 번역 제목·답변.
+  // 앱이 한 파일로 묶여 있어 번역을 통째로 넣으면 너무 커지므로, 필요한 언어만 따로 받아 갑니다.
+  for (const [code, dict] of Object.entries(translations ?? {})) {
+    const slim = chatTranslationsOf(dict);
+    if (Object.keys(slim.entries).length) files.set(`assets/chat-i18n-${code}.json`, `${JSON.stringify(slim)}\n`);
   }
   // 옮겨진 글의 옛 주소 → 새 주소 이동 페이지 (사이트맵에는 넣지 않습니다).
   // 새 주소의 글이 실제로 만들어졌을 때만 이동 페이지를 만듭니다(없는 글로 보내지 않도록).

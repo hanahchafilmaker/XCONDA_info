@@ -87,3 +87,24 @@ test("AI summary appears above the hub answer when a worker is connected, and di
   await expect(page.getByTestId("chat-ai")).toHaveCount(1); // 실패한 AI 칸은 사라지고 검색 답변만 남음
   expect(calls).toBe(2);
 });
+
+test("Q&A chatbot answers in English on the English hub", async ({ page }) => {
+  await page.evaluate(() => localStorage.setItem("xconda-lang", "en"));
+  await page.reload();
+  await expect(page.locator("#top h1")).toBeVisible();
+
+  await page.getByTestId("chat-open").click();
+  // The English translations load when the chat first opens.
+  await expect(page.getByTestId("chat-panel")).toHaveAttribute("data-chat-lang", "en", { timeout: 15_000 });
+  await page.getByTestId("chat-input").fill("How much do credit packs cost?");
+  await page.getByTestId("chat-input").press("Enter");
+  const answer = page.getByTestId("chat-answer").last();
+  // Human translation from content/i18n/en.json, not the Korean original.
+  await expect(answer.locator("h3")).toHaveText(/credit packs/i);
+  await expect(answer).not.toContainText("크레딧");
+
+  // A Korean question on the English hub still finds the same article, shown in English.
+  await page.getByTestId("chat-input").fill("엑스콘다 가격이 얼마예요?");
+  await page.getByTestId("chat-input").press("Enter");
+  await expect(page.getByTestId("chat-answer").last().locator("h3")).toHaveText(/credit packs/i);
+});
