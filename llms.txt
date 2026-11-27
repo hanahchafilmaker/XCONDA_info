@@ -40,6 +40,7 @@
 - [KOCCA AI 웹드라마 4편 국내 쇼케이스 안내](https://hub.xconda.ai/notice/kocca-ai-webdrama-showcase/): AICCA 협회원 작품 런칭 공식행사, KOCCA AI 웹드라마 4편 국내 쇼케이스가 11월 27일(금) 17:00 서울영화센터 상영관 I에서 열립니다. 상영과 패널토크, 참가비 무료. 앞서 11월 25일(수)에는 4편의 제작 노하우를 나누는 Meet 라이브가…
 - [XCONDA 워크스페이스 베타 오픈 | 기업·팀용](https://hub.xconda.ai/notice/xconda-workspace-beta-open/): 11월 17일, 기업·팀용 XCONDA 워크스페이스 베타 오픈. 팀 프로젝트와 멤버, 크레딧을 한곳에서 관리합니다.
 - [Seedream 5.5 XCONDA 출시 | 이미지 40% 할인](https://hub.xconda.ai/notice/seedream-55-xconda/): XCONDA 이미지 기본 모델이 Seedream 5.5로 바뀌었습니다. 여러 번 수정해도 구도·조명·색이 유지되고, 지금 40% 할인가로 만들 수 있습니다.
+- [XCONDA 비디오 업스케일러 오픈 | AI 영상 화질 개선, 최대 4K](https://hub.xconda.ai/notice/video-upscaler/): 11월 30일(월)부터 비디오 업스케일러 이용 가능. XCONDA에서 만든 영상이나 직접 올린 영상을 최대 4K까지 화질 개선.
 
 ## 뉴스
 
