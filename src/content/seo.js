@@ -887,22 +887,26 @@ export const OFFICIAL_SAME_AS = OFFICIAL_SOCIAL_URLS;
  */
 export const RESELLER_ID = "https://www.cuberry.kr/#reseller-us";
 /**
- * 문의처는 **모든 언어에서 한국 법인**입니다 — 대표 확정(2026-11-14 최종).
+ * 문의처 — **도메인·메일 분리 정책**(2026-11-27 대표 승인 · Slack #all-cuberry-mhw).
  *
- *   모든 허브 글(한·영·일·중) → cubeberry@cuberry.kr (한국 법인)
+ *   글로벌·미국 (cubeberry.ai) → product@cubeberry.ai   제품 문의
+ *                                info@cubeberry.ai      결제·계약
+ *   한국 (cuberry.kr)          → cubeberry@cuberry.kr   한국 고객 문의
  *
- * XCONDA 기능·사용법·크레딧 질문은 개발·운영사인 한국 본사만 답할 수 있기 때문입니다.
- * 미국 법인(info@cubeberry.ai)은 Stripe 결제 청구 문의만 담당하므로, 허브의 문의 창구로는
- * 쓰지 않고 푸터의 공인 리셀러 연락처로만 남깁니다(구조화 데이터 리셀러 노드).
+ * 화면 언어를 따라 시장을 고릅니다: ko → 한국(cuberry.kr), en·ja·zh → 글로벌(cubeberry.ai).
+ * 결제·계약 창구(info@cubeberry.ai)는 푸터·구조화 데이터의 미국 법인(공인 리셀러) 노드에도 남깁니다.
+ * 한국 도메인은 cuberry.kr 이고, 비슷한 다른 표기는 오타이므로 쓰지 않습니다(2026-11-27 태윤 님 정정).
  * 정적 페이지 하단 문구(content/i18n/{en,ja,zh}.json `ui.note`), 앱 Q&A·푸터,
  * 구조화 데이터 contactPoint 가 모두 이 함수를 씁니다.
  */
+export const SUPPORT_EMAIL_GLOBAL = "product@cubeberry.ai";
 export const SUPPORT_EMAIL_US = "info@cubeberry.ai";
 export const SUPPORT_EMAIL_KR = "cubeberry@cuberry.kr";
 
-/** 언어 코드(en·ko·ja·zh) → 문의 메일. 언어와 무관하게 한국 법인입니다. */
-export function supportEmailFor() {
-  return SUPPORT_EMAIL_KR;
+/** 언어 코드(ko·en·ja·zh) → 문의 메일. 한국어는 cuberry.kr, 그 밖의 언어는 cubeberry.ai(글로벌). */
+export function supportEmailFor(lang = "ko") {
+  const code = String(lang ?? "").toLowerCase();
+  return code && !code.startsWith("ko") ? SUPPORT_EMAIL_GLOBAL : SUPPORT_EMAIL_KR;
 }
 
 /** 한국어(기본값) 문의처. */
@@ -930,7 +934,8 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL, lang = "ko") {
       url: "https://www.cuberry.kr/",
       logo: "https://www.cuberry.kr/images/logo-512.png",
       foundingDate: "2023-08",
-      email: "ceo@cubeberry.ai",
+      // 한국 법인의 공개 메일은 한국 도메인(cuberry.kr) 주소입니다(2026-11-27 도메인 분리).
+      email: SUPPORT_EMAIL_KR,
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
@@ -947,8 +952,8 @@ export function siteJsonLd(siteUrl = DEFAULT_SITE_URL, lang = "ko") {
       "@id": RESELLER_ID,
       name: "Cubeberry Co., Ltd",
       description:
-        "Authorized reseller of XCONDA. Sells and bills XCONDA purchases paid through Stripe under its own name. XCONDA is developed and operated by Cubeberry Co., Ltd. (Korea).",
-      email: "info@cubeberry.ai",
+        "Authorized reseller of XCONDA. Sells and bills XCONDA purchases paid through Stripe under its own name; payments and contracts: info@cubeberry.ai. XCONDA is developed and operated by Cubeberry Co., Ltd. (Korea).",
+      email: SUPPORT_EMAIL_US,
       address: { "@type": "PostalAddress", addressRegion: "DE", addressCountry: "US" },
     },
     {

@@ -6,17 +6,18 @@ import { useLang } from "../i18n";
 import { IconArrow, IconPlus, Reveal, SectionHeader } from "./volt";
 
 /**
- * 문의 메일 — 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
- *   모든 화면 → cubeberry@cuberry.kr (한국 법인)
- * 미국 법인(info@cubeberry.ai)은 Stripe 결제 청구 문의만 담당하므로 허브 문의 창구로는 쓰지 않습니다.
+ * 문의 메일 — 도메인·메일 분리 정책(2026-11-27 대표 승인).
+ *   ko        → cubeberry@cuberry.kr  (한국 · cuberry.kr)
+ *   en·ja·zh  → product@cubeberry.ai  (글로벌·미국 제품 문의 · cubeberry.ai)
+ * 결제·계약 창구 info@cubeberry.ai(미국 법인)는 푸터·구조화 데이터의 리셀러 노드에 남깁니다.
  * Q&A 섹션 링크 · 푸터(Closing.tsx) · 구조화 데이터가 같은 규칙을 씁니다.
  */
-const SUPPORT_EMAIL_EN = "info@cubeberry.ai";
+const SUPPORT_EMAIL_GLOBAL = "product@cubeberry.ai";
 const SUPPORT_EMAIL_KO = "cubeberry@cuberry.kr";
 
-/** 문의 메일. 언어와 무관하게 한국 법인입니다. */
-function supportEmailFor(_lang?: string): string {
-  return SUPPORT_EMAIL_KO;
+/** 문의 메일. 한국어 화면은 한국(cuberry.kr), 그 밖의 언어는 글로벌(cubeberry.ai)입니다. */
+function supportEmailFor(lang?: string): string {
+  return lang && !String(lang).toLowerCase().startsWith("ko") ? SUPPORT_EMAIL_GLOBAL : SUPPORT_EMAIL_KO;
 }
 
 function QnaItem({ f, defaultOpen, onOpen }: { f: Entry; defaultOpen: boolean; onOpen: () => void }) {
@@ -111,4 +112,4 @@ export default function Qna() {
   );
 }
 
-export { supportEmailFor, SUPPORT_EMAIL_EN, SUPPORT_EMAIL_KO };
+export { supportEmailFor, SUPPORT_EMAIL_GLOBAL, SUPPORT_EMAIL_KO };

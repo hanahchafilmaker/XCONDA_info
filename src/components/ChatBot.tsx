@@ -6,7 +6,7 @@ import { useLang } from "../i18n";
 import { routePathFor, routePrefixFor } from "../content/seo";
 import { aiLangOf, loadChatTranslations, type ChatTranslations } from "../content/chatI18n";
 import { askQnaAi, resolveQnaAiEndpoint, type AiDoc } from "../content/qnaAi";
-import { SUPPORT_EMAIL_KO } from "./Qna";
+import { supportEmailFor } from "./Qna";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { IconArrow, IconClose, Pill } from "./volt";
 import { Button } from "./ui/button";
@@ -55,6 +55,8 @@ const toDoc = (entry: Entry, kind: Kind, tr: ChatTranslations): Doc => {
 
 export default function ChatBot() {
   const { t, target } = useLang();
+  // 답을 못 찾았을 때 안내하는 문의 메일도 화면 언어(시장)를 따릅니다 — ko=cuberry.kr, 그 밖=cubeberry.ai.
+  const supportEmail = supportEmailFor(target);
   const { faqs, notices, guides, openEntry, active } = useContent();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
@@ -237,7 +239,7 @@ export default function ChatBot() {
                     {m.text === t("chat.notFound") && (
                       <>
                         {"\n"}
-                        <span className="select-all font-medium text-neutral-950">{SUPPORT_EMAIL_KO}</span>
+                        <span className="select-all font-medium text-neutral-950">{supportEmail}</span>
                       </>
                     )}
                   </p>

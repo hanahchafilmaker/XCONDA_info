@@ -551,8 +551,23 @@ npm run build
 | `STUDIO_URL = "https://www.xconda.ai"` | `src/content/tools.ts` |
 | `PRIMARY_LANG = "ko"` (대표 언어 · `x-default`) — 영어 원문 발행을 시작하면 `"en"` 으로 | `src/content/seo.js` |
 | `NOTION_NEWS_URL` | `src/content/channels.tsx` |
-| 문의 메일 `SUPPORT_EMAIL = "info@cubeberry.ai"` (Q&A 섹션 · 푸터 노출) — 정적 페이지 하단 문구·구조화 데이터와 **같은 주소**여야 함(대표 확정 11/14) | `src/components/Qna.tsx`, `src/content/seo.js`, `content/i18n/{en,ja,zh}.json` `ui.note` |
+| 문의 메일 `SUPPORT_EMAIL_GLOBAL = "product@cubeberry.ai"`(글로벌·미국 제품) · `SUPPORT_EMAIL_US = "info@cubeberry.ai"`(결제·계약) · `SUPPORT_EMAIL_KR = "cubeberry@cuberry.kr"`(한국) — 화면 언어가 시장을 고름(`supportEmailFor(lang)`). 정적 페이지 하단 문구·구조화 데이터와 **같은 주소**여야 함(2026-11-27 도메인·메일 분리, 아래 11.6) | `src/components/Qna.tsx`, `src/content/seo.js`, `content/i18n/{en,ja,zh}.json` `ui.note` |
 | 언어별 공식 SNS 계정 · 링크 | `src/content/socialAccounts.js` (뉴스·푸터·JSON-LD 공용), 아이콘은 `src/content/channels.tsx` |
+
+### 11.6 문의 메일 · 도메인 정책 (2026-11-27 대표 승인)
+
+Slack `#all-cuberry-mhw`(2026-11-26~27)에서 **이진서 대표가 도메인·메일 분리를 승인**하고, 권태윤 님이 메일함을 셋업했습니다(제품용 `product@` 신설, 결제·계약용 `info@` 는 기존 것).
+
+| 시장 | 도메인 | 문의 | 쓰는 곳 |
+|---|---|---|---|
+| 한국 | `cuberry.kr` | `cubeberry@cuberry.kr` | 한국어 화면의 Q&A 섹션·푸터·JSON-LD contactPoint |
+| 글로벌·미국 | `cubeberry.ai` | 제품 `product@cubeberry.ai` | 영어·일본어·중국어 화면의 Q&A 섹션·푸터·JSON-LD contactPoint, `content/i18n/{en,ja,zh}.json` `ui.note`, 문의 안내 글(`qna/contact-inquiry`) |
+| 글로벌·미국 | `cubeberry.ai` | 결제·계약 `info@cubeberry.ai` | 같은 하단 문구·문의 안내 글, JSON-LD 미국 법인(공인 리셀러) 노드 |
+
+- **구현은 한 곳**: `src/content/seo.js` › `supportEmailFor(lang)` — `ko`(기본값)면 `SUPPORT_EMAIL_KR`, 그 밖의 언어면 `SUPPORT_EMAIL_GLOBAL`. `src/components/Qna.tsx` 가 같은 규칙을 갖고 있고 푸터(`Closing.tsx`)·챗봇 폴백(`ChatBot.tsx`)이 이 함수를 씁니다. 문구 계약은 `scripts/seo.test.mjs`(「문의 메일은 시장(도메인)을 따른다」)와 `scripts/smoke.mjs`(한국어·영어 화면 각각)가 고정합니다.
+- **한국 도메인은 `cuberry.kr`** 입니다 — 태윤 님이 정정한 사실이고, 비슷한 다른 표기는 오타입니다. `scripts/seo.test.mjs`(「한국 도메인 표기는 cuberry.kr 뿐이다」)가 `src/`·`content/i18n/` 에 그런 표기가 들어오면 실패합니다.
+- **한국어 원문은 노션에 있습니다.** 한국어 문의 안내 글(노션 Q&A 행)은 여전히 `cubeberry@cuberry.kr` + `info@cubeberry.ai` 를 적습니다. 한국어 독자에게 `product@` 까지 안내하려면 **노션 행을 고쳐야** 합니다(저장소의 `notion-content.json` 은 동기화 산출물이라 직접 고치지 않습니다).
+- **개별 Q&A 답변 문구**는 번역 원칙(원문 연락처 보존 · `npm run i18n:qc` 오류 0)에 따라 계속 한국 고객센터 주소(`cubeberry@cuberry.kr`)를 안내합니다. 고객센터는 모든 고객을 한 곳에서 받고, 글로벌 제품 문의 창구는 사이트 하단 문구·Q&A 섹션 링크·구조화 데이터·문의 안내 글이 맡습니다.
 
 ---
 
@@ -575,7 +590,7 @@ npm run build
 | `scripts/fields.test.mjs` | 썸네일 우선순위(Cover → 페이지 커버 → 본문 첫 이미지), 노션 이미지 프록시·폴백 주소, `Author`/`Author EN` |
 | `scripts/notion-snapshot.test.mjs` | 하트비트 판정(`shouldWriteSnapshot`), 안정 직렬화(`stableStringify`) |
 | `scripts/smoke-sections.mjs` | **실제 `src/notionPublic.ts`를 import**해 노션 행을 흘려보내고 섹션 배정을 확인. Node 22.18+ 의 TypeScript 타입 제거 기능 사용(미지원 버전은 SKIP) |
-| `scripts/smoke.mjs` | 실제 번들을 jsdom에서 마운트 → 모든 섹션 렌더 + 콘솔 에러 0 + 검색 동작 + 문의 메일(Q&A·푸터)이 `info@cubeberry.ai` |
+| `scripts/smoke.mjs` | 실제 번들을 jsdom에서 마운트 → 모든 섹션 렌더 + 콘솔 에러 0 + 검색 동작 + 문의 메일(Q&A·푸터)이 한국어 화면 `cubeberry@cuberry.kr` · 영어 화면 `product@cubeberry.ai` |
 | `scripts/smoke-sync.mjs` | **"지금 동기화" 정직성 회귀**: 프록시 사망 시 스냅샷 생성 시각을 표시해야지 "방금 전"을 표시하면 안 됨 |
 | `scripts/seo.test.mjs` | 슬러그 검증·경로 규칙, 발행 조건(`SEO 준비됨`·Slug), 제목·설명·이미지 대체 순서, 본문 HTML(H1 → h2, 이미지 alt), `sitemap.xml` 은 발행 글만, `robots.txt` 가 sitemap 을 가리킴, 생성 결과 멱등성, `$` 기호가 든 제목 안전 치환 |
 | `scripts/smoke-seo.mjs` | **실제 번들**을 jsdom 에서 실행: `/post/{slug}/` 직접 열기 → 글 제목·설명·canonical·og:type, 닫으면 홈 주소·홈 제목, 공유 버튼 → 글 주소 복사, 주소 조건 미달 글은 열리지 않음, 예전 `#post=ID` 는 이동 요청 (jsdom 은 실제 이동을 하지 않아 목적지 주소는 `seo.test.mjs` 가 확인) |

@@ -237,8 +237,11 @@ function ratioFlag(ko, tr, lang) {
  * @returns {{ errors: object[], warnings: object[] }}
  */
 /**
- * 문의처는 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
- * 번역은 원문 연락처를 그대로 써야 합니다(법인 교체 허용 없음).
+ * 문의처는 시장(도메인)을 따릅니다(2026-11-27 도메인·메일 분리).
+ *   한국어 원문(cuberry.kr) → cubeberry@cuberry.kr
+ *   번역(en·ja·zh, cubeberry.ai) → product@cubeberry.ai(제품)·info@cubeberry.ai(결제·계약)
+ * 번역이 원문의 연락처를 그대로 옮겨야 하는 규칙은 그대로입니다 — 원문에 있는 주소가
+ * 빠지면 오류입니다. 언어별 창구를 번역에 덧붙이는 것은 허용됩니다(product@cubeberry.ai).
  */
 
 export function qcLanguage(lang, dict, sources, allow = {}) {
@@ -254,7 +257,8 @@ export function qcLanguage(lang, dict, sources, allow = {}) {
     const koText = `${ko.title}\n${ko.summary}`;
 
     // 1) 연락처 · 주소는 사실이므로 그대로 있어야 합니다.
-    //    문의처는 모든 언어에서 한국 법인입니다(대표 확정 2026-11-14 최종).
+    //    한국어 원문의 주소는 번역에 그대로 남고, 글로벌 창구(product@cubeberry.ai)를 덧붙일 수 있습니다.
+    //    시장별 문의처(2026-11-27 도메인·메일 분리)는 위 qcLanguage 주석을 보세요.
     const koContact = contactTokens(koText);
     const trContact = contactTokens(text);
     for (const email of koContact.emails) {

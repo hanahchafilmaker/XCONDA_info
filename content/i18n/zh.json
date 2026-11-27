@@ -16,7 +16,7 @@
     "hubHome": "XCONDA Hub 首页",
     "koreanOriginal": "查看韩语原文",
     "allSections": "全部主题",
-    "note": "有关 XCONDA 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）：cubeberry@cuberry.kr",
+    "note": "有关 XCONDA 的咨询，产品问题请联系 product@cubeberry.ai，付款与合同请联系 info@cubeberry.ai（Cubeberry Co., Ltd.）。",
     "articleCount": "篇文章"
   },
   "sections": {
@@ -4201,7 +4201,7 @@
     },
     "qna/contact-inquiry": {
       "title": "咨询应该联系哪里？",
-      "summary": "有关 Xconda 的问题，请联系开发者与运营方 Cubeberry Co., Ltd.（韩国）。邮箱 cubeberry@cuberry.kr，电话 +82-70-8095-2302，工作日 10:00~17:00（韩国时间，午休 12:00~13:00）。英文咨询也可联系美国法人 Cubeberry Co., Ltd（Delaware，info@cubeberry.ai，+1-888-202-1989）。通过美国法人购买的项目，退款也请向同一客服窗口申请。",
+      "summary": "咨询窗口按市场划分。全球及美国的商品咨询：product@cubeberry.ai。付款与合同（美国法人 Cubeberry Co., Ltd, Delaware）：info@cubeberry.ai、+1-888-202-1989（纽约地址 276 5th Ave, Ste 704-2816, New York, NY 10001）。韩国：cubeberry@cuberry.kr、+82-70-8095-2302，工作日 10:00~17:00（韩国时间，午休 12:00~13:00）。通过美国法人购买的项目，退款也请向同一窗口申请。",
       "blocks": [
         {
           "type": "h2",
