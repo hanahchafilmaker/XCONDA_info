@@ -9,8 +9,7 @@
  * - 번역이 없거나 받기에 실패한 글은 한국어 원문을 그대로 씁니다.
  */
 import type { Target } from "../i18n";
-import { hubAssetUrl } from "./seo";
-import { hubAbsolute } from "../seo";
+import { hubAssetUrl, hubBaseFromPathname } from "./seo";
 
 export type ChatTranslation = { title: string; summary: string };
 /** "qna/credit-packs-and-price" 같은 키 → 번역 제목·답변 */
@@ -35,11 +34,22 @@ export function pickChatTranslations(file: unknown): ChatTranslations {
   return out;
 }
 
+/**
+ * 번역 파일 주소. 빌드 파일은 허브 맨 위 `assets/` 에만 있으므로, 언어 주소(/en/ · /ja/ · /zh/)에
+ * 있을 때도 그 언어 폴더가 아니라 허브 맨 위에서 읽습니다. 예: hub.xconda.ai/en/ → hub.xconda.ai/assets/…
+ */
+export function chatFileUrl(rel: string, pathname = window.location.pathname, origin = window.location.origin): string {
+  const viaProxy = hubAssetUrl(rel, undefined, pathname);
+  if (viaProxy && /^https?:\/\//.test(viaProxy)) return viaProxy;
+  const base = hubBaseFromPathname(pathname).replace(/(?:^|\/)(?:en|ja|zh)\/$/, "/");
+  return `${origin}${base}${rel}`;
+}
+
 async function fetchChatFile(target: Exclude<Target, "ko">): Promise<unknown> {
   const rel = `assets/chat-i18n-${fileCodeOf(target)}.json`;
   try {
     // 프록시(www.xconda.ai/hub/) 아래에서는 원본 도메인 주소로 읽습니다(i18n-paths.json 과 같은 규칙).
-    const res = await fetch(hubAssetUrl(rel) ?? hubAbsolute(rel));
+    const res = await fetch(chatFileUrl(rel));
     if (res.ok) return await res.json();
   } catch {
     /* 아래로 */
