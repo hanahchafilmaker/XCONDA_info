@@ -7,7 +7,7 @@
     "summary 는 그 글의 답변 전문입니다(Q&A 는 Summary 가 곧 답변). 블로그·가이드는 본문 번역(bodies)이 아직 없어 영어 주소를 만들지 않습니다."
   ],
   "lang": "en",
-  "updated": "2026-11-18",
+  "updated": "2026-11-28",
   "site": {
     "title": "XCONDA Hub — Q&A, Guides and Notices",
     "description": "English answers about XCONDA: pricing and refunds, privacy and payments, and the FLEXBOARD, Turn and Blocking Board tools. Published by Cubeberry."
@@ -4281,7 +4281,7 @@
     },
     "qna/current-discount-events": {
       "title": "Are there any discounts running now?",
-      "summary": "We are running a Seedance 2.5 promotion to mark the Flex Board launch. In Korea, 30% usage discount plus 10% price discount adds up to 40%; in the US, up to 30% usage discount. It runs from 11:00 on 7 October 2026 to 11:00 on 6 November 2026 (KST).",
+      "summary": "No promotion is running right now. The Seedance 2.5 promotion for the Flex Board launch ended at 11:00 on 6 November 2026 (KST). New members currently receive 500 free credits at sign-up, and credit packs bought in Korean won are sold 5–10% below list price. New promotions are announced in Xconda News.",
       "blocks": [
         {
           "type": "h2",
@@ -4903,7 +4903,7 @@
     },
     "qna/what-is-flexboard": {
       "title": "What is Flex Board?",
-      "summary": "Flex Board is a storyboard tool that splits a scenario into shots and previews each shot with text and an image. You check framing and characters before generating video, then fix only the shots you dislike. It is designed to be used together with Seedance 2.5.",
+      "summary": "Flex Board is a storyboard tool that splits a scenario into shots and previews each shot with text and an image. You check framing and characters before generating video, then fix only the shots you dislike. In the direction step of the Studio menu, you choose either Flex Board or Blocking Board. When your shots are done, use Send to save them to the asset library, or pass them to a video project and make video with Seedance 2.5. Aspect ratio, resolution, length and audio are set on the Video › model selection screen. Projects made earlier in Flex Board have moved to video projects, and their shot images can be found in the asset library.",
       "blocks": [
         {
           "type": "h2",
@@ -4931,7 +4931,7 @@
     },
     "qna/what-is-xconda": {
       "title": "What is Xconda?",
-      "summary": "Xconda is an AI video and image production platform run by Cubeberry (xconda.ai). It gives you several generative models in one place plus production tools — Flex Board, Turn, Blocking Board and others — that carry a project from scenario to storyboard to generated video. The focus is not a single clip but work in which many shots hold the same characters in the same space.",
+      "summary": "Xconda is an AI video and image production platform run by Cubeberry (xconda.ai). It gives you several generative models in one place plus production tools — Flex Board, Turn, Blocking Board and others — that carry a project from scenario to storyboard to generated video. The focus is not a single clip but work in which many shots hold the same characters in the same space. The top menu is divided into Studio (one film, step by step) and Image and Video (generate one item right away), with Community for example videos.",
       "blocks": [
         {
           "type": "h2",
